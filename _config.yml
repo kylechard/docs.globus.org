@@ -1,6 +1,9 @@
 # Server
 destination:      dev.globus.org
 
+exclude:
+- deploy.sh
+- dev.globus.org-staging
 
 include: 
 - .nojekyll
