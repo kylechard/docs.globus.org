@@ -17,10 +17,12 @@ sitesDir='dev.globus.org'
 customDomain=true
 
 # The url of your production site
-prodUrl="dev.globus.org"
+# prodUrl="dev.globus.org"
+prodUrl="dev.globuscs.info"
 
 # The url of your dev/staging site
-devUrl="staging.dev.globus.org"
+# devUrl="staging.dev.globus.org"
+devUrl="dev.staging.globuscs.info"
 
 # The name of the development git remote
 devRemote="dev"
