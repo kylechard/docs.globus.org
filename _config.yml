@@ -1,9 +1,16 @@
-# Server
-destination:      dev.globus.org
+# Site settings
+title: 						globus developer
 
+# Server
+source:						source
+destination:      dev.globus.org
+encoding:         UTF-8
+
+# Build settings
+markdown: 				kramdown
+permalink: 				pretty
 exclude:
 - deploy.sh
 - dev.globus.org-staging
-
 include: 
 - .nojekyll
