@@ -1,0 +1,81 @@
+= Endpoint ACL Management
+
+Shared endpoints and S3 endpoints have an associated Access Control List
+(ACL), and the API provides methods for reading, creating, updating and
+deleting access rules in the ACL.
+
+The default ACL allows full access to the endpoint owner, and no other access
+is allowed.
+
+== Document Type
+
+All ACL management resources use the +access+ document type, which represents
+a single access rule in the ACL.
+
+.Access Document Example
+------------------------
+{
+    "DATA_TYPE": "access",
+    "id": 12345,
+    "status": "active",
+    "principal_type": "user",
+    "principal": "user2",
+    "path": "/",
+    "permissions": "r"
+}
+------------------------
+
+=== Fields
+
+[cols="1,8",options="header"]
+|===================
+| Field Name     | Description
+| DATA_TYPE      | Always has value "access" to indicate this document type.
+| id             | Globally unique id for this access rule.
+| status         | Either "active" or "pending". Access rules of with
+                   a +principal_type+ of "email" will always have +status+
+                   of "pending". Other access rules are always "active".
+| principal_type | Type of principal that the rule applies to.
+                   One of "user", "group", "email",
+                   or "all_authenticated_users".
+| principal      | Name or id of the entity the rule applies to.
+                   For type "user", this will be the Globus username.
+                   For type "group", this will be the Globus group uuid.
+                   For type "email", this will be a user's email address.
+                   For type "all_authenticated_users", this is always null.
+| path           | Absolute path beginning with slash that the access
+                   rule applies to.
+| permissions    | How much permission to grant the principal specified in
+                   +principal_type+ and +principal+.
+                   Either read-only, specified as "r",
+                   or read-write, specified as "rw".
+|===================
+
+== Read
+
+Get the list of access rules in the ACL for a specified endpoint.
+
+[cols="h,5a"]
+|============
+| URL
+| /endpoint/<endpoint_name>/access_list
+
+| Method
+| GET
+
+| Response Body | 
+------------------------------------
+include::examples/access_list.json[]
+------------------------------------
+|============
+
+=== Errors
+
+[cols="1,8",options="header"]
+|===================
+| Code       | Description
+| NotFound   | If <endpoint_name> not found
+| BadRequest | If <endpoint_name> does not support ACLs.
+               See the +acl_available+ field of +endpoint+ to determine if
+               an endpoint supports ACLs.
+|===================
