@@ -1,6 +1,6 @@
 # dev.globus.org
 
-This is a private Globus Developer resource built with [nanoc][nanoc].
+This is a private Globus Developer resource built with nanoc.
 
 ## Setup
 
