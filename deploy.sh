@@ -25,41 +25,43 @@ prodUrl="dev.globuscs.info"
 devUrl="dev.staging.globuscs.info"
 
 # The name of the development git remote
-devRemote="dev"
+devRemote="staging"
 
 # The name of the prod git remote
-prodRemote="origin"
+prodRemote="prod"
 
 # The name of the branch used by GH pages (probably gh-pages)
 ghPagesBranch="gh-pages"
 
 ### Command line opts ###
 message=$1 #commit message
-env=${2-dev} # Environment: options are 'dev' and 'prod'. Defaults to 'dev'
+env=${2-stg} # Environment: options are 'stg' and 'prod'. Defaults to 'stg'
 branch=$3 # Branch to commit to - will default to the current working branch
 
 if  [[ -z "$banch" ]]; then
   branch=$ghbranch
 fi
 
-if [ $env == 'dev' ]; then
-  repo=$devRemote
-else
-  repo=$prodRemote
+if [ $env == 'stg' ]; then
+  sitesDir='dev.globus.org-staging'
 fi
 
-echo "Deploying to $repo"
+echo "Deploying to $env"
 
 # Clean up the sites dir, pull any outstanding changes
-echo "Updating sites with remote changes"
-cd ./$sitesDir 
-git checkout ./
-git pull $repo $ghPagesBranch
+echo "Updating sites with remote changes in $sitesDir"
+cd ./$sitesDir
+echo ${PWD}
+git checkout gh-pages
+git pull origin gh-pages
 
-# Build latest 
-echo "Building jekyll"
-cd ..
-jekyll build
+
+# Build latest
+cd ../
+echo "Compiling nanoc"
+nanoc
+cp -R output/* $sitesDir
+
 
 # Build the correct CNAME file for the env
 cd ./$sitesDir
@@ -67,12 +69,13 @@ cd ./$sitesDir
 if [ $customDomain == true ]
 then
   echo "Generating CNAME"
-  if [ $env == 'dev' ]; then
+  if [ $env == 'stg' ]; then
     echo $devUrl > CNAME
   else
     echo $prodUrl > CNAME
   fi
 fi
+
 
 # Commit and push the changes to the sites dir
 echo "Adding and committing destination files"
@@ -83,16 +86,19 @@ then
 else
   echo "Nothing to commit"
 fi
-git push $repo $ghPagesBranch
+git push origin gh-pages
+
+cd ..
+echo "** Remember to commit your source files"
 
 # Commit and push the changes to the source dir
-echo "Adding and committing source files"
-cd ..
-if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
-then
-  git add ./
-  git commit -a -m "$message"
-else
-  echo "Nothing to commit"  
-fi
-git push origin $branch
+# echo "Adding and committing source files"
+# cd ..
+# if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
+# then
+#   git add ./
+#   git commit -a -m "$message"
+# else
+#   echo "Nothing to commit"  
+# fi
+# git push origin $branch
