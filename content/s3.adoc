@@ -1,0 +1,55 @@
+= S3 Integration
+
+
+:product-name: Globus Transfer
+
+////
+Todos can come here
+////
+
+
+== Overview
+
+{product-name} supports using an Amazon S3 bucket as an endpoint to store
+files.  The bucket can be in any region.  
+
+{product-name} supports the following features on S3 endpoints:
+
+* You may transfer files to and from S3 endpoints, as long as
+the other side is an updated GridFTP server.  Transfers from an S3 endpoint to
+another S3 endpoint are not supported.
+
+* You may create ACLs on the endpoint to give other GO users
+access to directories.   These ACLs are created and stored in {product-name},
+not S3.
+
+* Interactive directory listings
+
+* Interactive directory creation (mkdir)
+
+* Deleting files and directories
+
+NOTE: A Managed Endpoint subscription is required in order to create S3
+endpoints.  Please contact support@globus.org for more information. 
+
+NOTE: Amazon S3 is an eventually-consistent system by design and {product-name}
+can not guarantee stronger levels of consistency.
+
+
+
+
+== Installing GridFTP
+
+You need to build and/or install the latest GT beta.  That has the Verisign CA
+automatically bundled (in source code) and is used if GO does not override it.
+There is no CA cert management required by the endpoint admin to use S3
+buckets, either in http:// or https:// mode.
+
+The following GridFTP installation types are supported:
+
+* Regular
+* Globus Shared Endpoint
+* Globus Connect Personal
+* Globus Connect Server
+
+

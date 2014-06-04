@@ -1,0 +1,9 @@
+<div class="page container">
+	<% if @item[:title] %>
+		<header class="page-header">
+	    <h1><%= @item[:title] %></h1>
+	  </header>
+	<% end %>
+
+	<%= yield %>
+</div>

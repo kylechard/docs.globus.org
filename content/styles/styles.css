@@ -1,0 +1,68 @@
+@font-face {
+	font-family: 'museosans';
+	src: url('//www.globus.org/sites/all/themes/globus_bootstrap_theme/fonts/221E91_4_0.woff') format('woff');
+	font-weight: 100 ;
+}
+@font-face {
+	font-family: 'museosans';
+	src: url('//www.globus.org/sites/all/themes/globus_bootstrap_theme/fonts/221E91_3_0.woff') format('woff');
+	font-weight: 500 ;
+}
+@font-face {
+	font-family: 'museosans';
+	src: url('//www.globus.org/sites/all/themes/globus_bootstrap_theme/fonts/221E91_1_0.woff') format('woff');
+	font-weight: 300 ;
+}
+@font-face {
+	font-family: 'museosans';
+	src: url('//www.globus.org/sites/all/themes/globus_bootstrap_theme/nts/221E91_0_0.woff') format('woff');
+	font-weight: 700 ;
+}
+
+body {
+	padding-top: 60px;
+  font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+/* Site header */
+header#masthead {
+	
+}
+header#masthead .navbar {
+	background-color: #3560A0;
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzM1NjBhMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQyJSIgc3RvcC1jb2xvcj0iIzI3NTE4ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyNzUxOGYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top,  #3560a0 0%, #27518f 42%, #27518f 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3560a0), color-stop(42%,#27518f), color-stop(100%,#27518f));
+  background: -webkit-linear-gradient(top,  #3560a0 0%,#27518f 42%,#27518f 100%);
+  background: -o-linear-gradient(top,  #3560a0 0%,#27518f 42%,#27518f 100%);
+  background: -ms-linear-gradient(top,  #3560a0 0%,#27518f 42%,#27518f 100%);
+  background: linear-gradient(to bottom,  #3560a0 0%,#27518f 42%,#27518f 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3560a0', endColorstr='#27518f',GradientType=0 );
+}
+header#masthead .navbar .navbar-header .navbar-brand {
+	vertical-align: middle;
+	color: #FFFFFF;
+	font-weight: 100;
+	font-size: 26px;
+}
+header#masthead .navbar .navbar-header .navbar-brand img {
+	height: 30px;
+	margin-top: -5px;
+	margin-right: 10px;
+}
+
+/*Content*/
+.content {}
+.content .page-header h1 {
+	font-weight: 100;
+}
+
+/*Site Footer*/
+footer {
+	font-size: 13px;
+	border-top: 1px solid #E8E8E8;
+	margin-top: 60px;
+	padding: 30px 0;
+}

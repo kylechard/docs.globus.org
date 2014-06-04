@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
-gem 'jekyll'
-gem 'asciidoctor'
+gem 'guard-nanoc'
+gem 'adsf'

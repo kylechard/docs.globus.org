@@ -1,0 +1,250 @@
+Crashlog created at 2014-06-03 11:03:39 -0500
+
+===== MESSAGE:
+
+Errno::ENOENT: No such file or directory @ rb_sysopen - output/xyz//about/
+
+===== COMPILATION STACK:
+
+  (empty)
+
+===== STACK TRACE:
+
+  0. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1396:in `initialize'
+  1. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1396:in `open'
+  2. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1396:in `block in copy_file'
+  3. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1395:in `open'
+  4. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1395:in `copy_file'
+  5. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:483:in `copy_file'
+  6. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:400:in `block in cp'
+  7. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1573:in `block in fu_each_src_dest'
+  8. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1589:in `fu_each_src_dest0'
+  9. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:1571:in `fu_each_src_dest'
+  10. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/fileutils.rb:399:in `cp'
+  11. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/result_data/item_rep.rb:146:in `write'
+  12. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/result_data/item_rep.rb:426:in `snapshot'
+  13. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/compilation/compiler.rb:387:in `compile_rep'
+  14. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/compilation/compiler.rb:341:in `block in compile_reps'
+  15. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/compilation/compiler.rb:334:in `loop'
+  16. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/compilation/compiler.rb:334:in `compile_reps'
+  17. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/compilation/compiler.rb:89:in `run'
+  18. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib/nanoc/base/source_data/site.rb:58:in `compile'
+  19. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-nanoc-1.0.2/lib/guard/nanoc.rb:65:in `block in recompile'
+  20. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-nanoc-1.0.2/lib/guard/nanoc.rb:63:in `chdir'
+  21. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-nanoc-1.0.2/lib/guard/nanoc.rb:63:in `recompile'
+  22. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-nanoc-1.0.2/lib/guard/nanoc.rb:28:in `run_on_changes'
+  23. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:74:in `block in run_supervised_task'
+  24. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:71:in `catch'
+  25. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:71:in `run_supervised_task'
+  26. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:119:in `block in _run_first_task_found'
+  27. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:117:in `each'
+  28. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:117:in `_run_first_task_found'
+  29. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:53:in `block in run_on_changes'
+  30. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:150:in `block (3 levels) in _scoped_plugins'
+  31. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:148:in `each'
+  32. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:148:in `block (2 levels) in _scoped_plugins'
+  33. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:147:in `catch'
+  34. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:147:in `block in _scoped_plugins'
+  35. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:145:in `each'
+  36. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:145:in `_scoped_plugins'
+  37. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/runner.rb:46:in `run_on_changes'
+  38. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/setuper.rb:296:in `block (2 levels) in _listener_callback'
+  39. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/commander.rb:108:in `block in within_preserved_state'
+  40. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/commander.rb:105:in `synchronize'
+  41. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/commander.rb:105:in `within_preserved_state'
+  42. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib/guard/setuper.rb:295:in `block in _listener_callback'
+  43. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/listen-2.7.6/lib/listen/listener.rb:272:in `call'
+  44. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/listen-2.7.6/lib/listen/listener.rb:272:in `_process_changes'
+  45. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/listen-2.7.6/lib/listen/listener.rb:231:in `block in _wait_for_changes'
+  46. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/listen-2.7.6/lib/listen/listener.rb:214:in `loop'
+  47. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/listen-2.7.6/lib/listen/listener.rb:214:in `_wait_for_changes'
+
+===== VERSION INFORMATION:
+
+nanoc 3.6.11 © 2007-2014 Denis Defreyne.
+Running ruby 2.1.2 (2014-05-08) on x86_64-darwin13.0 with RubyGems 2.2.2.
+
+===== SYSTEM INFORMATION:
+
+Darwin UofCs-MacBook-Pro-2.local 13.1.0 Darwin Kernel Version 13.1.0: Wed Apr  2 23:52:02 PDT 2014; root:xnu-2422.92.1~2/RELEASE_X86_64 x86_64
+
+===== INSTALLED GEMS:
+
+  adsf 1.2.0
+  bundler 1.6.2
+  celluloid 0.16.0.pre
+  coderay 1.1.0
+  colored 1.2
+  cri 2.6.1
+  ffi 1.9.3
+  formatador 0.2.5
+  guard 2.6.1
+  guard-nanoc 1.0.2
+  hitimes 1.2.1
+  listen 2.7.6
+  lumberjack 1.0.6
+  method_source 0.8.2
+  nanoc 3.6.11
+  pry 0.10.0.rc1
+  rack 1.5.2
+  rb-fsevent 0.9.4
+  rb-inotify 0.9.4
+  slop 3.5.0
+  thor 0.19.1
+  timers 2.0.0
+
+===== ENVIRONMENT:
+
+AUTOJUMP_DATA_DIR => "/Users/yawodame/.local/share/autojump"
+Apple_PubSub_Socket_Render => "/tmp/launch-2ow3Yy/Render"
+BUNDLE_BIN_PATH => "/Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/bundler-1.6.2/bin/bundle"
+BUNDLE_GEMFILE => "/Users/yawodame/Documents/UofC/Projects/Globus/nanoc-test/Gemfile"
+COLORFGBG => "12;8"
+COLUMNS => "110"
+GEM_HOME => "/Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0"
+GEM_PATH => "/Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0:/Users/yawodame/.gem/ruby/2.1.0"
+GREP_COLOR => "1;32"
+GREP_OPTIONS => "--color=auto --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn"
+GUARD_NOTIFIERS => "---\n- :name: :terminal_title\n  :options:\n    :silent: true\n"
+GUARD_NOTIFY => "true"
+HOME => "/Users/yawodame"
+ITERM_PROFILE => "Copy of Ubuntu"
+ITERM_SESSION_ID => "w0t0p0"
+LANG => "en_US.UTF-8"
+LC_CTYPE => "en_US.UTF-8"
+LESS => "-R"
+LINES => "38"
+LOGNAME => "yawodame"
+LSCOLORS => "Gxfxcxdxbxegedabagacad"
+OLDPWD => "/Users/yawodame"
+PAGER => "less"
+PATH => "/Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/bin:/Users/yawodame/.rvm/gems/ruby-2.1.2/bin:/Users/yawodame/.rvm/gems/ruby-2.1.2@global/bin:/Users/yawodame/.rvm/rubies/ruby-2.1.2/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Users/yawodame/.rvm/bin"
+PWD => "/Users/yawodame/Documents/UofC/Projects/Globus/nanoc-test"
+RUBYLIB => "/Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/bundler-1.6.2/lib"
+RUBYOPT => "-rbundler/setup"
+SECURITYSESSIONID => "186a5"
+SHELL => "/bin/zsh"
+SHLVL => "1"
+SSH_AUTH_SOCK => "/tmp/launch-1GIc33/Listeners"
+TERM => "xterm"
+TERM_PROGRAM => "iTerm.app"
+TMPDIR => "/var/folders/q5/q9dxvdw97_q8xj0t9kyp1lvm0000gn/T/"
+USER => "yawodame"
+ZSH => "/Users/yawodame/.oh-my-zsh"
+_ => "/Users/yawodame/.rvm/gems/ruby-2.1.2/bin/guard"
+__CF_USER_TEXT_ENCODING => "0x1F5:0:0"
+__CHECKFIX1436934 => "1"
+_system_arch => "x86_64"
+_system_name => "OSX"
+_system_type => "Darwin"
+_system_version => "10.9"
+rvm_alias_expanded => ""
+rvm_bin_path => "/Users/yawodame/.rvm/bin"
+rvm_docs_type => ""
+rvm_gemstone_package_file => ""
+rvm_gemstone_url => ""
+rvm_hook => ""
+rvm_niceness => ""
+rvm_nightly_flag => ""
+rvm_path => "/Users/yawodame/.rvm"
+rvm_prefix => "/Users/yawodame"
+rvm_proxy => ""
+rvm_quiet_flag => ""
+rvm_ruby_file => ""
+rvm_ruby_make => ""
+rvm_ruby_make_install => ""
+rvm_ruby_mode => ""
+rvm_script_name => ""
+rvm_sdk => ""
+rvm_silent_flag => ""
+rvm_version => "1.25.27 (stable)"
+rvm_wrapper_name => ""
+
+===== GEMFILE.LOCK:
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    adsf (1.2.0)
+      rack (>= 1.0.0)
+    celluloid (0.16.0.pre)
+      timers (~> 2.0.0)
+    coderay (1.1.0)
+    colored (1.2)
+    cri (2.6.1)
+      colored (~> 1.2)
+    ffi (1.9.3)
+    formatador (0.2.5)
+    guard (2.6.1)
+      formatador (>= 0.2.4)
+      listen (~> 2.7)
+      lumberjack (~> 1.0)
+      pry (>= 0.9.12)
+      thor (>= 0.18.1)
+    guard-nanoc (1.0.2)
+      guard (>= 1.8.0)
+      nanoc (>= 3.6.3)
+    hitimes (1.2.1)
+    listen (2.7.6)
+      celluloid (>= 0.15.2)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+    lumberjack (1.0.6)
+    method_source (0.8.2)
+    nanoc (3.6.11)
+      cri (~> 2.3)
+    pry (0.10.0.rc1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    rack (1.5.2)
+    rb-fsevent (0.9.4)
+    rb-inotify (0.9.4)
+      ffi (>= 0.5.0)
+    slop (3.5.0)
+    thor (0.19.1)
+    timers (2.0.0)
+      hitimes
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  adsf
+  guard-nanoc
+
+===== LOAD PATHS:
+
+  0. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-nanoc-1.0.2/lib
+  1. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/nanoc-3.6.11/lib
+  2. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/guard-2.6.1/lib
+  3. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/thor-0.19.1/lib
+  4. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/pry-0.10.0.rc1/lib
+  5. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/slop-3.5.0/lib
+  6. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/method_source-0.8.2/lib
+  7. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/lumberjack-1.0.6/lib
+  8. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/listen-2.7.6/lib
+  9. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/rb-inotify-0.9.4/lib
+  10. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/rb-fsevent-0.9.4/lib
+  11. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/formatador-0.2.5/lib
+  12. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/ffi-1.9.3
+  13. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/ffi-1.9.3/lib
+  14. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/ffi-1.9.3/ext/ffi_c
+  15. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/cri-2.6.1/lib
+  16. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/colored-1.2/lib
+  17. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/coderay-1.1.0/lib
+  18. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/celluloid-0.16.0.pre/lib
+  19. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/timers-2.0.0/lib
+  20. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/hitimes-1.2.1
+  21. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/hitimes-1.2.1/lib
+  22. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/adsf-1.2.0/lib
+  23. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/rack-1.5.2/lib
+  24. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/gems/2.1.0/gems/bundler-1.6.2/lib
+  25. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0
+  26. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0
+  27. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby
+  28. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0
+  29. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0
+  30. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby
+  31. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0
+  32. /Users/yawodame/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0
