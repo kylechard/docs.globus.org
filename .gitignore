@@ -1,4 +1,6 @@
-_gh_pages
-_site
 dev.globus.org
 dev.globus.org-staging
+output
+tmp
+.DS_Store
+crash.log
