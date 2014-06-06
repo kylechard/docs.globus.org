@@ -1,0 +1,23 @@
+<%= render 'partials/head' %>
+
+<body class="transfer_api">
+  <%= render 'partials/header' %>
+
+  <div class="container">
+    <%# if @item[:title] %>
+      <header class="page-header">
+        <h1><%= @item[:title] || 'Transfer API' %></h1>
+      </header>
+    <%# end %>
+  </div>
+
+  <div class="content container">
+    <div class="row">
+      <div class="col-sm-9"><%= yield %></div>
+      <div class="col-sm-3">SIDE BAR HERE</div>
+    </div>
+  </div><!-- .content -->
+
+  <%= render 'partials/footer' %>
+</body>
+</html>

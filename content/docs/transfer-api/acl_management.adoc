@@ -1,5 +1,5 @@
 = Endpoint ACL Management
-:toc2:
+:toc:
 
 Shared endpoints and S3 endpoints have an associated Access Control List
 (ACL), and the API provides methods for reading, creating, updating and

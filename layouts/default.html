@@ -1,26 +1,20 @@
-<!DOCTYPE HTML>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>A Brand New nanoc Site - <%= @item[:title] %></title>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%= @items['/styles/styles/'].path %>">
+<%= render 'partials/head' %>
 
-    <meta name="viewport" content="width=device-width">
-    <!-- you don't need to keep this, but it's cool for stats! -->
-    <meta name="generator" content="nanoc <%= Nanoc::VERSION %>">
-  </head>
-  <body>
-    <%= render 'partials/header' %>
+<body>
+  <%= render 'partials/header' %>
 
+  <div class="container">
+    <% if @item[:title] %>
+      <header class="page-header"><h1><%= @item[:title] %></h1></header>
+    <% end %>
+  </div>
+
+  <div id="wrapper">
     <div class="content container">
-      <% if @item[:title] %>
-        <header class="page-header"><h1><%= @item[:title] %></h1></header>
-      <% end %>
-
       <%= yield %>
     </div>
+  </div><!-- #wrapper -->
 
-    <%= render 'partials/footer' %>
-  </body>
+  <%= render 'partials/footer' %>
+</body>
 </html>

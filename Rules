@@ -13,11 +13,20 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '*' do
+
+compile '/docs/transfer-api/*' do
+  # layout item[:layout] || 'api'
   if item[:extension] == 'adoc'
     filter :asciidoc
-    layout 'default'
-  elsif item[:extension] == 'css'
+    layout item[:layout] || 'api'
+  end
+end
+
+compile '*' do
+  # if item[:extension] == 'adoc'
+  #   filter :asciidoc
+  #   layout 'default'
+  if item[:extension] == 'css'
     # don’t filter stylesheets
   elsif item.binary?
     # don’t filter binary items
