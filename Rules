@@ -19,6 +19,9 @@ compile '/docs/transfer-api/*' do
   if item[:extension] == 'adoc'
     filter :asciidoc
     layout item[:layout] || 'api'
+  else
+    filter :erb
+    layout item[:layout] || 'api'
   end
 end
 

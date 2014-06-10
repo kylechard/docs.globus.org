@@ -13,4 +13,5 @@ group :development do
   gem 'adsf'
 	gem 'nokogiri'
   gem 'w3c_validators'
+  # gem "nanoc-toolbox"
 end

@@ -1,29 +1,10 @@
-<%= render 'partials/head' %>
+<% render 'default' do %>
 
-<body class="transfer_api">
-  <%= render 'partials/header' %>
-
-  <div class="page-header">
-    <div class="container">
-      <h1><%= @item[:title] || 'Transfer API' %></h1>
-      <ul class="nav nav">
-        <li class="active"><a href="#">Reference</a></li>
-        <li><a href="#">Tutorials</a></li>
-        <li><a href="#">Libraries</a></li>
-        <li><a href="#">Support</a></li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-sm-9"><%= yield %></div>
+  <div class="col-sm-3">
+    <%= render 'partials/sidenav_api' %>
   </div>
+</div>
 
-  <div class="page-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-9"><%= yield %></div>
-        <div class="col-sm-3">SIDE BAR HERE</div>
-      </div>
-    </div>
-  </div><!-- .page-content -->
-
-  <%= render 'partials/footer' %>
-</body>
-</html>
+<% end %>

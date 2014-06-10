@@ -1,0 +1,11 @@
+<% if item.identifier.start_with?("/docs/transfer-api") %>
+	<h1><%= @item[:title] || "Transfer API <small>v0.10</small>" %></h1>
+	<ul class="nav nav">
+	  <li class="active"><a href="#">Reference</a></li>
+	  <li><a href="#">Tutorials</a></li>
+	  <li><a href="#">Libraries</a></li>
+	  <li><a href="#">Support</a></li>
+	</ul>
+<% else %>
+	<h1><%= @item[:title] %></h1>
+<% end %>
