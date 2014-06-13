@@ -17,3 +17,8 @@ You can see the available commands with nanoc:
 ```sh
 $ bundle exec nanoc -h
 ```
+
+
+## Resources
+
+http://rubular.com/ - a Ruby regular expression editor

@@ -13,6 +13,22 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
+preprocess do
+  items.each do |i|
+    if i.identifier.start_with?("/docs/transfer-api") && i[:title].nil?
+      # Match title from raw content
+      rc = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
+      if !rc.nil?
+        i[:title] = rc[:title]
+        i[:subtitle] = items['/docs/transfer-api/'][:subtitle]
+      else
+        # Grab titles from index item
+        i[:title] = items['/docs/transfer-api/'][:title]
+        i[:subtitle] = items['/docs/transfer-api/'][:subtitle]
+      end   
+    end
+  end
+end
 
 compile '/docs/transfer-api/*' do
   # layout item[:layout] || 'api'
