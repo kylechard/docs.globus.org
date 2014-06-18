@@ -13,5 +13,6 @@ group :development do
   gem 'adsf'
 	gem 'nokogiri'
   gem 'w3c_validators'
+  gem 'guard-livereload', require: false
   # gem "nanoc-toolbox"
 end

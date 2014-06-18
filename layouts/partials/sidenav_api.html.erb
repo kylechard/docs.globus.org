@@ -1,18 +1,9 @@
 <div class="panel panel-default">
-	<!-- <div class="panel-heading">Panel heading</div> -->
 	<div class="list-group">
-		<% 
-		item_root = "/docs/transfer-api"
-		item_active = @item.identifier
-
-		@items.each do |item|
-			if item.identifier.start_with?(item_root)
-			%>
-
-			<a href="<%= item.identifier %>" class="list-group-item <%= 'active' if item.identifier == item_active %>">
-				<%= item[:title] %>
+		<% SideNavHelper::api_menu(@items).each do |i| %>
+			<a href="<%= i.identifier %>" class="list-group-item <%= 'active' if i.identifier == @item.identifier %>">
+				<%= i[:title] %>
 			</a>
-		<% end 
-		end %>
+		<% end %>
 	</div>
 </div>

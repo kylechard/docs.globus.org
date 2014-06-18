@@ -20,11 +20,11 @@ preprocess do
       rc = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
       if !rc.nil?
         i[:title] = rc[:title]
-        i[:subtitle] = items['/docs/transfer-api/'][:subtitle]
+        i[:subtitle] = items['/docs/transfer-api/'][:version]
       else
         # Grab titles from index item
         i[:title] = items['/docs/transfer-api/'][:title]
-        i[:subtitle] = items['/docs/transfer-api/'][:subtitle]
+        i[:subtitle] = items['/docs/transfer-api/'][:version]
       end   
     end
   end

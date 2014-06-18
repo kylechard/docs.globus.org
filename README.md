@@ -6,7 +6,10 @@ This is a private Globus Developer resource built with nanoc.
 
 Ruby 2.1.2 is required to build the site.
 
-Install the gems
+Install the gems with Bundler. Bundler manages an application's dependencies through its entire life across many machines systematically and repeatably.
+
+See the bundler website http://bundler.io for information  on getting started.
+       
 
 ```sh
 $ bundle install
