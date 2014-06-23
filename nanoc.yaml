@@ -60,3 +60,6 @@ data_sources:
 
     # The default encoding for all files in `content/` and `layouts/`.
     encoding: utf-8
+
+# Site variables
+site_name: 'globus developer'
