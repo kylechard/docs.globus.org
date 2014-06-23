@@ -30,7 +30,7 @@ preprocess do
 
     # Match Toolkit titles from raw content
     if i.identifier.start_with?('/docs/toolkit') && i[:title].nil?
-      i[:title] = i[:filename]
+      # i[:title] = i[:filename]
       # i.content.sub(/Globus/, 'ffff')
       # m = /class="title">.*<\/a>(?<title>.*)(<\/h2>.*<)/m.match(i.raw_content)
       if !m.nil?
