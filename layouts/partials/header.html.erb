@@ -22,12 +22,20 @@
         </div>
         <!-- <button type="submit" class="btn btn-default">Submit</button> -->
       </form>
-
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to 'Transfer API', '/docs/transfer-api/v0.10' %></li>
-        <li><%= link_to 'Toolkit', '/toolkit' %></li>
-        <li><%= link_to 'About', '/about' %></li>
-        <li><%= link_to 'Support', '/' %></li>
+        <% nav_items = [
+          { title: "Transfer API", href: "/docs/transfer-api/v0.10/"},
+          { title: "Toolkit", href: "/docs/toolkit/"},
+          { title: "About", href: "/about/"},
+          { title: "Support", href: "#"},
+        ] %>
+        <% nav_items.each do |nav_item| 
+          # item = @items.find { |i| i.identifier == nav_item[:href] }
+          %>
+        <li class="<%= 'active' if nav_item[:href] == @item.identifier %>">
+          <%= link_to nav_item[:title], nav_item[:href] %>
+        </li>
+        <% end %>
       </ul>
     </nav><!-- /navigation-->
   </div><!-- /.container -->
