@@ -54,6 +54,8 @@ cd ./$sitesDir
 echo ${PWD}
 git checkout gh-pages
 git pull origin gh-pages
+git rm -r .
+git commit -a -m 'deleted last commit'
 
 
 # Build latest
@@ -79,13 +81,13 @@ fi
 
 # Commit and push the changes to the sites dir
 echo "Adding and committing destination files"
-if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
-then
-  git add ./ 
+# if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
+# then
+  git add ./
   git commit -a -m "$message"
-else
-  echo "Nothing to commit"
-fi
+# else
+  # echo "Nothing to commit"
+# fi
 git push origin gh-pages
 
 cd ..
