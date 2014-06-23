@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="gridftpKey"></a>GT 6.0 GridFTP Key Concepts</h1></div><div><div class="abstract"><p class="title"><b>Overview</b></p><p>One of the foundational issues in HPC computing is the ability to move
+large (multi Gigabyte, and even Terabyte), file-based data sets between sites.
+Simple file transfer mechanisms such as FTP and SCP are not sufficient either
+from a reliability or performance perspective. GridFTP extends the standard FTP
+protocol to provide a high-performance, secure, reliable protocol for bulk data
+transfer.</p></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#gridftp-key-advantages">1. GridFTP Protocol</a></span></dt><dt><span class="chapter"><a href="#globus-gridftp">2. Globus Implementation of GridFTP</a></span></dt><dt><span class="chapter"><a href="#gridftp-clients">3. GridFTP Clients</a></span></dt><dt><span class="glossary"><a href="#glossary-gridftpKey">Glossary</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gridftp-key-advantages"></a>Chapter?1.?GridFTP Protocol</h1></div></div></div><p>
+GridFTP is a protocol defined by Global Grid Forum Recommendation GFD.020,
+  RFC 959, RFC 2228, RFC 2389, and a draft before the IETF FTP working group. Key
+  features include:
+</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">Performance - GridFTP protocol supports using parallel TCP
+  streams and multi-node transfers to achieve high
+  performance.</li><li class="listitem">
+  Checkpointing - GridFTP protocol requires that the server send restart markers
+  (checkpoint) to the client.
+  </li><li class="listitem">
+  Third-party transfers - The FTP protocol on which GridFTP is based separates control and data channels, enabling third-party transfers, that is, the transfer of data between two end hosts, mediated by a third host.
+  </li><li class="listitem">
+  Security - Provides strong security on both control and data channels. Control
+  channel is encrypted by default. Data channel is authenticated by default with
+  optional integrity protection and encryption. 
+  </li></ul></div><p>
+  </p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="globus-gridftp"></a>Chapter?2.?Globus Implementation of GridFTP</h1></div></div></div><p>
+  The GridFTP protocol provides for the secure, robust, fast and efficient transfer
+  of (especially bulk) data. The Globus Toolkit provides the most commonly used
+  implementation of that protocol, though others do exist (primarily tied to
+  proprietary internal systems). </p><p>The Globus Toolkit provides:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">a server implementation
+          called <code class="computeroutput">globus-gridftp-server</code>,</li><li class="listitem"> a scriptable command line client called <code class="computeroutput">globus-url-copy</code>, and</li><li class="listitem">a set of development libraries for custom clients. </li></ul></div><p>While the Globus
+  Toolkit does not provide a client with Graphical User Interface (GUI), <a class="ulink" href="http://www.globusonline.org" target="_top">Globus Online</a> provides a web GUI for
+  GridFTP data movement. </p><p>
+Globus GridFTP framework implements all the key features of GridFTP protocol
+mentioned above. It supports both Grid Security Infrastructure (GSI) and SSH for
+securing the data transfer. Unlike sftp, SSH based GridFTP supports multiple
+security options on the data channel - authentication only, authentication and
+integrity protection, fully encrypted. Globus implemention of GridFTP is modular
+and extensibl. XIO based Globus GridFTP framework makes it easy to plugin
+alternate transport protocols. The Data Storage Interface (DSI) allows for
+easier integration with various storage systems. We currently have DSIs for
+POSIX filesystems (default) and HPSS. Globus GridFTP has been deployed at
+thousands of sites with more than 10 million data transfers per day.</p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gridftp-clients"></a>Chapter?3.?GridFTP Clients</h1></div></div></div><p> <a class="ulink" href="http://www.globusonline.org" target="_top">Globus Online</a> is the recommended interface to move data to and from
+GridFTP servers. Globus Online provides a web GUI, command line interface and a
+REST API for GridFTP data movement. It provides automatic fault recovery and
+automatic tuning of optimization parameters to achieve high performance. </p><p>
+The Globus Toolkit provides a GridFTP client called
+<code class="computeroutput">globus-url-copy</code>, a command line interface, suitable for scripting. For example,
+the following command:</p><pre class="screen">globus-url-copy gsiftp://remote.host.edu/path/to/file file:///path/on/local/host</pre><p>would transfer a file from a remote host to the locally accessible path specified
+in the second URL.</p><p>Finally, if you wish to add access to files stored behind GridFTP servers,
+  or you need custom client functionality, you can use our very powerful client
+library to develop custom client functionality.</p><p>
+  For more information about GridFTP, see:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">the <a href="../#gridftp" class="olink">documentation</a>.</li><li class="listitem"><a class="ulink" href="http://www.globus.org/alliance/publications/papers/gridftp_final.pdf" target="_top">The Globus Striped GridFTP Framework and Server</a></li></ul></div></div><div class="glossary"><div class="titlepage"><div><div><h1 class="title"><a name="glossary-gridftpKey"></a>Glossary</h1></div></div></div><div class="glossdiv"><h3 class="title">G</h3><dl><dt><a name="gridftp"></a><span class="glossterm">GridFTP</span></dt><dd class="glossdef"><p>
+                            A file transfer protocol based on FTP with
+                            extensions for security and parallel data
+                            transfers.
+                        </p></dd></dl></div></div></div>
