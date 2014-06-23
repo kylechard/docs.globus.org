@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+	<div class="list-group">
+		<% SideNavHelper::menu_toolkit(@items).each do |i| %>
+			<a href="<%= i.identifier %>" class="list-group-item <%= 'active' if i.identifier == @item.identifier %>">
+				<%= i[:title] %>
+			</a>
+		<% end %>
+	</div>
+</div>

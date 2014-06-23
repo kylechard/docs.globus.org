@@ -72,5 +72,4 @@ DEPENDENCIES
   guard-nanoc
   kramdown
   nanoc (~> 3.6.11)
-  nokogiri
   w3c_validators

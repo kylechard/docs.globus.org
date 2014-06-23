@@ -16,16 +16,27 @@
 preprocess do
   items.each do |i|
     if i.identifier.start_with?("/docs/transfer-api") && i[:title].nil?
-      # Match title from raw content
-      rc = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
-      if !rc.nil?
-        i[:title] = rc[:title]
+      # Match transfer API titles from raw content
+      m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
+      if !m.nil?
+        i[:title] = m[:title]
         i[:subtitle] = items['/docs/transfer-api/'][:version]
       else
         # Grab titles from index item
         i[:title] = items['/docs/transfer-api/'][:title]
         i[:subtitle] = items['/docs/transfer-api/'][:version]
       end   
+    end
+
+    # Match Toolkit titles from raw content
+    if i.identifier.start_with?('/docs/toolkit') && i[:title].nil?
+      i[:title] = 'Toolkit'
+      # i.content.sub(/Globus/, 'ffff')
+      # m = /class="title">.*<\/a>(?<title>.*)(<\/h2>.*<)/m.match(i.raw_content)
+      if !m.nil?
+        # puts m[:title]
+        # i[:title] = m[:title]
+      end
     end
   end
 end
@@ -39,6 +50,11 @@ compile '/docs/transfer-api/*' do
     filter :erb
     layout item[:layout] || 'api'
   end
+end
+
+compile '/docs/toolkit/*' do
+    filter :erb
+    layout item[:layout] || 'toolkit'
 end
 
 compile '*' do

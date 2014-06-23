@@ -1,6 +1,6 @@
 <div class="panel panel-default">
 	<div class="list-group">
-		<% SideNavHelper::api_menu(@items).each do |i| %>
+		<% SideNavHelper::menu_api(@items).each do |i| %>
 			<a href="<%= i.identifier %>" class="list-group-item <%= 'active' if i.identifier == @item.identifier %>">
 				<%= i[:title] %>
 			</a>
