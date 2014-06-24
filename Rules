@@ -42,20 +42,23 @@ preprocess do
 end
 
 compile '/docs/transfer-api/*' do
-  # layout item[:layout] || 'api'
-  if item[:extension] == 'adoc'
-    filter :asciidoc
-    layout item[:layout] || 'api'
-  else
-    filter :erb
-    layout item[:layout] || 'api'
+  if !item.binary?
+    if item[:extension] == 'adoc'
+      filter :asciidoc
+      layout item[:layout] || 'api'
+    else
+      filter :erb
+      layout item[:layout] || 'api'
+    end
   end
 end
 
 compile '/docs/toolkit/*' do
+  if !item.binary?
     filter :erb
     layout item[:layout] || 'toolkit'
-end
+  end 
+end 
 
 compile '*' do
   # if item[:extension] == 'adoc'

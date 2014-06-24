@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<div class="set" lang="en"><div class="titlepage"><div><div><h1 class="title"><a name="gtKey"></a>Globus Toolkit 6.0 Key Concepts</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="book"><a href="#gridftpKey">GridFTP Key Concepts</a></span></dt><dd><dl><dt><span class="chapter"><a href="#gridftp-key-advantages">1. GridFTP Protocol</a></span></dt><dt><span class="chapter"><a href="#globus-gridftp">2. Globus Implementation of GridFTP</a></span></dt><dt><span class="chapter"><a href="#gridftp-clients">3. GridFTP Clients</a></span></dt></dl></dd><dt><span class="book"><a href="#gram5Key">GRAM5 Key Concepts</a></span></dt><dd><dl><dt><span class="chapter"><a href="#gram5-key-concepts">1. Conceptual details</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75704260224">1. Targeted job types</a></span></dt><dt><span class="section"><a href="#idm75704049216">2. Component architecture</a></span></dt><dt><span class="section"><a href="#idm75700967712">3. Security</a></span></dt></dl></dd><dt><span class="chapter"><a href="#gram5-approach">2. GRAM5 Approach</a></span></dt><dd><dl><dt><span class="section"><a href="#gram5-approach-intro">1. Introduction</a></span></dt><dt><span class="section"><a href="#gram5-approach-approach">2. Component architecture approach</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75698366944">2.1. GRAM5 Architecture</a></span></dt><dt><span class="section"><a href="#idm75699899696">2.2. External Components used by GRAM5</a></span></dt></dl></dd></dl></dd></dl></dd><dt><span class="book"><a href="#gsicKey">GSI C Security Key Concepts</a></span></dt><dd><dl><dt><span class="chapter"><a href="#gsic-key-concepts">1. Conceptual Details</a></span></dt><dd><dl><dt><span class="section"><a href="#gsic-key-publickey">1. Public Key Cryptography </a></span></dt><dt><span class="section"><a href="#gsic-key-digitalsig">2. Digital Signatures </a></span></dt><dt><span class="section"><a href="#gsic-key-certificates">3. Certificates</a></span></dt><dt><span class="section"><a href="#gsic-key-mutualauthentication">4. Mutual Authentication </a></span></dt><dt><span class="section"><a href="#gsic-key-confcommunication">5. Confidential Communication </a></span></dt><dt><span class="section"><a href="#gsic-key-securingprivatekeys">6. Securing Private Keys </a></span></dt><dt><span class="section"><a href="#gsic-key-delegation">7. Delegation, Single Sign-On and Proxy Certificates </a></span></dt></dl></dd><dt><span class="chapter"><a href="#gsic-key-relateddocs">2. Related Documents</a></span></dt></dl></dd><dt><span class="book"><a href="#idm75710780496">Glosary</a></span></dt><dd><dl><dt><span class="glossary"><a href="#glossary-keyset">Glossary</a></span></dt></dl></dd></dl></div><div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="gridftpKey"></a>GT 6.0 GridFTP Key Concepts</h1></div><div><div class="abstract"><p class="title"><b>Overview</b></p><p>One of the foundational issues in HPC computing is the ability to move
+large (multi Gigabyte, and even Terabyte), file-based data sets between sites.
+Simple file transfer mechanisms such as FTP and SCP are not sufficient either
+from a reliability or performance perspective. GridFTP extends the standard FTP
+protocol to provide a high-performance, secure, reliable protocol for bulk data
+transfer.</p></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#gridftp-key-advantages">1. GridFTP Protocol</a></span></dt><dt><span class="chapter"><a href="#globus-gridftp">2. Globus Implementation of GridFTP</a></span></dt><dt><span class="chapter"><a href="#gridftp-clients">3. GridFTP Clients</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gridftp-key-advantages"></a>Chapter 1. GridFTP Protocol</h1></div></div></div><p>
+GridFTP is a protocol defined by Global Grid Forum Recommendation GFD.020,
+  RFC 959, RFC 2228, RFC 2389, and a draft before the IETF FTP working group. Key
+  features include:
+</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">Performance - GridFTP protocol supports using parallel TCP
+  streams and multi-node transfers to achieve high
+  performance.</li><li class="listitem">
+  Checkpointing - GridFTP protocol requires that the server send restart markers
+  (checkpoint) to the client.
+  </li><li class="listitem">
+  Third-party transfers - The FTP protocol on which GridFTP is based separates control and data channels, enabling third-party transfers, that is, the transfer of data between two end hosts, mediated by a third host.
+  </li><li class="listitem">
+  Security - Provides strong security on both control and data channels. Control
+  channel is encrypted by default. Data channel is authenticated by default with
+  optional integrity protection and encryption. 
+  </li></ul></div><p>
+  </p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="globus-gridftp"></a>Chapter 2. Globus Implementation of GridFTP</h1></div></div></div><p>
+  The GridFTP protocol provides for the secure, robust, fast and efficient transfer
+  of (especially bulk) data. The Globus Toolkit provides the most commonly used
+  implementation of that protocol, though others do exist (primarily tied to
+  proprietary internal systems). </p><p>The Globus Toolkit provides:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">a server implementation
+          called <code class="computeroutput">globus-gridftp-server</code>,</li><li class="listitem"> a scriptable command line client called <code class="computeroutput">globus-url-copy</code>, and</li><li class="listitem">a set of development libraries for custom clients. </li></ul></div><p>While the Globus
+  Toolkit does not provide a client with Graphical User Interface (GUI), <a class="ulink" href="http://www.globusonline.org" target="_top">Globus Online</a> provides a web GUI for
+  GridFTP data movement. </p><p>
+Globus GridFTP framework implements all the key features of GridFTP protocol
+mentioned above. It supports both Grid Security Infrastructure (GSI) and SSH for
+securing the data transfer. Unlike sftp, SSH based GridFTP supports multiple
+security options on the data channel - authentication only, authentication and
+integrity protection, fully encrypted. Globus implemention of GridFTP is modular
+and extensibl. XIO based Globus GridFTP framework makes it easy to plugin
+alternate transport protocols. The Data Storage Interface (DSI) allows for
+easier integration with various storage systems. We currently have DSIs for
+POSIX filesystems (default) and HPSS. Globus GridFTP has been deployed at
+thousands of sites with more than 10 million data transfers per day.</p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gridftp-clients"></a>Chapter 3. GridFTP Clients</h1></div></div></div><p> <a class="ulink" href="http://www.globusonline.org" target="_top">Globus Online</a> is the recommended interface to move data to and from
+GridFTP servers. Globus Online provides a web GUI, command line interface and a
+REST API for GridFTP data movement. It provides automatic fault recovery and
+automatic tuning of optimization parameters to achieve high performance. </p><p>
+The Globus Toolkit provides a GridFTP client called
+<code class="computeroutput">globus-url-copy</code>, a command line interface, suitable for scripting. For example,
+the following command:</p><pre class="screen">globus-url-copy gsiftp://remote.host.edu/path/to/file file:///path/on/local/host</pre><p>would transfer a file from a remote host to the locally accessible path specified
+in the second URL.</p><p>Finally, if you wish to add access to files stored behind GridFTP servers,
+  or you need custom client functionality, you can use our very powerful client
+library to develop custom client functionality.</p><p>
+  For more information about GridFTP, see:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">the <a href="../../gridftp/#gridftp" class="olink">documentation</a>.</li><li class="listitem"><a class="ulink" href="http://www.globus.org/alliance/publications/papers/gridftp_final.pdf" target="_top">The Globus Striped GridFTP Framework and Server</a></li></ul></div></div></div><div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="gram5Key"></a>GT 6.0 GRAM5 Key Concepts</h1></div><div><div class="abstract"><p class="title"><b>Overview</b></p><p> The Globus Toolkit provides GRAM5: a service to submit, monitor, and cancel jobs on
+        Grid computing resources. In GRAM, a job consists of a computation and, optionally, file
+        transfer and management operations related to the computation. Some users, particularly
+        interactive ones, benefit from accessing output data files as the job is running. Monitoring
+        consists of querying and/or subscribing for status information, such as job state changes. </p><p> Grid computing resources are typically managed by a local resource manager which
+        implements allocation and prioritization policies while optimizing the execution of all
+        submitted jobs for efficiency and performance according to site policy. GRAM is not a
+        resource scheduler, but rather a protocol engine for communicating with a range of different
+        local resource schedulers using a standard message format. </p></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#gram5-key-concepts">1. Conceptual details</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75704260224">1. Targeted job types</a></span></dt><dt><span class="section"><a href="#idm75704049216">2. Component architecture</a></span></dt><dt><span class="section"><a href="#idm75700967712">3. Security</a></span></dt></dl></dd><dt><span class="chapter"><a href="#gram5-approach">2. GRAM5 Approach</a></span></dt><dd><dl><dt><span class="section"><a href="#gram5-approach-intro">1. Introduction</a></span></dt><dt><span class="section"><a href="#gram5-approach-approach">2. Component architecture approach</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75698366944">2.1. GRAM5 Architecture</a></span></dt><dt><span class="section"><a href="#idm75699899696">2.2. External Components used by GRAM5</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75699899056">2.2.1. Local resource manager </a></span></dt></dl></dd></dl></dd></dl></dd></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gram5-key-concepts"></a>Chapter 1. Conceptual details</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#idm75704260224">1. Targeted job types</a></span></dt><dt><span class="section"><a href="#idm75704049216">2. Component architecture</a></span></dt><dt><span class="section"><a href="#idm75700967712">3. Security</a></span></dt></dl></div><p> A number of concepts underly the purpose and motivation for GRAM. These concepts are
+      divided into broad categories below. </p><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="idm75704260224"></a>1. Targeted job types</h2></div></div></div><p> GRAM is meant to address a range of jobs where arbitrary programs, reliable operation,
+        stateful monitoring, credential management, and file staging are important. GRAM is not
+        meant to serve as a "remote procedure call" (RPC) interface for applications not requiring
+        many of these features. Furthermore, its interface model and implementation may be too
+        costly for such uses. The GRAM5 service protocols and implementation will always involve
+        multiple round-trips to support these advanced features that are not required for simple RPC
+        applications. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="idm75704049216"></a>2. Component architecture</h2></div></div></div><p> Rather than consisting of a monolithic solution, GRAM is based on a component
+        architecture at both the protocol and software implementation levels. This component
+        approach serves as an ideal which shapes the implementation as well as the abstract design
+        and features. </p><div class="informaltable"><table border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td>Service model</td><td>
+                <p> For GRAM5, the <span class="command"><strong>globus-gatekeeper</strong></span> daemon and GSI library
+                  are used for secure communications and service dispatch. </p>
+                <p> The <span class="command"><strong>globus-job-manager</strong></span> daemon implements the job
+                  management and file transfer functionality. </p>
+              </td></tr><tr><td><a href="#local-resource-manager-adapter" class="glossterm"><em class="glossterm">Local Resource Manager Adapters</em></a></td><td>
+                <p> GRAM provides a scripted plug-in architecture to enable extension with
+                  adapters to control a variety of local resource systems. </p>
+              </td></tr></tbody></table></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="idm75700967712"></a>3. Security</h2></div></div></div><div class="informaltable"><table border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td>Secure operation</td><td>
+                <p>GRAM5 uses SSL-based protocols to establish identity or provide other security
+                  tokens needed to authorize GRAM5 service requests. Once authorized, each instance
+                  of the job service runs as a local POSIX user. GRAM5 restricts job monitoring and
+                  management operations to those who are authorized by the local site policy.
+                </p>
+              </td></tr><tr><td>Local system protection domains</td><td>
+                <p>To protect users from each other, the GRAM5 job manager and the jobs it starts
+                  are executed in separate local security contexts. Additionally, GRAM mechanisms
+                  used to interact with the local resource are designed to minimize the privileges
+                  required and to minimize the risks of service malfunction or compromise. </p>
+              </td></tr><tr><td>Credential delegation and management</td><td>
+                <p>A client delegates some of its rights to the GRAM service in order to allow it
+                  to perform file transfers on behalf of the client and send state notifications to
+                  registered clients. Additionally, GRAM5 provides per-job credentials so that job
+                  instances may perform further authentication with other services. </p>
+              </td></tr><tr><td>Audit</td><td>
+                <p>GRAM uses a range of audit and logging techniques to record a history of job
+                  submissions and critical system operations. These records may be used to assist
+                  with accounting functions as well as to further mitigate risks from abuse or
+                  malfunction.</p>
+              </td></tr></tbody></table></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gram5-approach"></a>Chapter 2. GT 6.0 GRAM5 Approach</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#gram5-approach-intro">1. Introduction</a></span></dt><dt><span class="section"><a href="#gram5-approach-approach">2. Component architecture approach</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75698366944">2.1. GRAM5 Architecture</a></span></dt><dt><span class="section"><a href="#idm75699899696">2.2. External Components used by GRAM5</a></span></dt><dd><dl><dt><span class="section"><a href="#idm75699899056">2.2.1. Local resource manager </a></span></dt></dl></dd></dl></dd></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gram5-approach-intro"></a>1. Introduction</h2></div></div></div><p> The GRAM5 software implements a solution to the job-management problem described
+            above. This solution is specific to operating systems following the POSIX programming
+            and security model. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gram5-approach-approach"></a>2. Component architecture approach</h2></div></div></div><p> GRAM5's job management services interact with local resource managers (LRMs) and
+            other service components of GT 6.0 in order
+            to support job execution with coordinated file staging. </p><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm75698366944"></a>2.1. GRAM5 Architecture</h3></div></div></div><p>The GRAM5 service architecture consists of several components which work together
+                to authenticate users, manage jobs, interface with the LRM, and stage files. These
+                components are described in the following table. </p><div class="table"><a name="idm75698365664"></a><p class="title"><b>Table 2.1. GRAM5 Service Components</b></p><div class="table-contents"><table summary="GRAM5 Service Components" border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td>
+                                <p>Gatekeeper</p>
+                            </td><td>
+                                <p>The <span class="application">globus-gatekeeper</span> service
+                                    provides a network interface to the GRAM5 system. It
+                                    authenticates client identities and starts Job Manager processes
+                                    using the local user account to which the client identity is
+                                    mapped. Typically, one instance of the <span class="application">globus-gatekeeper</span> process runs to accept
+                                    network connections, and forks a new short-lived process to
+                                    process each new conneciton.</p>
+                            </td></tr><tr><td>
+                                <p>Job Manager</p>
+                            </td><td>
+                                <p>The <span class="application">globus-job-manager</span> daemon
+                                    processes job requests and coordinates file transfers. There is
+                                    one long-lived instance of this per user per LRM and one
+                                    short-lived instance per job. </p>
+                            </td></tr><tr><td>
+                                <p>Scheduler Event Generator</p>
+                            </td><td>
+                                <p>The <span class="application">globus-scheduler-event-generator</span> process
+                                    parses LRM-specific data relating to job startup, execution, and
+                                    termination into an LRM-independent data format. There is
+                                    optionally one instance of this program per LRM.</p>
+                            </td></tr><tr><td>
+                                <p>LRM Adapter</p>
+                            </td><td>
+                                <p>The LRM adapter provides an interface between the GRAM5
+                                    system components and the LRM. It provides concrete
+                                    implementations of the submit, cancel, and poll functionality
+                                    for a particular system's LRM and to generate job status change
+                                    events.</p>
+                            </td></tr></tbody></table></div></div><br class="table-break"></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm75699899696"></a>2.2. External Components used by GRAM5</h3></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm75699899056"></a>2.2.1. Local resource manager </h4></div></div></div><p>GRAM5 uses a local resource manager (LRM) to schedule and run jobs on a
+                    compute element. GRAM5 supports several common LRM systems (Condor, Torque,
+                     Oracle GridEngine) and can also be configured to manage jobs without
+                    an LRM.</p></div></div></div></div></div><div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="gsicKey"></a>GT 6.0 GSI C Security: Key Concepts</h1></div><div><div class="abstract"><p class="title"><b>Overview</b></p><p>GSI uses <a href="#pub-key" class="glossterm"><em class="glossterm">public key</em></a> cryptography (also known as asymmetric cryptography)
+  as the basis for its functionality. Many of the terms and concepts used in
+  this description of GSI come from its use of public key cryptography. </p><p>For a good overview of GSI contained in the Web Services-based components
+  of GT4, see <a class="ulink" href="../../GT4-GSI-Overview.pdf" target="_top">Globus Toolkit Version 4 Grid
+Security Infrastructure: A Standards Perspective</a>.</p><p>A reference for detailed information about public key cryptography is available
+  in the book <a class="ulink" href="http://www.cacr.math.uwaterloo.ca/hac/" target="_top">Handbook of Applied
+  Cryptography </a>, by A. Menezes, P. van Oorschot, and S. Vanstone, CRC Press,
+  1996. <a class="ulink" href="http://www.cacr.math.uwaterloo.ca/hac/about/chap8.pdf" target="_top">Chapter
+  8 </a> of this book deals exclusively with public key cryptography. </p><p>The primary motivations behind GSI are: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">The need for secure communication (authenticated and perhaps confidential)
+    between elements of a computational Grid.</li><li class="listitem">The need to support security across organizational boundaries, thus prohibiting
+      a centrally-managed security system.
+  </li><li class="listitem">The need to support "single sign-on" for users of the Grid, including
+      delegation of credentials for computations that involve multiple resources
+      and/or sites. </li></ul></div></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#gsic-key-concepts">1. Conceptual Details</a></span></dt><dd><dl><dt><span class="section"><a href="#gsic-key-publickey">1. Public Key Cryptography </a></span></dt><dt><span class="section"><a href="#gsic-key-digitalsig">2. Digital Signatures </a></span></dt><dt><span class="section"><a href="#gsic-key-certificates">3. Certificates</a></span></dt><dt><span class="section"><a href="#gsic-key-mutualauthentication">4. Mutual Authentication </a></span></dt><dt><span class="section"><a href="#gsic-key-confcommunication">5. Confidential Communication </a></span></dt><dt><span class="section"><a href="#gsic-key-securingprivatekeys">6. Securing Private Keys </a></span></dt><dt><span class="section"><a href="#gsic-key-delegation">7. Delegation, Single Sign-On and Proxy Certificates </a></span></dt></dl></dd><dt><span class="chapter"><a href="#gsic-key-relateddocs">2. Related Documents</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-key-concepts"></a>Chapter 1. Conceptual Details</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#gsic-key-publickey">1. Public Key Cryptography </a></span></dt><dt><span class="section"><a href="#gsic-key-digitalsig">2. Digital Signatures </a></span></dt><dt><span class="section"><a href="#gsic-key-certificates">3. Certificates</a></span></dt><dt><span class="section"><a href="#gsic-key-mutualauthentication">4. Mutual Authentication </a></span></dt><dt><span class="section"><a href="#gsic-key-confcommunication">5. Confidential Communication </a></span></dt><dt><span class="section"><a href="#gsic-key-securingprivatekeys">6. Securing Private Keys </a></span></dt><dt><span class="section"><a href="#gsic-key-delegation">7. Delegation, Single Sign-On and Proxy Certificates </a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-publickey"></a>1. Public Key Cryptography </h2></div></div></div><p>The most important thing to know about public key cryptography is that, unlike
+  earlier cryptographic systems, it relies not on a single key (a password or
+  a secret "code"), but on two keys. These keys are numbers that are mathematically
+  related in such a way that if either key is used to encrypt a message, the
+  other key must be used to decrypt it. Also important is the fact that it is
+  next to impossible (with our current knowledge of mathematics and available
+  computing power) to obtain the second key from the first one and/or any messages
+  encoded with the first key. </p><p>By making one of the keys available publicly (a public key) and keeping the
+  other key private (a <a href="#priv-key" class="glossterm"><em class="glossterm">private key</em></a>), a person can prove that he or she holds
+  the private key simply by encrypting a message. If the message can be decrypted
+  using the public key, the person must have used the private key to encrypt
+  the message. </p><p><span class="emphasis"><em>Important:</em></span> It is critical that private keys be kept private!
+  Anyone who knows the private key can easily impersonate the owner. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-digitalsig"></a>2. Digital Signatures </h2></div></div></div><p>Using public key cryptography, it is possible to digitally "sign" a piece
+  of information. Signing information essentially means assuring a recipient
+  of the information that the information hasn't been tampered with since it
+  left your hands. </p><p>To sign a piece of information, first compute a mathematical hash of the information.
+  (A hash is a condensed version of the information. The algorithm used to compute
+  this hash must be known to the recipient of the information, but it isn't a
+  secret.) Using your private key, encrypt the hash, and attach it to the message.
+  Make sure that the recipient has your public key. </p><p>To verify that your signed message is authentic, the recipient of the message
+  will compute the hash of the message using the same hashing algorithm you used,
+  and will then decrypt the encrypted hash that you attached to the message.
+  If the newly-computed hash and the decrypted hash match, then it proves that
+  you signed the message and that the message has not been changed since you
+  signed it. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-certificates"></a>3. Certificates</h2></div></div></div><p>A central concept in GSI authentication is the <span class="emphasis"><em>certificate</em></span>. Every user and
+  service on the Grid is identified via a certificate, which contains information
+  vital to identifying and authenticating the user or service.</p><p>A GSI certificate includes four primary pieces of information:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">A subject name, which identifies the person or object that the certificate
+    represents.
+  </li><li class="listitem">The public key belonging to the subject.
+  </li><li class="listitem">The identity of a <a href="#ca" class="glossterm"><em class="glossterm">Certificate Authority (CA)</em></a> that has signed the certificate
+      to certify that the public key and the identity both belong to the subject.
+  </li><li class="listitem">The digital signature of the named CA. </li></ul></div><p>Note that a third party (a CA) is used to certify the link between the public
+  key and the subject in the certificate. In order to trust the certificate and
+  its contents, the CA's certificate must be trusted. The link between the CA
+  and its certificate must be established via some non-cryptographic means, or
+  else the system is not trustworthy.</p><p>GSI certificates are encoded in the X.509 certificate format, a standard data
+  format for certificates established by the Internet Engineering Task Force
+  (IETF). These certificates can be shared with other public key-based software,
+  including commercial web browsers from Microsoft and Netscape.</p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-mutualauthentication"></a>4. Mutual Authentication </h2></div></div></div><p>If two parties have certificates, and if both parties trust the CAs that signed
+  each other's certificates, then the two parties can prove to each other that
+  they are who they say they are. This is known as <span class="emphasis"><em>mutual
+  authentication</em></span>. GSI uses the Secure Sockets Layer (SSL) for its mutual authentication protocol,
+  which is described <a href="#gsic-key-delegation" class="olink">below</a>. (SSL is also known by a new, IETF standard name:
+  Transport Layer Security, or TLS.)</p><p>Before mutual authentication can occur, the parties involved must first trust
+  the CAs that signed each other's certificates. In practice, this means that
+  they must have copies of the CAs' certificates--which contain the CAs' public
+  keys--and that they must trust that these certificates really belong to the
+  CAs.</p><p>To mutually authenticate, the first person (<span class="emphasis"><em>A</em></span>) establishes a connection to
+the second person (<span class="emphasis"><em>B</em></span>). </p><p>To start the authentication process, <span class="emphasis"><em>A</em></span> gives <span class="emphasis"><em>B</em></span> his certificate. </p><p>The certificate tells <span class="emphasis"><em>B</em></span> who <span class="emphasis"><em>A</em></span> is claiming to be (the identity), what <span class="emphasis"><em>A</em></span>'s
+public key is, and what CA is being used to certify the certificate.  </p><p><span class="emphasis"><em>B</em></span> will
+      first make sure that the certificate is valid by checking the CA's digital
+      signature to make sure that the CA actually signed the certificate and
+  that the certificate hasn't been tampered with. (This is where <span class="emphasis"><em>B</em></span> must trust
+  the CA that signed <span class="emphasis"><em>A</em></span>'s certificate.) </p><p>Once <span class="emphasis"><em>B</em></span> has checked out <span class="emphasis"><em>A</em></span>'s certificate, <span class="emphasis"><em>B</em></span> must make sure that <span class="emphasis"><em>A</em></span> really is
+the person identified in the certificate.  </p><p><span class="emphasis"><em>B</em></span> generates a random message and
+sends it to <span class="emphasis"><em>A</em></span>, asking <span class="emphasis"><em>A</em></span> to encrypt it.  </p><p><span class="emphasis"><em>A</em></span> encrypts the message using his private
+key, and sends it back to <span class="emphasis"><em>B</em></span>.  </p><p><span class="emphasis"><em>B</em></span> decrypts the message using <span class="emphasis"><em>A</em></span>'s public key. </p><p>If this results in the original random message, then <span class="emphasis"><em>B</em></span> knows that <span class="emphasis"><em>A</em></span>  is who he says he is. </p><p>Now that <span class="emphasis"><em>B</em></span> trusts <span class="emphasis"><em>A</em></span>'s identity, the same operation must happen in reverse. </p><p><span class="emphasis"><em>B</em></span> sends <span class="emphasis"><em>A</em></span> her certificate, <span class="emphasis"><em>A</em></span> validates the certificate and sends a challenge
+message to be encrypted.  </p><p><span class="emphasis"><em>B</em></span> encrypts the message and sends it back to <span class="emphasis"><em>A</em></span>, and
+<span class="emphasis"><em>A</em></span> decrypts it and compares it with the original. </p><p>If it matches, then <span class="emphasis"><em>A</em></span>  knows that <span class="emphasis"><em>B</em></span> is who she says she is. </p><p>At this point, <span class="emphasis"><em>A</em></span> and <span class="emphasis"><em>B</em></span> have established a connection to each other and are
+  certain that they know each others' identities. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-confcommunication"></a>5. Confidential Communication </h2></div></div></div><p>By default, GSI does not establish confidential (encrypted) communication
+  between parties. Once mutual authentication is performed, GSI gets out
+  of the way so that communication can occur without the overhead of constant
+  encryption and decryption. </p><p>GSI can easily be used to establish a shared key for encryption if confidential
+  communication is desired. Recently relaxed United States export laws now allow
+  us to include encrypted communication as a standard optional feature of GSI. </p><p>A related security feature is communication integrity. Integrity means that
+  an eavesdropper may be able to read communication between two parties but is
+  not able to modify the communication in any way. GSI provides communication
+  integrity by default. (It can be turned off if desired). Communication integrity
+  introduces some overhead in communication, but not as large an overhead as
+  encryption. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-securingprivatekeys"></a>6. Securing Private Keys </h2></div></div></div><p>The core GSI software provided by the Globus Toolkit expects the user's private
+  key to be stored in a file in the local computer's storage. To prevent other
+  users of the computer from stealing the private key, the file that contains
+  the key is encrypted via a password (also known as a passphrase). To use GSI, the user must enter the passphrase required to decrypt the file containing
+  their private key. </p><p>We have also prototyped the use of cryptographic smartcards in conjunction
+  with GSI. This allows users to store their private key on a smartcard rather
+  than in a file system, making it still more difficult for others to gain access
+  to the key. </p></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-key-delegation"></a>7. Delegation, Single Sign-On and Proxy Certificates </h2></div></div></div><p>GSI provides a delegation capability: an extension of the standard SSL
+  protocol which reduces the number of times the user must enter his passphrase.
+  If a Grid computation requires that several Grid resources be used (each requiring
+  mutual authentication), or if there is a need to have agents (local or remote)
+  requesting services on behalf of a user, the need to re-enter the user's passphrase
+  can be avoided by creating a <span class="emphasis"><em>proxy</em></span>. </p><p>A proxy consists of a new certificate and a private key. The key
+  pair that is used for the proxy, i.e. the public key embedded in the
+  certificate and the private key, may either be regenerated for each
+  proxy or obtained by other means. The new certificate contains
+  the owner's identity, modified slightly to indicate that it is a
+  proxy. The new certificate is signed by the owner, rather than a
+  CA. (See diagram below.) The certificate also includes a time
+  notation after which the proxy should no longer be accepted by
+  others. Proxies have limited lifetimes. </p><div class="figure"><a name="gssapi1"></a><p class="title"><b>Figure 1.1. The new certificate is signed by the owner, rather than a CA.</b></p><div class="figure-contents"><div class="mediaobject" align="center"><img src="gssapi1.gif" align="middle" alt="The new certificate is signed by the owner, rather than a CA."></div></div></div><br class="figure-break"><p>The proxy's private key must be kept secure, but because the proxy isn't valid
+  for very long, it doesn't have to kept quite as secure as the owner's private
+  key. It is thus possible to store the proxy's private key in a local storage
+  system without being encrypted, as long as the permissions on the file prevent
+  anyone else from looking at them easily. Once a proxy is created and stored,
+  the user can use the <a href="#proxy-cert" class="glossterm"><em class="glossterm">proxy certificate</em></a> and private key for mutual authentication
+  without entering a password.</p><p>When proxies are used, the mutual authentication process differs slightly.
+  The remote party receives not only the proxy's certificate (signed by the owner),
+  but also the owner's certificate. During mutual authentication, the owner's
+  public key (obtained from her certificate) is used to validate the signature
+  on the proxy certificate. The CA's public key is then used to validate the
+  signature on the owner's certificate. This establishes a chain of trust from
+  the CA to the proxy through the owner.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.78.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>GSI, and software based on it (notably the Globus Toolkit, GSI-SSH,
+  and GridFTP), is currently the only software which supports the delegation extensions
+  to TLS (a.k.a. SSL).   The Globus Alliance has worked in the GGF and the IETF to standardize 
+  this extension in the form of Proxy Certificates (RFC 3820) [<a class="ulink" href="http://www.ietf.org/rfc/rfc3820.txt" target="_top">http://www.ietf.org/rfc/rfc3820.txt</a>].</p></td></tr></table></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-key-relateddocs"></a>Chapter 2. Related Documents</h1></div></div></div><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><a class="ulink" href="../../GT4-GSI-Overview.pdf" target="_top">Globus Toolkit Version 4 Grid Security
+    Infrastructure: A Standards Perspective</a> </li><li class="listitem"><a class="ulink" href="http://www.cacr.math.uwaterloo.ca/hac/" target="_top">Handbook of Applied
+    Cryptography </a></li></ul></div></div></div><div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="idm75710780496"></a>Glosary</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="glossary"><a href="#glossary-keyset">Glossary</a></span></dt></dl></div><div class="glossary"><div class="titlepage"><div><div><h1 class="title"><a name="glossary-keyset"></a>Glossary</h1></div></div></div><div class="glossdiv"><h3 class="title">C</h3><dl><dt><a name="ca"></a><span class="glossterm">Certificate Authority</span> ( CA )</dt><dd class="glossdef"><p> An entity that issues certificates.</p></dd></dl></div><div class="glossdiv"><h3 class="title">G</h3><dl><dt><a name="gram"></a><span class="glossterm">Grid Resource Allocation and Management</span> (GRAM)</dt><dd class="glossdef"><p>This component is used to locate, submit, monitor, and cancel jobs on Grid computing resources.</p></dd><dt><a name="gridftp"></a><span class="glossterm">GridFTP</span></dt><dd class="glossdef"><p>
+                            A file transfer protocol based on FTP with
+                            extensions for security and parallel data
+                            transfers.
+                        </p></dd><dt><a name="gsi"></a><span class="glossterm">Grid Security Infrastructure</span> (GSI)</dt><dd class="glossdef"><p>GSI stands for Grid Security Infrastructure and is used to describe the original infrastructure of GT security, which is comprised of 
+                        SSL, PKI and proxy certificates.</p></dd></dl></div><div class="glossdiv"><h3 class="title">L</h3><dl><dt><a name="local-resource-manager"></a><span class="glossterm">Local Resource Manager</span> (LRM)</dt><dd class="glossdef"><p>
+                        A system which controls access to a compute resource,
+                        such as a compute cluster or parallel computer.
+                        Such systems provide batch execution interfaces,
+                        which GRAM uses to execute jobs.
+                        <a href="#condor" class="glossterm"><em class="glossterm">Condor</em></a>,
+                        <a href="#pbs" class="glossterm"><em class="glossterm">Portable Batch System</em></a>,
+                        <a href="#Oracle-GridEngine" class="glossterm"><em class="glossterm">GridEngine</em></a> are examples
+                        of local resource managers.
+                    </p><p>See Also Condor, Portable Batch System, Oracle GridEngine.</p></dd><dt><a name="local-resource-manager-adapter"></a><span class="glossterm">LRM Adapter</span></dt><dd class="glossdef"><p>
+                        The interface code between 
+                        a <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a> and
+                        GRAM. In most cases, this consists of a Perl
+                        module that implements the
+                        <code class="classname">Globus::GRAM::JobManager</code> class
+                        and a <a href="#seg" class="glossterm"><em class="glossterm">Scheduler Event Generator</em></a>
+                        module.
+                    </p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv"><h3 class="title">P</h3><dl><dt><a name="priv-key"></a><span class="glossterm">private key</span></dt><dd class="glossdef"><p>The private part of a key pair. Depending on the type of certificate
+                              the key corresponds to it may typically be found in
+                                    <code class="filename">$HOME/.globus/userkey.pem</code> (for user
+                              certificates), <code class="filename">/etc/grid-security/hostkey.pem</code>
+                              (for host certificates) or
+                                          <code class="filename">/etc/grid-security/<em class="replaceable"><code>&lt;service&gt;</code></em>/<em class="replaceable"><code>&lt;service&gt;</code></em>key.pem</code>
+                              (for service certificates).</p><p>For more information on possible private key locations see
+                              <a href="../../gsic/pi/#gsic-env-credentials" class="olink">this</a>.</p></dd><dt><a name="proxy-cert"></a><span class="glossterm">proxy certificate</span></dt><dd class="glossdef"><p> A short lived certificate issued using a EEC. A proxy certificate
+                              typically has the same effective subject as the EEC that issued it and
+                              can thus be used in its place. GSI uses proxy certificates for single
+                              sign on and delegation of rights to other entities.</p><p>For more information about types of proxy certificates and their
+                              compatibility in different versions of GT, see <a class="ulink" href="http://dev.globus.org/wiki/Security/ProxyCertTypes" target="_top">http://dev.globus.org/wiki/Security/ProxyCertTypes</a>.</p></dd><dt><a name="pub-key"></a><span class="glossterm">public key</span></dt><dd class="glossdef"><p> The public part of a key pair used for cryptographic operations (e.g.
+                              signing, encrypting).</p></dd></dl></div></div></div></div>

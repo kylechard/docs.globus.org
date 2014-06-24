@@ -63,3 +63,6 @@ data_sources:
 
 # Site variables
 site_name: 'globus developer'
+latest_releases:
+  transfer_api: 'v0.10'
+  toolkit: '6.0'

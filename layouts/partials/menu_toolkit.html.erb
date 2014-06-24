@@ -1,9 +1,35 @@
+<% base_path = "/docs/toolkit/#{@config[:latest_releases][:toolkit]}" %>
+
 <div class="panel panel-default">
+	<div class="panel-heading"><b>Software Links</b></div>
 	<div class="list-group">
-		<% SideNavHelper::menu_toolkit(@items).each do |i| %>
-			<a href="<%= i.identifier %>" class="list-group-item <%= 'active' if i.identifier == @item.identifier %>">
-				<%= i[:title] %>
+		<% nav_items = [
+      { title: "Usage Statistics", href: "#{base_path}/Usage_Stats/"},
+      { title: "Versioning", href: "#"},
+      { title: "Downloads", href: "#"},
+    ] 
+    nav_items.each do |nav_item| %>
+    	<a href="<%= nav_item[:href] %>" class="list-group-item <%= 'active' if nav_item[:href] == @item.identifier %>">
+				<%= nav_item[:title] %>
 			</a>
-		<% end %>
+    <% end %>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Getting Started</b></div>
+	<div class="list-group">
+		<% nav_items = [
+      { title: "Installation", href: "#"},
+      { title: "Quickstart", href: "#"},
+      { title: "Platform Notes", href: "#"},
+      { title: "GT Developer's Guide", href: "#"},
+      { title: "Migrating Guides", href: "#"},
+    ] 
+    nav_items.each do |nav_item| %>
+    	<a href="<%= nav_item[:href] %>" class="list-group-item <%= 'active' if nav_item[:href] == @item.identifier %>">
+				<%= nav_item[:title] %>
+			</a>
+    <% end %>
 	</div>
 </div>

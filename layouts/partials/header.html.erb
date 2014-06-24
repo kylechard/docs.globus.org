@@ -14,7 +14,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <nav class="collapse navbar-collapse" role="navigation">
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hide" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
@@ -22,15 +22,15 @@
       </form>
       <ul class="nav navbar-nav navbar-right">
         <% nav_items = [
-          { title: "Transfer API", href: "/docs/transfer-api/v0.10/"},
-          { title: "Toolkit", href: "/docs/toolkit/"},
+          { title: "Transfer API", href: "/docs/transfer-api/#{@config[:latest_releases][:transfer_api]}/"},
+          { title: "Toolkit", href: "/docs/toolkit/#{@config[:latest_releases][:toolkit]}/"},
           { title: "About", href: "/about/"},
           { title: "Support", href: "#"},
         ] %>
         <% nav_items.each do |nav_item| 
           # item = @items.find { |i| i.identifier == nav_item[:href] }
           %>
-        <li class="<%= 'active' if nav_item[:href] == @item.identifier %>">
+        <li class="<%= 'active' if nav_item[:href] == @item.identifier || @item.identifier.start_with?(nav_item[:href]) %>">
           <%= link_to nav_item[:title], nav_item[:href] %>
         </li>
         <% end %>

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<div class="article"><div class="titlepage"><div><div><h2 class="title"><a name="gram5"></a>GT 6.0 GRAM5</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="glossary"><a href="#glossary-gram5">Glossary</a></span></dt></dl></div><p>
+  The Grid Resource Allocation and Management (GRAM5) component
+  is used to locate, submit, monitor, and cancel jobs on Grid computing resources. GRAM5 is not a <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>,
+  but rather a set of services and clients for communicating with a range of
+  different batch/cluster job schedulers using a common protocol. GRAM5 is
+  meant to address a range of jobs where reliable operation, stateful
+  monitoring, credential management, and file staging are important.
+</p><div class="informaltable"><table cellspacing="0" cellpadding="0" border="0" width="700px"><colgroup><col class="c1"><col class="c2"></colgroup><tbody><tr><td colspan="2">The following guides are available
+          for this component:</td></tr><tr><td><a href="key/#gram5Key" class="olink"><span class="strong"><strong>Key Concepts</strong></span></a></td><td>For important general concepts about job management in Globus. Includes <a href="key/#gram5-approach" class="olink">GRAM5 Approach</a>. [<a class="ulink" href="key/gram5KeyConcepts.pdf" target="_top">pdf</a>]</td></tr><tr><td><a href="admin/#gram5Admin" class="olink"><span class="strong"><strong>Admin Guide</strong></span></a></td><td>For system administrators and those installing, building and
+          deploying GT. You should already have read the <a href="../admin/install/#gtadmin" class="olink">Installation Guide</a> and <a href="../admin/quickstart/#quickstart" class="olink">Quickstart</a>.  [<a class="ulink" href="admin/gram5AdminGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a href="user/#gram5User" class="olink"><span class="strong"><strong>User's Guide</strong></span></a></td><td>Describes how end-users typically interact with this
+            component. [<a class="ulink" href="user/gram5UserGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a href="developer/#gram5Developer" class="olink"><span class="strong"><strong>Developer's Guide</strong></span></a>
+</td><td>Reference and usage scenarios for developers. [<a class="ulink" href="developer/gram5DeveloperGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td colspan="2"><p>Other information available for this
+          component are:</p></td></tr><tr><td><a href="rn/#gram5RN" class="olink"><span class="strong"><strong>Release Notes</strong></span></a></td><td>What's new with the 6.0 release for this
+          component. [<a class="ulink" href="rn/gram5ReleaseNotes.pdf" target="_top">pdf</a>]</td></tr><tr><td><a href="pi/#gram5PI" class="olink"><span class="strong"><strong>Public Interfaces</strong></span></a></td><td>Information for all public interfaces (including APIs,
+          commands, protocols, etc). Please note this is a subset of
+          information in
+          the <a href="developer/#gram5Developer" class="olink">Developer's
+          Guide</a>.  [<a class="ulink" href="pi/gram5PublicInterfacesGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a href="qp/#gram5QP" class="olink"><span class="strong"><strong>Quality Profile</strong></span></a></td><td>Information about test coverage reports, etc. [<a class="ulink" href="qp/gram5QualityProfile.pdf" target="_top">pdf</a>]</td></tr><tr><td><a href="mig/#gram5Mig" class="olink"><span class="strong"><strong>Migrating Guide</strong></span></a>
+</td><td>Information for migrating to this version if you were using a
+          previous version of GT. [<a class="ulink" href="mig/gram5MigratingGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a class="ulink" href="gram5.pdf" target="_top"><span class="strong"><strong>All GRAM5 Guides (PDF only)</strong></span></a>
+</td><td>Includes all GRAM5 guides except Public Interfaces (which is
+          a subset of the Developer's Guide)</td></tr></tbody></table></div><div class="glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-gram5"></a>Glossary</h2></div></div></div><div class="glossdiv"><h3 class="title">C</h3><dl><dt><a name="condor"></a><span class="glossterm">Condor</span></dt><dd class="glossdef"><p>A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>
+                        mechanism supported by GRAM. See the
+                        <a class="ulink" href="http://www.cs.wisc.edu/condor/" target="_top">Condor Project Website</a> for more
+                        information.</p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv"><h3 class="title">L</h3><dl><dt><a name="local-resource-manager"></a><span class="glossterm">Local Resource Manager</span> (LRM)</dt><dd class="glossdef"><p>
+                        A system which controls access to a compute resource,
+                        such as a compute cluster or parallel computer.
+                        Such systems provide batch execution interfaces,
+                        which GRAM uses to execute jobs.
+                        <a href="#condor" class="glossterm"><em class="glossterm">Condor</em></a>,
+                        <a href="#pbs" class="glossterm"><em class="glossterm">Portable Batch System</em></a>,
+                        <a href="#Oracle-GridEngine" class="glossterm"><em class="glossterm">GridEngine</em></a> are examples
+                        of local resource managers.
+                    </p><p>See Also Condor, Portable Batch System, Oracle GridEngine.</p></dd></dl></div><div class="glossdiv"><h3 class="title">O</h3><dl><dt><a name="Oracle-GridEngine"></a><span class="glossterm">Oracle GridEngine</span></dt><dd class="glossdef"><p>
+                        A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>
+                        supported by GRAM. See <a class="ulink" href="http://www.oracle.com/us/products/tools/oracle-grid-engine-075549.html" target="_top">Oracle's Web Site</a>
+                        for more information.
+                    </p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv"><h3 class="title">P</h3><dl><dt><a name="pbs"></a><span class="glossterm">Portable Batch System</span> (PBS)</dt><dd class="glossdef"><p>A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a> mechanism supported by GRAM. Multiple implementations of PBS exist: GRAM currently supports TORQUE. See also <a href="#TORQUE" class="glossterm"><em class="glossterm">TORQUE</em></a>.</p><p>See Also Local Resource Manager, TORQUE.</p></dd></dl></div></div></div>
