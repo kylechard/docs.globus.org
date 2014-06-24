@@ -1,3 +1,14 @@
+<ol class="breadcrumb">
+<% breadcrumbs_trail.each_with_index do |bc, index| %>
+	<% if index == 0 %>
+ 		<li><a href="/">Home</a></li>
+	<% end %>
+	<% if !bc.nil? && bc.identifier != @item.identifier && index > 0 %>
+		<li><a href="<%= bc.identifier %>"><%= bc[:title] || bc.identifier.split('/').last %></a></li>
+	<% end %>
+<%end %>
+</ol>
+
 <% if item.identifier.start_with?("/docs/transfer-api") %>
 	<h1><%= @item[:title] %> <small><%= @item[:subtitle] %></small></h1>
 	<ul class="nav nav">

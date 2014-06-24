@@ -75,6 +75,12 @@ header#masthead.navbar-inverse .navbar-nav>.active>a:focus {
 	border-bottom: 1px solid #EEE;
 	position: relative;
 }
+.page-header .breadcrumb {
+	background: rgba(0, 0, 0, 0);
+	padding: 0;
+	font-size: 14px;
+	text-transform: uppercase;
+}
 .page-header h1 {
 	font-weight: 100;
 }
