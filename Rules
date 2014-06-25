@@ -15,21 +15,21 @@
 
 preprocess do
   items.each do |i|
-    if i.identifier.start_with?("/docs/transfer-api") && i[:title].nil?
+    if i.identifier.start_with?("/transfer-api") && i[:title].nil?
       # Match transfer API titles from raw content
       m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
       if !m.nil?
         i[:title] = m[:title]
-        i[:subtitle] = items['/docs/transfer-api/'][:version]
+        # i[:subtitle] = items['/docs/transfer-api/'][:version]
       else
         # Grab titles from index item
-        i[:title] = items['/docs/transfer-api/'][:title]
-        i[:subtitle] = items['/docs/transfer-api/'][:version]
+        # i[:title] = items['/docs/transfer-api/'][:title]
+        # i[:subtitle] = items['/docs/transfer-api/'][:version]
       end   
     end
 
     # Match Toolkit titles from raw content
-    if i.identifier.start_with?('/docs/toolkit') && i[:title].nil?
+    if i.identifier.start_with?('/toolkit') && i[:title].nil?
       # i[:title] = i[:filename]
       # i.content.sub(/Globus/, 'ffff')
       # m = /class="title">.*<\/a>(?<title>.*)(<\/h2>.*<)/m.match(i.raw_content)
@@ -41,7 +41,7 @@ preprocess do
   end
 end
 
-compile '/docs/transfer-api/*' do
+compile '/transfer-api/*' do
   if !item.binary?
     if item[:extension] == 'adoc'
       filter :asciidoc
@@ -53,7 +53,7 @@ compile '/docs/transfer-api/*' do
   end
 end
 
-compile '/docs/toolkit/*' do
+compile '/toolkit/*' do
   if !item.binary?
     filter :erb
     layout item[:layout] || 'toolkit'

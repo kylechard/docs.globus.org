@@ -9,11 +9,11 @@
 <%end %>
 </ol>
 
-<% if item.identifier.start_with?("/docs/transfer-api") %>
+<% if item.identifier.start_with?("/transfer-api/docs") %>
 	<h1><%= @item[:title] %> <small><%= @item[:subtitle] %></small></h1>
 	<ul class="nav nav">
 		<% nav_items = [
-			{ title: "Reference", href: "/docs/transfer-api/"},
+			{ title: "Reference", href: "#"},
 			{ title: "Tutorials", href: "#"},
 			{ title: "Libraries", href: "#"},
 			{ title: "Support", href: "#"},
@@ -24,11 +24,11 @@
 		</li>
 		<% end %>
 	</ul>
-<% elsif item.identifier.start_with?("/docs/toolkit") %>
+<% elsif item.identifier.start_with?("/toolkit/docs") %>
 	<h1><%= @item[:title] %></h1>
 	<ul class="nav nav">
 		<% nav_items = [
-			{ title: "Release Notes", href: "/docs/transfer-api/"},
+			{ title: "Release Notes", href: "#"},
 			{ title: "Downloads", href: "#"},
 			{ title: "Support", href: "#"},
 		]	%>

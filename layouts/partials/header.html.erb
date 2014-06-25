@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/">
-        <img src="//www.globus.org/sites/all/themes/globus_bootstrap_theme/logo.png" alt="Home"> <%= @config[:site_name] %></a>
+        <img src="/images/logo.png" alt="Home"> <%= @config[:site_name] %></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -22,8 +22,9 @@
       </form>
       <ul class="nav navbar-nav navbar-right">
         <% nav_items = [
-          { title: "Transfer API", href: "/docs/transfer-api/#{@config[:latest_releases][:transfer_api]}/"},
-          { title: "Toolkit", href: "/docs/toolkit/#{@config[:latest_releases][:toolkit]}/"},
+          { title: "Transfer API", href: "/transfer-api/docs/#{@config[:latest_releases][:transfer_api]}/"},
+          # { title: "Toolkit", href: "/toolkit/docs/#{@config[:latest_releases][:toolkit]}/"},
+          { title: "Toolkit", href: "/toolkit/"},
           { title: "About", href: "/about/"},
           { title: "Support", href: "#"},
         ] %>
