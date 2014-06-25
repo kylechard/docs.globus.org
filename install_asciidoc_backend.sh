@@ -1,8 +1,15 @@
 #!/bin/bash
 set -e
 
-asciidoc --backend remove bootstrap
-asciidoc --backend install asciidoc_bootstrap/bootstrap.zip
+cd asciidoc/backends/bootstrap
+zip bootstrap *
+
+if [ -d ~/.asciidoc/backends/bootstrap ]; then
+	asciidoc --backend remove bootstrap
+fi
+
+echo "Installing Asccidoc Bootstrap Backend"
+asciidoc --backend install bootstrap.zip
 
 if [ $? -eq 0 ]; then
 	echo "Asciidoc Bootstrap Backend installed"

@@ -4,3 +4,4 @@ output
 tmp
 .DS_Store
 crash.log
+asciidoc/backends/bootstrap/bootstrap.zip

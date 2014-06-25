@@ -46,16 +46,7 @@ if [ $env == 'stg' ]; then
   sitesDir='dev.globus.org-staging'
 fi
 
-echo "Installing Asccidoc Bootstrap Backend"
-asciidoc --backend remove bootstrap
-asciidoc --backend install asciidoc_bootstrap/bootstrap.zip
-
-if [ $? -eq 0 ]; then
-  echo "Asciidoc Bootstrap Backend installed"
-else
-  echo "Asciidoc Bootstrap Backend failed to installed"
-  exit 1
-fi
+./install_asciidoc_backend.sh
 
 echo "Deploying to $env"
 
