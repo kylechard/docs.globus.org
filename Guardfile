@@ -16,6 +16,7 @@ guard 'livereload' do
   watch(%r{content/.+\.(html|yaml|adoc|erb)$})
   watch(%r{content/styles/.+\.(css)$})
   watch(%r{layouts/.+\.(html|erb)$})
+  watch(%r{menu_.+\.(yaml)$})
 
   #watch(%r{app/views/.+\.(erb|haml|slim)$})
   #watch(%r{app/helpers/.+\.rb})
