@@ -24,17 +24,17 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% nav_items = [
-          { title: "Transfer API", href: "/transfer-api/docs/#{@config[:latest_releases][:transfer_api]}/"},
-          # { title: "Toolkit", href: "/toolkit/docs/#{@config[:latest_releases][:toolkit]}/"},
-          { title: "Toolkit", href: "/toolkit/"},
-          { title: "About", href: "/about/"},
-          { title: "Support", href: "#"},
+          { title: "Transfer API", link: "/transfer-api/docs/#{@config[:latest_releases][:transfer_api]}/"},
+          # { title: "Toolkit", link: "/toolkit/docs/#{@config[:latest_releases][:toolkit]}/"},
+          { title: "Toolkit", link: "/toolkit/"},
+          { title: "About", link: "/about/"},
+          { title: "Support", link: "#"},
         ] %>
         <% nav_items.each do |nav_item| 
           # item = @items.find { |i| i.identifier == nav_item[:href] }
           %>
-        <li class="<%= 'active' if nav_item[:href] == @item.identifier || @item.identifier.start_with?(nav_item[:href]) %>">
-          <%= link_to nav_item[:title], nav_item[:href] %>
+        <li class="<%= 'active' if nav_item[:link] == @item.identifier || @item.identifier.start_with?(nav_item[:link]) %>">
+          <%= link_to nav_item[:title], nav_item[:link] %>
         </li>
         <% end %>
       </ul>

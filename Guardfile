@@ -7,11 +7,6 @@ guard 'nanoc' do
   watch(%r{^(content|layouts|lib)/.*$})
 end
 
-# Live reload
-#guard 'livereload',  :port => '35729' do
-#  watch(%r{output/.+\.(css|js|html)})
-#end
-
 guard 'livereload' do
   watch(%r{content/.+\.(html|yaml|adoc|erb)$})
   watch(%r{content/styles/.+\.(css)$})
