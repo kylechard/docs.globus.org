@@ -2,6 +2,9 @@
 
 This is a private Globus Developer resource built with nanoc.
 
+* auto-gen TOC:
+{:toc}
+
 ## Setup
 
 Ruby 2.1.2 is required to build the site.
