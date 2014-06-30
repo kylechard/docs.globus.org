@@ -21,6 +21,22 @@ You can see the available commands with nanoc:
 $ bundle exec nanoc -h
 ```
 
+### Dev Build Environment
+##### Asciidoc Bootstrap backend
+
+*** talk about how to run the install script here. ***
+
+
+___
+
+## Meta Data
+* ***title***
+	* Item page title
+* ***hide_pageheader***
+	* Hides item page header output.
+* ***hide_breadcrumb***
+	* Hides item breadcrumb output.
+
 
 ## Resources
 

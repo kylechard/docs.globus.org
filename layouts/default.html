@@ -3,11 +3,13 @@
 <body>
   <%= render 'partials/header' %>
 
-  <div class="page-header">
-    <div class="container">
-      <%= render 'partials/page_header' %>
+  <% if !@item[:hide_pageheader] %>
+    <div class="page-header">
+      <div class="container">
+        <%= render 'partials/page_header' %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="page-content">
     <div class="container">
