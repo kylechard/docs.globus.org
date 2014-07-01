@@ -58,8 +58,6 @@ then
 fi
 
 
-exit 0
-
 ### Run deployment ###
 echo "Deploying to $env"
 
@@ -67,19 +65,22 @@ echo "Deploying to $env"
 #./install_asciidoc_backend.sh
 
 # Clean up the sites dir, pull any outstanding changes
-echo "Updating sites with remote changes in $sitesDir"
+echo "Cleaning up $sitesDir directory"
 cd ./$sitesDir
-git checkout gh-pages
+# git checkout gh-pages
+# git pull origin gh-pages
+# git rm -r .
+# git commit -a -m 'deleted last commit'
+git checkout ./
 git pull origin gh-pages
-git rm -r .
-git commit -a -m 'deleted last commit'
 
 
 # Build latest
-cd ../
 echo "Compiling nanoc"
+cd ../
+rm -rf output
 nanoc
-cp -R output/* $sitesDir
+# cp -R output/* ./$sitesDir
 
 
 # Build the correct CNAME file for the env
@@ -98,17 +99,32 @@ fi
 
 # Commit and push the changes to the sites dir
 echo "Adding and committing destination files"
+git rm -r .
+cp -R ../output/* .
+git add -A
+git commit -a -m "$message"
+git push origin gh-pages
+exit 0
+
 # if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
 # then
-  git add ./
-  git commit -a -m "$message"
+#   git add -A
+#   git commit -a -m "$message"
+# else
+#   echo "Nothing to commit"
+# fi
+
+
+# if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
+# then
+  
 # else
   # echo "Nothing to commit"
 # fi
-git push origin gh-pages
 
-cd ..
-echo "** Remember to commit your source files"
+
+# cd ..
+# echo "** Remember to commit your source files"
 
 # Commit and push the changes to the source dir
 # echo "Adding and committing source files"
