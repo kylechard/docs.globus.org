@@ -1,13 +1,41 @@
 #!/bin/bash
 set -e
 
+### Check proper usage
 if [[ -z $1 ]]
 then
-    echo "Usage: $0 'commit message' [env]"
-    exit 0
+  echo "Usage: $0 'commit message' [env]"
+  exit 1
 fi
 
-ghbranch=`git rev-parse --abbrev-ref HEAD`
+### Command line opts ###
+message=$1 #commit message
+env=${2-stg} # Environment: options are 'stg' and 'prod'. Defaults to 'stg'
+
+### Current branch
+branch=`git rev-parse --abbrev-ref HEAD`
+
+# if [ $branch != 'master' -o $branch != 'prod' ]
+# then
+#  echo "Oops! You must be on either master or prod branch to run $0"
+#  exit 1
+# fi
+
+### Setup for staging deployment
+if [ $env == 'stg' ]
+then
+  # Make sure on master branch
+  if [ $branch != 'master' ]
+  then
+    echo "Sorry! You must be on master branch to deploy to staging."
+    exit 1
+  fi
+
+  sitesDir='dev.globus.org-staging'
+fi
+
+
+exit 0
 
 ### Config ###
 # Jekyll destination directory, usually _sites
@@ -33,18 +61,13 @@ prodRemote="prod"
 # The name of the branch used by GH pages (probably gh-pages)
 ghPagesBranch="gh-pages"
 
-### Command line opts ###
-message=$1 #commit message
-env=${2-stg} # Environment: options are 'stg' and 'prod'. Defaults to 'stg'
-branch=$3 # Branch to commit to - will default to the current working branch
 
-if  [[ -z "$banch" ]]; then
-  branch=$ghbranch
-fi
 
-if [ $env == 'stg' ]; then
-  sitesDir='dev.globus.org-staging'
-fi
+# if  [[ -z "$branch" ]]; then
+#   branch=$ghbranch
+# fi
+
+
 
 ./install_asciidoc_backend.sh
 
