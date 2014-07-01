@@ -86,6 +86,10 @@ nanoc
 # Build the correct CNAME file for the env
 cd ./$sitesDir
 
+# Commit and push the changes to the sites dir
+echo "Adding and committing destination files"
+git rm -r .
+
 if [ $customDomain == true ]
 then
   echo "Generating CNAME"
@@ -95,11 +99,6 @@ then
     echo $prodDomain > CNAME
   fi
 fi
-
-
-# Commit and push the changes to the sites dir
-echo "Adding and committing destination files"
-git rm -r .
 cp -R ../output/* .
 git add -A
 git commit -a -m "$message"
