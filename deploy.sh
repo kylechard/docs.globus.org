@@ -104,36 +104,6 @@ cp -R ../output/* .
 git add -A
 git commit -a -m "$message"
 git push origin gh-pages
-exit 0
 
-# if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
-# then
-#   git add -A
-#   git commit -a -m "$message"
-# else
-#   echo "Nothing to commit"
-# fi
-
-
-# if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
-# then
-  
-# else
-  # echo "Nothing to commit"
-# fi
-
-
-# cd ..
-# echo "** Remember to commit your source files"
-
-# Commit and push the changes to the source dir
-# echo "Adding and committing source files"
-# cd ..
-# if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]
-# then
-#   git add ./
-#   git commit -a -m "$message"
-# else
-#   echo "Nothing to commit"  
-# fi
-# git push origin $branch
+# Done
+echo "** Remember to commit your source files"
