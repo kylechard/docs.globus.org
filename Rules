@@ -55,13 +55,7 @@ end
 
 compile '/about/*' do
   if !item.binary?
-    if item[:extension] == '1\.txt'
-#    the_extension = item[:extension].to_s
-#    if the_extension.match(/\d\.txt/)
-#    if /\d\.txt/.match("#{the_extension}") > 0
-#    if item[:extension] == /\d\.txt/
-#    thematch = /\d\.txt/.match(item[:extension])
-#    if !thematch.nil? and thematch != 0
+    if item[:extension].split('.').last == 'txt'
       filter :asciidoc
       layout item[:layout] || 'about'
     else

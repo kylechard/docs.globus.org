@@ -1,0 +1,116 @@
+= RM(1)
+
+== NAME
+
+rm - Delete files and directories on a server
+== SYNOPSIS
+
+*rm *
+*[-r]*
+*[-f]*
+*[options]*
+'endpoint/path '
+.br
+*rm *
+*[-r]*
+*[-f]*
+*[options]*
+'endpoint:path '
+
+== DESCRIPTION
+
+The 
+*rm *
+command is a quick and easy way to delete a single file, directory, or
+pattern.   Its semantics are as close as possible to UNIX rm.
+
+The 
+'path '
+may have a shell-compatible wild card pattern in its final component.
+Type 'man glob' for details.
+
+Like UNIX rm, symbolic links are never followed - only unlinked (deleted).
+
+
+== OPTIONS
+
+.TP
+*-r               *
+Remove directories and their contents recursively.  Note that just like regular rm, the path does not have to be a directory and symlinks are never followed.
+
+.TP
+*-f               *
+Ignore nonexistent files and directories.  The operation succeeds if the path does not exist.
+
+
+.TP
+*-g*
+Activate the endpoint using your gsi-ssh credential
+
+.\" %start OPT_TASKLABEL
+.TP
+.BI "--label " LABEL
+Set the task's label.  The label can be displayed and searched for in commands
+such as 
+*status *
+and 
+.BR details .
+See 
+.BR labels (7)
+for more details on labels.
+.\" %end
+
+.\" %start OPT_DEADLINE
+.TP
+.BI "-d " DEADLINE 
+Set the task's deadline.  If the task has not completed by the deadline it
+will be automatically canceled.  A suffix of 'm', 'h', or 'd' may be specified
+to indicate minutes, hours, or days.  If a unit suffix is not given it is
+assumed to be minutes.  Example: '30m', '4h', '1d'.  
+
+If a deadline is not explicitly set, Globus Online will give the task a
+flexible deadline that is automatically extended as long as it is making
+progress.  
+.\" %end
+
+.TP
+*-D*
+Create a detached (background) task and exit.
+
+.\" %start OPT_UNSAFE
+.TP
+.BI "--unsafe" 
+Remove checks for possible human errors such as deleting all files in / and
+/~/.  Only use this option if necessary and always be careful when issuing
+delete commands.
+.\" %end
+
+
+== EXAMPLES
+
+.TP
+Remove files matching a pattern:
+*rm go#ep1/~/Downloads/*.tmp*
+
+.TP
+Remove directories matching a pattern:
+*rm -rf go#ep1/~/Work/testdir**
+
+.TP
+Alternate, SCP-like home directory path syntax:
+*rm -rf go#ep1:Work/testdir**
+
+
+
+== EXIT STATUS
+
+*-D*
+is used, rm returns 0 if the task was successfully created.  If 
+*-D *
+is not used, rm returns 0 if the task completes successfully or non zero if the task has a fatal error, fails to complete by the deadline, or is canceled.
+
+== SEE ALSO
+
+.BR delete (1), 
+.BR glob(7)
+

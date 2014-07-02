@@ -1,0 +1,10 @@
+*-d* 'DEADLINE'::
+
+Set the task's deadline.  If the task has not completed by the deadline it
+will be automatically canceled.  A suffix of "m", "h", or "d" may be specified
+to indicate minutes, hours, or days.  If a unit suffix is not given it is
+assumed to be minutes.  Example: "30m", "4h", "1d".  
++
+If a deadline is not explicitly set, Globus Online will give the task a
+flexible deadline that is automatically extended as long as it is making
+progress.  
