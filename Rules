@@ -64,12 +64,12 @@ end
 
 compile '/about/*' do
   if !item.binary?
-    if item[:extension].split('.').last == 'txt'
+    if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout item[:layout] || 'about'
+      layout 'default'
     else
       filter :erb
-      layout item[:layout] || 'about'
+      layout 'default'
     end
   end
 end

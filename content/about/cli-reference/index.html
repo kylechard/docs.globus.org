@@ -1,12 +1,22 @@
+---
+title: Command Line Reference
+---
+
 <% base_path = "/about/" %>
 <p>(General CLI info)</p>
 
 
 <% x = @items.select{ |x| x.identifier.start_with?("/about/cli-reference/docs") } %> 
 
-
-<% x.each do |i| %>
-	<hr>
-	<%= i[:title] %>
+<p><ul>
+<% x.each do |i|
+	item_url = i[:title].to_s.downcase
+	trim = item_url.index('(')
+	item_name = item_url[0, trim.to_i]
+	unless item_name.nil? or item_name.empty? %>
+		<li><a href = "<%= i.identifier %>" class="">
+		<%= item_name %>
+		</a></li>
+	<% end %>
 <% end %>
-
+</ul></p>
