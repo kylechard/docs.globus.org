@@ -1,0 +1,76 @@
+= DIAGNOSE(1)
+
+== NAME
+
+diagnose - Test a remote GridFTP server
+== SYNOPSIS
+
+*diagnose *
+*[options]*
+'target-endpoint'
+
+== DESCRIPTION
+
+The 
+.B
+diagnose 
+command performs a series of tests to check availability and basic
+functionality of a remote GridFTP server.
+The
+.I
+target-endpoint
+can be a GO logical endpoint name or a GridFTP server hostname with an optional
+port number. The command first tries to establish a TCP connection to the
+control port of the
+.I
+target-endpoint
+and obtains the version of the server. If successful, a two-party transfers is
+attempted from cli.globusonline.org and the
+.I
+target-endpoint
+. If successful, a third-party transfer is attempted in each direction between
+a GO tutorial endpoint and the
+.I
+target-endpoint\fP. If the
+.B
+-p
+option is specified, then that
+.I
+endpoint
+is used instead of the GO tutorial endpoint.
+
+
+== OPTIONS
+
+.TP
+*-g*
+Use your gsi-ssh delegated proxy credential for authentication
+
+.TP
+.BI -m " HOST"
+Retrieve a credential from a myproxy server
+
+.TP
+.BI -U " USER"
+Set the myproxy username
+
+.TP
+.BI -p " endpoint"
+Use this
+'endpoint'
+for third-party transfer tests instead of the GO tutorial endpoint.
+
+== EXAMPLES
+
+.TP
+Diagnose a GridFTP server using the Globus Online 'go#ep2' endpoint definition. go# endpoints autoactivate, so delegation with gsissh or myproxy is not required.
+*diagnose go#ep2*
+.TP
+Diagnose a GridFTP server using a hostname and port, using a credential from a myproxy server for a specific user, and using the specified endpoint for third-party transfers.
+*diagnose -m myproxy1.com -U johndoe -p nersc#dtn  gridftp.test.edu:2812*
+
+== EXIT STATUS
+
+.B
+diagnose
+returns a non zero exit code if any of the test steps fails.

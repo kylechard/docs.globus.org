@@ -1,0 +1,75 @@
+= DELETE(1)
+
+== NAME
+
+delete - Advanced file and directory deletion
+
+== SYNOPSIS
+
+*delete [OPTIONS] <* 'INPUT-LIST'
+
+*delete --generate-id*
+
+
+== DESCRIPTION
+
+The *delete* command can be used to script multi-line delete operations as a
+single batch.
+
+Each path is assumed to be URL-encoded; in particular any spaces and non-ASCII
+characters must be encoded.  Each path may have a shell-compatible wild card
+pattern in its final component.  Type "man glob" for details.
+
+Symbolic links are never followed - only unlinked (deleted).
+
+
+== INPUT LIST
+
+The 'INPUT-LIST' has the following format:
+
+    endpoint/path
+    ...
+
+
+== OPTIONS
+
+*-r*::
+
+Remove directories and their contents recursively.  Note that path(s) do not
+have to be directories and symlinks are never followed.
+
+*-f*::
+
+Ignore nonexistent files and directories.  The operation succeeds if the path
+does not exist.
+
+
+*-g*::
+
+Activate the endpoint using your gsi-ssh credential
+
+
+//include::include/tasklabel.adoc[]
+
+//include::include/opt_deadline.adoc[]
+
+//include::include/opt_unsafe.adoc[]
+
+
+*--generate-id, --taskid*='TASKID'::
+
+See *transfer(1)* for details on atomic task submission.
+
+== EXAMPLES
+
+Remove files matching patterns:
+
+    $ delete
+    go#ep1/~/Downloads/*.tmp
+    go#ep1/~/Downloads/*.txt
+    <EOF>
+
+
+== SEE ALSO
+
+*glob(7)*, *rm(1)*, *transfer(1)*
