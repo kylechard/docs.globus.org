@@ -28,7 +28,7 @@ preprocess do
       end   
     end
 
-    if i.identifier.start_with?("/about/cli-reference/docs") && i[:title].nil?
+    if i.identifier.start_with?("/cli-reference/docs") && i[:title].nil?
       if i[:extension].split('.').last == 'txt'
         m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
         if !m.nil?
@@ -62,7 +62,7 @@ compile '/transfer-api/*' do
   end
 end
 
-compile '/about/*' do
+compile '/cli-reference/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
