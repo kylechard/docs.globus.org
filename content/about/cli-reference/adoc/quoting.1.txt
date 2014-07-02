@@ -1,0 +1,121 @@
+= QUOTING(7)
+
+== NAME
+
+quoting - Quoting and Escaping in the CLI
+
+== DESCRIPTION
+
+The Globus Transfer CLI behaves much like a normal shell such as bash with
+respect to the use of quotes and escaping.
+
+However, there may be differences in how one must escape wildcard (globbing)
+character literals, because the Globus shell itself does not ever perform globbing;
+only the commands it executes do.
+
+== DETAILS
+
+A non-quoted backslash (\\) is the escape character.  It preserves the literal
+value of the next character that follows.
+
+Enclosing characters in single quotes preserves the literal value of each character  within
+the  quotes.   A  single quote may not occur between single quotes, even when preceded by a
+backslash.
+
+Enclosing characters in double quotes preserves the literal value of all
+characters  within the  quotes, with the exception of backslash (\\).   The
+backslash retains its special meaning only when followed by one of the
+following characters: ", \\, or <newline>. 
+
+
+.PP
+*Interactive CLI Shell Versus Remote Execution*
+.sp
+The quoting and escaping rules described above apply to the interactive CLI shell.  Additional escaping is needed when arguments are passed to the CLI from a remote shell via ssh or gsissh.  Please see the examples below.
+.PP
+*Exceptions*
+.sp
+The above quoting and escaping rules do not apply to the input lists sent to CLI commands such as 
+*transfer *
+and 
+.BR delete.  
+Please see the man pages for these commands to understand the rules that apply.
+.PP
+
+== EXAMPLES
+
+.SS Interactive Shell
+.TP 
+Use a backslash to escape a space in a file path
+.nf
+
+# creates "foo bar" file
+scp go#ep1:/etc/group go#ep2:/tmp/foo\\ bar
+.fi
+
+.TP
+Use double quotes to escape a space in a file path
+.nf
+
+# creates "foo bar" file
+scp go#ep1:/etc/group "go#ep2:/tmp/foo bar"
+.fi
+
+.TP
+Using double quotes and a backslash will result in a backslash in the name.
+.nf
+
+# creates "foo\\ bar" file
+scp go#ep1:/etc/group "go#ep2:/tmp/foo\\ bar"
+.fi
+
+.TP
+An unquoted backslash preceding a normal character is a noop.
+.nf
+
+# lists /tmp/foobar on go#ep2
+ls go#ep2/tmp/foo\\bar
+.fi
+
+.TP
+Remove a file with literal wildcard characters in the name.  Note that we have to work around the shell doing a first level of backslash interpretation.
+.nf
+
+# delete the file "foo*" but leave other files beginning 
+# with foo untouched
+rm "go#ep2/tmp/foo\\*"
+# OR
+rm go#ep2/tmp/foo\\\\*
+.fi
+
+.SS Remote Shell
+
+.TP
+Handling a space in a file path
+.nf
+
+# local shell eats the quotes but leaves the backslash
+ssh user@cli.globusonline.org scp go#ep1:/etc/group "go#ep2:/tmp/a/foo\\ bar"
+
+# an extra backslash also works
+ssh user@cli.globusonline.org scp go#ep1:/etc/group go#ep2:/tmp/a/foo\\\\ bar
+.fi
+
+.TP
+Working with backslashes in names remotely.
+.nf
+
+# need 6 backslashes to list the file "foo\\ bar"
+ssh user@cli.globusonline.org ls ep2:/tmp/a/foo\\\\\\\\\\\\ bar/tmp/a/foo\ bar
+
+# or if we escape the quotes locally, we just need to double the backslah
+ssh user@cli.globusonline.org ls \\"ep2:/tmp/a/foo\\\\ bar/tmp/a/foo\ bar\\"
+
+
+== SEE ALSO
+
+.BR delete (1),
+.BR ls (1),
+.BR rm (1)
+.BR glob (1)
+

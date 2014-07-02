@@ -1,0 +1,70 @@
+= ENDPOINT-ADD(1)
+
+== NAME
+
+endpoint-add - Create a logical endpoint 
+
+== SYNOPSIS
+
+.BI endpoint-add " name"
+.BI "[-p " "server" " [-s " subject "]]"
+.br 
+.BI endpoint-add " name " --gc
+
+== DESCRIPTION
+
+*endpoint-add *
+creates a logical endpoint with a user specified name.  
+*endpoint-add*
+can also add a physical server to an existing logical endpoint if the 
+*-p*
+option is given.
+
+If the 
+.B
+--gc 
+option is used, endpoint-add will print a setup key that can be used to install Globus Connect.
+
+A logical endpoint can be used by the
+.BR scp " and " transfer
+commands to transfer files.  Use the 
+.B
+endpoint-activate
+command to assign a valid credential to an endpoint.
+
+A logical endpoint name may contain these characters: letters, numbers, '.', '-', and '_'.  The first character must be a letter or number.  Endpoint names are case sensitive.
+
+
+== OPTIONS
+
+.TP
+.BI -p " server"
+'server '
+is a URL or hostname of a file server.  If a hostname is given, the scheme is assumed to be gsiftp://.  The currently supported schemes are ftp:// and gsiftp://.
+
+.TP
+.BI -s " subject"
+The subject DN that the server's host certificate must present.  Specify this if the server's subject can not be inferred from its DNS name.
+
+.TP
+.BI --gc 
+Create a Globus Connect endpoint and print a setup key.  The setup key is used to finalize installation of the Globus Connect client software.
+
+== EXAMPLES
+
+.TP
+Create a logical endpoint called 'my_endpoint', specifying the scheme, port, and subject:
+.ad l
+*endpoint-add -p gsiftp://gridftp2.com:1234 -s '/O=Grid/OU=GlobusTest/CN=gridftp2.com' my_endpoint*
+
+.TP
+Create a Globus Connect endpoint called 'laptop' and receive a setup key:
+*endpoint-add --gc laptop*
+
+== EXIT STATUS
+
+*endpoint-add*
+fails if the logical endpoint already exists and no server was specified.  If a server was specified, 
+**
+endpoint-add
+fails if that server has already been added to the logical endpoint.

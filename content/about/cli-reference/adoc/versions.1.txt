@@ -1,0 +1,70 @@
+= VERSIONS(1)
+
+== NAME
+
+versions - List versions supported by the server, request a specific version
+== SYNOPSIS
+
+*versions *
+.br
+.BI v= VERSION : USER_AGENT
+.BI "[" COMMAND "]"
+== DESCRIPTION
+
+*versions *
+displays a list of 
+service / version strings that are supported by the server.  
+A specific version can be requested for a command or a shell by using the 
+.BI v= VERSION:USER_AGENT
+prefix when running a command or starting the interactive shell.   If the server does not support the requested version, the command will fail and an error message will be displayed.
+
+.B
+Notice:
+.I
+It is highly recommended that 
+.B
+all automated clients
+.I
+use the 
+**
+v=
+''
+prefix on commands in order to have long term support by Globus Online.
+
+A shell's version may only be specified when it is created and may not be modified afterward.  If a version is not specified for a command or shell, it is assumed to be the latest version.
+
+.SS
+Version Strings
+The version strings returned by 
+.B
+versions
+and used by the
+*v=*
+prefix should be considered opaque tokens and only tested for equality.  Valid version characters are any printable character excluding whitespace.   Example version strings include:
+.RS
+*transfer/1.0.1-3abc*
+.br
+*transfer/2.0beta*
+.RE
+If the service portion is omitted when requesting a version, it is assumed to be
+'transfer.'
+
+
+.SS
+User Agent
+A user agent must be supplied when requesting a version via the
+*v=*
+prefix.  This user agent string must be at least 6 characters long and may not contain whitespace or the 
+*':'*
+character.
+The user agent string SHOULD identify the client / consumer software being used and its version, for example 'MyProgram/3.1'.  
+
+
+== EXAMPLES
+
+.TP
+The client program "MyProgram/3.1" requests version 1.1 of the transfer service for a command:
+*ssh cli.globusonline.org v=transfer/1.1:MyProgram/3.1 status -a*
+.TP
+Request version 1.1 (transfer service assumed) for a shell:
+*ssh -t cli.globusonline.org v=1.1:MyProgram/3.1*

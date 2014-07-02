@@ -1,0 +1,46 @@
+= ENDPOINT-REMOVE(1)
+
+== NAME
+
+endpoint-remove - Remove a logical endpoint or unmap a physical server 
+
+== SYNOPSIS
+
+.BI endpoint-remove " pattern" " ..."
+.br
+.BI endpoint-remove " name"
+.BI "[-p " "server" "]"
+
+== DESCRIPTION
+
+*endpoint-remove *
+can remove logical endpoint(s) with names matching a
+'pattern.   '
+.B
+endpoint-remove 
+can also remove (unmap) a physical server from a specific logical endpoint.
+
+== OPTIONS
+
+.TP
+.BI -p " server"
+'server '
+is a URL or hostname of a file server.  If a hostname is given, the scheme is assumed to be gsiftp://.
+
+== EXAMPLES
+
+.TP
+Remove a logical endpoint:
+.ad l
+*endpoint-remove testep1*
+
+.TP
+Remove endpoints with names matching a pattern:
+.ad l
+*endpoint-remove testep**
+
+.TP
+Unmap the server 'gsiftp://gridftp1.com' from endpoint 'myep1':
+.ad l
+*endpoint-remove -p gsiftp://gridftp1.com myep1*
+

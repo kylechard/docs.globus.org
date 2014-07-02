@@ -1,0 +1,285 @@
+= TRANSFER(1)
+
+== NAME
+
+transfer - Advanced file and directory transfer command
+== SYNOPSIS
+
+'transfer '
+[<options>]
+*-- *
+<single input line>
+.br
+'transfer '
+[<options>]
+*< *
+<one or more input lines>
+.br
+'transfer '
+--generate-id
+
+.br
+.TP 
+.IR "input line" :
+source-endpoint/file dest-endpoint/file
+.BI "[-vs " SIZE "]"
+.br
+source-endpoint/dir/ dest-endpoint/dir/
+.BI  -r 
+.br
+== DESCRIPTION
+
+*transfer *
+creates a task that copies files and/or directories between endpoints.  
+If multiple input lines are given over stdin, all lines must have the same source and destination endpoint.
+
+The endpoints used must be activated or transfer will fail and not create a
+task.  Use the 
+*-g *
+option to automatically (re)activate both endpoints using your gsi-ssh
+credential or use the
+.B
+endpoint-activate 
+command for all other endpoint activation methods such as myproxy.
+
+The 
+*transfer*
+command is different from the
+*scp*
+command in that 
+**
+transfer 
+will always place the destination files in a consistent,
+deterministic location.  The contents of a source directory will be placed inside the destination directory.  A source file will be copied to the destination file path, which must not be a directory.  All intermediate / parent directories on the destination will be created if they don't exist. 
+
+Paths relative to a user's home directory may be specified by using '/~/path'
+or '/~someuser/path' syntax.  
+
+If the files or directories given as input are symbolic links, they are
+followed.  However, no other symbolic links are followed and no symbolic links
+are ever created on the destination.  
+
+.B
+transfer 
+will print its task id in this format: 'Task ID: <taskid>'.  
+This task id may be passed to other task management commands.
+
+.SS Input Lines
+One or more input lines may be piped through stdin, terminated by CTRL-D or
+EOF.  A simpler method is also supported: a single input line can be given
+directly on the command line, after a '--' option break.
+
+An input line must contain a source and destination endpoint and path.  In
+addition, options and parameters may be appended to an input line.  These
+options apply only to the line they are on.
+
+These options apply to an individual input line:
+.TP
+.BI "-r "
+Recursively transfer directory.  The contents of the source directory, including all subdirectories, are transferred to the destination directory.
+The destination directory (and its parent directories) will be created if it
+does not exist.
+Both the source and destination paths must end with a slash ('/') character.  
+
+.TP
+.BI "-vs " SIZE
+(Beta) Verify file size before and after transfer.  The size specified, in
+bytes, must match the source file size before transfer and the destination file
+size after transfer.   If either check does not match, an error event will be
+recorded (error codes VERIFY_SOURCE_SIZE and VERIFY_DEST_SIZE) and the file
+will be retried. 
+
+.SS Handling Special Characters
+
+An input line accepts two ways of encoding characters:
+
+.TP
+*URL Escaped*
+If an endpoint/path token does not begin with a double quote ("), it is assumed to have URL-escaped bytes.  Thus, sequences like '%20' and '%25' will be transformed to a space (' ') and literal '%' byte, respectively.  This method is highly recommended, particularly when using the single line only syntax.
+
+.TP
+*Quoted Bytes*
+If an endpoint/path token begins with a double quote ("), it is assumed to be a sequence of raw bytes terminated by a final double quote (").  Embedded spaces and '%' characters are allowed and preserved.  An embedded double quote (") can not be used in this format.
+
+
+
+== OPTIONS
+
+These options apply to the transfer command itself:
+
+.TP
+*"-g "*
+Activate all endpoints that are part of this transfer task via
+gsi-ssh credential delegation.
+
+.\" %start OPT_SYNC_LEVEL
+.TP
+*"-s sync-level"*
+Synchronize, i.e. only copy new files or files that have been changed.  Note
+that this option alone does not turn on deletion of any files.  (See the --delete option for that).
+
+Valid sync levels are:
+.RS
+.TP
+*0*
+Copy files that do not exist at the destination
+.TP
+*1*
+Copy files if the size of the destination does not match the size of the source 
+.TP
+*2*
+Copy files if the timestamp of the destination is older than the timestamp of
+the source.   
+.TP
+*3*
+Copy files if checksums of the source and destination do not match
+
+.RE
+.RS
+Each sync level includes the comparison criteria from lower-numbered levels.  For instance, if level 3 is specified and the source and destination file sizes are different or the source file has a newer timestamp, the file will be transfered and a checksum operation is not even attempted.
+.RE
+.\" %end
+
+
+.\" %start OPT_TASKLABEL
+.TP
+.BI "--label " LABEL
+Set the task's label.  The label can be displayed and searched for in commands
+such as 
+*status *
+and 
+.BR details .
+See 
+.BR labels (7)
+for more details on labels.
+.\" %end
+
+
+.\" %start OPT_DEADLINE
+.TP
+.BI "-d " DEADLINE 
+Set the task's deadline.  If the task has not completed by the deadline it
+will be automatically canceled.  A suffix of 'm', 'h', or 'd' may be specified
+to indicate minutes, hours, or days.  If a unit suffix is not given it is
+assumed to be minutes.  Example: '30m', '4h', '1d'.  
+
+If a deadline is not explicitly set, Globus Online will give the task a
+flexible deadline that is automatically extended as long as it is making
+progress.  
+.\" %end
+
+.\" %start OPT_ENCRYPT
+.TP
+.BI "--encrypt" 
+Encrypt the data channel during file transfer.  This requires gsiftp and will
+not work on anonymous GridFTP servers.  By default, data channel connections
+are securely authenticated during initialization, but the file data is sent
+directly (unencrypted). 
+.\" %end
+
+.\" %start OPT_PRESERVE_MTIME
+.TP
+.BI "--preserve-mtime" 
+Preserve file modification time of files that were transferred.  Also preserve
+modification time of all directories.  Note: The destination server must be a
+recent GridFTP version, otherwise the transfer will have errors and not
+complete.  
+.\" %end
+
+.\" %start OPT_VERIFY_CHECKSUM
+.TP
+.BI "--verify-checksum" 
+After each file is transferred, verify that the source and destination
+checksums match.  If they don't, retransfer the entire file and try checksum
+verification again.  Keep trying until verification succeeds.  This is
+currently the default.
+.TP
+.BI "--no-verify-checksum" 
+Disables the --verify-checksum option; no checksum verification is performed.
+.\" %end
+
+.TP
+.BI "--delete" 
+Delete extraneous files (and directories) in the destination directory.  Only
+applies to recursive directory transfers.  For example, a transfer of
+/some/source/dir/ to /tmp/mydir/ will ensure /tmp/mydir/ is a perfect clone of
+/some/source/dir/.  All other files in /tmp outside of /tmp/mydir/ are left
+alone.
+
+
+
+.SS Reliable Submission
+
+These options are intended for idempotent request submission in the
+presence of network failures.  For example, an automated script should call
+--generate-id once and then call transfer --taskid=TASKID in a loop, retrying
+any SSH failures (exit code 255).
+
+.TP
+.BI "--taskid " TASKID
+Specify a taskid to use instead of having one automatically created.
+TASKID must be an id previously returned by 
+.B
+--generate-id.
+.
+If TASKID has already been successfully submitted, 
+.B
+transfer 
+will do nothing and return successfully.  
+If TASKID has not yet been submitted successfully, 
+.B
+transfer
+will delete any previous partial request and replace it with the new input.
+
+.TP
+.BI "--generate-id" 
+If this option is present,
+*transfer*
+will print a new task id that may be used as an argument to 
+.B
+--taskid
+and exit.
+
+.SS Performance Tuning
+
+These options are for advanced users who want to override performance auto
+tuning.  By default, Globus Online will select tuning options appropriate for
+the number and sizes of files used in the task.
+
+.TP
+.BI "--perf-p " NUM     
+Set parallelism level (Data streams per control channel).  Allowed values are
+1-16. 
+
+.TP
+.BI "--perf-cc " NUM    
+Set concurrency level (Number of control channels).  Allowed values are 1-16.
+
+.TP
+.BI "--perf-pp " NUM    
+Set pipeline depth (Files in flight per control channel).  Allowed values are
+1-32.  This is useful for small files and/or high latency connections.
+
+== EXAMPLES
+
+.TP
+Transfer a file to a user's home directory, and assign a task label:
+.nf
+$ transfer --label 'demo 1' -- go#ep1/share/godata/file1.txt xsede#forge/~/mynewfile.txt
+.fi
+
+.TP
+Transfer a directory, recursively, using encrypted data channels:
+.nf
+$ transfer --encrypt -- go#ep1/share/godata/  go#ep2/~/godatacopy/ -r 
+.fi
+
+.TP
+Synchronize a directory and file using checksums (sync level 3) for comparison:
+.nf
+$ transfer -s 3
+demo#tiger/etc/forest/ demo#bear/etc/woods/ -r 
+demo#tiger/etc/specialfile demo#bear/etc/specialfile-copy
+<EOF>
+.fi
+

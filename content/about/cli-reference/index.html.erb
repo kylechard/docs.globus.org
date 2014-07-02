@@ -1,0 +1,15 @@
+<% base_path = "/about/" %>
+<p>(General CLI info)</p>
+
+<% SideNavHelper::menu_about(@items).each do |i|
+       # find item's url
+       item_url = i[:title].to_s.downcase
+       trim = item_url.index('(')
+       item_name = item_url[0, trim.to_i]
+       item_url = "#{base_path}/cli-reference/##{item_name.gsub("-", "_")}"
+       unless item_name.nil? or item_name.empty? %>
+       <a href = "<%= item_url %>" class="list-group-item <%= 'active' if i.identifier == @item.identifier %>">
+                <%= item_name %>
+</a>
+        <% end %>
+<% end %>
