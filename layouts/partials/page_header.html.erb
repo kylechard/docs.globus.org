@@ -1,15 +1,8 @@
-<% if !@item[:hide_breadcrumb] %> 
-	<ol class="breadcrumb">
-		<% breadcrumbs_trail.each_with_index do |bc, index| %>
-			<% if index == 0 %>
-		 		<li><a href="/">Home</a></li>
-			<% end %>
-			<% if !bc.nil? && bc.identifier != @item.identifier && index > 0 %>
-				<li><a href="<%= bc.identifier %>"><%= bc[:title] || bc.identifier.split('/').last %></a></li>
-			<% end %>
-		<%end %>
-	</ol>
-<%end %>
+<% 
+if !@item[:hide_breadcrumb] 
+	breadcrumb_for(@item.identifier) 
+end 
+%>
 
 <% if item.identifier.start_with?("/transfer-api/docs") %>
 	<h1><%= @item[:title] %> <small><%= @item[:subtitle] %></small></h1>
