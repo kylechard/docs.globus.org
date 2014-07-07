@@ -15,11 +15,6 @@ See the bundler website http://bundler.io for information  on getting started.
 $ bundle install
 ```
 
-## In case submodules are not loaded (error produced upon running deploy script)
-```sh
-$ git submodule update --init
-```
-
 You can see the available commands with nanoc:
 
 ```sh
