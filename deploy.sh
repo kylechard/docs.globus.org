@@ -71,7 +71,7 @@ cd ./$sitesDir
 # git pull origin gh-pages
 # git rm -r .
 # git commit -a -m 'deleted last commit'
-git checkout ./
+git checkout gh-pages
 git pull origin gh-pages
 
 
