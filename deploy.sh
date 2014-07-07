@@ -64,25 +64,20 @@ fi
 echo "Deploying to $env"
 
 # Reinstall asciidoc bootstrap backend
-#./install_asciidoc_backend.sh
+./install_asciidoc_backend.sh
 
-# Clean up the sites dir, pull any outstanding changes
-# echo "Cleaning up $sitesDir directory"
-# cd ./$sitesDir
-# git checkout gh-pages
-# git pull origin gh-pages
-# git rm -r .
-# git commit -a -m 'deleted last commit'
-# git checkout gh-pages
-# git pull origin gh-pages
 
-# Remove directory if already exists
+# Remove site directory if exists
 if [ -d $sitesDir ]; then
   rm -rf $sitesDir
 fi
-# Clone repo
+# Clone repo and clean
 git clone $repoUrl $sitesDir
-exit 0
+cd $sitesDir
+git checkout gh-pages
+git add -u
+git rm -r *
+
 
 
 
@@ -91,15 +86,11 @@ echo "Compiling nanoc"
 cd ../
 rm -rf output
 nanoc
-# cp -R output/* ./$sitesDir
 
 
 # Build the correct CNAME file for the env
-cd ./$sitesDir
-
 # Commit and push the changes to the sites dir
-echo "Adding and committing destination files"
-git rm -r .
+cd $sitesDir
 
 if [ $customDomain == true ]
 then
@@ -110,6 +101,8 @@ then
     echo $prodDomain > CNAME
   fi
 fi
+
+echo "Adding and committing changes"
 cp -R ../output/* .
 git add -A
 git commit -a -m "$message"
