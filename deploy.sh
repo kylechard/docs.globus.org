@@ -81,7 +81,7 @@ if [ -d $sitesDir ]; then
   rm -rf $sitesDir
 fi
 # Clone repo
-git clone $repoUrl ../$sitesDir
+git clone $repoUrl $sitesDir
 exit 0
 
 
