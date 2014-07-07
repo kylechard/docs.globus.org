@@ -41,6 +41,7 @@ then
   fi
 
   sitesDir='dev.globus.org-staging'
+  repoUrl='git@github.com:globusonline/dev.globus.org-staging.git'
 fi
 
 
@@ -55,6 +56,7 @@ then
   fi
 
   sitesDir='dev.globus.org'
+  repoUrl='git@github.com:globusonline/dev.globus.org.git'
 fi
 
 
@@ -65,14 +67,23 @@ echo "Deploying to $env"
 #./install_asciidoc_backend.sh
 
 # Clean up the sites dir, pull any outstanding changes
-echo "Cleaning up $sitesDir directory"
-cd ./$sitesDir
+# echo "Cleaning up $sitesDir directory"
+# cd ./$sitesDir
 # git checkout gh-pages
 # git pull origin gh-pages
 # git rm -r .
 # git commit -a -m 'deleted last commit'
-git checkout gh-pages
-git pull origin gh-pages
+# git checkout gh-pages
+# git pull origin gh-pages
+
+# Remove directory if already exists
+if [ -d $sitesDir ]; then
+  rm -rf $sitesDir
+fi
+# Clone repo
+git clone $repoUrl ../$sitesDir
+exit 0
+
 
 
 # Build latest
