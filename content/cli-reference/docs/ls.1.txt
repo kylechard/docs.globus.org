@@ -1,0 +1,65 @@
+= LS(1)
+
+== NAME
+
+ls - List files and directories on an endpoint
+== SYNOPSIS
+
+*ls *
+*[options]*
+'endpoint/path'
+.br
+*ls *
+*[options]*
+'endpoint:[path]'
+
+== DESCRIPTION
+
+The 
+.B
+ls 
+command lists files and subdirectories on an endpoint.  
+
+User relative paths may be specified as '/~/', '/~/path/', or '/~otheruser/path/'.  Absolute paths are specified as '/path/'.  
+
+If SCP like name:path syntax is used, relative paths may be specified as ':path' or ':~/path', and absolute paths as ':/path'.
+
+Files and directories are printed with one entry per line in alphabetical
+order.  Directories are always displayed with a trailing '/'.
+
+The 
+'path '
+may have a shell-compatible wild card pattern in its final component.
+Type 'man glob' for details.
+
+== OPTIONS
+
+.TP
+*-a*
+Show all files and directories, including those that start with a '.' character.
+
+.TP
+*-l*
+Use long listing format.  This is similar to UNIX ls except that the link count column is not displayed.  Dates and times are displayed in UTC time.
+
+.TP
+*-g*
+Activate using your gsi-ssh credential 
+
+
+== EXAMPLES
+
+.TP
+List your home directory in long format:
+*ls -l go#ep1/~/ *
+
+.TP
+List all files matching a pattern, using SCP-like path syntax:
+*ls -l go#ep1:*.txt*
+
+
+== EXIT STATUS
+
+.B
+ls
+returns a non zero exit code if a network failure occured, authentication failed, or the requested file or directory does not exist on the target server.

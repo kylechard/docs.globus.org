@@ -3,3 +3,5 @@ tmp
 .DS_Store
 crash.log
 asciidoc/backends/bootstrap/bootstrap.zip
+dev.globus.org-staging
+dev.globus.org
