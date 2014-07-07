@@ -1,0 +1,238 @@
+= DETAILS(1)
+
+== NAME
+
+details - View detailed information about a task
+== SYNOPSIS
+
+*details *
+.BI [ options ]
+*[-a]*
+.br
+*details *
+.BI [ options ]
+*[-t]*
+.I
+taskid
+*"..." *
+.br
+*details *
+.BI [ options ]
+*[-t]*
+.RI label= pattern
+== DESCRIPTION
+
+*details  *
+displays detailed information about tasks.  By default,
+.B
+details
+displays all currently running or pending tasks.  Use the
+.B
+-a
+option to display all tasks, including completed tasks.  
+Tasks are sorted by request time in descending order.
+
+Tasks may be specified by one or more task ids
+or by a label pattern.  The
+.I
+pattern
+may contain asterisk ('*') characters for wildcard matching of labels.
+  
+If individual task id(s) are specified, tasks will be displayed in the order given and not sorted. 
+
+== OPTIONS
+
+.TP
+.BI "-a" 
+Show all tasks, including those that have already completed
+
+.TP
+.BI "-t" 
+Show subtasks, such as individual file copy operations, of the specified
+task(s).  
+'This information level is highly internal to Globus Online and the output, format, and sort order is not guaranteed to remain backwards-compatible in future releases.'
+
+.TP
+.BI "--retrying" 
+Only show subtasks that are pending and had a fault.  Only available with -t.
+
+.TP
+.BI "--succeeded" 
+Only show subtasks that have succeeded.  Only available with -t.
+
+
+
+.TP
+.BI "-l " LIMIT
+Limit the number of results.  Default: Unlimited
+
+.\" %start CLI_OUTPUT
+.TP
+.BI "-f " field "[," field2 "...]"
+Select field(s) to display.  
+If 
+'field'
+is 'all', all possible fields are selected.  If 
+'field '
+is 'help', all possible field names are printed and the program will exit.
+
+.TP
+.BI "-O " format
+Select the output format.  Formats are:
+.RS
+
+.TP
+.B
+default
+A human readable format with one field per line.  Records are delimited by a blank line.
+
+.TP
+.B
+csv
+CSV format with no headers
+
+.TP
+.B
+csvh
+CSV format with field headers on the first line
+
+.TP
+.B
+kv
+A basic key=value format with one record per line.  Characters such as whitespace are url-encoded.
+
+
+.RE
+.\" %end
+
+== OUTPUT FIELDS
+
+.TP
+*bytes_transferred*
+The number of bytes transferred.  Valid for transfer tasks.
+
+.TP
+*command*
+The original command line, including options, that created this task.
+
+
+.TP
+*completion_time*
+The date and time this task finished processing (successfully or unsuccessfully).  
+
+.TP
+*deadline*
+The date and time of this task's deadline.  If a task has not completed by its deadline it will be aborted.
+
+.TP
+*directories*
+The total number of directories and subdirectories added by recursive directory expansion.  Valid for transfer tasks.
+
+.TP
+*expansions*
+The number of recursive directories given as input.
+
+.TP
+*faults*
+The number of errors this task encountered.  Note that certain types of faults are not fatal (for example, network communication errors) and can be successfully retried.  A CANCELED or EXPIRED event is not included in this fault count.  
+
+.TP
+*files*
+The total number of files in this task.  Valid for transfer tasks.
+
+.TP
+*label*
+The label (if any) for the task.
+
+.TP
+*mbits_sec*
+A simplistic calculation of megabits/second based on the start time of the task and its completion time, if applicable, or the current time.  Valid for transfer tasks.
+
+.TP
+*request_time*
+The date and time this task was created
+
+.TP
+*src_endpoint, dst_endpoint*
+The source and destination logical endpoint names
+
+.TP
+*status*
+.\" %start STATUS
+The basic, high level status of this task.  Valid status codes are:
+.RS
+.TP
+*ACTIVE*
+The task is in progress.
+.TP
+*INACTIVE*
+The task has been suspended and will not continue without intervention.  Currently, only credential expiration will cause this state.
+.TP
+*SUCCEEDED*
+The task completed successfully.
+
+.TP
+*FAILED*
+The task or one of its subtasks failed, expired, or was canceled.
+
+.RE
+.\" %end
+
+.TP
+*taskid*
+The unique id of the task
+
+.TP
+*task_type*
+.\" %start TASK_TYPE
+The type of task.  Possible values are:
+.RS
+.TP
+*TRANSFER *
+A 
+.BR transfer " or " scp " task"
+.TP
+*DELETE *
+A 
+.BR delete " or " rm " task"
+
+.RE
+.\" %end
+
+.TP
+*tasks_canceled*
+The number of tasks canceled by an operator
+.TP
+*tasks_expired*
+The number of tasks that passed their deadline
+.TP
+*tasks_failed*
+The number of tasks that had a critical failure.  This does not include canceled or expired tasks. 
+.TP
+*tasks_pending*
+The number of tasks that have not yet completed.  Completed means canceled, expired, failed, or successful.
+.TP
+*tasks_retrying*
+The number of pending tasks that have had one or more faults while processing.  This is a subset of tasks_pending.  
+.TP
+*tasks_successful*
+The number of tasks that completed successfully
+.TP
+*total_tasks*
+The task's total number of subtasks
+
+
+
+== EXAMPLES
+
+.TP
+Show details of last 5 tasks:
+*details -a -l 5*
+
+.TP
+Show details of a transfer task:
+*details a04d9872-aec7-11df-9563-1231380722ca*
+
+.TP
+Show details of all transfer tasks with label matching pattern:
+*details label=*data**

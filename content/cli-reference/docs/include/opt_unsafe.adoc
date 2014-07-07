@@ -1,0 +1,5 @@
+*--unsafe*::
+
+Remove checks for possible human errors such as deleting all files in +/+ and
++/~/+.  Only use this option if necessary and always be careful when issuing
+delete commands.

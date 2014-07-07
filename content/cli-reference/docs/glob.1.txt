@@ -1,0 +1,85 @@
+= GLOB(7)
+
+== NAME
+
+glob - Globbing pathnames
+
+== DESCRIPTION
+
+Certain CLI commands, like 
+*rm*
+and
+.BR ls ,
+will expand a shell-compatibile glob pattern in the final path component.
+For example, \(aqrm go#ep1/tmp/*.txt\(aq would look for all files in /tmp that
+match \(aq*.txt\(aq.  
+
+
+== DETAILS
+
+The rules below are standard POSIX.
+
+A string is a wildcard pattern if it contains one of the
+characters \(aq?\(aq, \(aq*\(aq or \(aq[\(aq.
+Globbing is the operation
+that expands a wildcard pattern into the list of pathnames
+matching the pattern.
+Matching is defined by:
+
+A \(aq?\(aq (not between brackets) matches any single character.
+
+A \(aq*\(aq (not between brackets) matches any string,
+including the empty string.
+
+.PP
+*"Character classes"*
+.sp
+An expression "\fI[...]\fP" where the first character after the
+leading \(aq[\(aq is not an \(aq!\(aq matches a single character,
+namely any of the characters enclosed by the brackets.
+The string enclosed by the brackets cannot be empty;
+therefore \(aq]\(aq can be allowed between the brackets, provided
+that it is the first character.
+(Thus, "\fI[][!]\fP" matches the
+three characters \(aq[\(aq, \(aq]\(aq and \(aq!\(aq.)
+.PP
+*Ranges*
+.sp
+There is one special convention:
+two characters separated by \(aq\-\(aq denote a range.
+(Thus, "\fI[A\-Fa\-f0\-9]\fP"
+is equivalent to "\fI[ABCDEFabcdef0123456789]\fP".)
+One may include \(aq\-\(aq in its literal meaning by making it the
+first or last character between the brackets.
+Thus, "\fI[]\-]\fP" matches just the two characters \(aq]\(aq and \(aq\-\(aq.
+.PP
+
+*Complementation*
+.sp
+An expression "\fI[!...]\fP" matches a single character, namely
+any character that is not matched by the expression obtained
+by removing the first \(aq!\(aq from it.
+(Thus, "\fI[!]a\-]\fP" matches any
+single character except \(aq]\(aq, \(aqa\(aq and \(aq\-\(aq.)
+
+One can remove the special meaning of \(aq?\(aq, \(aq*\(aq and \(aq[\(aq by
+preceding them by a backslash or enclosing enclosing them in quotes.
+Between brackets these characters stand for themselves.
+
+*NOTE: *
+The Globus Online CLI shell also performs a level of backslash
+interpretation, so one must double up a backslash to send it to a command.  For
+example: 
+
+.nf
+   ls go#ep1/tmp/\\\\*.txt
+
+would require a file with a literal asterisk in its name.
+
+== SEE ALSO
+
+.BR delete (1),
+.BR ls (1),
+.BR rm (1)
+.BR quoting (1)
+

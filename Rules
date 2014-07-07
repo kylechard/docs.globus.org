@@ -28,6 +28,15 @@ preprocess do
       end   
     end
 
+    if i.identifier.start_with?("/cli-reference/docs") && i[:title].nil?
+      if i[:extension].split('.').last == 'txt'
+        m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
+        if !m.nil?
+          i[:title] = m[:title]
+        end
+      end
+    end
+
     # Match Toolkit titles from raw content
     if i.identifier.start_with?('/toolkit') && i[:title].nil?
       # i[:title] = i[:filename]
@@ -49,6 +58,18 @@ compile '/transfer-api/*' do
     else
       filter :erb
       layout item[:layout] || 'api'
+    end
+  end
+end
+
+compile '/cli-reference/*' do
+  if !item.binary?
+    if ["txt", "adoc"].include?item[:extension].split('.').last
+      filter :asciidoc
+      layout 'default'
+    else
+      filter :erb
+      layout 'default'
     end
   end
 end
