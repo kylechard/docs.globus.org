@@ -50,4 +50,13 @@ def breadcrumb_for(identifier, options={})
   render_menu(sections, options)
 end
 
+
+def build_nav
+  fn = File.dirname(File.expand_path(__dir__)) + '/menus.yaml'
+  menus = YAML::load(File.read(fn))
+
+end
+
+
+
 # include SideNavHelper

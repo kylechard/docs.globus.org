@@ -1,8 +1,6 @@
-<% 
-if !@item[:hide_breadcrumb] 
-	breadcrumb_for(@item.identifier) 
-end 
-%>
+<% if !@item[:hide_breadcrumb] %>
+	<%= breadcrumb_for(@item.identifier) %>
+<% end %>
 
 <% if item.identifier.start_with?("/transfer-api/docs") %>
 	<h1><%= @item[:title] %> <small><%= @item[:subtitle] %></small></h1>
