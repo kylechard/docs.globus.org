@@ -108,5 +108,9 @@ git add -A
 git commit -a -m "$message"
 git push origin gh-pages
 
+# Remove site directory
+cd ..
+rm -rf $sitesDir
+
 # Done
 echo "** Remember to commit your source files"
