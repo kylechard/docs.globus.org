@@ -54,7 +54,7 @@ end
 # Ref Nanoc::Toolbox::Helpers::Navigation#render_menu method
 def globus_render_menu(items, options={})
   options[:depth]            ||= 3
-  options[:collection_tag]   ||= 'ol'
+  options[:collection_tag]   ||= 'ul'
   options[:collection_class] ||= 'menu'
   options[:item_tag]         ||= 'li'
   options[:title_tag]        ||= 'h2'
@@ -122,6 +122,7 @@ end
 
 
 # Recursively convert arrays keys to symbolized hash
+# Source: https://gist.github.com/neektza/8585746
 def symbolize_keys(x)
   if x.is_a? Hash
     x.inject({}) do |result, (key, value)|

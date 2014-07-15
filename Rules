@@ -95,7 +95,7 @@ compile '*' do
     # layout 'page'
   else 
     filter :erb
-    layout 'default'
+    layout item[:layout] || 'default'
   end
 end
 

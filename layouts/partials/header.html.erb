@@ -21,27 +21,9 @@
         </div>
         <!-- <button type="submit" class="btn btn-default">Submit</button> -->
       </form>
+      
+      <%= globus_build_menu('main_menu') %>
 
-      <ul class="nav navbar-nav navbar-right">
-        <%= globus_build_menu('main_menu') %>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <% nav_items = [
-          { title: "Transfer API", link: "/transfer-api/docs/#{@config[:docs][:transfer_api]}/"},
-          # { title: "Toolkit", link: "/toolkit/docs/#{@config[:latest_releases][:toolkit]}/"},
-          { title: "Toolkit", link: "/toolkit/"},
-	  { title: "CLI Reference", link: "/cli-reference/"},
-          { title: "About", link: "/about/"},
-          { title: "Support", link: "#"},
-        ] %>
-        <% nav_items.each do |nav_item| 
-          # item = @items.find { |i| i.identifier == nav_item[:href] }
-          %>
-        <li class="<%= 'active' if nav_item[:link] == @item.identifier || @item.identifier.start_with?(nav_item[:link]) %>">
-          <%= link_to nav_item[:title], nav_item[:link] %>
-        </li>
-        <% end %>
-      </ul>
     </nav><!-- /navigation-->
   </div><!-- /.container -->
 </header>

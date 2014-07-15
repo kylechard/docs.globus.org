@@ -1,6 +1,5 @@
 main_menu:
   options:
-    collection_tag: 'ul'
     collection_class: 'nav navbar-nav navbar-right'
   items:
     -
@@ -32,7 +31,45 @@ main_menu:
     - 
       title: 'Support'
       link: '/support/'
+
 footer_menu:
   options:
-    collection_tag: 'ul'
-    collection_class: 'nav navbar-nav'
+    collection_class: 'nav pull-right'
+  items:
+    -
+      title: 'Legal'
+      link: '//globus.org/legal'
+    -
+      title: 'Privacy'
+      link: '/privacy'
+
+toolkit_menu:
+  options:
+    collection_class: 'nav'
+  items:
+    -
+      title: 'Release'
+      link: '/toolkit/docs/'
+    -
+      title: 'Downloads'
+      link: '/toolkit/downloads/'
+    -
+      title: 'Support'
+      link: '/toolkit/support/'
+
+transfer_menu:
+  options:
+    collection_class: 'nav'
+  items:
+    -
+      title: 'Reference'
+      link: '#'
+    -
+      title: 'Tutorials'
+      link: '#'
+    -
+      title: 'Libraries'
+      link: '#'
+    -
+      title: 'Support'
+      link: '#'

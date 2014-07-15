@@ -4,33 +4,10 @@
 
 <% if item.identifier.start_with?("/transfer-api/docs") %>
 	<h1><%= @item[:title] %> <small><%= @item[:subtitle] %></small></h1>
-	<ul class="nav nav">
-		<% nav_items = [
-			{ title: "Reference", link: "#"},
-			{ title: "Tutorials", link: "#"},
-			{ title: "Libraries", link: "#"},
-			{ title: "Support", link: "#"},
-		]	%>
-		<% nav_items.each do |nav_item| %>
-		<li class="<%= 'active' if nav_item[:link] == @item.identifier %>">
-			<%= link_to nav_item[:title], nav_item[:link] %>
-		</li>
-		<% end %>
-	</ul>
+	<%= globus_build_menu('transfer_menu') %>
 <% elsif item.identifier.start_with?("/toolkit/") %>
 	<h1><%= @item[:title] %></h1>
-	<ul class="nav nav">
-		<% nav_items = [
-			{ title: "Releases", link: "/toolkit/docs/"},
-			{ title: "Downloads", link: "/toolkit/downloads/"},
-			{ title: "Support", link: "/support#toolkit"},
-		]	%>
-		<% nav_items.each do |nav_item| %>
-		<li class="<%= 'active' if nav_item[:link] == @item.identifier %>">
-			<%= link_to nav_item[:title], nav_item[:link] %>
-		</li>
-		<% end %>
-	</ul>
+	<%= globus_build_menu('toolkit_menu') %>
 <% else %>
 	<h1><%= @item[:title] %></h1>
 <% end %>
