@@ -1,5 +1,5 @@
 <% if !@item[:hide_breadcrumb] %>
-	<%= breadcrumb_for(@item.identifier) %>
+	<%= globus_breadcrumb_for(@item.identifier) %>
 <% end %>
 
 <% if item.identifier.start_with?("/transfer-api/docs") %>

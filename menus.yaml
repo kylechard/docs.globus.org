@@ -1,5 +1,38 @@
 main_menu:
-  -
-    title: 'Docs'
-  - 
-    ttile: 'Tutorials'
+  options:
+    collection_tag: 'ul'
+    collection_class: 'nav navbar-nav navbar-right'
+  items:
+    -
+      title: 'Documents'
+      link: '#'
+      subsections:
+        -
+          title: 'Transfer API'
+          link: '/transfer-api/'
+        -
+          title: 'Globus Toolkit'
+          link: '/toolkit/'
+        -
+          title: 'CLI Reference'
+          link: '/cli-reference/'
+    - 
+      title: 'Tutorials'
+      link: '#'
+      subsections:
+        -
+          title: 'Transfer API'
+          link: '/link/'
+        -
+          title: 'Globus Toolkit'
+          link: '/link/'
+        -
+          title: 'CLI Reference'
+          link: '/link/'
+    - 
+      title: 'Support'
+      link: '/support/'
+footer_menu:
+  options:
+    collection_tag: 'ul'
+    collection_class: 'nav navbar-nav'
