@@ -110,11 +110,18 @@ def globus_render_menu(items, options={})
 
 end
 
-# Build menus yaml file
-def globus_build_menu(menu_name)
+
+# Load menu from menus.yaml file
+def globus_load_menu(menu_name)
   fn = File.dirname(File.expand_path(__dir__)) + '/menus.yaml'
   yaml = YAML.load(File.read(fn)).select { |key, value| key.to_s == menu_name }.values[0]
   menu = symbolize_keys(yaml)
+end
+
+
+# Build menus yaml file
+def globus_build_menu(menu_name)
+  menu = globus_load_menu(menu_name)
   options = menu[:options]
   items =  menu[:items]
   globus_render_menu(items, options)
