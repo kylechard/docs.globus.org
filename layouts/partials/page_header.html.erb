@@ -4,10 +4,10 @@
 
 <% if item.identifier.start_with?("/transfer-api/docs") %>
 	<h1><%= @item[:title] %> <small><%= @item[:subtitle] %></small></h1>
-	<%= globus_build_menu('transfer_menu') %>
+	<%= globus_build_menu('transfer_header_menu') %>
 <% elsif item.identifier.start_with?("/toolkit/") %>
 	<h1><%= @item[:title] %></h1>
-	<%= globus_build_menu('toolkit_menu') %>
+	<%= globus_build_menu('toolkit_header_menu') %>
 <% else %>
 	<h1><%= @item[:title] %></h1>
 <% end %>

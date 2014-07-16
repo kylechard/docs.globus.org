@@ -3,6 +3,9 @@
 <div class="row toolkit-doc">
   <div class="col-sm-9"><%= yield %></div>
   <div class="col-sm-3">
+    <div class="well well-sm text-center text-muted">
+    	<small>Latest release: <strong><%= @config[:docs][:toolkit] %></strong></small>
+    </div>
     <%= render 'partials/menu_toolkit' %>
   </div>
 </div>

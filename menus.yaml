@@ -43,6 +43,21 @@ footer_menu:
       title: 'Privacy'
       link: '/privacy'
 
+# Toolkit Menus
+toolkit_header_menu:
+  options:
+    collection_class: 'nav'
+  items:
+    -
+      title: 'Release'
+      link: '/toolkit/docs/'
+    -
+      title: 'Downloads'
+      link: '/toolkit/downloads/'
+    -
+      title: 'Support'
+      link: '/toolkit/support/'
+
 toolkit_menu:
   options:
     collection_class: 'nav'
@@ -57,7 +72,8 @@ toolkit_menu:
       title: 'Support'
       link: '/toolkit/support/'
 
-transfer_menu:
+# Transfer API Menus
+transfer_header_menu:
   options:
     collection_class: 'nav'
   items:
