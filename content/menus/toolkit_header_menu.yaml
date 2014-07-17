@@ -1,0 +1,14 @@
+menus: 
+  -
+    options:
+      collection_class: 'nav'
+    items:
+      -
+        title: 'Release'
+        link: '/toolkit/docs/'
+      -
+        title: 'Downloads'
+        link: '/toolkit/downloads/'
+      -
+        title: 'Support'
+        link: '/toolkit/support/'

@@ -1,0 +1,84 @@
+menus: 
+  -
+    options:
+      title: 'Software Links'
+      collection_tag: 'div'
+      collection_class: 'list-group'
+      hide_item_tag: true
+      link_class: 'list-group-item'
+    items:
+      -
+        title: 'Usage Statistics'
+        link: '#'
+      -
+        title: 'Release Notes'
+        link: '#'
+      -
+        title: 'Versioning'
+        link: '#'
+      -
+        title: 'Downloads'
+        link: '#'
+      -
+        title: 'Advisories'
+        link: '#'
+      -
+        title: 'Licenses'
+        link: '#'
+      -
+        title: 'CVS & Dev Tools'
+        link: '#'
+  -
+    options:
+      title: 'Getting Started'
+      collection_tag: 'div'
+      collection_class: 'list-group'
+      hide_item_tag: true
+      link_class: 'list-group-item'
+    items:
+      -
+        title: 'Installing GT'
+        link: '#'
+      - 
+        title: 'Quickstart'
+        link: '#'
+      - 
+        title: 'Platform Notes'
+        link: '#'
+      - 
+        title: "GT Developer's Guide"
+        link: '#'
+      - 
+        title: 'Migrating Guides'
+        link: '#'
+  -
+    options:
+      title: 'Components'
+      collection_tag: 'div'
+      collection_class: 'list-group'
+      hide_item_tag: true
+      link_class: 'list-group-item'
+    items:
+      -
+        title: 'NEED TO FIX NESTED LINKS HERE'
+        link: '#'
+  -
+    options:
+      title: 'Reference'
+      collection_tag: 'div'
+      collection_class: 'list-group'
+      hide_item_tag: true
+      link_class: 'list-group-item'
+    items:
+      -
+        title: 'Coding Guidelines'
+        link: '#'
+      - 
+        title: 'API Docs'
+        link: '#'
+      - 
+        title: 'GT Commands'
+        link: '#'
+      - 
+        title: 'Glossary'
+        link: '#'

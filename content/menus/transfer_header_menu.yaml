@@ -1,0 +1,17 @@
+menus: 
+  -
+    options:
+      collection_class: 'nav'
+    items:
+      -
+        title: 'Reference'
+        link: '#'
+      -
+        title: 'Tutorials'
+        link: '#'
+      -
+        title: 'Libraries'
+        link: '#'
+      -
+        title: 'Support'
+        link: '#'
