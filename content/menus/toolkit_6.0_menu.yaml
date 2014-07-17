@@ -12,10 +12,10 @@ menus:
         link: '/toolkit/docs/6.0/Usage_Stats/'
       -
         title: 'Release Notes'
-        link: '#'
+        link: '/toolkit/docs/6.0/rn/'
       -
         title: 'Versioning'
-        link: '#'
+        link: '/toolkit/versioning/'
       -
         title: 'Downloads'
         link: '#'
