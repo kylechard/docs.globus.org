@@ -13,6 +13,9 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
+# ignore this directory
+ignore '/menus/*/'
+
 preprocess do
   items.each do |i|
     if i.identifier.start_with?("/transfer-api") && i[:title].nil?
@@ -49,6 +52,7 @@ preprocess do
     end
   end
 end
+
 
 compile '/transfer-api/*' do
   if !item.binary?

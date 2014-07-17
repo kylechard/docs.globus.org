@@ -1,8 +1,12 @@
 <% base_path = "/toolkit/docs/#{@config[:docs][:toolkit]}" %>
 
+
+
+
 <div class="panel panel-default">
 	<div class="panel-heading"><b>Software Links</b></div>
 	<div class="list-group">
+    <%= globus_build_menu('toolkit_menu') %>
 		<% nav_items = [
       { title: "Usage Statistics", href: "#{base_path}/Usage_Stats/"},
       { title: "Versioning", href: "#"},

@@ -6,7 +6,15 @@
     <div class="well well-sm text-center text-muted">
     	<small>Latest release: <strong><%= @config[:docs][:toolkit] %></strong></small>
     </div>
-    <%= render 'partials/menu_toolkit' %>
+
+    <% globus_load_menu('toolkit_6.0_menu').each do |m| %>
+			<div class="panel panel-default">
+			  <div class="panel-heading"><b><%= m[:options][:title] %></b></div>
+			  	<% m[:options].delete(:title) # Delete title value %>
+			    <%= globus_render_menu(m[:items], m[:options]) %>
+			</div>
+		<% end %>
+    <%#= render 'partials/menu_toolkit' %>
   </div>
 </div>
 

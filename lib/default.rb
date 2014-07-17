@@ -60,8 +60,8 @@ def globus_render_menu(items, options={})
   options[:title_tag]        ||= 'h2'
   options[:title]            ||= nil
   options[:separator]        ||= ''
+  options[:link_class]       ||= ''
   
-
 
   # Parse the title and remove it from the options
   title =  options[:title] ? content_tag(options[:title_tag], options[:title]) : ''
@@ -74,7 +74,9 @@ def globus_render_menu(items, options={})
 
   rendered_menu = items.map do |item|
     # Reset item and link options
-    options[:link_attr] = {}
+    options[:link_attr] = {
+      :class => options[:link_class]
+    }
     options[:item_class] = nil
 
     # Set item active class
@@ -96,12 +98,16 @@ def globus_render_menu(items, options={})
       # Toggle item and link dropdowns
       options[:item_class] = 'dropdown'
 
-      options[:link_attr] = {:class => 'dropdown-toggle', 'data-toggle' => 'dropdown'}
+      options[:link_attr][:class] =  options[:link_attr][:class] + ' dropdown-toggle'
+      options[:link_attr]['data-toggle'] = 'dropdown'
     end
     output ||= ""
     # content_tag(options[:item_tag], link_to_unless_current(item[:title], item[:link]) + options[:separator] + output)
-    content_tag(options[:item_tag], link_to(item[:title], item[:link], options[:link_attr]) + options[:separator] + output, :class => options[:item_class])
-
+    if options[:hide_item_tag]
+      link_to(item[:title], item[:link], options[:link_attr]) + options[:separator] + output
+    else
+      content_tag(options[:item_tag], link_to(item[:title], item[:link], options[:link_attr]) + options[:separator] + output, :class => options[:item_class])
+    end
   end.join()
 
   # title + content_tag(options[:collection_tag], rendered_menu, :class => options[:collection_class]) unless rendered_menu.strip.empty?
@@ -112,19 +118,56 @@ end
 
 
 # Load menu from menus.yaml file
-def globus_load_menu(menu_name)
-  fn = File.dirname(File.expand_path(__dir__)) + '/menus.yaml'
-  yaml = YAML.load(File.read(fn)).select { |key, value| key.to_s == menu_name }.values[0]
-  menu = symbolize_keys(yaml)
+def globus_load_menu(file_name)
+  # fn = File.dirname(File.expand_path(__dir__)) + '/menus.yaml'
+  # fn = File.dirname(File.expand_path(__dir__))
+  # yaml = YAML.load(File.read(fn)).select { |key, value| key.to_s == menu_name }.values[0]
+  # 
+  file = 'content/menus/' + file_name + '.yaml'
+  yaml = YAML.load(File.read(file))
+  if !yaml
+    abort 'Menu file cannot be empty in ' + file
+  elsif !yaml.has_key?("menus")
+    abort 'Cannot find "menus" key in ' + file
+  end
+
+  # puts '+++++++++++++++'
+  # puts yaml[:menus]
+  # abort '-----------'
+
+  # yaml['options'] ||= {}
+  # yaml['items'] ||= {}
+
+  symbolize_keys(yaml)[:menus]
 end
 
 
 # Build menus yaml file
 def globus_build_menu(menu_name)
-  menu = globus_load_menu(menu_name)
-  options = menu[:options]
-  items =  menu[:items]
-  globus_render_menu(items, options)
+  menus = globus_load_menu(menu_name)
+
+  if menus.size == 1
+    globus_render_menu(menus[0][:items], menus[0][:options])
+  elsif menus.size > 1
+    menus.map do |menu|
+      globus_render_menu(menu[:items], menu[:options])
+    end
+  end
+
+  # menus.map do |menu|
+  #   options = menu[:options]
+  #   items =  menu[:items]
+  #   rendered_menus.push(globus_render_menu(items, options))
+  # end
+  
+  # puts '+++++++'
+  # puts 
+  # puts '-----------'
+
+  # abort
+  
+  # abort
+  # globus_render_menu(items, options)
 end
 
 
