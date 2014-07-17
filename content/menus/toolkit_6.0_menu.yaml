@@ -9,7 +9,7 @@ menus:
     items:
       -
         title: 'Usage Statistics'
-        link: '#'
+        link: '/toolkit/docs/6.0/Usage_Stats/'
       -
         title: 'Release Notes'
         link: '#'

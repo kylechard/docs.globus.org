@@ -82,6 +82,11 @@ def globus_render_menu(items, options={})
     # Set item active class
     options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : '' 
 
+    # Set link active if hide_item_tag is true
+    if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]))
+      options[:link_attr][:class] = options[:link_attr][:class] + ' active'
+    end
+
     # Render only if there is depth left
     if options[:depth].to_i  > 0 && item[:subsections]
 
