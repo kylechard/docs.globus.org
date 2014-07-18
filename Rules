@@ -32,7 +32,7 @@ preprocess do
     end
 
     if i.identifier.start_with?("/cli-reference/docs") && i[:title].nil?
-      if i[:extension].split('.').last == 'txt'
+      if i[:extension].split('.').last == 'txt' or i[:extension].split('.').last == 'adoc'
         m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
         if !m.nil?
           i[:title] = m[:title]
