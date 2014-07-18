@@ -3,44 +3,41 @@
 == NAME
 
 mkdir - Create a directory on an endpoint
+
 == SYNOPSIS
 
-*mkdir *
-*[options]*
-'endpoint/path '
-.br
-*mkdir *
-*[options]*
-'endpoint:path '
+*mkdir* ['OPTIONS'] 'ENDPOINT/PATH'
+
+*mkdir* ['OPTIONS'] 'ENDPOINT:PATH'
 
 == DESCRIPTION
 
-The 
-*mkdir *
-command creates a directory.  Currently, the parent directory must exist (-p is not supported).
+The *mkdir* command creates a directory.  Currently, the parent directory must
+exist (-p is not supported).
 
 
 == OPTIONS
 
-.TP
-*-g*
+*-g*::
 Activate the endpoint using your gsi-ssh credential
 
 
 == EXAMPLES
 
-.TP
 Create a directory under your home directory:
-*mkdir go#ep1/~/testfolder*
 
-.TP
+----
+mkdir go#ep1/~/testfolder
+----
+
 Alternate, SCP-like home directory path syntax:
-*mkdir go#ep1:testfolder*
+
+----
+mkdir go#ep1:testfolder
+----
 
 
 == EXIT STATUS
 
 mkdir returns 0 on success, and 1 if a network or server error occurred.
 mkdir returns 1 if the path already exists.
-
-

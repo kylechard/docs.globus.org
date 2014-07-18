@@ -1,0 +1,38 @@
+= LABELS(7)
+
+== NAME
+
+labels - Task labeling
+
+== DESCRIPTION
+
+Globus Online tasks may be given a user created, arbitrary label to enable easy
+categorization and management of lots of tasks.  
+
+Commands that create tasks, like *scp* and *rm*, accept a *--label*
+option to initially set a label.  The *modify* command can set or change a
+label of a previously created task, even if the task has already completed.  
+
+The *status* command can show a task's label and search tasks by label using
+wildcarding.
+
+
+=== Label Format
+
+A label is opaque to Globus Online - no specific form is required, however only
+certain characters are allowed.  
+
+A label may only contain these characters:
+
+* ASCII upper and lower case letters 
+* The digits 0-9
+* space (" ")
+* hypen ("-")
+* underscore ("_")
+* comma (",")
+
+The maximum label length is 128 characters.
+
+== SEE ALSO
+
+*modify(1)*, *status(1)*

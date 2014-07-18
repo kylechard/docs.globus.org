@@ -6,7 +6,7 @@ delete - Advanced file and directory deletion
 
 == SYNOPSIS
 
-*delete [OPTIONS] <* 'INPUT-LIST'
+*delete* ['OPTIONS'] *<* 'INPUT-LINE'...
 
 *delete --generate-id*
 
@@ -23,12 +23,13 @@ pattern in its final component.  Type "man glob" for details.
 Symbolic links are never followed - only unlinked (deleted).
 
 
-== INPUT LIST
+=== INPUT LINE
 
-The 'INPUT-LIST' has the following format:
+An 'INPUT-LINE' has the following format:
 
-    endpoint/path
-    ...
+----
+endpoint/path
+----
 
 
 == OPTIONS
@@ -49,14 +50,15 @@ does not exist.
 Activate the endpoint using your gsi-ssh credential
 
 
-//include::include/tasklabel.adoc[]
+// include::include/opt_label.adoc[]
 
-//include::include/opt_deadline.adoc[]
+// include::include/opt_deadline.adoc[]
 
-//include::include/opt_unsafe.adoc[]
+// include::include/opt_unsafe.adoc[]
 
 
-*--generate-id, --taskid*='TASKID'::
+*--generate-id*::
+*--taskid* 'TASKID'::
 
 See *transfer(1)* for details on atomic task submission.
 
@@ -64,10 +66,12 @@ See *transfer(1)* for details on atomic task submission.
 
 Remove files matching patterns:
 
-    $ delete
-    go#ep1/~/Downloads/*.tmp
-    go#ep1/~/Downloads/*.txt
-    <EOF>
+----
+$ delete
+go#ep1/~/Downloads/*.tmp
+go#ep1/~/Downloads/*.txt
+<EOF>
+----
 
 
 == SEE ALSO

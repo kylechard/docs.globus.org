@@ -1,0 +1,29 @@
+= ENDPOINT-DEACTIVATE(1)
+
+== NAME
+
+endpoint-deactivate - Remove authentication credentials
+
+== SYNOPSIS
+
+*endpoint-deactivate* ['PATTERN'...]
+
+== DESCRIPTION
+
+*endpoint-deactivate* removes credentials previously assigned to a logical
+endpoint by *endpoint-activate*.  If 'PATTERN' is not specified, it defaults
+to `*`.
+
+== EXAMPLES
+
+Deactivate all endpoints:
+
+----
+endpoint-deactivate *
+----
+
+Deactivate endpoints with names matching a pattern:
+
+----
+endpoint-deactivate testendpoint*
+----

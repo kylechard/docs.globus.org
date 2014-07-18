@@ -1,0 +1,6 @@
+*--encrypt*::
+
+Encrypt the data channel during file transfer.  This requires gsiftp and will
+not work on anonymous GridFTP servers.  By default, data channel connections
+are securely authenticated during initialization, but the file data is sent
+directly (unencrypted). 

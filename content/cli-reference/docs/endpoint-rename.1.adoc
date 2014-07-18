@@ -1,0 +1,21 @@
+= ENDPOINT-RENAME(1)
+
+== NAME
+
+endpoint-rename - Rename a logical endpoint
+
+== SYNOPSIS
+
+*endpoint-rename* 'OLDNAME' 'NEWNAME'
+
+== DESCRIPTION
+
+*endpoint-rename* renames the logical endpoint 'OLDNAME' to 'NEWNAME'.
+
+== EXAMPLES
+
+Rename an endpoint called "test_endpoint" to "myep1":
+
+----
+endpoint-rename test_endpoint myep1
+----

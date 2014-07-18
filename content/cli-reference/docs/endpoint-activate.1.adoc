@@ -1,0 +1,74 @@
+= ENDPOINT-ACTIVATE(1)
+
+== NAME
+
+endpoint-activate - Add or renew security credentials
+
+== SYNOPSIS
+
+*endpoint-activate* ['OPTIONS'] ['PATTERN'...]
+
+== DESCRIPTION
+
+*endpoint-activate* assigns a short term security credential to specified
+endpoint(s).  If 'PATTERN' is not specified, it defaults to "`*`", which
+matches all endpoints shown by *endpoint-list*.  
+
+A security credential is a X.509 proxy certificate delegated through gsi-ssh
+or myproxy.  A pass phrase must be entered when retrieving a credential from a
+myproxy server.  
+
+If no *-m* or *-g* option is given, *endpoint-activate* will attempt to use
+the default myproxy server for the selected endpoint(s).  Use the
+*endpoint-modify* command to set a default myproxy server.
+
+'PATTERN' may contain asterisk (`*`) characters for wildcard matching of
+endpoint names.  Additionally, 'PATTERN' may contain a "`user#`" prefix, which
+matches public endpoints owned by another user.  Activated public endpoint(s)
+are automatically added to the current user's endpoint list.
+
+== OPTIONS
+
+*-g*::
+Use a gsi-ssh delegated credential
+
+*-m* 'HOST'::
+Retrieve a credential from the specified myproxy server 
+
+*-U* 'USER'::
+
+Set the myproxy username.  If this is not set, the command will prompt for a
+user name.
+
+*--dn* 'DN'::
+
+Set the myproxy server's subject DN.  Sometimes the myproxy server's
+certificate differs from its host name, causing an error.
+
+*--myproxy-lifetime* 'HOURS'::
+
+Set the requested myproxy credential lifetime.  The myproxy server may still
+provide a shorter lived credential depending on its configuration.  The
+default lifetime is 24 hours, or what the endpoint defines.
+
+
+== EXAMPLES
+
+Activate all endpoints using a gsi-ssh credential:
+
+----
+endpoint-activate -g *
+----
+
+Activate public endpoints using their default myproxy servers and add them to
+the current user's endpoint list:
+
+----
+endpoint-activate teragrid#* nersc#*
+----
+
+Activate an endpoint using a specific myproxy server:
+
+----
+endpoint-activate -m myproxy.test.com myep1
+----

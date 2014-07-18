@@ -1,0 +1,195 @@
+= TRANSFER(1)
+
+== NAME
+
+transfer - Advanced file and directory transfer command
+
+== SYNOPSIS
+
+*transfer* ['OPTIONS'] *--* 'INPUT-LINE'
+
+*transfer* ['OPTIONS'] *<* 'INPUT-LINE'...
+
+*transfer --generate-id*
+
+
+== DESCRIPTION
+
+*transfer* creates a task that copies files and/or directories between
+endpoints.  If multiple input lines are given over stdin, all lines must have
+the same source and destination endpoint.
+
+The endpoints used must be activated or transfer will fail and not create a
+task.  Use the *-g* option to automatically (re)activate both endpoints using
+your gsi-ssh credential or use the *endpoint-activate* command for all other
+endpoint activation methods such as myproxy.
+
+The *transfer* command is different from the *scp* command in that *transfer*
+will always place the destination files in a consistent, deterministic
+location.  The contents of a source directory will be placed inside the
+destination directory.  A source file will be copied to the destination file
+path, which must not be a directory.  All intermediate / parent directories on
+the destination will be created if they don't exist. 
+
+// NB: use backticks to disable ~ (subscript) quoting
+Paths relative to a user's home directory may be specified by using "`/~/path`"
+or "`/~someuser/path`" syntax.  
+
+If the files or directories given as input are symbolic links, they are
+followed.  However, no other symbolic links are followed and no symbolic links
+are ever created on the destination.  
+
+*transfer* will print its task id in this format: "Task ID: <taskid>".  This
+task id may be passed to other task management commands.
+
+== Input Lines
+
+An input line has the following format:
+
+// NB: whitespace not being preserved easily in the labeled list data. bug?
+File::
+*source-endpoint/file dest-endpoint/file [-vs SIZE]*
+
+Directory::
+*source-endpoint/dir/ dest-endpoint/dir/ -r*
+
+An input line must contain a source and destination endpoint and path.  In
+addition, options and parameters may be appended to an input line.  These
+options apply only to the line they are on.
+
+One or more input lines may be piped through stdin, terminated by CTRL-D or
+EOF.  A simpler method is also supported: a single input line can be given
+directly on the command line, after a "--" option break.
+
+These options apply to an individual input line:
+
+*-r*::
+
+Recursively transfer directory.  The contents of the source directory,
+including all subdirectories, are transferred to the destination directory.
+The destination directory (and its parent directories) will be created if it
+does not exist.  Both the source and destination paths must end with a slash
+("/") character.  
+
+*-vs* 'SIZE'::
+
+Verify file size before and after transfer.  The size specified, in
+bytes, must match the source file size before transfer and the destination
+file size after transfer.   If either check does not match, an error event
+will be recorded (error codes VERIFY_SOURCE_SIZE and VERIFY_DEST_SIZE) and the
+file will be retried. 
+
+=== Handling Special Characters
+
+An input line accepts two ways of encoding characters:
+
+URL Escaped::
+
+If an endpoint/path token does not begin with a double quote ("), it is
+assumed to have URL-escaped bytes.  Thus, sequences like "%20" and "%25" will
+be transformed to a space (" ") and literal "%" byte, respectively.  This
+method is highly recommended, particularly when using the single line only
+syntax.
+
+Quoted Bytes::
+
+If an endpoint/path token begins with a double quote ("), it is assumed to be
+a sequence of raw bytes terminated by a final double quote (").  Embedded
+spaces and "%" characters are allowed and preserved.  An embedded double quote
+(") can not be used in this format.
+
+
+== OPTIONS
+
+These options apply to the transfer command itself:
+
+*-g*::
+Activate all endpoints that are part of this transfer task via
+gsi-ssh credential delegation.
+
+// include::include/opt_synclevel.adoc[]
+
+// include::include/opt_label.adoc[]
+
+// include::include/opt_deadline.adoc[]
+
+// include::include/opt_encrypt.adoc[]
+
+// include::include/opt_preserve_mtime.adoc[]
+
+// include::include/opt_verify_checksum.adoc[]
+
+*--delete*::
+
+Delete extraneous files (and directories) in the destination directory.  Only
+applies to recursive directory transfers.  For example, a transfer of
+/some/source/dir/ to /tmp/mydir/ will ensure /tmp/mydir/ is a perfect clone of
+/some/source/dir/.  All other files in /tmp outside of /tmp/mydir/ are left
+alone.
+
+
+=== Reliable Submission
+
+These options are intended for idempotent request submission in the presence
+of network failures.  For example, an automated script should call
+*--generate-id* once and then call *transfer --taskid=TASKID* in a loop,
+retrying any SSH failures (exit code 255).
+
+*--taskid* 'TASKID'::
+
+Specify a taskid to use instead of having one automatically created.  'TASKID'
+must be an id previously returned by *--generate-id*.
++
+If 'TASKID' has already been successfully submitted, *transfer* will do
+nothing and return successfully.  If TASKID has not yet been submitted
+successfully, *transfer* will delete any previous partial request and replace
+it with the new input.
+
+*--generate-id*::
+
+If this option is present, *transfer* will print a new task id that may be
+used as an argument to *--taskid* and exit.
+
+=== Performance Tuning
+
+These options are for advanced users who want to override performance auto
+tuning.  By default, Globus Online will select tuning options appropriate for
+the number and sizes of files used in the task.
+
+*--perf-p* 'NUM'::
+
+Set parallelism level (Data streams per control channel).  Allowed values are
+1-16. 
+
+*--perf-cc* 'NUM'::
+
+Set concurrency level (Number of control channels).  Allowed values are 1-16.
+
+*--perf-pp* 'NUM'::
+
+Set pipeline depth (Files in flight per control channel).  Allowed values are
+1-32.  This is useful for small files and/or high latency connections.
+
+
+== EXAMPLES
+
+Transfer a file to a user's home directory, and assign a task label:
+
+----
+$ transfer --label 'demo 1' -- go#ep1/share/godata/file1.txt xsede#forge/~/mynewfile.txt
+----
+
+Transfer a directory, recursively, using encrypted data channels:
+
+----
+$ transfer --encrypt -- go#ep1/share/godata/  go#ep2/~/godatacopy/ -r 
+----
+
+Synchronize a directory and file using checksums (sync level 3) for comparison:
+
+----
+$ transfer -s 3
+demo#tiger/etc/forest/ demo#bear/etc/woods/ -r 
+demo#tiger/etc/specialfile demo#bear/etc/specialfile-copy
+<EOF>
+----
