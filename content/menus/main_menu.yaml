@@ -14,8 +14,8 @@ menus:
             title: 'Globus Toolkit'
             link: '/toolkit/'
           -
-            title: 'CLI Reference'
-            link: '/cli-reference/'
+            title: 'Transfer CLI'
+            link: '/tcli-reference/'
       - 
         title: 'Tutorials'
         link: '#'

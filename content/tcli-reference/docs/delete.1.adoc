@@ -76,4 +76,4 @@ go#ep1/~/Downloads/*.txt
 
 == SEE ALSO
 
-*glob(7)*, *rm(1)*, *transfer(1)*
+link:/tcli-reference/docs/glob/[*glob(7)*], *rm(1)*, *transfer(1)*
