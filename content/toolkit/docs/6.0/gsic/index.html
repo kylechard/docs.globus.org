@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<div class="article"><div class="titlepage"><div><div><h2 class="title"><a name="gsic"></a>GT 6.0: Grid Security Infrastructure in C (GSI C) </h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="glossary"><a href="#glossary-gsic">Glossary</a></span></dt></dl></div><p>
+The Globus Toolkit GSI C component provides APIs and tools for authentication,
+authorization and certificate management. The authentication API is built using
+<a href="#pub-key" class="glossterm"><em class="glossterm">Public Key</em></a> Infrastructure (PKI)
+technologies, e.g. X.509 Certificates and TLS. In addition to authentication it
+features a delegation mechanism based upon X.509 <a href="#proxy-cert" class="glossterm"><em class="glossterm">Proxy Certificates</em></a>. Authorization support takes  the
+form of a couple of APIs. The first provides a generic authorization API that
+allows callouts to perform access control based on the client's credentials
+(i.e. the X.509 certificate chain). The second provides a simple access control
+list that maps authorized remote entities to local (system) user names. The
+second mechanism also provides callouts that allow third parties to override
+the default behavior and is currently used in the Gatekeeper and GridFTP
+servers. In addition to the above there are various lower level APIs and tools
+for managing, discovering and querying certificates.
+</p><div class="informaltable"><table border="0" width="700px"><colgroup><col class="c1"><col class="c2"></colgroup><tbody><tr><td colspan="2">The following guides are available
+          for this component:</td></tr><tr><td><span class="strong"><strong> <a href="key/#gsicKey" class="olink">Security Key Concepts</a>
+          </strong></span></td><td>For important general concepts.  [<a class="ulink" href="key/securityKeyConcepts.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="admin/#gsicAdmin" class="olink">Admin Guide</a> </strong></span></td><td>For system administrators and those installing, building and
+          deploying GT. You should already have read the <a href="../admin/install/#gtadmin" class="olink">Installation Guide</a> and <a href="../admin/quickstart/#quickstart" class="olink">Quickstart</a>.  [<a class="ulink" href="admin/gsicAdminGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="user/#gsicUser" class="olink">User's Guide</a> </strong></span></td><td>Describes how end-users typically interact with this
+            component. [<a class="ulink" href="user/gsicUserGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="developer/#gsicDeveloper" class="olink">Developer's Guide</a>
+          </strong></span></td><td>Reference and usage scenarios for developers.  [<a class="ulink" href="developer/gsicDeveloperGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td colspan="2">Other information available for this
+          component are:</td></tr><tr><td><span class="strong"><strong> <a href="rn/#gsicRN" class="olink">Release
+          Notes</a> </strong></span></td><td>What's new with the 6.0 release for this
+          component.  [<a class="ulink" href="rn/gsicReleaseNotes.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="pi/#gsicPI" class="olink">Public
+          Interface Guide</a> </strong></span></td><td>Information for all public interfaces (including APIs,
+          commands, etc). Please note this is a subset of information in
+          the <a href="developer/#gsicDeveloper" class="olink">Developer's
+          Guide</a>.  [<a class="ulink" href="pi/gsicPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="qp/#gsicQP" class="olink">Quality
+          Profile</a> </strong></span></td><td>Information about test coverage reports, etc.  [<a class="ulink" href="qp/gsicQualityProfile.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="mig/#gsicMig" class="olink">Migrating Guide</a> </strong></span></td><td>Information for migrating to this version if you were using a
+          previous version of GT.  [<a class="ulink" href="mig/gsicMigratingGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a class="ulink" href="gsic.pdf" target="_top"><span class="strong"><strong>All GSI C Guides (PDF only)</strong></span></a>
+          </td><td>Includes all GSI C guides
+          except Public Interfaces (which is a subset of the Developer's
+          Guide)</td></tr></tbody></table></div><div class="glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-gsic"></a>Glossary</h2></div></div></div><div class="glossdiv"><h3 class="title">P</h3><dl><dt><a name="proxy-cert"></a><span class="glossterm">proxy certificate</span></dt><dd class="glossdef"><p> A short lived certificate issued using a EEC. A proxy certificate
+                              typically has the same effective subject as the EEC that issued it and
+                              can thus be used in its place. GSI uses proxy certificates for single
+                              sign on and delegation of rights to other entities.</p><p>For more information about types of proxy certificates and their
+                              compatibility in different versions of GT, see <a class="ulink" href="http://dev.globus.org/wiki/Security/ProxyCertTypes" target="_top">http://dev.globus.org/wiki/Security/ProxyCertTypes</a>.</p></dd><dt><a name="pub-key"></a><span class="glossterm">public key</span></dt><dd class="glossdef"><p> The public part of a key pair used for cryptographic operations (e.g.
+                              signing, encrypting).</p></dd></dl></div></div></div>

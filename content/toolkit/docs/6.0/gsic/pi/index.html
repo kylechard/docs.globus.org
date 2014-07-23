@@ -1,0 +1,1221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="gsicPI"></a>GT 6.0 GSI C Public Interfaces</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#gsic-apis">1. APIs</a></span></dt><dt><span class="chapter"><a href="#gsic-protocol">2. Protocol Specifications</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462692465504">1. GSI Message Specification</a></span></dt></dl></dd><dt><span class="reference"><a href="#gsic-cmd">I. GSI Commands</a></span></dt><dd><dl><dt><span class="refentrytitle"><a href="#idm462687957712">globus-update-certificate-dir</a></span><span class="refpurpose"> &#8212; Update symlinks in the trusted CA directory</span></dt><dt><span class="refentrytitle"><a href="#grid-cert-diagnostics">grid-cert-diagnostics</a></span><span class="refpurpose"> &#8212; Print diagnostic information about certificates and keys</span></dt><dt><span class="refentrytitle"><a href="#grid-cert-info">grid-cert-info</a></span><span class="refpurpose"> &#8212; Display information about a certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-cert-request">grid-cert-request</a></span><span class="refpurpose"> &#8212; Generate a X.509 certificate request and corresponding private
+    key</span></dt><dt><span class="refentrytitle"><a href="#grid-default-ca">grid-default-ca</a></span><span class="refpurpose"> &#8212; Select default CA for certificate requests</span></dt><dt><span class="refentrytitle"><a href="#grid-change-pass-phrase">grid-change-pass-phrase</a></span><span class="refpurpose"> &#8212; Change the passphrase of a private key</span></dt><dt><span class="refentrytitle"><a href="#grid-proxy-init">grid-proxy-init</a></span><span class="refpurpose"> &#8212; Generate a new proxy certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-proxy-destroy">grid-proxy-destroy</a></span><span class="refpurpose"> &#8212; Destroy the default proxy certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-proxy-info">grid-proxy-info</a></span><span class="refpurpose"> &#8212; Display information about a proxy certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-mapfile-add-entry">grid-mapfile-add-entry</a></span><span class="refpurpose"> &#8212; Add an entry to a gridmap file</span></dt><dt><span class="refentrytitle"><a href="#grid-mapfile-check-consistency">grid-mapfile-check-consistency</a></span><span class="refpurpose"> &#8212; Add an entry to a grid map file</span></dt><dt><span class="refentrytitle"><a href="#grid-mapfile-delete-entry">grid-mapfile-delete-entry</a></span><span class="refpurpose"> &#8212; Remove entries from a gridmap file</span></dt></dl></dd><dt><span class="chapter"><a href="#gsic-configuring">3. Configuring Certificates</a></span></dt><dd><dl><dt><span class="section"><a href="#gsic-configuring-trustCA">1. Configuring Globus to Trust a Particular Certificate Authority</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462685566752">1.1. Trusted certificates directory</a></span></dt><dt><span class="section"><a href="#idm462689645088">1.2. Trusted certificates files</a></span></dt><dt><span class="section"><a href="#idm462686807488">1.3. Hash of the CA certificate</a></span></dt><dt><span class="section"><a href="#idm462686805056">1.4. Creating a signing policy by hand</a></span></dt><dt><span class="section"><a href="#idm462688434064">1.5. Repository of CAs</a></span></dt></dl></dd><dt><span class="section"><a href="#idm462688432272">2. Configuring Globus to Create Appropriate Certificate Requests</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462685854976">2.1. Creating a certificate request for a specific CA</a></span></dt><dt><span class="section"><a href="#idm462685852672">2.2. Listing available CAs</a></span></dt><dt><span class="section"><a href="#idm462685850624">2.3. Specifying a default CA for certificate requests</a></span></dt><dt><span class="section"><a href="#idm462685846912">2.4. <code class="filename">directions</code> file</a></span></dt></dl></dd><dt><span class="section"><a href="#idm462688997408">3. Requesting Service Certificates</a></span></dt><dt><span class="section"><a href="#setting-up-gridmap">4. Configuring Credential Mappings</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462689244896">4.1. Configuring Identity Mappings Using <code class="filename">gridmap</code> Files</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462689243200">4.1.1. Adding an entry to a gridmap file</a></span></dt><dt><span class="section"><a href="#idm462689240896">4.1.2. Deleting an entry from a gridmap file</a></span></dt><dt><span class="section"><a href="#idm462689238592">4.1.3. Checking consistency of a gridmap file</a></span></dt><dt><span class="section"><a href="#idm462689236928">4.1.4. Configuring per-service gridmap files</a></span></dt><dt><span class="section"><a href="#idm462685933216">4.1.5. Gridmap formats</a></span></dt></dl></dd><dt><span class="section"><a href="#idm462689455568">4.2. Configuring Alternate Credential Mappings</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462689441872">4.2.1. Callout File Format</a></span></dt></dl></dd></dl></dd><dt><span class="section"><a href="#gsic-config-permissions">5. GSI File Permissions Requirements</a></span></dt></dl></dd><dt><span class="chapter"><a href="#gsic-pi-env">4. Environment variable interface</a></span></dt><dd><dl><dt><span class="section"><a href="#gsic-env-var">1. Environmental Variables for GSI C</a></span></dt><dd><dl><dt><span class="section"><a href="#gsic-env-credentials">1.1. Credentials</a></span></dt><dt><span class="section"><a href="#gsic-env-gridmapfile">1.2. Gridmap file</a></span></dt><dt><span class="section"><a href="#gsic-env-trustedca">1.3. Trusted CAs directory</a></span></dt><dt><span class="section"><a href="#gsic-env-gsiauthz">1.4. GSI authorization callout configuration file</a></span></dt><dt><span class="section"><a href="#gsic-env-gaaauthz">1.5. GAA (Generic Authorization and Access control) configuration file</a></span></dt><dt><span class="section"><a href="#gsic-env-gridsecurity">1.6. Grid security directory</a></span></dt><dt><span class="section"><a href="#gsic-env-tls">1.7. Using TLS</a></span></dt><dt><span class="section"><a href="#gsic-env-name">1.8. Name Comparisons</a></span></dt></dl></dd></dl></dd><dt><span class="appendix"><a href="#gsic-error-codes">A. Errors</a></span></dt><dt><span class="glossary"><a href="#glossary-gsicPI">Glossary</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-apis"></a>Chapter 1. APIs</h1></div></div></div><p>Documentation for the APIs in this component can be found here:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gaa_core/html/index.html#_top" target="_top">gaa_core</a>
+      [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gaa_core/html/main.html#_top" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gaa_gss_generic/html/index.html#_top" target="_top">gaa_gss_generic</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gaa_gss_generic/html/main.html#_top" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gaa_plugin/html/index.html#_top" target="_top">gaa_plugin</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gaa_plugin/html/main.html#_top" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_authz/html/index.html#_top" target="_top">globus_authz</a>
+
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_authz/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_authz_callout_error/html/index.html#_top" target="_top">globus_authz_callout_error</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_authz_callout_error/html/main.html" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gridmap_callout_error/html/index.html#_top" target="_top">globus_gridmap_callout_error</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gridmap_callout_error/html/main.html" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_callback/html/index.html#_top" target="_top">globus_gsi_callback</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_callback/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_cert_utils/html/index.html#_top" target="_top">globus_gsi_cert_utils</a>
+
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_cert_utils/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_credential/html/index.html#_top" target="_top">globus_gsi_credential</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_credential/html/main.html" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_openssl_error/html/index.html#_top" target="_top">globus_gsi_openssl_error</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_openssl_error/html/main.html" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_proxy_core/html/index.html#_top" target="_top">globus_gsi_proxy_core</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_proxy_core/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_proxy_ssl/html/index.html#_top" target="_top">globus_gsi_proxy_ssl</a>
+
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_proxy_ssl/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_sysconfig/html/index.html#_top" target="_top">globus_gsi_sysconfig</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gsi_sysconfig/html/main.html" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gss_assist/html/index.html#_top" target="_top">globus_gss_assist</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gss_assist/html/main.html" target="_top">no frames</a>]
+    </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gssapi_gsi/html/index.html#_top" target="_top">globus_gssapi_gsi</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_gssapi_gsi/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_openssl_module/html/index.html#_top" target="_top">globus_openssl_module</a>
+
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_openssl_module/html/main.html" target="_top">no frames</a>]
+   </li><li class="listitem"> <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gssapi_error/html/index.html#_top" target="_top">gssapi_error</a>
+     [<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/gssapi_error/html/main.html" target="_top">no frames</a>]
+    </li></ul></div><p>For information on the internationalization API, see the <a href="../../ccommonlib/pi/#ccommonlib-apis" class="olink">CCommon Libraries Public Interface</a>. </p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-protocol"></a>Chapter 2. Protocol Specifications</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#idm462692465504">1. GSI Message Specification</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="idm462692465504"></a>1. GSI Message Specification</h2></div></div></div><p>The GSSAPI implementation contained in this component produces
+    security tokens that follow an extended version of the SSL/TLS
+    protocol. More information about the protocol can be found 
+    <a class="ulink" href="../GSI-message-specification-02.doc" target="_top">here</a>.</p></div></div><div class="reference"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-cmd"></a>GSI Commands</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="refentrytitle"><a href="#idm462687957712">globus-update-certificate-dir</a></span><span class="refpurpose"> &#8212; Update symlinks in the trusted CA directory</span></dt><dt><span class="refentrytitle"><a href="#grid-cert-diagnostics">grid-cert-diagnostics</a></span><span class="refpurpose"> &#8212; Print diagnostic information about certificates and keys</span></dt><dt><span class="refentrytitle"><a href="#grid-cert-info">grid-cert-info</a></span><span class="refpurpose"> &#8212; Display information about a certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-cert-request">grid-cert-request</a></span><span class="refpurpose"> &#8212; Generate a X.509 certificate request and corresponding private
+    key</span></dt><dt><span class="refentrytitle"><a href="#grid-default-ca">grid-default-ca</a></span><span class="refpurpose"> &#8212; Select default CA for certificate requests</span></dt><dt><span class="refentrytitle"><a href="#grid-change-pass-phrase">grid-change-pass-phrase</a></span><span class="refpurpose"> &#8212; Change the passphrase of a private key</span></dt><dt><span class="refentrytitle"><a href="#grid-proxy-init">grid-proxy-init</a></span><span class="refpurpose"> &#8212; Generate a new proxy certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-proxy-destroy">grid-proxy-destroy</a></span><span class="refpurpose"> &#8212; Destroy the default proxy certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-proxy-info">grid-proxy-info</a></span><span class="refpurpose"> &#8212; Display information about a proxy certificate</span></dt><dt><span class="refentrytitle"><a href="#grid-mapfile-add-entry">grid-mapfile-add-entry</a></span><span class="refpurpose"> &#8212; Add an entry to a gridmap file</span></dt><dt><span class="refentrytitle"><a href="#grid-mapfile-check-consistency">grid-mapfile-check-consistency</a></span><span class="refpurpose"> &#8212; Add an entry to a grid map file</span></dt><dt><span class="refentrytitle"><a href="#grid-mapfile-delete-entry">grid-mapfile-delete-entry</a></span><span class="refpurpose"> &#8212; Remove entries from a gridmap file</span></dt></dl></div><div class="refentry"><a name="idm462687957712"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>globus-update-certificate-dir &#8212; Update symlinks in the trusted CA directory</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">globus-update-certificate-dir</code>  [-help] [-d <em class="replaceable"><code>DIRECTORY</code></em>]</p></div></div><div class="refsect1"><a name="idm462689433216"></a><h2>Description</h2><p>
+The <span class="command"><strong>globus-update-certificate-dir</strong></span> program creates symlinks between files (CA certificates, certificate
+revocation lists, signing policy, and certificate request configuration files)
+using the certificate hash the installed version of OpenSSL uses. OpenSSL
+1.0.0 uses a different name hashing algorithm than previous versions, so 
+CA distributions created with older versions of OpenSSL might not be able
+to locate trusted CAs and related files. Running <span class="command"><strong>globus-update-certificate-dir</strong></span> against a
+trusted CA directory will add symlinks to the files to the hash if needed.
+</p><p>
+The full set of command-line options to
+<span class="command"><strong>globus-update-certificate-dir</strong></span> consists of:
+
+</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code></span></dt><dd>Display a help message to standard output and exit</dd><dt><span class="term"><code class="option">-d <em class="replaceable"><code>DIRECTORY</code></em></code></span></dt><dd>Create links in the trusted CA directory
+        <em class="replaceable"><code>DIRECTORY</code></em> instead of using the default 
+        search path.</dd></dl></div><p>
+</p></div><div class="refsect1"><a name="idm462685810400"></a><h2>Environment</h2><p>
+If the following variables affect the execution of <span class="command"><strong>globus-update-certificate-dir</strong></span>
+
+</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_CERT_DIR</code></span></dt><dd>Default trusted certificate directory.</dd><dt><span class="term"><code class="envar">HOME</code></span></dt><dd>Path to the current user's home directory.</dd><dt><span class="term"><code class="envar">GLOBUS_LOCATION</code></span></dt><dd>Path to the Globus installation.</dd></dl></div><p>
+</p></div></div><div class="refentry"><a name="grid-cert-diagnostics"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-cert-diagnostics &#8212; Print diagnostic information about certificates and keys</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-cert-diagnostics</code>   [-h] |  [-help]  [-p] [-n] [-c <em class="replaceable"><code>CERTIFICATE</code></em>]</p></div></div><div class="refsect1"><a name="idm462686564768"></a><h2>Description</h2><p>
+The <span class="command"><strong>grid-cert-diagnostics</strong></span> program displays information about
+the current user's security environment, including information about
+security-related environment variables, security directory search path, personal
+key and certificates, and trusted certificates. It is intended to provide 
+information to help diagnose problems using GSIC.
+</p><p>
+By default, <span class="command"><strong>grid-cert-diagnostics</strong></span> prints out information regarding the environment and
+trusted certificate directory. If the <code class="option">-p</code> command-line option
+is used, then additional information about the current user's default
+certificate and key will be printed.
+</p><p>
+The full set of command-line options to
+<span class="command"><strong>grid-cert-diagnostics</strong></span>
+consists of:
+
+</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-h</code>, </span><span class="term"><code class="option">-help</code></span></dt><dd>Display a help message and
+            exit.</dd><dt><span class="term"><code class="option">-p</code></span></dt><dd>Display information about the personal certificate
+        and key that is the current user's default
+        credential.</dd><dt><span class="term"><code class="option">-n</code></span></dt><dd>Check time synchronization with the
+        <span class="command"><strong>ntpdate</strong></span> command.</dd><dt><span class="term"><code class="option">-c <em class="replaceable"><code>CERTIFICATE</code></em></code>, </span><span class="term"><code class="option">-c <code class="literal">-</code></code></span></dt><dd>Check the validity of the certificate in the file
+        named by <em class="replaceable"><code>CERTIFICATE</code></em> or standard input if
+        the parameter to <code class="option">-c</code> is <code class="literal">-</code>.</dd></dl></div><p>
+</p></div><div class="refsect1"><a name="idm462688640144"></a><h2>Examples</h2><p>
+In this example, we see the default mode of checking the default security
+environment for the system, without processing the user's key and certificate.
+Note the user receives a warning about a <code class="filename">cog.properties</code> 
+and about an expired CA certificate.
+
+</p><pre class="screen">
+<code class="prompt">% </code><span class="command"><strong>grid-cert-diagnostics</strong></span>
+<code class="computeroutput">
+Checking Environment Variables
+==============================
+Checking if X509_CERT_DIR is set... no
+Checking if X509_USER_CERT is set... no
+Checking if X509_USER_KEY is set... no
+Checking if X509_USER_PROXY is set... no
+
+Checking Security Directories
+=======================
+Determining trusted cert path... /etc/grid-security/certificates
+Checking for cog.properties... found
+    WARNING: If the cog.properties file contains security properties, 
+             Java apps will ignore the security paths described in the GSI
+             documentation
+
+Checking trusted certificates...
+================================
+Getting trusted certificate list...
+Checking CA file /etc/grid-security/certificates/1c4f4c48.0... ok
+Verifying certificate chain for "/etc/grid-security/certificates/1c3f2ca8.0"... ok
+Checking CA file /etc/grid-security/certificates/9d8788eb.0... ok
+Verifying certificate chain for "/etc/grid-security/certificates/9d8753eb.0"... failed
+    globus_credential: Error verifying credential: Failed to verify credential
+    globus_gsi_callback_module: Could not verify credential
+    globus_gsi_callback_module: The certificate has expired:
+    Credential with subject: /DC=org/DC=example/OU=grid/CN=CA has expired.
+</code>
+</pre><p>
+</p><p>
+In this example, we show a user with a mismatched private key and certificate:
+
+</p><pre class="screen">
+<code class="prompt">% </code><span class="command"><strong>grid-cert-diagnostics</strong></span> <code class="option">-p</code>
+<code class="computeroutput">
+Checking Environment Variables
+==============================
+Checking if X509_CERT_DIR is set... no
+Checking if X509_USER_CERT is set... no
+Checking if X509_USER_KEY is set... no
+Checking if X509_USER_PROXY is set... no
+
+Checking Security Directories
+=======================
+Determining trusted cert path... /etc/grid-security/certificates
+Checking for cog.properties... not found
+
+Checking Default Credentials
+==============================
+Determining certificate and key file names... ok
+Certificate Path: "/home/juser/.globus/usercert.pem"
+Key Path: "/home/juser/.globus/userkey.pem"
+Reading certificate... ok
+Reading private key...
+ok
+Checking Certificate Subject...
+"/O=Grid/OU=Example/OU=User/CN=Joe User"
+Checking cert... ok
+Checking key... ok
+Checking that certificate contains an RSA key... ok
+Checking that private key is an RSA key... ok
+Checking that public and private keys have the same modulus... failed
+Private key modulus: D294849E37F048C3B5ACEEF2CCDF97D88B679C361E29D5CB5
+219C3E948F3E530CFC609489759E1D751F0ACFF0515A614276A0F4C11A57D92D7165B8
+FA64E3140155DE448D45C182F4657DA13EDA288423F5B9D169DFF3822EFD81EB2E6403
+CE3CB4CCF96B65284D92592BB1673A18354DA241B9AFD7F494E54F63A93E15DCAE2
+Public key modulus : C002C7B329B13BFA87BAF214EACE3DC3D490165ACEB791790
+600708C544175D9193C9BAC5AED03B7CB49BB6AE6D29B7E635FAC751E9A6D1CEA98022
+6F1B63002902D6623A319E4682E7BFB0968DCE962CF218AAD95FAAD6A0BA5C42AA9AAF
+7FDD32B37C6E2B2FF0E311310AA55FFB9EAFDF5B995C7D9EEAD8D5D81F3531E0AE5
+Certificate and and private key don't match
+</code>
+</pre><p>
+</p></div></div><div class="refentry"><a name="grid-cert-info"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-cert-info &#8212; Display information about a certificate</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-cert-info</code>  [-help] [-usage] [-version] [-versions]</p></div><div class="cmdsynopsis"><p><code class="command">grid-cert-info</code>  [-file <em class="replaceable"><code>CERTIFICATE-FILE</code></em>] [-rfc2253] [-all]<br>  [-subject] |  [-s] <br>  [-issuer] |  [-i] <br>  [-issuerhash] |  [-ih] <br>  [-startdate] |  [-sd] <br>  [-endate] |  [-ed] </p></div></div><div class="refsect1"><a name="idm462689408624"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-cert-info</strong></span> program displays information contained within a certificate
+    file. By default it shows a text representation of the entire certificate.
+    Specific facts about the certificate can be shown instead by using
+    command-line options. If any of those options are used, then the default
+    display is suppressed. This can be added to the output by using the
+    <code class="option">-all</code> command-line option.
+    </p><p>
+    If multiple display options are included on the command-line, the facts
+    related to those will be displayed on separate lines in the order that
+    they occur. If an option is specified multiple time, that fact will
+    be displayed multiple times.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-cert-info</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-cert-info</strong></span> and exit.</dd><dt><span class="term"><code class="option">-version</code>, </span><span class="term"><code class="option">-versions</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-cert-info</strong></span>
+            command. The second form includes more
+            details.</dd><dt><span class="term"><code class="option">-file <em class="replaceable"><code>CERTIFICATE-FILE</code></em></code></span></dt><dd>Display information about the first certificate
+            contained in the file named by
+            <em class="replaceable"><code>CERTIFICATE-FILE</code></em> instead of the
+            default user certificate.</dd><dt><span class="term"><code class="option">-rfc2253</code></span></dt><dd>Display X.509 distinguished names using the 
+            string representation defined in RFC 2253 instead of the
+            default OpenSSL oneline format.</dd><dt><span class="term"><code class="option">-all</code></span></dt><dd>Display the text representation of the
+            entire certificate in addition to any other facts requested
+            by command-line options. This is the default if no fact-specific
+            command-line options are used.</dd><dt><span class="term"><code class="option">-subject</code>, </span><span class="term"><code class="option">-s</code></span></dt><dd>Display the subject name of the X.509
+            certificate.</dd><dt><span class="term"><code class="option">-issuer</code>, </span><span class="term"><code class="option">-i</code></span></dt><dd>Display the issuer name of the X.509
+            certificate.</dd><dt><span class="term"><code class="option">-issuerhash</code>, </span><span class="term"><code class="option">-ih</code></span></dt><dd>Display the default hash of the issuer name of
+            the X.509 certificate. This can be used to locate which CA
+            certificate in the trusted certificate directory issued the
+            certifcate being inspected.</dd><dt><span class="term"><code class="option">-startdate</code>, </span><span class="term"><code class="option">-sd</code></span></dt><dd>Display a string representation of the date
+            and time when the certificate is valid from. This is displayed
+            in the format used by the OpenSSL <span class="command"><strong>x509</strong></span>
+            command.</dd><dt><span class="term"><code class="option">-enddate</code>, </span><span class="term"><code class="option">-dd</code></span></dt><dd>Display a string representation of the date
+            and time when the certificate is valid until. This is displayed
+            in the format used by the OpenSSL <span class="command"><strong>x509</strong></span>
+            command.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462687341744"></a><h2>Examples</h2><p>Display the validity times for the default certificate
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-cert-info</strong></span> <code class="option">-sd</code> <code class="option">-ed</code>
+<code class="computeroutput">Aug 31 12:33:47 2009 GMT
+Aug 31 12:33:47 2010 GMT</code></pre><p>
+    </p><p>Display the same information about a different certificate specified
+    on the command-line
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-cert-info</strong></span> <code class="option">-sd</code> <code class="option">-ed</code> <code class="option">-f /etc/grid-security/hostcert.pem</code>
+<code class="computeroutput">Jan 21 12:24:48 2003 GMT
+Jul 15 11:30:57 2020 GMT</code></pre><p>
+    </p><p>Display the subject of a certificate in both the default and the
+    RFC 2253 forms.
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-cert-info</strong></span> <code class="option">-subject</code>
+<code class="computeroutput">/DC=org/DC=example/DC=grid/CN=Joe User</code>
+<code class="prompt">% </code><span class="command"><strong>grid-cert-info</strong></span> <code class="option">-subject</code> <code class="option">-rfc2253</code>
+<code class="computeroutput">CN=Joe User,DC=grid,DC=example,DC=org</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462688683616"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-cert-info</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_USER_CERT</code></span></dt><dd>Path to the default certificate
+            file to inspect.</dd></dl></div><p>
+    </p></div></div><div class="refentry"><a name="grid-cert-request"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-cert-request &#8212; Generate a X.509 certificate request and corresponding private
+    key</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-cert-request</code>  [-help] [-h] [-?] [-usage]<br> [-version] [-versions]</p></div><div class="cmdsynopsis"><p><code class="command">grid-cert-request</code>  [ -cn <em class="replaceable"><code>NAME</code></em>  |   -commonname <em class="replaceable"><code>NAME</code></em> ]<br> [-dir <em class="replaceable"><code>DIRECTORY</code></em>] [-prefix <em class="replaceable"><code>PREFIX</code></em>]<br> [ -nopw  |   -nodes  |   -nopassphrase ]<br> [ -nopw  |   -nodes  |   -nopassphrase ]<br> [-ca [<em class="replaceable"><code>HASH</code></em>]] [-verbose] [ -interactive  |   -int ] [-force]</p></div><div class="cmdsynopsis"><p><code class="command">grid-cert-request</code>   -host <em class="replaceable"><code>FQDN</code></em>  [-service <em class="replaceable"><code>SERVICE</code></em>] [-dns <em class="replaceable"><code>FQDN</code></em>...] [-ip <em class="replaceable"><code>IP-ADDRESS</code></em>...]<br> [-dir <em class="replaceable"><code>DIRECTORY</code></em>] [-prefix <em class="replaceable"><code>PREFIX</code></em>]<br> [-ca [<em class="replaceable"><code>HASH</code></em>]] [-verbose] [ -interactive  |   -int ] [-force]</p></div></div><div class="refsect1"><a name="idm462688276752"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-cert-request</strong></span> program generates an X.509 Certificate Request and corresponding
+    private key for the specified name, host, or service. It is intended to be
+    used with a CA implemented using the
+    <span class="application">globus_simple_ca</span> package.
+    </p><p>
+    The default behavior of <span class="command"><strong>grid-cert-request</strong></span> is to generate a certificate request and
+    private key for the user running the command. The subject name is 
+    derived from the gecos information in the local system's password database,
+    unless the <code class="option">-commonname</code>, <code class="option">-cn</code>, or
+    <code class="option">-host</code> command-line options are used.
+    </p><p>
+    By default, <span class="command"><strong>grid-cert-request</strong></span> writes user certificate requests and keys to the
+    <code class="filename"><code class="envar">$HOME</code>/.globus</code> directory, and host
+    and service certificate requests and keys to
+    <code class="filename">/etc/grid-security</code>. This can be overridden by using
+    the <code class="option">-dir</code> command-line option.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-cert-request</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-h</code>, </span><span class="term"><code class="option">-?</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-cert-request</strong></span> and exit.</dd><dt><span class="term"><code class="option">-version</code>, </span><span class="term"><code class="option">-versions</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-cert-request</strong></span>
+            command. The second form includes more
+            details.</dd><dt><span class="term"><code class="option">-cn <em class="replaceable"><code>NAME</code></em></code>, </span><span class="term"><code class="option">-commonname <em class="replaceable"><code>NAME</code></em></code></span></dt><dd>Create a certificate request with the
+            common name component of the subject set to
+            <em class="replaceable"><code>NAME</code></em>. This is used to create user
+            identity certificates.</dd><dt><span class="term"><code class="option">-dir <em class="replaceable"><code>DIRECTORY</code></em></code></span></dt><dd>Write the certificate request and key to
+            files in the directory specified by <em class="replaceable"><code>DIRECTORY</code></em>.</dd><dt><span class="term"><code class="option">-prefix <em class="replaceable"><code>PREFIX</code></em></code></span></dt><dd>Use the string <em class="replaceable"><code>PREFIX</code></em>
+            as the base name of the certificate, certificate_request, and key
+            files instead of the default. For a user certificate request,
+            this would mean creating files
+            <code class="filename"><code class="envar">$HOME</code>/.globus/<em class="replaceable"><code>PREFIX</code></em>cert_request.pem</code>,
+            <code class="filename"><code class="envar">$HOME</code>/.globus/<em class="replaceable"><code>PREFIX</code></em>cert.pem</code>, and
+            <code class="filename"><code class="envar">$HOME</code>/.globus/<em class="replaceable"><code>PREFIX</code></em>key.pem</code>.</dd><dt><span class="term"><code class="option">-ca <em class="replaceable"><code>CA-HASH</code></em></code></span></dt><dd>Use the certificate request configuration for
+            the CA with the name hash <em class="replaceable"><code>CA-HASH</code></em> instead
+            of the default CA chosen by running
+            <span class="command"><strong>grid-default-ca</strong></span>. </dd><dt><span class="term"><code class="option">-verbose</code></span></dt><dd>Keep the output from the OpenSSL certificate
+            request command visible after it completes, instead of clearing the
+            screen.. </dd><dt><span class="term"><code class="option">-interactive</code>, </span><span class="term"><code class="option">-int</code></span></dt><dd>Prompt for each component of the subject
+            name of the request, instead of generating the common name
+            from other command-line options. Note that CAs may not
+            sign certificates for subject names that don't match their signing
+            policies.</dd><dt><span class="term"><code class="option">-force</code></span></dt><dd>Overwrite any existing certificate request and
+            private key with a new one.</dd><dt><span class="term"><code class="option">-nopw</code>, </span><span class="term"><code class="option">-nodes</code>, </span><span class="term"><code class="option">-nopassphrase</code></span></dt><dd>Create an unencrypted private key for the
+            certificate instead of prompting for a passphrase. This is the
+            default behavior for host or service certificates, but not 
+            recommended for user certificates.</dd><dt><span class="term"><code class="option">-host <em class="replaceable"><code>FQDN</code></em></code></span></dt><dd>Create a certificate request for use on a
+            particular host. This option also causes the private key assoicated
+            with the certificate request to be unencrypted. The
+            <em class="replaceable"><code>FQDN</code></em> argument to this
+            option should be the fully qualified domain name of the host that
+            will use this certificate. The subject name of the certificate
+            will be derived from the <em class="replaceable"><code>FQDN</code></em> and the
+            service option if specified by the <code class="option">-service</code>
+            command-line option. If the host for the certificate has multiple
+            names, then use either the <code class="option">-dns</code> or
+            <code class="option">-ip</code> command-line options to add alternate names or
+            addresses to the certificates.</dd><dt><span class="term"><code class="option">-service <em class="replaceable"><code>SERVICE</code></em></code></span></dt><dd>Create a certificate request for a particular
+            service on a host. The subject name of the certificate will be 
+            derived from the <em class="replaceable"><code>FQDN</code></em> passed as the
+            argument to the <code class="option">-host</code> command-line option and the
+            <em class="replaceable"><code>SERVICE</code></em> string.</dd><dt><span class="term"><code class="option">-dns <em class="replaceable"><code>FQDN,...</code></em></code></span></dt><dd>Create a certificate request containing
+            a <code class="literal">subjectAltName</code> extension containing one or
+            more host names. This is used when a certificate may be used by
+            multiple virtual servers or if a host has different names when
+            contacted within or outside a private network. Multiple
+            DNS names can be included in the extension by separating then
+            with a comma.</dd><dt><span class="term"><code class="option">-ip <em class="replaceable"><code>IP-ADDRESS,...</code></em></code></span></dt><dd>Create a certificate request containing
+            a <code class="literal">subjectAltName</code> extension containing the
+            IP addresses named by the <em class="replaceable"><code>IP-ADDRESS</code></em>
+            strings. This is used when a certificate may be used by
+            services listening on multiple networks. Multiple IP addresses
+            can be included in the extension by separating then with a
+            comma.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462686309792"></a><h2>Examples</h2><p>Create a user certificate request:
+    </p><pre class="screen"><code class="prompt">% </code> <span class="command"><strong>grid-cert-request</strong></span>
+<code class="computeroutput">A certificate request and private key is being created.
+You will be asked to enter a PEM pass phrase.
+This pass phrase is akin to your account password, 
+and is used to protect your key file.
+If you forget your pass phrase, you will need to
+obtain a new certificate.
+A private key and a certificate request has been generated with the subject:
+
+/O=org/OU=example/OU=grid/CN=Joe User
+
+If the CN=Joe User is not appropriate, rerun this
+script with the -force -cn "Common Name" options.
+
+Your private key is stored in /home/juser/.globus/userkey.pem
+Your request is stored in /home/juser/.globus/usercert_request.pem
+
+Please e-mail the request to the Example CA ca@grid.example.org
+You may use a command similar to the following:
+
+  cat /home/juser/.globus/usercert_request.pem | mail ca@grid.example.org
+
+Only use the above if this machine can send AND receive e-mail. if not, please
+mail using some other method.
+
+Your certificate will be mailed to you within two working days.
+If you receive no response, contact Example CA at ca@grid.example.org</code></pre><p>
+    </p><p>Create a host certificate for a host with two names.
+
+    </p><pre class="screen"><code class="prompt">% </code> <span class="command"><strong>grid-cert-request</strong></span> <code class="option">-host grid.example.org</code> <code class="option">-dns grid.example.org,grid-internal.example.org</code>
+<code class="computeroutput">
+A private host key and a certificate request has been generated
+with the subject:
+
+/O=org/OU=example/OU=grid/CN=host/grid.example.org
+
+----------------------------------------------------------
+
+The private key is stored in /etc/grid-security/hostkey.pem
+The request is stored in /etc/grid-security/hostcert_request.pem
+
+Please e-mail the request to the Example CA ca@grid.example.org
+You may use a command similar to the following:
+
+ cat /etc/grid-security/hostcert_request.pem | mail ca@grid.example.org
+
+Only use the above if this machine can send AND receive e-mail. if not, please
+mail using some other method.
+
+Your certificate will be mailed to you within two working days.
+If you receive no response, contact Example CA at
+ca@grid.example.org</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462687757088"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-cert-request</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_CERT_DIR</code></span></dt><dd>Path to the directory containing
+            SSL configuration files for generating certificate
+            requests.</dd><dt><span class="term"><code class="envar">GRID_SECURITY_DIR</code></span></dt><dd>Path to the directory containing
+            SSL configuration files for generating certificate
+            requests. This value is used if <code class="envar">X509_CERT_DIR</code> is
+            not set.</dd><dt><span class="term"><code class="envar">GLOBUS_LOCATION</code></span></dt><dd>Path to the directory containing
+            the Globus Toolkit. This is searched if neither the
+            <code class="envar">X509_CERT_DIR</code> nor the
+            <code class="envar">GRID_SECURITY_DIR</code> environment variables are
+            set.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462687093312"></a><h2>Files</h2><p>
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename"><code class="envar">$HOME</code>/.globus/usercert_request.pem</code></span></dt><dd>Default path to write a user certificate
+            request.</dd><dt><span class="term"><code class="filename"><code class="envar">$HOME</code>/.globus/usercert.pem</code></span></dt><dd>Default path to write a user
+            certificate.</dd><dt><span class="term"><code class="filename"><code class="envar">$HOME</code>/.globus/userkey.pem</code></span></dt><dd>Default path to write a user private
+            key.</dd><dt><span class="term"><code class="filename">/etc/grid-security/hostcert_request.pem</code></span></dt><dd>Default path to write a host certificate
+            request.</dd><dt><span class="term"><code class="filename">/etc/grid-security/hostcert.pem</code></span></dt><dd>Default path to write a host
+            certificate.</dd><dt><span class="term"><code class="filename">/etc/grid-security/hostkey.pem</code></span></dt><dd>Default path to write a host private
+            key.</dd><dt><span class="term"><code class="filename"><em class="replaceable"><code>TRUSTED-CERT-DIR</code></em>/globus-user-ssl.conf</code>, </span><span class="term"><code class="filename"><em class="replaceable"><code>TRUSTED-CERT-DIR</code></em>/globus-user-ssl.conf.<em class="replaceable"><code>CA-HASH</code></em></code></span></dt><dd>SSL configuration file for requesting a user
+            certificate. The first form is the default location, the second form
+            is used when the <em class="replaceable"><code>-ca</code></em> command-line option
+            is specified.</dd><dt><span class="term"><code class="filename"><em class="replaceable"><code>TRUSTED-CERT-DIR</code></em>/globus-host-ssl.conf</code>, </span><span class="term"><code class="filename"><em class="replaceable"><code>TRUSTED-CERT-DIR</code></em>/globus-host-ssl.conf.<em class="replaceable"><code>CA-HASH</code></em></code></span></dt><dd>SSL configuration file for requesting a host or
+            service certificate. The first form is the default location, the
+            second form is used when the <em class="replaceable"><code>-ca</code></em>
+            command-line option is specified.</dd></dl></div><p>
+    </p></div></div><div class="refentry"><a name="grid-default-ca"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-default-ca &#8212; Select default CA for certificate requests</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-default-ca</code>  [-help] [-h] [-usage] [-u] [-version] [-versions]</p></div><div class="cmdsynopsis"><p><code class="command">grid-default-ca</code>   -list  [-dir <em class="replaceable"><code>CA-DIRECTORY</code></em>]</p></div><div class="cmdsynopsis"><p><code class="command">grid-default-ca</code>  [-ca <em class="replaceable"><code>CA-HASH</code></em>] [-dir <em class="replaceable"><code>CA-DIRECTORY</code></em>]</p></div></div><div class="refsect1"><a name="idm462688736256"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-default-ca</strong></span> program sets the default certificate authority to use when
+    the <span class="command"><strong>grid-cert-request</strong></span> script is run. The CA's
+    certificate, configuration, and signing policy must be installed in the
+    trusted certificate directory to be able to request certificates from
+    that CA. Note that some CAs have different policies and use other tools
+    to handle certificate requests. Please consult your CA's support
+    staff if you unsure. The <span class="command"><strong>grid-default-ca</strong></span> is designed to work with CAs implemented
+    using the <span class="application">globus_simple_ca</span> package.
+    </p><p>
+    By default, the <span class="command"><strong>grid-default-ca</strong></span> program displays a list of installed CA certificates
+    and the prompts the user for which one to set as the default. If invoked
+    with the <code class="option">-list</code> command-line option, <span class="command"><strong>grid-default-ca</strong></span> will print
+    the list and not prompt nor set the default CA. If invoked with the
+    <code class="option">-ca</code> option, it will not list or prompt, but set the
+    default CA to the one with the hash that matches the
+    <em class="replaceable"><code>CA-HASH</code></em> argument to that option. If
+    <span class="command"><strong>grid-default-ca</strong></span> is used to set the default CA, the caller of this program must have
+    write permissions to the trusted certificate directory.
+    </p><p>
+    The <span class="command"><strong>grid-default-ca</strong></span> program sets the CA in the one of the grid security directories.
+    It looks in the directory named by the <code class="envar">GRID_SECURITY_DIR</code>
+    environment, the <code class="envar">X509_CERT_DIR</code>,
+    <code class="filename">/etc/grid-security</code>, and
+    <code class="filename"><code class="envar">$GLOBUS_LOCATION</code>/share/certificates</code>.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-default-ca</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-h</code>, </span><span class="term"><code class="option">-usage</code>, </span><span class="term"><code class="option">-u</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-default-ca</strong></span> and exit.</dd><dt><span class="term"><code class="option">-version</code>, </span><span class="term"><code class="option">-versions</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-default-ca</strong></span>
+            command. The second form includes more
+            details.</dd><dt><span class="term"><code class="option">-dir <em class="replaceable"><code>CA-DIRECTORY</code></em></code></span></dt><dd>Use the trusted certificate directory named
+            by <em class="replaceable"><code>CA-DIRECTORY</code></em> instead of the
+            default.</dd><dt><span class="term"><code class="option">-list</code></span></dt><dd>Instead of changing the default CA, print out
+            a list of all available CA certificates in the trusted certificate
+            directory</dd><dt><span class="term"><code class="option">-ca <em class="replaceable"><code>CA-HASH</code></em></code></span></dt><dd>Set the default CA without displaying the
+            list of choices or prompting. The CA file named by
+            <em class="replaceable"><code>CA-HASH</code></em> must exist.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462688523824"></a><h2>Examples</h2><p>List the contents of the trusted certificate directory that contain
+    the string Example:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-default-ca</strong></span> | <span class="command"><strong>grep Example</strong></span>
+<code class="computeroutput">15) cd1186ff -  /DC=org/DC=Example/DC=Grid/CN=Example CA</code></pre><p>
+    </p><p>Choose that CA as the default:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-default-ca</strong></span> <code class="option">-ca cd1186ff</code>
+<code class="computeroutput">
+setting the default CA to: /DC=org/DC=Example/DC=Grid/CN=Example CA
+
+linking /etc/grid-security/certificates/grid-security.conf.cd1186ff to
+        /etc/grid-security/certificates/grid-security.conf
+
+linking /etc/grid-security/certificates/grid-host-ssl.conf.cd1186ff  to
+        /etc/grid-security/certificates/grid-host-ssl.conf
+
+linking /etc/grid-security/certificates/grid-user-ssl.conf.cd1186ff  to
+        /etc/grid-security/certificates/grid-user-ssl.conf
+
+...done.</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462687611792"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-default-ca</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">GRID_SECURITY_DIRECTORY</code></span></dt><dd>Path to the default trusted certificate
+            directory.</dd><dt><span class="term"><code class="envar">X509_CERT_DIR</code></span></dt><dd>Path to the default trusted certificate
+            directory.</dd><dt><span class="term"><code class="envar">GLOBUS_LOCATION</code></span></dt><dd>Path to the Globus Toolkit installation
+            directory.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462686253440"></a><h2>Bugs</h2><p>
+    The <span class="command"><strong>grid-default-ca</strong></span> program displays CAs from all of the directories in its search
+    list; however, <span class="command"><strong>grid-cert-request</strong></span> only uses the first 
+    which contains a grid security configuration.
+    </p><p>
+    The <span class="command"><strong>grid-default-ca</strong></span> program may display the same CA multiple times if it is located
+    in multiple directories in its search path. However, it does not provide
+    any information about which one would actually be used by the 
+    <span class="command"><strong>grid-cert-request</strong></span> command.
+    </p></div><div class="refsect1"><a name="idm462689191744"></a><h2>See Also</h2><p>
+        <span class="citerefentry"><span class="refentrytitle">grid-cert-request</span>(1)</span>
+    </p></div></div><div class="refentry"><a name="grid-change-pass-phrase"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-change-pass-phrase &#8212; Change the passphrase of a private key</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-change-pass-phrase</code>  [-help] [-usage] [-version] [-versions]</p></div><div class="cmdsynopsis"><p><code class="command">grid-change-pass-phrase</code>  [-file <em class="replaceable"><code>PRIVATE-KEY</code></em>]</p></div></div><div class="refsect1"><a name="idm462689839344"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-change-pass-phrase</strong></span> program changes the passphrase protecting a private key or
+    PKCS12 bundle containing a private key and certificate. By default, <span class="command"><strong>grid-change-pass-phrase</strong></span>
+    uses the <code class="envar">X509_USER_KEY</code> environment variable to locate the
+    private key. If that is not set, then it looks for 
+    <code class="filename"><code class="envar">$HOME</code>/.globus/userkey.pem</code> and
+    <code class="filename"><code class="envar">$HOME</code>/.globus/usercred.p12</code> in
+    succession. The path to a key can be specified by using the
+    <code class="option">-file</code> command-line option.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-change-pass-phrase</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-change-pass-phrase</strong></span> and exit.</dd><dt><span class="term"><code class="option">-version</code>, </span><span class="term"><code class="option">-versions</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-change-pass-phrase</strong></span>
+            command. The second form includes more
+            details.</dd><dt><span class="term"><code class="option">-file <em class="replaceable"><code>PRIVATE-KEY</code></em></code></span></dt><dd>Change the passphrase of the private key
+            named by <em class="replaceable"><code>PRIVATE-KEY</code></em> instead of the
+            default.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462685877536"></a><h2>Examples</h2><p>Change the passphrase of the default private key:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-change-pass-phrase</strong></span> 
+<code class="computeroutput">
+Enter pass phrase for /home/juser/.globus/userkey.pem:
+writing RSA key
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462688124096"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-change-pass-phrase</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_USER_KEY</code></span></dt><dd>Path to the default private key
+            file.</dd></dl></div><p>
+    </p></div></div><div class="refentry"><a name="grid-proxy-init"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-proxy-init &#8212; Generate a new proxy certificate</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-proxy-init</code>  [-help] [-usage] [-version]</p></div><div class="cmdsynopsis"><p><code class="command">grid-proxy-init</code>  [-debug] [-q] [-verify]<br> [[-valid <em class="replaceable"><code>HOURS</code></em>:<em class="replaceable"><code>MINUTES</code></em>] |  [-hours <em class="replaceable"><code>HOURS</code></em>]] [-cert <em class="replaceable"><code>CERTFILE</code></em>] [-key <em class="replaceable"><code>KEYFILE</code></em>] [-certdir <em class="replaceable"><code>CERTDIR</code></em>] [-out <em class="replaceable"><code>PROXYPATH</code></em>] [-bits <em class="replaceable"><code>BITS</code></em>]<br> [-policy <em class="replaceable"><code>POLICYFILE</code></em>]<br> [[-pl <em class="replaceable"><code>POLICY-OID</code></em>] |  [-policy-language <em class="replaceable"><code>POLICY-OID</code></em>]] [-path-length <em class="replaceable"><code>MAXIMUM</code></em>] [-pwstdin] [-limited] [-independent] [[-draft] |  [-old] |  [-rfc]]</p></div></div><div class="refsect1"><a name="idm462685345840"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-proxy-init</strong></span> program generates X.509 proxy certificates derived from the
+    currently available certificate files.  By default, this command generates
+    a <a class="ulink" href="http://www.ietf.org/rfc/rfc3820.txt" target="_top">RFC 3820</a> Proxy
+    Certificate with a 512 bit key valid for 12 hours in a file named
+    <code class="filename">/tmp/x509up_u<em class="replaceable"><code>UID</code></em></code>.
+    Command-line options and variables can modify the format, strength,
+    lifetime, and location of the generated proxy certificate.
+    </p><p>
+    X.509 proxy certificates are short-lived certificates, signed usually by a
+    user's identity certificate or another proxy certificate. The key
+    associated with a proxy certificate is unencrypted, so applications
+    can authenticate using a proxy identity without providing a passphrase.
+    </p><p>Proxy certificates provide a convenient alternative to constantly
+    entering passwords, but are also less secure than the user's normal
+    security credential. Therefore, they should always be user-readable only
+    (this is enforced by the GSI libraries), and should be deleted after they
+    are no longer needed.</p><p>This version of <span class="command"><strong>grid-proxy-init</strong></span> supports three different proxy formats: the
+    old proxy format used in early releases of the Globus Toolkit up to
+    version 2.4.x, an IETF draft version of X.509 Proxy Certificate profile
+    used in Globus Toolkit 3.0.x and 3.2.x, and the RFC 3820 profile used in
+    Globus Toolkit Version 4.0.x and 4.2.x. By default, this version of <span class="command"><strong>grid-proxy-init</strong></span> 
+    creates an RFC 3820 compliant proxy. To create a proxy compatible with
+    older versions of the Globus Toolkit, use the <code class="option">-old</code> or
+    <code class="option">-draft</code> command-line options.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-proxy-init</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-proxy-init</strong></span>.</dd><dt><span class="term"><code class="option">-version</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-proxy-init</strong></span>
+            command</dd><dt><span class="term"><code class="option">-debug</code></span></dt><dd>Display information about the path to the
+            certificate and key used to generate the proxy certificate, the
+            path to the trusted certificate directory, and verbose error
+            messages</dd><dt><span class="term"><code class="option">-q</code></span></dt><dd>Suppress all output from <span class="command"><strong>grid-proxy-init</strong></span> except for
+            passphrase prompts.</dd><dt><span class="term"><code class="option">-verify</code></span></dt><dd>Perform certificate chain validity checks on the
+            generated proxy.</dd><dt><span class="term"><code class="option">-valid <em class="replaceable"><code>HOURS</code></em>:<em class="replaceable"><code>MINUTES</code></em></code>, </span><span class="term"><code class="option">-hours <em class="replaceable"><code>HOURS</code></em></code></span></dt><dd>Create a certificate that is valid for
+            <em class="replaceable"><code>HOURS</code></em> hours and
+            <em class="replaceable"><code>MINUTES</code></em> minutes. If not specified, the
+            default of twelve hours and no minutes is used.</dd><dt><span class="term"><code class="option">-cert <em class="replaceable"><code>CERTFILE</code></em></code>, </span><span class="term"><code class="option">-key <em class="replaceable"><code>KEYFILE</code></em></code></span></dt><dd>Create a proxy certificate signed by
+            the certificate located in <code class="filename">CERTFILE</code> using the
+            key located in <code class="filename">KEYFILE</code>. If not specified the
+            default certificate and key will be used. This overrides the
+            values of environment variables described
+            below.</dd><dt><span class="term"><code class="option">-certdir <em class="replaceable"><code>CERTDIR</code></em></code></span></dt><dd>Search <em class="replaceable"><code>CERTDIR</code></em> for
+            trusted certificates if verifying the proxy certificate. If not 
+            specified, the default trusted certificate search path is used. This
+            overrides the value of the <code class="envar">X509_CERT_DIR</code> environment
+            variable</dd><dt><span class="term"><code class="option">-out <em class="replaceable"><code>PROXYPATH</code></em></code></span></dt><dd>Write the generated proxy certificate file to
+            <em class="replaceable"><code>PROXYPATH</code></em> instead of the default path of
+            <code class="filename">/tmp/x509up_u<em class="replaceable"><code>UID</code></em></code>.</dd><dt><span class="term"><code class="option">-bits <em class="replaceable"><code>BITS</code></em></code></span></dt><dd>When creating the proxy certificate, use a 
+            <em class="replaceable"><code>BITS</code></em> bit key instead of the default
+            512 bit keys.</dd><dt><span class="term"><code class="option">-policy <em class="replaceable"><code>POLICYFILE</code></em></code></span></dt><dd>Add the certificate policy data described in
+            <em class="replaceable"><code>POLICYFILE</code></em> as the ProxyCertInfo X.509
+            extension to the generated proxy certificate.</dd><dt><span class="term"><code class="option">-pl <em class="replaceable"><code>POLICY-OID</code></em></code>, </span><span class="term"><code class="option">-policy-language <em class="replaceable"><code>POLICY-OID</code></em></code></span></dt><dd>Set the policy language identifier of the policy
+          data specified by the <code class="option">-policy</code> command-line option
+          to the oid specified by the <em class="replaceable"><code>POLICY-OID</code></em>
+          string.</dd><dt><span class="term"><code class="option">-path-length <em class="replaceable"><code>MAXIMUM</code></em></code></span></dt><dd>Set the maximum length of the chain of proxies
+            that can be created by the generated proxy to
+            <em class="replaceable"><code>MAXIMUM</code></em>. If not set, the default of an
+            unlimited proxy chain length is used.</dd><dt><span class="term"><code class="option">-pwstdin</code></span></dt><dd>Read the private key's passphrase from stdin
+            instead of reading input from the controlling tty. This is useful
+            when scripting <span class="command"><strong>grid-proxy-init</strong></span>.</dd><dt><span class="term"><code class="option">-limited</code></span></dt><dd>Create a limited proxy. Limited proxies are
+            generally refused by process-creating services, but may be
+            used to authorize with other services.</dd><dt><span class="term"><code class="option">-independent</code></span></dt><dd>Create an independent proxy. An independent
+            proxy is not treated as an impersonation proxy but as a separate
+            identity for authorization purposes.</dd><dt><span class="term"><code class="option">-draft</code></span></dt><dd>Create a IETF draft proxy instead of the default
+            RFC 3280-compliant proxy. This type of proxy uses a non-standard proxy
+            policy identifier. This might be useful for authenticating with
+            older versions of the Globus Toolkit.</dd><dt><span class="term"><code class="option">-old</code></span></dt><dd>Create a legacy proxy instead of the default
+            RFC 3280-compliant proxy. This type of proxy uses a non-standard method
+            of indicating that the certificate is a proxy and whether it is
+            limited.  This might be useful for authenticating with
+            older versions of the Globus Toolkit.</dd><dt><span class="term"><code class="option">-rfc</code></span></dt><dd>Create an RFC 3820-compliant proxy certificate.
+            This is the default for this version of <span class="command"><strong>grid-proxy-init</strong></span>.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462688039856"></a><h2>Examples</h2><p>To create a proxy with the default lifetime and format, run the
+        <span class="command"><strong>grid-proxy-init</strong></span> program with no arguments. For example:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-proxy-init</strong></span>
+<code class="computeroutput">Your identity: /DC=org/DC=example/CN=Joe User</code>
+<code class="prompt">Enter GRID pass phrase for this identity:</code>
+<code class="computeroutput">Creating proxy .................................. Done
+Your proxy is valid until: Thu Mar 18 03:48:05 2010</code></pre><p>
+    </p><p>To create a stronger proxy that lasts for only 8 hours, use the
+    <code class="option">-hours</code> and <code class="option">-bits</code> command-line options to
+    <span class="command"><strong>grid-proxy-init</strong></span>. For example:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-proxy-init</strong></span> <code class="option">-hours 8</code> <code class="option">-bits 1024</code>
+<code class="computeroutput">Your identity: /DC=org/DC=example/CN=Joe User</code>
+<code class="prompt">Enter GRID pass phrase for this identity:</code>
+<code class="computeroutput">Creating proxy .................................. Done
+Your proxy is valid until: Thu Mar 17 23:48:05 2010</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462686483424"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-proxy-init</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_USER_CERT</code></span></dt><dd>Path to the certificate to use as issuer of the
+            new proxy.</dd><dt><span class="term"><code class="envar">X509_USER_KEY</code></span></dt><dd>Path to the key to use to sign the new
+            proxy.</dd><dt><span class="term"><code class="envar">X509_CERT_DIR</code></span></dt><dd>Path to the directory containing trusted
+            certifiate certificates and signing policies.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462686075872"></a><h2>Files</h2><p>
+    The following files affect the execution of <span class="command"><strong>grid-proxy-init</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename"><code class="envar">$HOME</code>/.globus/usercert.pem</code></span></dt><dd>Default path to the certificate to use as issuer
+            of the new proxy.</dd><dt><span class="term"><code class="filename"><code class="envar">$HOME</code>/.globus/userkey.pem</code></span></dt><dd>Default path to the key to use to sign the new
+            proxy.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462685947680"></a><h2>Compatibility</h2><p>
+    For more information about proxy certificate types and their compatibility in GT, see <a class="ulink" href="http://dev.globus.org/wiki/Security/ProxyCertTypes" target="_top">http://dev.globus.org/wiki/Security/ProxyCertTypes</a>.</p></div><div class="refsect1"><a name="idm462689652560"></a><h2>See Also</h2><p>
+        <span class="citerefentry"><span class="refentrytitle">grid-proxy-destroy</span>(1)</span>,
+        <span class="citerefentry"><span class="refentrytitle">grid-proxy-info</span>(1)</span>
+    </p></div></div><div class="refentry"><a name="grid-proxy-destroy"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-proxy-destroy &#8212; Destroy the default proxy certificate</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-proxy-destroy</code>  [-help] [-usage] [-version]</p></div><div class="cmdsynopsis"><p><code class="command">grid-proxy-destroy</code>  [-debug] [-dryrun] [-default] [-all] [--] [FILENAME...]</p></div></div><div class="refsect1"><a name="idm462688941632"></a><h2>Description</h2><p>
+        The <span class="command"><strong>grid-proxy-destroy</strong></span> program removes X.509 proxy files from the local filesystem.
+        It overwrites the data in the files and removes the files from the 
+        filesystem. By default, it removes the current user's default proxy
+        (either
+        <code class="filename">/tmp/x509up_u<em class="replaceable"><code>UID</code></em></code> where
+        <em class="replaceable"><code>UID</code></em> is the current POSIX user id, or
+        the file pointed to by the <code class="envar">X509_USER_PROXY</code> environment
+        variable) unless a list of proxy file paths are included as part of
+        the command line.
+    </p><p>
+        Use the <code class="literal">--</code> command-line option to separate a
+        list of proxy paths from command line options if the proxy file
+        begins with the <code class="literal">-</code> character.
+    </p><p>
+        The full list of command-line options to <span class="command"><strong>grid-proxy-destroy</strong></span> are:
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to
+                <span class="command"><strong>grid-proxy-destroy</strong></span>.</dd><dt><span class="term"><code class="option">-version</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-proxy-destroy</strong></span>
+                command</dd><dt><span class="term"><code class="option">-debug</code></span></dt><dd>Display verbose error
+                messages.</dd><dt><span class="term"><code class="option">-dryrun</code></span></dt><dd>Do not remove the proxy, but display the
+                path of the files that would have been removed, or the
+                directory where they would have been removed from if the
+                <code class="option">-all</code> command-line option is used.</dd><dt><span class="term"><code class="option">-default</code></span></dt><dd>Remove the default proxy in addition to
+                the files included on the command-line. Only needed if 
+                other paths are included on the command-line.</dd><dt><span class="term"><code class="option">-all</code></span></dt><dd>Remove the default proxy and all delegated
+                proxies in the temporary file directory.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462688289328"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-proxy-destroy</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_USER_PROXY</code></span></dt><dd>Path to the default user
+            proxy.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462685747312"></a><h2>See Also</h2><p><span class="citerefentry"><span class="refentrytitle">grid-proxy-init</span>(1)</span>,
+    <span class="citerefentry"><span class="refentrytitle">grid-proxy-info</span>(1)</span>
+    </p></div></div><div class="refentry"><a name="grid-proxy-info"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-proxy-info &#8212; Display information about a proxy certificate</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-proxy-info</code>  [-help] [-usage] [-version]</p></div><div class="cmdsynopsis"><p><code class="command">grid-proxy-info</code>  [[-subject] |  [-s]]<br> [[-issuer] |  [-i]]<br> [-identity] [-type] [-timeleft] [-strength] [-all] [-text] [-path] [-rfc2253]<br> [{ -exists  |   -e }<br> [[-valid <em class="replaceable"><code>HOURS</code></em>:<em class="replaceable"><code>MINUTES</code></em>] |  [-v <em class="replaceable"><code>HOURS</code></em>:<em class="replaceable"><code>MINUTES</code></em>]]<br> [[-hours <em class="replaceable"><code>HOURS</code></em>] |  [-h <em class="replaceable"><code>HOURS</code></em>]]<br> [[-bits <em class="replaceable"><code>BITS</code></em>] |  [-b <em class="replaceable"><code>BITS</code></em>]]]</p></div></div><div class="refsect1"><a name="idm462684955968"></a><h2>Description</h2><p>
+            The <span class="command"><strong>grid-proxy-info</strong></span> program extracts information from an X.509 proxy
+            certificates, and optionally displays or returns an exit code based
+            on that information.
+        </p><p>
+            The default mode of operation is to print the following facts
+            about the current user's default proxy: 
+            subject, issuer, identity, type, strength, path, and time left.
+            If the command-line option <code class="option">-exists</code> or
+            <code class="option">-e</code> is included in the command-line, nothing
+            is printed unless one of the print options is specified. Instead,
+            <span class="command"><strong>grid-proxy-info</strong></span> determines if a valid proxy exists and, if so, exits with the
+            exit code <code class="literal">0</code>; if a proxy does not exist or 
+            is not valid, <span class="command"><strong>grid-proxy-info</strong></span> exits with the exit code <code class="literal">1</code>.
+            Additional validity criteria can be added by using the
+            <code class="option">-valid</code>, <code class="option">-v</code>,
+            <code class="option">-hours</code>, <code class="option">-h</code>,
+            <code class="option">-bits</code>, or <code class="option">-b</code> command-line
+            options. If used, these options must occur
+            <span class="emphasis"><em>after</em></span> the <code class="option">-e</code> or
+            <code class="option">-exists</code> command-line options. Those options are
+            only valid if one of the <code class="option">-e</code> or
+            <code class="option">-exists</code> command-line options is used.
+        </p><p>
+        The complete set of command-line options to <span class="command"><strong>grid-proxy-info</strong></span> are:
+
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to
+                <span class="command"><strong>grid-proxy-info</strong></span>.</dd><dt><span class="term"><code class="option">-version</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-proxy-info</strong></span>
+                command</dd><dt><span class="term"><code class="option">-debug</code></span></dt><dd>Display verbose error
+                messages.</dd><dt><span class="term"><code class="option">-file <em class="replaceable"><code>PROXYFILE</code></em></code>, </span><span class="term"><code class="option">-f <em class="replaceable"><code>PROXYFILE</code></em></code></span></dt><dd>Read the proxy located in the file
+                <em class="replaceable"><code>PROXYFILE</code></em> instead of using the
+                default proxy.</dd><dt><span class="term"><code class="option">-subject</code>, </span><span class="term"><code class="option">-s</code></span></dt><dd>Display the proxy certificate's subject
+                distinguished name.</dd><dt><span class="term"><code class="option">-issuer</code>, </span><span class="term"><code class="option">-i</code></span></dt><dd>Display the proxy certificate issuer's
+                distinguished name.</dd><dt><span class="term"><code class="option">-identity</code></span></dt><dd>Display the proxy certificate's identity.
+                For non-independent proxies, the identity is the subject of
+                the certificate which issued the first proxy in the proxy
+                chain.</dd><dt><span class="term"><code class="option">-type</code></span></dt><dd>Display the type of proxy certificate. The
+                type string includes the format ("legacy", "draft", or RFC 3280
+                compliant), identity type ("impersonation" or "independent"),
+                and policy ("limited" or "full"). See
+                <span class="citerefentry"><span class="refentrytitle">grid-proxy-init</span>(1)</span>
+                for information about how to create different types of
+                proxies.</dd><dt><span class="term"><code class="option">-timeleft</code></span></dt><dd>Display the number of seconds remaining
+                until the proxy certificate expires.</dd><dt><span class="term"><code class="option">-strength</code></span></dt><dd>Display the strength (in bits) of the key
+                associated with the proxy certificate.</dd><dt><span class="term"><code class="option">-all</code></span></dt><dd>Display the default information for the
+                proxy when also using the <code class="option">-e</code> or
+                <code class="option">-exists</code> command-line
+                option.</dd><dt><span class="term"><code class="option">-text</code></span></dt><dd>Display the proxy certificate contents
+                to standard output, including policy information, issuer,
+                public key, and modulus.</dd><dt><span class="term"><code class="option">-path</code></span></dt><dd>Display the path to the file containing
+                the default proxy certificate.</dd><dt><span class="term"><code class="option">-rfc2253</code></span></dt><dd>Display distinguished names for the subject,
+                issuer, and identity using the string representation described
+                in RFC 2253, instead of the legacy format.</dd><dt><span class="term"><code class="option">-exists</code>, </span><span class="term"><code class="option">-e</code></span></dt><dd>Perform an existence and validity check for
+                the proxy. If a valid proxy exists and matches the criteria
+                described by other command-line options (if any), exit with 0; 
+                otherwise, exit with 1. This option must be before
+                other validity check predicate in the command-line
+                options. If this option is specified, the output of the default
+                facts about the proxy is disabled. Use the
+                <code class="option">-all</code> option to have the information displayed
+                as well as the exit code set.</dd><dt><span class="term"><code class="option">-valid <em class="replaceable"><code>HOURS</code></em>:<em class="replaceable"><code>MINUTES</code></em></code>, </span><span class="term"><code class="option">-v <em class="replaceable"><code>HOURS</code></em>:<em class="replaceable"><code>MINUTES</code></em></code>, </span><span class="term"><code class="option">-hours <em class="replaceable"><code>HOURS</code></em></code>, </span><span class="term"><code class="option">-h <em class="replaceable"><code>HOURS</code></em></code></span></dt><dd>Check that the proxy certificate is valid
+                for at least <em class="replaceable"><code>HOURS</code></em> hours and
+                <em class="replaceable"><code>MINUTES</code></em> minutes. If it is not, 
+                <span class="command"><strong>grid-proxy-info</strong></span> will exit with exit code <code class="literal">1</code>.</dd><dt><span class="term"><code class="option">-bits <em class="replaceable"><code>BITS</code></em></code>, </span><span class="term"><code class="option">-b <em class="replaceable"><code>BITS</code></em></code></span></dt><dd>Check that the proxy certificate key
+                strength is at least <em class="replaceable"><code>BITS</code></em>
+                bits.</dd></dl></div><p>
+        </p></div><div class="refsect1"><a name="idm462687961744"></a><h2>Environment Variables</h2><p>The following environment variables affect the execution of
+        <span class="command"><strong>grid-proxy-info</strong></span>:
+        
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">X509_USER_PROXY</code></span></dt><dd>Path to the default user
+                proxy.</dd></dl></div><p>
+        </p></div><div class="refsect1"><a name="idm462688827392"></a><h2>See Also</h2><p><span class="citerefentry"><span class="refentrytitle">grid-proxy-init</span>(1)</span>,
+        <span class="citerefentry"><span class="refentrytitle">grid-proxy-destroy</span>(1)</span>
+        </p></div></div><div class="refentry"><a name="grid-mapfile-add-entry"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-mapfile-add-entry &#8212; Add an entry to a gridmap file</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-mapfile-add-entry</code>  [-help] [-usage] [-version] [-versions]</p></div><div class="cmdsynopsis"><p><code class="command">grid-mapfile-add-entry</code>  {-dn <em class="replaceable"><code>DISTINGUISHED-NAME</code></em>} {-ln  <em class="replaceable"><code>LOCAL-NAME</code></em>... }<br> [[-d] |  [-dryrun]]<br> [[-mapfile <em class="replaceable"><code>MAPFILE</code></em>] |  [-f <em class="replaceable"><code>MAPFILE</code></em>]]</p></div></div><div class="refsect1"><a name="idm462689841600"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-mapfile-add-entry</strong></span> program adds a new mapping from an X.509 distinguished name
+    to a local POSIX user name to a gridmap file. Gridmap files are used
+    as a simple authorization method for services such as GRAM5 or GridFTP.
+    </p><p>
+    The <span class="command"><strong>grid-mapfile-add-entry</strong></span> program verifies that the <em class="replaceable"><code>LOCAL-NAME</code></em>
+    is a valid user name on the system on which it was run, and that the
+    mapping between <em class="replaceable"><code>DISTINGUISHED-NAME</code></em> and
+    <em class="replaceable"><code>LOCAL-NAME</code></em> does not already exist in the gridmap
+    file.
+    </p><p>
+    By default, <span class="command"><strong>grid-mapfile-add-entry</strong></span> will modify the gridmap file named by the
+    <code class="envar">GRIDMAP</code> environment variable if present, or the file
+    <code class="filename">/etc/grid-security/grid-mapfile</code> if not. This can 
+    be changed by the use of the <code class="option">-mapfile</code> or
+    <code class="option">-f</code> command-line options.
+    </p><p>
+    If the gridmap file does not exist, <span class="command"><strong>grid-mapfile-add-entry</strong></span> will create it. If it already
+    exists, <span class="command"><strong>grid-mapfile-add-entry</strong></span> will save the current contents of the file to a new file with
+    the string <code class="literal">.old</code> appended to the file name.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-mapfile-add-entry</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-mapfile-add-entry</strong></span>.</dd><dt><span class="term"><code class="option">-version</code>, </span><span class="term"><code class="option">-versions</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-mapfile-add-entry</strong></span>
+            command. The second form includes more
+            details.</dd><dt><span class="term"><code class="option">-dn <em class="replaceable"><code>DISTINGUISHED-NAME</code></em></code></span></dt><dd>The X.509 distinguished name to add a mapping
+            for. The name should be in OpenSSL's <code class="literal">oneline</code>
+            format.</dd><dt><span class="term"><code class="option">-ln <em class="replaceable"><code>LOCAL-NAME</code></em>...</code></span></dt><dd>The POSIX user name to map the distinguished
+            name to. This name must be a valid username. Add multiple
+            <em class="replaceable"><code>LOCAL-NAME</code></em> strings after the
+            <code class="option">-ln</code> command-line option. If any of the local names
+            are invalid, no changes will be made to the gridmap
+            file. Note that if multiple occurances of the <code class="option">-ln</code>
+            command-line option are present, only the the last one will be
+            added.</dd><dt><span class="term"><code class="option">-d</code>, </span><span class="term"><code class="option">-dryrun</code></span></dt><dd>Verify local names and display diagnostics about
+            what would be added to the gridmap file, but don't actually modify
+            the file.</dd><dt><span class="term"><code class="option">-mapfile <em class="replaceable"><code>MAPFILE</code></em></code>, </span><span class="term"><code class="option">-f <em class="replaceable"><code>MAPFILE</code></em></code></span></dt><dd>Modify the gridmap file named by
+            <em class="replaceable"><code>MAPFILE</code></em> instead of the
+            default.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462687188832"></a><h2>Examples</h2><p>Add a mapping between the current user's certificate to the
+    current user id to a gridmap file in
+    <code class="filename"><code class="envar">$HOME</code>/.gridmap</code>:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-mapfile-add-entry</strong></span> <code class="option">-f $HOME/.gridmap</code> <code class="option">-dn "`grid-cert-info -subject`"</code> <code class="option">-ln "`id -un`"</code>
+<code class="computeroutput">Modifying /home/juser/.gridmap ...
+/home/juser/.gridmap does not exist... Attempting to create /home/juser/.gridmap
+New entry:
+"/DC=org/DC=example/DC=grid/CN=Joe User" juser
+(1) entry added</code></pre><p>
+    </p><p>Add a mapping between the a distinguished name and multiple local
+    names:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-mapfile-add-entry</strong></span> <code class="option">-dn "/DC=org/DC=example/DC=grid/CN=Joe User" juser"</code> <code class="option">local1</code> <code class="option">local2</code>
+<code class="computeroutput">Modifying /home/juser/.gridmap ...
+/home/juser/.gridmap does not exist... Attempting to create /home/juser/.gridmap
+New entry:
+"/DC=org/DC=example/DC=grid/CN=Joe User" local1,local2
+(1) entry added</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462688540768"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-mapfile-add-entry</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">GRIDMAP</code></span></dt><dd>Path to the default gridmap to
+            modify.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462686157376"></a><h2>Files</h2><p>
+    The following files affect the execution of <span class="command"><strong>grid-mapfile-add-entry</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename">/etc/grid-security/grid-mapfile</code></span></dt><dd>Path to the default gridmap to modify if
+            <code class="envar">GRIDMAP</code> environment variable is not
+            set.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462687220960"></a><h2>See Also</h2><p>
+        <span class="citerefentry"><span class="refentrytitle">grid-mapfile-check-consistency</span>(8)</span>,
+        <span class="citerefentry"><span class="refentrytitle">grid-mapfile-delete-entry</span>(8)</span>
+    </p></div></div><div class="refentry"><a name="grid-mapfile-check-consistency"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-mapfile-check-consistency &#8212; Add an entry to a grid map file</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-mapfile-check-consistency</code>  [-h] [-help] [-usage] [-version]</p></div><div class="cmdsynopsis"><p><code class="command">grid-mapfile-check-consistency</code>   [-mapfile <em class="replaceable"><code>MAPFILE</code></em>] |  [-f <em class="replaceable"><code>MAPFILE</code></em>] </p></div></div><div class="refsect1"><a name="idm462687317920"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-mapfile-check-consistency</strong></span> program performs basic checks for validity of a gridmap file.
+    These checks include checks for existence, duplication of entries, and
+    valid local user names. If the gridmap file is valid, <span class="command"><strong>grid-mapfile-check-consistency</strong></span> exits with
+    a zero exit code, otherwise it exits with a non-zero exit code. In either
+    case, it displays information about its progress as it parses and validates
+    the gridmap file.
+    </p><p>
+    By default, <span class="command"><strong>grid-mapfile-check-consistency</strong></span> will check the gridmap file named by the
+    <code class="envar">GRIDMAP</code> environment variable if present. If that
+    variable is not set, it will check the file
+    <code class="filename"><code class="envar">$HOME</code>/.gridmap</code> for non-root users
+    if present. If that doesn't exist or <span class="command"><strong>grid-mapfile-check-consistency</strong></span> is run as root, it will 
+    then check <code class="filename">/etc/grid-security/grid-mapfile</code>. This can 
+    be changed by the use of the <code class="option">-mapfile</code> or
+    <code class="option">-f</code> command-line options.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-mapfile-check-consistency</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-h</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-mapfile-check-consistency</strong></span>.</dd><dt><span class="term"><code class="option">-version</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-mapfile-check-consistency</strong></span>
+            command.</dd><dt><span class="term"><code class="option">-mapfile <em class="replaceable"><code>MAPFILE</code></em></code>, </span><span class="term"><code class="option">-f <em class="replaceable"><code>MAPFILE</code></em></code></span></dt><dd>Check the gridmap file named by
+            <em class="replaceable"><code>MAPFILE</code></em> instead of the
+            default.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462687575008"></a><h2>Examples</h2><p>Check that the gridmap file in
+    <code class="filename">/etc/grid-security</code> is valid:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-mapfile-check-consistency</strong></span> <code class="option">-f /etc/grid-security/grid-mapfile</code>
+<code class="computeroutput">Checking /etc/grid-security/grid-mapfile
+Verifying grid mapfile existence...OK
+Checking for duplicate entries...OK
+Checking for valid user names...OK</code></pre><p>
+    </p><p>Check a gridmap file that has an invalid local user name:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-mapfile-check-consistency</strong></span> <code class="option">-f /etc/grid-security/grid-mapfile</code>
+<code class="computeroutput">Checking /etc/grid-security/grid-mapfile
+Verifying grid mapfile existence...OK
+Checking for duplicate entries...OK
+ERROR: baduser is not a valid local username
+ERROR: Found 1 invalid username(s)</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462686432672"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-mapfile-check-consistency</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">GRIDMAP</code></span></dt><dd>Path to the default gridmap to
+            check.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462686254896"></a><h2>Files</h2><p>
+    The following files affect the execution of <span class="command"><strong>grid-mapfile-check-consistency</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename"><code class="envar">$HOME</code>/.gridmap</code></span></dt><dd>Path to the default gridmap to check if the
+            <code class="envar">GRIDMAP</code> environment variable is not
+            set for non-root users.</dd><dt><span class="term"><code class="filename">/etc/grid-security/grid-mapfile</code></span></dt><dd>Path to the default gridmap to check if
+            <code class="envar">GRIDMAP</code> environment variable is not
+            set and the above file does not exist.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462687143744"></a><h2>See Also</h2><p>
+        <span class="citerefentry"><span class="refentrytitle">grid-mapfile-add-entry</span>(8)</span>,
+        <span class="citerefentry"><span class="refentrytitle">grid-mapfile-delete-entry</span>(8)</span>
+    </p></div></div><div class="refentry"><a name="grid-mapfile-delete-entry"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>grid-mapfile-delete-entry &#8212; Remove entries from a gridmap file</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">grid-mapfile-delete-entry</code>  [-help] [-usage] [-version] [-versions]</p></div><div class="cmdsynopsis"><p><code class="command">grid-mapfile-delete-entry</code>  {-dn <em class="replaceable"><code>DISTINGUISHED-NAME</code></em>} {-ln  <em class="replaceable"><code>LOCAL-NAME</code></em>... }<br> [[-d] |  [-dryrun]]<br> [[-mapfile <em class="replaceable"><code>MAPFILE</code></em>] |  [-f <em class="replaceable"><code>MAPFILE</code></em>]]</p></div></div><div class="refsect1"><a name="idm462688945936"></a><h2>Description</h2><p>
+    The <span class="command"><strong>grid-mapfile-delete-entry</strong></span> program deletes mappings from a gridmap file. If both
+    the <code class="option">-dn</code> and <code class="option">-ln</code>&gt; options are specified,
+    <span class="command"><strong>grid-mapfile-delete-entry</strong></span> removes entries which meet both criteria (remove entries mapping
+    <em class="replaceable"><code>DISTINGUISHED-NAME</code></em> to
+    <em class="replaceable"><code>LOCAL-NAME</code></em> for each
+    <em class="replaceable"><code>LOCAL-NAME</code></em> specified). If only
+    <code class="option">-dn</code> or <code class="option">-ln</code> is specified
+    <span class="emphasis"><em>all</em></span> entries for that
+    <em class="replaceable"><code>DISTINGUISHED-NAME</code></em> or
+    <em class="replaceable"><code>LOCAL-NAME</code></em> are removed.
+    </p><p>
+    By default, <span class="command"><strong>grid-mapfile-delete-entry</strong></span> will modify the gridmap file named by the
+    <code class="envar">GRIDMAP</code> environment variable if present, or the file
+    <code class="filename">/etc/grid-security/grid-mapfile</code> if not. This can 
+    be changed by the use of the <code class="option">-mapfile</code> or
+    <code class="option">-f</code> command-line options.
+    </p><p>
+    Prior to modifying a gridmap file, <span class="command"><strong>grid-mapfile-delete-entry</strong></span> saves its current contents
+    to a file with the string <code class="literal">.old</code> appended to the original
+    file name.
+    </p><p>
+    The full set of command-line options to <span class="command"><strong>grid-mapfile-delete-entry</strong></span> are:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-help</code>, </span><span class="term"><code class="option">-usage</code></span></dt><dd>Display the command-line options to 
+            <span class="command"><strong>grid-mapfile-delete-entry</strong></span>.</dd><dt><span class="term"><code class="option">-version</code>, </span><span class="term"><code class="option">-versions</code></span></dt><dd>Display the version number of the <span class="command"><strong>grid-mapfile-delete-entry</strong></span>
+            command. The second form includes more
+            details.</dd><dt><span class="term"><code class="option">-dn <em class="replaceable"><code>DISTINGUISHED-NAME</code></em></code></span></dt><dd>The X.509 distinguished name to remove from
+            the gridmap file. If the <code class="option">-ln</code> option is not
+            specified, remove all entries for this name; otherwise, remove
+            entries that match both this name and the local name.
+            The name should be in OpenSSL's <code class="literal">oneline</code>
+            format.</dd><dt><span class="term"><code class="option">-ln <em class="replaceable"><code>LOCAL-NAME</code></em>...</code></span></dt><dd>The POSIX user name to remove from the
+            gridmap file. Include multiple
+            <em class="replaceable"><code>LOCAL-NAME</code></em> strings after the
+            <code class="option">-ln</code> command-line option to remove multiple names
+            from the gridmap. If the <code class="option">-dn</code> option is not
+            specifeid, remove all entries for these names; otherwise, remove
+            entries that match the <em class="replaceable"><code>DISTINGUISHED-NAME</code></em>
+            and any of the <em class="replaceable"><code>LOCAL-NAME</code></em>
+            values.</dd><dt><span class="term"><code class="option">-d</code>, </span><span class="term"><code class="option">-dryrun</code></span></dt><dd>Display diagnostics about
+            what would be removed from the gridmap file, but don't actually
+            modify the file.</dd><dt><span class="term"><code class="option">-mapfile <em class="replaceable"><code>MAPFILE</code></em></code>, </span><span class="term"><code class="option">-f <em class="replaceable"><code>MAPFILE</code></em></code></span></dt><dd>Modify the gridmap file named by
+            <em class="replaceable"><code>MAPFILE</code></em> instead of the
+            default.</dd></dl></div><p>
+
+    </p></div><div class="refsect1"><a name="idm462689473104"></a><h2>Examples</h2><p>Remove all mappings for a distinguished name:
+    
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-mapfile-delete-entry</strong></span> <code class="option">"/DC=org/DC=example/DC=grid/CN=Joe User"</code>
+<code class="computeroutput">Modifying /etc/grid-security/grid-mapfile ...
+Deleting entry: "/DC=org/DC=example/DC=grid/CN=Joe User" juser,juser2
+(1) entry deleted</code></pre><p>
+    </p><p>Remove the mapping between a distinguished name and a single local
+    username:
+    </p><pre class="screen"><code class="prompt">% </code><span class="command"><strong>grid-mapfile-delete-entry</strong></span> <code class="option">"/DC=org/DC=example/DC=grid/CN=Joe User"</code> <code class="option">-ln juser2</code>
+<code class="computeroutput">Modifying /etc/grid-security/grid-mapfile ...
+Current entry: "/DC=org/DC=example/DC=grid/CN=Joe User" juser
+(1) mapping removed: (juser2), (0) not present and ignored
+(0) entries deleted</code></pre><p>
+    </p></div><div class="refsect1"><a name="idm462688457216"></a><h2>Environment Variables</h2><p>
+    The following environment variables affect the execution of <span class="command"><strong>grid-mapfile-delete-entry</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">GRIDMAP</code></span></dt><dd>Path to the default gridmap to
+            modify.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462686955552"></a><h2>Files</h2><p>
+    The following files affect the execution of <span class="command"><strong>grid-mapfile-delete-entry</strong></span>:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename">/etc/grid-security/grid-mapfile</code></span></dt><dd>Path to the default gridmap to modify if
+            <code class="envar">GRIDMAP</code> environment variable is not
+            set.</dd></dl></div><p>
+    </p></div><div class="refsect1"><a name="idm462685753456"></a><h2>See Also</h2><p>
+        <span class="citerefentry"><span class="refentrytitle">grid-mapfile-add-entry</span>(8)</span>,
+        <span class="citerefentry"><span class="refentrytitle">grid-mapfile-check-consistency</span>(8)</span>
+    </p></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-configuring"></a>Chapter 3. Configuring Certificates</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#gsic-configuring-trustCA">1. Configuring Globus to Trust a Particular Certificate Authority</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462685566752">1.1. Trusted certificates directory</a></span></dt><dt><span class="section"><a href="#idm462689645088">1.2. Trusted certificates files</a></span></dt><dt><span class="section"><a href="#idm462686807488">1.3. Hash of the CA certificate</a></span></dt><dt><span class="section"><a href="#idm462686805056">1.4. Creating a signing policy by hand</a></span></dt><dt><span class="section"><a href="#idm462688434064">1.5. Repository of CAs</a></span></dt></dl></dd><dt><span class="section"><a href="#idm462688432272">2. Configuring Globus to Create Appropriate Certificate Requests</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462685854976">2.1. Creating a certificate request for a specific CA</a></span></dt><dt><span class="section"><a href="#idm462685852672">2.2. Listing available CAs</a></span></dt><dt><span class="section"><a href="#idm462685850624">2.3. Specifying a default CA for certificate requests</a></span></dt><dt><span class="section"><a href="#idm462685846912">2.4. <code class="filename">directions</code> file</a></span></dt></dl></dd><dt><span class="section"><a href="#idm462688997408">3. Requesting Service Certificates</a></span></dt><dt><span class="section"><a href="#setting-up-gridmap">4. Configuring Credential Mappings</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462689244896">4.1. Configuring Identity Mappings Using <code class="filename">gridmap</code> Files</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462689243200">4.1.1. Adding an entry to a gridmap file</a></span></dt><dt><span class="section"><a href="#idm462689240896">4.1.2. Deleting an entry from a gridmap file</a></span></dt><dt><span class="section"><a href="#idm462689238592">4.1.3. Checking consistency of a gridmap file</a></span></dt><dt><span class="section"><a href="#idm462689236928">4.1.4. Configuring per-service gridmap files</a></span></dt><dt><span class="section"><a href="#idm462685933216">4.1.5. Gridmap formats</a></span></dt></dl></dd><dt><span class="section"><a href="#idm462689455568">4.2. Configuring Alternate Credential Mappings</a></span></dt><dd><dl><dt><span class="section"><a href="#idm462689441872">4.2.1. Callout File Format</a></span></dt></dl></dd></dl></dd><dt><span class="section"><a href="#gsic-config-permissions">5. GSI File Permissions Requirements</a></span></dt></dl></div><p>This section describes the configuration steps required to:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">determine whether or not to trust certificates issued by a particular <a href="#ca" class="glossterm"><em class="glossterm">Certificate Authority (CA)</em></a>,</li><li class="listitem">provide appropriate default values for use by the <a href="#grid-cert-request" class="olink"><span class="command"><strong>grid-cert-request</strong></span></a> command,
+          which is used to generate certificates,</li><li class="listitem">request <a href="#svc-cert" class="glossterm"><em class="glossterm">service certificates</em></a>,
+          used by services to authenticate themselves to users, and</li><li class="listitem">specify identity mapping information.</li></ul></div><p>In general, Globus tools will look for a configuration file in a user-specific location
+    first, and in a system-wide location if no user-specific file was found. The configuration
+    commands described here may be run by administrators to create system-wide defaults and by
+    individuals to override those defaults.</p><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-configuring-trustCA"></a>1. Configuring Globus to Trust a Particular Certificate Authority</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462685566752"></a>1.1. Trusted certificates directory</h3></div></div></div><p>The Globus tools will trust certificates issued by a CA if (and only if) it can find
+        information about the CA in the trusted certificates directory.</p><p>The trusted certificates directory is located as described below and exists either on a
+        per-machine or on a per-installation basis. </p><p><code class="envar">X509_CERT_DIR</code> is the environment variable used to specify the path to the
+        trusted certificates directory. This directory contains information about which CAs are
+        trusted (including the <a href="#ca-cert" class="glossterm"><em class="glossterm">CA certificates</em></a>
+        themselves) and, in some cases, configuration information used by <a href="#grid-cert-request" class="olink"><span class="command"><strong>grid-cert-request</strong></span></a> to formulate
+        certificate requests. The location of the trusted certificates directory is looked for in
+        the following order: </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">value of the <code class="envar">X509_CERT_DIR</code> environment variable</li><li class="listitem"><code class="filename">$HOME/.globus/certificates</code></li><li class="listitem"><code class="filename">/etc/grid-security/certificates</code> exists</li><li class="listitem"><code class="filename">$GLOBUS_LOCATION/share/certificates</code></li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462689645088"></a>1.2. Trusted certificates files</h3></div></div></div><p>The following two files must exist in the directory for each trusted CA:</p><div class="table"><a name="idm462689644064"></a><p class="title"><b>Table 3.1. CA files</b></p><div class="table-contents"><table summary="CA files" border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td><code class="filename"><em class="replaceable"><code>cert_hash</code></em>.0</code></td><td>The trusted <a href="#ca-cert" class="glossterm"><em class="glossterm">CA Certificate</em></a>.</td></tr><tr><td><code class="filename"><em class="replaceable"><code>cert_hash</code></em>.signing_policy</code></td><td>A configuration file defining the distinguished names of certificates signed by
+                the CA.</td></tr></tbody></table></div></div><br class="table-break"><p>Non-WS Globus components will honor a certificate only if: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">its CA certificate exists (with the appropriate name) in the
+                <span class="emphasis"><em>TRUSTED_CA</em></span> directory, and</li><li class="listitem">the certificate's distinguished name matches the pattern described in the
+              signing policy file.</li></ul></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462686807488"></a>1.3. Hash of the CA certificate</h3></div></div></div><p>The <span class="emphasis"><em>cert_hash</em></span> that appears in the file names above is the hash of
+        the CA certificate, which can be found by running the command:</p><pre class="screen">$GLOBUS_LOCATION/bin/openssl x509 -hash -noout &lt; <span class="emphasis"><em>ca_certificate</em></span></pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462686805056"></a>1.4. Creating a signing policy by hand</h3></div></div></div><p>Some CAs provide tools to install their CA certificates and signing policy files into
+        the trusted certificates directory. You can, however, create a signing policy file by hand;
+        the signing policy file has the following format:</p><pre class="screen">access_id_CA X509 '<span class="emphasis"><em>CA Distinguished Name</em></span>'
+pos_rights globus CA:sign
+cond_subjects globus '"<span class="emphasis"><em>Distinguished Name Pattern</em></span>"'</pre><p>In the above, the <span class="emphasis"><em>CA Distinguished Name</em></span> is the subject name of the
+        CA certificate, and the <span class="emphasis"><em>Distinguished Name Pattern</em></span> is a string used to
+        match the distinguished names of certificates granted by the CA. </p><p>Some very simple wildcard matching is done: if the <span class="emphasis"><em>Distinguished Name
+        Pattern</em></span> ends with a '*', then any distinguished name that matches the part of the
+        CA subject name before the '*' is considered a match. </p><p>Note: the cond_subjects line may contain a space-separated list of distinguished name
+        patterns.</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462688434064"></a>1.5. Repository of CAs</h3></div></div></div><p>A repository of CA certificates that are widely used in academic and research settings
+        can be found <a class="ulink" href="https://www.tacar.org/certs.html" target="_top">here</a>.</p></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="idm462688432272"></a>2. Configuring Globus to Create Appropriate Certificate Requests</h2></div></div></div><p>The <a href="#grid-cert-request" class="olink"><span class="command"><strong>grid-cert-request</strong></span></a> command, which is used to create certificates, uses the
+      following configuration files:</p><div class="table"><a name="idm462688430352"></a><p class="title"><b>Table 3.2. Certificate request configuration files</b></p><div class="table-contents"><table summary="Certificate request configuration files" border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td><code class="filename">globus-user-ssl.conf</code></td><td>Defines the distinguished name to use for a user's certificate request. The
+              format is described <a class="ulink" href="http://www.openssl.org/docs/apps/req.html#CONFIGURATION_FILE_FORMAT" target="_top">here</a>.</td></tr><tr><td><code class="filename">globus-host-ssl.conf</code></td><td>Defines the distinguished name for a host (or service) certificate request. The
+              format is described <a class="ulink" href="http://www.openssl.org/docs/apps/req.html#CONFIGURATION_FILE_FORMAT" target="_top">here</a>.</td></tr><tr><td><code class="filename">grid-security.conf</code></td><td>A base configuration file that contains the name and email address for the
+            CA.</td></tr><tr><td><code class="filename">directions</code></td><td>An optional file that may contain directions on using the CA.</td></tr></tbody></table></div></div><br class="table-break"><p>Many CAs provide tools to install configuration files with the following names in the
+      Trusted Certificates directory:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><code class="filename">globus-user-ssl.conf.<em class="replaceable"><code>cert_hash</code></em></code></p></li><li class="listitem"><p><code class="filename">globus-host-ssl.conf.<em class="replaceable"><code>cert_hash</code></em></code></p></li><li class="listitem"><p><code class="filename">grid_security.conf.<em class="replaceable"><code>cert_hash</code></em></code></p></li><li class="listitem"><p><code class="filename">directions.<em class="replaceable"><code>cert_hash</code></em></code></p></li></ul></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462685854976"></a>2.1. Creating a certificate request for a specific CA</h3></div></div></div><p>The command:</p><pre class="screen">grid-cert-request -ca <span class="emphasis"><em>cert_hash</em></span></pre><p>will create a certificate request based on the specified CA's configuration files.
+      </p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462685852672"></a>2.2. Listing available CAs</h3></div></div></div><p>The command:</p><pre class="screen">grid-cert-request -ca</pre><p>will list the available CAs and let the user choose which one to create a request
+      for.</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462685850624"></a>2.3. Specifying a default CA for certificate requests</h3></div></div></div><p>The default CA is the CA that will be used for certificate requests if <a href="#grid-cert-request" class="olink"><span class="command"><strong>grid-cert-request</strong></span></a> is invoked without the <code class="option">-ca</code> flag. </p><p>You can specify a default CA by invoking the <a href="#grid-default-ca" class="olink"><span class="command"><strong>grid-default-ca</strong></span></a> command (follow the
+        link for examples of using the command).</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462685846912"></a>2.4. <code class="filename">directions</code> file</h3></div></div></div><p>The <code class="filename">directions</code> file may contain specific directions on how to use
+        the CA. There are three types of printed messages: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><span class="emphasis"><em>REQUEST HEADER</em></span>, printed to a certificate request
+            file,</li><li class="listitem"><span class="emphasis"><em>USER INSTRUCTIONS</em></span>, printed on the screen when one requests
+              a <a href="#user-cert" class="glossterm"><em class="glossterm">user certificate</em></a>,</li><li class="listitem"><span class="emphasis"><em>NONUSER INSTRUCTIONS</em></span>, printed on the screen when one
+              requests a certificate for a service.</li></ul></div><p>Each message is delimited from others with lines <span class="emphasis"><em>----- BEGIN message type TEXT
+          -----</em></span> and <span class="emphasis"><em>----- END message type TEXT -----</em></span>. For example,
+        the <code class="filename">directions</code> file would contain the following lines:</p><pre class="screen">----- BEGIN REQUEST HEADER TEXT -----
+This is a Certificate Request file
+
+It should be mailed to ${GSI_CA_EMAIL_ADDR}
+----- END REQUEST HEADER TEXT -----</pre><p>If this file does not exist, the default messages are printed.</p></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="idm462688997408"></a>3. Requesting Service Certificates</h2></div></div></div><p>Different CAs use different mechanisms for issuing end-user certificates; some use
+      mechanisms that are entirely web-based, while others require you to generate a certificate
+      request and send it to the CA. If you need to create a certificate request for a service
+      certificate, you can do so by running:</p><pre class="screen">grid-cert-request -host <span class="emphasis"><em>hostname</em></span> -service <span class="emphasis"><em>service_name</em></span></pre><p>where <span class="emphasis"><em>hostname</em></span> is the fully-qualified name of the host on which the
+      service will be running, and <span class="emphasis"><em>service_name</em></span> is the name of the service.
+      This will create the following three files:</p><div class="table"><a name="idm462689257696"></a><p class="title"><b>Table 3.3. Certificate request files</b></p><div class="table-contents"><table summary="Certificate request files" border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td><code class="filename"><em class="replaceable"><code>GRID_SECURITY/service_name/service_name</code></em>cert.pem</code></td><td>An empty file. When you receive your actual service certificate from your CA, you
+              should place it in this file.</td></tr><tr><td><code class="filename"><em class="replaceable"><code>GRID_SECURITY/service_name/service_name</code></em>cert_request.pem</code></td><td>The certificate request, which you should send to your CA.</td></tr><tr><td><code class="filename"><em class="replaceable"><code>GRID_SECURITY/service_name/service_name</code></em>key.pem</code></td><td>The <a href="#priv-key" class="glossterm"><em class="glossterm">private key</em></a> associated with your certificate request,
+              encrypted with the pass phrase that you entered when prompted by <span class="command"><strong>grid-cert-request</strong></span>.</td></tr></tbody></table></div></div><br class="table-break"><p>The <a href="#grid-cert-request" class="olink"><span class="command"><strong>grid-cert-request</strong></span></a> command recognizes several other useful options; you
+      can list these with:</p><pre class="screen">grid-cert-request -help</pre></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="setting-up-gridmap"></a>4. Configuring Credential Mappings</h2></div></div></div><p> Several Globus services map certificates to local unix usernames to be used with unix
+      services. The default implementation uses a <a href="#grid-map-file" class="glossterm"><em class="glossterm">gridmap</em></a> file to map the distinguished name of the identity of the client's
+      certificate to a local login name. Administrators can modify the contents of the gridmap file
+      to control what certificate identities are allowed to access Globus services, as well as
+      configure, via an environment variable, what gridmap file a particular service uses. </p><p>In addition to the identity-based mapping done via the gridmap file, administrators can
+      configure Globus services to to use arbitrary mapping functions. These may use other criteria,
+      such as SAML assertions, to map a certificate to a local account, or may map certificates to
+      temporary accounts. Administrators can install different mapping implementations and configure
+      services to use them by creating appropriate configuration files and setting environment
+      variables. </p><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462689244896"></a>4.1. Configuring Identity Mappings Using <code class="filename">gridmap</code> Files</h3></div></div></div><p> Gridmap files contain a database of entries mapping distinguished names to local user
+        names. These may be manipulated by using the following tools. </p><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm462689243200"></a>4.1.1. Adding an entry to a gridmap file</h4></div></div></div><p>To add an entry to the gridmap file, run:</p><pre class="screen">$GLOBUS_LOCATION/sbin/grid-mapfile-add-entry \
+        -dn "<em class="replaceable"><code>Distinguished Name</code></em>" \
+        -ln <em class="replaceable"><code>local_name</code></em></pre></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm462689240896"></a>4.1.2. Deleting an entry from a gridmap file</h4></div></div></div><p>To delete an entry from the gridmap file, run:</p><pre class="screen">$GLOBUS_LOCATION/sbin/grid-mapfile-delete-entry \
+        -dn "<em class="replaceable"><code>Distinguished Name</code></em>" \
+        -ln <em class="replaceable"><code>local_name</code></em></pre></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm462689238592"></a>4.1.3. Checking consistency of a gridmap file</h4></div></div></div><p>To check the consistency of the gridmap file, run</p><pre class="screen">$GLOBUS_LOCATION/sbin/grid-mapfile-check-consistency</pre></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm462689236928"></a>4.1.4. Configuring per-service gridmap files</h4></div></div></div><p> To configure a service to use a particular gridmap file, set the
+          <code class="envar">GRIDMAP</code> variable in the service's environment to the path of the gridmap
+          file. In this way, you can grant different access rights to different certificate
+          identities on a per-service basis by setting the <code class="envar">GRIDMAP</code> variable in
+          different service environments. </p><p> You can use tools described above to operate on different gridmap files by either
+          setting the <code class="envar">GRIDMAP</code> environment variable prior to invoking them, or by
+          using the <code class="option">-mapfile</code> command-line option. </p><p>For reference, the GSI C code looks for the gridmap in these locations: </p><div class="table"><a name="gsic-gridmap-location-table"></a><p class="title"><b>Table 3.4. Gridmap File Location Algorithm </b></p><div class="table-contents"><table summary="Gridmap File Location Algorithm " border="1" width="700px"><colgroup><col align="left" class="Location"><col align="left" class="c2"></colgroup><thead><tr><th align="left">Location</th><th align="left">notes</th></tr></thead><tbody><tr><td align="left">
+                    <p>
+                      <code class="envar">GRIDMAP</code> environment variable </p>
+                  </td><td align="left">
+                    <p></p>
+                  </td></tr><tr><td align="left">
+                    <p>
+                      <code class="filename">/etc/grid-security/grid-mapfile</code>
+                    </p>
+                  </td><td align="left">
+                    <p> Only for services running as root. </p>
+                  </td></tr><tr><td align="left">
+                    <p>
+                      <code class="filename"><code class="envar">HOME</code>.gridmap</code>
+                    </p>
+                  </td><td align="left">
+                    <p> Only for services not running as root. </p>
+                  </td></tr></tbody></table></div></div><p><br class="table-break"></p></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm462685933216"></a>4.1.5. Gridmap formats</h4></div></div></div><p>A gridmap line of the form:</p><pre class="screen">"<em class="replaceable"><code>Distinguished Name</code></em>" <em class="replaceable"><code>local_name</code></em></pre><p>maps the distinguished name <em class="replaceable"><code>Distinguished Name</code></em> to the local
+          name <em class="replaceable"><code>local_name</code></em>. </p><p>A gridmap line of the form:</p><pre class="screen">"<em class="replaceable"><code>Distinguished Name</code></em>" <em class="replaceable"><code>local_name1</code></em>,<em class="replaceable"><code>local_name2</code></em></pre><p>maps <em class="replaceable"><code>Distinguished Name</code></em> to both
+          <em class="replaceable"><code>local_name1</code></em> and <em class="replaceable"><code>local_name2</code></em>; any
+          number of local user names may occur in the comma-separated local name list.</p><p>For more detailed information about the gridmap file see the <a class="ulink" href="https://dev.globus.org/wiki/Gridmap" target="_top">file description and grammars </a> on
+          dev.globus.org.</p></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="idm462689455568"></a>4.2. Configuring Alternate Credential Mappings</h3></div></div></div><p>To use an alternative credential mapping, you create a <code class="filename">gsi-authz.conf</code> file containing information about how the mapping functions are
+        called from the authorization library. </p><p>To configure a per-service authorization configuration file, set the
+          <code class="envar">GSI_AUTHZ_CONF</code> variable to the path to the configuration file in the
+        environment of the service. </p><p>For reference, the GSI C code looks for the authorization configuration file in these
+        locations (in the given order): </p><div class="table"><a name="gsic-gsi-authz-conf-location-table"></a><p class="title"><b>Table 3.5. Authorization Configuration File Locations</b></p><div class="table-contents"><table summary="Authorization Configuration File Locations" border="1" width="700px"><colgroup><col align="left" class="Location"></colgroup><thead><tr><th align="left">Location</th></tr></thead><tbody><tr><td align="left">
+                  <p>
+                    <code class="envar">GSI_AUTHZ_CONF</code> environment variable </p>
+                </td></tr><tr><td align="left">
+                  <p>
+                    <code class="filename">/etc/grid-security/gsi-authz.conf</code>
+                  </p>
+                </td></tr><tr><td align="left">
+                  <p>
+                    <code class="filename"><code class="envar">GLOBUS_LOCATION</code>/etc/gsi-authz.conf</code>
+                  </p>
+                </td></tr><tr><td align="left">
+                  <p>
+                    <code class="filename"><code class="envar">HOME</code>/.gsi-authz.conf</code>
+                  </p>
+                </td></tr></tbody></table></div></div><p><br class="table-break"></p><div class="section"><div class="titlepage"><div><div><h4 class="title"><a name="idm462689441872"></a>4.2.1. Callout File Format</h4></div></div></div><p> The authorization file defines a set of callouts, one per line. Each callout is
+          defined by an <span class="emphasis"><em>abstract type</em></span>, <span class="emphasis"><em>library</em></span>, and
+            <span class="emphasis"><em>symbol</em></span> separated by whitespace. Comments begin with the
+          <span class="emphasis"><em>#</em></span> character and continue to the end of line. </p><div class="table"><a name="gsic-gsi-authz-conf-entries-table"></a><p class="title"><b>Table 3.6. Authorization Configuration File Locations</b></p><div class="table-contents"><table summary="Authorization Configuration File Locations" border="1" width="700px"><colgroup><col align="left" class="Field"><col align="left" class="Meaning"></colgroup><thead><tr><th align="left">Field</th><th align="left">Meaning</th></tr></thead><tbody><tr><td align="left">
+                    <p><em class="replaceable"><code>abstract type</code></em></p>
+                  </td><td align="left">
+                    <p>Type of the callout: <span class="emphasis"><em>globus_mapping</em></span> is used for
+                      credential mapping callouts</p>
+                  </td></tr><tr><td align="left">
+                    <p><em class="replaceable"><code>library</code></em>
+                    </p>
+                  </td><td align="left">
+                    <p>Path to the shared object containing the callout implementation. The
+                      library name may be a literal filename, or a partial filename to which the
+                      compilation flavor of the service is appended to the filename before its
+                      extension. </p>
+                  </td></tr><tr><td align="left">
+                    <p><em class="replaceable"><code>symbol</code></em></p>
+                  </td><td align="left">
+                    <p>The exported symbol containing the entry point to the callout
+                      implementation.</p>
+                  </td></tr></tbody></table></div></div><p><br class="table-break"></p><p>Here is a sample <code class="filename">gsi-authz.conf</code> file that configures a
+            <span class="emphasis"><em>globus_mapping</em></span> callout to use the
+          <span class="emphasis"><em>globus_gridmap_callout</em></span> function in the <code class="filename">/usr/local/globus/lib/libglobus_gridmap_callout_gcc32dbg</code> shared object:
+          </p><pre class="screen">
+# abstract-type     library                                            symbol
+
+globus_mapping      /opt/globus/lib/libglobus_gridmap_callout_gcc32dbg globus_gridmap_callout
+</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-config-permissions"></a>5. GSI File Permissions Requirements</h2></div></div></div><p>
+      </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a href="#eec" class="glossterm"><em class="glossterm">End Entity Certificate</em></a> (<a href="#user-cert" class="glossterm"><em class="glossterm">User</em></a>, <a href="#host-cert" class="glossterm"><em class="glossterm">Host</em></a> and <a href="#svc-cert" class="glossterm"><em class="glossterm">Service</em></a>)
+            Certificates and the <a href="#gsi-authz-config" class="glossterm"><em class="glossterm">GSI Authorization Callout Configuration File</em></a>: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">May not be executable</li><li class="listitem">May not be writable by group and other</li><li class="listitem">Must be either regular files or soft links</li></ul></div></li><li class="listitem"><p><a href="#priv-key" class="glossterm"><em class="glossterm">Private Keys</em></a> and <a href="#proxy-cred" class="glossterm"><em class="glossterm">Proxy Credentials</em></a>: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">Must be owned by the current (effective) user</li><li class="listitem">May not be executable</li><li class="listitem">May not be readable by group and other</li><li class="listitem">May not be writable by group and other</li><li class="listitem">Must be either regular files or soft links</li></ul></div></li><li class="listitem"><p><a href="#ca-cert" class="glossterm"><em class="glossterm">CA Certificates</em></a>, <a href="#ca-sign" class="glossterm"><em class="glossterm">CA Signing Policy Files</em></a>, the <a href="#grid-map-file" class="glossterm"><em class="glossterm">Grid Map File</em></a> and the <a href="#gaa-config" class="glossterm"><em class="glossterm">GAA Configuration File</em></a>: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">Must be either regular files or soft links</li></ul></div></li><li class="listitem"><p>GSI Authorization callout configuration files</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">Must exist</li><li class="listitem">Should be world readable</li><li class="listitem">Should not be writable by group and other</li><li class="listitem">Should be either a regular file or a soft link</li></ul></div></li><li class="listitem"><p>GSI GAA configuration files</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">Must exist</li><li class="listitem">Should be world readable</li><li class="listitem">Should not be writable by group and other</li><li class="listitem">Should be either a regular file or a soft link</li></ul></div></li></ul></div><p>
+    </p></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-pi-env"></a>Chapter 4. Environment variable interface</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#gsic-env-var">1. Environmental Variables for GSI C</a></span></dt><dd><dl><dt><span class="section"><a href="#gsic-env-credentials">1.1. Credentials</a></span></dt><dt><span class="section"><a href="#gsic-env-gridmapfile">1.2. Gridmap file</a></span></dt><dt><span class="section"><a href="#gsic-env-trustedca">1.3. Trusted CAs directory</a></span></dt><dt><span class="section"><a href="#gsic-env-gsiauthz">1.4. GSI authorization callout configuration file</a></span></dt><dt><span class="section"><a href="#gsic-env-gaaauthz">1.5. GAA (Generic Authorization and Access control) configuration file</a></span></dt><dt><span class="section"><a href="#gsic-env-gridsecurity">1.6. Grid security directory</a></span></dt><dt><span class="section"><a href="#gsic-env-tls">1.7. Using TLS</a></span></dt><dt><span class="section"><a href="#gsic-env-name">1.8. Name Comparisons</a></span></dt></dl></dd></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="gsic-env-var"></a>1. Environmental Variables for GSI C</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-credentials"></a>1.1. Credentials</h3></div></div></div><p>Credentials are looked for in the following order:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>service credential</p></li><li class="listitem"><p>host credential</p></li><li class="listitem"><p>proxy credential</p></li><li class="listitem"><p>user credential</p></li></ol></div><p><code class="envar">X509_USER_PROXY</code> specifies the path to the 
+      <a href="#proxy-cred" class="glossterm"><em class="glossterm">proxy credential</em></a>. If <code class="envar">X509_USER_PROXY</code> is not set, the
+      proxy credential is created (by <span class="command"><strong>grid-proxy-init</strong></span>) and searched for (by
+      client programs) in an operating-system-dependent local temporary file.</p><p><code class="envar">X509_USER_CERT</code> and <code class="envar">X509_USER_KEY</code> specify the path to the end
+      entity (user, service, or host) certificate and corresponding <a href="#priv-key" class="glossterm"><em class="glossterm">private key</em></a>. The paths to the certificate and key files are determined as follows:</p><p>For <a href="#svc-cred" class="glossterm"><em class="glossterm">service credentials</em></a>:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If <code class="envar">X509_USER_CERT</code> and <code class="envar">X509_USER_KEY</code> exist and contain
+          a valid certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename">/etc/grid-security/<em class="replaceable"><code>service/service</code></em>cert.pem</code> and
+            <code class="filename">/etc/grid-security/<em class="replaceable"><code>service/service</code></em>key.pem</code>
+          exist and contain a valid certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename">$GLOBUS_LOCATION/etc/grid-security/<em class="replaceable"><code>service/service</code></em>cert.pem</code>
+          and <code class="filename">$GLOBUS_LOCATION/etc/grid-security/<em class="replaceable"><code>service/service</code></em>key.pem</code>
+          exist and contain a valid certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename"><em class="replaceable"><code>service/service</code></em>cert.pem</code> and <code class="filename"><em class="replaceable"><code>service/service</code></em>key.pem</code> in the user's <code class="filename">.globus</code> directory exist and contain a valid certificate and key, those files
+          are used.</li></ol></div><p>For <a href="#host-cred" class="glossterm"><em class="glossterm">host credentials</em></a>:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If <code class="envar">X509_USER_CERT</code> and <code class="envar">X509_USER_KEY</code> exist and
+          contain a valid certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename">/etc/grid-security/hostcert.pem</code> and
+            <code class="filename">/etc/grid-security/hostkey.pem</code> exist and contain a valid
+          certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename">$GLOBUS_LOCATION/etc/hostcert.pem</code> and <code class="filename">$GLOBUS_LOCATION/etc/hostkey.pem</code> exist and contain a valid
+          certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename">hostcert.pem</code> and <code class="filename">hostkey.pem</code> in the user's <code class="filename">.globus</code> directory, exist and
+          contain a valid certificate and key, those files are used.</li></ol></div><p>For <a href="#user-cred" class="glossterm"><em class="glossterm">user credentials</em></a>:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If <code class="envar">X509_USER_CERT</code> and <code class="envar">X509_USER_KEY</code> exist and contain
+          a valid certificate and key, those files are used.</li><li class="listitem">Otherwise, if the files <code class="filename">usercert.pem</code> and <code class="filename">userkey.pem</code> exist in the user's <code class="filename">.globus</code> directory, those
+          files are used.</li><li class="listitem">Otherwise, if a PKCS-12 file called <code class="filename">usercred.p12</code> exists in the
+          user's <code class="filename">.globus</code> directory, the certificate and key are read from that
+          file.</li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-gridmapfile"></a>1.2. Gridmap file</h3></div></div></div><p><code class="envar">GRIDMAP</code> specifies the path to the <a href="#grid-map-file" class="glossterm"><em class="glossterm">grid map file</em></a>,
+      which is used to map distinguished names (found in certificates) to local names (such as login
+      accounts). The location of the grid map file is determined as follows: </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If the <code class="envar">GRIDMAP</code> environment variable is set, the grid map file
+            location is the value of that environment variable.</li><li class="listitem"><p>Otherwise: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">If the user is root (uid 0), then the grid map file is <code class="filename">/etc/grid-security/grid-mapfile</code>.</li><li class="listitem">Otherwise, the grid map file is <code class="filename">$HOME/.gridmap</code>.</li></ul></div></li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-trustedca"></a>1.3. Trusted CAs directory</h3></div></div></div><p><code class="envar">X509_CERT_DIR</code> is used to specify the path to the trusted certificates
+      directory. This directory contains information about which CAs are trusted (including the
+        <a href="#ca-cert" class="glossterm"><em class="glossterm">CA certificates</em></a> themselves) and, in some
+      cases, configuration information used by <span class="command"><strong>grid-cert-request</strong></span> to formulate
+      certificate requests. The location of the trusted certificates directory is determined as
+      follows: </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If the <code class="envar">X509_CERT_DIR</code> environment variable is set, the trusted
+            certificates directory is the value of that environment variable.</li><li class="listitem">Otherwise, if <code class="filename">$HOME/.globus/certificates</code> exists, that
+            directory is the trusted certificates directory.</li><li class="listitem">Otherwise, if <code class="filename">/etc/grid-security/certificates</code> exists, that
+            directory is the trusted certificates directory.</li><li class="listitem">Finally, if <code class="filename">$GLOBUS_LOCATION/share/certificates</code> exists, then
+            it is the trusted certificates directory.</li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-gsiauthz"></a>1.4. GSI authorization callout configuration file</h3></div></div></div><p><code class="envar">GSI_AUTHZ_CONF</code> is used to specify the path to the 
+      <a href="#gsi-authz-config" class="glossterm"><em class="glossterm">GSI authorization callout configuration file</em></a>. This file is used to configure
+      authorization callouts used by both the gridmap and the authorization API. The location of the
+      GSI authorization callout configuration file is determined as follows:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If the <code class="envar">GSI_AUTHZ_CONF</code> environment variable is set, the
+            authorization callout configuration file location is the value of this environment
+            variable.</li><li class="listitem">Otherwise, if <code class="filename">/etc/grid-security/gsi-authz.conf</code> exists, then
+            this file is used.</li><li class="listitem">Otherwise, if <code class="filename">$GLOBUS_LOCATION/etc/gsi-authz.conf</code> exists,
+            then this file is used.</li><li class="listitem">Finally, if <code class="filename">$HOME/.gsi-authz.conf</code> exists, then this file is
+            used.</li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-gaaauthz"></a>1.5. GAA (Generic Authorization and Access control) configuration file</h3></div></div></div><p><code class="envar">GSI_GAA_CONF</code> is used to specify the path to the GSI <a href="#gaa-config" class="glossterm"><em class="glossterm">GAA (Generic Authorization and Access control)
+        configuration file</em></a>. This file is used to configure policy language specific
+      plugins to the GAA-API. The location of the GSI GAA configuration file is determined as
+        follows:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If the <code class="envar">GSI_GAA_CONF</code> environment variable is set, the GAA
+            configuration file location is the value of this environment variable.</li><li class="listitem">Otherwise, if <code class="filename">/etc/grid-security/gsi-gaa.conf</code> exists, then
+            this file is used.</li><li class="listitem">Otherwise, if <code class="filename">$GLOBUS_LOCATION/etc/gsi-gaa.conf</code> exists, then
+            this file is used.</li><li class="listitem">Finally, if <code class="filename">$HOME/.gsi-gaa.conf</code> exists, then this file is
+            used.</li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-gridsecurity"></a>1.6. Grid security directory</h3></div></div></div><p><code class="envar">GRID_SECURITY_DIR</code> specifies a path to a directory containing configuration
+      files that specify default values to be placed in certificate requests. This environment
+      variable is used only by the <span class="command"><strong>grid-cert-request</strong></span> and <span class="command"><strong>grid-default-ca</strong></span> commands.</p><p>The location of the <a href="#grid-sec-dir" class="glossterm"><em class="glossterm">grid security directory</em></a> is determined as
+      follows: </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">If the <code class="envar">GRID_SECURITY_DIR</code> environment variable is set, the grid
+            security directory is the value of that environment variable.</li><li class="listitem">If the configuration files exist in <code class="filename">/etc/grid-security</code>, the
+            grid security directory is that directory.</li><li class="listitem">if the configuration files exist in <code class="filename">$GLOBUS_LOCATION/etc</code>,
+            the grid security directory is that directory.</li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-tls"></a>1.7. Using TLS</h3></div></div></div><p><code class="envar">GLOBUS_GSSAPI_FORCE_TLS</code> specifies whether to use TLS
+     by default when establishing a security context. The default behavior if
+     this is not set is to use SSLv3.
+     </p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a name="gsic-env-name"></a>1.8. Name Comparisons</h3></div></div></div><p><code class="envar">GLOBUS_GSSAPI_NAME_COMPATIBILITY</code> specifies what name
+     matching algorithms are supported by GSSAPI for mutual authentication and
+     <code class="function">gss_compare_name</code>. This variable may be set to any
+     of the following values:
+
+     </p><div class="informaltable"><table border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td><code class="literal">STRICT_GT2</code></td><td><p>Strictly backward-compatible with GT 2.0 name
+                    matching. X.509 subjectAltName values are ignored. Names
+                    with hyphens are treated as wildcarded as described in the
+                    <a href="../admin/#gsic-security-considerations" class="olink">security
+                    considerations</a> documentation. Name matching will
+                    rely on canonical host name associated with connection IP
+                    addresses.</p>
+                    </td></tr><tr><td><p><code class="literal">STRICT_RFC2818</code></p></td><td><p>Support
+                    <a class="ulink" href="http://www.ietf.org/rfc/rfc2818.txt" target="_top">RFC
+                    2818</a> server identity processing. Hyphen characters
+                    are treated as normal part of a host name. DNSName and
+                    IPAddress subjectAltName extensions are matched against the
+                    host and port passed to GSSAPI. If subjectAltName is
+                    present, X.509 SubjectName is ignored.</p>
+                    </td></tr><tr><td><p><code class="literal">HYBRID</code></p>
+                    </td><td><p>Support a hybrid of the two previous name
+                    matching algorithms, liberally matching both hyphen
+                    wildcards, canonical names associated with IP addresses,
+                    and subjectAltName extensions.</p>
+                    </td></tr></tbody></table></div><p>
+
+    If this variable is not set, the <code class="literal">HYBRID</code> behavior is 
+    used.
+     </p></div></div></div><div class="appendix"><div class="titlepage"><div><div><h1 class="title"><a name="gsic-error-codes"></a>Appendix A. Errors</h1></div></div></div><a class="indexterm" name="idm462694044064"></a><div class="table"><a name="credential-errors-table"></a><p class="title"><b>Table A.1. Credential Errors</b></p><div class="table-contents"><table summary="Credential Errors" border="1" width="700px"><colgroup><col align="left" class="c1"><col align="left" class="c2"><col align="left" class="c3"></colgroup><thead><tr><th align="left">Error Code</th><th align="left">Definition</th><th align="left">Possible Solutions</th></tr></thead><tbody><tr><td align="left"><code class="code">Your proxy credential may have expired</code></td><td align="left">Your proxy credential may have expired.</td><td align="left">Use <a href="#grid-proxy-info" class="olink">grid-proxy-info</a> to check
+            whether the proxy credential has actually expired. If it has,
+            generate a new proxy with <a href="#grid-proxy-init" class="olink">grid-proxy-init</a>.</td></tr><tr><td align="left"><code class="code">The system clock on either the local or remote system
+            is wrong.</code></td><td align="left">This may cause the server or client to conclude that a
+            credential has expired.</td><td align="left">Check the system clocks on the local and remote
+            system.</td></tr><tr><td align="left"><code class="code">Your end-user certificate may have
+            expired</code></td><td align="left">Your end-user certificate may have expired</td><td align="left">Use <a href="#grid-cert-info" class="olink">grid-cert-info</a> to check your
+            certificate's expiration date. If it has expired, follow your CA's
+            procedures to get a new one.</td></tr><tr><td align="left"><code class="code">The permissions may be wrong on your proxy
+            file</code></td><td align="left">If the permissions on your proxy file are too lax (for
+            example, if others can read your proxy file), Globus Toolkit
+            clients will not use that file to authenticate.</td><td align="left">You can "fix" this problem by changing the permissions on
+            the file or by destroying it (with <a href="#grid-proxy-destroy" class="olink">grid-proxy-destroy</a>) and
+            creating a new one (with <a href="#grid-proxy-init" class="olink">grid-proxy-init</a>).
+            <p><span class="strong"><strong>Important:</strong></span> However, it
+            is still possible that someone else has made a copy of that file
+            during the time that the permissions were wrong. In that case,
+            they will be able to impersonate you until the proxy file expires
+            or your permissions or end-user certificate are revoked, whichever
+            happens first.</p></td></tr><tr><td align="left"><code class="code">The permissions may be wrong on your private key
+            file</code></td><td align="left">If the permissions on your end user certificate private key
+            file are too lax (for example, if others can read the file),
+            grid-proxy-init will refuse to create a proxy certificate.</td><td align="left">You can "fix" this by changing the permissions on the
+            private key file. <p><span class="strong"><strong>Important:</strong></span> However, you will still have a
+            much more serious problem: it is possible that someone has made a
+            copy of your private key file. Although this file is encrypted, it
+            is possible that someone will be able to decrypt the private key,
+            at which point they will be able to impersonate you as long as
+            your end user certificate is valid. You should contact your CA to
+            have your end-user certificate revoked and get a new
+            one.</p></td></tr><tr><td align="left"><code class="code">The remote system may not trust your
+            CA</code></td><td align="left">The remote system may not trust your CA</td><td align="left">Verify that the remote system is configured to trust the CA
+            that issued your end-entity certificate. See <a href="../../admin/install/#gtadmin" class="olink">Installing GT 6.0</a> for details.</td></tr><tr><td align="left"><code class="code">You may not trust the remote system's
+            CA</code></td><td align="left">You may not trust the remote system's CA</td><td align="left">Verify that your system is configured to trust the remote
+            CA (or that your environment is set up to trust the remote CA).
+            See <a href="../../admin/install/#gtadmin" class="olink">Installing GT 6.0</a> for details.</td></tr><tr><td align="left"><code class="code">There may be something wrong with the remote
+            service's credentials</code></td><td align="left">There may be something wrong with the remote service's
+            credentials</td><td align="left">It is sometimes difficult to distinguish between errors
+            reported by the remote service regarding your credentials and
+            errors reported by the client interface regarding the remote
+            service's credentials. If you cannot find anything wrong with your
+            credentials, check for the same conditions on the remote system
+            (or ask a remote administrator to do so) .</td></tr></tbody></table></div></div><br class="table-break"><div class="table"><a name="gridmap-errors-table"></a><p class="title"><b>Table A.2. Gridmap Errors</b></p><div class="table-contents"><table summary="Gridmap Errors" border="1" width="700px"><colgroup><col align="left" class="c1"><col align="left" class="c2"><col align="left" class="c3"></colgroup><thead><tr><th align="left">Error Code</th><th align="left">Definition</th><th align="left">Possible Solutions</th></tr></thead><tbody><tr><td align="left"><code class="code">The content of the grid map file does not conform to the expected format</code></td><td align="left">The content of the grid map file does not conform to the expected format</td><td align="left">
+Run <a href="#grid-mapfile-check-consistency" class="olink">grid-mapfile-check-consistency</a> to make sure that your 
+   gridmap file conforms to the expected format.
+  </td></tr><tr><td align="left"><code class="code">The grid map file does not contain a entry for your DN</code></td><td align="left">The grid map file does not contain a entry for your DN</td><td align="left">
+Use <a href="#grid-mapfile-add-entry" class="olink">grid-mapfile-add-entry</a> to add the relevant entry.
+  </td></tr></tbody></table></div></div><br class="table-break"></div><div class="glossary"><div class="titlepage"><div><div><h1 class="title"><a name="glossary-gsicPI"></a>Glossary</h1></div></div></div><div class="glossdiv"><h3 class="title">C</h3><dl><dt><a name="ca"></a><span class="glossterm">Certificate Authority</span> ( CA )</dt><dd class="glossdef"><p> An entity that issues certificates.</p></dd><dt><a name="ca-cert"></a><span class="glossterm">CA Certificate</span></dt><dd class="glossdef"><p> The CA's certificate. This certificate is used to verify signature on
+                              certificates issued by the CA. GSI typically stores a given CA
+                              certificate in
+                                          <code class="filename">/etc/grid-security/certificates/<em class="replaceable"><code>&lt;hash&gt;</code></em>.0</code>,
+                              where &lt;hash&gt; is the hash code of the CA identity.</p></dd><dt><a name="ca-sign"></a><span class="glossterm">CA Signing Policy</span></dt><dd class="glossdef"><p> The CA signing policy is used to place constraints on the information
+                              you trust a given CA to bind to public keys. Specifically it
+                              constrains the identities a CA is trusted to assert in a certificate.
+                              In GSI the signing policy for a given CA can typically be found in
+                                          <code class="filename">/etc/grid-security/certificates/<em class="replaceable"><code>&lt;hash&gt;</code></em>.signing_policy</code>,
+                              where &lt;hash&gt; is the hash code of the CA identity.</p></dd></dl></div><div class="glossdiv"><h3 class="title">E</h3><dl><dt><a name="eec"></a><span class="glossterm">End Entity Certificate</span> (EEC)</dt><dd class="glossdef"><p> A certificate belonging to a non-CA entity, e.g. you, me or the
+                              computer on your desk.</p></dd></dl></div><div class="glossdiv"><h3 class="title">G</h3><dl><dt><a name="gaa-config"></a><span class="glossterm">GAA configuration file</span></dt><dd class="glossdef"><p> A file that configures the Generic Authorization and Access control
+                                    <acronym class="acronym">GAA</acronym> libraries. When using GSI, this file is typically found in
+                                    <code class="filename">/etc/grid-security/gsi-gaa.conf</code>.</p></dd><dt><a name="grid-map-file"></a><span class="glossterm">grid map file</span></dt><dd class="glossdef"><p> A file containing entries mapping certificate subjects to local user
+                              names. This file can also serve as a access control list for GSI
+                              enabled services and is typically found in
+                                    <code class="filename">/etc/grid-security/grid-mapfile</code>. For more
+                              information see the Gridmap section <a href="../admin/#setting-up-gridmap" class="olink">here</a>.</p></dd><dt><a name="grid-sec-dir"></a><span class="glossterm">grid security directory</span></dt><dd class="glossdef"><p> The directory containing GSI configuration files such as the GSI
+                              authorization callout configuration and GAA configuration files.
+                              Typically this directory is <code class="filename">/etc/grid-security</code>.
+                              For more information see <a href="#gsic-env-gridsecurity" class="olink">this</a>.</p></dd><dt><a name="gsi-authz-config"></a><span class="glossterm">GSI authorization callout configuration file</span></dt><dd class="glossdef"><p> A file that configures authorization callouts to be used for mapping
+                              and authorization in GSI enabled services. When using GSI this file is
+                              typically found in
+                              <code class="filename">/etc/grid-security/gsi-authz.conf</code>.</p></dd></dl></div><div class="glossdiv"><h3 class="title">H</h3><dl><dt><a name="host-cert"></a><span class="glossterm">host certificate</span></dt><dd class="glossdef"><p> An <a class="ulink" href="#EEC" target="_top">EEC</a> belonging to a host. When using GSI this certificate is
+                              typically stored in
+                              <code class="filename">/etc/grid-security/hostcert.pem</code>. For more
+                              information on possible host certificate locations see the <a href="../developer/#gsic-env-credentials" class="olink">GSI C Developer's Guide</a>. </p></dd><dt><a name="host-cred"></a><span class="glossterm">host credentials</span></dt><dd class="glossdef"><p> The combination of a host certificate and its corresponding private
+                              key.</p></dd></dl></div><div class="glossdiv"><h3 class="title">P</h3><dl><dt><a name="priv-key"></a><span class="glossterm">private key</span></dt><dd class="glossdef"><p>The private part of a key pair. Depending on the type of certificate
+                              the key corresponds to it may typically be found in
+                                    <code class="filename">$HOME/.globus/userkey.pem</code> (for user
+                              certificates), <code class="filename">/etc/grid-security/hostkey.pem</code>
+                              (for host certificates) or
+                                          <code class="filename">/etc/grid-security/<em class="replaceable"><code>&lt;service&gt;</code></em>/<em class="replaceable"><code>&lt;service&gt;</code></em>key.pem</code>
+                              (for service certificates).</p><p>For more information on possible private key locations see
+                              <a href="#gsic-env-credentials" class="olink">this</a>.</p></dd><dt><a name="proxy-cred"></a><span class="glossterm">proxy credentials</span></dt><dd class="glossdef"><p> The combination of a proxy certificate and its corresponding private
+                              key. GSI typically stores proxy credentials in
+                                          <code class="filename">/tmp/x509up_u<em class="replaceable"><code>&lt;uid&gt;</code></em>
+                              </code>, where &lt;uid&gt; is the user id of the proxy
+                              owner.</p></dd></dl></div><div class="glossdiv"><h3 class="title">S</h3><dl><dt><a name="svc-cert"></a><span class="glossterm">service certificate</span></dt><dd class="glossdef"><p> A EEC for a specific service (e.g. FTP or LDAP). When using GSI this
+                              certificate is typically stored in
+                                          <code class="filename">/etc/grid-security/<em class="replaceable"><code>&lt;service&gt;</code></em>/<em class="replaceable"><code>&lt;service&gt;</code></em>cert.pem</code>.
+                              For more information on possible service certificate locations, see
+                             <a href="#gsic-env-credentials" class="olink">this</a>.</p></dd><dt><a name="svc-cred"></a><span class="glossterm">service credentials</span></dt><dd class="glossdef"><p> The combination of a service certificate and its corresponding
+                              private key.</p></dd></dl></div><div class="glossdiv"><h3 class="title">U</h3><dl><dt><a name="user-cert"></a><span class="glossterm">user certificate</span></dt><dd class="glossdef"><p> A EEC belonging to a user. When using GSI, this certificate is
+                              typically stored in <code class="filename">$HOME/.globus/usercert.pem</code>.
+                              For more information on possible user certificate locations, see
+                              <a href="#gsic-env-credentials" class="olink">this</a>.</p></dd><dt><a name="user-cred"></a><span class="glossterm">user credentials</span></dt><dd class="glossdef"><p> The combination of a user certificate and its corresponding private
+                              key.</p></dd></dl></div></div></div>

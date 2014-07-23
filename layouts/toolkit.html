@@ -7,15 +7,24 @@
     	<small>Latest release: <strong><%= @config[:docs][:toolkit] %></strong></small>
     </div>
 
-    <% if item.identifier.start_with?('/toolkit/docs/6.0')
-	    globus_load_menu('toolkit_6.0_menu').each do |m| %>
+    <%
+		case
+		when item.identifier.start_with?('/toolkit/docs/6.0')
+		  menu_name = 'toolkit_60_menu'
+		else
+		  menu_name = ''
+		end 
+		%>
+    
+    <% if menu_name != '' %>
+	    <% globus_load_menu('toolkit_60_menu').each do |m| %>
 				<div class="panel panel-default">
 				  <div class="panel-heading"><b><%= m[:options][:title] %></b></div>
 				  	<% m[:options].delete(:title) # Delete title value %>
 				    <%= globus_render_menu(m[:items], m[:options]) %>
 				</div>
-		<% end
-		end %>
+			<% end %>
+		<% end %>
   </div>
 </div>
 
