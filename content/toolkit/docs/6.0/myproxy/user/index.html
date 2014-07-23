@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="myproxyUser"></a>GT 6.0 MyProxy: User's Guide</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#myproxy-user-introduction">1. Introduction</a></span></dt><dt><span class="chapter"><a href="#myproxy-cmd">2. Command-line tools</a></span></dt><dt><span class="chapter"><a href="#myproxy-user-troubleshooting">3. Troubleshooting</a></span></dt><dd><dl><dt><span class="section"><a href="#myproxy-error-codes">1. Errors</a></span></dt><dt><span class="section"><a href="#myproxy-errors">2. Additional MyProxy Troubleshooting</a></span></dt></dl></dd><dt><span class="chapter"><a href="#myproxy-usage">4. Usage statistics collection</a></span></dt><dd><dl><dt><span class="section"><a href="#myproxy-usage-stats">1. MyProxy usage statistics collection</a></span></dt></dl></dd><dt><span class="glossary"><a href="#glossary-myproxyUser">Glossary</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="myproxy-user-introduction"></a>Chapter 1. Introduction</h1></div></div></div><p>
+Please refer to the 
+<a class="ulink" href="http://myproxy.ncsa.uiuc.edu/userguide.html" target="_top">MyProxy User's Guide</a>
+on the MyProxy web site.
+</p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="myproxy-cmd"></a>Chapter 2. Command-line tools</h1></div></div></div><p>
+Please refer to the 
+<a class="ulink" href="http://myproxy.ncsa.uiuc.edu/man/" target="_top">MyProxy Reference Manual</a>
+for documentation of the MyProxy command-line tools.
+</p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="myproxy-user-troubleshooting"></a>Chapter 3. Troubleshooting</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#myproxy-error-codes">1. Errors</a></span></dt><dt><span class="section"><a href="#myproxy-errors">2. Additional MyProxy Troubleshooting</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="myproxy-error-codes"></a>1. Errors</h2></div></div></div><a class="indexterm" name="idm234364114480"></a><div class="table"><a name="myproxy-errors-table"></a><p class="title"><b>Table 3.1. MyProxy Errors</b></p><div class="table-contents"><table summary="MyProxy Errors" border="1" width="700px"><colgroup><col align="left" class="c1"><col align="left" class="c2"><col align="left" class="c3"></colgroup><thead><tr><th align="left">Error Code</th><th align="left">Definition</th><th align="left">Possible Solutions</th></tr></thead><tbody><tr><td align="left"><code class="code"> MyProxy server name does not match expected name</code></td><td align="left"><p>This error appears as a mutual authentication failure or a server authentication failure, and the error message should list two names: 
+   the expected name of the MyProxy server and the actual authenticated name.</p> 
+   <p>By default, the MyProxy clients expect the MyProxy server to be running with a host certificate that matches the target hostname. 
+   This error can occur when running the MyProxy server under a non-host certificate or if the server is running on a machine with multiple hostnames.</p> The MyProxy clients authenticate the identity of the MyProxy server to avoid sending passphrases and credentials to rogue servers.
+  <p> If the expected name contains an IP address, your system is unable to do a reverse lookup on that address to get the canonical hostname of the server, indicating either a problem with that machine's DNS record or a problem with the resolver on your system.</p></td><td align="left">
+If the server name shown in the error message is acceptable, set the <code class="envar">MYPROXY_SERVER_DN</code> environment variable to that name to resolve the problem.
+  </td></tr><tr><td align="left"><code class="code">Error in bind(): Address already in use</code></td><td align="left">This error indicates that the myproxy-server port (default: 7512) is in use by another process, probably another myproxy-server 
+   instance. You cannot run multiple instances of the myproxy-server on the same network port.</td><td align="left">
+If you want to run multiple instances of the myproxy-server on a machine, you can specify different ports with the <code class="option">-p</code> option, 
+   and then give the same <code class="option">-p</code> option to the MyProxy commands to tell them to use the myproxy-server on that port.
+  </td></tr><tr><td align="left"><code class="code">grid-proxy-init failed</code></td><td align="left">This error indicates that the grid-proxy-init command failed when myproxy-init attempted to run it, which implies a problem with the 
+   underlying Globus installation.</td><td align="left">
+Run <pre class="screen">grid-proxy-init -debug -verify</pre> for more information. 
+  </td></tr><tr><td align="left"><code class="code">User not authorized</code></td><td align="left">An error from the myproxy-server saying you are "not authorized" to complete an operation typically indicates that the 
+   <code class="filename">myproxy-server.config</code> file settings are restricting your access to the myproxy-server. It is possible that the 
+   myproxy-server is running with the default <code class="filename">myproxy-server.config</code> file, which does not authorize any operations.</td><td align="left">
+See <a href="../admin/#myproxy-configuring" class="olink">Configuring MyProxy</a>  for more information.
+  </td></tr><tr><td align="left"><code class="code">Unable to verify remote side's credentials</code></td><td align="left">
+    An error saying "Unable to verify remote side's credentials,"
+    "Couldn't verify the remote certificate," or "alert bad certificate"
+    often indicates that the client or server's certificate is signed by
+    an untrusted Certification Authority (CA). The client must have a CA
+    certificate and signing policy file installed in
+    <code class="filename">/etc/grid-security/certificates</code> for the CA that signed the server's
+    certificate. Likewise, the server must have a CA certificate and
+    signing policy file installed in <code class="filename">/etc/grid-security/certificates</code> for
+    the CA that signed the client's certificate.
+  </td><td align="left">
+    See <a href="../../gsic/admin/#gsic-configuring" class="olink">Configuring Certificates</a> for more information.
+  </td></tr></tbody></table></div></div><br class="table-break"></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="myproxy-errors"></a>2. Additional MyProxy Troubleshooting</h2></div></div></div><p>For additional information, see the
+  <a class="ulink" href="http://myproxy.ncsa.uiuc.edu/troubleshooting.html" target="_top">MyProxy Troubleshooting Page</a> at NCSA.
+</p></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="myproxy-usage"></a>Chapter 4. Usage statistics collection</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="section"><a href="#myproxy-usage-stats">1. MyProxy usage statistics collection</a></span></dt></dl></div><a class="indexterm" name="idm234357495024"></a><div class="section"><div class="titlepage"><div><div><h2 class="title"><a name="myproxy-usage-stats"></a>1. MyProxy usage statistics collection</h2></div></div></div><p>
+By default, the myproxy-server will send a UDP packet containing usage
+information to 
+usage-stats.cilogon.org:4810 after serving each request. 
+See the
+<a class="ulink" href="http://myproxy.ncsa.uiuc.edu/privacy" target="_top">MyProxy Privacy Policy</a>
+    for details. You can see the Globus Usage Statistics policy <a class="ulink" href="/toolkit/docs/latest-stable/Usage_Stats.html" target="_top">here</a>.
+</p></div></div><div class="glossary"><div class="titlepage"><div><div><h1 class="title"><a name="glossary-myproxyUser"></a>Glossary</h1></div></div></div></div></div>

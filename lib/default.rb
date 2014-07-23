@@ -60,7 +60,6 @@ def globus_render_menu(items, options={})
   options[:title_tag]        ||= 'h2'
   options[:title]            ||= nil
   options[:separator]        ||= ''
-  options[:link_class]       ||= ''
   
 
   # Parse the title and remove it from the options
@@ -75,16 +74,18 @@ def globus_render_menu(items, options={})
   rendered_menu = items.map do |item|
     # Reset item and link options
     options[:link_attr] = {
-      :class => options[:link_class]
+      :class => item[:class] ? item[:class] : ''
     }
     options[:item_class] = nil
 
     # Set item active class
-    options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : '' 
+    if item[:link]
+      options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : '' 
 
-    # Set link active if hide_item_tag is true
-    if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]))
-      options[:link_attr][:class] = options[:link_attr][:class] + ' active'
+      # Set link active if hide_item_tag is true
+      if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]))
+        options[:link_attr][:class] = options[:link_attr][:class] + ' active'
+      end
     end
 
     # Render only if there is depth left
@@ -108,10 +109,17 @@ def globus_render_menu(items, options={})
     end
     output ||= ""
     # content_tag(options[:item_tag], link_to_unless_current(item[:title], item[:link]) + options[:separator] + output)
-    if options[:hide_item_tag]
-      link_to(item[:title], item[:link], options[:link_attr]) + options[:separator] + output
+    case item[:type]
+    when 'divider'
+      link = content_tag('div', item[:title], options[:link_attr])
     else
-      content_tag(options[:item_tag], link_to(item[:title], item[:link], options[:link_attr]) + options[:separator] + output, :class => options[:item_class])
+      link = link_to(item[:title], item[:link], options[:link_attr])
+    end
+
+    if options[:hide_item_tag]
+      link + options[:separator] + output
+    else
+      content_tag(options[:item_tag], link + options[:separator] + output, :class => options[:item_class])
     end
   end.join()
 

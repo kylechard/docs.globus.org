@@ -1,84 +1,141 @@
-menus: 
-  -
-    options:
-      title: 'Software Links'
-      collection_tag: 'div'
-      collection_class: 'list-group'
-      hide_item_tag: true
-      link_class: 'list-group-item'
-    items:
-      -
-        title: 'Usage Statistics'
-        link: '/toolkit/docs/6.0/Usage_Stats/'
-      -
-        title: 'Release Notes'
-        link: '/toolkit/docs/6.0/rn/'
-      -
-        title: 'Versioning'
-        link: '/toolkit/versioning/'
-      -
-        title: 'Downloads'
-        link: '#'
-      -
-        title: 'Advisories'
-        link: '#'
-      -
-        title: 'Licenses'
-        link: '#'
-      -
-        title: 'CVS & Dev Tools'
-        link: '#'
+menus:
   -
     options:
       title: 'Getting Started'
       collection_tag: 'div'
       collection_class: 'list-group'
       hide_item_tag: true
-      link_class: 'list-group-item'
     items:
       -
         title: 'Installing GT'
         link: '#'
+        class: 'list-group-item'
       - 
         title: 'Quickstart'
         link: '#'
+        class: 'list-group-item'
       - 
         title: 'Platform Notes'
         link: '#'
+        class: 'list-group-item'
       - 
         title: "GT Developer's Guide"
         link: '#'
+        class: 'list-group-item'
       - 
         title: 'Migrating Guides'
         link: '#'
+        class: 'list-group-item'
   -
     options:
       title: 'Components'
       collection_tag: 'div'
       collection_class: 'list-group'
       hide_item_tag: true
-      link_class: 'list-group-item'
     items:
       -
-        title: 'NEED TO FIX NESTED LINKS HERE'
+        title: 'Data Management'
+        type: 'divider'
+        class: 'list-group-header' 
+      -
+        title: 'GridFTP'
+        link: '/toolkit/docs/6.0/gridftp/'
+        class: 'list-group-item' 
+      -
+        title: 'Jobs Management'
+        type: 'divider'
+        class: 'list-group-header'
+      -
+        title: 'GRAM5'
+        link: '/toolkit/docs/6.0/gram5/'
+        class: 'list-group-item'
+      -
+        title: 'Security'
+        type: 'divider'
+        class: 'list-group-header'
+      -
+        title: 'GSI C'
+        link: '/toolkit/docs/6.0/gsic/'
+        class: 'list-group-item'
+      -
+        title: 'MyProxy'
+        link: '/toolkit/docs/6.0/myproxy/'
+        class: 'list-group-item'
+      -
+        title: 'GSI-OpenSSH'
+        link: '/toolkit/docs/6.0/gsiopenssh/'
+        class: 'list-group-item'
+      -
+        title: 'SimpleCA'
+        link: '/toolkit/docs/6.0/simpleca/'
+        class: 'list-group-item'
+      -
+        title: 'Common Runtime'
+        type: 'divider'
+        class: 'list-group-header'
+      -
+        title: 'XIO'
+        link: '/toolkit/docs/6.0/xio/'
+        class: 'list-group-item'
+      -
+        title: 'C Common Libraries'
+        link: '/toolkit/docs/6.0/ccommonlib/'
+        class: 'list-group-item'
+  -
+    options:
+      title: 'Software Links'
+      collection_tag: 'div'
+      collection_class: 'list-group'
+      hide_item_tag: true
+    items:
+      -
+        title: 'Usage Statistics'
+        link: '/toolkit/docs/6.0/Usage_Stats/'
+        class: 'list-group-item'
+      -
+        title: 'Release Notes'
+        link: '/toolkit/docs/6.0/rn/'
+        class: 'list-group-item'
+      -
+        title: 'Versioning'
+        link: '/toolkit/versioning/'
+        class: 'list-group-item'
+      -
+        title: 'Downloads'
         link: '#'
+        class: 'list-group-item'
+      -
+        title: 'Advisories'
+        link: '#'
+        class: 'list-group-item'
+      -
+        title: 'Licenses'
+        link: '#'
+        class: 'list-group-item'
+      -
+        title: 'CVS & Dev Tools'
+        link: '#'
+        class: 'list-group-item'
   -
     options:
       title: 'Reference'
       collection_tag: 'div'
       collection_class: 'list-group'
       hide_item_tag: true
-      link_class: 'list-group-item'
     items:
       -
         title: 'Coding Guidelines'
         link: '#'
+        class: 'list-group-item'
       - 
         title: 'API Docs'
         link: '#'
+        class: 'list-group-item'
       - 
         title: 'GT Commands'
         link: '#'
+        class: 'list-group-item'
       - 
         title: 'Glossary'
         link: '#'
+        class: 'list-group-item'
