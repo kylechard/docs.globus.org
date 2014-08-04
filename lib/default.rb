@@ -19,8 +19,8 @@ module SideNavHelper extend self
         self.sort_menuitems(i,':menu_weight')
     end
 
-    def cliref_list(items)
-  		i = items.select{|x| x.identifier.start_with?("/about/cli-reference/adoc")}
+    def tcliref_list(items)
+  		i = items.select{|x| x.identifier.start_with?("/about/tcli-reference/adoc")}
       	self.sort_menuitems(i,':menu_weight')
     end
 end
