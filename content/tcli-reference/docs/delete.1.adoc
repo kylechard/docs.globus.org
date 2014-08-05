@@ -50,11 +50,11 @@ does not exist.
 Activate the endpoint using your gsi-ssh credential
 
 
-// include::include/opt_label.adoc[]
+include::include/opt_label.adoc[]
 
-// include::include/opt_deadline.adoc[]
+include::include/opt_deadline.adoc[]
 
-// include::include/opt_unsafe.adoc[]
+include::include/opt_unsafe.adoc[]
 
 
 *--generate-id*::

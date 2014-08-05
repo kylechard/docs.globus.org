@@ -39,6 +39,13 @@ preprocess do
         end
       end
     end
+    # Adjust adoc include paths to be absolute
+    if i.identifier.start_with?("/tcli-reference/docs")
+      # Add full path for adoc includes
+      raw = i.raw_content
+      raw.gsub!(/include::include/, 'include::content/tcli-reference/docs/include')
+      raw.gsub!(/teresa::test/, 'Teresa::test/worked')
+    end
 
     # Match Toolkit titles from raw content
     if i.identifier.start_with?('/toolkit') && i[:title].nil?
@@ -57,7 +64,7 @@ end
 compile '/transfer-api/*' do
   if !item.binary?
     if item[:extension] == 'adoc'
-      filter :asciidoctor
+      filter :asciidoc
       layout item[:layout] || 'api'
     else
       filter :erb
@@ -69,7 +76,7 @@ end
 compile '/tcli-reference/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
-      filter :asciidoctor
+      filter :asciidoc
       layout 'default'
     else
       filter :erb

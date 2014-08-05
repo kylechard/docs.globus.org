@@ -57,15 +57,15 @@ Enable verbose output.  Show endpoint and credential details.
 Use your gsi-ssh proxy credential to activate the source and destination
 endpoints.  You must be using gsi-ssh, not regular ssh.
 
-// include::include/opt_deadline.adoc[]
+include::include/opt_deadline.adoc[]
 
-// include::include/opt_label.adoc[]
+include::include/opt_label.adoc[]
 
-// include::include/opt_encrypt.adoc[]
+include::include/opt_encrypt.adoc[]
 
-// include::include/opt_preserve_mtime.adoc[]
+include::include/opt_preserve_mtime.adoc[]
 
-// include::include/opt_verify_checksum.adoc[]
+include::include/opt_verify_checksum.adoc[]
 
 
 *--delete*::
@@ -78,7 +78,7 @@ files in /tmp outside of /tmp/dir are left alone.
 *-D*::
 Create a detached (background) task and exit.
 
-// include::include/opt_synclevel.adoc[]
+include::include/opt_synclevel.adoc[]
 
 
 == EXAMPLES

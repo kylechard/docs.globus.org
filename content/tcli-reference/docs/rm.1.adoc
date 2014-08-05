@@ -38,14 +38,14 @@ does not exist.
 
 Activate the endpoint using your gsi-ssh credential
 
-// include::include/opt_label.adoc[]
+include::include/opt_label.adoc[]
 
-// include::include/opt_deadline.adoc[]
+include::include/opt_deadline.adoc[]
 
 *-D*::
 Create a detached (background) task and exit.
 
-// include::include/opt_unsafe.adoc[]
+include::include/opt_unsafe.adoc[]
 
 
 == EXAMPLES
