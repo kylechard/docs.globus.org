@@ -57,7 +57,7 @@ end
 compile '/transfer-api/*' do
   if !item.binary?
     if item[:extension] == 'adoc'
-      filter :asciidoc
+      filter :asciidoctor
       layout item[:layout] || 'api'
     else
       filter :erb
@@ -69,7 +69,7 @@ end
 compile '/tcli-reference/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
-      filter :asciidoc
+      filter :asciidoctor
       layout 'default'
     else
       filter :erb
