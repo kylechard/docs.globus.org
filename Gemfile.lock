@@ -4,6 +4,7 @@ GEM
     adsf (1.2.0)
       rack (>= 1.0.0)
     asciidoc (0.0.2)
+    asciidoctor (0.1.4)
     celluloid (0.16.0.pre)
       timers (~> 2.0.0)
     coderay (1.1.0)
@@ -72,6 +73,7 @@ PLATFORMS
 DEPENDENCIES
   adsf
   asciidoc
+  asciidoctor
   guard
   guard-livereload
   guard-nanoc
