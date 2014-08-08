@@ -6,14 +6,18 @@
   <% if !@item[:hide_pageheader] %>
     <div class="page-header">
       <div class="container">
-        <%= render 'partials/page_header' %>
+        <div class="row"><div class="col-sm-12">
+          <%= render 'partials/page_header' %>
+	</div></div>
       </div>
     </div>
   <% end %>
 
   <div class="page-content">
     <div class="container">
-      <%= yield %>
+      <div class="row"><div class="col-sm-12">
+        <%= yield %>
+      </div></div>
     </div>
   </div>
 
