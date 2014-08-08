@@ -15,7 +15,7 @@ menus:
             link: '/#/'
           -
             title: 'Transfer CLI Reference'
-            link: '/tcli-reference/'
+            link: '/transfer-cli/'
       -
         title: 'Globus Toolkit'
         link: '#'

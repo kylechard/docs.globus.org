@@ -31,7 +31,7 @@ preprocess do
       end   
     end
 
-    if i.identifier.start_with?("/tcli-reference/docs") && i[:title].nil?
+    if i.identifier.start_with?("/transfer-cli/docs") && i[:title].nil?
       if i[:extension].split('.').last == 'txt' or i[:extension].split('.').last == 'adoc'
         m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
         if !m.nil?
@@ -40,10 +40,10 @@ preprocess do
       end
     end
     # Adjust adoc include paths to be absolute
-    if i.identifier.start_with?("/tcli-reference/docs")
+    if i.identifier.start_with?("/transfer-cli/docs")
       # Add full path for adoc includes
       raw = i.raw_content
-      raw.gsub!(/include::include/, 'include::content/tcli-reference/docs/include')
+      raw.gsub!(/include::include/, 'include::content/transfer-cli/docs/include')
       raw.gsub!(/teresa::test/, 'Teresa::test/worked')
     end
 
@@ -73,7 +73,7 @@ compile '/transfer-api/*' do
   end
 end
 
-compile '/tcli-reference/*' do
+compile '/transfer-cli/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc

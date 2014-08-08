@@ -34,9 +34,9 @@ header.navbar-inverse .navbar-nav>.active>a:focus {
 
 /* Page Header - Navs */
 .page-header .nav {
-	position: absolute;
+/*	position: absolute;
 	right: 0;
-	bottom: 0;
+	bottom: 0;*/
 	border-bottom: none;
 }
 .page-header .nav>li {
@@ -62,9 +62,10 @@ header.navbar-inverse .navbar-nav>.active>a:focus {
 /* Page Header - Breadcrumbs */
 .page-header .breadcrumb {
 	background: rgba(0, 0, 0, 0);
-	padding: 0;
+/*	padding: 0;*/
 	font-size: 12px;
 	text-transform: uppercase;
+	margin-bottom: 0;
 }
 
 /* List Group */
@@ -77,4 +78,14 @@ header.navbar-inverse .navbar-nav>.active>a:focus {
 .list-group-header ~ .list-group-item {
 	padding-left: 35px;
 	font-weight: 100;
+}
+
+/* media queries */
+@media (min-width: 992px) {
+	.page-header .nav {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		border-bottom: none;
+	} 
 }
