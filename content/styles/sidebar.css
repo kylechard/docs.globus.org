@@ -1,0 +1,6 @@
+aside.sidebar-block {
+	margin-bottom: 35px;
+}
+aside.sidebar-block .nav>li>a {
+	padding: 5px 15px;
+}

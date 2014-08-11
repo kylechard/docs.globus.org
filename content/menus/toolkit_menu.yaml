@@ -1,0 +1,16 @@
+menus: 
+  -
+    options:
+      collection_class: 'nav nav-stacked'
+      # collection_tag: 'div'
+      # collection_class: 'list-group'
+      # hide_item_tag: true
+    items:
+      -
+        title: 'Applications'
+        link: '/toolkit/applications/'
+        # class: 'list-group-item'
+      -
+        title: 'Applications'
+        link: '/toolkit/applications/'
+        # class: 'list-group-item'

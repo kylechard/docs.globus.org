@@ -3,28 +3,35 @@
 <div class="row toolkit-doc">
   <div class="col-sm-9"><%= yield %></div>
   <div class="col-sm-3">
-    <div class="well well-sm text-center text-muted">
-    	<small>Latest release: <strong><%= @config[:docs][:toolkit] %></strong></small>
-    </div>
+
+  	<aside class="sidebar-block">
+  		<p class="text-muted">Latest release: <strong><%= @config[:docs][:toolkit] %></strong></p>
+  	</aside>
 
     <%
 		case
 		when item.identifier.start_with?('/toolkit/docs/6.0')
 		  menu_name = 'toolkit_60_menu'
 		else
-		  menu_name = ''
+		  menu_name = 'toolkit_menu'
 		end 
 		%>
     
     <% if menu_name != '' %>
-	    <% globus_load_menu('toolkit_60_menu').each do |m| %>
-				<div class="panel panel-default">
-				  <div class="panel-heading"><b><%= m[:options][:title] %></b></div>
-				  	<% m[:options].delete(:title) # Delete title value %>
+    	<aside class="sidebar-block">
+		    <% globus_load_menu(menu_name).each do |m| %>
+					<!-- <div class="panel panel-default"> -->
+						<% if m[:options].include?(:title) %>
+					  	<!-- <div class="panel-heading"></div> -->
+					  	<b><%= m[:options][:title] %></b>
+					  	<% m[:options].delete(:title) # Delete title value %>
+					  <% end %>
 				    <%= globus_render_menu(m[:items], m[:options]) %>
-				</div>
-			<% end %>
+					<!-- </div> -->
+				<% end %>
+			</aside>
 		<% end %>
+  
   </div>
 </div>
 
