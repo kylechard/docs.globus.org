@@ -2,7 +2,7 @@
 
 <div class="row toolkit-doc">
   <div class="col-sm-9"><%= yield %></div>
-  <div class="col-sm-3">
+  <div class="col-sm-3 sidebar">
 
   	<aside class="sidebar-block">
   		<p class="text-muted">Latest release: <strong><%= @config[:docs][:toolkit] %></strong></p>
@@ -10,7 +10,7 @@
 
     <%
 		case
-		when item.identifier.start_with?('/toolkit/docs/6.0')
+		when item.identifier.start_with?('/toolkit/docs/6/6.0')
 		  menu_name = 'toolkit_60_menu'
 		else
 		  menu_name = 'toolkit_menu'
