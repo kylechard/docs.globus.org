@@ -44,7 +44,6 @@ preprocess do
       # Add full path for adoc includes
       raw = i.raw_content
       raw.gsub!(/include::include/, 'include::content/transfer-cli/docs/include')
-      raw.gsub!(/teresa::test/, 'Teresa::test/worked')
     end
 
     # Match Toolkit titles from raw content
