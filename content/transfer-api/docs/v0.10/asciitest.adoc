@@ -284,7 +284,7 @@ video::rPQoq7ThGAU[youtube]
 ==== Embedded Vimeo
 video::67480300[vimeo]
 
-== Source Code
+== Source Code (most of these are broken)
 ==== Inline (broken)
 Reference code like `types` or `methods` inline.
 
@@ -302,3 +302,71 @@ would you like to die again? y/n
 
 ==== Code block with title and syntax highlighting (broken, wouldn't compile)
  Syntax highlighting is enabled by setting the source-highlighter attribute in the document header or passed as an argument.
+
+==== Code block with non-selectable callouts
+----
+line of code  // <1>
+line of code  # <2>
+line of code  ;; <3>
+----
+<1> A callout behind a line comment for C-style languages.
+<2> A callout behind a line comment for Ruby, Python, Perl, etc.
+<3> A callout behind a line comment for Clojure.
+
+== More Delimited Blocks
+==== Sidebar
+.AsciiDoc history
+****
+AsciiDoc was first released in Nov 2002 by Stuart Rackham.
+It was designed from the start to be a shorthand syntax
+for producing professional documents like DocBook and LaTeX.
+****
+
+==== Admonitionview result
+[NOTE]
+====
+An admonition block may contain complex content.
+
+.A list
+- one
+- two
+- three
+
+Another paragraph.
+====
+
+==== Blockquote
+[quote, Abraham Lincoln, Soldiers' National Cemetery Dedication]
+____
+Four score and seven years ago our fathers brought forth
+on this continent a new nation...
+____
+
+[quote, Albert Einstein]
+A person who never made a mistake never tried anything new.
+
+____
+A person who never made a mistake never tried anything new.
+____
+
+==== Abbreviated blockquote (Asciidoctor only)
+"I hold it that a little rebellion now and then is a good thing,
+and as necessary in the political world as storms in the physical."
+-- Thomas Jefferson, Papers of Thomas Jefferson: Volume 11
+
+==== Air quotes: the best thing since fenced code blocks (Asciidoctor only)
+[, Richard M. Nixon]
+""
+When the President does it, that means that it's not illegal.
+""
+
+==== Passthrough
+++++
+<p>
+Content in a passthrough block is passed to the output unprocessed.
+That means you can include raw HTML, like this embedded Gist:
+</p>
+
+<script src="http://gist.github.com/mojavelinux/5333524.js">
+</script>
+++++
