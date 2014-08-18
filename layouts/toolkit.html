@@ -4,10 +4,6 @@
   <div class="col-sm-9"><%= yield %></div>
   <div class="col-sm-3 sidebar">
 
-  	<aside class="sidebar-block">
-  		<p class="text-muted">Latest release: <strong><%= @config[:docs][:toolkit] %></strong></p>
-  	</aside>
-
     <%
 		case
 		when item.identifier.start_with?('/toolkit/docs/6/6.0')
@@ -31,6 +27,10 @@
 				<% end %>
 			</aside>
 		<% end %>
+
+		<aside class="sidebar-block">
+  		<p class="text-muted">Latest release: <strong><%= @config[:docs][:toolkit] %></strong></p>
+  	</aside>
   
   </div>
 </div>

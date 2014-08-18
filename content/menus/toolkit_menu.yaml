@@ -9,3 +9,6 @@ menus:
       -
         title: 'Usage Statistics'
         link: '/toolkit/docs/6/6.0/Usage_Stats/'
+      -
+        title: 'How to Contribute'
+        link: '/toolkit/contributions/'
