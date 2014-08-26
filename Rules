@@ -18,7 +18,8 @@ ignore '/menus/*/'
 
 preprocess do
   items.each do |i|
-    if i.identifier.start_with?("/transfer-api") && i[:title].nil?
+    if i.identifier.start_with?("/transfer-api") || i.identifier.start_with?("/asciiguide")
+      if i[:title].nil?
       # Match transfer API titles from raw content
       m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
       if !m.nil?
@@ -29,6 +30,7 @@ preprocess do
         # i[:title] = items['/docs/transfer-api/'][:title]
         # i[:subtitle] = items['/docs/transfer-api/'][:version]
       end   
+      end
     end
 
     if i.identifier.start_with?("/transfer-cli/docs") && i[:title].nil?
@@ -40,7 +42,7 @@ preprocess do
       end
     end
     # Adjust adoc include paths to be absolute
-    if i.identifier.start_with?("/transfer-cli/docs")
+    if i.identifier.start_with?("/transfer-cli/docs") 
       # Add full path for adoc includes
       raw = i.raw_content
       raw.gsub!(/include::include/, 'include::content/transfer-cli/docs/include')
@@ -73,6 +75,18 @@ compile '/transfer-api/*' do
 end
 
 compile '/transfer-cli/*' do
+  if !item.binary?
+    if ["txt", "adoc"].include?item[:extension].split('.').last
+      filter :asciidoc
+      layout 'default'
+    else
+      filter :erb
+      layout 'default'
+    end
+  end
+end
+
+compile '/asciiguide/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
