@@ -72,7 +72,7 @@ compile '/transfer-api/*' do
   end
 end
 
-compile '/transfer-cli/*' do
+compile '/transfer-cli/docs/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
