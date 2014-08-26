@@ -76,10 +76,10 @@ compile '/transfer-cli/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout 'default'
+      layout item[:layout] || 'transfer-cli'
     else
       filter :erb
-      layout 'default'
+      layout item[:layout] || 'transfer-cli'
     end
   end
 end
