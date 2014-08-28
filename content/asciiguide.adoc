@@ -1,22 +1,22 @@
-= Asciidoc Guide 
+= Asciidoc Guide
 :toc:
 :toc-title: Table of Contents
 :toclevels: 2
 
-This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/#horizontal-rules-and-page-breaks
+This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
 == Paragraphs
-=== Normal
+=== _Normal_
 Paragraphs don't require any special markup in AsciiDoc.
 A paragraph is just one or more lines of consecutive text.
 
 To begin a new paragraph, separate it by at least one blank line.
 
-=== Line breaks
+=== _Line breaks_
 Rubies are red, +
 Topazes are blue.
 
-=== Literal
+=== _Literal_
 A normal paragraph.
 
  A sequence of lines that begin with at least one space is a literal paragraph.
@@ -26,7 +26,7 @@ A normal paragraph.
 
 Another normal paragraph.
 
-=== Admonition
+=== _Admonition_
 NOTE: An admonition paragraph draws the reader's attention to
 auxiliary information.
 Its purpose is determined by the label
@@ -42,13 +42,13 @@ WARNING: Watch out for...
 
 CAUTION: Ensure that...
 
-=== Lead paragraph (broken, syntax of "[.lead]" won't work)
+=== _Lead paragraph (broken, syntax of "[.lead]" won't work)_
 //[.lead]
 This text will be styled as a lead paragraph (i.e., larger font).
 
 
 == Formatted Text
-=== Bold, Italic, and Monospace
+=== _Bold, Italic, and Monospace_
 _italic phrase_
 
 __i__talic le__tt__ers
@@ -73,7 +73,7 @@ __i__talic le__tt__ers
 
 `single quoted text' and +monospaced quoted text+
 
-=== Custom Styling
+=== _Custom Styling_
 Werewolves are [custom_style]#allergic to cinnamon#.
 
 Do werewolves believe in [small]#small print#?
@@ -81,13 +81,13 @@ Do werewolves believe in [small]#small print#?
 [big]##O##nce upon an infinite loop.
 
 
-=== Superscript and Subscript
+=== _Superscript and Subscript_
 ^super^script phrase
 
 ~sub~script phrase
 
 
-=== Curved Quotation Marks and Apostrophes (broken)
+=== _Curved Quotation Marks and Apostrophes (broken)_
 '`single curved quotes`'
 
 "`double curved quotes`"
@@ -99,7 +99,7 @@ All of the werewolves`' desks were a mess.
 Olaf had been with the company since the `'60s.
 
 == Section Titles (Headers)
-=== Article doctype
+=== _Article doctype_
 Document Title (Level 0)
 
 == Level 1 Section Title
@@ -115,22 +115,22 @@ Document Title (Level 0)
 
 == Explicit id
 [[primitives-nulls]]
-=== Primitive types and null values
+=== _Primitive types and null values_
 
 == Horizontal Rules and Page Breaks
-=== Horizontal rule
+=== _Horizontal rule_
 '''
 
-=== Page break
+=== _Page break_
 <<<
 
 == Lists
-=== Unordered, basic
+=== _Unordered, basic_
 * Edgar Allen Poe
 * Sheri S. Tepper
 * Bill Bryson
 
-=== Unordered, max nesting
+=== _Unordered, max nesting_
 * level 1
 ** level 2
 *** level 3
@@ -138,18 +138,18 @@ Document Title (Level 0)
 ***** level 5
 * level 1
 
-=== Checklist (broken)
+=== _Checklist (broken)_
 - [*] checked
 - [x] also checked
 - [ ] not checked
 -     normal list item
 
-=== Ordered, basic
+=== _Ordered, basic_
 . Step 1
 . Step 2
 . Step 3
 
-=== Ordered, nested (broken)
+=== _Ordered, nested (broken)_
 . Step 1
 . Step 2
 [loweralpha]
@@ -157,7 +157,7 @@ Document Title (Level 0)
 .. Step 2b
 . Step 3
 
-=== Ordered, max nesting (broken)
+=== _Ordered, max nesting (broken)_
 . level 1
 .. level 2
 ... level 3
@@ -165,23 +165,23 @@ Document Title (Level 0)
 ..... level 5
 . level 1
 
-=== Labeled, single-line
+=== _Labeled, single-line_
 first term:: definition of first term
 section term:: definition of second term
 
-=== Labeled, multi-line
+=== _Labeled, multi-line_
 first term::
 definition of first term
 section term::
 definition of second term
 
-=== Q&A
+=== _Q&A_
 [qanda]
 What is Asciidoctor?::
   An implementation of the AsciiDoc processor in Ruby.
 What is the answer to the Ultimate Question?:: 42
 
-=== Mixed
+=== _Mixed_
 Operating Systems::
   Linux:::
     . Fedora
@@ -201,7 +201,7 @@ Cloud Providers::
     . Amazon EC2
     . Rackspace
 
-=== Complex content in outline lists
+=== _Complex content in outline lists_
 * Every list item has at least one paragraph of content,
   which may be wrapped, even using a hanging indent.
 +
@@ -229,17 +229,17 @@ list continuation:: a plus sign (`{plus}`) on a line by itself
 |===
 
 == Links
-=== External
+=== _External_
 http://asciidoctor.org - automatic!
 
 http://asciidoctor.org[Asciidoctor]
 
 https://github.com/asciidoctor[Asciidoctor @ *GitHub*]
 
-=== Relative
+=== _Relative_
 link:index.html[Docs]
 
-=== Email and IRC
+=== _Email and IRC_
 devel@discuss.arquillian.org
 
 mailto:devel@discuss.arquillian.org[Discuss Arquillian]
@@ -248,48 +248,48 @@ mailto:devel-join@discuss.arquillian.org[Subscribe, Subscribe me, I want to join
 
 irc://irc.freenode.org/#asciidoctor
 
-=== Inline anchors
+=== _Inline anchors_
 [[bookmark-a]]Inline anchors make arbitrary content referenceable.
 
 anchor:bookmark-b[]Use a cross reference to link to this location.
 
-=== Internal cross references
+=== _Internal cross references_
 See <<paragraphs>> to learn how to write paragraphs. (broken, adding brackets)
 
 Learn how to organize the document into <<section-titles,sections>>.
 
 == Images (broken, adjusted to remove a ":" after "image")
-=== External Images
+=== _External Images_
 There are more options here, but I only included this one; if more need to be accomodated, code may need to be added.
 image:http://asciidoctor.org/images/octocat.jpg[GitHub mascot]
 
 == Videos (broken)
-=== Embedded Youtube
+=== _Embedded Youtube_
 video::rPQoq7ThGAU[youtube]
 
-=== Embedded Vimeo
+=== _Embedded Vimeo_
 video::67480300[vimeo]
 
 == Source Code (most of these are broken)
-=== Inline (broken, instead of replacing backticks with <code> tags, it uses span class "monospaced")
+=== _Inline (broken, instead of replacing backticks with <code> tags, it uses span class "monospaced")_
 Reference code like `types` or `methods` inline.
 
-=== Literal Line
+=== _Literal Line_
  Indent the line one space to insert a code snippet
 
-=== Literal Block
+=== _Literal Block_
 ....
 error: The requested operation returned error: 1954 Forbidden search for defensive operations manual
 absolutely fatal: operation initiation lost in the dodecahedron of doom
 would you like to die again? y/n
 ....
 
-=== Listing block with title, no syntax highlighting (broken, wouldn't compile)
+=== _Listing block with title, no syntax highlighting (broken, wouldn't compile)_
 
-=== Code block with title and syntax highlighting (broken, wouldn't compile)
+=== _Code block with title and syntax highlighting (broken, wouldn't compile)_
  Syntax highlighting is enabled by setting the source-highlighter attribute in the document header or passed as an argument.
 
-=== Code block with non-selectable callouts
+=== _Code block with non-selectable callouts_
 ----
 line of code  // <1>
 line of code  # <2>
@@ -300,7 +300,7 @@ line of code  ;; <3>
 <3> A callout behind a line comment for Clojure.
 
 == More Delimited Blocks
-=== Sidebar (broken)
+=== _Sidebar (broken)_
 .AsciiDoc history
 ****
 AsciiDoc was first released in Nov 2002 by Stuart Rackham.
@@ -321,7 +321,7 @@ An admonition block may contain complex content.
 Another paragraph.
 ====
 
-=== Blockquote (broken)
+=== _Blockquote (broken)_
 [quote, Abraham Lincoln, Soldiers' National Cemetery Dedication]
 ____
 Four score and seven years ago our fathers brought forth
@@ -335,7 +335,7 @@ ____
 A person who never made a mistake never tried anything new.
 ____
 
-=== Passthrough
+=== _Passthrough_
 ++++
 <p>
 Content in a passthrough block is passed to the output unprocessed.
@@ -346,7 +346,7 @@ That means you can include raw HTML, like this embedded Gist:
 </script>
 ++++
 
-=== Open (broken)
+=== _Open (broken)_
 --
 An open block can be an anonymous container,
 or it can masquerade as any other block.
@@ -356,3 +356,332 @@ or it can masquerade as any other block.
 --
 puts "I'm a source block!"
 --
+
+=== _Custom substitutions (broken)_
+
+:version: 0.1.4
+
+//[source,xml,subs="verbatim,attributes"]
+----
+<dependency>
+  <groupId>org.asciidoctor</groupId>
+  <artifactId>asciidoctor-java-integration</artifactId>
+  <version>{version}</version>
+</dependency>
+----
+
+== Block Id, Role and Options
+=== _Tradiitonal markup method for assigning block id and role_
+[[goals]]
+[role="incremental"]
+* Goal 1
+* Goal 2
+
+=== _Traditional markup method for assigning quoted text anchor (id) and role_
+[[free_the_world]][big goal]_free the world_
+
+=== _Role assigned to text enclosed in backticks_
+[rolename]`monospace text`
+
+=== _Traditional markup method for assigning block options_
+[options="header,footer,autowidth"]
+|===
+|Cell A |Cell B
+|===
+
+== Comments
+=== _Line_
+// A single-line comment.
+
+=== _Block_
+////
+A multi-line comment.
+
+Notice it's a delimited block.
+////
+
+== Tables
+=== _Table with a title, three columns, a header, and two rows of content_
+.Table Title
+|===
+|Name of Column 1 |Name of Column 2 |Name of Column 3
+
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+|Cell in column 3, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===
+
+=== _Table with two columns, a header, and two rows of content_
+[cols="2*", options="header"]
+|===
+|Name of Column 1
+|Name of Column 2
+
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===
+
+=== _Table with three columns, a header, and two rows of content_
+[cols="1,1,2", options="header"]
+.Applications
+|===
+|Name
+|Category
+|Description
+
+|Firefox
+|Browser
+|Mozilla Firefox is an open-source web browser.
+It's designed for standards compliance,
+performance, portability.
+
+|Arquillian
+|Testing
+|An innovative and highly extensible testing platform.
+Empowers developers to easily create real, automated tests.
+|===
+
+=== _Table with column containing AsciiDoc content_
+[cols="2,2,5a"]
+|===
+|Firefox
+|Browser
+|Mozilla Firefox is an open-source web browser.
+
+It's designed for:
+
+* standards compliance
+* performance
+* portability
+
+http://getfirefox.com[Get Firefox]!
+|===
+
+=== _Table from CSV data_
+[format="csv", options="header"]
+|===
+Artist,Track,Genre
+Baauer,Harlem Shake,Hip Hop
+The Lumineers,Ho Hey,Folk Rock
+|===
+
+=== _Table with formatted, aligned and merged cells_
+[cols="e,m,^,>s", width="25%"]
+|===
+|1 >s|2 |3 |4
+^|5 2.2+^.^|6 .3+<.>m|7
+^|8
+|9 2+>|10
+|===
+
+== UI Macros
+_You must set the experimental attribute in the document header to enable macros._
+(skipping)
+
+== Attributes and Substitutions
+=== _Attribute declaration and usage_ (broken)
+////
+:homepage: http://asciidoctor.org
+:docslink: http://asciidoctor.org/docs[Asciidoctor's Docs]
+:description: Asciidoctor is a mature, plain-text document format for +
+       writing notes, articles, documentation, books, and more. +
+       It's also a text processor & toolchain for translating +
+       documents into various output formats (i.e., backends), +
+       including HTML, DocBook, PDF and ePub.
+:checkedbox: pass:normal[+[&#10004;]+]
+////
+Check out {homepage}[Asciidoctor]!
+
+{description}
+
+Check out {docslink} too!
+
+{checkedbox} That's done!
+
+=== _Built-in literal attributes (some broken)_
+lt: {lt}
+
+gt: {gt}
+
+amp: {amp}
+
+startsb: {startsb}
+
+endsb: {endsb}
+
+vbar: {vbar}
+
+caret: {caret}
+
+asterisk: {asterisk}
+
+tilde: {tilde}
+
+apostrophe: {apostrophe}
+
+backslash: {backslash}
+
+backtick: {backtick}
+
+two colons: {two-colons}
+
+two semicolons: {two-semicolons}
+
+=== _Built-in entity attributes_
+empty: {empty}
+
+sp, space: {sp}, {space}
+
+nbsp: {nbsp}
+
+zwsp: {zwsp}
+
+wj: {wj}
+
+apos: {apos}
+
+quot: {quot}
+
+lsquo: {lsquo}
+
+rsquo: {rsquo}
+
+ldquo: {ldquo}
+
+rdquo: {rdquo}
+
+deg: {deg}
+
+plus: {plus}
+
+brvbar: {brvbar}
+
+=== _Built-in data attributes_
+usage: "\{attribute\}"
+asciidoctor: calls the processor, {asciidoctor}
+
+asciidoctor-version: version of the processor, {asciidoctor-version}
+
+backend: backend used to render document, {backend}
+
+docdate: last modified date, {docdate}
+
+docdatetime: last modified  date and time, {docdatetime}
+
+docdir: name of document directory, {docdir}
+
+docfile: name of document file, {docfile}
+
+doctime: last modified time, {doctime}
+
+doctitle: the title of the document, {doctitle}
+
+doctype: document's doctype (e.g., article), {doctype}
+
+localdate: local date when rendered, {localdate}
+
+localdatetime: local date and time when rendered, {localdatetime}
+
+localtime: local time when rendered, {localtime}
+
+=== _Named substitutions (broken? check usage)_
+none: Disables substitutions, {none}
+
+normal: Performs all substitutions except for callouts, {normal}
+
+verbatim: Replaces special characters and processes callouts, {verbatim}
+
+specialchars, specialcharacters: Replaces <, >, and & with their corresponding entities, {specialchars}
+
+quotes: Applies text formatting, {quotes}
+
+attributes: Replaces attribute references, {attributes}
+
+replacements: Substitutes textual and character reference replacements, {replacements}
+
+macros: Processes macros, {macros}
+
+post_replacements: Replaces the line break character (+), {post_replacements}
+
+=== _Counter attributes_
+[caption=""]
+.Parts{counter2:index:0}
+|===
+|Part Id |Description
+
+|PX-{counter:index}
+|Description of PX-{index}
+
+|PX-{counter:index}
+|Description of PX-{index}
+|===
+
+== Text Replacement
+=== _Textual symbol replacements_
+Copyright, (C)
+
+Registered, (R)
+
+Trademark, (TM)
+
+Em dash, --
+
+ellipses, ...
+
+right single arrow, ->
+
+right double arrow, =>
+
+left single arrow, <-
+
+left double arrow, <=
+
+apostrophe, Sam's
+
+== Escaping Text
+=== _Backslash_
+\\*Stars* is not rendered as bold text.
+The asterisks around the word are preserved.
+
+\\{author} is not resolved to the author name.
+The curly brackets around the word are preserved.
+
+The backslash character is automatically removed.
+
+=== _Triple plus and inline passthrough macro_
++++<u>underline me</u>+++ renders as underlined text.
+
+pass:[<u>underline me</u>] also renders as underlined text.
+
+== Table of Contents (ToC)
+=== _Document with ToC_
+\:toc:, usage at top of this file
+
+\:toc: right (broken)
+
+== Bibliography
+=== _References_
+_The Pragmatic Programmer_ <<prag>> should be required reading for
+all developers.
+
+[bibliography]
+- [[[prag]]] Andy Hunt & Dave Thomas. The Pragmatic Programmer:
+  From Journeyman to Master. Addison-Wesley. 1999.
+- [[[seam]]] Dan Allen. Seam in Action. Manning Publications.
+  2008.
+
+== Footnotes
+=== _Normal and reusable footnotes (broken)_
+A statement.footnote:[Clarification about this statement.]
+
+A bold statement.footnoteref:[disclaimer,Opinions are my own.]
+
+Another bold statement.footnoteref:[disclaimer]
+
