@@ -677,11 +677,10 @@ all developers.
 - [[[seam]]] Dan Allen. Seam in Action. Manning Publications.
   2008.
 
-== Footnotes
-=== _Normal and reusable footnotes (broken & break toc)_
-A statement.footnote:\[Clarification about this statement.]
+== \Footnotes (broken, needd to escape word since it kept breaking toc)
+=== _Normal and reusable footnotes_
+A statement.footnote:[Clarification about this statement.]
 
-A bold statement.footnoteref:\[disclaimer,Opinions are my own.]
+A bold statement.footnoteref:[disclaimer,Opinions are my own.]
 
-Another bold statement.footnoteref:\[disclaimer]
-
+Another bold statement.footnoteref:[disclaimer]
