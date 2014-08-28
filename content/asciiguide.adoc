@@ -664,7 +664,7 @@ pass:[<u>underline me</u>] also renders as underlined text.
 === _Document with ToC_
 \:toc:, usage at top of this file
 
-\:toc: right (broken)
+\:toc: right, (broken)
 
 == Bibliography
 === _References_
@@ -678,10 +678,10 @@ all developers.
   2008.
 
 == Footnotes
-=== _Normal and reusable footnotes (broken)_
-A statement.footnote:[Clarification about this statement.]
+=== _Normal and reusable footnotes (broken & break toc)_
+A statement.footnote:\[Clarification about this statement.]
 
-A bold statement.footnoteref:[disclaimer,Opinions are my own.]
+A bold statement.footnoteref:\[disclaimer,Opinions are my own.]
 
-Another bold statement.footnoteref:[disclaimer]
+Another bold statement.footnoteref:\[disclaimer]
 
