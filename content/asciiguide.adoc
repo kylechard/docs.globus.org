@@ -5,6 +5,8 @@
 
 This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
+We are currently supporting asciidoc version *8.6.9*
+
 == Paragraphs
 === _Normal_
 Paragraphs don't require any special markup in AsciiDoc.
