@@ -1,11 +1,9 @@
 = Asciidoc Guide
 :toc:
-:toc-title: Table of Contents
-:toclevels: 2
 
 This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
-We are currently supporting asciidoc version *8.6.9*
+*We are currently supporting asciidoc version 8.6.9*
 
 == Paragraphs
 === _Normal_
