@@ -1,11 +1,12 @@
 = Asciidoc Guide
 :toc:
-:toc-title: Table of Contents
-:toclevels: 2
+:toc-placement!:
 
 This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
-We are currently supporting asciidoc version *8.6.9*
+*We are currently supporting asciidoc version 8.6.9*
+
+toc::[]
 
 == Paragraphs
 === _Normal_
@@ -44,7 +45,9 @@ WARNING: Watch out for...
 
 CAUTION: Ensure that...
 
-=== _Lead paragraph (broken, syntax of "[.lead]" won't work)_
+ NOTE: Icons can be turned on for these, but only asciidoctor renders fontawesome icons; we can use custom icons with asciidoc by adding them to the /images/icons directory and setting the icons attribute.
+
+=== _Lead paragraph (broken, syntax of "[.lead]" won't compile)_
 //[.lead]
 This text will be styled as a lead paragraph (i.e., larger font).
 
@@ -141,6 +144,7 @@ Document Title (Level 0)
 * level 1
 
 === _Checklist (broken)_
+//[options=interactive]
 - [*] checked
 - [x] also checked
 - [ ] not checked
@@ -166,6 +170,15 @@ Document Title (Level 0)
 .... level 4
 ..... level 5
 . level 1
+
+=== _Unordered inside ordered_
+. Linux
+* Fedora
+* Ubuntu
+* Slackware
+. BSD
+* FreeBSD
+* NetBSD
 
 === _Labeled, single-line_
 first term:: definition of first term
@@ -210,7 +223,7 @@ Cloud Providers::
 Additional paragraphs or blocks are adjoined by putting
 a list continuation on a line adjacent to both blocks.
 +
-list continuation:: a plus sign (`{plus}`) on a line by itself
+list continuation:: a plus sign (`{plus}`) (broken) on a line by itself
 
 * A literal paragraph does not require a list continuation.
 
@@ -273,7 +286,7 @@ video::rPQoq7ThGAU[youtube]
 video::67480300[vimeo]
 
 == Source Code (most of these are broken)
-=== _Inline (broken, instead of replacing backticks with <code> tags, it uses span class "monospaced")_
+=== _Inline_
 Reference code like `types` or `methods` inline.
 
 === _Literal Line_
@@ -679,10 +692,36 @@ all developers.
 - [[[seam]]] Dan Allen. Seam in Action. Manning Publications.
   2008.
 
-== \Footnotes (broken, needd to escape word since it kept breaking toc)
+== \Footnotes (broken, needed to escape word since it kept breaking toc)
 === _Normal and reusable footnotes_
 A statement.footnote:[Clarification about this statement.]
 
 A bold statement.footnoteref:[disclaimer,Opinions are my own.]
 
 Another bold statement.footnoteref:[disclaimer]
+
+== TODO: "Broken" Notes & Adjustments
+* lead paragraph styling not working; not in conf file?
+* monospace letters broken; maybe add styling for .monospace?
+* monospace + bold or italic broken; check conf file
+* single and double quotes not working; adjust conf file
+* add h6 to conf file
+* not sure pagebreaks are necessary?
+* interactive checklist broken (won't compile); check conf?
+* check nested lists in conf file since they work in html4
+* definition styling, add indent on "answers"?
+* plus {plus} sign rendering broken; check conf?
+* adjust table styling
+* internal cross reference links adding brackets when not given link text
+
+
+
+== HTML4 vs HTML5
+* all h2 elements are surrounded by a div with section1 class applied in html5
+* horizontal rules between h2 elements in html4
+* lists: ordered, nested works in html4, broken in html5
+* lists: ordered, max nesting works in html4, broken in html5
+* video: totally broken in html4, partially broken in html5
+* more delimited blocks: sidebar is table in html4 (broken) and is div with class "sidebarblock" in html5 (needs styling to work)
+* Table with formatted, aligned and merged cells: html4 renders 6, 7 & 10 in code tags while html5 gives them monospaced class
+* Footnotes: html4 "opinions are my own" rendered as italic link with name "_footnote_disclaimer" while html5 renders it as plain text with span class "footnote" and id "_footnote_disclaimer"
