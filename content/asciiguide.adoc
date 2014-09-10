@@ -1,9 +1,12 @@
 = Asciidoc Guide
 :toc:
+:toc-placement!:
 
 This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
 *We are currently supporting asciidoc version 8.6.9*
+
+toc::[]
 
 == Paragraphs
 === _Normal_
@@ -41,6 +44,8 @@ IMPORTANT: Don't forget...
 WARNING: Watch out for...
 
 CAUTION: Ensure that...
+
+ NOTE: Icons can be turned on for these, but only asciidoctor renders fontawesome icons; we can use custom icons with asciidoc by adding them to the /images/icons directory and setting the icons attribute.
 
 === _Lead paragraph (broken, syntax of "[.lead]" won't work)_
 //[.lead]
@@ -677,10 +682,13 @@ all developers.
 - [[[seam]]] Dan Allen. Seam in Action. Manning Publications.
   2008.
 
-== \Footnotes (broken, needd to escape word since it kept breaking toc)
+== \Footnotes (broken, needed to escape word since it kept breaking toc)
 === _Normal and reusable footnotes_
 A statement.footnote:[Clarification about this statement.]
 
 A bold statement.footnoteref:[disclaimer,Opinions are my own.]
 
 Another bold statement.footnoteref:[disclaimer]
+
+== ToFix Broken Notes
+* ToC "list-unstyled" styling seems broken when toc-placement is unset

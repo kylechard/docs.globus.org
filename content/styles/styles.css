@@ -1,58 +1,58 @@
 @font-face {
-	font-family: 'museosans';
-	src: url('fonts/221E91_4_0.woff') format('woff');
-	font-weight: 100 ;
+    font-family: 'museosans';
+    src: url('fonts/221E91_4_0.woff') format('woff');
+    font-weight: 100 ;
 }
 @font-face {
-	font-family: 'museosans';
-	src: url('fonts/221E91_3_0.woff') format('woff');
-	font-weight: 500 ;
+    font-family: 'museosans';
+    src: url('fonts/221E91_3_0.woff') format('woff');
+    font-weight: 500 ;
 }
 @font-face {
-	font-family: 'museosans';
-	src: url('fonts/221E91_1_0.woff') format('woff');
-	font-weight: 300 ;
+    font-family: 'museosans';
+    src: url('fonts/221E91_1_0.woff') format('woff');
+    font-weight: 300 ;
 }
 @font-face {
-	font-family: 'museosans';
-	src: url('fonts/221E91_0_0.woff') format('woff');
-	font-weight: 700 ;
+    font-family: 'museosans';
+    src: url('fonts/221E91_0_0.woff') format('woff');
+    font-weight: 700 ;
 }
 
 body {
-	/*padding-top: 60px;*/
+    /*padding-top: 60px;*/
   font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 300;
   font-size: 14px;
 }
 
 h2, h3 {
-	color: #708FCA;
-	font-weight: 100;
+    color: #708FCA;
+    font-weight: 100;
 }
 
 /* Navbar */
 
 /* Masthead */
 .page-masthead {
-	padding: 90px 15px;
-	margin-bottom: 40px;
-	background-color: #B9E5FF; /*#F0F0F0;*/
-	color: #3560A0;
+    padding: 90px 15px;
+    margin-bottom: 40px;
+    background-color: #B9E5FF; /*#F0F0F0;*/
+    color: #3560A0;
 }
 
 /* Header */
 .page-header {
-	border-bottom: none;
+    border-bottom: none;
 }
 .page-header .container {
-	border-bottom: 1px solid #EEE;
-	position: relative;
+    border-bottom: 1px solid #EEE;
+    position: relative;
 }
 .page-header h1 {
-	font-weight: 100;
+    font-weight: 100;
 /*	padding-right: 500px;*/
-	font-size: 30px;
+    font-size: 30px;
 }
 
 
@@ -60,16 +60,30 @@ h2, h3 {
 .page-content {}
 
 /* Asciidoc */
-#doc-header {
-	margin-bottom: 30px;
-}
 #doc-header h1 {
-	font-weight: 300;
-	/*padding-bottom: 9px;
-	border-bottom: 1px solid #EEE;*/
+    font-weight: 300;
+    /*padding-bottom: 9px;
+    border-bottom: 1px solid #EEE;*/
 }
-#doc-header #toc li {
-	margin: 3px 0;
+#toctitle {
+    color: #708FCA;
+    font-weight: 100;
+    font-size: 24px;
+}
+#toc li {
+    margin: 3px 0;
+}
+#doc-header div:last-child {
+    margin-bottom: 30px;
+}
+#doc-header + #doc-content #toctitle {
+    border-top: solid 1px #eee;
+    margin-top: 20px;
+    padding: 20px 0 10px;
+}
+#doc-header + #doc-content #toc {
+  margin-left: 20px;
+  margin-bottom: 30px;
 }
 
 /* Tables */
@@ -78,13 +92,14 @@ h2, h3 {
         background-color: #fdfdfd;
 }
 .table-borderless>tbody>tr>td {
-	border: 0;
+    border: 0;
 }
 
 /* admonition blocks */
 .admonitionblock .table tbody>tr td:first-child {
         border-right: solid 2px #fff;
-		width: 15%;
+        width: 15%;
+        text-transform: uppercase;
 }
 .admonitionblock .table.note tbody tr {
         background-color: #f5f5f5;
@@ -101,20 +116,20 @@ h2, h3 {
 .admonitionblock .table.caution tbody tr {
         background-color: #fcf8e3;
 }
-	
+
 /* Site Footer */
 footer {
-	font-size: 13px;
-	margin-top: 60px;
-	padding: 30px 0;
+    font-size: 13px;
+    margin-top: 60px;
+    padding: 30px 0;
 }
 footer .container {
-	border-top: 1px solid #E8E8E8;
-	padding: 30px 0;
+    border-top: 1px solid #E8E8E8;
+    padding: 30px 0;
 }
 footer p {
-	padding: 10px 0;
+    padding: 10px 0;
 }
 footer .nav li {
-	display: inline-block;
+    display: inline-block;
 }
