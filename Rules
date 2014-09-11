@@ -18,7 +18,7 @@ ignore '/menus/*/'
 
 preprocess do
   items.each do |i|
-    if i.identifier.start_with?("/transfer-api") || i.identifier.start_with?("/asciiguide")
+    if i.identifier.start_with?("/transfer-api") || i.identifier.start_with?("/site-docs/asciiguide")
       if i[:title].nil?
       # Match transfer API titles from raw content
       m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
@@ -86,7 +86,7 @@ compile '/transfer-cli/*' do
   end
 end
 
-compile '/asciiguide/*' do
+compile '/site-docs/asciiguide/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
