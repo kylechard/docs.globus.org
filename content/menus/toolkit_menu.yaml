@@ -1,8 +1,11 @@
 menus: 
   -
     options:
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
     items:
+      -
+        title: 'Downloads'
+        link: '/toolkit/downloads/'
       -
         title: 'Applications'
         link: '/toolkit/applications/'
@@ -12,3 +15,14 @@ menus:
       -
         title: 'How to Contribute'
         link: '/toolkit/contributions/'
+      -
+        title: 'Support'
+        link: '/toolkit/support/'
+  -
+    options: 
+      title: 'Documention'
+      collection_class: 'nav nav-pills nav-stacked'
+    items:
+      -
+        title: '6.0 Stable Release'
+        link: '/toolkit/docs/6.0/'

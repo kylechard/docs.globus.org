@@ -4,26 +4,21 @@
   <div class="col-sm-9"><%= yield %></div>
   <div class="col-sm-3 sidebar">
 
-    <%
-		case
-		when item.identifier.start_with?('/toolkit/docs/6/6.0')
+    <% case
+		when item.identifier.start_with?('/toolkit/docs/6.0')
 		  menu_name = 'toolkit_60_menu'
 		else
 		  menu_name = 'toolkit_menu'
-		end 
-		%>
+		end %>
     
     <% if menu_name != '' %>
     	<aside class="sidebar-block">
 		    <% globus_load_menu(menu_name).each do |m| %>
-					<!-- <div class="panel panel-default"> -->
-						<% if m[:options].include?(:title) %>
-					  	<!-- <div class="panel-heading"></div> -->
-					  	<b><%= m[:options][:title] %></b>
-					  	<% m[:options].delete(:title) # Delete title value %>
-					  <% end %>
-				    <%= globus_render_menu(m[:items], m[:options]) %>
-					<!-- </div> -->
+					<% if m[:options].include?(:title) %>
+				  	<b><%= m[:options][:title] %></b>
+				  	<% m[:options].delete(:title) # Delete title value %>
+				  <% end %>
+			    <%= globus_render_menu(m[:items], m[:options]) %>
 				<% end %>
 			</aside>
 		<% end %>
