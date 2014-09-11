@@ -16,22 +16,6 @@ menus:
           -
             title: 'Transfer CLI Reference'
             link: '/transfer-cli/'
-      -
-        title: 'Globus Toolkit'
-        link: '#'
-        subsections:
-          -
-            title: 'Overview'
-            link: '/toolkit/'
-          -
-            title: 'Documentation'
-            link: '/toolkit/docs/'
-          -
-            title: 'Tutorials'
-            link: '/#/'
-          -
-            title: 'Downloads'
-            link: '/toolkit/downloads/'
       - 
         title: 'Support'
         link: '/support/'
