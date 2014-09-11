@@ -2,7 +2,7 @@ menus:
   -
     options:
       title: 'Getting Started'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
@@ -30,7 +30,7 @@ menus:
   -
     options:
       title: 'Components'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
@@ -41,7 +41,7 @@ menus:
         class: 'nav-header-divider' 
       -
         title: 'GridFTP'
-        link: '/toolkit/docs/6/6.0/gridftp/'
+        link: '/toolkit/docs/6.0/gridftp/'
         # class: 'list-group-item' 
       -
         title: 'Jobs Management'
@@ -49,7 +49,7 @@ menus:
         class: 'nav-header-divider'
       -
         title: 'GRAM5'
-        link: '/toolkit/docs/6/6.0/gram5/'
+        link: '/toolkit/docs/6.0/gram5/'
         # class: 'list-group-item'
       -
         title: 'Security'
@@ -57,19 +57,19 @@ menus:
         class: 'nav-header-divider'
       -
         title: 'GSI C'
-        link: '/toolkit/docs/6/6.0/gsic/'
+        link: '/toolkit/docs/6.0/gsic/'
         # class: 'list-group-item'
       -
         title: 'MyProxy'
-        link: '/toolkit/docs/6/6.0/myproxy/'
+        link: '/toolkit/docs/6.0/myproxy/'
         # class: 'list-group-item'
       -
         title: 'GSI-OpenSSH'
-        link: '/toolkit/docs/6/6.0/gsiopenssh/'
+        link: '/toolkit/docs/6.0/gsiopenssh/'
         # class: 'list-group-item'
       -
         title: 'SimpleCA'
-        link: '/toolkit/docs/6/6.0/simpleca/'
+        link: '/toolkit/docs/6.0/simpleca/'
         # class: 'list-group-item'
       -
         title: 'Common Runtime'
@@ -77,27 +77,27 @@ menus:
         class: 'nav-header-divider'
       -
         title: 'XIO'
-        link: '/toolkit/docs/6/6.0/xio/'
+        link: '/toolkit/docs/6.0/xio/'
         # class: 'list-group-item'
       -
         title: 'C Common Libraries'
-        link: '/toolkit/docs/6/6.0/ccommonlib/'
+        link: '/toolkit/docs/6.0/ccommonlib/'
         # class: 'list-group-item'
   -
     options:
       title: 'Software Links'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
     items:
       -
         title: 'Usage Statistics'
-        link: '/toolkit/docs/6/6.0/Usage_Stats/'
+        link: '/toolkit/docs/6.0/Usage_Stats/'
         # class: 'list-group-item'
       -
         title: 'Release Notes'
-        link: '/toolkit/docs/6/6.0/rn/'
+        link: '/toolkit/docs/6.0/rn/'
         # class: 'list-group-item'
       -
         title: 'Versioning'
@@ -122,7 +122,7 @@ menus:
   -
     options:
       title: 'Reference'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
