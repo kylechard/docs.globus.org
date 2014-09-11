@@ -25,9 +25,9 @@ aside.sidebar-block .nav>li>.nav-header-divider {
 	margin-top: 5px;
 	padding-bottom: 0 !important;
 }
-aside.sidebar-block .nav>li>a:hover, 
+/*aside.sidebar-block .nav>li>a:hover, 
 aside.sidebar-block .nav>li>a:focus {
 	text-decoration: underline;
 	background-color: transparent;
 	color: #2A6496;
-}
+}*/
