@@ -102,8 +102,8 @@ end
 compile '/toolkit/*' do
   if !item.binary?
     filter :erb
-
-    if item.identifier.start_with?('/toolkit/docs') 
+    # Parse toolkit HTML doc files if ignoreParse is NOT set
+    if item.identifier.start_with?('/toolkit/docs') && item[:ignoreParse].nil?
       filter :parse_toolkit
     end
 
