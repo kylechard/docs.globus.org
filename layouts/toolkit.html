@@ -9,7 +9,9 @@
 		  menu_name = 'toolkit_60_menu'
 		else
 		  menu_name = 'toolkit_menu'
-		end %>
+		end 
+
+		menu_name = 'toolkit_menu'%>
     
     <% if menu_name != '' %>
     	<aside class="sidebar-block">
@@ -22,10 +24,6 @@
 				<% end %>
 			</aside>
 		<% end %>
-
-		<aside class="sidebar-block">
-  		<p class="text-muted">Latest release: <strong><%= @config[:docs][:toolkit] %></strong></p>
-  	</aside>
   
   </div>
 </div>

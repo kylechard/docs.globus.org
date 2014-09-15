@@ -16,6 +16,9 @@ menus:
         title: 'How to Contribute'
         link: '/toolkit/contributions/'
       -
+        title: 'Publications'
+        link: '/'
+      -
         title: 'Support'
         link: '/toolkit/support/'
   -

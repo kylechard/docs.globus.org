@@ -1,5 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<div class="article"><div class="titlepage"><div><div><h2 class="title"><a name="gram5"></a>GT 6.0 GRAM5</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="glossary"><a href="#glossary-gram5">Glossary</a></span></dt></dl></div><p>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GT 6.0 GRAM5</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#gram5" title="GT 6.0 GRAM5"><link rel="next" href="#glossary-gram5" title="Glossary"><link href="http://www.globus.org/toolkit/css/default.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="/toolkit/css/print.css" media="print"><!-- calling in special style sheet if detected browser is IE 7 --><!--[if IE 7]>
+                                                
+                                                                <link rel="stylesheet" type="text/css" href="/toolkit/css/ie7.css" />
+                                                
+                                                <![endif]--><link rel="alternate" title="Globus Toolkit RSS" href="/toolkit/rss/downloadNews/downloadNews.xml" type="application/rss+xml"><script><!--
+                                                function GlobusSubmit()
+                                                {
+                                                var f=document.GlobusSearchForm;
+                                                
+                                                f.action="http://www.google.com/custom";
+                                                if (f.elements[0].checked) {
+                                                f.q.value = f.qinit.value + " -inurl:mail_archive " ;
+                                                } else {
+                                                f.q.value = f.qinit.value + " inurl:mail_archive " ;
+                                                }
+                                                }
+                                                --></script></head><body class="section-3"><?php include_once("../includes/docbook_sidebar.inc");?><div class="article" title="GT 6.0 GRAM5"><div class="titlepage"><div><div><h2 class="title"><a name="gram5"></a>GT 6.0 GRAM5</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="glossary"><a href="#glossary-gram5">Glossary</a></span></dt></dl></div><p>
   The Grid Resource Allocation and Management (GRAM5) component
   is used to locate, submit, monitor, and cancel jobs on Grid computing resources. GRAM5 is not a <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>,
   but rather a set of services and clients for communicating with a range of
@@ -20,10 +36,10 @@
 </td><td>Information for migrating to this version if you were using a
           previous version of GT. [<a class="ulink" href="mig/gram5MigratingGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a class="ulink" href="gram5.pdf" target="_top"><span class="strong"><strong>All GRAM5 Guides (PDF only)</strong></span></a>
 </td><td>Includes all GRAM5 guides except Public Interfaces (which is
-          a subset of the Developer's Guide)</td></tr></tbody></table></div><div class="glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-gram5"></a>Glossary</h2></div></div></div><div class="glossdiv"><h3 class="title">C</h3><dl><dt><a name="condor"></a><span class="glossterm">Condor</span></dt><dd class="glossdef"><p>A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>
+          a subset of the Developer's Guide)</td></tr></tbody></table></div><div class="glossary" title="Glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-gram5"></a>Glossary</h2></div></div></div><div class="glossdiv" title="C"><h3 class="title">C</h3><dl><dt><a name="condor"></a>Condor</dt><dd><p>A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>
                         mechanism supported by GRAM. See the
                         <a class="ulink" href="http://www.cs.wisc.edu/condor/" target="_top">Condor Project Website</a> for more
-                        information.</p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv"><h3 class="title">L</h3><dl><dt><a name="local-resource-manager"></a><span class="glossterm">Local Resource Manager</span> (LRM)</dt><dd class="glossdef"><p>
+                        information.</p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv" title="L"><h3 class="title">L</h3><dl><dt><a name="local-resource-manager"></a>Local Resource Manager (LRM)</dt><dd><p>
                         A system which controls access to a compute resource,
                         such as a compute cluster or parallel computer.
                         Such systems provide batch execution interfaces,
@@ -32,8 +48,8 @@
                         <a href="#pbs" class="glossterm"><em class="glossterm">Portable Batch System</em></a>,
                         <a href="#Oracle-GridEngine" class="glossterm"><em class="glossterm">GridEngine</em></a> are examples
                         of local resource managers.
-                    </p><p>See Also Condor, Portable Batch System, Oracle GridEngine.</p></dd></dl></div><div class="glossdiv"><h3 class="title">O</h3><dl><dt><a name="Oracle-GridEngine"></a><span class="glossterm">Oracle GridEngine</span></dt><dd class="glossdef"><p>
+                    </p><p>See Also Condor, Portable Batch System, Oracle GridEngine.</p></dd></dl></div><div class="glossdiv" title="O"><h3 class="title">O</h3><dl><dt><a name="Oracle-GridEngine"></a>Oracle GridEngine</dt><dd><p>
                         A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a>
                         supported by GRAM. See <a class="ulink" href="http://www.oracle.com/us/products/tools/oracle-grid-engine-075549.html" target="_top">Oracle's Web Site</a>
                         for more information.
-                    </p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv"><h3 class="title">P</h3><dl><dt><a name="pbs"></a><span class="glossterm">Portable Batch System</span> (PBS)</dt><dd class="glossdef"><p>A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a> mechanism supported by GRAM. Multiple implementations of PBS exist: GRAM currently supports TORQUE. See also <a href="#TORQUE" class="glossterm"><em class="glossterm">TORQUE</em></a>.</p><p>See Also Local Resource Manager, TORQUE.</p></dd></dl></div></div></div>
+                    </p><p>See Also Local Resource Manager.</p></dd></dl></div><div class="glossdiv" title="P"><h3 class="title">P</h3><dl><dt><a name="pbs"></a>Portable Batch System (PBS)</dt><dd><p>A <a href="#local-resource-manager" class="glossterm"><em class="glossterm">Local Resource Manager</em></a> mechanism supported by GRAM. Multiple implementations of PBS exist: GRAM currently supports TORQUE. See also <a href="#TORQUE" class="glossterm"><em class="glossterm">TORQUE</em></a>.</p><p>See Also Local Resource Manager, TORQUE.</p></dd></dl></div></div></div></body></html>

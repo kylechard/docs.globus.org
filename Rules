@@ -17,6 +17,7 @@
 ignore '/menus/*/'
 
 preprocess do
+  # Iterate each item
   items.each do |i|
     if i.identifier.start_with?("/transfer-api") || i.identifier.start_with?("/site-docs/asciiguide")
       if i[:title].nil?
@@ -86,21 +87,26 @@ compile '/transfer-cli/*' do
   end
 end
 
-compile '/site-docs/asciiguide/*' do
-  if !item.binary?
-    if ["txt", "adoc"].include?item[:extension].split('.').last
-      filter :asciidoc
-      layout 'default'
-    else
-      filter :erb
-      layout 'default'
-    end
-  end
+compile '/site-docs/*' do
+  # if !item.binary?
+  #   if ["txt", "adoc"].include?item[:extension].split('.').last
+  #     filter :asciidoc
+  #     layout 'default'
+  #   else
+  #     filter :erb
+  #     layout 'default'
+  #   end
+  # end
 end
 
 compile '/toolkit/*' do
   if !item.binary?
     filter :erb
+
+    if item.identifier.start_with?('/toolkit/docs') 
+      filter :parse_toolkit
+    end
+
     layout item[:layout] || 'toolkit'
   end 
 end 

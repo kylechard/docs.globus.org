@@ -1,43 +1,177 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<div class="article"><div class="titlepage"><div><div><h2 class="title"><a name="gt"></a>Globus Toolkit 6.0 Release
-                        Manuals</h2></div></div><hr></div><p>The following documents are good places to start with Globus Toolkit 6.0:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>For everyone: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
-                                                  <a href="rn/#rn" class="olink">GT 6.0 Release
-                                                  Notes</a>
-                                                  </li><li class="listitem"><a class="ulink" href="http://globus.org/provision/" target="_top">Globus Provision (Globus in the Cloud)</a></li><li class="listitem"><a href="appendices/commands/#gtcommands" class="olink">GT
-                                                  Commands</a></li></ul></div></li><li class="listitem"><p>For system administrators and those installing GT: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
-                                                  <a href="admin/install/#gtadmin" class="olink">Installation
-                                                  Guide</a>
-                                                  </li><li class="listitem">
-                                                  <a href="admin/quickstart/#quickstart" class="olink">Quickstart</a>
-                                                  </li></ul></div></li><li class="listitem"><p>For End Users: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><a href="rn/#java-api-download" class="olink">Java API Download</a></li></ul></div></li><li class="listitem"><p>For Developers: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
-                                                  <a href="appendices/developer/#gtdeveloper" class="olink">GT Developer's
-                                                  Guide</a>
-                                                  </li></ul></div></li></ul></div><p>GT 6.0 release manuals are divided
-                        into the following areas:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p class="simpara">
-                                                <span class="strong"><strong>
-                                                            <a href="gridftp/#gridftp" class="olink">GridFTP</a> for Data Management
-                                                </strong></span>
-                                    </p><p class="simpara">GridFTP provides high-performance and reliable data transport.</p></li><li class="listitem"><p class="simpara">
-                                                <span class="strong"><strong>
-                                                  <a href="gram5/#gram5" class="olink">GRAM5</a> for Jobs Management
-                                                </strong></span>
-                                    </p><p class="simpara">The Grid Resource Allocation and Management
-                                                (GRAM5) interface as a basic mechanism for initiation, monitoring, management, scheduling,
-                                                and/or coordination of remote computations.</p></li><li class="listitem"><p class="simpara">
-                                                <span class="strong"><strong>
-                                                            <a href="gsic/#gsic" class="olink">GSI C</a>, <a href="myproxy/#myproxy" class="olink">MyProxy</a> and <a href="gsiopenssh/#gsiopenssh" class="olink">GSI-OpenSSH</a> for Grid Security
-                                                </strong></span>
-                                    </p><p class="simpara">These components establish the identity of users or
-                                                services (authentication), protect communications,
-                                                and determine who is allowed to perform what actions
-                                                (authorization), as well as manage user
-                                                credentials.</p></li><li class="listitem"><p class="simpara">
-                                                <span class="strong"><strong>
-                                                  Other Components
-                                                </strong></span>
-                                    </p><p class="simpara">GT 6 also includes a set of <a href="ccommonlib/#ccommonlib" class="olink">C Common libraries</a>
-                                                needed for building grid infrastructure, <a href="xio/#xio" class="olink">XIO</a>, a
-                                                sophisticated and extensible I/O library suitable
-                                                for the dynamic needs of grid
-                                                applications and <a href="simpleca/#simpleca" class="olink">SimpleCA</a>, a simple certificate 
-                                                authority available for testing purposes.</p></li></ul></div></div>
+---
+title: "Globus Toolkit 6.0 Documentation"
+ignoreParse: true
+---
+
+
+<p>Intro paragraph with [link] to release notes. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue varius augue. Vestibulum massa quam, laoreet nec cursus at, luctus non libero.</p>
+
+<!-- <ul>
+  <li>For everyone:
+    <ul>
+      <li><a href="rn/#rn">GT 6.0 Release Notes</a> </li>
+      <li><a href="appendices/commands/#gtcommands">GT Commands</a></li>
+    </ul>
+  </li>
+  <li>For system administrators and those installing GT:
+    <ul>
+      <li><a href="admin/install/#gtadmin">Installation Guide</a></li>
+      <li><a href="admin/quickstart/#quickstart">Quickstart</a></li>
+    </ul>
+  </li>
+  <li>For End Users:
+    <ul>
+      <li><a href="rn/#java-api-download">Java API Download</a></li>
+    </ul>
+  </li>
+  <li>For Developers:
+    <ul>
+      <li><a href="appendices/developer/#gtdeveloper">GT Developer's Guide</a></li>
+    </ul>
+  </li>
+</ul> -->
+
+<hr>
+
+<h3>GT 6.0 component documentation:</h3>
+
+<!-- <div class="row"> -->
+  <!-- Nav tabs -->
+  <!-- <div class="col-sm-3"> -->
+<div class="tabbable tabs-left">
+  <ul id="nav-tabs" class="nav nav-tabs col-sm-2" role="tablist">
+    <li class="active"><a href="#gridftp">GridFTP</a></li>
+    <li><a href="#gram">Gram</a></li>
+    <li><a href="#gsi">GSI</a></li>
+    <li><a href="#myproxy">MyProxy</a></li>
+    <li><a href="#simpleca">SimpleCA</a></li>
+    <li><a href="#gsiopenssh">GSI-OpenSSH</a></li>
+    <li><a href="#xio">XIO</a></li>
+    <li><a href="#common-runtime">Common Runtime</a></li>
+  </ul>
+    <!-- </div> -->
+  <!-- </div> -->
+
+
+  <!-- Tab panes -->
+  <!-- <div class="col-sm-9"> -->
+
+  <div class="tab-content col-sm-10">
+    <div class="tab-pane active" id="gridftp">
+
+      <p>GridFTP is a high-performance, secure, reliable data transfer protocol optimized for high-bandwidth wide-area networks. The GridFTP protocol is based on FTP, the highly-popular Internet file transfer protocol. We have selected a set of protocol features and extensions defined already in IETF RFCs and added a few additional features to meet requirements from current data grid projects.</p>
+      <table border="0" width="700px" class="table">
+        <tbody>
+          <tr>
+            <td colspan="2">The following guides are available for this component:</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="key/#gridftpKey">Data Management Key Concepts</a> </strong></td>
+            <td>For important general concepts. [<a href="key/gridftpKeyConcepts.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="admin/#gridftpAdmin">Admin Guide</a> </strong></td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>. [<a href="admin/gridftpAdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="user/#gridftpUser">User's Guide</a> </strong></td>
+            <td>Describes how end-users typically interact with this component. [<a href="user/gridftpUserGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="developer/#gridftpDeveloper">Developer's Guide</a> </strong></td>
+            <td>Reference and usage scenarios for developers. [<a href="developer/gridftpDeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td colspan="2">Other information available for this component are:</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="rn/#gridftpRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="rn/gridftpReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="pi/#gridftpPI">Public Interface Guide</a> </strong></td>
+            <td>Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the <a href="developer/#gridftpDeveloper">Developer's Guide</a>. [<a href="pi/gridftpPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="qp/#gridftpQP">Quality Profile</a> </strong></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/gridftpQualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="mig/#gridftpMig">Migrating Guide</a> </strong></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/gridftpMigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="gridftp.pdf" target="_top"><strong>All GridFTP Guides (PDF only)</strong></a></td>
+            <td>Includes all GridFTP guides except Public Interfaces (which is a subset of the Developer's Guide)</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="tab-pane" id="gram">
+
+      <p>The Grid Resource Allocation and Management (GRAM5) component is used to locate, submit, monitor, and cancel jobs on Grid computing resources. GRAM5 is not a <a href="#local-resource-manager"><em>Local Resource Manager</em></a>, but rather a set of services and clients for communicating with a range of different batch/cluster job schedulers using a common protocol. GRAM5 is meant to address a range of jobs where reliable operation, stateful monitoring, credential management, and file staging are important.</p>
+
+      <table class="table">
+        <tbody>
+          <tr><td colspan="2">The following guides are available for this component:</td></tr>
+          <tr>
+            <td><a href="key/#gram5Key"><strong>Key Concepts</strong></a></td>
+            <td>For important general concepts about job management in Globus. Includes <a href="key/#gram5-approach">GRAM5 Approach</a>. [<a href="key/gram5KeyConcepts.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="admin/#gram5Admin"><strong>Admin Guide</strong></a></td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>.  [<a href="admin/gram5AdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="user/#gram5User"><strong>User's Guide</strong></a></td>
+            <td>Describes how end-users typically interact with this component. [<a href="user/gram5UserGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="developer/#gram5Developer"><strong>Developer's Guide</strong></a></td>
+            <td>Reference and usage scenarios for developers. [<a href="developer/gram5DeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td colspan="2"><p>Other information available for this component are:</p></td>
+          </tr>
+          <tr>
+            <td><a href="gram5/rn/#gram5RN"><strong>Release Notes</strong></a></td>
+            <td>What's new with the 6.0 release for this component. [<a href="gram5/rn/gram5ReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="pi/#gram5PI"><strong>Public Interfaces</strong></a></td><td>Information for all public interfaces (including APIs, commands, protocols, etc). Please note this is a subset of information in the <a href="developer/#gram5Developer">Developer's Guide</a>.  [<a href="pi/gram5PublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="qp/#gram5QP"><strong>Quality Profile</strong></a></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/gram5QualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="mig/#gram5Mig"><strong>Migrating Guide</strong></a></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/gram5MigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="gram5.pdf" target="_top"><strong>All GRAM5 Guides (PDF only)</strong></a></td>
+            <td>Includes all GRAM5 guides except Public Interfaces (which is a subset of the Developer's Guide)</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="tab-pane" id="gsi">..gsi.</div>
+
+    <div class="tab-pane" id="myproxy">.myproxy..</div>
+
+    <div class="tab-pane" id="simpleca">..simpleca.</div>
+
+    <div class="tab-pane" id="gsi-openssh">.openssh..</div>
+
+    <div class="tab-pane" id="xio">..xio.</div>
+
+    <div class="tab-pane" id="common-runtime">..runtime.</div>
+  </div>
+
+  <!-- </div> -->
+
+</div>

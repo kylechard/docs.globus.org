@@ -1,6 +1,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<div class="article"><div class="titlepage"><div><div><h2 class="title"><a name="gsiopenssh"></a>GT 6.0:
-  GSI-OpenSSH</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="glossary"><a href="#glossary-openssh">Glossary</a></span></dt></dl></div><p>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GT 6.0: GSI-OpenSSH</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#gsiopenssh" title="GT 6.0: GSI-OpenSSH"><link rel="next" href="#glossary-openssh" title="Glossary"><link href="http://www.globus.org/toolkit/css/default.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="/toolkit/css/print.css" media="print"><!-- calling in special style sheet if detected browser is IE 7 --><!--[if IE 7]>
+                                                
+                                                                <link rel="stylesheet" type="text/css" href="/toolkit/css/ie7.css" />
+                                                
+                                                <![endif]--><link rel="alternate" title="Globus Toolkit RSS" href="/toolkit/rss/downloadNews/downloadNews.xml" type="application/rss+xml"><script><!--
+                                                function GlobusSubmit()
+                                                {
+                                                var f=document.GlobusSearchForm;
+                                                
+                                                f.action="http://www.google.com/custom";
+                                                if (f.elements[0].checked) {
+                                                f.q.value = f.qinit.value + " -inurl:mail_archive " ;
+                                                } else {
+                                                f.q.value = f.qinit.value + " inurl:mail_archive " ;
+                                                }
+                                                }
+                                                --></script></head><body class="section-3"><?php include_once("../includes/docbook_sidebar.inc");?><div class="article" title="GT 6.0: GSI-OpenSSH"><div class="titlepage"><div><div><h2 class="title"><a name="gsiopenssh"></a>GT 6.0:
+  GSI-OpenSSH</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="glossary"><a href="#glossary-openssh">Glossary</a></span></dt></dl></div><p>
 GSI-OpenSSH is a modified version of OpenSSH that adds support for
     X.509 <a href="#proxy-cert" class="glossterm"><em class="glossterm">proxy certificate</em></a> authentication and delegation,
 providing a single sign-on remote login and file transfer service.
@@ -29,12 +45,12 @@ For more information about GSI-OpenSSH, see the
           Guide</a>.  [<a class="ulink" href="pi/gsiopensshPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="qp/#gsiopensshQP" class="olink">Quality
           Profile</a> </strong></span></td><td>Information about test coverage reports, etc.  [<a class="ulink" href="qp/gsiopensshQualityProfile.pdf" target="_top">pdf</a>]</td></tr><tr><td><span class="strong"><strong> <a href="mig/#gsiopensshMig" class="olink">Migrating Guide</a> </strong></span></td><td>Information for migrating to this version if you were using a
           previous version of GT.  [<a class="ulink" href="mig/gsiopensshMigratingGuide.pdf" target="_top">pdf</a>]</td></tr><tr><td><a class="ulink" href="gsiopenssh.pdf" target="_top"><span class="strong"><strong>All GSI-OpenSSH Guides (PDF only)</strong></span></a></td><td>Includes all GSI-OpenSSH guides except Public Interfaces
-          (which is a subset of the Developer's Guide)</td></tr></tbody></table></div><div class="glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-openssh"></a>Glossary</h2></div></div></div><div class="glossdiv"><h3 class="title">P</h3><dl><dt><a name="proxy-cert"></a><span class="glossterm">proxy certificate</span></dt><dd class="glossdef"><p> A short lived certificate issued using a EEC. A proxy certificate
+          (which is a subset of the Developer's Guide)</td></tr></tbody></table></div><div class="glossary" title="Glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-openssh"></a>Glossary</h2></div></div></div><div class="glossdiv" title="P"><h3 class="title">P</h3><dl><dt><a name="proxy-cert"></a>proxy certificate</dt><dd><p> A short lived certificate issued using a EEC. A proxy certificate
                               typically has the same effective subject as the EEC that issued it and
                               can thus be used in its place. GSI uses proxy certificates for single
                               sign on and delegation of rights to other entities.</p><p>For more information about types of proxy certificates and their
-                              compatibility in different versions of GT, see <a class="ulink" href="http://dev.globus.org/wiki/Security/ProxyCertTypes" target="_top">http://dev.globus.org/wiki/Security/ProxyCertTypes</a>.</p></dd><dt><a name="proxy-cred"></a><span class="glossterm">proxy credentials</span></dt><dd class="glossdef"><p> The combination of a proxy certificate and its corresponding private
+                              compatibility in different versions of GT, see <a class="ulink" href="http://dev.globus.org/wiki/Security/ProxyCertTypes" target="_top">http://dev.globus.org/wiki/Security/ProxyCertTypes</a>.</p></dd><dt><a name="proxy-cred"></a>proxy credentials</dt><dd><p> The combination of a proxy certificate and its corresponding private
                               key. GSI typically stores proxy credentials in
                                           <code class="filename">/tmp/x509up_u<em class="replaceable"><code>&lt;uid&gt;</code></em>
                               </code>, where &lt;uid&gt; is the user id of the proxy
-                              owner.</p></dd></dl></div></div></div>
+                              owner.</p></dd></dl></div></div></div></body></html>

@@ -3,7 +3,6 @@
 
 require "nanoc/toolbox"
 
-
 module SideNavHelper extend self
     def menu_api(items)
   		i = items.select{|x| x.identifier.start_with?("/transfer-api/docs")}
@@ -202,5 +201,3 @@ def symbolize_keys(x)
     x
   end
 end
-
-# include SideNavHelper
