@@ -17,7 +17,7 @@ menus:
         link: '/toolkit/contributions/'
       -
         title: 'Publications'
-        link: '/'
+        link: 'http://globus.org/publications'
       -
         title: 'Support'
         link: '/toolkit/support/'
