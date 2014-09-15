@@ -6,59 +6,27 @@ ignoreParse: true
 
 <p>Intro paragraph with [link] to release notes. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue varius augue. Vestibulum massa quam, laoreet nec cursus at, luctus non libero.</p>
 
-<!-- <ul>
-  <li>For everyone:
-    <ul>
-      <li><a href="rn/#rn">GT 6.0 Release Notes</a> </li>
-      <li><a href="appendices/commands/#gtcommands">GT Commands</a></li>
-    </ul>
-  </li>
-  <li>For system administrators and those installing GT:
-    <ul>
-      <li><a href="admin/install/#gtadmin">Installation Guide</a></li>
-      <li><a href="admin/quickstart/#quickstart">Quickstart</a></li>
-    </ul>
-  </li>
-  <li>For End Users:
-    <ul>
-      <li><a href="rn/#java-api-download">Java API Download</a></li>
-    </ul>
-  </li>
-  <li>For Developers:
-    <ul>
-      <li><a href="appendices/developer/#gtdeveloper">GT Developer's Guide</a></li>
-    </ul>
-  </li>
-</ul> -->
-
 <hr>
 
-<h3>GT 6.0 component documentation:</h3>
+<h2>Components</h2>
 
-<!-- <div class="row"> -->
-  <!-- Nav tabs -->
-  <!-- <div class="col-sm-3"> -->
+<!-- Nav tabs -->
 <div class="tabbable tabs-left">
   <ul id="nav-tabs" class="nav nav-tabs col-sm-2" role="tablist">
     <li class="active"><a href="#gridftp">GridFTP</a></li>
-    <li><a href="#gram">Gram</a></li>
-    <li><a href="#gsi">GSI</a></li>
+    <li><a href="#gram5">Gram5</a></li>
+    <li><a href="#gsic">GSI C</a></li>
     <li><a href="#myproxy">MyProxy</a></li>
     <li><a href="#simpleca">SimpleCA</a></li>
     <li><a href="#gsiopenssh">GSI-OpenSSH</a></li>
     <li><a href="#xio">XIO</a></li>
-    <li><a href="#common-runtime">Common Runtime</a></li>
+    <li><a href="#ccommonlib">Common Runtime</a></li>
   </ul>
-    <!-- </div> -->
-  <!-- </div> -->
-
 
   <!-- Tab panes -->
-  <!-- <div class="col-sm-9"> -->
-
   <div class="tab-content col-sm-10">
     <div class="tab-pane active" id="gridftp">
-
+      <h3>GT 6.0: GridFTP</h3>
       <p>GridFTP is a high-performance, secure, reliable data transfer protocol optimized for high-bandwidth wide-area networks. The GridFTP protocol is based on FTP, the highly-popular Internet file transfer protocol. We have selected a set of protocol features and extensions defined already in IETF RFCs and added a few additional features to meet requirements from current data grid projects.</p>
       <table border="0" width="700px" class="table">
         <tbody>
@@ -109,8 +77,8 @@ ignoreParse: true
 
     </div>
 
-    <div class="tab-pane" id="gram">
-
+    <div class="tab-pane" id="gram5">
+      <h3>GT 6.0: GRAM5</h3>
       <p>The Grid Resource Allocation and Management (GRAM5) component is used to locate, submit, monitor, and cancel jobs on Grid computing resources. GRAM5 is not a <a href="#local-resource-manager"><em>Local Resource Manager</em></a>, but rather a set of services and clients for communicating with a range of different batch/cluster job schedulers using a common protocol. GRAM5 is meant to address a range of jobs where reliable operation, stateful monitoring, credential management, and file staging are important.</p>
 
       <table class="table">
@@ -122,7 +90,7 @@ ignoreParse: true
           </tr>
           <tr>
             <td><a href="admin/#gram5Admin"><strong>Admin Guide</strong></a></td>
-            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>.  [<a href="admin/gram5AdminGuide.pdf" target="_top">pdf</a>]</td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>. [<a href="admin/gram5AdminGuide.pdf" target="_top">pdf</a>]</td>
           </tr>
           <tr>
             <td><a href="user/#gram5User"><strong>User's Guide</strong></a></td>
@@ -140,7 +108,7 @@ ignoreParse: true
             <td>What's new with the 6.0 release for this component. [<a href="gram5/rn/gram5ReleaseNotes.pdf" target="_top">pdf</a>]</td>
           </tr>
           <tr>
-            <td><a href="pi/#gram5PI"><strong>Public Interfaces</strong></a></td><td>Information for all public interfaces (including APIs, commands, protocols, etc). Please note this is a subset of information in the <a href="developer/#gram5Developer">Developer's Guide</a>.  [<a href="pi/gram5PublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+            <td><a href="pi/#gram5PI"><strong>Public Interfaces</strong></a></td><td>Information for all public interfaces (including APIs, commands, protocols, etc). Please note this is a subset of information in the <a href="developer/#gram5Developer">Developer's Guide</a>. [<a href="pi/gram5PublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
           </tr>
           <tr>
             <td><a href="qp/#gram5QP"><strong>Quality Profile</strong></a></td>
@@ -159,19 +127,254 @@ ignoreParse: true
 
     </div>
 
-    <div class="tab-pane" id="gsi">..gsi.</div>
+    <div class="tab-pane" id="gsic">
+      <h3>GT 6.0: Grid Security Infrastructure in C (GSI C)</h3>
 
-    <div class="tab-pane" id="myproxy">.myproxy..</div>
+      <p>The Globus Toolkit GSI C component provides APIs and tools for authentication, authorization and certificate management. The authentication API is built using <a href="#pub-key"><em>Public Key</em></a> Infrastructure (PKI) technologies, e.g. X.509 Certificates and TLS. In addition to authentication it features a delegation mechanism based upon X.509 <a href="#proxy-cert"><em>Proxy Certificates</em></a>. Authorization support takes the form of a couple of APIs. The first provides a generic authorization API that allows callouts to perform access control based on the client's credentials (i.e. the X.509 certificate chain). The second provides a simple access control list that maps authorized remote entities to local (system) user names. The second mechanism also provides callouts that allow third parties to override the default behavior and is currently used in the Gatekeeper and GridFTP servers. In addition to the above there are various lower level APIs and tools for managing, discovering and querying certificates.</p>
 
-    <div class="tab-pane" id="simpleca">..simpleca.</div>
+      <table class="table">
+        <tbody>
+          <tr>
+              <td colspan="2">The following guides are available for this component:</td>
+          </tr>
+          <tr>
+              <td><strong> <a href="key/#gsicKey">Security Key Concepts</a> </strong></td>
+              <td>For important general concepts. [<a href="key/securityKeyConcepts.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="admin/#gsicAdmin">Admin Guide</a> </strong></td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>. [<a href="admin/gsicAdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="user/#gsicUser">User's Guide</a> </strong></td>
+            <td>Describes how end-users typically interact with this component. [<a href="user/gsicUserGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="developer/#gsicDeveloper">Developer's Guide</a> </strong></td>
+            <td>Reference and usage scenarios for developers. [<a href="developer/gsicDeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td colspan="2">Other information available for this component are:</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="rn/#gsicRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="rn/gsicReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="pi/#gsicPI">Public Interface Guide</a> </strong></td>
+            <td>Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the <a href="developer/#gsicDeveloper">Developer's Guide</a>. [<a href="pi/gsicPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="qp/#gsicQP">Quality Profile</a> </strong></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/gsicQualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="mig/#gsicMig">Migrating Guide</a> </strong></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/gsicMigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="gsic.pdf" target="_top"><strong>All GSI C Guides (PDF only)</strong></a> </td>
+            <td>Includes all GSI C guides except Public Interfaces (which is a subset of the Developer's Guide)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="tab-pane" id="gsi-openssh">.openssh..</div>
+    <div class="tab-pane" id="myproxy">
+      <h3>GT 6.0: MyProxy</h3>
+      <p>MyProxy is open source software for managing X.509 Public Key Infrastructure (PKI) security credentials (certificates and private keys). MyProxy combines an online credential repository with an online certificate authority to allow users to securely obtain credentials when and where needed. Users run <span class="command"><strong>myproxy-logon</strong></span> to authenticate and obtain credentials, including trusted CA certificates and Certificate Revocation Lists (CRLs). For more information about MyProxy, see the <a href="http://myproxy.ncsa.uiuc.edu/" target="_top">MyProxy Home Page</a>.</p>
+      
+      <table class="table">
+        <tbody>
+          <tr><td colspan="2">The following guides are available for this component:</td></tr>
+          <tr>
+            <td><strong> <a href="../gsic/key/#gsicKey">Security Key Concepts</a> </strong></td>
+            <td>For important general concepts. [<a href="../key/securityKeyConcepts.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="admin/#myproxyAdmin">Admin Guide</a> </strong></td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>. [<a href="admin/myproxyAdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="user/#myproxyUser">User's Guide</a> </strong></td>
+            <td>Describes how end-users typically interact with this component. [<a href="user/myproxyUserGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="developer/#myproxyDeveloper">Developer's Guide</a> </strong></td>
+            <td>Reference and usage scenarios for developers. [<a href="developer/myproxyDeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr><td colspan="2">Other information available for this component are:</td></tr>
+          <tr>
+            <td><strong><a href="rn/#myproxyRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="rn/myproxyReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="pi/#myproxyPI">Public Interface Guide</a> </strong></td>
+            <td>Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the <a href="developer/#myproxyDeveloper">Developer's Guide</a>. [<a href="pi/myproxyPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="qp/#myproxyQP">Quality Profile</a> </strong></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/myproxyQualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="mig/#myproxyMig">Migrating Guide</a> </strong></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/myproxyMigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="myproxy.pdf" target="_top"><strong>All GT MyProxy Guides (PDF only)</strong></a></td>
+            <td>Includes all GT MyProxy guides except Public Interfaces (which is a subset of the Developer's Guide)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="tab-pane" id="xio">..xio.</div>
+    <div class="tab-pane" id="simpleca">
+      <h3>GT 6.0: SimpleCA</h3>
+      <p>SimpleCA provides a simple implementation of a certification authority which can issue X.509 certificates to Globus Toolkit users and services.</p>
 
-    <div class="tab-pane" id="common-runtime">..runtime.</div>
+      <table class="table">
+        <tbody>
+          <tr><td colspan="2">The following guides are available for this component:</td></tr>
+          <tr>
+            <td><strong> <a href="../gsic/key/#gsicKey">Security Key Concepts</a> </strong></td>
+            <td>For important general concepts. [<a href="../key/securityKeyConcepts.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="admin/#simplecaAdmin">Admin Guide</a> </strong></td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a> (which contains an example of using SimpleCA). [<a href="admin/simplecaAdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="rn/#simplecaRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="rn/simplecaReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="simpleca.pdf" target="_top"><strong>All SimpleCA Guides (PDF only)</strong></a></td>
+            <td>Includes all SimpleCA guides</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+    <div class="tab-pane" id="gsiopenssh">
+      <h3>GT 6.0: GSI-OpenSSH</h3>
+      <p>GSI-OpenSSH is a modified version of OpenSSH that adds support for X.509 <a href="#proxy-cert"><em>proxy certificate</em></a> authentication and delegation, providing a single sign-on remote login and file transfer service. GSI-OpenSSH can be used to login to remote systems and transfer files between systems without entering a password, relying instead on a valid <a href="#proxy-cred"><em>proxy credential</em></a>for authentication. GSI-OpenSSH forwards proxy credentials to the remote system on login, so commands requiring proxy credentials (including GSI-OpenSSH commands) can be used on the remote system without the need to manually create a new proxy credential on that system. For more information about GSI-OpenSSH, see the <a class="ulink" href="http://grid.ncsa.illinois.edu/ssh/" target="_top">GSI-OpenSSH Home Page</a>.</p>
+      <table class="table">
+        <tbody>
+          <tr><td colspan="2">The following guides are available for this component:</td></tr>
+          <tr>
+            <td><strong> <a href="../gsic/key/#gsicKey">Security Key Concepts</a> </strong></td>
+            <td>For important general concepts. [<a href="../key/securityKeyConcepts.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="admin/#gsiopensshAdmin">Admin Guide</a> </strong></td>
+            <td>For system administrators and those installing, building and deploying GT. You should already have read the <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>. [<a href="admin/gsiopensshAdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="user/#gsiopensshUser">User's Guide</a> </strong></td>
+            <td>Describes how end-users typically interact with this component. [<a href="user/gsiopensshUserGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="developer/#gsiopensshDeveloper">Developer's Guide</a> </strong></td>
+            <td>Reference and usage scenarios for developers. [<a href="developer/gsiopensshDeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr><td colspan="2">Other information available for this component are:</td></tr>
+          <tr>
+            <td><strong> <a href="rn/#gsiopensshRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="rn/gsiopensshReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="pi/#gsiopensshPI">Public Interface Guide</a> </strong></td>
+            <td>Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the <a href="developer/#gsiopensshDeveloper">Developer's Guide</a>. [<a href="pi/gsiopensshPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="qp/#gsiopensshQP">Quality Profile</a> </strong></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/gsiopensshQualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="mig/#gsiopensshMig">Migrating Guide</a> </strong></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/gsiopensshMigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="gsiopenssh.pdf" target="_top"><strong>All GSI-OpenSSH Guides (PDF only)</strong></a></td>
+            <td>Includes all GSI-OpenSSH guides except Public Interfaces (which is a subset of the Developer's Guide)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane" id="xio">
+      <h3>GT 6.0: XIO</h3>
+      <p> Globus XIO is an extensible input/output library written in C for the Globus Toolkit. It provides a single API (open/close/read/write) that supports multiple wire protocols, with protocol implementations encapsulated as drivers. The XIO drivers distributed with 6.0 include TCP, UDP, file, HTTP, GSI, GSSAPI_FTP, TELNET and queuing. In addition, Globus XIO provides a driver development interface for use by protocol developers. This interface allows the developer to concentrate on writing protocol code rather than infrastructure, as XIO provides a framework for error handling, asynchronous message delivery, timeouts, etc. The XIO driver-based approach maximizes the reuse of code by supporting the notion of a driver stack. XIO drivers can be written as atomic units and stacked on top of one another. This modularization provides maximum flexibility and simplifies the design and evaluation of individual protocols.</p>
+      <table class="table">
+        <tbody>
+          <tr><td colspan="2">The following guides are available for this component:</td></tr>
+          <tr>
+            <td><strong> <a href="admin/#xioAdmin">Admin Guide</a> </strong></td>
+            <td>For system administrators and those installing, building and deploying GT. Contains information specific to the XIO. You should already have read <a href="../admin/install/#gtadmin">Installation Guide</a> and <a href="../admin/quickstart/#quickstart">Quickstart</a>. [<a href="admin/xioAdminGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="developer/#xioDeveloper">Developer's Guide</a> </strong></td>
+            <td>Reference and usage scenarios for developers. [<a href="developer/xioDeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr><td colspan="2">Other information available for this component are:</td></tr>
+          <tr>
+            <td><strong> <a href="rn/#xioRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="developer/xioDeveloperGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="pi/#xioPI">Public Interface Guide</a> </strong></td>
+            <td>Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the <a href="developer/#xioDeveloper">Developer's Guide</a>. [<a href="pi/xioPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="qp/#xioQP">Quality Profile</a> </strong></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/xioQualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="mig/#xioMig">Migrating Guide</a> </strong></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/xioMigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="xio.pdf" target="_top"><strong>All XIO Guides (PDF only)</strong></a></td>
+            <td>Includes all XIO guides except Public Interfaces (which is a subset of the Developer's Guide)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane" id="ccommonlib">
+      <h3>GT 6.0: C Common Libraries</h3>
+      <p>The C Common Libraries provide an abstraction layer for data types, libc system calls, and data structures used throughout the Globus Toolkit and useful for applications that use the Globus Toolkit.</p>
+      <table class="table">
+        <tbody>
+          <tr><td colspan="2">The following guides are available for this component:</td></tr>
+          <tr>
+            <td><strong><a href="developer/#ccommonlibDeveloper">Developer's Guide</a> </strong></td>
+            <td>Reference for developers who want to access the C libraries. [<a href="developer/ccommonlibDevelopersGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr><td colspan="2">Other information available for this component are:</td></tr>
+          <tr>
+            <td><strong> <a href="rn/#ccommonlibRN">Release Notes</a> </strong></td>
+            <td>What's new with the 6.0 release for this component. [<a href="rn/ccommonlibReleaseNotes.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong><a href="pi/#ccommonlibPI">Public Interface Guide</a> </strong></td>
+            <td>Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the <a href="developer/#ccommonlibDeveloper">Developer's Guide</a>. [<a href="pi/ccommonlibPublicInterfacesGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="qp/#ccommonlibQP">Quality Profile</a> </strong></td>
+            <td>Information about test coverage reports, etc. [<a href="qp/ccommonlibQualityProfile.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><strong> <a href="mig/#ccommonlibMig">Migrating Guide</a> </strong></td>
+            <td>Information for migrating to this version if you were using a previous version of GT. [<a href="mig/ccommonlibMigratingGuide.pdf" target="_top">pdf</a>]</td>
+          </tr>
+          <tr>
+            <td><a href="ccommonlib.pdf" target="_top"><strong>All C Common Libraries Guides (PDF only)</strong></a> </td>
+            <td>Includes all C Common Libraries guides except Public Interfaces (which is a subset of the Developer's Guide). </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <!-- </div> -->
 
 </div>
