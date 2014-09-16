@@ -66,7 +66,7 @@ __i__talic le__tt__ers
 
 **__b__**old italic le**__tt__**ers
 
-`monospace phrase` and le``tt``ers (broken)
+`monospace phrase` and le`tt`ers (broken)
 
 `_monospace italic phrase_` and le``__tt__``ers (broken)
 
@@ -104,19 +104,19 @@ All of the werewolves`' desks were a mess.
 Olaf had been with the company since the `'60s.
 
 == Section Titles (Headers)
-=== _Article doctype_
+=== _Article doctype (escaped to prevent ToC tampering)_
+
 Document Title (Level 0)
 
-== Level 1 Section Title
+\== Level 1 Section Title
 
-=== Level 2 Section Title
+\=== Level 2 Section Title
 
-==== Level 3 Section Title
+\==== Level 3 Section Title
 
-===== Level 4 Section Title
+\===== Level 4 Section Title
 
-====== Level 5 Section Title (broken)
-
+\====== Level 5 Section Title (broken)
 
 == Explicit id
 [[primitives-nulls]]
@@ -155,7 +155,7 @@ Document Title (Level 0)
 . Step 2
 . Step 3
 
-=== _Ordered, nested (broken)_
+=== _Ordered, nested_
 . Step 1
 . Step 2
 [loweralpha]
@@ -163,7 +163,7 @@ Document Title (Level 0)
 .. Step 2b
 . Step 3
 
-=== _Ordered, max nesting (broken)_
+=== _Ordered, max nesting_
 . level 1
 .. level 2
 ... level 3
@@ -708,19 +708,15 @@ Another bold statement.footnoteref:[disclaimer]
 * add h6 to conf file
 * not sure pagebreaks are necessary?
 * interactive checklist broken (won't compile); check conf?
-* check nested lists in conf file since they work in html4
 * definition styling, add indent on "answers"?
 * plus {plus} sign rendering broken; check conf?
 * adjust table styling
 * internal cross reference links adding brackets when not given link text
-
-
+* ToC sometimes repeats; may need to check asciidoc.js and timer?
 
 == HTML4 vs HTML5
 * all h2 elements are surrounded by a div with section1 class applied in html5
 * horizontal rules between h2 elements in html4
-* lists: ordered, nested works in html4, broken in html5
-* lists: ordered, max nesting works in html4, broken in html5
 * video: totally broken in html4, partially broken in html5
 * more delimited blocks: sidebar is table in html4 (broken) and is div with class "sidebarblock" in html5 (needs styling to work)
 * Table with formatted, aligned and merged cells: html4 renders 6, 7 & 10 in code tags while html5 gives them monospaced class
