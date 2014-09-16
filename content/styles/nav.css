@@ -38,15 +38,33 @@ header.navbar-inverse .navbar-nav>li>a {
 header.navbar-inverse .navbar-nav>li {
 	margin: 0 4px;
 }
-header.navbar-inverse .navbar-nav>.active>a, 
-header.navbar-inverse .navbar-nav>.active>a:hover, 
-header.navbar-inverse .navbar-nav>.active>a:focus {
-	background-color: #186EB8;
-	border-radius: 4px;
+header.navbar-inverse .navbar-nav>.active>a,
+header.navbar-inverse .navbar-nav>.active>a:focus,
+header.navbar-inverse .nav>li>a:focus,
+header.navbar-inverse .navbar-toggle:focus,
+header.navbar-inverse .nav .open>a:focus {
+	background-color: transparent;
 }
-.navbar-inverse .navbar-nav>.open>a:hover,
-.navbar-inverse .navbar-nav>.open>a:focus {
+header.navbar-inverse .nav .open>a,
+header.navbar-inverse .nav .open>a:hover,
+header.navbar-inverse .navbar-nav>.active>a:hover,
+header.navbar-inverse .nav>li>a:hover,
+header.navbar-inverse .nav li a.go-nav-item:hover,
+header.navbar-inverse .nav li a.go-nav-item:focus,
+header.navbar-inverse .navbar-toggle:hover,
+header.navbar-inverse .navbar-nav>.open>a,
+header.navbar-inverse .navbar-nav>.open>a:hover,
+header.navbar-inverse .navbar-nav>.open>a:focus {
 	background-color: #468cc8;
+}
+header.navbar-inverse .nav .open>a .caret,
+header.navbar-inverse .nav .open>a:hover .caret,
+.nav .open>a:focus .caret,
+header.navbar-inverse .nav>li>a:hover .caret,
+header.navbar-inverse .nav li a.go-nav-item:hover .caret,
+header.navbar-inverse .navbar-toggle:hover .caret {
+	border-top-color: #2a6496;
+	border-bottom-color: #2a6496;
 }
 header.navbar-inverse .navbar-nav>li>.dropdown-menu {
     margin-top: 2px;
