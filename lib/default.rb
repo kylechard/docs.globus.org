@@ -92,6 +92,10 @@ def globus_render_menu(items, options={})
 
       output = globus_render_menu(item[:subsections], options)
 
+      # Add caret to drop-downs in main menu
+      item[:title] += ' '
+      item[:title] += content_tag('span', '', :class => 'caret')
+
       options[:depth] += 1 # Increase the depth level after the call of navigation_for
 
       options[:collection_class] = collection_class #reset value to preivous value
