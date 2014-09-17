@@ -15,21 +15,23 @@
 
 # ignore this directory
 ignore '/menus/*/'
+ignore '/site-docs/*/'
 
 preprocess do
+  # Iterate each item
   items.each do |i|
     if i.identifier.start_with?("/transfer-api") || i.identifier.start_with?("/site-docs/asciiguide")
       if i[:title].nil?
-      # Match transfer API titles from raw content
-      m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
-      if !m.nil?
-        i[:title] = m[:title]
-        # i[:subtitle] = items['/docs/transfer-api/'][:version]
-      else
-        # Grab titles from index item
-        # i[:title] = items['/docs/transfer-api/'][:title]
-        # i[:subtitle] = items['/docs/transfer-api/'][:version]
-      end   
+        # Match transfer API titles from raw content
+        m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
+        if !m.nil?
+          i[:title] = m[:title]
+          # i[:subtitle] = items['/docs/transfer-api/'][:version]
+        else
+          # Grab titles from index item
+          # i[:title] = items['/docs/transfer-api/'][:title]
+          # i[:subtitle] = items['/docs/transfer-api/'][:version]
+        end   
       end
     end
 
@@ -41,22 +43,12 @@ preprocess do
         end
       end
     end
+
     # Adjust adoc include paths to be absolute
     if i.identifier.start_with?("/transfer-cli/docs") 
       # Add full path for adoc includes
       raw = i.raw_content
       raw.gsub!(/include::include/, 'include::content/transfer-cli/docs/include')
-    end
-
-    # Match Toolkit titles from raw content
-    if i.identifier.start_with?('/toolkit') && i[:title].nil?
-      # i[:title] = i[:filename]
-      # i.content.sub(/Globus/, 'ffff')
-      # m = /class="title">.*<\/a>(?<title>.*)(<\/h2>.*<)/m.match(i.raw_content)
-      if !m.nil?
-        # puts m[:title]
-        # i[:title] = m[:title]
-      end
     end
   end
 end
@@ -78,15 +70,15 @@ compile '/transfer-cli/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout 'default'
+      layout item[:layout] || 'transfer-cli'
     else
       filter :erb
-      layout 'default'
+      layout item[:layout] || 'transfer-cli'
     end
   end
 end
 
-compile '/site-docs/asciiguide/*' do
+compile '/site-docs/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
@@ -101,6 +93,11 @@ end
 compile '/toolkit/*' do
   if !item.binary?
     filter :erb
+    # Parse toolkit HTML doc files if ignoreParse is NOT set
+    if item.identifier.start_with?('/toolkit/docs') && item[:ignoreParse].nil?
+      filter :parse_toolkit
+    end
+
     layout item[:layout] || 'toolkit'
   end 
 end 

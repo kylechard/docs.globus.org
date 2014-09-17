@@ -2,7 +2,7 @@ menus:
   -
     options:
       title: 'Getting Started'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
@@ -30,7 +30,7 @@ menus:
   -
     options:
       title: 'Components'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
@@ -38,7 +38,7 @@ menus:
       -
         title: 'Data Management'
         type: 'divider'
-        class: 'list-group-header' 
+        class: 'nav-header-divider' 
       -
         title: 'GridFTP'
         link: '/toolkit/docs/6.0/gridftp/'
@@ -46,7 +46,7 @@ menus:
       -
         title: 'Jobs Management'
         type: 'divider'
-        class: 'list-group-header'
+        class: 'nav-header-divider'
       -
         title: 'GRAM5'
         link: '/toolkit/docs/6.0/gram5/'
@@ -54,7 +54,7 @@ menus:
       -
         title: 'Security'
         type: 'divider'
-        class: 'list-group-header'
+        class: 'nav-header-divider'
       -
         title: 'GSI C'
         link: '/toolkit/docs/6.0/gsic/'
@@ -74,7 +74,7 @@ menus:
       -
         title: 'Common Runtime'
         type: 'divider'
-        class: 'list-group-header'
+        class: 'nav-header-divider'
       -
         title: 'XIO'
         link: '/toolkit/docs/6.0/xio/'
@@ -86,7 +86,7 @@ menus:
   -
     options:
       title: 'Software Links'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true
@@ -122,7 +122,7 @@ menus:
   -
     options:
       title: 'Reference'
-      collection_class: 'nav nav-stacked'
+      collection_class: 'nav nav-pills nav-stacked'
       # collection_tag: 'div'
       # collection_class: 'list-group'
       # hide_item_tag: true

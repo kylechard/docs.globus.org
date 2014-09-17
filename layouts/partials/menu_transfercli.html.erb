@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+	<div class="list-group">
+		<% x = @items.select{ |x| x.identifier.start_with?("/transfer-cli/docs") } %>
+
+		<% x.each do |i|
+		        item_url = i[:title].to_s.downcase
+		        trim = item_url.index('(')
+		        item_name = item_url[0, trim.to_i]
+		        unless item_name.nil? or item_name.empty? %>
+		                <a href = "<%= i.identifier %>" class="list-group-item <%= 'active' if i.identifier == @item.identifier %>">
+		                <%= item_name %>
+		                </a>
+		        <% end %>
+		<% end %>
+	</div>
+</div>

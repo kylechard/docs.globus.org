@@ -28,6 +28,12 @@ hide_breadcrumb: true
 		<h3>Find Help</h3>
 		<p>Nulla commodo felis non sem consequat, quis faucibus risus ultricies. Morbi in mi vel nibh ultrices venenatis. Curabitur lectus neque, ultrices molestie magna at, bibendum sagittis ipsum.</p>
 	</div>
+
+	<div class="col-sm-12 text-center">
+		<hr>
+		<% doc_link = '/toolkit/docs/' + @config[:docs][:toolkit] %>
+		<p>Globus services leverage the tried and tested components of the <a href="/toolkit/">Globus Toolkit</a> including <a href="<%= doc_link %>#gridftp">GridFTP</a>, <a href="<%= doc_link %>#gsic">GSI C</a>, and <a href="<%= doc_link %>#myproxy">MyProxy</a>.</p>
+	</div>
 </div>
 
 

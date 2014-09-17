@@ -3,7 +3,6 @@
 
 require "nanoc/toolbox"
 
-
 module SideNavHelper extend self
     def menu_api(items)
   		i = items.select{|x| x.identifier.start_with?("/transfer-api/docs")}
@@ -92,6 +91,10 @@ def globus_render_menu(items, options={})
       options[:collection_class] = 'dropdown-menu'
 
       output = globus_render_menu(item[:subsections], options)
+
+      # Add caret to drop-downs in main menu
+      item[:title] += ' '
+      item[:title] += content_tag('span', '', :class => 'caret')
 
       options[:depth] += 1 # Increase the depth level after the call of navigation_for
 
@@ -202,5 +205,3 @@ def symbolize_keys(x)
     x
   end
 end
-
-# include SideNavHelper

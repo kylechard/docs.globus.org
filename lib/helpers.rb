@@ -4,7 +4,6 @@ include Nanoc::Helpers::Tagging
 include Nanoc::Helpers::Blogging
 include Nanoc::Helpers::LinkTo
 include Nanoc::Helpers::Breadcrumbs
-include Nanoc::Helpers::Breadcrumbs
 
 # Custom Helpers
 include Nanoc::Toolbox::Helpers::Navigation

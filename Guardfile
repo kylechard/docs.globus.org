@@ -7,10 +7,10 @@ guard 'nanoc' do
   watch(%r{^(content|layouts|lib)/.*$})
 end
 
-guard 'livereload' do
-  watch(%r{content/.+\.(html|yaml|adoc|erb|css)$})
-  watch(%r{layouts/.+\.(html|erb)$})
-  watch(%r{menus.yaml})
+#guard 'livereload' do
+#  watch(%r{content/.+\.(html|yaml|adoc|erb|css)$})
+#  watch(%r{layouts/.+\.(html|erb)$})
+#  watch('Rules')
 
   #watch(%r{app/views/.+\.(erb|haml|slim)$})
   #watch(%r{app/helpers/.+\.rb})
@@ -18,4 +18,4 @@ guard 'livereload' do
   #watch(%r{config/locales/.+\.yml})
   # Rails Assets Pipeline
   #watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
-end
+#end

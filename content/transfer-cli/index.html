@@ -2,20 +2,4 @@
 title: Transfer Command Line Reference (CLI)
 ---
 
-<p>(General CLI info)</p>
-
-
-<% x = @items.select{ |x| x.identifier.start_with?("/transfer-cli/docs") } %> 
-
-<p><ul>
-<% x.each do |i|
-	item_url = i[:title].to_s.downcase
-	trim = item_url.index('(')
-	item_name = item_url[0, trim.to_i]
-	unless item_name.nil? or item_name.empty? %>
-		<li><a href = "<%= i.identifier %>" class="">
-		<%= item_name %>
-		</a></li>
-	<% end %>
-<% end %>
-</ul></p>
+<p>General CLI info.  Describe how the CLI works (hosted CLI, use ssh) and what they need to do to be able to use it (add ssh key to account.  Other details here...)</p>
