@@ -4,7 +4,7 @@
 
 This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
-*We are currently supporting asciidoc version 8.6.9*
+*We are currently supporting asciidoc version {asciidoc-version}*
 
 toc::[]
 
@@ -108,15 +108,15 @@ Olaf had been with the company since the `'60s.
 
 Document Title (Level 0)
 
-\== Level 1 Section Title
+== Level 1 Section Title
 
-\=== Level 2 Section Title
+=== Level 2 Section Title
 
-\==== Level 3 Section Title
+==== Level 3 Section Title
 
-\===== Level 4 Section Title
+===== Level 4 Section Title
 
-\====== Level 5 Section Title (broken)
+====== Level 5 Section Title (broken)
 
 == Explicit id
 [[primitives-nulls]]
@@ -304,6 +304,19 @@ would you like to die again? y/n
 === _Code block with title and syntax highlighting (broken, wouldn't compile)_
  Syntax highlighting is enabled by setting the source-highlighter attribute in the document header or passed as an argument.
 
+=== _Code block with callouts (broken)_
+[source,ruby]
+----
+require 'sinatra' // <1>
+
+get '/hi' do // <2>
+  "Hello World!" // <3>
+end
+----
+<1> Library import
+<2> URL mapping
+<3> Content for response
+
 === _Code block with non-selectable callouts_
 ----
 line of code  // <1>
@@ -313,6 +326,17 @@ line of code  ;; <3>
 <1> A callout behind a line comment for C-style languages.
 <2> A callout behind a line comment for Ruby, Python, Perl, etc.
 <3> A callout behind a line comment for Clojure.
+
+=== _XML code block with a non-selectable callout (broken)_
+////
+[source,xml]
+----
+<section>
+  <title>Section Title</title> <!-- <1> -->
+</section>
+----
+<1> The section title is required.
+////
 
 == More Delimited Blocks
 === _Sidebar (broken)_
@@ -502,7 +526,6 @@ _You must set the experimental attribute in the document header to enable macros
 
 == Attributes and Substitutions
 === _Attribute declaration and usage_ (broken)
-////
 :homepage: http://asciidoctor.org
 :docslink: http://asciidoctor.org/docs[Asciidoctor's Docs]
 :description: Asciidoctor is a mature, plain-text document format for +
@@ -510,8 +533,8 @@ _You must set the experimental attribute in the document header to enable macros
        It's also a text processor & toolchain for translating +
        documents into various output formats (i.e., backends), +
        including HTML, DocBook, PDF and ePub.
-:checkedbox: pass:normal[+[&#10004;]+]
-////
+//:checkedbox: pass:normal[+[&#10004;]+]
+
 Check out {homepage}[Asciidoctor]!
 
 {description}
@@ -521,109 +544,163 @@ Check out {docslink} too!
 {checkedbox} That's done!
 
 === _Built-in literal attributes (some broken)_
-lt: {lt}
+lt:
+{lt}
 
-gt: {gt}
+gt:
+{gt}
 
-amp: {amp}
+amp:
+{amp}
 
-startsb: {startsb}
+startsb:
+{startsb}
 
-endsb: {endsb}
+endsb:
+{endsb}
 
-vbar: {vbar}
+vbar:
+{vbar}
 
-caret: {caret}
+caret:
+{caret}
 
-asterisk: {asterisk}
+asterisk:
+{asterisk}
 
-tilde: {tilde}
+tilde:
+{tilde}
 
-apostrophe: {apostrophe}
+apostrophe:
+{apostrophe}
 
-backslash: {backslash}
+backslash:
+{backslash}
 
-backtick: {backtick}
+backtick:
+{backtick}
 
-two colons: {two-colons}
+two colons:
+{two-colons}
 
-two semicolons: {two-semicolons}
+two semicolons:
+{two-semicolons}
 
 === _Built-in entity attributes_
-empty: {empty}
+empty:
+{empty}
 
-sp, space: {sp}, {space}
+sp, space:
+{sp}, {space}
 
-nbsp: {nbsp}
+nbsp:
+{nbsp}
 
-zwsp: {zwsp}
+zwsp:
+{zwsp}
 
-wj: {wj}
+wj:
+{wj}
 
-apos: {apos}
+apos:
+{apos}
 
-quot: {quot}
+quot:
+{quot}
 
-lsquo: {lsquo}
+lsquo:
+{lsquo}
 
-rsquo: {rsquo}
+rsquo:
+{rsquo}
 
-ldquo: {ldquo}
+ldquo:
+{ldquo}
 
-rdquo: {rdquo}
+rdquo:
+{rdquo}
 
-deg: {deg}
+deg:
+{deg}
 
-plus: {plus}
+plus:
+{plus}
 
-brvbar: {brvbar}
+brvbar:
+{brvbar}
 
 === _Built-in data attributes_
 usage: "\{attribute\}"
-asciidoctor: calls the processor, {asciidoctor}
 
-asciidoctor-version: version of the processor, {asciidoctor-version}
+asciidoctor: calls the processor:
+{asciidoctor}
 
-backend: backend used to render document, {backend}
+asciidoctor-version: version of the processor:
+{asciidoctor-version}
 
-docdate: last modified date, {docdate}
+asciidoc-version: version of the processor: (trying)
+{asciidoc-version}
 
-docdatetime: last modified  date and time, {docdatetime}
+backend: backend used to render document:
+{backend}
 
-docdir: name of document directory, {docdir}
+docdate: last modified date:
+{docdate}
 
-docfile: name of document file, {docfile}
+docdatetime: last modified  date and time:
+{docdatetime}
 
-doctime: last modified time, {doctime}
+docdir: name of document directory:
+{docdir}
 
-doctitle: the title of the document, {doctitle}
+docfile: name of document file:
+{docfile}
 
-doctype: document's doctype (e.g., article), {doctype}
+doctime: last modified time:
+{doctime}
 
-localdate: local date when rendered, {localdate}
+doctitle: the title of the document:
+{doctitle}
 
-localdatetime: local date and time when rendered, {localdatetime}
+doctype: document's doctype (e.g., article):
+{doctype}
 
-localtime: local time when rendered, {localtime}
+localdate: local date when rendered:
+{localdate}
+
+localdatetime: local date and time when rendered:
+{localdatetime}
+
+localtime: local time when rendered:
+{localtime}
 
 === _Named substitutions (broken? check usage)_
-none: Disables substitutions, {none}
+none: Disables substitutions: (turned off to see if rest work)
+//none
 
-normal: Performs all substitutions except for callouts, {normal}
+normal: Performs all substitutions except for callouts:
+{normal}
 
-verbatim: Replaces special characters and processes callouts, {verbatim}
+verbatim: Replaces special characters and processes callouts:
+{verbatim}
 
-specialchars, specialcharacters: Replaces <, >, and & with their corresponding entities, {specialchars}
+specialchars, specialcharacters: Replaces <, >, and & with their corresponding entities:
+{specialchars}
 
-quotes: Applies text formatting, {quotes}
+quotes: Applies text formatting:
+{quotes}
 
-attributes: Replaces attribute references, {attributes}
+attributes: Replaces attribute references:
+{attributes}
 
-replacements: Substitutes textual and character reference replacements, {replacements}
+replacements: Substitutes textual and character reference replacements:
+{replacements}
 
-macros: Processes macros, {macros}
+macros: Processes macros:
+{macros}
 
-post_replacements: Replaces the line break character (+), {post_replacements}
+post_replacements: Replaces the line break character (+):
+{post_replacements}
 
 === _Counter attributes_
 [caption=""]
@@ -662,10 +739,10 @@ apostrophe, Sam's
 
 == Escaping Text
 === _Backslash_
-\\*Stars* is not rendered as bold text.
+\*Stars* is not rendered as bold text.
 The asterisks around the word are preserved.
 
-\\{author} is not resolved to the author name.
+\{author} is not resolved to the author name.
 The curly brackets around the word are preserved.
 
 The backslash character is automatically removed.
@@ -700,24 +777,45 @@ A bold statement.footnoteref:[disclaimer,Opinions are my own.]
 
 Another bold statement.footnoteref:[disclaimer]
 
+'''
+
 == TODO: "Broken" Notes & Adjustments
-* lead paragraph styling not working; not in conf file?
-* monospace letters broken; maybe add styling for .monospace?
-* monospace + bold or italic broken; check conf file
-* single and double quotes not working; adjust conf file
-* add h6 to conf file
-* not sure pagebreaks are necessary?
-* interactive checklist broken (won't compile); check conf?
-* definition styling, add indent on "answers"?
-* plus {plus} sign rendering broken; check conf?
-* adjust table styling
-* internal cross reference links adding brackets when not given link text
-* ToC sometimes repeats; may need to check asciidoc.js and timer?
+. adjust table styling
+. monospace letters broken; maybe add styling for .monospace?
+. monospace + bold or italic broken; check conf file
+. lead paragraph styling not working; not in conf file?
+. single and double quotes not working; adjust conf file
+. add h6 to conf file
+. not sure pagebreaks are necessary?
+. interactive checklist broken (won't compile); check conf?
+. definition styling, add indent on "answers"?
+. internal cross reference links adding brackets when not given link text
+. ToC sometimes repeats; may need to check asciidoc.js and timer?
+. images broken; needed to remove ":" after image
+. embedded videos don't work at all
+. listing block with no title
+. code block with title and syntax highlighting doesn't compile
+. code blocks with callouts wouldn't compile
+. Code block with non-selectable callouts (won't compile)
+. XML code block with a non-selectable callout (throws warnings)
+. content won't flow around sidebar; it's in an <aside> with class of sidebar-block
+. pretty sure blockquote just needs styling
+. open block broken
+. custom substitutions example broken; think this is a asciidoc/doctor issue
+. role doesn't work; either it doesn't filter at all or is instead assigned as a class
+. attribute declaration checked box won't compile
+. built-in literals attributes: startsb, endsb do nothing
+. built-in entity attributes: apos, quot
+. built-in data attributes: asciidoctor, asciidoctor-version, docdatetime, docdir, docfile, localdatetime all do nothing, but most of these might be doc/doctor issues
+. named substitutions: all broken; need to check usage?
+. Textual symbol replacements: em dash broken; check conf?
+. toc-right is broken, but I think this is low priority
+. footnotes completely broken
 
 == HTML4 vs HTML5
-* all h2 elements are surrounded by a div with section1 class applied in html5
-* horizontal rules between h2 elements in html4
-* video: totally broken in html4, partially broken in html5
-* more delimited blocks: sidebar is table in html4 (broken) and is div with class "sidebarblock" in html5 (needs styling to work)
-* Table with formatted, aligned and merged cells: html4 renders 6, 7 & 10 in code tags while html5 gives them monospaced class
-* Footnotes: html4 "opinions are my own" rendered as italic link with name "_footnote_disclaimer" while html5 renders it as plain text with span class "footnote" and id "_footnote_disclaimer"
+. all h2 elements are surrounded by a div with section1 class applied in html5
+. horizontal rules between h2 elements in html4
+. video: totally broken in html4, partially broken in html5
+. more delimited blocks: sidebar is table in html4 (broken) and is div with class "sidebarblock" in html5 (needs styling to work)
+. Table with formatted, aligned and merged cells: html4 renders 6, 7 & 10 in code tags while html5 gives them monospaced class
+. Footnotes: html4 "opinions are my own" rendered as italic link with name "_footnote_disclaimer" while html5 renders it as plain text with span class "footnote" and id "_footnote_disclaimer"
