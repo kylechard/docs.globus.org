@@ -780,29 +780,30 @@ Another bold statement.footnoteref:[disclaimer]
 '''
 
 == TODO: "Broken" Notes & Adjustments
+. ToC sometimes repeats; may need to check asciidoc.js and timer?
 . adjust table styling
 . monospace letters broken; maybe add styling for .monospace?
 . monospace + bold or italic broken; check conf file
+. code block with title and syntax highlighting doesn't compile
+. code blocks with callouts wouldn't compile
+. code block with non-selectable callouts (won't compile)
+. XML code block with a non-selectable callout (throws warnings)
+. definition styling, add indent on "answers"?
+. pretty sure blockquote just needs styling
+. footnotes completely broken
+. internal cross reference links adding brackets when not given link text
+. role doesn't work; either it doesn't filter at all or is instead assigned as a class
 . lead paragraph styling not working; not in conf file?
 . single and double quotes not working; adjust conf file
 . add h6 to conf file
 . not sure pagebreaks are necessary?
 . interactive checklist broken (won't compile); check conf?
-. definition styling, add indent on "answers"?
-. internal cross reference links adding brackets when not given link text
-. ToC sometimes repeats; may need to check asciidoc.js and timer?
 . images broken; needed to remove ":" after image
 . embedded videos don't work at all
 . listing block with no title
-. code block with title and syntax highlighting doesn't compile
-. code blocks with callouts wouldn't compile
-. Code block with non-selectable callouts (won't compile)
-. XML code block with a non-selectable callout (throws warnings)
 . content won't flow around sidebar; it's in an <aside> with class of sidebar-block
-. pretty sure blockquote just needs styling
 . open block broken
 . custom substitutions example broken; think this is a asciidoc/doctor issue
-. role doesn't work; either it doesn't filter at all or is instead assigned as a class
 . attribute declaration checked box won't compile
 . built-in literals attributes: startsb, endsb do nothing
 . built-in entity attributes: apos, quot
@@ -810,7 +811,6 @@ Another bold statement.footnoteref:[disclaimer]
 . named substitutions: all broken; need to check usage?
 . Textual symbol replacements: em dash broken; check conf?
 . toc-right is broken, but I think this is low priority
-. footnotes completely broken
 
 == HTML4 vs HTML5
 . all h2 elements are surrounded by a div with section1 class applied in html5
