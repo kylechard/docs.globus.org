@@ -1,33 +1,52 @@
 .sidebar {
-	border-left: 1px solid #EEE;
+    border-left: 1px solid #EEE;
 }
 aside.sidebar-block {
-	margin-bottom: 15px;
-	padding: 0 15px 15px;
-	border-bottom: 1px solid #EEE;
+    margin-bottom: 15px;
+    padding: 0 15px 15px;
+    border-bottom: 1px solid #EEE;
 }
 aside.sidebar-block+aside.sidebar-block {
-	padding-top: 15px;
+    padding-top: 15px;
 }
 aside.sidebar-block .nav {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 aside.sidebar-block .nav.nav-stacked>li+li {
-	margin-top: 0;
+    margin-top: 0;
 }
 aside.sidebar-block .nav>li>.nav-header-divider,
 aside.sidebar-block .nav>li>a {
-	padding: 3px 10px;
-	font-size: 12px;
+    padding: 3px 20px;
+    font-size: 12px;
+    border-radius: 0;
+    margin-top: 4px;
+    color: #aaa;
 }
 aside.sidebar-block .nav>li>.nav-header-divider {
-	color: #999;
-	margin-top: 5px;
-	padding-bottom: 0 !important;
+    color: #999;
+    margin-top: 5px;
+    padding-bottom: 0 !important;
 }
-/*aside.sidebar-block .nav>li>a:hover, 
+/*aside.sidebar-block .nav>li>a:hover,
 aside.sidebar-block .nav>li>a:focus {
-	text-decoration: underline;
-	background-color: transparent;
-	color: #2A6496;
+    text-decoration: underline;
+    background-color: transparent;
+    color: #2A6496;
 }*/
+aside.sidebar-block .nav>li>a:hover,
+aside.sidebar-block .nav>li>a:focus,
+aside.sidebar-block .nav>li.active>a,
+aside.sidebar-block .nav>li.active>a:hover,
+aside.sidebar-block .nav>li.active>a:focus {
+    background-color: transparent;
+    border-left: solid 1px #06C;
+    padding-left: 19px;
+    color: #06C;
+}
+aside.sidebar-block .nav>li.active>a,
+aside.sidebar-block .nav>li.active>a:hover,
+aside.sidebar-block .nav>li.active>a:focus {
+    border-left-width: 2px;
+    padding-left: 18px;
+}
