@@ -791,14 +791,18 @@ Another bold statement.footnoteref:[disclaimer]
 . definition styling, add indent on "answers"?
 . pretty sure blockquote just needs styling
 . footnotes completely broken
+. images broken; needed to remove ":" after image
 . internal cross reference links adding brackets when not given link text
+
+'''
+Lower priority "Broken" Notes & Adjustments
+
 . role doesn't work; either it doesn't filter at all or is instead assigned as a class
 . lead paragraph styling not working; not in conf file?
 . single and double quotes not working; adjust conf file
 . add h6 to conf file
 . not sure pagebreaks are necessary?
 . interactive checklist broken (won't compile); check conf?
-. images broken; needed to remove ":" after image
 . embedded videos don't work at all
 . listing block with no title
 . content won't flow around sidebar; it's in an <aside> with class of sidebar-block
