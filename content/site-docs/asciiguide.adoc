@@ -679,28 +679,28 @@ none: Disables substitutions: (turned off to see if rest work)
 //none
 
 normal: Performs all substitutions except for callouts:
-{normal}
+//{normal}
 
 verbatim: Replaces special characters and processes callouts:
-{verbatim}
+//{verbatim}
 
 specialchars, specialcharacters: Replaces <, >, and & with their corresponding entities:
-{specialchars}
+//{specialchars}
 
 quotes: Applies text formatting:
-{quotes}
+//{quotes}
 
 attributes: Replaces attribute references:
-{attributes}
+//{attributes}
 
 replacements: Substitutes textual and character reference replacements:
-{replacements}
+//{replacements}
 
 macros: Processes macros:
-{macros}
+//{macros}
 
 post_replacements: Replaces the line break character (+):
-{post_replacements}
+//{post_replacements}
 
 === _Counter attributes_
 [caption=""]
