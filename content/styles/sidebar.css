@@ -1,10 +1,7 @@
-.sidebar {
-    border-left: 1px solid #EEE;
-}
 aside.sidebar-block {
     margin-bottom: 15px;
     padding: 0 15px 15px;
-    border-bottom: 1px solid #EEE;
+/*	border-bottom: 1px solid #EEE;*/
 }
 aside.sidebar-block+aside.sidebar-block {
     padding-top: 15px;
