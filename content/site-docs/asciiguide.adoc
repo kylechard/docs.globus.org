@@ -360,7 +360,7 @@ An admonition block may contain complex content.
 Another paragraph.
 ====
 
-=== _Blockquote (broken)_
+=== _Blockquote_
 [quote, Abraham Lincoln, Soldiers' National Cemetery Dedication]
 ____
 Four score and seven years ago our fathers brought forth
@@ -781,22 +781,19 @@ Another bold statement.footnoteref:[disclaimer]
 
 == TODO: "Broken" Notes & Adjustments
 . ToC sometimes repeats; may need to check asciidoc.js and timer?
-. adjust table styling
+. footnotes completely broken
 . monospace letters broken; maybe add styling for .monospace?
 . monospace + bold or italic broken; check conf file
 . code block with title and syntax highlighting doesn't compile
-. code blocks with callouts wouldn't compile
-. code block with non-selectable callouts (won't compile)
-. XML code block with a non-selectable callout (throws warnings)
-. definition styling, add indent on "answers"?
-. pretty sure blockquote just needs styling
-. footnotes completely broken
 . images broken; needed to remove ":" after image
 . internal cross reference links adding brackets when not given link text
 
 '''
 Lower priority "Broken" Notes & Adjustments
 
+. code blocks with callouts wouldn't compile
+. code block with non-selectable callouts (won't compile)
+. XML code block with a non-selectable callout (throws warnings)
 . role doesn't work; either it doesn't filter at all or is instead assigned as a class
 . lead paragraph styling not working; not in conf file?
 . single and double quotes not working; adjust conf file

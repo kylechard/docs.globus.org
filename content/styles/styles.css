@@ -58,6 +58,9 @@ h2, h3 {
 
 /* Content */
 .page-content {}
+dd {
+    margin-left: 30px;
+}
 
 /* Asciidoc */
 #doc-header h1 {
@@ -104,9 +107,8 @@ ol.upperroman {
 }
 
 /* Tables */
-.table-striped>tbody>tr>td pre,
-.table-striped>tbody>tr>th .literalblock pre {
-        background-color: #fdfdfd;
+pre {
+        background-color: #f8f8f8;
 }
 .table-borderless>tbody>tr>td {
     border: 0;
@@ -138,18 +140,18 @@ ol.upperroman {
 }
 
 /* Site Footer */
-footer {
+.page-content + footer {
     font-size: 13px;
     margin-top: 60px;
     padding: 30px 0;
 }
-footer .container {
+.page-content + footer .container {
     border-top: 1px solid #E8E8E8;
     padding: 30px 0;
 }
-footer p {
+.page-content + footer p {
     padding: 10px 0;
 }
-footer .nav li {
+.page-content + footer .nav li {
     display: inline-block;
 }
