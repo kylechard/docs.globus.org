@@ -16,13 +16,13 @@ header.navbar .navbar-header .navbar-brand {
 	padding: 12px;
 }
 header.navbar .navbar-header .navbar-brand img {
-	height: 30px;
-	margin-top: -5px;
-	margin-right: 10px;
+    height: 30px;
+    margin-top: -5px;
+    margin-right: 10px;
 }
 header.navbar-inverse .nav {
-	font-size: 17px;
-	font-weight: 100;
+    font-size: 17px;
+    font-weight: 100;
 }
 header.navbar .navbar-form {
 	margin-top: 6px;
@@ -75,28 +75,28 @@ header.navbar-inverse .navbar-nav>li>.dropdown-menu {
 /* Page Header - Navs */
 .page-header .nav {
 /*	position: absolute;
-	right: 0;
-	bottom: 0;*/
-	border-bottom: none;
+    right: 0;
+    bottom: 0;*/
+    border-bottom: none;
 }
 .page-header .nav>li {
-	display: inline-block;
+    display: inline-block;
 }
 .page-header .nav>li>a {
-	border-radius: 0;
-	font-size: 15px;
-	color: #666;
+    border-radius: 0;
+    font-size: 15px;
+    color: #666;
 }
-.page-header .nav>li>a:hover, 
+.page-header .nav>li>a:hover,
 .page-header .nav>li>a:focus {
-	background-color: transparent;
-	color: #2A6496;
+    background-color: transparent;
+    color: #2A6496;
 }
-.page-header .nav>li.active>a, 
-.page-header .nav>li.active>a:hover, 
+.page-header .nav>li.active>a,
+.page-header .nav>li.active>a:hover,
 .page-header .nav>li.active>a:focus {
-	color: #000;
-	border-bottom: 3px solid #DDD;
+    color: #000;
+    border-bottom: 3px solid #DDD;
 }
 
 /* Page Header - Breadcrumbs */
@@ -110,14 +110,14 @@ header.navbar-inverse .navbar-nav>li>.dropdown-menu {
 
 /* List Group */
 .list-group-header {
-	position: relative;
-	display: block;
-	padding: 10px 15px;
-	margin-bottom: -1px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
 }
 .list-group-header ~ .list-group-item {
-	padding-left: 35px;
-	font-weight: 100;
+    padding-left: 35px;
+    font-weight: 100;
 }
 
 
@@ -218,10 +218,10 @@ header.navbar-inverse .navbar-nav>li>.dropdown-menu {
 
 /* media queries */
 @media (min-width: 992px) {
-	.page-header .nav {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		border-bottom: none;
-	} 
+    .page-header .nav {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        border-bottom: none;
+    }
 }

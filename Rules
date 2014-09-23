@@ -15,7 +15,7 @@
 
 # ignore this directory
 ignore '/menus/*/'
-ignore '/site-docs/*/'
+#ignore '/site-docs/*/'
 
 preprocess do
   # Iterate each item
