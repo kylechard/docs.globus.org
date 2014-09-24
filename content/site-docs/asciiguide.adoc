@@ -305,6 +305,7 @@ would you like to die again? y/n
  Syntax highlighting is enabled by setting the source-highlighter attribute in the document header or passed as an argument.
 
 === _Code block with callouts (broken)_
+////
 [source,ruby]
 ----
 require 'sinatra' // <1>
@@ -316,8 +317,10 @@ end
 <1> Library import
 <2> URL mapping
 <3> Content for response
+////
 
 === _Code block with non-selectable callouts_
+////
 ----
 line of code  // <1>
 line of code  # <2>
@@ -326,6 +329,7 @@ line of code  ;; <3>
 <1> A callout behind a line comment for C-style languages.
 <2> A callout behind a line comment for Ruby, Python, Perl, etc.
 <3> A callout behind a line comment for Clojure.
+////
 
 === _XML code block with a non-selectable callout (broken)_
 ////
