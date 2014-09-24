@@ -1,0 +1,1150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>GT 6.0 Component Guide to Public Interfaces: GridFTP</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#gridftpPI" title="GT 6.0 Component Guide to Public Interfaces: GridFTP"><link rel="next" href="#gridftp-api-summary" title="Chapter 1. API Summary"><link href="http://www.globus.org/toolkit/css/default.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="/toolkit/css/print.css" media="print"><!-- calling in special style sheet if detected browser is IE 7 --><!--[if IE 7]>
+                                                
+                                                                <link rel="stylesheet" type="text/css" href="/toolkit/css/ie7.css" />
+                                                
+                                                <![endif]--><link rel="alternate" title="Globus Toolkit RSS" href="/toolkit/rss/downloadNews/downloadNews.xml" type="application/rss+xml"><script><!--
+                                                function GlobusSubmit()
+                                                {
+                                                var f=document.GlobusSearchForm;
+                                                
+                                                f.action="http://www.google.com/custom";
+                                                if (f.elements[0].checked) {
+                                                f.q.value = f.qinit.value + " -inurl:mail_archive " ;
+                                                } else {
+                                                f.q.value = f.qinit.value + " inurl:mail_archive " ;
+                                                }
+                                                }
+                                                --></script></head><body class="section-3"><?php include_once("../../includes/docbook_sidebar.inc");?><div class="book" title="GT 6.0 Component Guide to Public Interfaces: GridFTP"><div class="titlepage"><div><div><h1 class="title"><a name="gridftpPI"></a>GT 6.0 Component Guide to Public Interfaces: GridFTP</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="chapter"><a href="#gridftp-api-summary">1. API Summary</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6403471488">1. Programming Model Overview</a></span></dt><dt><span class="section"><a href="#idm6408950768">2. Component API</a></span></dt></dl></dd><dt><span class="reference"><a href="#gridftp-commandline">I. GridFTP Commands</a></span></dt><dd><dl><dt><span class="refentrytitle"><a href="#globus-url-copy">globus-url-copy</a></span><span class="refpurpose"> — Multi-protocol data movement</span></dt><dt><span class="refentrytitle"><a href="#globus-gridftp-server">globus-gridftp-server</a></span><span class="refpurpose"> — Configures the GridFTP Server</span></dt></dl></dd><dt><span class="chapter"><a href="#gridftp-guis">2. Graphical User Interface</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6400118448">1. Globus Online</a></span></dt></dl></dd><dt><span class="chapter"><a href="#gridftp-configuring">3. Configuring GridFTP</a></span></dt><dd><dl><dt><span class="section"><a href="#gridftp-config-overview">1. GridFTP server configuration overview</a></span></dt><dt><span class="section"><a href="#gridftp-config-types">2. Typical configuration</a></span></dt><dt><span class="section"><a href="#gridftp-config-security-firewalls">3. Firewall requirements</a></span></dt><dt><span class="section"><a href="#gridftp-admin-config-security">4. Configuring Security for GridFTP</a></span></dt><dd><dl><dt><span class="section"><a href="#gridftp-admin-config-security-anonymous">4.1. Anonymous mode</a></span></dt><dt><span class="section"><a href="#gridftp-admin-config-security-userpw">4.2. Username/password</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6396585440">4.2.1. Create password file</a></span></dt><dt><span class="section"><a href="#idm6396580752">4.2.2. Run the server in password mode</a></span></dt><dt><span class="section"><a href="#idm6396578064">4.2.3. Make a transfer</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-config-security-sshftp">4.3. SSHFTP (GridFTP-over-SSH)</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6396991408">4.3.1. Configure Server for SSH GridFTP Support</a></span></dt><dt><span class="section"><a href="#idm6398793680">4.3.2. Performing <code class="filename">sshftp://</code> Transfers</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-gsiftp">4.4. GSIFTP</a></span></dt><dd><dl><dt><span class="section"><a href="#gridftp-admin-daemon_mode">4.4.1. Running in daemon mode</a></span></dt><dt><span class="section"><a href="#gridftp-admin-inetd">4.4.2. Running under
+          inetd or xinetd</a></span></dt><dt><span class="section"><a href="#gridftp-admin-launchd">4.4.3. Running under launchd</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-user-pems">4.5. User permissions</a></span></dt></dl></dd><dt><span class="section"><a href="#idm6399196704">5. <span class="command"><strong>globus-gridftp-server</strong></span> quickstart</a></span></dt><dt><span class="section"><a href="#idm6397787808">6. Enabling File Sharing with Globus Sharing Service</a></span></dt></dl></dd><dt><span class="chapter"><a href="#gridftp-pi-env-var">4. Environment variable interface</a></span></dt><dd><dl><dt><span class="section"><a href="#gridftp-env-var">1. Environment variables for GridFTP</a></span></dt></dl></dd><dt><span class="appendix"><a href="#gridftp-error-codes">A. Errors</a></span></dt><dt><span class="glossary"><a href="#glossary-gridftpPI">Glossary</a></span></dt></dl></div><div class="chapter" title="Chapter 1. API Summary"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-api-summary"></a>Chapter 1. API Summary</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#idm6403471488">1. Programming Model Overview</a></span></dt><dt><span class="section"><a href="#idm6408950768">2. Component API</a></span></dt></dl></div><a class="indexterm" name="idm6403261376"></a><div class="section" title="1. Programming Model Overview"><div class="titlepage"><div><div><h2 class="title"><a name="idm6403471488"></a>1. Programming Model Overview</h2></div></div></div><p>The Globus FTP Client library provides a convenient way of accessing files on remote FTP
+      servers. In addition to supporting the basic FTP protocol, the FTP Client library supports
+      several security and performance extensions to make FTP more suitable for Grid applications.
+      These extensions are described in the <a class="ulink" href="http://www.globus.org/alliance/publications/papers/GFD-R.0201.pdf" target="_top">GridFTP Protocol
+        document</a>.</p><p>In addition to protocol support for grid applications, the FTP Client library provides a
+        <a class="ulink" href="http://www.globus.org/api/c-globus-%24%7Bversion%7D/globus_ftp_client/html/group__globus__ftp__client__plugins.html" target="_top">plugin architecture</a> for installing application or grid-specific fault recovery and
+      performance tuning algorithms within the library. Application writers may then target their
+      code toward the FTP Client library and, by simply enabling the appropriate plugins, easily
+      tune their application to run it on a different grid.</p><p>All applications which use the Globus FTP Client API must include the header file
+        <code class="filename">globus_ftp_client.h</code> and activate the <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_client/html/group__globus__ftp__client__activation.html" target="_top">GLOBUS_FTP_CLIENT_MODULE</a>.</p><p>To use the Globus FTP Client API, one must create an <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_client/html/group__globus__ftp__client__handle.html" target="_top">FTP Client handle</a>. This structure contains: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>context information about FTP operations which are being executed,</p></li><li class="listitem"><p>a cache of FTP control and data connections, and</p></li><li class="listitem"><p>information about plugins which are being used.</p></li></ul></div><p> The specifics of the connection caching and plugins are found in the "<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_client/html/group__globus__ftp__client__handleattr.html" target="_top">Handle Attributes</a>" section of the API documentation.</p><p>Once the handle is created, one may begin transferring files or doing other FTP operations
+      by calling the functions in the "<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_client/html/group__globus__ftp__client__operations.html" target="_top">FTP Operations</a>" section of the API documentation. In addition to whole-file
+      transfers, the API supports partial file transfers, restarting transfers from a known point,
+      and various FTP directory management commands. All FTP operations may have a set of
+      attributes, defined in the operationattr section, associated with them to tune various FTP
+      parameters. The data structures and functions needed to restart a file transfer are described
+      in the "<a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_client/html/group__globus__ftp__client__restart__marker.html" target="_top">Restart Markers</a>" section of the API documentation. For operations which require the
+      user to send to or receive data from an FTP <a href="#server" class="glossterm"><em class="glossterm">server</em></a> they must call the
+      functions described in the "globus_ftp_client_data" section of the manual.</p><p>The globus_ftp_control library provides low-level services needed to implement FTP clients
+      and servers. The API provided is protocol specific. The data transfer portion of this API
+      provides support for the standard data methods described in the FTP Specification as well as
+      extensions for parallel, striped, and partial data transfer. </p></div><div class="section" title="2. Component API"><div class="titlepage"><div><div><h2 class="title"><a name="idm6408950768"></a>2. Component API</h2></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_client/html/index.html" target="_top">C
+            Client Library API</a></li><li class="listitem"><a class="ulink" href="http://www.globus.org/api/c-globus-6.0/globus_ftp_control/html/index.html" target="_top">C
+            Control Library API</a></li></ul></div><p>For information on the internationalization API, see <a href="../../ccommonlib/pi/#ccommonlib-apis" class="olink">Chapter 1, <i>APIs</i></a>. </p></div></div><div class="reference" title="GridFTP Commands"><div class="titlepage"><div><div><h1 class="title"><a name="gridftp-commandline"></a>GridFTP Commands</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="refentrytitle"><a href="#globus-url-copy">globus-url-copy</a></span><span class="refpurpose"> — Multi-protocol data movement</span></dt><dt><span class="refentrytitle"><a href="#globus-gridftp-server">globus-gridftp-server</a></span><span class="refpurpose"> — Configures the GridFTP Server</span></dt></dl></div><div class="refentry" title="globus-url-copy"><a name="globus-url-copy"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>globus-url-copy — Multi-protocol data movement</p></div><div class="refsynopsisdiv" title="Synopsis"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">globus-url-copy</code> </p></div></div><div class="refsect1" title="Tool description"><a name="idm6398458624"></a><h2>Tool description</h2><a class="indexterm" name="idm6397011504"></a><a class="indexterm" name="idm6399074928"></a><p><span class="command"><strong>globus-url-copy</strong></span> is a scriptable command line tool that can do
+      multi-protocol data movement. It supports gsiftp:// (GridFTP), ftp://, http://, https://, and
+      file:/// protocol specifiers in the URL. For GridFTP, globus-url-copy supports all implemented
+      functionality. Versions from GT 3.2 and later support file globbing and directory
+      moves.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><a href="#globus-url-copy-before" class="olink">Before you begin</a></p></li><li class="listitem"><p><a href="#globus-url-copy-syntax" class="olink">Command syntax</a></p></li><li class="listitem"><p><a href="../user/#globus-url-copy-commandlineoptions" class="olink">Command
+            line options</a>
+          </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p><a href="#globus-url-copy-informationaloptions" class="olink">Informational
+                  options</a></p></li><li class="listitem"><p><a href="#globus-url-copy-utilityoptions" class="olink">Utility options</a></p></li><li class="listitem"><p><a href="#globus-url-copy-reliability" class="olink">Reliability
+                options</a></p></li><li class="listitem"><p><a href="#globus-url-copy-performanceoptions" class="olink">Performance
+                  options</a></p></li><li class="listitem"><p><a href="#globus-url-copy-securityoptions" class="olink">Security-related
+                  options</a></p></li></ul></div></li><li class="listitem"><p><a href="#globus-url-copy-defaultusage" class="olink">Default usage</a></p></li><li class="listitem"><p><a href="#globus-url-copy-modes" class="olink">MODES in GridFTP</a></p></li><li class="listitem"><p><a href="#globus-url-copy-manualserver" class="olink">If you run a GridFTP server by
+            hand</a></p></li><li class="listitem"><p><a href="#globus-url-copy-tcpbuffervalue" class="olink">How do I choose a value for the TCP
+            buffer size (<code class="option">-tcp-bs</code>) option?</a></p></li><li class="listitem"><p><a href="#globus-url-copy-parallelismvalue" class="olink">How do I choose a value for the
+            parallelism (<code class="option">-p</code>) option?</a></p></li><li class="listitem"><p><a href="#globus-url-copy-limitations" class="olink">Limitations</a></p></li><li class="listitem"><p><a href="#globus-url-copy-interactiveclients" class="olink">Interactive clients for
+            GridFTP</a></p></li></ul></div></div><div class="refsect1" title="Before you begin"><a name="globus-url-copy-before"></a><h2>Before you begin</h2><div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/important.png"></td><th align="left">Important</th></tr><tr><td align="left" valign="top"><p>To use <code class="filename">gsiftp://</code> and <code class="filename">https://</code> protocols in
+        globus-url-copy, you must have a <a href="../../admin/install/#gtadmin-basic-host" class="olink">certificate</a>. However, you may use <code class="filename">ftp://</code>, <code class="filename">http://</code> or <code class="filename">sshftp://</code> protocols without a
+        certificate.</p></td></tr></table></div><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>First, as with all things Grid, you <span class="emphasis"><em>must</em></span> have a valid proxy
+          certificate to run globus-url-copy in certain protocols (<code class="filename">gsiftp://</code>
+          and <code class="filename">https://</code>, as noted above). If you are using <code class="filename">ftp://</code>, <code class="filename">http://</code> or <code class="filename">sshftp://</code>
+          protocols, you may skip ahead to <a href="#globus-url-copy-syntax" class="olink">Command
+            syntax</a>
+        </p><p>If you do not have a certificate, you must <a href="../../admin/install/#gtadmin-basic-host" class="olink">obtain one</a>. </p><p>If you are doing this for testing in your own environment, the <a href="../../admin/install/appendix.html#gtadmin-simpleca" class="olink">SimpleCA</a> provided with the
+          Globus Toolkit should suffice. </p><p>If not, you must contact the Virtual Organization (VO) with which you are associated
+          to find out whom to ask for a certificate. </p><p>One common source is the <a class="ulink" href="http://www.doegrids.org/pages/cert-request.htm" target="_top">DOE Science Grid CA</a>, although you must confirm whether or not the resources you
+          wish to access will accept their certificates. </p><p>Instructions for proper installation of the certificate should be provided from the
+          source of the certificate. </p><p>Please note when your certificates expire; they will need to be renewed or you may
+          lose access to your resources.</p></li><li class="listitem"><p>Now that you have a certificate, you must generate a temporary proxy. Do this by
+          running: </p><pre class="screen">grid-proxy-init </pre><p>Further documentation for <span class="command"><strong>grid-proxy-init</strong></span> can be found <a href="../../gsic/developer/#grid-proxy-init" class="olink">here</a>.</p></li><li class="listitem"><p>You are now ready to use <span class="command"><strong>globus-url-copy</strong></span>! See the following
+          sections for syntax and command line options and other considerations.</p></li></ol></div></div><div class="refsect1" title="Command syntax"><a name="globus-url-copy-syntax"></a><h2>Command syntax</h2><p>The basic syntax for <span class="command"><strong>globus-url-copy</strong></span> is:
+      </p><pre class="screen">globus-url-copy [optional command line switches] <em class="replaceable"><code>Source_URL</code></em> <em class="replaceable"><code>Destination_URL</code></em> </pre><p>
+      where:</p><div class="informaltable"><table border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td>[optional command line switches]</td><td>See <a href="../user/#globus-url-copy-commandlineoptions" class="olink">Command line options</a> below for a list of available options. </td></tr><tr><td>
+              <p><em class="replaceable"><code>Source_URL</code></em></p>
+            </td><td>
+              <p>Specifies the original URL of the file(s) to be copied. </p>
+              <p>If this is a directory, all files within that directory will be copied. </p>
+            </td></tr><tr><td>
+              <p><em class="replaceable"><code>Destination_URL</code></em></p>
+            </td><td>
+              <p> Specifies the URL where you want to copy the files.</p>
+              <p>If you want to copy multiple files, this must be a directory. </p>
+            </td></tr></tbody></table></div><p>
+      </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Any url specifying a directory must end with <span class="command"><strong>/</strong></span>.</p></td></tr></table></div><p>
+    </p><div class="refsect2" title="URL prefixes"><a name="urlprefixes"></a><h3>URL prefixes</h3><p>Versions from GT 3.2 and later support the following URL prefixes:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><span class="command"><strong>file://</strong></span> (on a local machine only)</li><li class="listitem"><span class="command"><strong>ftp://</strong></span></li><li class="listitem">
+            <span class="command"><strong>gsiftp://</strong></span></li><li class="listitem"><span class="command"><strong>http://</strong></span></li><li class="listitem"><span class="command"><strong>https://</strong></span></li></ul></div><p>Versions from GT 4.2 and later support the following URL prefix (in addition to the
+        above-mentioned URL prefixes):</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><span class="command"><strong>sshftp://</strong></span>
+          </li></ul></div><p>
+        </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>We do <span class="emphasis"><em>not</em></span> provide an interactive client similar to the
+            generic FTP client provided with Linux. See the <a href="#globus-url-copy-interactiveclients" class="olink">Interactive Clients</a> section
+            below for information on an interactive client developed by NCSA/NMI/TeraGrid.</p></td></tr></table></div><p>
+      </p></div><div class="refsect2" title="URL formats"><a name="syncurlformats"></a><h3>URL formats</h3><p>URLs can be any valid URL as defined by RFC 1738 that have a <a href="#urlprefixes" class="olink">protocol</a> we support. In general, they have the following
+        format: <span class="command"><strong><em class="replaceable"><code>protocol</code></em>://<em class="replaceable"><code>host</code></em>:<em class="replaceable"><code>port</code></em>/<em class="replaceable"><code>path</code></em></strong></span>.</p><p>
+        </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>If the path ends with a trailing / (i.e. <code class="filename">/path/to/directory/</code>) it will be considered to be a directory and all files
+            in that directory will be moved. If you want a recursive directory move, you need to add
+            the <a href="#globus-url-copy-utilityoptions" class="olink"> -r / -recurse</a> switch
+            described below.</p></td></tr></table></div><p>
+      </p><div class="table"><a name="idm6398035792"></a><p class="title"><b>Table 1. URL formats</b></p><div class="table-contents"><table summary="URL formats" border="1" width="700px"><colgroup><col><col></colgroup><tbody><tr><td><code class="filename">gsiftp://myhost.mydomain.com:2812/data/foo.dat</code></td><td>Fully specified.</td></tr><tr><td><code class="filename">http://myhost.mydomain.com/mywebpage/default.html</code></td><td>Port is not specified; therefore, GridFTP uses protocol default (in this case,
+                  <code class="computeroutput">80</code>).</td></tr><tr><td><code class="filename">file:///foo.dat</code></td><td>Host is not specified; therefore, GridFTP uses your local host. Port is not
+                specified; therefore, GridFTP uses protocol default (in this case, <code class="computeroutput">80</code>).</td></tr><tr><td><code class="filename">file:/foo.dat</code></td><td>This is also valid but is not recommended because, while many servers
+                (including ours) accept this format, it is <span class="emphasis"><em>not</em></span> RFC conformant
+                and is not recommended.</td></tr></tbody></table></div></div><br class="table-break"><div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/important.png"></td><th align="left">Important</th></tr><tr><td align="left" valign="top"><p>For GridFTP (<code class="filename">gsiftp://</code>) and FTP (<code class="filename">ftp://</code>), it
+          is legal to specify a user name and password in the the URL as follows:</p><pre class="screen"> gsiftp://<em class="replaceable"><code>myname</code></em>:[<em class="replaceable"><code>mypassword</code></em>]@<em class="replaceable"><code>myhost.mydomain.com/foo.dat</code></em></pre><p>If you are using GSI security, then you may specify the username (but you may
+            <span class="emphasis"><em>not</em></span> include the <code class="computeroutput">:</code> or the password)
+          and the grid-mapfile will be searched to see if that is a valid account mapping for your
+          distinguished name (DN). If it is found, the <a href="#server" class="glossterm"><em class="glossterm">server</em></a> will setuid to
+          that account. If not, it will fail. It will NOT fail back to your default account.</p><p>If you are using anonymous FTP, the username <span class="emphasis"><em>must</em></span> be one of the
+          usernames listed as a valid anonymous name and the password can be anything.</p><p>If you are using password authentication, you must specify both your username and
+          password. THIS IS HIGHLY DISCOURAGED, AS YOU ARE SENDING YOUR PASSWORD IN THE CLEAR ON THE
+          NETWORK. This is worse than no security; it is a false illusion of security.</p></td></tr></table></div></div></div><div class="refsect1" title="Command line options"><a name="globus-url-copy-commandlineoptions"></a><h2>Command line options</h2><div class="refsect2" title="Informational Options"><a name="globus-url-copy-informationaloptions"></a><h3>Informational Options</h3><div class="variablelist"><dl><dt><span class="term">-help | -usage</span></dt><dd><p>Prints help.</p></dd><dt><span class="term">-version</span></dt><dd><p>Prints the version of this program.</p></dd><dt><span class="term">-versions</span></dt><dd><p>Prints the versions of all modules that this program uses.</p></dd><dt><span class="term">-q | -quiet</span></dt><dd><p>Suppresses all output for successful operation.</p></dd><dt><span class="term">-vb | -verbose</span></dt><dd><p>During the transfer, displays: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"> number of bytes transferred, </li><li class="listitem"> performance since the last update (currently every 5 seconds), and
+                  </li><li class="listitem"> average performance for the whole transfer. </li></ul></div></dd><dt><span class="term">-dbg | -debugftp</span></dt><dd><p> Debugs FTP connections and prints the entire control channel protocol exchange to
+              STDERR. </p><p>Very useful for debugging. Please provide this any time you are requesting
+              assistance with a globus-url-copy problem. </p></dd><dt><span class="term">-list &lt;url&gt;</span></dt><dd><p> This option will display a directory listing for the given url.</p></dd><dt><span class="term">-nl-bottleneck | -nlb</span></dt><dd><p>This option uses NetLogger to estimate speeds of disk and network read/write system calls, and attempt to determine the bottleneck component.
+            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>In order to use this, the server must be configured to <a class="ulink" href="http://www.cedps.net/index.php/Gridftp-netlogger" target="_top">enable netlogger bottleneck detection</a>.</p></td></tr></table></div><p>
+          </p></dd></dl></div></div><div class="refsect2" title="Utility Ease of Use Options"><a name="globus-url-copy-utilityoptions"></a><h3>Utility Ease of Use Options</h3><div class="variablelist"><dl><dt><span class="term">-a | -ascii</span></dt><dd><p>Converts the file to/from ASCII format to/from local file format.</p></dd><dt><span class="term">-b | -binary</span></dt><dd><p>Does not apply any conversion to the files. This option is turned on by
+              default.</p></dd><dt><span class="term">-cd | -create-dest</span></dt><dd><p>Create destination directories, if needed</p></dd><dt><span class="term">-f <em class="replaceable"><code>filename</code></em></span></dt><dd><p> Reads a list of URL pairs from a filename. </p><p>Each line should contain:</p><pre class="screen"><em class="replaceable"><code>sourceURL</code></em> <em class="replaceable"><code>destURL</code></em> </pre><p> Enclose URLs with spaces in double quotes ("). Blank lines and lines beginning
+              with the hash sign (#) will be ignored. </p></dd><dt><span class="term">-r | -recurse</span></dt><dd><p>Copies files in subdirectories.</p></dd><dt><span class="term">-rp | -relative-paths</span></dt><dd><p>
+The path portion of ftp urls will be interpereted as relative to the
+      user's starting directory on the server.  By default, all paths are
+      root-relative.  When this flag is set, the path portion of the ftp url
+      must start with %2F if it designates a root-relative path.
+	</p></dd><dt><span class="term">-notpt | -no-third-party-transfers</span></dt><dd><p> Turns third-party transfers off (on by default). </p><p>Site firewall and/or software configuration may prevent a connection between the
+              two servers (a <a href="#third-party-transfers" class="glossterm"><em class="glossterm">third party
+                transfer</em></a>). If this is the case, globus-url-copy will "relay" the data.
+              It will do a GET from the source and a PUT to the destination. </p><p>This obviously causes a performance penalty but will allow you to complete a
+              transfer you otherwise could not do. </p></dd></dl></div></div><div class="refsect2" title="Reliability Options"><a name="globus-url-copy-reliability"></a><h3>Reliability Options</h3><div class="variablelist"><dl><dt><span class="term">-rst | -restart</span></dt><dd><p>Restarts failed FTP operations.</p></dd><dt><span class="term">-rst-retries &lt;retries&gt;</span></dt><dd><p> Specifies the maximum number of times to retry the operation before giving up on
+              the transfer. </p><p>Use 0 for infinite. </p><p>The default value is 5. </p></dd><dt><span class="term">-rst-interval &lt;seconds&gt;</span></dt><dd><p>Specifies the interval in seconds to wait after a failure before retrying the
+              transfer. </p><p>Use 0 for an exponential backoff. </p><p>The default value is 0. </p></dd><dt><span class="term">-rst-timeout &lt;seconds&gt;</span></dt><dd><p> Specifies the maximum time after a failure to keep retrying. </p><p>Use 0 for no timeout. </p><p>The default value is 0. </p></dd><dt><span class="term">-df &lt;filename&gt; | -dumpfile &lt;filename&gt;</span></dt><dd><p>Specifies path to the file where untransferred urls will be saved for later
+              restarting. The resulting file is the same format as the <code class="option">-f</code> input
+              file. If the file exists, it will be read and all other url input will be
+              ignored.</p></dd><dt><span class="term">-do &lt;filename&gt; | -dump-only &lt;filename&gt;</span></dt><dd><p>
+Perform no write operations on the destination.  Instead, all files
+       that would be transferred are enumerated and dumped to the specified
+       file.  Resulting file is the same format as the -f input file.
+       Note: if you intend to use this file as input for a future transfer,
+       the -create-dest option will be required if any destination
+       directories do not already exist.
+	      </p></dd><dt><span class="term">-stall-timeout | -st &lt;seconds&gt;</span></dt><dd><p>Specifies how long before cancelling/restarting a transfer with no data movement.
+              Set to 0 to disable. Default is 600 seconds.</p></dd></dl></div></div><div class="refsect2" title="Performance Options"><a name="globus-url-copy-performanceoptions"></a><h3>Performance Options </h3><div class="variablelist"><dl><dt><span class="term">-tcp-bs &lt;size&gt; | -tcp-buffer-size &lt;size&gt;</span></dt><dd><p> Specifies the size (in bytes) of the TCP buffer to be used by the underlying ftp
+              data channels. </p><div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/important.png"></td><th align="left">Important</th></tr><tr><td align="left" valign="top"><p>This is critical to good performance over the WAN. </p></td></tr></table></div><p><a href="#globus-url-copy-tcpbuffervalue" class="olink">How do I pick a value?</a>
+            </p></dd><dt><span class="term">-p &lt;parallelism&gt; | -parallel &lt;parallelism&gt;</span></dt><dd><p> Specifies the number of parallel data connections that should be used. </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>This is one of the most commonly used options. </p></td></tr></table></div><p><a href="#globus-url-copy-parallelismvalue" class="olink">How do I pick a value?</a>
+            </p></dd><dt><span class="term">-bs &lt;block size&gt; | -block-size &lt;block size&gt;</span></dt><dd><p> Specifies the size (in bytes) of the buffer to be used by the underlying transfer
+              methods.</p></dd><dt><a name="gridftp-user-pipelining"></a><span class="term">-pp</span></dt><dd><p> Allows pipelining.
+              GridFTP is a command response protocol. A client sends one command and then waits for
+              a "Finished response" before sending another. Adding this overhead on a per-file basis
+              for a large data set partitioned into many small files makes the performance suffer.
+              Pipelining allows the client to have many outstanding, unacknowledged transfer
+              commands at once. Instead of being forced to wait for the "Finished response" message,
+              the client is free to send transfer commands at any time.</p></dd><dt><span class="term">-mc <em class="replaceable"><code>filename</code></em>
+            <em class="replaceable"><code>source_url</code></em></span></dt><dd><p> Transfers a single file to many destinations.
+              Filename is a line-separated list of destination urls. For more information on this
+              option, click <a href="../user/#gridftp-user-experimental-multicasting" class="olink">here</a>.</p><p>Multicasting must be <a href="../admin/#gridftp-config-multi" class="olink">enabled for use</a> on the
+		server side.</p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>This option is EXPERIMENTAL. </p></td></tr></table></div></dd><dt><a name="concurrency"></a><span class="term"> -concurrency | -cc</span></dt><dd><p>Specifies the number of concurrent FTP connections to use for multiple
+              transfers.</p></dd><dt><span class="term"> -udt</span></dt><dd><p>Uses UDT, a reliable UDP-based transport protocol, for data transfers.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Note: In order to use this option, the server must be configured to use <a href="../admin/#gridftp-config-udt" class="olink">UDT</a>. For third party
+              transfers, no change is required on the client side. For client-server transfers, you
+              need to enable threading in the client. To switch to
+	      threaded flavor, set the environment variable
+	      'GLOBUS_THREAD_MODEL=pthread'.
+              </p></td></tr></table></div></dd><dt><span class="term"> -fast</span></dt><dd><p>Recommended when using GridFTP servers. Use MODE E for all data transfers,
+              including reusing data channels between list and transfer operations.</p></dd></dl></div></div><div class="refsect2" title="Security Related Options"><a name="globus-url-copy-securityoptions"></a><h3>Security Related Options</h3><div class="variablelist"><dl><dt><span class="term">-s &lt;subject&gt; | -subject &lt;subject&gt;</span></dt><dd><p> Specifies a subject to match with both the source and destination servers. </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Used when the server does not have access to the host certificate (usually when
+                you are running the server as a user). See <a href="#globus-url-copy-manualserver" class="olink">the section called “If you run a GridFTP server by hand...”</a>.</p></td></tr></table></div></dd><dt><span class="term">-ss &lt;subject&gt; | -source-subject &lt;subject&gt;</span></dt><dd><p> Specifies a subject to match with the source server.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Used when the server does not have access to the host certificate (usually when
+                you are running the server as a user). See <a href="#globus-url-copy-manualserver" class="olink">the section called “If you run a GridFTP server by hand...”</a>.</p></td></tr></table></div></dd><dt><span class="term">-ds &lt;subject&gt; | -dest-subject &lt;subject&gt;</span></dt><dd><p> Specifies a subject to match with the destination server.</p><p>
+              </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Used when the server does not have access to the host certificate (usually
+                  when you are running the server as a user). See <a href="#globus-url-copy-manualserver" class="olink">the section called “If you run a GridFTP server by hand...”</a>.</p></td></tr></table></div><p>
+            </p></dd><dt><span class="term">-nodcau | -no-data-channel-authentication</span></dt><dd><p> Turns off data channel authentication for FTP transfers (the default is to
+              authenticate the data channel). </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>We do <span class="emphasis"><em>not</em></span> recommend this option, as it is a security
+                  risk. </p></td></tr></table></div></dd><dt><span class="term">-dcsafe | -data-channel-safe</span></dt><dd><p> Sets data channel protection mode to SAFE. </p><p>Otherwise known as <span class="emphasis"><em>integrity</em></span> or
+                <span class="emphasis"><em>checksumming</em></span>. </p><p>Guarantees that the data channel has not been altered, though a malicious party
+              may have observed the data. </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>Rarely used as there is a substantial performance penalty. </p></td></tr></table></div></dd><dt><span class="term">-dcpriv | -data-channel-private</span></dt><dd><p> Sets data channel protection mode to PRIVATE. </p><p>The data channel is encrypted and checksummed. </p><p>Guarantees that the data channel has not been altered and, if observed, it won't
+              be understandable. </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>VERY rarely used due to the VERY substantial performance penalty. </p></td></tr></table></div></dd></dl></div></div><div class="refsect2" title="Advanced Options"><a name="globus-url-copy-advancedoptions"></a><h3>Advanced Options</h3><div class="variablelist"><dl><dt><span class="term">-stripe</span></dt><dd><p> Enables striped transfers on supported servers. </p></dd><dt><span class="term">-striped-block-size | -sbs</span></dt><dd><p>Sets layout mode and blocksize for striped transfers.</p><p>If not set, the server defaults will be used. </p><p>If set to 0, partitioned mode will be used. </p><p>If set to &gt;0, blocked mode will be used, with this setting used as the
+              blocksize.</p></dd><dt><span class="term">-t &lt;transfer time in seconds&gt;</span></dt><dd><p> Runs the transfer for the specified number of seconds and then ends. Useful for
+              performance testing or forced restart loops.</p></dd><dt><span class="term">-ipv6</span></dt><dd><p> Uses ipv6 when available. </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>This option is EXPERIMENTAL. Use at your own risk.</p></td></tr></table></div></dd><dt><span class="term"> -dp | -delayed-pasv</span></dt><dd><p> Enables delayed passive.</p></dd><dt><span class="term">-g2 | -gridftp2</span></dt><dd><p> Uses GridFTP v2 protocol enhancements when possible.</p></dd><dt><span class="term">-mn | -module-name &lt;gridftp storage module name&gt;</span></dt><dd><p> Specifies the backend storage module to use for both the source and destination
+              in a GridFTP transfer.</p></dd><dt><span class="term">-mp | -module-parameters &lt;gridftp storage module parameters&gt;</span></dt><dd><p> Specifies the backend storage module arguments to use for both the source and
+              destination in a GridFTP transfer.</p></dd><dt><span class="term">-smn | -src-module-name &lt;gridftp storage module name&gt;</span></dt><dd><p> Specifies the backend storage module to use for the source file in a GridFTP
+              transfer.</p></dd><dt><span class="term">-smp | -src-module-parameters &lt;gridftp storage module parameters&gt;</span></dt><dd><p> Specifies the backend storage module arguments to use for the source file in a
+              GridFTP transfer.</p></dd><dt><span class="term">-dmn | -dst-module-name &lt;gridftp storage module name&gt;</span></dt><dd><p> Specifies the backend storage module to use for the destination file in a GridFTP
+              transfer.</p></dd><dt><span class="term">-dmp | -dst-module-parameters &lt;gridftp storage module parameters&gt;</span></dt><dd><p> Specifies the backend storage module arguments to use for the destination file in
+              a GridFTP transfer.</p></dd><dt><span class="term">-aa | -authz-assert &lt;authorization assertion file&gt;</span></dt><dd><p> Uses the assertions in the specified file to authorize access to both the source
+              and destination servers.</p></dd><dt><span class="term">-saa | -src-authz-assert &lt;authorization assertion file&gt;</span></dt><dd><p> Uses the assertions in the specified file to authorize access to the source
+              server.</p></dd><dt><span class="term">-daa | -dst-authz-assert &lt;authorization assertion file&gt;</span></dt><dd><p> Uses the assertions in the specified file to authorize access to the destination
+              server.</p></dd><dt><span class="term">-cache-aa | -cache-authz-assert</span></dt><dd><p> Caches the authorization assertion for subsequent transfers.</p></dd><dt><span class="term">-cache-saa | -cache-src-authz-assert</span></dt><dd><p> Caches the source authorization assertion for subsequent transfers.</p></dd><dt><span class="term">-cache-daa | -cache-dst-authz-assert</span></dt><dd><p> Caches the destination authorization assertion for subsequent transfers.</p></dd><dt><span class="term">-nl-bottleneck | -nlb</span></dt><dd><p> Uses NetLogger to estimate speeds of disk and network read/write system calls,
+              and attempt to determine the bottleneck component.</p><p>Note: In order to use this, the server must be configured to enable netlogger
+              bottleneck detection.</p></dd><dt><span class="term">-src-pipe | -SP &lt;command line&gt;</span></dt><dd><p> Sets the source end of a remote transfer to use piped-in input with the given
+              command line. </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>Do not use with the <code class="option">-fsstack</code> option.</p></td></tr></table></div></dd><dt><span class="term">-dst-pipe | -DP &lt;command line&gt;</span></dt><dd><p> Sets the destination end of a remote transfer to write data to then standard
+              input of the program run via the given command line. </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>Do not use with the <code class="option">-fsstack</code> option.</p></td></tr></table></div></dd><dt><span class="term">-pipe &lt;command line&gt;</span></dt><dd><p> Sets both <code class="option">-src-pipe</code> and <code class="option">-dst-pipe</code> to the same
+              value.</p></dd><dt><span class="term">-dcstack | -data-channel-stack</span></dt><dd><p> Specifies the XIO driver stack for the network on both the source and and the
+              destination. Both must be GridFTP servers.</p></dd><dt><span class="term">-fsstack | -file-system-stack</span></dt><dd><p> Specifies the XIO driver stack for the disk on both the source and the
+              destination. Both must be GridFTP servers.</p></dd><dt><span class="term">-src-dcstack | -source-data-channel-stack</span></dt><dd><p> Specifies the XIO driver stack for the network on the source GridFTP
+              server.</p></dd><dt><span class="term">-src-fsstack | -source-file-system-stack</span></dt><dd><p> Specifies the XIO driver stack for the disk on the source GridFTP server.</p></dd><dt><span class="term">-dst-dcstack | -dest-data-channel-stack</span></dt><dd><p> Specifies the XIO driver stack for the network on the destination GridFTP
+              server.</p></dd><dt><span class="term">-dst-fsstack | -dest-file-system-stack</span></dt><dd><p> Specifies the XIO driver stack for the disk on the destination GridFTP
+              server.</p></dd><dt><span class="term">-cred &lt;path to credentials or proxy file&gt;, -src-cred | -sc &lt;path to
+            credentials or proxy file&gt;, -dst-cred | -dc &lt;path to credentials or proxy
+            file&gt;</span></dt><dd><p> Specifies the credentials to use for source, destination, or both FTP
+              connections.</p></dd><dt><span class="term">-af &lt;filename&gt; | -alias-file &lt;filename&gt;</span></dt><dd><p>Specifies a file that maps logical host aliases to lists of physical hosts. When
+              used with multiple concurrent connections, each connection uses the next host in the
+              list. Each line should either be an alias (noted with the @ symbol), or a
+              hostname[:port]. Currently, only the aliases @source and @destination are valid, and
+              they are used for every source or destination url.</p></dd></dl></div></div><div class="refsect2" title="Synchronization Options"><a name="globus-url-copy-syncoptions"></a><h3>Synchronization Options</h3><div class="variablelist"><dl><dt><span class="term">-sync </span></dt><dd><p>
+	    Only transfer files where the destination does not exist or differs
+	    from the source.  -sync-level controls how to determine if files
+	    differ.
+	      </p></dd><dt><span class="term">-sync-level &lt;number&gt;</span></dt><dd><p>
+	    Choose critera for determining if files differ when performing a
+	    sync transfer.  Level 0 will only transfer if the destination does
+	    not exist.  Level 1 will transfer if the size of the destination
+	    does not match the size of the source.  Level 2 will transfer if the
+	    timestamp of the destination is older than the timestamp of the
+	    source.  Level 3 will perform a checksum of the source and
+	    destination and transfer if the checksums do not match. The default
+	    sync level is 2.
+	      </p></dd></dl></div></div><div class="refsect2" title="Default globus-url-copy usage"><a name="globus-url-copy-defaultusage"></a><h3>Default <span class="command"><strong>globus-url-copy</strong></span> usage</h3><p> A <span class="command"><strong>globus-url-copy</strong></span> invocation using the <span class="command"><strong>gsiftp</strong></span>
+        protocol with no options (i.e., using all the defaults) will perform a transfer with the
+        following characteristics: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">binary</li><li class="listitem">stream mode (which implies no parallelism)</li><li class="listitem">host default TCP buffer size</li><li class="listitem">encrypted and checksummed control channel</li><li class="listitem">an authenticated data channel</li></ul></div></div><div class="refsect2" title="MODES in GridFTP"><a name="globus-url-copy-modes"></a><h3>MODES in GridFTP</h3><p>GridFTP (as well as normal FTP) defines multiple wire protocols, or MODES, for the data
+        channel. </p><p>Most normal FTP servers only implement <a href="#stream-mode" class="glossterm"><em class="glossterm">stream
+          mode</em></a> (MODE S) , i.e. the bytes flow in order over a single TCP connection.
+        GridFTP defaults to this mode so that it is compatible with normal FTP servers.</p><p>However, GridFTP has another MODE, called Extended Block Mode, or <a href="#extended-block-mode" class="glossterm"><em class="glossterm">MODE E</em></a>. This mode sends the data over
+        the data channel in blocks. Each block consists of 8 bits of flags, a 64 bit integer
+        indicating the offset from the start of the transfer, and a 64 bit integer indicating the
+        length of the block in bytes, followed by a payload of length bytes. Because the offset and
+        length are provided, out of order arrival is acceptable, i.e. the 10th block could arrive
+        before the 9th because you know explicitly where it belongs. This allows us to use multiple
+        TCP channels. If you use the <code class="option">-p | -parallelism</code> option, <span class="command"><strong>globus-url-copy</strong></span> automatically puts the servers into MODE E.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p> Putting <code class="option">-p 1</code> is not the same as no <span class="command"><strong>-p</strong></span> at all.
+          Both will use a single stream, but the default will use stream mode and <code class="option">-p
+            1</code> will use MODE E. </p></td></tr></table></div></div><div class="refsect2" title="If you run a GridFTP server by hand..."><a name="globus-url-copy-manualserver"></a><h3>If you run a GridFTP server by hand...</h3><p>If you run a GridFTP server by hand, you will need to explicitly specify the subject
+        name to expect. The subject option provides <span class="command"><strong>globus-url-copy</strong></span> with a way to
+        validate the remote servers with which it is communcating. Not only must the server trust
+          <span class="command"><strong>globus-url-copy</strong></span>, but <span class="command"><strong>globus-url-copy</strong></span> must trust that
+        it is talking to the correct server. The validation is done by comparing host DNs or
+        subjects.</p><p>If the GridFTP server in question is running under a <a href="../../admin/install/#gtadmin-basic-host" class="olink">host certificate</a> then the client assumes a subject
+        name based on the server's canonical DNS name. However, if it was started under a user
+        certificate, as is the case when a server is started by hand, then the expected subject name
+        must be explicitly stated. This is done with the <code class="option">-ss</code>, <code class="option">-sd</code>,
+        and <code class="option">-s</code> options.</p><div class="variablelist"><dl><dt><span class="term"><code class="option">-ss</code></span></dt><dd><p>Sets the <code class="computeroutput">sourceURL</code> subject.</p></dd><dt><span class="term"><code class="option">-ds</code></span></dt><dd><p>Sets the <code class="computeroutput">destURL</code> subject.</p></dd><dt><span class="term"><code class="option">-s</code></span></dt><dd><p>If you use this option alone, it will set both urls to be the same. You can see an
+              example of this usage under the <a href="../user/#gridftp-troubleshooting" class="olink">Troubleshooting</a> section. </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>This is an <span class="emphasis"><em>unusual</em></span> use of the client. Most times you need
+                  to specify both URLs. </p></td></tr></table></div></dd></dl></div></div><div class="refsect2" title="How do I choose a value?"><a name="choosingvalues"></a><h3>How do I choose a value?</h3><div class="refsect3" title="How do I choose a value for the TCP buffer size (-tcp-bs) option?"><a name="globus-url-copy-tcpbuffervalue"></a><h4>How do I choose a value for the TCP buffer size (<code class="option">-tcp-bs</code>)
+          option?</h4><p>The value you should pick for the TCP buffer size (<code class="option">-tcp-bs</code>) depends
+          on how fast you want to go (your bandwidth) and how far you are moving the data (as
+          measured by the Round Trip Time (RTT) or the time it takes a packet to get to the
+          destination and back). </p><p>To calculate the value for <code class="option">-tcp-bs</code>, use the following formula (this
+          assumes that Mega means 1000^2 rather than 1024^2, which is typical for bandwidth):</p><p><code class="option">-tcp-bs</code> = bandwidth in Megabits per second (Mbs) * RTT in
+          milliseconds (ms) * 1000 / 8</p><p>As an example, if you are using fast ethernet (100 Mbs) and the RTT was 50 ms it would
+          be:</p><p><code class="option">-tcp-bs</code> = 100 * 50 * 1000 / 8 = 625,000 bytes.</p><p>So, how do you come up with values for bandwidth and RTT? To determine RTT, use either
+          ping or traceroute. They both list RTT values.</p><p>
+          </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>You must be on one end of the transfer and ping the other end. This means that
+              if you are doing a <a href="../user/#gridftp-user-thirdpartytransfers" class="olink">third party transfer</a> you have
+              to run the ping or traceroute between the two server hosts, not from your
+              client.</p></td></tr></table></div><p>
+        </p><p>The bandwidth is a little trickier. Any point in the network can be the bottleneck, so
+          you either need to talk with your network engineers to find out what the bottleneck link
+          is or just assume that your host is the bottleneck and use the speed of your network
+          interface card (NIC).</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>The value you pick for <code class="option">-tcp-bs</code> limits the top speed you can
+            achieve. You will NOT get bandwidth any higher than what you used in the calculation
+            (assuming the RTT is actually what you specified; it varies a little with network
+            conditions). So, if for some reason you want to limit the bandwidth you get, you can do
+            that by judicious choice of <code class="option">-tcp-bs</code> values.</p></td></tr></table></div><p>So where does this formula come from? Because it uses the bandwidth and the RTT (also
+          known as the latency or delay) it is called the <span class="emphasis"><em>bandwidth delay
+            product</em></span>. The very simple explanation is this: TCP is a reliable protocol. It
+          must save a copy of everything it sends out over the network until the other end
+          acknowledges that it has been received.</p><p>As a simple example, if I can put one byte per second onto the network, and it takes
+          10 seconds for that byte to get there, and 10 seconds for the acknowledgment to get back
+          (RTT = 20 seconds), then I would need at least 20 bytes of storage. Then, hopefully, by
+          the time I am ready to send byte 21, I have received an acknowledgement for byte 1 and I
+          can free that space in my buffer. If you want a more detailed explanation, try the
+          following links on TCP tuning:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><a class="ulink" href="http://www.psc.edu/networking/perf_tune.html" target="_top">http://www.psc.edu/networking/perf_tune.html</a></li><li class="listitem"><a class="ulink" href="http://www-didc.lbl.gov/TCP-tuning/" target="_top">http://www-didc.lbl.gov/TCP-tuning/</a></li><li class="listitem"><a class="ulink" href="http://www.ncne.nlanr.net/research/tcp/" target="_top">http://www.ncne.nlanr.net/research/tcp/</a></li></ul></div></div><div class="refsect3" title="How do I choose a value for the parallelism (-p) option?"><a name="globus-url-copy-parallelismvalue"></a><h4>How do I choose a value for the parallelism (<code class="option">-p</code>) option?</h4><p>For most instances, using 4 streams is a very good rule of thumb. Unfortunately, there
+          is not a good formula for picking an exact answer. The shape of the graph shown here is
+          very characteristic. </p><div class="figure"><a name="parallelism_chart"></a><p class="title"><b>Figure 1. Effect of Parallel Streams in GridFTP</b></p><div class="figure-contents"><div class="mediaobject" align="center"><img src="Parallel_Streams.jpg" align="middle" alt="Effect of Parallel Streams in GridFTP"></div></div></div><br class="figure-break"><p>You get a strong increase in bandwidth, then a sharp knee, after which
+          additional streams have very little impact. Where this knee is depends on many things, but
+          it is generally between 2 and 10 streams. Higher bandwidth, longer round trip times, and
+          more congestion in the network (which you usually can only guess at based on how
+          applications are behaving) will move the knee higher (more streams needed). </p><p> In practice, between 4 and 8 streams are usually sufficient. If things look really
+          bad, try 16 and see how much difference that makes over 8. However, anything above 16,
+          other than for academic interest, is basically wasting resources.</p></div></div></div><div class="refsect1" title="Limitations"><a name="globus-url-copy-limitations"></a><h2>Limitations</h2><p>There are no limitations for <span class="command"><strong>globus-url-copy</strong></span> in GT 6.0. </p></div><div class="refsect1" title="Interactive clients for GridFTP"><a name="globus-url-copy-interactiveclients"></a><h2>Interactive clients for GridFTP </h2><p>The Globus Project does <span class="emphasis"><em>not</em></span> provide an interactive client for
+      GridFTP. Any normal FTP client will work with a GridFTP server, but it cannot take advantage
+      of the advanced features of GridFTP. The interactive clients listed below take advantage of
+      the advanced features of GridFTP.</p><p> There is no endorsement implied by their presence here. We make no assertion as to the
+      quality or appropriateness of these tools, we simply provide this for your convenience. We
+      will <span class="emphasis"><em>not</em></span> answer questions, accept bugs, or in any way shape or form be
+      responsible for these tools, although they should have mechanisms of their own for such
+      things. </p><p><a class="indexterm" name="idm6398597072"></a>UberFTP was developed at the
+      NCSA under the auspices of NMI and TeraGrid:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"> NCSA Uberftp only download: <a class="ulink" href="http://dims.ncsa.uiuc.edu/set/uberftp/download.html" target="_top">http://dims.ncsa.uiuc.edu/set/uberftp/download.html</a></li><li class="listitem"> UberFTP User's Guide: <a class="ulink" href="http://dims.ncsa.uiuc.edu/set/uberftp/userdoc.html" target="_top">http://dims.ncsa.uiuc.edu/set/uberftp/userdoc.html</a></li></ul></div></div></div><div class="refentry" title="globus-gridftp-server"><a name="globus-gridftp-server"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>globus-gridftp-server — Configures the GridFTP Server</p></div><div class="refsynopsisdiv" title="Synopsis"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">globus-gridftp-server</code> </p></div></div><div class="refsect1" title="Tool description"><a name="idm6398180016"></a><h2>Tool description</h2><a class="indexterm" name="idm6398179504"></a><a class="indexterm" name="idm6399122336"></a><p><span class="command"><strong>globus-gridftp-server</strong></span> configures the GridFTP server using a config file
+      and/or commandline options.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Command line options and configuration file options may both be used, but the command
+        line <span class="emphasis"><em>overrides</em></span> the config file.</p></td></tr></table></div><p>The configuration file for the GridFTP <a href="#server" class="glossterm"><em class="glossterm">server</em></a> is read from
+      the following locations, in the given order. Only the first file found will be loaded:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Path specified with the <code class="computeroutput">-c &lt;configfile&gt;</code>
+            command line option.</li><li class="listitem">
+            <code class="filename">$GLOBUS_LOCATION/etc/gridftp.conf</code>
+          </li><li class="listitem">
+            <code class="filename">/etc/grid-security/gridftp.conf</code>
+          </li></ul></div><p>Options are one per line, with the format:
+      </p><pre class="screen">&lt;option&gt; &lt;value&gt;</pre><p> If the value contains spaces, they should be
+      enclosed in double-quotes ("). Flags or boolean options should only have a value of 0 or 1.
+      Blank lines and lines beginning with # are ignored.</p><p>For example:
+      </p><pre class="screen">  port 5000
+  allow_anonymous 1
+  anonymous_user bob
+  banner "Welcome!"
+      </pre><div class="refsect2" title="Developer notes"><a name="idm6396702512"></a><h3>Developer notes</h3><p>The Globus implementation of the GridFTP <a href="#server" class="glossterm"><em class="glossterm">server</em></a> draws on: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>three IETF RFCs: </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">RFC 959</li><li class="listitem">RFC 2228</li><li class="listitem">RFC 2389</li></ul></div></li><li class="listitem"> an IETF Draft: MLST-16</li><li class="listitem">the GridFTP protocol specification, which is Global Grid Forum (GGF) Standard
+              GFD.020.</li></ul></div><p>The command line tools and the <a href="#client" class="glossterm"><em class="glossterm">client</em></a> library completely hide the
+        details of the protocol from the user and the developer. Unless you choose to use the
+        control library, it is not necessary to have a detailed knowledge of the protocol.</p></div></div><div class="refsect1" title="Command syntax"><a name="idm6397665952"></a><h2>Command syntax</h2><p>The basic syntax for <span class="command"><strong>globus-gridftp-server</strong></span> is:
+      </p><pre class="screen">globus-gridftp-server <a href="#commandlineoptions-server" class="olink">[optional command line switches]</a></pre><p>To use <span class="command"><strong>globus-gridftp-server</strong></span> with a config file, make sure to use the
+        <code class="option">-c &lt;configfile&gt;</code> option.</p></div><div class="refsect1" title="Command line options"><a name="commandlineoptions-server"></a><h2>Command line options</h2><p>The table below lists config file options, associated command line options (if available)
+      and descriptions. </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Any boolean option can be negated on the command line by preceding the specified option
+        with '-no-' or '-n'. example: -no-cas or -nf.</p></td></tr></table></div><div class="refsect2" title="Informational Options"><a name="gridftp-server-config_options-info"></a><h3>Informational Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">help &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-h</code>
+          , </span><span class="term">
+            <code class="option">-help</code>
+          </span></dt><dd><p>Show usage information and exit.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">version &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-v</code>
+          , </span><span class="term">
+            <code class="option">-version</code>
+          </span></dt><dd><p>Show version information for the server and exit.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">versions &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-V</code>
+          , </span><span class="term">
+            <code class="option">-versions</code>
+          </span></dt><dd><p>Show version information for <span class="strong"><strong>all</strong></span> loaded globus
+              libraries and exit.</p><p>Default value: FALSE</p></dd></dl></div></div><div class="refsect2" title="Modes of Operation"><a name="gridftp-server-config_options-modes"></a><h3>Modes of Operation</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">inetd &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-i</code>
+          , </span><span class="term">
+            <code class="option">-inetd</code>
+          </span></dt><dd><p>Run under an inetd service.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">daemon &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-s</code>
+          , </span><span class="term">
+            <code class="option">-daemon</code>
+          </span></dt><dd><p>Run as a daemon. All connections will fork off a new process and setuid if
+              allowed. See <a href="../admin/#gridftp-admin-daemon_mode" class="olink">Section 4.4.1, “Running in daemon mode”</a>
+              for more information.</p><p>Default value: TRUE</p></dd><dt><span class="term">
+            <code class="option">detach &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-S</code>
+          , </span><span class="term">
+            <code class="option">-detach</code>
+          </span></dt><dd><p>Run as a background daemon detached from any controlling terminals. See <a href="../admin/#gridftp-admin-daemon_mode" class="olink">Section 4.4.1, “Running in daemon mode”</a> for more
+              information.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">ssh</code>
+          , </span><span class="term">
+            <code class="option">-ssh</code>
+          </span></dt><dd><p>Run over a connected ssh session. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">exec &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-exec &lt;string&gt;</code>
+          </span></dt><dd><p>For statically compiled or non-GLOBUS_LOCATION standard binary locations, specify
+              the full path of the server binary here. Only needed when run in <a href="../admin/#gridftp-admin-daemon_mode" class="olink">daemon
+              mode</a>.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">chdir &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-chdir</code>
+          </span></dt><dd><p>Change directory when the server starts. This will change directory to the dir
+              specified by the chdir_to option.</p><p>Default value: TRUE</p></dd><dt><span class="term">
+            <code class="option">chdir_to &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-chdir-to &lt;string&gt;</code>
+          </span></dt><dd><p>Directory to chdir to after starting. Will use <code class="computeroutput">/</code>
+              if not set.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">fork &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-f</code>
+          , </span><span class="term">
+            <code class="option">-fork</code>
+          </span></dt><dd><p>Server will fork for each new connection. Disabling this option is only
+              recommended when debugging. Note that non-forked servers running as 'root' will only
+              accept a single connection and then exit.</p><p>Default value: TRUE</p></dd><dt><span class="term">
+            <code class="option">single &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-1</code>
+          , </span><span class="term">
+            <code class="option">-single</code>
+          </span></dt><dd><p>Exit after a single connection.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">chroot_path &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-chroot-path &lt;string&gt;</code>
+          </span></dt><dd><p>Path to become the new root after authentication.  This path must contain a valid certificate structure, <code class="filename">/etc/passwd</code>, and <code class="filename">/etc/groups</code>.  The command globus-gridftp-server-setup-chroot can help create a suitable directory structure. </p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="Authentication, Authorization, and Security Options"><a name="gridftp-server-config_options-security"></a><h3>Authentication, Authorization, and Security Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">auth_level &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-auth-level &lt;number&gt;</code>
+          </span></dt><dd><p>
+              </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">0 = Disables all authorization checks.</li><li class="listitem">1 = Authorize identity only.</li><li class="listitem">2 = Authorize all file/resource accesses.</li></ul></div><p>
+            </p><p>If not set, the GridFTP Server uses level 2 for front ends and level 1 for data
+              nodes.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">ipc_allow_from &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-allow-from &lt;string&gt;</code>
+          </span></dt><dd><p>Only allow IPC connections (applicable for backend servers in a striped
+              configuration) from these source IP addresses. Specify a comma-separated list of IP
+              address fragments. A match is any IP address that starts with the specified fragment.
+              Example: '192.168.1.' will match and allow a connection from 192.168.1.45. Note that
+              if this option is used, any address not specifically allowed will be denied.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">ipc_deny_from &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-deny-from &lt;string&gt;</code>
+          </span></dt><dd><p>Deny IPC connections (applicable for backend servers in a striped configuration)
+              from these source IP addresses. Specify a comma-separated list of IP address
+              fragments. A match is any IP address that starts with the specified fragment. Example:
+              '192.168.2.' will match and deny a connection from 192.168.2.45.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">allow_from &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-allow-from &lt;string&gt;</code>
+          </span></dt><dd><p>Only allow connections from these source IP addresses. Specify a comma-separated
+              list of IP address fragments. A match is any IP address that starts with the specified
+              fragment. Example: '192.168.1.' will match and allow a connection from 192.168.1.45.
+              Note that if this option is used, any address not specifically allowed will be
+              denied.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">deny_from &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-deny-from &lt;string&gt;</code>
+          </span></dt><dd><p>Deny connections from these source IP addresses. Specify a comma-separated list of
+              IP address fragments. A match is any IP address that starts with the specified
+              fragment. Example: '192.168.2.' will match and deny a connection from
+              192.168.2.45.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">secure_ipc &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-si</code>
+          , </span><span class="term">
+            <code class="option">-secure-ipc</code>
+          </span></dt><dd><p>Use GSI security on the IPC channel.</p><p>Default value: TRUE</p></dd><dt><span class="term">
+            <code class="option">ipc_auth_mode &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ia &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-auth-mode &lt;string&gt;</code>
+          </span></dt><dd><p>Set GSI authorization mode for the IPC connection. Options are one of the
+              following: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">none</li><li class="listitem">host</li><li class="listitem">self</li><li class="listitem">subject:[subject]</li></ul></div><p>Default value: host</p></dd><dt><span class="term">
+            <code class="option">allow_anonymous &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-aa</code>
+          , </span><span class="term">
+            <code class="option">-allow-anonymous</code>
+          </span></dt><dd><p>Allow cleartext anonymous access. If server is running as root, anonymous_user
+              must also be set. Disables IPC security.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">anonymous_names_allowed &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-anonymous-names-allowed &lt;string&gt;</code>
+          </span></dt><dd><p>Comma-separated list of names to treat as anonymous users when allowing anonymous
+              access. If not set, the default names of 'anonymous' and 'ftp' will be allowed. Use
+              '*' to allow any username.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">anonymous_user &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-anonymous-user &lt;string&gt;</code>
+          </span></dt><dd><p>User to setuid to for an anonymous connection. Only applies when running as
+              root.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">anonymous_group &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-anonymous-group &lt;string&gt;</code>
+          </span></dt><dd><p>Group to setgid to for an anonymous connection. If not set, the default group of
+              anonymous_user will be used.</p><p>Default value: not set</p></dd><dt><span class="term">
+	    <code class="option">allow_root</code>
+	  , </span><span class="term">
+	    <code class="option">-allow-root</code>
+	  </span></dt><dd><p>Allow clients to be mapped to the root account.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">pw_file &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-password-file &lt;string&gt;</code>
+          </span></dt><dd><p>Enable cleartext access and authenticate users against this <code class="filename">/etc/passwd</code> formatted file.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">connections_max &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-connections-max &lt;number&gt;</code>
+          </span></dt><dd><p>Maximum concurrent connections allowed. Only applies when running in <a href="../admin/#gridftp-admin-daemon_mode" class="olink">daemon mode</a>.
+              Unlimited if not set.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">connections_disabled &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-connections-disabled</code>
+          </span></dt><dd><p>Disable all new connections. Does not affect ongoing connections. This must be set
+              in the configuration file and then a SIGHUP issued to the server in order to reload
+              the configuration.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">offline_msg &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-offline-msg &lt;string&gt;</code>
+          </span></dt><dd><p> Custom message to be displayed to clients when the server is offline via the
+              connections_disabled or connections_max = 0 options. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">disable_command_list &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-disable-command-list &lt;string&gt;</code>
+          </span></dt><dd><p> A comma seperated list of client commands that will be disabled. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">authz_callouts </code>
+          , </span><span class="term">
+            <code class="option">-authz-callouts </code>
+          </span></dt><dd><p> Enable the GSI authorization callout framework. </p><p>Default value: TRUE</p></dd><dt><span class="term">
+	    <code class="option">restrict_paths </code>
+	  , </span><span class="term">
+	    <code class="option">-rp </code>
+	  , </span><span class="term">
+	    <code class="option">-restrict-paths </code>
+	  </span></dt><dd><p>A comma separated list of full paths that clients may access.
+	    Each path may be prefixed by R and/or W, denoting read or write
+	    access, otherwise full access is granted.  If a given path is a
+	    directory, all contents and subdirectories will be given the same
+	    access.  Order of paths does not matter -- the permissions on the
+	    longest matching path will apply.  The special character '~' will be
+	    replaced by the authenticated user's home directory.  Note that if
+	    the authenticated user's home directory is not accessible, the home
+	    directory and starting path will be set to '/'.  By default all
+	    paths are allowed, and access control is handled by the OS.
+	    </p><p>Default value: not set</p></dd><dt><span class="term">
+	    <code class="option">rp_follow_symlinks </code>
+	  , </span><span class="term">
+	    <code class="option">-rp-follow-symlinks </code>
+	  </span></dt><dd><p>Allow following symlinks that lead to restricted paths.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">acl </code>
+          , </span><span class="term">
+            <code class="option">-em</code>
+          , </span><span class="term">
+            <code class="option">-acl </code>
+          </span></dt><dd><p> A comma seperated list of ACL or event modules to load. </p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="Logging Options"><a name="gridftp-server-config_options-logging"></a><h3>Logging Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">log_level &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-d &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-log-level &lt;string&gt;</code>
+          </span></dt><dd><p>Log level. A comma-separated list of levels from the following: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">ERROR</li><li class="listitem">WARN</li><li class="listitem">INFO</li><li class="listitem">DUMP</li><li class="listitem">ALL</li></ul></div><p> For example:
+              </p><pre class="screen">globus-gridftp-server -d error,warn,info</pre><p>You may also specify a
+              numeric level of 1-255.</p><p>Default value: ERROR</p></dd><dt><span class="term">
+            <code class="option">log_module &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-log-module &lt;string&gt;</code>
+          </span></dt><dd><p>Indicates the <code class="filename">globus_logging</code> module that will be loaded. If
+              not set, the default <code class="computeroutput">stdio</code> module will be used and
+              the logfile options (see next option) will apply. </p><p>Built-in modules are <code class="computeroutput">stdio</code> and <code class="computeroutput">syslog</code>. Log module options may be set by specifying
+                <code class="computeroutput">module:opt1=val1:opt2=val2</code>. Available options for
+              the built-in modules are: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><code class="option">interval</code> - Indicates buffer flush interval. Default is 5
+                    seconds. A 0 second flush interval will disable periodic flushing, and the
+                    buffer will only flush when it is full.</p></li><li class="listitem"><p><code class="option">buffer</code> - Indicates buffer size. Default is 64k. A value of
+                    0k will disable buffering and all messages will be written immediately.</p></li></ul></div><p> Example:
+              </p><pre class="screen">-log-module stdio:buffer=4096:interval=10</pre><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">log_single &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-l &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-logfile &lt;string&gt;</code>
+          </span></dt><dd><p>Indicates the path of a single file to which you want to log all activity. If
+              neither this option nor <code class="computeroutput">log_unique</code> is set, logs will
+              be written to stderr, unless the execution mode is detached, or inetd, in which case
+              logging will be disabled.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p> You have to provide full path </p></td></tr></table></div><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">log_unique &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-L &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-logdir &lt;string&gt;</code>
+          </span></dt><dd><p>Partial path to which <code class="computeroutput">gridftp.(pid).log</code> will be
+              appended to construct the log filename. Example: </p><pre class="screen">-L /var/log/gridftp/</pre><p>
+              will create a separate log (<code class="filename">/var/log/gridftp/gridftp.xxxx.log</code>)
+              for each process (which is normally each new <a href="#client" class="glossterm"><em class="glossterm">client</em></a> session).
+              If neither this option nor <code class="computeroutput">log_single</code> is set, logs
+              will be written to stderr, unless the execution mode is detached, or inetd, in which
+              case logging will be disabled.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p> You have to provide full path </p></td></tr></table></div><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">log_transfer &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-Z &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-log-transfer &lt;string&gt;</code>
+          </span></dt><dd><p>Log NetLogger-style info for each transfer into this file.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p> You have to provide full path </p></td></tr></table></div><p>Default value: not set</p><p> Example: DATE=20050520163008.306532 HOST=localhost PROG=globus-gridftp-server
+              NL.EVNT=FTP_INFO START=20050520163008.305913 USER=ftp FILE=/etc/group BUFFER=0
+              BLOCK=262144 NBYTES=542 VOLUME=/ STREAMS=1 STRIPES=1 DEST=[127.0.0.1] TYPE=RETR
+              CODE=226 </p><p>Time format is YYYYMMDDHHMMSS.UUUUUU (microsecs).</p><p>
+              </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">DATE: time the transfer completed.</li><li class="listitem">START: time the transfer started.</li><li class="listitem">HOST: hostname of the server.</li><li class="listitem">USER: username on the host that transfered the file.</li><li class="listitem">BUFFER: tcp buffer size (if 0 system defaults were used).</li><li class="listitem">BLOCK: the size of the data block read from the disk and posted to the
+                    network.</li><li class="listitem">NBYTES: the total number of bytes transfered.</li><li class="listitem">VOLUME: the disk partition where the transfer file is stored.</li><li class="listitem">STREAMS: the number of parallel TCP streams used in the
+                    transfer.</li><li class="listitem">STRIPES: the number of stripes used on this end of the
+                    transfer.</li><li class="listitem">DEST: the destination host.</li><li class="listitem">TYPE: the transfer type, RETR is a send and STOR is a receive (ftp 959
+                    commands).</li><li class="listitem">CODE: the FTP rfc959 completion code of the transfer. 226 indicates
+                    success, 5xx or 4xx are failure codes.</li></ul></div><p>
+            </p></dd><dt><span class="term">
+            <code class="option">log_filemode &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-log-filemode &lt;string&gt;</code>
+          </span></dt><dd><p>File access permissions of log files. Should be an octal number such as 0644 (the
+              leading 0 is required).</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">disable_usage_stats &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-disable-usage-stats</code>
+          </span></dt><dd><p>Disable transmission of per-transfer usage statistics. See the <a class="ulink" href="../../../Usage_Stats.html" target="_top">Usage Statistics</a> section in the online
+              documentation for more information.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">usage_stats_target &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-usage-stats-target &lt;string&gt;</code>
+          </span></dt><dd><p>Comma-separated list of contact strings for usage statistics listeners. The format
+              of &lt;string&gt; is <code class="computeroutput">host:port</code>.</p><p>Default value: <code class="computeroutput">usage-stats.globus.org:4810</code></p><p>
+              <span class="strong"><strong>Example:</strong></span>
+            </p><pre class="screen">-usage-stats-target usage-stats.globus.org:4810,usage-stats.uc.teragrid.org:5920</pre><p>In this example, the usage statistics will be transmitted to the default Globus
+              target (<code class="computeroutput">usage-stats.globus.org:4810</code>) and another
+              target (<code class="computeroutput">usage-stats.uc.teragrid.org:5920</code>).</p><p> The usage stats sent to a particular receiver may be customized by configuring it
+              with a taglist (host:port!taglist) The taglist is a list of characters that each
+              correspond to a usage stats tag. When this option is unset, stats are reported to
+              usage-stats.globus.org:4810. If you set your own receiver, and wish to continue
+              reporting to the Globus receiver, you will need to add it manually. The list of
+              available tags follow. Tags marked * are reported by default.</p><p>
+              </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"> *(e) START - start time of transfer </li><li class="listitem"> *(E) END - end time of transfer </li><li class="listitem"> *(v) VER - version string of gridftp server </li><li class="listitem"> *(b) BUFFER - tcp buffer size used for transfer </li><li class="listitem"> *(B) BLOCK - disk blocksize used for transfer </li><li class="listitem"> *(N) NBYTES - number of bytes transferred </li><li class="listitem"> *(s) STREAMS - number of parallel streams used </li><li class="listitem"> *(S) STRIPES - number of stripes used </li><li class="listitem"> *(t) TYPE - transfer command: RETR, STOR, LIST, etc </li><li class="listitem"> *(c) CODE - ftp result code (226 = success, 5xx = fail) </li><li class="listitem"> *(D) DSI - DSI module in use </li><li class="listitem"> *(A) EM - event modules in use </li><li class="listitem"> *(T) SCHEME - ftp, gsiftp, sshftp, etc. (client supplied) </li><li class="listitem"> *(a) APP - guc, rft, generic library app, etc. (client supplied)
+                  </li><li class="listitem"> *(V) APPVER - version string of above. (client supplied) </li><li class="listitem"> (f) FILE - name of file/data transferred </li><li class="listitem"> (i) CLIENTIP - ip address of host running client (control channel)
+                  </li><li class="listitem"> (I) DATAIP - ip address of source/dest host of data (data channel)
+                  </li><li class="listitem"> (u) USER - local user name the transfer was performed as </li><li class="listitem"> (d) USERDN - DN that was mapped to user id </li><li class="listitem"> (C) CONFID - ID defined by -usage-stats-id config option </li><li class="listitem"> (U) SESSID - unique id that can be used to match transfers in a session
+                    and transfers across source/dest of a third party transfer. (client supplied)
+                  </li></ul></div><p>
+            </p></dd><dt><span class="term">
+            <code class="option">usage_stats_id &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-usage-stats-id &lt;string&gt;</code>
+          </span></dt><dd><p> Identifying tag to include in usage statistics data. </p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="Single and Striped Remote Data Node Options"><a name="gridftp-server-config_options-remotedata"></a><h3>Single and Striped Remote Data Node Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">remote_nodes &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-r &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-remote-nodes &lt;string&gt;</code>
+          </span></dt><dd><p>Comma-separated list of remote node contact strings. See <a href="../admin/#gridftp-admin-striped" class="olink">Remote data-nodes and
+                striped operations</a> and <a href="../admin/#gridftp-admin-separated" class="olink">Separation of processes for higher
+                security</a> for examples of using this option.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">data_node &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-dn</code>
+          , </span><span class="term">
+            <code class="option">-data-node</code>
+          </span></dt><dd><p>This server is a back end data node. See <a href="../admin/#gridftp-admin-separated" class="olink">Separation of processes for higher
+                security</a> for an example of using this option.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">stripe_blocksize &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-sbs &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-stripe-blocksize &lt;number&gt;</code>
+          </span></dt><dd><p>Size in bytes of sequential data that each stripe will transfer.</p><p>Default value: 1048576</p></dd><dt><span class="term">
+            <code class="option">stripe_count &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-stripe-count &lt;number&gt;</code>
+          </span></dt><dd><p> Number of stripes to use per transfer when this server controls that number. If
+              remote nodes are statically configured (via -r or remote_nodes), this will be set to
+              that number of nodes, otherwise the default is 1. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">stripe_layout &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-sl &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-stripe-layout &lt;number&gt;</code>
+          </span></dt><dd><p>Stripe layout. 1 = Partitioned, 2 = Blocked.</p><p>Default value: 2</p></dd><dt><span class="term">
+            <code class="option">stripe_blocksize_locked &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-stripe-blocksize-locked;</code>
+          </span></dt><dd><p>Do not allow client to override stripe blocksize with the <span class="command"><strong>OPTS
+                RETR</strong></span> command.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">stripe_layout_locked &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-stripe-layout-locked</code>
+          </span></dt><dd><p>Do not allow client to override stripe layout with the <span class="command"><strong>OPTS
+                RETR</strong></span> command.</p><p>Default value: FALSE</p></dd></dl></div></div><div class="refsect2" title="Disk Options"><a name="gridftp-server-config_options-disk"></a><h3>Disk Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">blocksize &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-bs &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-blocksize &lt;number&gt;</code>
+          </span></dt><dd><p>Size in bytes of data blocks to read from disk before posting to the
+              network.</p><p>Default value: 262144</p></dd><dt><span class="term">
+            <code class="option">sync_writes &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-sync-writes</code>
+          </span></dt><dd><p>Flush disk writes before sending a restart marker. This attempts to ensure that
+              the range specified in the restart marker has actually been committed to disk. This
+              option will probably impact performance and may result in different behavior on
+              different storage systems. See the man page for <span class="command"><strong>sync()</strong></span> for more
+              information.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">use_home_dirs </code>
+          , </span><span class="term">
+            <code class="option">-use-home-dirs </code>
+          </span></dt><dd><p> Set the startup directory to the authenticated users home dir. </p><p>Default value: TRUE</p></dd><dt><span class="term">
+            <code class="option">perms &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-perms &lt;string&gt;</code>
+          </span></dt><dd><p> Set the default permissions for created files. Should be an octal number such as
+              0644. The default is 0644. Note: If umask is set it will affect this setting -- i.e.
+              if the umask is 0002 and this setting is 0666, the resulting files will be created
+              with permissions of 0664. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">file_timeout &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-file-timeout &lt;number&gt;</code>
+          </span></dt><dd><p> Timeout in seconds for all disk accesses. A value of 0 disables the timeout. </p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="Network Options"><a name="gridftp-server-config_options-network"></a><h3>Network Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">port &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-p &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-port &lt;number&gt;</code>
+          </span></dt><dd><p>Port on which a front end will listen for client control channel connections or on
+              which a data node will listen for connections from a front end. If not set, a random
+              port will be chosen and printed via the logging mechanism. See <a href="../admin/#gridftp-admin-striped" class="olink">Remote data-nodes and
+                striped operations</a> and <a href="../admin/#gridftp-admin-separated" class="olink">Separation of processes for higher
+                security</a> for examples of using this option.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">control_interface &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-control-interface &lt;string&gt;</code>
+          </span></dt><dd><p>Hostname or IP address of the interface to listen for control connections on. If
+              not set, will listen on all interfaces.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">data_interface &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-data-interface &lt;string&gt;</code>
+          </span></dt><dd><p>Hostname or IP address of the interface to use for data connections. If not set
+              will use the current control interface.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">ipc_interface &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-interface &lt;string&gt;</code>
+          </span></dt><dd><p>Hostname or IP address of the interface to use for IPC connections. If not set,
+              will listen on all interfaces.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">hostname &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-hostname &lt;string&gt;</code>
+          </span></dt><dd><p>Effectively sets the above <code class="option">control_interface</code>,
+                <code class="option">data_interface</code> and <code class="option">ipc_interface</code> options.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">ipc_port &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-port &lt;number&gt;</code>
+          </span></dt><dd><p>Port on which the front end will listen for data node connections.</p><p>Default value: not set</p></dd></dl></div><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">control_preauth_timeout &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-control-preauth-timeout &lt;number&gt;</code>
+          </span></dt><dd><p>Time in seconds to allow a client to remain connected to the control channel
+              without activity before authenticating.</p><p>Default value: 120</p></dd><dt><span class="term">
+            <code class="option">control_idle_timeout &lt;number&gt;;</code>
+          , </span><span class="term">
+            <code class="option">-control-idle-timeout &lt;number&gt;</code>
+          </span></dt><dd><p>Time in seconds to allow a client to remain connected to the control channel
+              without activity.</p><p>Default value: 600</p></dd><dt><span class="term">
+            <code class="option">ipc_idle_timeout &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-idle-timeout &lt;number&gt;</code>
+          </span></dt><dd><p>Idle time in seconds before an unused IPC connection will close.</p><p>Default value: 900</p></dd><dt><span class="term">
+            <code class="option">ipc_connect_timeout &lt;number&gt;</code>
+          , </span><span class="term">
+            <code class="option">-ipc-connect-timeout &lt;number&gt;</code>
+          </span></dt><dd><p>Time in seconds before cancelling an attempted IPC connection.</p><p>Default value: 60</p></dd><dt><span class="term">
+	    <code class="option">port_range &lt;string&gt;</code>
+	  , </span><span class="term">
+	    <code class="option">-port-range &lt;string&gt;</code>
+	  </span></dt><dd><p>Port range to use for incoming connections. The format is
+	    "startport,endport". This, along with -data-interface, can be used
+	    to enable operation behind a firewall and/or when NAT is involved.
+	    This is the same as setting the environment variable
+	    GLOBUS_TCP_PORT_RANGE.</p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="User Messages"><a name="gridftp-server-config_options-user-msg"></a><h3>User Messages</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">banner &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-banner &lt;string&gt;</code>
+          </span></dt><dd><p>Message that is displayed to the client before authentication.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">banner_file &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-banner-file &lt;string&gt;</code>
+          </span></dt><dd><p>Read banner message from this file.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">banner_terse &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-banner-terse</code>
+          </span></dt><dd><p>When this is set, the minimum allowed banner message will be displayed to
+              unauthenticated clients.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">banner_append &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-banner-append</code>
+          </span></dt><dd><p> When this is set, the message set in the 'banner' or 'banner_file' option will be
+              appended to the default banner message rather than replacing it. </p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">login_msg &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-login-msg &lt;string&gt;</code>
+          </span></dt><dd><p>Message that is displayed to the client after authentication.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">login_msg_file &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-login-msg-file &lt;string&gt;</code>
+          </span></dt><dd><p>Read login message from this file.</p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="Module Options"><a name="gridftp-server-config_options-module"></a><h3>Module Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">load_dsi_module &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-dsi &lt;string&gt;</code>
+          </span></dt><dd><p>Load this Data Storage Interface module. File and remote modules are defined by
+              the server. If not set, the file module is loaded, unless the <code class="option">remote</code>
+              option is specified, in which case the remote module is loaded. An additional
+              configuration string can be passed to the DSI using the format <code class="computeroutput">[module
+                name]:[configuration string]</code>. The format of the configuration
+              string is defined by the DSI being loaded.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">allowed_modules &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-allowed-modules &lt;string&gt;</code>
+          </span></dt><dd><p>Comma-separated list of ERET/ESTO modules to allow and, optionally, specify an
+              alias for. Example: </p><pre class="screen">-allowed-modules module1,alias2:module2,module3</pre><p>
+              (module2 will be loaded when a client asks for alias2).</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">dc_whitelist &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-dc-whitelist &lt;string&gt;</code>
+          </span></dt><dd><p> A comma separated list of drivers allowed on the network stack. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">fs_whitelist &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-fs-whitelist &lt;string&gt;</code>
+          </span></dt><dd><p> A comma separated list of drivers allowed on the disk stack. </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">popen_whitelist &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-popen-whitelist &lt;string&gt;</code>
+          </span></dt><dd><p> A comma seperated list of programs that the popen driver is allowed to execute,
+              when used on the network or disk stack. An alias may also be specified, so that a
+              client does not need to specify the full path. Format is [alias:]prog,[alias:]prog.
+              example: /bin/gzip,tar:/bin/tar </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">dc_default &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-dc-default &lt;string&gt;</code>
+          </span></dt><dd><p>A comma separated list of XIO drivers and options representing the default network stack. Format is of each driver entry is driver1[:opt1=val1;opt2=val2;...]. The bottom of the stack, the transport driver, is always first.</p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">fs_default &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-fs-default &lt;string&gt;</code>
+          </span></dt><dd><p>A comma separated list of XIO drivers and options representing the default disk stack. Format is of each driver entry is driver1[:opt1=val1;opt2=val2;...]. The bottom of the stack, the transport driver, is always first.</p><p>Default value: not set</p></dd></dl></div></div><div class="refsect2" title="Other Options"><a name="gridftp-server-config_options-other"></a><h3>Other Options</h3><div class="variablelist"><dl><dt><span class="term">
+            <code class="option">configfile &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-c &lt;string&gt;</code>
+          </span></dt><dd><p>Path to configuration file that should be loaded. Otherwise will attempt to load
+                <code class="filename">$GLOBUS_LOCATION/etc/gridftp.conf</code> and <code class="filename">/etc/grid-security/gridftp.conf</code>.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p> You have to provide full path </p></td></tr></table></div><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">config_dir &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-C &lt;string&gt;</code>
+          </span></dt><dd><p>Path to directory holding configuration files that should be
+	    loaded. Files will be loaded in alphabetical order, and in the event
+	    of duplicate parameters the last loaded file will take precedence.
+	    Note that the main configuration file, if one exists, will always be
+	    loaded last.
+	    </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">config_base_path &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-config-base-path &lt;string&gt;</code>
+          </span></dt><dd><p>Base path to use when config and log path options are not full
+	    paths. By default this is the current directory when the process is
+	    started.
+	    </p><p>Default value: not set</p></dd><dt><span class="term">
+            <code class="option">debug &lt;0|1&gt;</code>
+          , </span><span class="term">
+            <code class="option">-debug</code>
+          </span></dt><dd><p>Set options that make the server easier to debug. Forces no-fork, no-chdir, and
+              allows core dumps on bad signals instead of exiting cleanly. Not recommended for
+              production servers. Note that non-forked servers running as root will only accept a
+              single connection and then exit.</p><p>Default value: FALSE</p></dd><dt><span class="term">
+            <code class="option">pidfile &lt;string&gt;</code>
+          , </span><span class="term">
+            <code class="option">-pidfile &lt;string&gt;</code>
+          </span></dt><dd><p>Write PID of the GridFTP server to this path. May contain
+	    variable references to ${localstatedir}
+	    </p><p>Default value: not set</p></dd></dl></div><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>Any FLAG can be negated by prepending <code class="option">-no</code> or <code class="option">-n</code> to the command line option.</p></td></tr></table></div></div></div><div class="refsect1" title="Limitations"><a name="idm6396033792"></a><h2>Limitations</h2><p>For transfers using parallel data transport streams and for transfers using multiple
+      computers at each end, the direction of the connection on the data channels must go from the
+      sending to the receiving side. For more information about this limitations see <a class="ulink" href="http://www.ogf.org/documents/GFD.20.pdf" target="_top">http://www.ogf.org/documents/GFD.20.pdf</a>.</p><p>Globus GridFTP server does not run on windows</p></div></div></div><div class="chapter" title="Chapter 2. Graphical User Interface"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-guis"></a>Chapter 2. Graphical User Interface</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#idm6400118448">1. Globus Online</a></span></dt></dl></div><a class="indexterm" name="idm6399554960"></a><div class="section" title="1. Globus Online"><div class="titlepage"><div><div><h2 class="title"><a name="idm6400118448"></a>1. Globus Online</h2></div></div></div><p>
+    Globus Toolkit does not provide a client with Graphical User Interface
+    (GUI) but <a class="ulink" href="http://www.globusonline.org" target="_top">Globus Online</a>
+    provides a web GUI for GridFTP data movement.
+
+It has the following features: 
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>With a one-click <a class="ulink" href="https://www.globusonline.org/globus_connect/" target="_top">Globus
+		    Connect</a> (modified GridFTP server binary) installed
+		    on your local system, you can browse the local file system and transfer files and directories between the local system and remote GridFTP servers 
+
+		    
+		    and between
+                        two remote GridFTP servers (third-party transfers).</p></li><li class="listitem"><p>Supports file system operations such as creating, deleting and renaming
+                        files and directories.</p></li></ul></div><p>
+        </p><p> Prerequisites: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> JDK 1.5.0+ </p></li></ul></div><p> Supported Platforms: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> Windows </p></li><li class="listitem"><p> Linux </p></li><li class="listitem"><p> MAC </p></li></ul></div><p> The GUI provides two ways for generating a proxy credential required for the data
+            transfer: </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p> Creating a proxy credential using a locally stored key pair. </p></li><li class="listitem"><p> Obtaining a proxy from a MyProxy Server. For more information about MyProxy,
+                    please visit: <a class="ulink" href="http://myproxy.ncsa.uiuc.edu/" target="_top">http://myproxy.ncsa.uiuc.edu/</a>. </p></li></ol></div><p><a class="ulink" href="../demo.tar.gz" target="_top">A demo of using the GridFTP GUI is available here</a>. 
+            Open the file ending in .htm with any browser with the Flash plugin to start the Flash demo - 
+            then just click the green arrows to progress through each screen.</p></div></div><div class="chapter" title="Chapter 3. Configuring GridFTP"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-configuring"></a>Chapter 3. Configuring GridFTP</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#gridftp-config-overview">1. GridFTP server configuration overview</a></span></dt><dt><span class="section"><a href="#gridftp-config-types">2. Typical configuration</a></span></dt><dt><span class="section"><a href="#gridftp-config-security-firewalls">3. Firewall requirements</a></span></dt><dt><span class="section"><a href="#gridftp-admin-config-security">4. Configuring Security for GridFTP</a></span></dt><dd><dl><dt><span class="section"><a href="#gridftp-admin-config-security-anonymous">4.1. Anonymous mode</a></span></dt><dt><span class="section"><a href="#gridftp-admin-config-security-userpw">4.2. Username/password</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6396585440">4.2.1. Create password file</a></span></dt><dt><span class="section"><a href="#idm6396580752">4.2.2. Run the server in password mode</a></span></dt><dt><span class="section"><a href="#idm6396578064">4.2.3. Make a transfer</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-config-security-sshftp">4.3. SSHFTP (GridFTP-over-SSH)</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6396991408">4.3.1. Configure Server for SSH GridFTP Support</a></span></dt><dt><span class="section"><a href="#idm6398793680">4.3.2. Performing <code class="filename">sshftp://</code> Transfers</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-gsiftp">4.4. GSIFTP</a></span></dt><dd><dl><dt><span class="section"><a href="#gridftp-admin-daemon_mode">4.4.1. Running in daemon mode</a></span></dt><dt><span class="section"><a href="#gridftp-admin-inetd">4.4.2. Running under
+          inetd or xinetd</a></span></dt><dd><dl><dt><span class="section"><a href="#idm6398340464">4.4.2.1. Set up xinetd/inetd config file</a></span></dt><dt><span class="section"><a href="#idm6396748368">4.4.2.2. globus-gridftp-server -i</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-launchd">4.4.3. Running under launchd</a></span></dt></dl></dd><dt><span class="section"><a href="#gridftp-admin-user-pems">4.5. User permissions</a></span></dt></dl></dd><dt><span class="section"><a href="#idm6399196704">5. <span class="command"><strong>globus-gridftp-server</strong></span> quickstart</a></span></dt><dt><span class="section"><a href="#idm6397787808">6. Enabling File Sharing with Globus Sharing Service</a></span></dt></dl></div><a class="indexterm" name="idm6398316528"></a><a class="indexterm" name="idm6399005120"></a><div class="section" title="1. GridFTP server configuration overview"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-config-overview"></a>1. GridFTP server configuration overview</h2></div></div></div><a class="indexterm" name="idm6397469056"></a><p>The configuration interface for GridFTP is the admin tool, <span class="command"><strong><a href="../admin/#globus-gridftp-server" class="olink">globus-gridftp-server(8)</a></strong></span>, which
+      can be used with a configuration file and/or run-time options.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Command line options and configuration file options may both be used, but the command
+        line <span class="emphasis"><em>overrides</em></span> the config file.</p></td></tr></table></div><p>The configuration file for the GridFTP <a href="#server" class="glossterm"><em class="glossterm">server</em></a> is read from
+      the following locations, in the given order. Only the first file found will be loaded:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Path specified with the <code class="computeroutput">-c &lt;configfile&gt;</code>
+            command line option.</li><li class="listitem">
+            <code class="filename">$GLOBUS_LOCATION/etc/gridftp.conf</code>
+          </li><li class="listitem">
+            <code class="filename">/etc/grid-security/gridftp.conf</code>
+          </li></ul></div><p>Options are one per line, with the format:
+      </p><pre class="screen">&lt;option&gt; &lt;value&gt;</pre><p> If the value contains spaces, they should be
+      enclosed in double-quotes ("). Flags or boolean options should only have a value of 0 or 1.
+      Blank lines and lines beginning with # are ignored.</p><p>For example:
+      </p><pre class="screen">  port 5000
+  allow_anonymous 1
+  anonymous_user bob
+  banner "Welcome!"
+      </pre><p>For
+      complete command documentation including all options, see <span class="command"><strong><a href="../admin/#globus-gridftp-server" class="olink">globus-gridftp-server(8)</a></strong></span>.</p><p>This page includes information about
+      general configuration of the GridFTP server. Security options are discussed <a href="../admin/#gridftp-admin-config-security" class="olink">here</a>, and more
+      advanced configuration is described <a href="../admin/#gridftp-admin-advanced" class="olink">here</a>.</p></div><div class="section" title="2. Typical configuration"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-config-types"></a>2. Typical configuration</h2></div></div></div><a class="indexterm" name="idm6403089200"></a><p>The following describes a typical GridFTP configuration of the front end (control channel)
+      and back end (data channels). For other alternatives that provide greater levels of security,
+      see <a href="../admin/#gridftp-admin-advanced" class="olink">Advanced
+        Configuration</a>.</p><p>By default, the data channel and control channel are
+      separate socket connections within the same process. The client sends a command and waits to
+      finish before issuing the next command. This is good for a single host, traditional-type user.
+      If you have a single host and you want an ultra-reliable and light weight file transfer
+      service, this is a good choice. This configuration is also good for testing
+    purposes.</p></div><div class="section" title="3. Firewall requirements"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-config-security-firewalls"></a>3. Firewall requirements</h2></div></div></div><p>If the GridFTP server is behind a firewall:</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>Contact your network administrator to open up port 2811 (for GridFTP control channel
+          connection) and a range of ports (for GridFTP data channel connections) for the incoming
+          connections. If the firewall blocks the outgoing connections, open up a range of ports for
+          outgoing connections as well.</p></li><li class="listitem"><p>Set the environment variable GLOBUS_TCP_PORT_RANGE:
+          </p><pre class="screen">export GLOBUS_TCP_PORT_RANGE=min,max </pre><p> where
+            <code class="option">min</code>,<code class="option">max</code> specify the port range that you have opened
+          for the incoming connections on the firewall. This restricts the listening ports of the
+          GridFTP server to this range. Recommended range is 1000 (e.g., 50000-51000) but it really
+          depends on how much use you expect.</p></li><li class="listitem"><p>If you have a firewall blocking the outgoing connections and you have opened a range
+          of ports, set the environment variable GLOBUS_TCP_SOURCE_RANGE:
+          </p><pre class="screen">export GLOBUS_TCP_SOURCE_RANGE=min,max </pre><p> where
+            <code class="option">min</code>,<code class="option">max</code> specify the port range that you have opened
+          for the outgoing connections on the firewall. This restricts the
+	  GridFTP server to bind to a local port in this range for outbound
+	  connections.
+          Recommended range is twice the range used for
+          GLOBUS_TCP_PORT_RANGE, because if parallel TCP streams are used for transfers, the
+          listening port would remain the same for each connection but the connecting port would be
+          different for each connection.</p></li></ol></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>If the server is behind NAT, the <code class="computeroutput">--data-interface &lt;real
+          ip/hostname&gt;</code> option needs to be used on the server.</p></td></tr></table></div><p><a name="gridftp-client-firewall-intro"></a>If the GridFTP <span class="emphasis"><em>client</em></span> is behind a firewall:</p><div class="orderedlist"><a name="gridftp-client-firewall-config"></a><ol class="orderedlist" type="1"><li class="listitem"><p>Contact your network administrator to open up a range of ports (for GridFTP data
+          channel connections) for the incoming connections. If the firewall blocks the outgoing
+          connections, open up a range of ports for outgoing connections as well.</p></li><li class="listitem"><p>Set the environment variable GLOBUS_TCP_PORT_RANGE
+          </p><pre class="screen">export GLOBUS_TCP_PORT_RANGE=min,max </pre><p> where min,max specify the port
+          range that you have opened for the incoming connections on the firewall. This restricts
+          the listening ports of the GridFTP client to this range. Recommended range is 1000 (e.g.,
+          50000-51000) but it really depends on how much use you expect.</p></li><li class="listitem"><p>If you have a firewall blocking the outgoing connections and you have opened a range
+          of (local) ports, set the environment variable GLOBUS_TCP_SOURCE_RANGE:
+          </p><pre class="screen">export GLOBUS_TCP_PORT_RANGE=min,max </pre><p> where min,max specify the port
+          range that you have opened for the outgoing connections on the
+	  firewall. This restricts the GridFTP client to bind to a local port in
+	  this range for
+          outbound connections. Recommended range is twice the
+          range used for GLOBUS_TCP_PORT_RANGE, because if parallel TCP streams are used for
+          transfers, the listening port would remain the same for each connection but the connecting
+          port would be different for each connection.</p></li></ol></div><p><a name="gridftp-client-firewall-moreinfo"></a>Additional information on Globus Toolkit Firewall Requirements is available <a class="ulink" href="http://www.globus.org/toolkit/security/firewalls/" target="_top">here</a>.</p></div><div class="section" title="4. Configuring Security for GridFTP"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-admin-config-security"></a>4. Configuring Security for GridFTP</h2></div></div></div><p>There are many security options in GridFTP ranging from no security to higher security via
+      GSI .</p><div class="section" title="4.1. Anonymous mode"><div class="titlepage"><div><div><h3 class="title"><a name="gridftp-admin-config-security-anonymous"></a>4.1. Anonymous mode</h3></div></div></div><a class="indexterm" name="idm6403066240"></a><p>Anonymous mode (using the <code class="option">-aa</code> option) allows any user with an FTP
+        client to read and write (and delete) files that the server process can similarly access (it
+        is also a quick way to test that your server works).</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-gridftp-server -aa</strong></span>
+<code class="computeroutput">Server listening at 127.0.0.1:58806</code></pre><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>When the server is run in this way, anyone who can connect to the server will posses
+          all the same rights as the user that the process is run as (directly or via
+            <code class="option">-anonymous-user</code>). If using this mode intentionally for open access, it
+          is best to run under a dedicated account with limited filesystem permissions. You can also
+          use the option below to disable FTP commands such as STOR, ESTO, DELE, RDEL, RNTO, etc to
+          make sure that users can only read from the server and not write to it.
+          </p><pre class="screen"> -disable-command-list &lt;string&gt;</pre><p> Where &lt;string&gt; represents a
+          comma separated list of client commands that will be disabled. Default: not set. </p></td></tr></table></div></div><div class="section" title="4.2. Username/password"><div class="titlepage"><div><div><h3 class="title"><a name="gridftp-admin-config-security-userpw"></a>4.2. Username/password</h3></div></div></div><a class="indexterm" name="idm6398259456"></a><p>If you trust your network and want a minimal amount of security, you can run the
+        globus-gridftp-server with clear text passwords. This security model is the one originally
+        introduced in RFC959.</p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/warning.png"></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>We do not recommend it for long running servers open to the internet.</p></td></tr></table></div><div class="section" title="4.2.1. Create password file"><div class="titlepage"><div><div><h4 class="title"><a name="idm6396585440"></a>4.2.1. Create password file</h4></div></div></div><p>To run the server in clear text password mode, we first need to create a password file
+          dedicated to it. The format of the password file is the same as standard system password
+          files; however, it is ill-advised to use a system password file. To create an entry in a
+          GridFTP password file, run the following commands:</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>touch pwfile</strong></span>
+<code class="prompt">globus@elephant% </code><span class="command"><strong>gridftp-password.pl &gt;&gt; pwfile</strong></span>
+<code class="computeroutput">Password:</code></pre><p>This will ask you for a password and then create an entry in the password file for the
+          current user name and the given password. Take a look at the file created. You will notice
+          that the password you typed in is not in the file in a clear text form. We have run it
+          though a one way hash algorithm before storing it in the file.</p></div><div class="section" title="4.2.2. Run the server in password mode"><div class="titlepage"><div><div><h4 class="title"><a name="idm6396580752"></a>4.2.2. Run the server in password mode</h4></div></div></div><p>Simply start the server pointing it at the password file you just created.</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-gridftp-server -password-file  /full/path/of/pwfile</strong></span>
+<code class="computeroutput">Server listening at 127.0.0.1:5555</code></pre></div><div class="section" title="4.2.3. Make a transfer"><div class="titlepage"><div><div><h4 class="title"><a name="idm6396578064"></a>4.2.3. Make a transfer</h4></div></div></div><p>To run globus-url-copy with the password, use the following syntax:</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-url-copy file:///etc/group ftp://<em class="replaceable"><code>username</code></em>:<em class="replaceable"><code>pw</code></em>@localhost:5000/tmp/group</strong></span></pre></div></div><div class="section" title="4.3. SSHFTP (GridFTP-over-SSH)"><div class="titlepage"><div><div><h3 class="title"><a name="gridftp-admin-config-security-sshftp"></a>4.3. SSHFTP (GridFTP-over-SSH)</h3></div></div></div><a class="indexterm" name="idm6396574352"></a><p>This type of security introduces the sshftp control channel (frontend) protocol. This is
+        a very simple means of obtaining strong security on the control channel only (the data
+        channel is <span class="emphasis"><em>not</em></span> authenticated). With this approach, you can run a
+        GridFTP transfer anywhere that you can ssh. <code class="filename">sshftp://</code> leverages the
+        ubiquitous ssh/sshd programs to form control channel connections much in the same way that
+        inetd forms connections.</p><div class="section" title="4.3.1. Configure Server for SSH GridFTP Support"><div class="titlepage"><div><div><h4 class="title"><a name="idm6396991408"></a>4.3.1. Configure Server for SSH GridFTP Support</h4></div></div></div><p>Every host that wishes to run a <span class="command"><strong>globus-gridftp-server</strong></span> which can
+          accept <code class="filename">sshftp://</code> connections must run the following command as
+          root:</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-gridftp-server-enable-sshftp</strong></span></pre><p>In the absence of root access, a user can configure the server to allow <code class="filename">sshftp://</code> connections for that user only with the following command:</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-gridftp-server-enable-sshftp -nonroot</strong></span></pre><p> 
+	  The above command creates a file named 'sshftp' in
+	  '/etc/grid-security' (if run as root) or in '$HOME/.globus' (if run as
+	  nonroot).   You may edit this file to set gridftp commandline options
+	  or environment variables such as GLOBUS_TCP_PORT_RANGE, but you can
+	  also set those options in the config file.
+	  </p></div><div class="section" title="4.3.2. Performing sshftp:// Transfers"><div class="titlepage"><div><div><h4 class="title"><a name="idm6398793680"></a>4.3.2. Performing <code class="filename">sshftp://</code> Transfers</h4></div></div></div><p>In this case, a <span class="command"><strong>globus-gridftp-server</strong></span> does not need to be running.
+          The server will be started via the sshd program. Therefore, the hostname and port should
+          be that of the sshd server. Run <span class="command"><strong>globus-url-copy</strong></span> just as you have
+          before; simply change <code class="filename">ftp://</code> to <code class="filename">sshftp://</code>.</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-url-copy -v file:/etc/group sshftp://127.0.0.1/tmp/group</strong></span>
+<code class="prompt">globus@elephant% </code><span class="command"><strong>globus-url-copy -list sshftp://127.0.0.1/tmp/</strong></span></pre></div></div><div class="section" title="4.4. GSIFTP"><div class="titlepage"><div><div><h3 class="title"><a name="gridftp-admin-gsiftp"></a>4.4. GSIFTP</h3></div></div></div><a class="indexterm" name="idm6399563760"></a><p>This security option can be the most involved to set up, but provides the most security.
+        It requires setting up GSI security as described in the GT Installation Guide here: <a href="../../admin/install/#gtadmin-basic-security" class="olink">Basic Security Configuration</a>. </p><p>Once GSI has been
+        set up (host and user credentials are valid, the gridmap file is updated and you've run
+        grid-proxy-init to create a proxy certificate), you simply run the GridFTP server:</p><pre class="screen">globus-gridftp-server</pre><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>If run as <code class="computeroutput">root</code>, it will pick up the host cert; if
+          not, it will pick up the user cert.</p></td></tr></table></div><p>Now you are ready to perform a GSI-authenticated transfer:</p><pre class="screen">globus-url-copy &lt;-s subject&gt; src_url dst_url</pre><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>The subject option is only needed if the server was not started as root.</p></td></tr></table></div><div class="section" title="4.4.1. Running in daemon mode"><div class="titlepage"><div><div><h4 class="title"><a name="gridftp-admin-daemon_mode"></a>4.4.1. Running in daemon mode</h4></div></div></div><a class="indexterm" name="idm6397971856"></a><a class="indexterm" name="idm6397970832"></a><p>The server should generally be run as root in daemon mode, although it is possible to
+          run it as a user (see below). When run as root you will need to have a <a href="../../admin/install/#gtadmin-basic-host" class="olink">host
+          certificate</a>.</p><p>Run the
+          server:</p><pre class="screen">globus-gridftp-server &lt; -s | -S &gt; &lt;args&gt;</pre><p>where:</p><div class="variablelist"><dl><dt><span class="term">-s</span></dt><dd>Runs in the foreground (this is the default mode).</dd><dt><span class="term">-S</span></dt><dd>Detaches from the terminal and runs in the background.</dd></dl></div><p>The following additional steps may be required when running as a user
+          other than root (for more details, review <a href="../../admin/install/#gtadmin-basic-security" class="olink">Basic Security Configuration</a>): </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Create a <code class="filename">~/.gridmap</code> file, containing the DNs of any
+                clients you wish to allow, mapped to the current username.</li><li class="listitem">Create a proxy with <span class="command"><strong>grid-proxy-init</strong></span>.</li></ul></div></div><div class="section" title="4.4.2. Running under inetd or xinetd"><div class="titlepage"><div><div><h4 class="title"><a name="gridftp-admin-inetd"></a>4.4.2. Running under
+          inetd or xinetd</h4></div></div></div><a class="indexterm" name="idm6396998208"></a><a class="indexterm" name="idm6396996800"></a><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>We also feature a user-configurable, super-server daemon plugin called GFork. Click
+              <a href="../admin/#gridftp-admin-gfork-master" class="olink">here</a>
+            for more information.</p></td></tr></table></div><div class="section" title="4.4.2.1. Set up xinetd/inetd config file"><div class="titlepage"><div><div><h5 class="title"><a name="idm6398340464"></a>4.4.2.1. Set up xinetd/inetd config file</h5></div></div></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>The service name used (gsiftp in this case) should be defined in <code class="computeroutput">/etc/services</code> with the desired port.</p></td></tr></table></div><p>Here is a sample GridFTP server xinetd config entry in <code class="filename">/etc/xinetd.conf</code>:
+            </p><pre class="screen">service gsiftp
+              {
+              instances               = 100
+              socket_type             = stream
+              wait                    = no
+              user                    = root
+              env                     += GLOBUS_LOCATION=(globus_location)
+              env                     += LD_LIBRARY_PATH=(globus_location)/lib
+              server                  = (globus_location)/sbin/globus-gridftp-server
+              server_args             = -i
+              log_on_success          += DURATION
+              nice                    = 10
+              disable                 = no
+              }</pre><p>
+            Here is a sample gridftp server inetd config entry in <code class="filename">/etc/inetd.conf</code> (read as a single line):
+            </p><pre class="screen">
+              gsiftp   stream   tcp   nowait   root   /usr/bin/env env   \
+              GLOBUS_LOCATION=(globus_location)                      \
+              LD_LIBRARY_PATH=(globus_location)/lib                  \ 
+              (globus_location)/sbin/globus-gridftp-server -i
+            </pre><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>On Mac OS X, you must set DYLD_LIBRARY_PATH instead of LD_LIBRARY_PATH in the
+              above examples. </p></td></tr></table></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>You should NOT include USERID in the log lines. See <a href="../admin/#gridftp-troubleshooting-latency" class="olink">Section 5, “High latency for GridFTP server connections”</a> for more
+              information.</p></td></tr></table></div></div><div class="section" title="4.4.2.2. globus-gridftp-server -i"><div class="titlepage"><div><div><h5 class="title"><a name="idm6396748368"></a>4.4.2.2. globus-gridftp-server -i</h5></div></div></div><p>Use the <code class="option">-i</code> commandline option with <span class="command"><strong>globus-gridftp-server</strong></span>: </p><pre class="screen">globus-gridftp-server -i</pre></div></div><div class="section" title="4.4.3. Running under launchd"><div class="titlepage"><div><div><h4 class="title"><a name="gridftp-admin-launchd"></a>4.4.3. Running under launchd</h4></div></div></div><p>launchd is used to start services in the system Mac OS X 10.4 (Tiger) and newer, and is also available as a port to FreeBSD.</p><p>Here is a <a class="ulink" href="http://www.globus.org/toolkit/docs/6/6.0/gridftp/globus.gridftp.plist" target="_top">sample</a> configuration file for launchd to start the server:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+    &lt;dict&gt;
+        &lt;key&gt;Disabled&lt;/key&gt;
+        &lt;false/&gt;
+        &lt;key&gt;Label&lt;/key&gt;
+        &lt;string&gt;globus.gridftp&lt;/string&gt;
+        &lt;key&gt;Program&lt;/key&gt;
+        &lt;string&gt;(globus_location)/sbin/globus-gridftp-server&lt;/string&gt;
+        &lt;key&gt;ProgramArguments&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;globus-gridftp-server&lt;/string&gt;
+            &lt;string&gt;-i&lt;/string&gt;
+            &lt;string&gt;-d&lt;/string&gt;
+            &lt;string&gt;ALL&lt;/string&gt;
+            &lt;string&gt;-l&lt;/string&gt;
+            &lt;string&gt;(globus_location)/var/gridftp.log&lt;/string&gt;
+        &lt;/array&gt;
+        &lt;key&gt;Sockets&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;Listeners&lt;/key&gt;
+            &lt;dict&gt;
+                &lt;key&gt;SockServiceName&lt;/key&gt;
+                &lt;string&gt;gsiftp&lt;/string&gt;
+            &lt;/dict&gt;
+        &lt;/dict&gt;
+        &lt;key&gt;inetdCompatibility&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;Wait&lt;/key&gt;
+            &lt;false/&gt;
+        &lt;/dict&gt;
+        &lt;key&gt;StandardErrorPath&lt;/key&gt;
+        &lt;string&gt;/dev/null&lt;/string&gt;
+        &lt;key&gt;EnvironmentVariables&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;GLOBUS_LOCATION&lt;/key&gt;
+            &lt;string&gt;(globus_location)&lt;/string&gt;
+            &lt;key&gt;LD_LIBRARY_PATH&lt;/key&gt;
+            &lt;string&gt;(globus_location)/lib&lt;/string&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/plist&gt;
+</pre><p>Provided that the configuration file is stored in <code class="filename">/System/Library/LaunchDaemons/globus.gridftp.plist</code>, the following command starts the GridFTP server:</p><pre class="screen"><span class="command"><strong>launchctl load /System/Library/LaunchDaemons/globus.griftp.plist</strong></span></pre><p>The server will be started automatically with a system, unless the value of the key 'Disabled' is changed from <code class="code">&lt;false/&gt;</code> to <code class="code">&lt;true/&gt;</code>.</p></div></div><div class="section" title="4.5. User permissions"><div class="titlepage"><div><div><h3 class="title"><a name="gridftp-admin-user-pems"></a>4.5. User permissions</h3></div></div></div><p>Users are mapped to a local account on the server machine and file permissions are
+        handled by the operating systems. In the anonymous mode, users that connect to the server
+        will posses all the same rights as the user that the server process is run as (directly or
+        via -anonymous-user).</p><p>In case of username/password authentication, the users are mapped to the uid
+        corresponding to the username in the GridFTP password file and the access permissions for
+        the users is same as that of the UID that they are mapped to. If SSH based authentication is
+        used, upon successful authentication, SSHD maps users to a local account and the GridFTP
+        server is run as the mapped local user. The access permissions are the same as that of the
+        mapped local user.</p><p>If GSI is used, upon successful authentication an authorization callout is invoked to
+        (a) verify authorization and (b) determine the local user id as which the request should be
+        executed. This callout is linked dynamically. Globus GridFTP provides an implementation that
+        supports a Globus "gridmapfile". Sites can also provide alternative implementations. Server
+        does a setuid to the local user id as determined by the authorization callout and the access
+        permissions are the same as that of the local user id.</p><p>GridFTP server provides an option to disable certain FTP commands:
+        </p><pre class="screen"> -disable-command-list &lt;string&gt;</pre><p> Where &lt;string&gt; represents a
+        comma separated list of client commands that will be disabled. Default: not set.</p></div></div><div class="section" title="5. globus-gridftp-server quickstart"><div class="titlepage"><div><div><h2 class="title"><a name="idm6399196704"></a>5. <span class="command"><strong>globus-gridftp-server</strong></span> quickstart</h2></div></div></div><p>The following is a quick guide to running the server and using the client:</p><p>Look through the list of options for globus-gridftp-server:</p><pre class="screen">globus-gridftp-server --help</pre><p>Start the server in anonymous mode (discussed more fully <a href="../admin/#gridftp-admin-config-security-anonymous" class="olink">here</a>):</p><pre class="screen">globus-gridftp-server -control-interface 127.0.0.1 -aa -p 5000</pre><p>where: </p><div class="variablelist"><dl><dt><span class="term">–control-interface</span></dt><dd>is the hostname or IP address of the interface to listen for control
+              connections on . This
+              option is only needed here as a rudimentary means of security for this simple example.
+            </dd><dt><span class="term">–aa</span></dt><dd>enables anonymous mode</dd><dt><span class="term">–p</span></dt><dd>indicates on which port the server listens.</dd></dl></div><p>Run a two party transfer with client:</p><pre class="screen">globus-url-copy -v file:///etc/group ftp://localhost:5000/tmp/group</pre><p>Run 3rd party transfer:</p><pre class="screen">globus-url-copy -v ftp://localhost:<em class="replaceable"><code>port</code></em>/etc/group ftp://localhost:<em class="replaceable"><code>port</code></em>/tmp/group2</pre><p>Experiment with -dbg, and -vb options for debugging and checking the performance of your
+      setup:</p><pre class="screen">globus-url-copy -dbg file:///etc/group ftp://localhost:5000/tmp/group</pre><pre class="screen">globus-url-copy -vb file:///dev/zero ftp://localhost:5000/dev/null</pre><p>where:</p><div class="variablelist"><a name="debugging-options"></a><dl><dt><span class="term"><code class="option"> -dbg</code></span></dt><dd><p>A useful option when something is not working. It results in a GridFTP control
+            channel protocol dump (along with other useful information) to stderr. If you understand
+            the GridFTP protocol, or you have ambition to understand it, this can be a very useful
+            tool to discover various problems in your setup such as overloaded servers and
+            firewalls. When submitting a bug report or asking a question on the support email lists
+            one should always send along the -dbg output.</p></dd><dt><span class="term"><code class="option">-vb</code></span></dt><dd><p>Provides a type of progress bar of the user to observe the rate at which their
+            transfer is progressing.</p></dd></dl></div><p>Ctrl-c - Kill the server.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../docbook/xsl/docbook-xsl-1.76.1/images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>There are many possible options and configurations with <span class="command"><strong>globus-gridftp-server</strong></span>. For some guidelines on setting it up for your situation,
+        see <a href="../admin/#gridftp-admin-tuning" class="olink">Chapter 3, <i>Key Admin Settings and Tuning Recommendations</i></a>.</p></td></tr></table></div></div><div class="section" title="6. Enabling File Sharing with Globus Sharing Service"><div class="titlepage"><div><div><h2 class="title"><a name="idm6397787808"></a>6. Enabling File Sharing with Globus Sharing Service</h2></div></div></div><p>To enable file sharing using <a class="ulink" href="https://www.globus.org/researchers/plus-plans" target="_top">Globus
+	      Sharing</a>, you have to add the <a class="ulink" href="../securityd2b.tar.gz" target="_top">Globus Sharing CA
+	      certificates</a> to your trusted certificates directory
+	      (/etc/grid-security/certificates) and use '-sharing-dn' option in the server
+	      as follows:
+</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-gridftp-server -sharing-dn
+"/C=US/O=Globus Consortium/OU=Globus Connect User/CN=__transfer__"</strong></span>
+</pre><p>
+	and use '-sharing-rp' option to restrict the file paths allowed for
+	sharing:
+</p><pre class="screen"><code class="prompt">globus@elephant% </code><span class="command"><strong>globus-gridftp-server -sharing-rp &lt;path&gt; </strong></span>
+</pre></div></div><div class="chapter" title="Chapter 4. Environment variable interface"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-pi-env-var"></a>Chapter 4. Environment variable interface</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#gridftp-env-var">1. Environment variables for GridFTP</a></span></dt></dl></div><div class="section" title="1. Environment variables for GridFTP"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-env-var"></a>1. Environment variables for GridFTP</h2></div></div></div><a class="indexterm" name="idm6397974048"></a><p>The GridFTP <a href="#server" class="glossterm"><em class="glossterm">server</em></a> or <a href="#client" class="glossterm"><em class="glossterm">client</em></a> libraries do not read any environment variable 
+directly, but the security and networking related variables described below 
+may be useful.
+</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><a href="../../gsic/pi/#gsic-env-var" class="olink">Non-WS (General) Authentication &amp; Authorization Environment Variables</a>.</li><li class="listitem"><a href="../../xio/pi/#xio-env-var" class="olink">XIO Network Driver Environment Variables</a>.</li></ul></div><p>
+ </p></div></div><div class="appendix" title="Appendix A. Errors"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-error-codes"></a>Appendix A. Errors</h2></div></div></div><a class="indexterm" name="idm6404531936"></a><div class="table"><a name="gridftp-errors-table"></a><p class="title"><b>Table A.1. GridFTP Errors</b></p><div class="table-contents"><table summary="GridFTP Errors" border="1" width="700px"><colgroup><col align="left" class="c1"><col align="left" class="c2"><col align="left" class="c3"></colgroup><thead><tr><th align="left">Error Code</th><th align="left">Definition</th><th align="left">Possible Solutions</th></tr></thead><tbody><tr><td align="left"><code class="code">
+    globus_ftp_client: the server responded with an error
+530 530-globus_xio: Authentication Error
+530-OpenSSL Error: s3_srvr.c:2525: in library: SSL routines, 
+     function SSL3_GET_CLIENT_CERTIFICATE: no certificate returned
+530-globus_gsi_callback_module: Could not verify credential
+530-globus_gsi_callback_module: Can't get the local trusted CA certificate: 
+Untrusted self-signed certificate in chain with hash d1b603c3
+530 End.
+  </code></td><td align="left">This error message indicates that the GridFTP server doesn't trust the certificate authority (CA) that issued your certificate.</td><td align="left">
+You need to ask the GridFTP server administrator to install your CA certificate chain in the GridFTP server's trusted certificates directory.
+  </td></tr><tr><td align="left"><code class="code">
+  globus_ftp_control: gss_init_sec_context failed
+OpenSSL Error: s3_clnt.c:951: in library: SSL routines, function 
+SSL3_GET_SERVER_CERTIFICATE: certificate verify failed
+globus_gsi_callback_module: Could not verify credential
+globus_gsi_callback_module: Can't get the local trusted CA certificate: 
+Untrusted self-signed certificate in chain with hash d1b603c3
+    </code></td><td align="left">This error message indicates that your local system doesn't trust the certificate authority (CA) that issued the certificate on the resource you are connecting to.</td><td align="left">
+You need to ask the resource administrator which CA issued their certificate and  install the CA certificate in the local trusted certificates directory.
+  </td></tr><tr><td align="left"><code class="code">
+  530-globus_xio: Authentication Error
+  530-globus_gsi_callback_module: Could not verify credential
+  530-globus_gsi_callback_module: Could not verify credential
+  530-globus_gsi_callback_module: Invalid CRL: The available CRL has expired
+  530 End.
+    </code></td><td align="left">This error message indicates one of the following: 
+  Certificate
+  Revocation List (CRL) for the source or destination server CA at the client has
+  expired or CRL for client CA has expired at source or destination server or
+  CRL for source (destination) server CA has expired at destination (source)
+  server. CRL is a file {CA_hash}.r0 in /etc/grid-security/certificates or
+  ${USER_HOME}/.globus/certificates or ${X509_CERT_DIR}
+  </td><td align="left">
+  The tool available at http://dist.eugridpma.info/distribution/util/fetch-crl/
+  can be run in a crontab to keep the CRLs up to date.
+  </td></tr></tbody></table></div></div><br class="table-break"></div><div class="glossary" title="Glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-gridftpPI"></a>Glossary</h2></div></div></div><div class="glossdiv" title="C"><h3 class="title">C</h3><dl><dt><a name="client"></a>client</dt><dd><p>A process that sends commands and receives responses. Note that in GridFTP, the client may or may not take part in the actual movement of data.
+                        </p></dd></dl></div><div class="glossdiv" title="E"><h3 class="title">E</h3><dl><dt><a name="extended-block-mode"></a>extended block mode (MODE E)</dt><dd><p> MODE E is a critical GridFTP components because it allows for out of
+                              order reception of data. This in turn, means we can send the data down
+                              multiple paths and do not need to worry if one of the paths is slower
+                              than the others and the data arrives out of order. This enables
+                              parallelism and striping within GridFTP. In MODE E, a series of
+                              “blocks” are sent over the data channel. Each block consists of:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">an 8 bit flag field, </li><li class="listitem">a 64 bit field indicating the offset in the
+                                    transfer,</li><li class="listitem">and a 64 bit field indicating the length of the
+                                          payload, </li><li class="listitem">followed by length bytes of payload. </li></ul></div><p>Note that since the offset and length are included in the block, out
+                              of order reception is possible, as long as the receiving side can
+                              handle it, either via something like a seek on a file, or via some
+                              application level buffering and ordering logic that will wait for the
+                              out of order blocks. </p></dd></dl></div><div class="glossdiv" title="S"><h3 class="title">S</h3><dl><dt><a name="server"></a>server</dt><dd><p>A process that receives commands and sends responses to
+                              those commands. Since it is a server or service, and it receives
+                              commands, it must be listening on a port somewhere to receive the
+                              commands. Both FTP and GridFTP have IANA registered ports. For FTP it
+                              is port 21, for GridFTP it is port 2811. This is normally handled via
+                              inetd or xinetd on Unix variants. However, it is also possible to
+                              implement a daemon that listens on the specified port. This is
+                              described more fully in in the Architecture section of the GridFTP
+                              Developer's Guide.</p></dd><dt><a name="stream-mode"></a>stream mode (MODE S)</dt><dd><p> The only mode normally implemented for FTP is MODE S. This is simply
+                              sending each byte, one after another over the socket in order, with no
+                              application level framing of any kind. This is the default and is what
+                              a standard FTP server will use. This is also the default for GridFTP.
+                        </p></dd></dl></div><div class="glossdiv" title="T"><h3 class="title">T</h3><dl><dt><a name="third-party-transfers"></a>third party transfers</dt><dd><p>In the simplest terms, a third party transfer moves a file between two
+                              GridFTP servers.</p><p> The following is a more detailed, programmatic description. </p><p>In a third party transfer, there are three entities involved. The
+                              client, who will only orchestrate, but not actually take place in the
+                              data transfer, and two servers one of which will be sending data to
+                              the other. This scenario is common in Grid applications where you may
+                              wish to stage data from a data store somewhere to a supercomputer you
+                              have reserved. The commands are quite similar to the client/server
+                              transfer. However, now the client must establish two control channels,
+                              one to each server. He will then choose one to listen, and send it the
+                              PASV command. When it responds with the IP/port it is listening on,
+                              the client will send that IP/port as part of the PORT command to the
+                              other server. This will cause the second server to connect to the
+                              first server, rather than the client. To initiate the actual movement
+                              of the data, the client then sends the RETR filename command to the
+                              server that will read from disk and write to the network (the
+                              sending server) and will send the STOR filename command to the
+                              other server which will read from the network and write to the disk
+                              (the receiving server). </p><p>See Also <a class="glossseealso" href="#client-server-transfer">client/server transfer</a>.</p></dd></dl></div></div></div></body></html>
