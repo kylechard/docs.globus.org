@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>GT 6.0 GRAM5: Quality Profile</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#gram5QP" title="GT 6.0 GRAM5: Quality Profile"><link href="http://www.globus.org/toolkit/css/default.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="/toolkit/css/print.css" media="print"><!-- calling in special style sheet if detected browser is IE 7 --><!--[if IE 7]>
+                                                
+                                                                <link rel="stylesheet" type="text/css" href="/toolkit/css/ie7.css" />
+                                                
+                                                <![endif]--><link rel="alternate" title="Globus Toolkit RSS" href="/toolkit/rss/downloadNews/downloadNews.xml" type="application/rss+xml"><script><!--
+                                                function GlobusSubmit()
+                                                {
+                                                var f=document.GlobusSearchForm;
+                                                
+                                                f.action="http://www.google.com/custom";
+                                                if (f.elements[0].checked) {
+                                                f.q.value = f.qinit.value + " -inurl:mail_archive " ;
+                                                } else {
+                                                f.q.value = f.qinit.value + " inurl:mail_archive " ;
+                                                }
+                                                }
+                                                --></script></head><body class="section-3"><?php include_once("../../includes/docbook_sidebar.inc");?><div class="article" title="GT 6.0 GRAM5: Quality Profile"><div class="titlepage"><div><div><h2 class="title"><a name="gram5QP"></a>GT 6.0 GRAM5: Quality Profile</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#gram5-qp-test">1. Test Reports </a></span></dt><dt><span class="section"><a href="#gram5-qp-coverage">2. Test Coverage Reports </a></span></dt><dt><span class="section"><a href="#gram5-outstanding">3. Known Problems in GRAM5</a></span></dt><dt><span class="section"><a href="#gram5-fixed-bugs">4. Fixed Bugs for GRAM5</a></span></dt></dl></div><div class="section" title="1. Test Reports"><div class="titlepage"><div><div><h2 class="title"><a name="gram5-qp-test"></a>1. Test Reports </h2></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                    <a class="ulink" href="protocoltest.html" target="_top">GT 6.0 GRAM Protocol Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="clienttest.html" target="_top">GT 6.0 GRAM Client Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="condornone.html" target="_top">GT 6.0 Condor Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="forkpoll.html" target="_top">GT 6.0 Fork (Poll) Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="forkseg.html" target="_top">GT 6.0 Fork (SEG) Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="pbspoll.html" target="_top">GT 6.0 PBS (Poll) Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="pbsseg.html" target="_top">GT 6.0 PBS (SEG) Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="sgepoll.html" target="_top">GT 6.0 SGE (Poll) Test Report</a>
+                </li><li class="listitem">
+                    <a class="ulink" href="sgeseg.html" target="_top">GT 6.0 SGE (SEG) Test Report</a>
+                </li></ul></div></div><div class="section" title="2. Test Coverage Reports"><div class="titlepage"><div><div><h2 class="title"><a name="gram5-qp-coverage"></a>2. Test Coverage Reports </h2></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><a class="ulink" href="http://www.mcs.anl.gov/~bester/gram5/coverage/6.0" target="_top">http://www.mcs.anl.gov/~bester/gram5/coverage/6.0</a></li></ul></div></div><div class="section" title="3. Known Problems in GRAM5"><div class="titlepage"><div><div><h2 class="title"><a name="gram5-outstanding"></a>3. Known Problems in GRAM5</h2></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-45" target="_top">GT-45</a>: Manager lock double-locked</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-47" target="_top">GT-47</a>: globus-job-manager null pointer dereference for some call paths</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-52" target="_top">GT-52</a>: SEG may deadlock with threads</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-56" target="_top">GT-56</a>: Tear-down of object requires multiple threads</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-103" target="_top">GT-103</a>: GRAM refresh credentials test sometimes fails because job terminates</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-292" target="_top">GT-292</a>: Service tags may not isolate services completely</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-324" target="_top">GT-324</a>: Behaviour of globus-job-status</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-369" target="_top">GT-369</a>:  GRAM5 skips some SEG events for PBS batch system</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-389" target="_top">GT-389</a>: globusrun and globus-job-run don't report job failures to user</li><li class="listitem"><a class="ulink" href="https://globus.atlassian.net/browse/GT-418" target="_top">GT-418</a>: globus-gatekeeper leaves stale processes behind if port 2119 is probed</li></ul></div><p>
+    
+  </p></div><div class="section" title="4. Fixed Bugs for GRAM5"><div class="titlepage"><div><div><h2 class="title"><a name="gram5-fixed-bugs"></a>4. Fixed Bugs for GRAM5</h2></div></div></div><p>
+    </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Fix crash when USER environment variable is not set</li><li class="listitem">Incorrect argument order in <code class="literal">globus_cond_wait()</code> in <code class="literal">globus-scheduler-event-generator</code> package</li></ul></div><p>
+  </p></div></div></body></html>

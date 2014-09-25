@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>GT 6.0 Component Guide to Public Interfaces: C Common Libraries</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#ccommonlibPI" title="GT 6.0 Component Guide to Public Interfaces: C Common Libraries"><link rel="next" href="#ccommonlib-apis" title="Chapter 1. APIs"><link href="http://www.globus.org/toolkit/css/default.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="/toolkit/css/print.css" media="print"><!-- calling in special style sheet if detected browser is IE 7 --><!--[if IE 7]>
+                                                
+                                                                <link rel="stylesheet" type="text/css" href="/toolkit/css/ie7.css" />
+                                                
+                                                <![endif]--><link rel="alternate" title="Globus Toolkit RSS" href="/toolkit/rss/downloadNews/downloadNews.xml" type="application/rss+xml"><script><!--
+                                                function GlobusSubmit()
+                                                {
+                                                var f=document.GlobusSearchForm;
+                                                
+                                                f.action="http://www.google.com/custom";
+                                                if (f.elements[0].checked) {
+                                                f.q.value = f.qinit.value + " -inurl:mail_archive " ;
+                                                } else {
+                                                f.q.value = f.qinit.value + " inurl:mail_archive " ;
+                                                }
+                                                }
+                                                --></script></head><body class="section-3"><?php include_once("../../includes/docbook_sidebar.inc");?><div class="book" title="GT 6.0 Component Guide to Public Interfaces: C Common Libraries"><div class="titlepage"><div><div><h1 class="title"><a name="ccommonlibPI"></a>GT 6.0 Component Guide to Public Interfaces: C
+    Common Libraries</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="chapter"><a href="#ccommonlib-apis">1. APIs</a></span></dt><dd><dl><dt><span class="section"><a href="#idm187998335280">1. Component API</a></span></dt></dl></dd><dt><span class="chapter"><a href="#ccommonlib-pi-env">2. Environment variable interface</a></span></dt><dd><dl><dt><span class="section"><a href="#ccommonlib-env-var">1. Environment variables for C Common Libraries</a></span></dt></dl></dd></dl></div><div class="chapter" title="Chapter 1. APIs"><div class="titlepage"><div><div><h2 class="title"><a name="ccommonlib-apis"></a>Chapter 1. APIs</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#idm187998335280">1. Component API</a></span></dt></dl></div><div class="section" title="1. Component API"><div class="titlepage"><div><div><h2 class="title"><a name="idm187998335280"></a>1. Component API</h2></div></div></div><p>See the <a class="ulink" href="http://www.globus.org/api/c-globus-6.0/" target="_top">C API pages</a> for other API documentation on globus_common.</p></div></div><div class="chapter" title="Chapter 2. Environment variable interface"><div class="titlepage"><div><div><h2 class="title"><a name="ccommonlib-pi-env"></a>Chapter 2. Environment variable interface</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#ccommonlib-env-var">1. Environment variables for C Common Libraries</a></span></dt></dl></div><div class="section" title="1. Environment variables for C Common Libraries"><div class="titlepage"><div><div><h2 class="title"><a name="ccommonlib-env-var"></a>1. Environment variables for C Common Libraries</h2></div></div></div><div class="variablelist"><dl><dt><span class="term">GLOBUS_HOSTNAME</span></dt><dd>Set this variable to the fully qualified name of the local
+        machine's hostname.</dd><dt><span class="term">GLOBUS_DOMAIN_NAME</span></dt><dd>Set this variable to the domain name to be used to qualify the local
+        machine's hostname.</dd><dt><span class="term">GLOBUS_ERROR_OUTPUT</span></dt><dd>Set this variable to 1 to cause Globus libraries to display error information
+        to stderr.</dd><dt><span class="term">GLOBUS_ERROR_VERBOSE</span></dt><dd>Set this variable to 1 to enable verbose error messages.</dd><dt><span class="term">GLOBUS_I18N</span></dt><dd>Set this variable to 1 to attempt to use localized messages.
+        (Currently not working)</dd><dt><span class="term">GLOBUS_LOCATION</span></dt><dd>Set this variable to the path where the Globus Toolkit is installed, so
+        that Globus tools can find libraries and data files. This is only needed if the
+        Globus Toolkit was built with the source installer.</dd><dt><span class="term">GLOBUS_THREAD_MODEL</span></dt><dd>Set to the name of a thread model to control the operation of the Globus
+        event driver. Valid values are (depending on the platform) <code class="literal">none</code>
+        for non-threaded operation (the default), <code class="literal">pthread</code> for POSIX
+        threads, or <code class="literal">windows</code> for Windows threads.</dd></dl></div></div></div></div></body></html>

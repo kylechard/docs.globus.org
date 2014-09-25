@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>GT 6.0 Migrating Guide for GridFTP</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#gridftpMig" title="GT 6.0 Migrating Guide for GridFTP"><link rel="next" href="#glossary-gridftpMig" title="Glossary"><link href="http://www.globus.org/toolkit/css/default.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="/toolkit/css/print.css" media="print"><!-- calling in special style sheet if detected browser is IE 7 --><!--[if IE 7]>
+                                                
+                                                                <link rel="stylesheet" type="text/css" href="/toolkit/css/ie7.css" />
+                                                
+                                                <![endif]--><link rel="alternate" title="Globus Toolkit RSS" href="/toolkit/rss/downloadNews/downloadNews.xml" type="application/rss+xml"><script><!--
+                                                function GlobusSubmit()
+                                                {
+                                                var f=document.GlobusSearchForm;
+                                                
+                                                f.action="http://www.google.com/custom";
+                                                if (f.elements[0].checked) {
+                                                f.q.value = f.qinit.value + " -inurl:mail_archive " ;
+                                                } else {
+                                                f.q.value = f.qinit.value + " inurl:mail_archive " ;
+                                                }
+                                                }
+                                                --></script></head><body class="section-3"><?php include_once("../../includes/docbook_sidebar.inc");?><div class="article" title="GT 6.0 Migrating Guide for GridFTP"><div class="titlepage"><div><div><h2 class="title"><a name="gridftpMig"></a> GT 6.0 Migrating Guide for GridFTP</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#gridftp-migrating-GT5.0">1. Migrating GridFTP from GT5.0</a></span></dt><dt><span class="section"><a href="#gridftp-migrating-GT4.2">2. Migrating GridFTP from GT4.2</a></span></dt><dt><span class="section"><a href="#gridftp-migrating-GT3-GT4">3. Migrating GridFTP from GT3 or GT4.0</a></span></dt><dt><span class="section"><a href="#gridftp-migrating-GT2">4. Migrating GridFTP from GT2</a></span></dt><dt><span class="glossary"><a href="#glossary-gridftpMig">Glossary</a></span></dt></dl></div><p>The following provides available information about migrating from previous versions of the
+  Globus Toolkit.</p><div class="section" title="1. Migrating GridFTP from GT5.0"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-migrating-GT5.0"></a>1. Migrating GridFTP from GT5.0</h2></div></div></div><p>  FIXME</p></div><div class="section" title="2. Migrating GridFTP from GT4.2"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-migrating-GT4.2"></a>2. Migrating GridFTP from GT4.2</h2></div></div></div><p>  FIXME</p></div><div class="section" title="3. Migrating GridFTP from GT3 or GT4.0"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-migrating-GT3-GT4"></a>3. Migrating GridFTP from GT3 or GT4.0</h2></div></div></div><p>  If you are running GT 3.0.0 or greater, the migration for GridFTP is relatively painless.  There were only new 
+    features added.  No changes were made to the existing protocol or APIs, so any existing <a href="#client" class="glossterm"><em class="glossterm">client</em></a> or application 
+    built using our client APIs will work unchanged.  You may install new clients and servers on an as-opportunity-permits basis and will have no problems.  Any combination of old/new client/server will work.</p><p>To upgrade your server, either install it in a $GLOBUS_LOCATION different than the GT 3 installation (either as 
+    part of an entire GT 4 installation or by doing just <code class="computeroutput">make gridftp</code>).  Alternately, you can statically link the new 
+    server to avoid versioning issues and replace the existing executable.  The configuration files are very 
+    different, so you will need to update the configuration.</p><p>    To upgrade your client, simply build the client and use the new client as you would the old one. </p><p>Below is a list of new functionality available in GT 3.2 and higher (note that the MLST/MLSD feature is used by 
+    RFT in GT 3.2 and higher and is required if you want to be able to specify a directory to move):</p><p>    New Functionality in 3.2:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+Server Improvements
+    </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">Structured File Info</li><li class="listitem">MLST, MLSD</li><li class="listitem">checksum support</li><li class="listitem">chmod support</li></ul></div><p>    
+</p></li><li class="listitem"><p>
+    globus-url-copy changes
+    </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">File globbing support</li><li class="listitem">Recursive dir moves</li><li class="listitem">RFC 1738 support</li><li class="listitem">Control of restart</li><li class="listitem">Control of DC security</li></ul></div><p>
+</p></li></ul></div></div><div class="section" title="4. Migrating GridFTP from GT2"><div class="titlepage"><div><div><h2 class="title"><a name="gridftp-migrating-GT2"></a>4. Migrating GridFTP from GT2</h2></div></div></div><p>If you are running a version 2.2 or earlier, it is deprecated, unsupported, has major bugs leading to stability 
+ problems, has known potential security exploits via the wuftpd <a href="#server" class="glossterm"><em class="glossterm">server</em></a>, and has a protocol incompatibility with 
+ later versions due to an error in the security code.  Your GT 2.2 <a href="#client" class="glossterm"><em class="glossterm">clients</em></a> will not work with newer servers (GT 2.4.0 
+    and greater) and new clients will not work with GT 2.2 servers.  You should immediately upgrade to GT 6.0.</p><p> If you are running GT 2.4.0 or greater, the migration for GridFTP is relatively painless.  There were only new 
+ features added.  No changes were made to the existing protocol or APIs, so any existing client or application 
+ built using our client APIs will work unchanged.  You may install new clients and servers on an as-opportunity-permits basis and will have no problems.  Any combination of old/new client/server will work.</p><p> To upgrade your server, either install it in a $GLOBUS_LOCATION different than the GT 2 installation (either as 
+ part of an entire GT 4 installation or by just doing <code class="computeroutput">make gridftp</code>).  Alternately, you can statically link the new 
+ server to avoid versioning issues and replace the existing executable.  The configuration files are very different, 
+ so you will need to update the configuration.</p><p> To upgrade your client, simply build the client and use the new client as you would the old one. </p><p> Below is a list of new functionality available in GT 3.2 and higher (note that the MLST/MLSD feature is used by 
+ RFT in GT 3.2 and higher and is required if you want to be able to specify a directory to move):</p><p>New Functionality in 3.2:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Server Improvements
+ </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">Structured File Info</li><li class="listitem">MLST, MLSD</li><li class="listitem">checksum support</li><li class="listitem">chmod support</li></ul></div><p>
+</p></li><li class="listitem"><p>globus-url-copy changes
+    </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">File globbing support</li><li class="listitem">Recursive dir moves</li><li class="listitem">RFC 1738 support</li><li class="listitem">Control of restart</li><li class="listitem">Control of DC security</li></ul></div><p>
+</p></li></ul></div></div><div class="glossary" title="Glossary"><div class="titlepage"><div><div><h2 class="title"><a name="glossary-gridftpMig"></a>Glossary</h2></div></div></div><div class="glossdiv" title="C"><h3 class="title">C</h3><dl><dt><a name="client"></a>client</dt><dd><p>A process that sends commands and receives responses. Note that in GridFTP, the client may or may not take part in the actual movement of data.
+                        </p></dd></dl></div><div class="glossdiv" title="S"><h3 class="title">S</h3><dl><dt><a name="server"></a>server</dt><dd><p>A process that receives commands and sends responses to
+                              those commands. Since it is a server or service, and it receives
+                              commands, it must be listening on a port somewhere to receive the
+                              commands. Both FTP and GridFTP have IANA registered ports. For FTP it
+                              is port 21, for GridFTP it is port 2811. This is normally handled via
+                              inetd or xinetd on Unix variants. However, it is also possible to
+                              implement a daemon that listens on the specified port. This is
+                              described more fully in in the Architecture section of the GridFTP
+                              Developer's Guide.</p></dd></dl></div></div></div></body></html>

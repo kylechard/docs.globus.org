@@ -32,27 +32,18 @@ module Nanoc::Filters
     def run(content, params={})
       doc = Nokogiri::HTML(content)
       
-      doc.css('head').remove
-      doc.css('div.titlepage').remove
+      doc.css('head')[0].remove
 
-      doc.css('table').add_class('table')
-      # puts links.inspect
+      doc.css('div.titlepage')[0].remove
+      doc.css('div.titlepage').css('hr').remove
 
-      # doc.search('//div.titlepage').each do |node|
-      #   # node.remove
-      #   puts node
-      #   # puts node
-      #   # node.children.remove
-      #   # node.content = 'Children removed.'
-      # end
-
-      # Find comments.
-      # doc.xpath("//comment()").each do |comment|
-      #     # Check it's not a conditional comment.
-      #     if (comment.content !~ /\A(\[if|\<\!\[endif)/)
-      #         comment.remove()
-      #     end
-      # end
+      doc.css('table').add_class('table').remove_attr('width')
+      doc.css("table[border='1']").add_class('table-bordered')
+      
+      doc.css("div.note").remove_attr('style').add_class('alert alert-info')
+      doc.css("div.important").remove_attr('style').add_class('alert alert-warning')
+      doc.css("div.warning").remove_attr('style').add_class('alert alert-danger')
+      doc.css("div.tip").remove_attr('style').add_class('alert alert-info')
 
       doc.to_html
     end

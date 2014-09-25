@@ -26,10 +26,18 @@ body {
   font-size: 14px;
 }
 
+/* Overide Bootstrap */
+h1 { font-size: 30px; }
+h2 { font-size: 26px; }
+h3 { font-size: 22px; }
 h2, h3 {
     color: #708FCA;
     font-weight: 100;
 }
+.toc { font-size: 12px; margin-bottom: 20px; }
+.toc dl { margin-bottom: 0; }
+.toc dt { font-weight: 300; }
+code { white-space: normal; }
 
 /* Navbar */
 
