@@ -1,826 +1,498 @@
 = Asciidoc Guide
+Optional Author Name <optional@author.email>
+Optional version, optional date
+:Author:    AlternativeWayToSetOptional Author Name
+:Email:     <AlternativeWayToSetOptional@author.email>
+:Date:      AlternativeWayToSetOptional date
+:Revision:  AlternativeWayToSetOptional version
 :toc:
-:toc-placement!:
 
-This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
+== About this Guide
+This file is based off of http://powerman.name/doc/asciidoc
 
 *We are currently supporting asciidoc version {asciidoc-version}*
 
-toc::[]
+'''
+
+== Attributes
+There a lot of predefined attributes in AsciiDoc, plus you can add your own. To get attribute value use \{attributename} syntax.
+
+Author is {author}
+
+Version is {revision}
+
+:My name: Alex Efros
+My name is {myname}
+
+Line
+with bad attribute {qwe} will be
+deleted
+
+Escaped: \{qwe} and +++{qwe}+++
+
+== Headers
+Level 1
+-------
+Text.
+
+Level 2
+~~~~~~~
+Text.
+
+Level 3
+^^^^^^^
+Text.
+
+Level 4
++++++++
+Text.
+
+'''
+
+== Level 1
+Text.
+
+=== Level 2
+Text.
+
+==== Level 3
+Text.
+
+===== Level 4
+Text.
 
 == Paragraphs
-=== _Normal_
-Paragraphs don't require any special markup in AsciiDoc.
-A paragraph is just one or more lines of consecutive text.
+.Optional Title
 
-To begin a new paragraph, separate it by at least one blank line.
+Usual
+paragraph.
 
-=== _Line breaks_
-Rubies are red, +
-Topazes are blue.
+.Optional Title
 
-=== _Literal_
-A normal paragraph.
+ Literal paragraph.
+  Must be indented.
 
- A sequence of lines that begin with at least one space is a literal paragraph.
- Literal paragraphs are treated as preformatted text.
- The text is shown in a fixed-width font
- and endlines are preserved.
+.Optional Title
 
-Another normal paragraph.
+[source,perl]
+die 'connect: '.$dbh->errstr;
 
-=== _Admonition_
-NOTE: An admonition paragraph draws the reader's attention to
-auxiliary information.
-Its purpose is determined by the label
-at the beginning of the paragraph.
+Not a code in next paragraph.
 
-Here are the other built-in admonition types:
+.Optional Title
+NOTE: This is an example
+      single-paragraph note.
 
-TIP: Pro tip...
+.Optional Title
+[NOTE]
+This is an example
+single-paragraph note.
 
-IMPORTANT: Don't forget...
+TIP: Tip.
 
-WARNING: Watch out for...
+IMPORTANT: Important.
 
-CAUTION: Ensure that...
+WARNING: Warning.
 
- NOTE: Icons can be turned on for these, but only asciidoctor renders fontawesome icons; we can use custom icons with asciidoc by adding them to the /images/icons directory and setting the icons attribute.
+CAUTION: Caution.
 
-=== _Lead paragraph (broken, syntax of "[.lead]" won't compile)_
-//[.lead]
-This text will be styled as a lead paragraph (i.e., larger font).
+== Blocks
+.Optional Title
+----
+*Listing* Block
 
+Use: code or file listings
+----
 
-== Formatted Text
-=== _Bold, Italic, and Monospace_
-_italic phrase_
+.Optional Title
+[source,perl]
+----
+# *Source* block
+# Use: highlight code listings
+# (require `source-highlight` or `pygmentize`)
+use DBI;
+my $dbh = DBI->connect('...',$u,$p)
+    or die "connect: $dbh->errstr";
+----
 
-__i__talic le__tt__ers
+.Optional Title
+****
+*Sidebar* Block
 
-*bold phrase*
+Use: sidebar notes :)
+****
 
-**b**old le**tt**ers
+.Optional Title
+==========================
+*Example* Block
 
-*_bold italic phrase_*
+Use: examples :)
 
-**__b__**old italic le**__tt__**ers
+Default caption "Example:"
+can be changed using
 
-`monospace phrase` and le`tt`ers (broken)
+ [caption="Custom: "]
 
-`_monospace italic phrase_` and le``__tt__``ers (broken)
+before example block.
+==========================
 
-`*monospace bold phrase*` and le``**tt**``ers (broken)
+.Optional Title
+[NOTE]
+===============================
+*NOTE* Block
 
-`*_monospace bold italic phrase_*` and le``**__tt__**``ers (broken)
+Use: multi-paragraph notes.
+===============================
 
-`single quoted text' and `monospaced quoted text`
+////
+*Comment* block
 
-`single quoted text' and +monospaced quoted text+
+Use: hide comments
+////
 
-=== _Custom Styling_
-Werewolves are [custom_style]#allergic to cinnamon#.
+++++
+*Passthrough* Block
+<p>
+Use: backend-specific markup like
+<table border="1">
+<tr><td>1<td>2
+</table>
+++++
 
-Do werewolves believe in [small]#small print#?
+.Optional Title
+ ....
+ *Literal* Block
 
-[big]##O##nce upon an infinite loop.
+ Use: workaround when literal
+ paragraph (indented) like
+   1. First.
+   2. Second.
+ incorrectly processed as list.
+ ....
 
+.Optional Title
+[quote, cite author, cite source]
+____
+*Quote* Block
 
-=== _Superscript and Subscript_
-^super^script phrase
+Use: cite somebody
+____
 
-~sub~script phrase
+== Text
+forced +
+line break
 
+normal, _italic_, *bold*, +mono+.
 
-=== _Curved Quotation Marks and Apostrophes (broken)_
-'`single curved quotes`'
+``double quoted'', `single quoted'.
 
-"`double curved quotes`"
+normal, ^super^, ~sub~.
 
-Olaf's desk was a mess.
+Command: `ls -al`
 
-All of the werewolves`' desks were a mess.
++mono *bold*+
 
-Olaf had been with the company since the `'60s.
+`passthru *bold*`
 
-== Section Titles (Headers)
-=== _Article doctype (escaped to prevent ToC tampering)_
+Path: '/some/filez.txt', '.b'
 
-Document Title (Level 0)
+[red]#red text# [yellow-background]#on yellow#
+[big]#large# [red yellow-background big]*all bold*
 
-== Level 1 Section Title
+Chars: n__i__**b**++m++[red]##r##
 
-=== Level 2 Section Title
+// Comment
 
-==== Level 3 Section Title
+(C) (R) (TM) -- ... -> <- => <= &#182;
 
-===== Level 4 Section Title
+''''
 
-====== Level 5 Section Title (broken)
+Escaped:
+\_italic_, +++_italic_+++,
+t\__e__st, +++t__e__st+++,
++++<b>bold</b>+++, $$<b>normal</b>$$
+\&#182;
+\`not single quoted'
+\`\`not double quoted''
 
-== Explicit id
-[[primitives-nulls]]
-=== _Primitive types and null values_
+== Macros: links, images & include
+If you’ll need to use space in url/path you should replace it with %20.
 
-== Horizontal Rules and Page Breaks
-=== _Horizontal rule_
-'''
+[[anchor-1]]
+Paragraph or block 1.
 
-=== _Page break_
-<<<
+anchor:anchor-2[]
+Paragraph or block 2.
+
+<<anchor-1>>,
+<<anchor-1,First anchor>>,
+xref:anchor-2[],
+xref:anchor-2[Second anchor].
+
+link:asciidoc[This document]
+link:asciidoc.html[]
+link:/index.html[This site root]
+
+http://google.com
+http://google.com[Google Search]
+mailto:root@localhost[email admin]
+
+First home
+image:images/icons/home.png[]
+, second home
+image:images/icons/home.png[Alt text]
+.
+
+.Block image
+image::images/icons/home.png[]
+image::images/icons/home.png[Alt text]
+
+.Thumbnail linked to full image
+image:/images/font/640-screen2.gif[
+"My screenshot",width=128,
+link="/images/font/640-screen2.gif"]
+
+This is example how files
+can be included.
+It's commented because
+there no such files. :)
+
+// include::footer.txt[]
+
+// [source,perl]
+// ----
+// include::script.pl[]
+// ----
 
 == Lists
-=== _Unordered, basic_
-* Edgar Allen Poe
-* Sheri S. Tepper
-* Bill Bryson
+.Bulleted
+* bullet
+* bullet
+  - bullet
+  - bullet
+* bullet
+** bullet
+** bullet
+*** bullet
+*** bullet
+**** bullet
+**** bullet
+***** bullet
+***** bullet
+**** bullet
+*** bullet
+** bullet
+* bullet
 
-=== _Unordered, max nesting_
-* level 1
-** level 2
-*** level 3
-**** level 4
-***** level 5
-* level 1
+.Bulleted 2
+- bullet
+  * bullet
 
-=== _Checklist (broken)_
-//[options=interactive]
-- [*] checked
-- [x] also checked
-- [ ] not checked
--     normal list item
+.Ordered
+. number
+. number
+  .. letter
+  .. letter
+. number
+.. loweralpha
+.. loweralpha
+... lowerroman
+... lowerroman
+.... upperalpha
+.... upperalpha
+..... upperroman
+..... upperroman
+.... upperalpha
+... lowerroman
+.. loweralpha
+. number
 
-=== _Ordered, basic_
-. Step 1
-. Step 2
-. Step 3
+.Ordered 2
+a. letter
+b. letter
+   .. letter2
+   .. letter2
+       .  number
+       .  number
+           1. number2
+           2. number2
+           3. number2
+           4. number2
+       .  number
+   .. letter2
+c. letter
 
-=== _Ordered, nested_
-. Step 1
-. Step 2
-[loweralpha]
-.. Step 2a
-.. Step 2b
-. Step 3
+.Labeled
+Term 1::
+    Definition 1
+Term 2::
+    Definition 2
+    Term 2.1;;
+        Definition 2.1
+    Term 2.2;;
+        Definition 2.2
+Term 3::
+    Definition 3
+Term 4:: Definition 4
+Term 4.1::: Definition 4.1
+Term 4.2::: Definition 4.2
+Term 4.2.1:::: Definition 4.2.1
+Term 4.2.2:::: Definition 4.2.2
+Term 4.3::: Definition 4.3
+Term 5:: Definition 5
 
-=== _Ordered, max nesting_
-. level 1
-.. level 2
-... level 3
-.... level 4
-..... level 5
-. level 1
+.Labeled 2
+Term 1;;
+    Definition 1
+    Term 1.1::
+        Definition 1.1
 
-=== _Unordered inside ordered_
-. Linux
-* Fedora
-* Ubuntu
-* Slackware
-. BSD
-* FreeBSD
-* NetBSD
+[horizontal]
+.Labeled horizontal
+Term 1:: Definition 1
+Term 2:: Definition 2
+[horizontal]
+    Term 2.1;;
+        Definition 2.1
+    Term 2.2;;
+        Definition 2.2
+Term 3::
+    Definition 3
+Term 4:: Definition 4
+[horizontal]
+Term 4.1::: Definition 4.1
+Term 4.2::: Definition 4.2
+[horizontal]
+Term 4.2.1:::: Definition 4.2.1
+Term 4.2.2:::: Definition 4.2.2
+Term 4.3::: Definition 4.3
+Term 5:: Definition 5
 
-=== _Labeled, single-line_
-first term:: definition of first term
-section term:: definition of second term
-
-=== _Labeled, multi-line_
-first term::
-definition of first term
-section term::
-definition of second term
-
-=== _Q&A_
 [qanda]
-What is Asciidoctor?::
-  An implementation of the AsciiDoc processor in Ruby.
-What is the answer to the Ultimate Question?:: 42
+.Q&A
+Question 1::
+    Answer 1
+Question 2:: Answer 2
 
-=== _Mixed_
-Operating Systems::
-  Linux:::
-    . Fedora
-      * Desktop
-    . Ubuntu
-      * Desktop
-      * Server
-  BSD:::
-    . FreeBSD
-    . NetBSD
+.Indent is optional
+- bullet
+    * another bullet
+        1. number
+        .  again number
+            a. letter
+            .. again letter
 
-Cloud Providers::
-  PaaS:::
-    . OpenShift
-    . CloudBees
-  IaaS:::
-    . Amazon EC2
-    . Rackspace
+.. letter
+. number
 
-=== _Complex content in outline lists_
-* Every list item has at least one paragraph of content,
-  which may be wrapped, even using a hanging indent.
+* bullet
+- bullet
+
+.Break two lists
+. number
+. number
+
+Independent paragraph break list.
+
+. number
+
+.Header break list too
+. number
+
+--
+. List block define list boundary too
+. number
+. number
+--
+
+--
+. number
+. number
+--
+
+.Continuation
+- bullet
+continuation
+. number
+  continuation
+* bullet
+
+  literal continuation
+
+.. letter
 +
-Additional paragraphs or blocks are adjoined by putting
-a list continuation on a line adjacent to both blocks.
+Non-literal continuation.
 +
-list continuation:: a plus sign (`{plus}`) (broken) on a line by itself
+----
+any block can be
 
-* A literal paragraph does not require a list continuation.
-
- $ gem install asciidoctor
-
-* AsciiDoc lists may contain any complex content.
+included in list
+----
 +
-[cols="2", options="header"]
-|===
-|Application
-|Language
+Last continuation.
 
-|AsciiDoc
-|Python
-
-|Asciidoctor
-|Ruby
-|===
-
-== Links
-=== _External_
-http://asciidoctor.org - automatic!
-
-http://asciidoctor.org[Asciidoctor]
-
-https://github.com/asciidoctor[Asciidoctor @ *GitHub*]
-
-=== _Relative_
-link:index.html[Docs]
-
-=== _Email and IRC_
-devel@discuss.arquillian.org
-
-mailto:devel@discuss.arquillian.org[Discuss Arquillian]
-
-mailto:devel-join@discuss.arquillian.org[Subscribe, Subscribe me, I want to join!]
-
-irc://irc.freenode.org/#asciidoctor
-
-=== _Inline anchors_
-[[bookmark-a]]Inline anchors make arbitrary content referenceable.
-
-anchor:bookmark-b[]Use a cross reference to link to this location.
-
-=== _Internal cross references_
-See <<paragraphs>> to learn how to write paragraphs. (broken, adding brackets)
-
-Learn how to organize the document into <<section-titles,sections>>.
-
-== Images (broken, adjusted to remove a ":" after "image")
-=== _External Images_
-There are more options here, but I only included this one; if more need to be accomodated, code may need to be added.
-image:http://asciidoctor.org/images/octocat.jpg[GitHub mascot]
-
-== Videos (broken)
-=== _Embedded Youtube_
-video::rPQoq7ThGAU[youtube]
-
-=== _Embedded Vimeo_
-video::67480300[vimeo]
-
-== Source Code (most of these are broken)
-=== _Inline_
-Reference code like `types` or `methods` inline.
-
-=== _Literal Line_
- Indent the line one space to insert a code snippet
-
-=== _Literal Block_
-....
-error: The requested operation returned error: 1954 Forbidden search for defensive operations manual
-absolutely fatal: operation initiation lost in the dodecahedron of doom
-would you like to die again? y/n
-....
-
-=== _Listing block with title, no syntax highlighting (broken, wouldn't compile)_
-
-=== _Code block with title and syntax highlighting (broken, wouldn't compile)_
- Syntax highlighting is enabled by setting the source-highlighter attribute in the document header or passed as an argument.
-
-=== _Code block with callouts (broken)_
-////
-[source,ruby]
-----
-require 'sinatra' // <1>
-
-get '/hi' do // <2>
-  "Hello World!" // <3>
-end
-----
-<1> Library import
-<2> URL mapping
-<3> Content for response
-////
-
-=== _Code block with non-selectable callouts_
-////
-----
-line of code  // <1>
-line of code  # <2>
-line of code  ;; <3>
-----
-<1> A callout behind a line comment for C-style languages.
-<2> A callout behind a line comment for Ruby, Python, Perl, etc.
-<3> A callout behind a line comment for Clojure.
-////
-
-=== _XML code block with a non-selectable callout (broken)_
-////
-[source,xml]
-----
-<section>
-  <title>Section Title</title> <!-- <1> -->
-</section>
-----
-<1> The section title is required.
-////
-
-== More Delimited Blocks
-=== _Sidebar (broken)_
-.AsciiDoc history
-****
-AsciiDoc was first released in Nov 2002 by Stuart Rackham.
-It was designed from the start to be a shorthand syntax
-for producing professional documents like DocBook and LaTeX.
-****
-
-==== Admonition
-[NOTE]
-====
-An admonition block may contain complex content.
-
-.A list
-- one
-- two
-- three
-
-Another paragraph.
-====
-
-=== _Blockquote_
-[quote, Abraham Lincoln, Soldiers' National Cemetery Dedication]
-____
-Four score and seven years ago our fathers brought forth
-on this continent a new nation...
-____
-
-[quote, Albert Einstein]
-A person who never made a mistake never tried anything new.
-
-____
-A person who never made a mistake never tried anything new.
-____
-
-=== _Passthrough_
-++++
-<p>
-Content in a passthrough block is passed to the output unprocessed.
-That means you can include raw HTML, like this embedded Gist:
-</p>
-
-<script src="http://gist.github.com/mojavelinux/5333524.js">
-</script>
-++++
-
-=== _Open (broken)_
+.List block allow sublist inclusion
+- bullet
+  * bullet
++
 --
-An open block can be an anonymous container,
-or it can masquerade as any other block.
+    - bullet
+      * bullet
 --
-
-//[source]
+  * bullet
+- bullet
+  . number
+    .. letter
++
 --
-puts "I'm a source block!"
+      . number
+        .. letter
 --
-
-=== _Custom substitutions (broken)_
-
-:version: 0.1.4
-
-//[source,xml,subs="verbatim,attributes"]
-----
-<dependency>
-  <groupId>org.asciidoctor</groupId>
-  <artifactId>asciidoctor-java-integration</artifactId>
-  <version>{version}</version>
-</dependency>
-----
-
-== Block Id, Role and Options
-=== _Tradiitonal markup method for assigning block id and role_
-[[goals]]
-[role="incremental"]
-* Goal 1
-* Goal 2
-
-=== _Traditional markup method for assigning quoted text anchor (id) and role_
-[[free_the_world]][big goal]_free the world_
-
-=== _Role assigned to text enclosed in backticks_
-[rolename]`monospace text`
-
-=== _Traditional markup method for assigning block options_
-[options="header,footer,autowidth"]
-|===
-|Cell A |Cell B
-|===
-
-== Comments
-=== _Line_
-// A single-line comment.
-
-=== _Block_
-////
-A multi-line comment.
-
-Notice it's a delimited block.
-////
+    .. letter
+  . number
 
 == Tables
-=== _Table with a title, three columns, a header, and two rows of content_
-.Table Title
-|===
-|Name of Column 1 |Name of Column 2 |Name of Column 3
-
-|Cell in column 1, row 1
-|Cell in column 2, row 1
-|Cell in column 3, row 1
-
-|Cell in column 1, row 2
-|Cell in column 2, row 2
-|Cell in column 3, row 2
-|===
-
-=== _Table with two columns, a header, and two rows of content_
-[cols="2*", options="header"]
-|===
-|Name of Column 1
-|Name of Column 2
-
-|Cell in column 1, row 1
-|Cell in column 2, row 1
-
-|Cell in column 1, row 2
-|Cell in column 2, row 2
-|===
-
-=== _Table with three columns, a header, and two rows of content_
-[cols="1,1,2", options="header"]
-.Applications
-|===
-|Name
-|Category
-|Description
-
-|Firefox
-|Browser
-|Mozilla Firefox is an open-source web browser.
-It's designed for standards compliance,
-performance, portability.
-
-|Arquillian
-|Testing
-|An innovative and highly extensible testing platform.
-Empowers developers to easily create real, automated tests.
-|===
-
-=== _Table with column containing AsciiDoc content_
-[cols="2,2,5a"]
-|===
-|Firefox
-|Browser
-|Mozilla Firefox is an open-source web browser.
-
-It's designed for:
-
-* standards compliance
-* performance
-* portability
-
-http://getfirefox.com[Get Firefox]!
-|===
-
-=== _Table from CSV data_
-[format="csv", options="header"]
-|===
-Artist,Track,Genre
-Baauer,Harlem Shake,Hip Hop
-The Lumineers,Ho Hey,Folk Rock
-|===
-
-=== _Table with formatted, aligned and merged cells_
-[cols="e,m,^,>s", width="25%"]
-|===
-|1 >s|2 |3 |4
-^|5 2.2+^.^|6 .3+<.>m|7
-^|8
-|9 2+>|10
-|===
-
-== UI Macros
-_You must set the experimental attribute in the document header to enable macros._
-(skipping)
-
-== Attributes and Substitutions
-=== _Attribute declaration and usage_ (broken)
-:homepage: http://asciidoctor.org
-:docslink: http://asciidoctor.org/docs[Asciidoctor's Docs]
-:description: Asciidoctor is a mature, plain-text document format for +
-       writing notes, articles, documentation, books, and more. +
-       It's also a text processor & toolchain for translating +
-       documents into various output formats (i.e., backends), +
-       including HTML, DocBook, PDF and ePub.
-//:checkedbox: pass:normal[+[&#10004;]+]
-
-Check out {homepage}[Asciidoctor]!
-
-{description}
-
-Check out {docslink} too!
-
-{checkedbox} That's done!
-
-=== _Built-in literal attributes (some broken)_
-lt:
-{lt}
-
-gt:
-{gt}
-
-amp:
-{amp}
-
-startsb:
-{startsb}
-
-endsb:
-{endsb}
-
-vbar:
-{vbar}
-
-caret:
-{caret}
-
-asterisk:
-{asterisk}
-
-tilde:
-{tilde}
-
-apostrophe:
-{apostrophe}
-
-backslash:
-{backslash}
-
-backtick:
-{backtick}
-
-two colons:
-{two-colons}
-
-two semicolons:
-{two-semicolons}
-
-=== _Built-in entity attributes_
-empty:
-{empty}
-
-sp, space:
-{sp}, {space}
-
-nbsp:
-{nbsp}
-
-zwsp:
-{zwsp}
-
-wj:
-{wj}
-
-apos:
-{apos}
-
-quot:
-{quot}
-
-lsquo:
-{lsquo}
-
-rsquo:
-{rsquo}
-
-ldquo:
-{ldquo}
-
-rdquo:
-{rdquo}
-
-deg:
-{deg}
-
-plus:
-{plus}
-
-brvbar:
-{brvbar}
-
-=== _Built-in data attributes_
-usage: "\{attribute\}"
-
-asciidoctor: calls the processor:
-{asciidoctor}
-
-asciidoctor-version: version of the processor:
-{asciidoctor-version}
-
-asciidoc-version: version of the processor: (trying)
-{asciidoc-version}
-
-backend: backend used to render document:
-{backend}
-
-docdate: last modified date:
-{docdate}
-
-docdatetime: last modified  date and time:
-{docdatetime}
-
-docdir: name of document directory:
-{docdir}
-
-docfile: name of document file:
-{docfile}
-
-doctime: last modified time:
-{doctime}
-
-doctitle: the title of the document:
-{doctitle}
-
-doctype: document's doctype (e.g., article):
-{doctype}
-
-localdate: local date when rendered:
-{localdate}
-
-localdatetime: local date and time when rendered:
-{localdatetime}
-
-localtime: local time when rendered:
-{localtime}
-
-=== _Named substitutions (broken? check usage)_
-none: Disables substitutions: (turned off to see if rest work)
-//none
-
-normal: Performs all substitutions except for callouts:
-//{normal}
-
-verbatim: Replaces special characters and processes callouts:
-//{verbatim}
-
-specialchars, specialcharacters: Replaces <, >, and & with their corresponding entities:
-//{specialchars}
-
-quotes: Applies text formatting:
-//{quotes}
-
-attributes: Replaces attribute references:
-//{attributes}
-
-replacements: Substitutes textual and character reference replacements:
-//{replacements}
-
-macros: Processes macros:
-//{macros}
-
-post_replacements: Replaces the line break character (+):
-//{post_replacements}
-
-=== _Counter attributes_
-[caption=""]
-.Parts{counter2:index:0}
-|===
-|Part Id |Description
-
-|PX-{counter:index}
-|Description of PX-{index}
-
-|PX-{counter:index}
-|Description of PX-{index}
-|===
-
-== Text Replacement
-=== _Textual symbol replacements_
-Copyright, (C)
-
-Registered, (R)
-
-Trademark, (TM)
-
-Em dash, --
-
-ellipses, ...
-
-right single arrow, ->
-
-right double arrow, =>
-
-left single arrow, <-
-
-left double arrow, <=
-
-apostrophe, Sam's
-
-== Escaping Text
-=== _Backslash_
-\*Stars* is not rendered as bold text.
-The asterisks around the word are preserved.
-
-\{author} is not resolved to the author name.
-The curly brackets around the word are preserved.
-
-The backslash character is automatically removed.
-
-=== _Triple plus and inline passthrough macro_
-+++<u>underline me</u>+++ renders as underlined text.
-
-pass:[<u>underline me</u>] also renders as underlined text.
-
-== Table of Contents (ToC)
-=== _Document with ToC_
-\:toc:, usage at top of this file
-
-\:toc: right, (broken)
-
-== Bibliography
-=== _References_
-_The Pragmatic Programmer_ <<prag>> should be required reading for
-all developers.
-
-[bibliography]
-- [[[prag]]] Andy Hunt & Dave Thomas. The Pragmatic Programmer:
-  From Journeyman to Master. Addison-Wesley. 1999.
-- [[[seam]]] Dan Allen. Seam in Action. Manning Publications.
-  2008.
-
-== \Footnotes (broken, needed to escape word since it kept breaking toc)
-=== _Normal and reusable footnotes_
-A statement.footnote:[Clarification about this statement.]
-
-A bold statement.footnoteref:[disclaimer,Opinions are my own.]
-
-Another bold statement.footnoteref:[disclaimer]
-
-'''
-
-== TODO: "Broken" Notes & Adjustments
-. ToC sometimes repeats; may need to check asciidoc.js and timer?
-. footnotes completely broken
-. monospace letters broken; maybe add styling for .monospace?
-. monospace + bold or italic broken; check conf file
-. code block with title and syntax highlighting doesn't compile
-. images broken; needed to remove ":" after image
-. internal cross reference links adding brackets when not given link text
-
-'''
-Lower priority "Broken" Notes & Adjustments
-
-. code blocks with callouts wouldn't compile
-. code block with non-selectable callouts (won't compile)
-. XML code block with a non-selectable callout (throws warnings)
-. role doesn't work; either it doesn't filter at all or is instead assigned as a class
-. lead paragraph styling not working; not in conf file?
-. single and double quotes not working; adjust conf file
-. add h6 to conf file
-. not sure pagebreaks are necessary?
-. interactive checklist broken (won't compile); check conf?
-. embedded videos don't work at all
-. listing block with no title
-. content won't flow around sidebar; it's in an <aside> with class of sidebar-block
-. open block broken
-. custom substitutions example broken; think this is a asciidoc/doctor issue
-. attribute declaration checked box won't compile
-. built-in literals attributes: startsb, endsb do nothing
-. built-in entity attributes: apos, quot
-. built-in data attributes: asciidoctor, asciidoctor-version, docdatetime, docdir, docfile, localdatetime all do nothing, but most of these might be doc/doctor issues
-. named substitutions: all broken; need to check usage?
-. Textual symbol replacements: em dash broken; check conf?
-. toc-right is broken, but I think this is low priority
-
-== HTML4 vs HTML5
-. all h2 elements are surrounded by a div with section1 class applied in html5
-. horizontal rules between h2 elements in html4
-. video: totally broken in html4, partially broken in html5
-. more delimited blocks: sidebar is table in html4 (broken) and is div with class "sidebarblock" in html5 (needs styling to work)
-. Table with formatted, aligned and merged cells: html4 renders 6, 7 & 10 in code tags while html5 gives them monospaced class
-. Footnotes: html4 "opinions are my own" rendered as italic link with name "_footnote_disclaimer" while html5 renders it as plain text with span class "footnote" and id "_footnote_disclaimer"
+You can fill table from CSV file using include:: macros inside table.
+
+.An example table
+[options="header,footer"]
+|=======================
+|Col 1|Col 2      |Col 3
+|1    |Item 1     |a
+|2    |Item 2     |b
+|3    |Item 3     |c
+|6    |Three items|d
+|=======================
+
+.CSV data, 15% each column
+[format="csv",width="60%",cols="4"]
+[frame="topbot",grid="none"]
+|======
+1,2,3,4
+a,b,c,d
+A,B,C,D
+|======
+
+[grid="rows",format="csv"]
+[options="header",cols="^,<,<s,<,>m"]
+|===========================
+ID,FName,LName,Address,Phone
+1,Vasya,Pupkin,London,+123
+2,X,Y,"A,B",45678
+|===========================
+
+.Multiline cells, row/col span
+|====
+|Date |Duration |Avg HR |Notes
+
+|22-Aug-08 .2+^.^|10:24 | 157 |
+Worked out MSHR (max sustainable
+heart rate) by going hard
+for this interval.
+
+|22-Aug-08 | 152 |
+Back-to-back with previous interval.
+
+|24-Aug-08 3+^|none
+
+|====
