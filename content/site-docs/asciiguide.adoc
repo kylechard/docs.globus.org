@@ -1,16 +1,17 @@
 = Asciidoc Guide
-Optional Author Name <optional@author.email>
-Optional version, optional date
-:Author:    AlternativeWayToSetOptional Author Name
-:Email:     <AlternativeWayToSetOptional@author.email>
-:Date:      AlternativeWayToSetOptional date
-:Revision:  AlternativeWayToSetOptional version
+:Author:    Teresa Sutton
+:Email:     tsutton.ci@gmail.com
+:Date:      September 2014
+:Revision:  v1.2
 :toc:
+:toc-placement: manual
 
 == About this Guide
 This file is based off of http://powerman.name/doc/asciidoc
 
 *We are currently supporting asciidoc version {asciidoc-version}*
+
+toc::[]
 
 '''
 
@@ -21,7 +22,7 @@ Author is {author}
 
 Version is {revision}
 
-:My name: Alex Efros
+:My name: Teresa Sutton
 My name is {myname}
 
 Line

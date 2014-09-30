@@ -1,14 +1,15 @@
 = Asciidoc Guide
 :toc:
 //:toc-placement!:
+:toc-placement: manual
 
-'''
 == About this Guide
 This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-reference
 
 *We are currently supporting asciidoc version {asciidoc-version}*
 
-//toc::[]
+toc::[]
+
 '''
 
 == Paragraphs
