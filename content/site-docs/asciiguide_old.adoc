@@ -289,7 +289,7 @@ video::rPQoq7ThGAU[youtube]
 === _Embedded Vimeo_
 video::67480300[vimeo]
 
-== Source Code (most of these are broken)
+== Source Code
 === _Inline_
 Reference code like `types` or `methods` inline.
 
@@ -303,28 +303,46 @@ absolutely fatal: operation initiation lost in the dodecahedron of doom
 would you like to die again? y/n
 ....
 
-=== _Listing block with title, no syntax highlighting (broken, wouldn't compile)_
+=== _Listing block with title, no syntax highlighting_
+.Gemfile.lock
+----
+GEM
+  remote: https://rubygems.org/
+  specs:
+    asciidoctor (0.1.4)
 
-=== _Code block with title and syntax highlighting (broken, wouldn't compile)_
- Syntax highlighting is enabled by setting the source-highlighter attribute in the document header or passed as an argument.
+PLATFORMS
+  ruby
 
-=== _Code block with callouts (broken)_
-////
+DEPENDENCIES
+  asciidoctor (~> 0.1.4)
+----
+
+=== _Code block with title and syntax highlighting_
+[source,ruby]
+.app.rb
+----
+require 'sinatra'
+
+get '/hi' do
+  "Hello World!"
+end
+----
+
+=== _Code block with callouts_
 [source,ruby]
 ----
-require 'sinatra' // <1>
+require 'sinatra' # <1>
 
-get '/hi' do // <2>
-  "Hello World!" // <3>
+get '/hi' do # <2>
+  "Hello World!" # <3>
 end
 ----
 <1> Library import
 <2> URL mapping
 <3> Content for response
-////
 
 === _Code block with non-selectable callouts_
-////
 ----
 line of code  // <1>
 line of code  # <2>
@@ -333,10 +351,8 @@ line of code  ;; <3>
 <1> A callout behind a line comment for C-style languages.
 <2> A callout behind a line comment for Ruby, Python, Perl, etc.
 <3> A callout behind a line comment for Clojure.
-////
 
-=== _XML code block with a non-selectable callout (broken)_
-////
+=== _XML code block with a non-selectable callout_
 [source,xml]
 ----
 <section>
@@ -344,7 +360,6 @@ line of code  ;; <3>
 </section>
 ----
 <1> The section title is required.
-////
 
 == More Delimited Blocks
 === _Sidebar (broken)_
@@ -408,7 +423,7 @@ puts "I'm a source block!"
 
 :version: 0.1.4
 
-//[source,xml,subs="verbatim,attributes"]
+[source,xml,subs="verbatim,attributes"]
 ----
 <dependency>
   <groupId>org.asciidoctor</groupId>
@@ -792,16 +807,12 @@ Another bold statement.footnoteref:[disclaimer]
 . footnotes completely broken
 . monospace letters broken; maybe add styling for .monospace?
 . monospace + bold or italic broken; check conf file
-. code block with title and syntax highlighting doesn't compile
 . images broken; needed to remove ":" after image
 . internal cross reference links adding brackets when not given link text
 
 '''
 Lower priority "Broken" Notes & Adjustments
 
-. code blocks with callouts wouldn't compile
-. code block with non-selectable callouts (won't compile)
-. XML code block with a non-selectable callout (throws warnings)
 . role doesn't work; either it doesn't filter at all or is instead assigned as a class
 . lead paragraph styling not working; not in conf file?
 . single and double quotes not working; adjust conf file
@@ -809,7 +820,6 @@ Lower priority "Broken" Notes & Adjustments
 . not sure pagebreaks are necessary?
 . interactive checklist broken (won't compile); check conf?
 . embedded videos don't work at all
-. listing block with no title
 . content won't flow around sidebar; it's in an <aside> with class of sidebar-block
 . open block broken
 . custom substitutions example broken; think this is a asciidoc/doctor issue
