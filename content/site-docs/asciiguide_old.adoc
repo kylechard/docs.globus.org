@@ -414,9 +414,9 @@ An open block can be an anonymous container,
 or it can masquerade as any other block.
 --
 
-//[source]
+[source,php]
 --
-puts "I'm a source block!"
+echo "I'm a source block!";
 --
 
 === _Custom substitutions (broken)_

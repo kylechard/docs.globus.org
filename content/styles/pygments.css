@@ -60,3 +60,23 @@
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+/* overrides */
+.highlight { background-color: #fcfcfc;}
+.highlighttable .linenos .linenodiv pre {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    color: #999;
+    background-color: #f8f8f8;
+}
+.highlighttable .code .highlight pre {
+    border-top-left-radius:0;
+    border-bottom-left-radius: 0;
+    border-left:0;
+}
+/* gist */
+.gist .file-data { background-color: #fbfbfb; }
+.gist td.line-numbers {
+    background-color: #f8f8f8;
+    color: #999;;
+}
