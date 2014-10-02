@@ -15,7 +15,7 @@
 
 # ignore this directory
 ignore '/menus/*/'
-#ignore '/site-docs/*/'
+ignore '/site-docs/asciiguide_old*'
 
 preprocess do
   # Iterate each item
@@ -31,7 +31,7 @@ preprocess do
           # Grab titles from index item
           # i[:title] = items['/docs/transfer-api/'][:title]
           # i[:subtitle] = items['/docs/transfer-api/'][:version]
-        end   
+        end
       end
     end
 
@@ -44,11 +44,17 @@ preprocess do
       end
     end
 
-    # Adjust adoc include paths to be absolute
-    if i.identifier.start_with?("/transfer-cli/docs") 
+    # Adjust adoc include & image paths to be absolute
+    if i.identifier.start_with?("/transfer-cli/docs")
       # Add full path for adoc includes
       raw = i.raw_content
       raw.gsub!(/include::include/, 'include::content/transfer-cli/docs/include')
+    end
+    if i.identifier.start_with?("/site-docs") && i[:extension].split('.').last == 'adoc'
+      # Add full path for adoc includes
+      raw = i.raw_content
+      raw.gsub!(/include::include/, 'include::content/site-docs/include')
+      raw.gsub!(/image::images/, 'image::content/site-docs/images')
     end
   end
 end
@@ -99,8 +105,8 @@ compile '/toolkit/*' do
     end
 
     layout item[:layout] || 'toolkit'
-  end 
-end 
+  end
+end
 
 compile '*' do
   # if item[:extension] == 'adoc'
@@ -114,7 +120,7 @@ compile '*' do
     # don’t filter binary items
   # elsif item[:kind] == 'page'
     # layout 'page'
-  else 
+  else
     filter :erb
     layout item[:layout] || 'default'
   end
