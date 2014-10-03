@@ -54,7 +54,6 @@ preprocess do
       # Add full path for adoc includes
       raw = i.raw_content
       raw.gsub!(/include::include/, 'include::content/site-docs/include')
-      raw.gsub!(/image::images/, 'image::content/site-docs/images')
     end
   end
 end
