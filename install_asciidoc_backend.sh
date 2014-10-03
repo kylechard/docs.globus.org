@@ -2,9 +2,10 @@
 set -e
 
 cd asciidoc/backends/bootstrap
-zip bootstrap *
+zip -r bootstrap.zip . -x ".*" -x "*/.*"
 
 if [ -d ~/.asciidoc/backends/bootstrap ]; then
+	echo "Removing Asccidoc Bootstrap Backend"
 	asciidoc --backend remove bootstrap
 fi
 
