@@ -52,8 +52,7 @@ CAUTION: Ensure that...
  NOTE: Icons can be turned on for these, but only asciidoctor renders fontawesome icons; we can use custom icons with asciidoc by adding them to the /images/icons directory and setting the icons attribute.
 
 === _Lead paragraph (broken, syntax of "[.lead]" won't compile)_
-//[.lead]
-This text will be styled as a lead paragraph (i.e., larger font).
+[lead]#This text will be styled as a lead paragraph (i.e., larger font).# (check syntax)
 
 
 == Formatted Text
@@ -70,17 +69,13 @@ __i__talic le__tt__ers
 
 **__b__**old italic le**__tt__**ers
 
-`monospace phrase` and le`tt`ers (broken)
++monospace phrase+ and le++tt++ers (check syntax)
 
-`_monospace italic phrase_` and le``__tt__``ers (broken)
++_monospace italic phrase_+ and le++__tt__++ers (check syntax)
 
-`*monospace bold phrase*` and le``**tt**``ers (broken)
++*monospace bold phrase*+ and le++**tt**++ers (check syntax)
 
-`*_monospace bold italic phrase_*` and le``**__tt__**``ers (broken)
-
-`single quoted text' and `monospaced quoted text`
-
-`single quoted text' and +monospaced quoted text+
++*_monospace bold italic phrase_*+ and le++**__tt__**++ers (check syntax)
 
 === _Custom Styling_
 Werewolves are [custom_style]#allergic to cinnamon#.
@@ -803,9 +798,6 @@ Another bold statement.footnoteref:[disclaimer]
 '''
 
 == TODO: "Broken" Notes & Adjustments
-. ToC sometimes repeats; may need to check asciidoc.js and timer?
-. monospace letters broken; maybe add styling for .monospace?
-. monospace + bold or italic broken; check conf file
 . images broken; needed to remove ":" after image
 . internal cross reference links adding brackets when not given link text
 
@@ -813,7 +805,6 @@ Another bold statement.footnoteref:[disclaimer]
 Lower priority "Broken" Notes & Adjustments
 
 . role doesn't work; either it doesn't filter at all or is instead assigned as a class
-. lead paragraph styling not working; not in conf file?
 . single and double quotes not working; adjust conf file
 . add h6 to conf file
 . not sure pagebreaks are necessary?
