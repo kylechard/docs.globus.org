@@ -250,9 +250,9 @@ image::images/icons/home.png[]
 image::images/icons/home.png[Alt text]
 
 .Thumbnail linked to full image
-image:/images/font/640-screen2.gif[
+image:images/font/640-screen2.gif[
 "My screenshot",width=128,
-link="/images/font/640-screen2.gif"]
+link="images/font/640-screen2.gif"]
 
 This is example how files
 can be included.
