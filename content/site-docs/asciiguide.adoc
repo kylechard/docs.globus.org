@@ -11,6 +11,7 @@ This file is based off of http://powerman.name/doc/asciidoc
 
 *We are currently supporting asciidoc version {asciidoc-version}*
 
+'''
 toc::[]
 
 '''

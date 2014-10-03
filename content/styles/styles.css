@@ -71,31 +71,26 @@ dd {
 }
 
 /* Asciidoc */
-#doc-header h1 {
-    font-weight: 300;
-    /*padding-bottom: 9px;
-    border-bottom: 1px solid #EEE;*/
+#header div:last-child {
+    margin-bottom: 30px;
 }
+
+/* ToC */
 #toctitle {
     color: #708FCA;
     font-weight: 100;
     font-size: 24px;
 }
-#toc li {
-    margin: 3px 0;
-}
-#doc-header div:last-child {
-    margin-bottom: 30px;
-}
-#doc-header + #doc-content #toctitle {
-    border-top: solid 1px #eee;
-    margin-top: 20px;
-    padding: 20px 0 10px;
+#toc div.toclevel1 {
+    margin: 3px 1.2em;
 }
 #doc-header + #doc-content #toc {
   margin-left: 20px;
   margin-bottom: 30px;
 }
+#toc .toclevel2 { margin-left: 2.4em; font-size: .9em; font-weight: 100;}
+#toc .toclevel3 { margin-left: 4.2em; font-size: .8em; font-weight: 100;}
+#toc .toclevel2 + .toclevel1 { margin-top:10px; }
 
 /* Lists */
 ol.arabic {

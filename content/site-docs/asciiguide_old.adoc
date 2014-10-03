@@ -1,6 +1,5 @@
 = Asciidoc Guide
 :toc:
-//:toc-placement!:
 :toc-placement: manual
 
 == About this Guide
@@ -8,6 +7,7 @@ This file is based off of http://asciidoctor.org/docs/asciidoc-syntax-quick-refe
 
 *We are currently supporting asciidoc version {asciidoc-version}*
 
+'''
 toc::[]
 
 '''
@@ -792,7 +792,7 @@ all developers.
 - [[[seam]]] Dan Allen. Seam in Action. Manning Publications.
   2008.
 
-== \Footnotes (broken, needed to escape word since it kept breaking toc)
+== \Footnotes (needed to escape so \footnotes wouldn't break)
 === _Normal and reusable footnotes_
 A statement.footnote:[Clarification about this statement.]
 
@@ -804,7 +804,6 @@ Another bold statement.footnoteref:[disclaimer]
 
 == TODO: "Broken" Notes & Adjustments
 . ToC sometimes repeats; may need to check asciidoc.js and timer?
-. footnotes completely broken
 . monospace letters broken; maybe add styling for .monospace?
 . monospace + bold or italic broken; check conf file
 . images broken; needed to remove ":" after image
