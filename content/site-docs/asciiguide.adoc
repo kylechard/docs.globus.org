@@ -6,9 +6,6 @@
 :toc:
 :toc-placement: manual
 
-== TESTING ROLLBACK
-This is to test a site rollback if changes are committed and pushed that shouldn't have been.
-
 == About this Guide
 This file is based off of http://powerman.name/doc/asciidoc
 
