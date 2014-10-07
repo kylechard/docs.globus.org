@@ -1,0 +1,50 @@
+= ACL-ADD(1)
+
+== NAME
+
+acl-add - Add an Access Rule
+
+== SYNOPSIS
+
+acl-add 'ENDPOINT/PATH/' --perm {r|rw} 
+    {--user 'USERNAME' | --groupid 'GROUPID' | --email 'EMAILADDRESS' | --all}
+
+
+== DESCRIPTION
+
+*acl-add* adds a new rule to the endpoint's access control list (ACL).
+
+'PATH' is assumed to be URL-encoded.
+
+include::include/more_acl.adoc[]
+
+== OPTIONS
+
+--perm='PERM':: 
+Permission (Required): +r+ (read only) or +rw+ (read write)
+
+--user='USER'::     
+User name to receive permission.  By default, the target user will receive an
+email notification, unless *--no-send-email* is specified.
+
+--groupid='GROUPID'::  
+Group UUID to receive permission
+
+--email='EMAILADDRESS'::      
+Invite an email address to claim the rule
+
+--all::              
+Create a rule for all authenticated users
+
+--no-send-email::    
+Don't send an email notification.
+
+
+
+== EXAMPLES
+
+Share the `/~/share/` directory with "alice":
+
+----
+acl-add bob#myep/~/share/ --user alice --perm r
+----

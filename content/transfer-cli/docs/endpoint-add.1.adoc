@@ -14,9 +14,6 @@ endpoint-add - Create a logical endpoint
 *endpoint-add* can also add a physical server to an existing logical endpoint
 if the *-p* option is given.
 
-If the *--gc* option is used, endpoint-add will print a setup key that can be
-used to install Globus Connect.
-
 A logical endpoint can be used by the *scp* and *transfer* commands to
 transfer files.  Use the *endpoint-activate* command to assign a valid
 credential to an endpoint.
@@ -44,6 +41,35 @@ sense when used with *-p*.
 
 Create a Globus Connect Personal endpoint and print a setup key.  The setup
 key is used to finalize installation of the Globus Connect client software.
+
+*--sharing* 'ENDPOINT/DIRECTORY/'::
+
+Create a Shared Endpoint.  The specified 'ENDPOINT' is the host endpoint, and
+the specified 'DIRECTORY' will be the root directory.
+
+
+*--s3*::
+
+(BETA) Create an endpoint backed by an Amazon S3 bucket.  This requires a
+Managed Endpoint subscription (the *--managed-endpoint* option is required).
+
+
+*--managed-endpoint*::
+
+This option makes the endpoint a managed endpoint.  This option is required if
+the *--s3* option is specified. This option is not permitted with the
+*--sharing* option.
++
+The *--subscription* option may be used to specify the subscription UUID to
+use.   If *--subscription* is not specified, and the user is authorized to add
+managed endpoints under only a single subscription, that subscription UUID is
+used automatically.
+
+
+*--subscription* 'UUID'::
+
+Specifies the subscription ID to use with *--managed-endpoint*.
+
 
 == EXAMPLES
 
