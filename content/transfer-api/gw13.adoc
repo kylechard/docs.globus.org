@@ -1,0 +1,365 @@
+= GlobusWorld 2013 Transfer API Tutorial
+:toc:
+:toc-title: Contents
+
+== Installation
+. Open a command prompt and verify that you have Python 2.6 or 2.7 installed
+    and in your path, by running python -V. If not, download and install the
+    latest 2.7 release from link:http://www.python.org/download/[python.org] for
+    your platform.
+. (Optional) Install link:http://pypi.python.org/pypi/setuptools[setuptools],
+    if it's not already installed. To check, run \'easy_install -h' in a
+    terminal.
+. Install the python client library, which is available on
+    link:http://pypi.python.org/pypi/globusonline-transfer-api-client/[PyPI].
+    If you have setuptools installed, it can be installed with easy_install:
++
+[source,python]
+easy_install globusonline-transfer-api-client
++
+If you don't have easy_install, you can download the
+tarball from PyPI and unpack it.
+
+== Setup
+. To simplify the following instructions, set a shell environment variable
+    with your Globus username. This tutorial will use bourne shell
+    syntax for setting variables and accessing the value ($VARIABLE_NAME);
+    change as needed if using a different shell.
++
+[source,bash]
+----
+# Replace "myusername" with your actual Globus username
+GO_USER=myusername+
+----
+
+. Run an interactive Python shell with a Transfer API client connection:
++
+[source,python]
+python -i -m globusonline.transfer.api_client.main $GO_USER -p
++
+If you used the tarball instead of easy_install or pip, change
+to the directory where you unpacked it and run this instead:
++
+[source,python]
+python -i globusonline/transfer/api_client/main.py $GO_USER -p
++
+Enter your Globus password when prompted.
++
+Note: this is a shortcut for using GoAuth, which contacts Nexus to get
+an access token using the provided username and password, and uses the
+token to authenticate with the Transfer API.
+
+. Run your first API command:
++
+[source,python]
+----
+status, message, data = api.tasksummary()
+print data
+----
+
+. Enable debug printing for both request and response:
++
+[source,python]
+api.set_debug_print(True, True)
+
+. Run the API call again:
++
+[source,python]
+status, message, data = api.tasksummary()
+
+. Setup a pretty printer:
++
+[source,python]
+----
+import pprint
+printer = pprint.PrettyPrinter(indent=2)
+p = printer.pprint
+p(data)
+----
+
+=== Exercises
+
+. If you have a grid credential from a trusted provider such as XSEDE, you
+    can use that to authenticate to the Transfer API. For this to
+    work, you first have to register your external identity with Globus,
+    by following the "Add External Identity" link on the
+    link:https://www.globus.org/account/ManageIdentities[Manage Identities]
+    page of your account.
++
+Once the identity is associated with your account, you need to acquire
+an X.509 credential from your provider. This is typically done with
+myproxy-logon from Globus Toolkit. For example, for XSEDE the following
+command can be used:
++
+[source,python]
+myproxy-logon -s myproxy.teragrid.org -l XSEDE_USERNAME -o credential.pem
++
+Then you can authenticate to the API with this credential:
++
+[source,python]
+python -i -m globusonline.transfer.api_client.main $GO_USER -c credential.pem
++
+If you don't have an account on one of the listed providers, you can
+get a trusted X.509 credential from a
+link:http://lists.globusonline.org/pipermail/transfer-api/2012-March/000230.html[Globus Connect installation]. You'll need to use the "Add X.509" link on
+the Manage Identities page, and paste in the contents of ltacert.pem.
+Using the Linux location of the ltacert/key:
++
+[source,python]
+npython -i -m globusonline.transfer.api_client.main $GO_USER \
+    -c ~/.globusonline/lta/ltacert.pem -k ~/.globusonline/lta/ltakey.pem
+
+== Activation
+If you don't have an account at an organization with a myproxy server, just
+skip that part of the tutorial. You can still transfer files between go#ep1 and
+go#ep2, our demo endpoints.
+
+. First attempt auto-activation:
++
+[source,python]
+status, message, data = api.endpoint_autoactivate("go#ep1")
+
+. Check the result code:
++
+[source,python]
+data["code"]
++
+go#ep1/2 and GC endpoints can always be auto-activated.
+
+. Get a list of public endpoints.
++
+[source,python]
+status, message, data = api.endpoint_list(fields="canonical_name", limit=500)
+print "\n".join(ep_data["canonical_name"] for ep_data in data["DATA"])
+
+. Try activating one of the endpoints in the list.
++
+If your site has created public endpoints on Globus, try
+activating one of those endpoints. Most endpoints support \'myproxy'
+activation, which accepts a myproxy username and password and
+fetches a credential from the server on your behalf. The password
+is never stored and is always sent over a secure connection.
++
+[source,python]
+site_ep = "ci#pads"
+site_username = "YOUR SITE USERNAME"
+status, message, data = api.endpoint_autoactivate(site_ep)
+data["code"]
+data.supported_types()
++
+Change "ci#pads" to whatever endpoint you have access to, and
+site_username to the username you use at your organization (which
+may be different than your Globus password).
++
+Auto activation returns code "AutoActivationFailed", and the result
+includes a list of the information required to activate the endpoint. If
+you don't have access to any of the other endpoints, skip to the end of
+this section.
+
+. Disable request debug print, to keep your password private:
++
+[source,python]
+api.set_debug_print(False, True)
+
+. Fill in the requirements for myproxy type:
++
+[source,python]
+----
+data.set_requirement_value("myproxy", "username", site_username)
+from getpass import getpass
+passphrase = getpass()
+data.set_requirement_value("myproxy", "passphrase", passphrase)
+----
+
+. Post the filled requirements back to activate the endpoint:
++
+[source,python]
+----
+status, message, data = api.endpoint_activate(site_ep, data)
+data["code"]
+data["expire_time"]
+data["subject"]
+----
+
+. Try conditional activation:
++
+[source,python]
+----
+status, message, data = api.endpoint_activate(site_ep, data, if_expires_in=600)
+data["code"]
+----
+
+=== Exercises
+
+. Use +GET /endpoint/NAME+ (via the api.endpoint method) to determine which
+    of your endpoints are activated and when they expire.
+
+. What happens if you enter the wrong myproxy password when activating
+    and endpoint with the myproxy method? Look at the documentation for
+    link:transfer-api/docs/v0.10/endpoint_activate.html[endpoint activate --BROKEN: NEED TO MIGRATE];
+    what other error codes does it return?
+
+== Transfer
+
+. Activate all endpoints involved in the transfer. For now we will use
+    go#ep1 and go#ep2. You can skip this if you already activated them above.
++
+[source,python]
+----
+status, message, data = api.endpoint_autoactivate("go#ep1")
+print data["code"]
+status, message, data = api.endpoint_autoactivate("go#ep2")
+print data["code"]
+----
+
+. Get a submission id:
++
+[source,python]
+----
+code, reason, result = api.transfer_submission_id()
+submission_id = result["value"]
+----
+
+. Create a transfer object:
++
+[source,python]
+----
+t = Transfer(submission_id, "go#ep1", "go#ep2")
+t.add_item("/~/.bashrc", "/~/bashrc_from_goep1")
+t.add_item("/share/godata", "/~/", recursive=True)
+----
+
+. Submit the transfer:
++
+[source,python]
+----
+status, reason, result = api.transfer(t)
+task_id = result["task_id"]
+----
+
+. Check the progress of the new transfer:
++
+[source,python]
+----
+status, reason, result = api.task(task_id)
+result["status"]
+----
+
+=== Exercises
+
+. Do the transfer again but set +t.sync_level+ to 3 before submitting.
+    You will also need to get a new submission id. Examine the +files_skipped+
+    field of the task to confirm that the files were not re-transferred.
+
+. If you have GlobusConnect installed, try to transfer files from your
+    GlobusConnect endpoint to another endpoint using the Transfer API.
+
+. Get a list of subtasks with +GET /task/ID/subtask_list+, using the
+    api.task_subtask_list method.
+
+. Get a list of all your tasks with +GET /task_list+, using api.task_list.
+    What is the total number of tasks in your account?
+    Are all of them returned? Experiment with pagination, using the
+    limit and offset parameters:
++
+[source,python]
+status, reason, result = api.task_list(offset=2, limit=2)
+
+. Get a list of only your SUCCEEDED tasks:
++
+[source,python]
+status, reason, result = api.task_list(filter="status:SUCCEEDED")
++
+Look at the link:transfer-api/docs/v0.10/tutorial/index.html#filtering[filter documentation --BROKEN: NEED TO MIGRATE], and experiment with more complex filtering.
+
+== Mkdir
+Mkdir does not require a submission id - it runs as an immediate foreground
+job. It does still require that the endpoint be activated.
+
+. Create a directory:
++
+[source,python]
+----
+# Not needed if you already activated ep1 above.
+api.endpoint_autoactivate("go#ep1")
+
+api.endpoint_mkdir("go#ep1", "/~/gw13tutorial")
+----
+
+=== Exercises
+
+. Use the api to transfer data to the directory you just created.
+
+== Delete
+Delete is a backround task that requires a submission id, just like transfer
+and unlike mkdir.
+
+. Get a submission id:
++
+[source,python]
+----
+code, reason, result = api.transfer_submission_id()
+submission_id = result["value"]
+----
+
+. Create a delete object:
++
+[source,python]
+----
+d = globusonline.transfer.api_client.Delete(submission_id, "go#ep1", recursive=True)
+d.add_item("/~/gw13tutorial")
+----
++
+Note that unlike transfer, recursive is a property on the entire job
+instead of on the items.
+
+. Submit the delete request:
++
+[source,python]
+----
+status, reason, result = api.delete(d)
+task_id = result["task_id"]
+----
+
+. Check the progress of the new delete:
++
+[source,python]
+----
+status, reason, result = api.task(task_id)
+result["status"]
+----
+
+=== Exercises
+
+. Submit a transfer and delete operation with a "gw13" label, by passing a
+    label keyword argument to the Transfer/Delete constructor. For example:
++
+[source,python]
+----
+t = Transfer(submission_id, "go#ep1", "go#ep2", label="gw13")
+t = Delete(other_submission_id, "go#ep1", label="gw13")
+----
++
+Then use filtering to get all tasks matching that label:
++
+[source,python]
+status, reason, result = api.task_list(filter="label:gw13")
++
+Notice that only the TRANSFER task is returned. For backward compatibility,
+DELETE jobs were not include in the task list by default. To get all jobs,
+add to the filter:
++
+[source,python]
+status, reason, result = api.task_list(filter="label:gw13/type:TRANSFER,DELETE")
++
+The next release (0.11 or 1.0) will not have this behavior (it will return
+all task types by default).
++
+The link:https://transfer.api.globusonline.org/v0.10/resource/task_list.html[task_list --BROKEN: NEED TO MIGRATE]
+documentation has more details about the filtering options supported. The
+format is a bit obtuse - scroll down to the \'filter_subdocuments' section,
+and look for the \'label' field.
+
+. Take a look at the resource list in the
+    link:https://transfer.api.globusonline.org/v0.10/doc/index.html#api-reference[API Reference --BROKEN: NEED TO MIGRATE], and try accessing some of the resources that weren't
+    included in the tutorial.

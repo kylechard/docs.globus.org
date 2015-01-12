@@ -174,7 +174,7 @@ Get the list of access rules in the ACL for a specified endpoint.
 | Method
 | GET
 
-| Response Body | 
+| Response Body |
 ------------------------------------
 {
     "length": 2,
@@ -356,7 +356,7 @@ can't claim it for themselves.
 | Method
 | POST
 
-| Response Body | 
+| Response Body |
 ------------------------------------
 {
     "DATA_TYPE": "claim_response",
@@ -376,7 +376,7 @@ can't claim it for themselves.
 |===================
 | Code             | HTTP Status | Description
 
-| Conflict | 409 
+| Conflict | 409
 | If <token> has already been claimed by a different user.
 
 | Conflict | 409
