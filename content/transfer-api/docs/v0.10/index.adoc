@@ -53,8 +53,7 @@ with as much care as passwords and kept private.
 To get an access token, send a GET request to the following URL with HTTP basic
 auth over SSL using your Globus username and password:
 
-[source,bash]
-https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials
+    https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials
 
 Using the curl command line program with a prompt for your password:
 
@@ -96,15 +95,12 @@ curl with the -H option:
 [source,bash]
 ----
 TOKEN=$(cat /tmp/goauth-token.secret)
-curl -H "Authorization : Globus-Goauthtoken $TOKEN" \'https://transfer.api.globusonline.org/v0.10/tasksummary'
+curl -H "Authorization : Globus-Goauthtoken $TOKEN" \
+    'https://transfer.api.globusonline.org/v0.10/tasksummary'
 ----
 
 You could also paste the token directly but then it will be stored in your
 shell history, which is poor security practice.
-
-The token can also be used for the link:/transfer-api/docs/__LATEST_TRANSFER_VERSION__/try.html[interactive demo BROKEN NEED TO MIGRATE] client, by clicking the "Auth Options" link at the top and pasting the value into the long
-"Goauth Token" field. Make sure you are on the official Transfer API homepage
-with a verified SSL connection before doing this.
 
 ==== Globus Goauth: OAuth
 
@@ -146,7 +142,7 @@ Globus username to sign in as, since a user could have
 multiple accounts associated with the same certificate DN.
 
 Here is an example using curl and standard globus toolkit certificate
-locations; replace USERNAME with your globusonline username.
+locations; replace USERNAME with your globus username.
 
 [source,bash]
 ----
@@ -276,7 +272,7 @@ versions of the API.
 === Paged Lists
 
 The task_list, subtask_list, event_list, and endpoint_list
-link:../resource_list?format=html&fields=name,method,self_link,url_patterns&filter=paging:True[resources BROKEN]
+link:https://transfer.api.globusonline.org/v0.10/resource_list?format=html&fields=name,method,self_link,url_patterns&filter=paging:True[resources]
 are all paged, with a default page size of 10. If you call them without
 any query paremeters, you will only get the first 10 records. Getting
 *all* records is currently not supported. Different records can be
@@ -307,13 +303,13 @@ The json representation uses a "DATA_TYPE" key to specify the type of
 resource and a "DATA" key containing a list of sub-documents, if any.
 Here is an examples of the endpoint document type:
 
-* link:../document_type/endpoint/example?format=json[/document_type/endpoint/example.json BROKEN NEED TO MIGRATE]
+* link:https://transfer.api.globusonline.org/v0.10/document_type/endpoint/example?format=json[/document_type/endpoint/example.json]
 
 === Errors
 
 When an error occurs an HTTP status code >=400 will be used, and the body of
 the response will contain an X-Transfer-API-Error header with an error code and
-a body with details about the link:../document_type/error?format=html[error BROKEN NEED TO MIGRATE], in the
+a body with details about the link:https://transfer.api.globusonline.org/v0.10/document_type/error?format=html[error], in the
 requested format (or the default json if the error has to do with format
 selection). In extreme cases a plaintext or html 500 error may be returned;
 this indicates a bug in the API or a deployment issue. Here is an example error
@@ -350,17 +346,6 @@ a ServerError.
 ServiceUnavailable is returned when the API is down for maintenance. All
 clients should check for this error on every request, and when found display
 a friendly message to the user.
-
-== Interactive Demo
-
-The link:try.html[interactive demo BROKEN NEED TO MIGRATE] provides a from-based JavaScript + jQuery
-interface to the API, suitable for testing calls and learning the API.
-View source to see how it works.
-
-Only the dynamic documentation is accessible without authentication
-(+/resources+, +/resource_list+, +/document_type+, +/document_type_list+).
-To access anything else, you must setup either SSL client auth in your browser
-or use a Goauth token.
 
 == Examples
 
@@ -437,7 +422,7 @@ the API itself including those details.
 === Monitoring
 
 * Paged task list with sorting and field selection.
-  (link:../resource/task_list?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/task_list?format=html[Reference])
 +
     GET /task_list?offset=0&limit=10&fields=task_id,request_time&orderby=request_time
 +
@@ -478,7 +463,7 @@ Content-Type: application/json
 ----
 
 * Subtask list.
-  (link:../resource/task_subtask_list?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/task_subtask_list?format=html[Reference])
 +
     GET /task/3949cec8-7cc8-11e0-82be-12313932c1e0/subtask_list
 +
@@ -546,8 +531,8 @@ Content-Type: application/json
 ----
 
 * Event list.
-  (link:../resource/task_event_list?format=html[Task Reference BROKEN NEED TO MIGRATE],
-   link:../resource/subtask_event_list?format=html[Subtask Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/task_event_list?format=html[Task Reference],
+   link:https://transfer.api.globusonline.org/v0.10/resource/subtask_event_list?format=html[Subtask Reference])
 +
 [source,bash]
 ----
@@ -609,7 +594,7 @@ Content-Type: application/json
 === Endpoint Management
 
 * Paged endpoint list.
-  (link:../resource/endpoint_list?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_list?format=html[Reference])
 +
     GET /endpoint_list
 +
@@ -694,7 +679,7 @@ Content-Type: application/json
 ----
 
 * Single endpoint.
-  (link:../resource/endpoint?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint?format=html[Reference])
 +
     GET /endpoint/go%23ep1
 +
@@ -740,7 +725,7 @@ Content-Type: application/json
 ----
 
 * Endpoint create.
-  (link:../resource/endpoint_create?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_create?format=html[Reference])
 +
 [source,json]
 ----
@@ -794,7 +779,7 @@ Content-Type: application/json
 ----
 
 * Globus Connect endpoint create.
-  (link:../resource/endpoint_create?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_create?format=html[Reference])
 +
 [source,json]
 ----
@@ -831,7 +816,7 @@ Location: https://transfer.api.globusonline.org/__TRANSFER_VERSION__/endpoint/US
 The globus_connect_setup_key will also be available in the endpoint representation until it is used to complete setup. It is deleted after first use.
 
 * Endpoint update.
-  (link:../resource/endpoint_update_create?format=html[Reference BROKEN NEED TO MIGRATE])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_update_create?format=html[Reference])
 +
 [source,json]
 ----
@@ -895,7 +880,7 @@ Getting a directory listing from an endpoint requires activating the endpoint - 
 The first step in activation is determining what activation methods are
 supported by the endpoint, and what data is needed to perform the
 activation.  This information is exposed in the
-link:../document_type/activation_requirements?format=html[activation_requirements BROKEN NEED TO MIGRATE]
+link:https://transfer.api.globusonline.org/v0.10/document_type/activation_requirements?format=html[activation_requirements]
 resource:
 
     GET /endpoint/USERNAME#ENDPOINT_NAME/activation_requirements
@@ -911,17 +896,17 @@ To activate an endpoint, pick one of the supported activation methods, fill in o
     POST /endpoint/USERNAME#ENDPOINT_NAME/activate
 
 For more details see the API reference for
-link:../resource/endpoint_activate?format=html[/endpoint/NAME/activate BROKEN NEED TO MIGRATE].
+link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_activate?format=html[/endpoint/NAME/activate].
 
 ===== Auto-Activation
 
 The Globus tutorial endpoints (go#ep1, go#ep2) and all Globus Connect
 endpoints do not require external credentials, and can be activated without
-specifying any myproxy credentials. This is done by POSTing an empty body to link:../resource/endpoint_autoactivate?format=html[/endpoint/NAME/autoactivate BROKEN NEED TO MIGRATE].
+specifying any myproxy credentials. This is done by POSTing an empty body to link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_autoactivate?format=html[/endpoint/NAME/autoactivate].
 
 Endpoints with a default myproxy server also support auto-activation, by using a cached credential. When you activate an endpoint from a given myproxy server, you can auto-activate other endpoints that have that myproxy server configured as the default. For example, all teragrid endpoints are configured with the teragrid myproxy server as the default, so once you activate a single teragrid endpoint, the other teragrid endpoints can be auto-activated, without having to specify the myproxy credentials again.  This also works if the user has logged in to link:http://www.globus.org[www.globus.org] using their myproxy identity.
 
-If auto-activation fails (e.g. if no cached credential is present), activate returns an +activation_requirement+ list as part of the +activation_result+. This allows clients to attempt auto-activation on all endpoints; if that fails, they can use the activation_requirement list to prompt the user for the required data and try again using manual activation, without having to do another round trip requesting the activation_requirements. The +activation_result+ can be POSTed back to link:../resource/endpoint_activate?format=html[/endpoint/NAME/activate BROKEN NEED TO MIGRATE] after the required fields are filled in; +activate+ accepts both activation_result and activation_requirements resources as input, and ignores all the fields except for the +activation_requirement+ sub-documents.
+If auto-activation fails (e.g. if no cached credential is present), activate returns an +activation_requirement+ list as part of the +activation_result+. This allows clients to attempt auto-activation on all endpoints; if that fails, they can use the activation_requirement list to prompt the user for the required data and try again using manual activation, without having to do another round trip requesting the activation_requirements. The +activation_result+ can be POSTed back to link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_activate?format=html[/endpoint/NAME/activate] after the required fields are filled in; +activate+ accepts both activation_result and activation_requirements resources as input, and ignores all the fields except for the +activation_requirement+ sub-documents.
 
 ===== OAuth and Activation
 
@@ -947,7 +932,7 @@ Directory listing on an endpoint is exposed as a sub-resource of the endpoint:
 
     GET /endpoint/USERNAME#ENDPOINT_NAME/ls?path=/~/directory
 
-If the endpoint connection succeeds and the path is a valid directory with appropriate permission for the user, a link:../document_type/file_list?format=html[file_list BROKEN NEED TO MIGRATE] is returned.
+If the endpoint connection succeeds and the path is a valid directory with appropriate permission for the user, a link:https://transfer.api.globusonline.org/v0.10/document_type/file_list?format=html[file_list] is returned.
 
 /~/ is an alias for the users' home directory on the server. _path_ can be an empty string, in which case the "default" directory is used, currently */~/*.
 
@@ -960,8 +945,8 @@ support partial listing, so the entrie list is always fetched.
 === Creating Directories
 
 To create a directory on an endpoint, submit a
-link:../document_type/mkdir?format=html[mkdir BROKEN NEED TO MIGRATE] document to link:../resource/endpoint_mkdir?format=html[POST
-/endpoint/NAME/mkdir BROKEN NEED TO MIGRATE] (where NAME is the
+link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir?format=html[mkdir] document to link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_mkdir?format=html[POST
+/endpoint/NAME/mkdir] (where NAME is the
 endpoint name):
 
 [source,json]
@@ -976,7 +961,7 @@ If the path field does not contain an absolute path, it's assumed to be
 relative to the users home directory (~).
 
 A standard error document is returned on failure; on sucess a
-link:../document_type/mkdir_result?format=html[mkdir_result BROKEN NEED TO MIGRATE] is returned, with status 202
+link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir_result?format=html[mkdir_result] is returned, with status 202
 and code +DirectoryCreated+:
 
 [source,json]
@@ -994,7 +979,7 @@ Note that recursive transfers implicitly create directories as needed at the des
 
 === Transfer Submission
 
-A link:../document_type/transfer?format=html[transfer BROKEN NEED TO MIGRATE] is a request to copy files and directories from a source endpoint to a destination endpoint. The request document is essentially a list of transfer items containing source / destination path pairs, with flags to indicate if the path is a directory to be copied recursively or a single file to be transfered. To fullfill the request, the service creates a link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE], which can be monitored usingthe +task_id+.
+A link:https://transfer.api.globusonline.org/v0.10/document_type/transfer?format=html[transfer] is a request to copy files and directories from a source endpoint to a destination endpoint. The request document is essentially a list of transfer items containing source / destination path pairs, with flags to indicate if the path is a directory to be copied recursively or a single file to be transfered. To fullfill the request, the service creates a link:https://transfer.api.globusonline.org/v0.10/document_type/task?format=html[task], which can be monitored usingthe +task_id+.
 
 For recursive (directory) transfer items, the contents of the source directory is copied to the destination directory, including any subdirectories. Any intermediate/parent directories that don't exist on the destination will be created.
 
@@ -1010,13 +995,13 @@ endpoint expires before the transfer is complete, the endpoints can be
 re-activated to allow it to continue, up until the deadline (which defaults to 24 hours after the request time).
 
 When submitting a transfer, you must first get a
-link:../resource/submission_id?format=html[submission_id BROKEN NEED TO MIGRATE]:
+link:https://transfer.api.globusonline.org/v0.10/resource/submission_id?format=html[submission_id]:
 
     GET /submission_id
 
 The submission id should be saved in case the submission is interrupted before a result is received from the server. The transfer can then be resubmitted, and if the original request was successful it will not double submit, it will simply return a result indicating that it's a duplicate id, with the id of the task created to fulfill the request.
 
-The transfer itself is submitted via link:../resource/transfer?format=html[POST /transfer BROKEN NEED TO MIGRATE]:
+The transfer itself is submitted via link:https://transfer.api.globusonline.org/v0.10/resource/transfer?format=html[POST /transfer]:
 
 [source,javascript]
 ----
@@ -1047,7 +1032,7 @@ The transfer itself is submitted via link:../resource/transfer?format=html[POST 
 }
 ----
 
-and returns a link:../document_type/transfer_result?format=html[transfer_result BROKEN NEED TO MIGRATE]:
+and returns a link:https://transfer.api.globusonline.org/v0.10/document_type/transfer_result?format=html[transfer_result]:
 
 [source,javascript]
 ----
@@ -1070,19 +1055,19 @@ and returns a link:../document_type/transfer_result?format=html[transfer_result 
 ----
 
 +sync_level+ can be used to request that only modified files are transferred, using different mechanisms to determine modification. See the
-link:../document_type/transfer?format=html[transfer BROKEN NEED TO MIGRATE] document type for details on the different sync levels. If +sync_level+ is not included or +null+, all files will be transferred.
+link:https://transfer.api.globusonline.org/v0.10/document_type/transfer?format=html[transfer] document type for details on the different sync levels. If +sync_level+ is not included or +null+, all files will be transferred.
 
 +verify_size+ is a per +transfer_item+ integer option, that if specified and not +null+ causes both the source and destination sizes to be checked, raising an error if they do not match the specified value. Currently +verify_size+ cannot be used with +sync_level+. WARNING: this is a beta feature.
 
 === Task Monitoring
 
-To track the progress of a newly submitted task, use the +task_link+ or +task_id+ field of the returned link:../document_type/transfer_result?format=html[transfer_result BROKEN NEED TO MIGRATE] or link:../document_type/delete_result?format=html[delete_result BROKEN NEED TO MIGRATE] document.
+To track the progress of a newly submitted task, use the +task_link+ or +task_id+ field of the returned link:https://transfer.api.globusonline.org/v0.10/document_type/transfer_result?format=html[transfer_result] or link:https://transfer.api.globusonline.org/v0.10/document_type/delete_result?format=html[delete_result] document.
 
     GET /task/TASK_ID
 
-This returns a link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE] document.
+This returns a link:https://transfer.api.globusonline.org/v0.10/document_type/task?format=html[task] document.
 
-A request to link:../resource/task_cancel?format=html[cancel BROKEN NEED TO MIGRATE] the task can be submitted like this:
+A request to link:https://transfer.api.globusonline.org/v0.10/resource/task_cancel?format=html[cancel] the task can be submitted like this:
 
     POST /task/TASK_ID/cancel
 
@@ -1092,7 +1077,7 @@ happened.
 
 === Delete Submission
 
-Remote files and directories can be deleted on an endpoint by submitting a link:../document_type/delete?format=html[delete document BROKEN NEED TO MIGRATE] to link:../resource/delete?format=html[POST /delete BROKEN NEED TO MIGRATE]:
+Remote files and directories can be deleted on an endpoint by submitting a link:https://transfer.api.globusonline.org/v0.10/document_type/delete?format=html[delete document] to link:https://transfer.api.globusonline.org/v0.10/resource/delete?format=html[POST /delete]:
 
 [source,javascript]
 ----
@@ -1128,7 +1113,7 @@ Most resources support field selection using the *fields* paramater. List resour
 
 === Paging
 
-List resources which link:../resource?format=html&fields=name,method,self_link,url_patterns&paging=True[use paging BROKEN NEED TO MIGRATE] can be controlled with the *offset* and *limit* query parameters; the default is +offset=0+ and +limit=10+. A maximum page size is configured on the server, and is currently set at 100. Typical usage involves starting with +offset=0+, choosing a page size and passing with +limit=PAGE_SIZE+, and incrementing +offset+ by +PAGE_SIZE+ to display successive pages.
+List resources which link:https://transfer.api.globusonline.org/v0.10/resource?format=html&fields=name,method,self_link,url_patterns&paging=True[use paging] can be controlled with the *offset* and *limit* query parameters; the default is +offset=0+ and +limit=10+. A maximum page size is configured on the server, and is currently set at 100. Typical usage involves starting with +offset=0+, choosing a page size and passing with +limit=PAGE_SIZE+, and incrementing +offset+ by +PAGE_SIZE+ to display successive pages.
 
 For example, with a page size of 50:
 
@@ -1196,209 +1181,7 @@ GET /endpoint_list?fields=canonical_name,server.ALL
 
 API reference documentation is exposed via dynamically generated documentation resources. This can be browsed conveniently using the HTML representation:
 
-* link:../resource_list?format=html&fields=name,method,self_link,url_patterns,description[Resources BROKEN NEED TO MIGRATE] - a list of all the resources in the API, describing their purpose, what document types they take as input and return as output, what query parameters they accept, and what errors they can return.
-* link:../document_type_list?format=html[Document Types] - a list of all the document types used in the API, describing their purpose, and linking to a list of their fields and example representations.
+* link:https://transfer.api.globusonline.org/v0.10/resource_list?format=html&fields=name,method,self_link,url_patterns,description[Resources] - a list of all the resources in the API, describing their purpose, what document types they take as input and return as output, what query parameters they accept, and what errors they can return.
+* link:https://transfer.api.globusonline.org/v0.10/document_type_list?format=html[Document Types] - a list of all the document types used in the API, describing their purpose, and linking to a list of their fields and example representations.
 
-A shortcut for accessing resource path documentation is to append "*/\_doc_*" to a valid resource URL, for example link:../task/ID/_doc_?format=html[/task/ID/\_doc_ BROKEN NEED TO MIGRATE] links to +/resource/task+. Patterns that support multiple methods, like link:../endpoint/NAME/_doc_?format=html[/endpoint/NAME/\_doc_ BROKEN NEED TO MIGRATE], display links to all the supported operations using that url pattern. When using "/\_doc_", the identifiers in the URL are ignored.
-
-== Changelog
-
-=== __TRANSFER_VERSION__
-
-*   *Release 24*
-    ** Add ALPHA +acl_available+, +acl_editable+, and +shareable+ fields to
-       link:../document_type/endpoint?format=html[endpoint document BROKEN NEED TO MIGRATE].
-    ** Add ALPHA +s3_url+ and +s3_owner_activated+ field to
-       link:../document_type/endpoint?format=html[endpoint document BROKEN NEED TO MIGRATE]. +s3_url+
-       will be set only on S3 endpoints, which is an ALPHA feature and will
-       require a managed endpoint subscription. Creating S3 endpoints via
-       the API is not yet supported.
-    ** Append +/+ to +default_directory+ if it's missing in
-       link:../document_type/endpoint?format=html[endpoint document BROKEN NEED TO MIGRATE].
-    ** Add PUT support for ALPHA access rule resource
-       link:../resource/endpoint_access_update?format=html[PUT /endpoint/NAME/access/ID BROKEN NEED TO MIGRATE]
-       for updating the +permissions+ field on an existing access rule.
-*   *Release 21*
-    ** Add +is_paused+ to
-       link:../document_type/server?format=html[server document BROKEN NEED TO MIGRATE] for Globus
-       Connect endpoints, to indicate when the user has paused the endpoint.
-       Note that +is_connected+ will always be false when +is_paused+ is true,
-       because pause is designed to temporarily stop all operations to the
-       endpoint.
-*   *Release 20*
-    ** Fix internal error when an endpoint admin fetches task details for
-       another user's task and the task is a delete task.
-    ** Fix internal error when calling ls on a directory path; now returns
-       correct error.
-*   *Release 19*
-    ** Use a format query parameter instead of extension to specify the format
-       in the URL. The Accepts header is still supported as well, but the
-       extension is only supported for documentation resources to avoid
-       breaking links from the mailing list archives etc. Even for
-       documentation resources this is deprecated and the format query
-       parameter should be used instead. This change was made to support
-       the following:
-    ** Allow dots in endpoint names.
-    ** Add +force_encryption+ and +disable_verify+ fields to
-       link:../document_type/endpoint?format=html[endpoint document BROKEN NEED TO MIGRATE].
-    ** Add deprecation warnings to
-       link:../resource_list?format=html&fields=name,method,self_link,url_patterns,description&filter=name:task_subtask_list,subtask,subtask_event_list[subtask API BROKEN NEED TO MIGRATE].
-    ** Make DEPRECATED and ALPHA resource searchable in the dynamic reference
-       documentation.
-*   *Release 18*
-    ** Rename alpha sharing API; the access API is unchanged, and the old API
-       for create/test is deprecated. Note that field names have also changed:
-       link:../document_type/shared_endpoint?format=html[shared_endpoint document BROKEN NEED TO MIGRATE],
-       link:../resource/shared_endpoint_create?format=html[shared_endpoint_create BROKEN NEED TO MIGRATE],
-       link:../resource/shared_endpoint_test?format=html[shared_endpoint_test BROKEN NEED TO MIGRATE],
-    ** Add PUT for updating endpoint servers by ID:
-       link:../resource/endpoint_server_update?format=html[endpoint_server_update BROKEN NEED TO MIGRATE].
-*   *Release 17*
-    ** Add alpha API for sharing:
-       link:../document_type/sharing_endpoint?format=html[sharing_endpoint document BROKEN NEED TO MIGRATE],
-       link:../resource/sharing_endpoint_create?format=html[sharing_endpoint_create BROKEN NEED TO MIGRATE],
-       link:../resource/sharing_endpoint_test?format=html[sharing_endpoint_test BROKEN NEED TO MIGRATE],
-       link:../document_type/access?format=html[access document BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_access_list?format=html[endpoint_access_list BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_access_get?format=html[endpoint_access_get BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_access_add?format=html[endpoint_access_add BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_access_delete?format=html[endpoint_access_delete BROKEN NEED TO MIGRATE].
-    ** Add new API for manipulating servers within an endpoint:
-       link:../resource/endpoint_server_list?format=html[endpoint_server_list BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_server?format=html[endpoint_server BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_server_add?format=html[endpoint_server_add BROKEN NEED TO MIGRATE],
-       link:../resource/endpoint_server_delete?format=html[endpoint_server_delete BROKEN NEED TO MIGRATE].
-*   *2012-03-28*
-    ** Add +encrypt_data+ field to
-       link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE] document, containing the value
-       used for the transfer.
-*   *2012-03-13*
-    ** Add +sync_level+ field to
-       link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE] document, containing the value
-       used for the transfer.
-    ** Fix bug causing symlinks to be excluded from ls, and add
-       +link_target+ field to link:../document_type/file?format=html[file BROKEN NEED TO MIGRATE]
-       document with the absolute path of the link target (or null for
-       non links).
-*   *2011-11-01*
-    ** Add +source_endpoint+ and +destination_endpoint+ fields to
-       link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE] document.
-       Filtering and orderby are not currently supported on these fields.
-    ** Add nice_status, nice_status_details, and nice_status_expires_in fields
-       to link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE] document.
-       These fields are *alpha* and very likely to change.
-    ** Add +interpret_globs+ field to link:../document_type/delete?format=html[delete BROKEN NEED TO MIGRATE]
-       document, default +false+. If
-       specified and set +true+, interprets *, ?, and [] like standard shell,
-       but only in the last path segment.
-    ** Add link:../document_type/endpoint/field/expires_in?format=html[expires_in BROKEN NEED TO MIGRATE] field
-       to link:../document_type/endpoint?format=html[endpoint BROKEN NEED TO MIGRATE] documents.
-    ** Add filters to link:../resource/endpoint_list?format=html[endpoint_list BROKEN NEED TO MIGRATE]:
-       +in_use+ (source or destination of and active task)
-       and +in_history+ (owned by the user or activated by
-       the user at some point in the past; this is the default shown
-       by the CLI endpoint-list command). Both only take the value +true+
-       (or +1+); inverse filtering is not supported.
-    ** Add link:../resource/endpoint_mkdir?format=html[POST /endpoint/NAME/mkdir BROKEN NEED TO MIGRATE]
-       for creating directories.
-    ** Add link:../resource/task_update?format=html[PUT /task/ID BROKEN NEED TO MIGRATE] for updating +label+
-       and +deadline+.
-    ** Allow JSON string input for integer types.
-    ** Add new link:../resource/delete?format=html[POST /delete BROKEN NEED TO MIGRATE] resource
-       for submitting delete tasks.
-    ** Add new +DELETE+ type tasks. Delete tasks are not shown be default in
-       link:../resource/task_list?format=html[task_list BROKEN NEED TO MIGRATE] and not included by
-       link:../resource/tasksummary?format=html[tasksummary BROKEN NEED TO MIGRATE] counts. To include delete
-       tasks in each case, filter=type:TRANSFER,DELETE must be passed.
-       This is implemented by setting the default filter to type:TRANSFER;
-       setting it explictly overrides the default.
-    ** Add link:../resource/submission_id?format=html[/submission_id BROKEN NEED TO MIGRATE] resource for use
-       by both +/transfer+ and +/delete+.
-       +/transfer/submission_id+ is now deprecated, but returns the same
-       result as +/submission_id+ for backward compatibility.
-    ** Add boolean +is_connected+ field to
-       link:../document_type/server?format=html[server BROKEN NEED TO MIGRATE] documents, indicating if
-       a globus connect endpoint is connected. For other endpoints it will
-       always be +true+. The server list is no longer empty when a GC
-       endpoint is disconnected, to expose the +subject+ field for disconnected
-       endpoints. All other server fields are now +null+, for both connected
-       and disconnected endpoints, since the GC endpoints can't be used from
-       outside globusonline.
-    ** Add +label+ field to link:../document_type/transfer?format=html[transfer BROKEN NEED TO MIGRATE] and
-       link:../document_type/task?format=html[task BROKEN NEED TO MIGRATE], with a pattern filter
-       on +task+. Label modification on +task+ is not yet supported.
-    ** Support filtering +endpoint_list+ by +activated+ and +expire_time+,
-       and ordering by +expire_time+.
-*   *2011-07-27*
-    ** Added +delegate_proxy+ activation method. Documentation will be added
-       shortly; Python examples are included in the latest client example
-       download.
-    ** Provide more detailed error messages when X.509 authentication fails.
-*   *2011-07-15*
-    ** Change the server certificate to one signed by GoDaddy. Since GoDaddy
-       CAs are installed in all common web browsers, the browser will no
-       longer display a warning to users, and users can be sure they are
-       talking to the real server.
-*   *2011-05-27*
-    ** Integrated the tutorial into this index page as the overview and
-       examples sections, and fixed some errors and omissions in the tutorial
-       content.
-*   *2011-05-06*
-    ** Added link:../resource/endpoint_autoactivate?format=html[POST /endpoint/&lt;name>/autoactivate BROKEN NEED TO MIGRATE] -
-       Using link:../resource/endpoint_activate?format=html[POST /endpoint/&lt;name>/activate BROKEN NEED TO MIGRATE]
-       with an empty request body to auto activate is deprecated,
-       and will be removed in the next version.
-    ** Added link:../resource/endpoint_deactivate?format=html[POST /endpoint/&lt;name>/deactivate BROKEN NEED TO MIGRATE] -
-       This deletes the credential assocated with the endpoint, even
-       before it expires and is deleted automatically.
-    ** Added support for renaming endpoints with
-       link:../resource/endpoint_update_create?format=html[PUT /endpoint/&lt;name> BROKEN NEED TO MIGRATE] - on
-       success 301 is returned with code Renamed, and the Location header
-       contains the new URL (which will always be +/endpoint/<new_name>+).
-    ** Added support for modifying is_public on endpoints
-       with link:../resource/endpoint_update_create?format=html[PUT /endpoint/&lt;name> BROKEN NEED TO MIGRATE].
-*   *2011-03-15*
-    ** Added link:../resource/endpoint_create?format=html[POST /endpoint BROKEN NEED TO MIGRATE] -
-       this is now the recommended way to create endpoints; it will return a
-       ClientError.Conflict error if an endpoint with the same name already
-       exists. Using PUT for creation is deprecated, and will be removed in
-       a later release.
-    ** Support creation of globus connect endpoints, and return a
-       setup key in the response. This is only available with the new
-       link:../resource/endpoint_create?format=html[POST /endpoint BROKEN NEED TO MIGRATE]
-       operation.
-    ** Support sync transfers via a new 'sync_level' field in the
-       link:../document_type/transfer?format=html[transfer resource BROKEN NEED TO MIGRATE].
-*   *2011-02-16*
-    ** Replaced +/task(<task_id>)+ style with +/task/<task_id>+ style, for
-       all resources.
-    ** Renamed document types +tasks+, +subtasks+, and +endpoints+ to
-       +task_list+, +subtask_list+, and +endpoint_list+.
-    ** Renamed list resources with singular names which return lists
-       to +X_list+, e.g. +task+ -> +task_list+, +task/ID/subtask+ ->
-       +task/ID/subtask_list+, etc.
-    ** Renamed +directory_listing+ resource (returned by ls) to +file_list+.
-       It supports standard +filter+ and +orderby+ params, just like the
-       other list types.
-    ** Renamed +/user(NAME)/endpoint+ to +/endpoint_list+.
-    ** Get format from extension at end of URL, instead of from query
-       param. +format+ and +alt+ are no longer recognized query params.
-    ** In +transfer+ document, renamed +transfer_id+ to +submission_id+.
-       Please note that this is unrelated to the +task_id+ - you must read
-       that from the +transfer_result+ document returned by successful
-       submission.
-    ** Filtering now uses a separate +filter+ query param, with the filter
-       expressions delimited by +/+, and the name/value delimited by +:+,
-       instead of using separate query parameters named for the field being
-       filtered. For example, the query string fragment on +task_list+
-       +status=ACTIVE&request_time=2010-12-22%2023:35:48,+ becomes
-       +filter=status:ACTIVE/request_time:2010-12-22%2023:35:48,+. Note that
-       the new delimiters do not require escaping within a query string
-       value.
-    ** Field selection now supports selecting fields on subdocuments. For
-       example, +/endpoint_list?fields=ALL,server.uri+ displays all top level
-       endpoint fields, and only the +uri+ field in the server subdocuments.
-       Note that +ALL+ means all fields at that level, not including
-       subresources. It can also be used on subresources:
-       +/endpoint_list?fields=canonical_name,server.ALL+. For list document
-       types, field selection applies to the element type, not the list itself.
+A shortcut for accessing resource path documentation is to append "*/\_doc_*" to a valid resource URL, for example link:https://transfer.api.globusonline.org/v0.10/task/ID/_doc_?format=html[/task/ID/\_doc_] links to +/resource/task+. Patterns that support multiple methods, like link:https://transfer.api.globusonline.org/v0.10/endpoint/NAME/_doc_?format=html[/endpoint/NAME/\_doc_], display links to all the supported operations using that url pattern. When using "/\_doc_", the identifiers in the URL are ignored.

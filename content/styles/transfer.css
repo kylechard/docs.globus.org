@@ -1,0 +1,8 @@
+.go-try-table {
+    width: 100%;
+}
+.go-try-table td { padding: 5px;}
+.go-try-table textarea {
+    width: 100%;
+}
+  .go-try-table label { font-weight: 300; }

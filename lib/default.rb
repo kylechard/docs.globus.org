@@ -4,11 +4,6 @@
 require "nanoc/toolbox"
 
 module SideNavHelper extend self
-    def menu_api(items)
-  		i = items.select{|x| x.identifier.start_with?("/transfer-api/docs")}
-      	self.sort_menuitems(i,':menu_weight')
-    end
-
     def sort_menuitems(items, sort_by)
         items.sort_by { |a| a[sort_by] }
     end
@@ -27,7 +22,7 @@ def globus_breadcrumb_for(identifier, options={})
 
   # Retreive the breadcrumbs trail and format them
   sections = find_breadcrumbs_trail(identifier)
-  
+
   # Customer code
   sections[0][:title] = 'home' # rename the first to home
   sections.pop # remove last
@@ -54,7 +49,7 @@ def globus_render_menu(items, options={})
   options[:title_tag]        ||= 'h2'
   options[:title]            ||= nil
   options[:separator]        ||= ''
-  
+
 
   # Parse the title and remove it from the options
   title =  options[:title] ? content_tag(options[:title_tag], options[:title]) : ''
@@ -74,7 +69,7 @@ def globus_render_menu(items, options={})
 
     # Set item active class
     if item[:link]
-      options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : '' 
+      options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : ''
 
       # Set link active if hide_item_tag is true
       if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]))
@@ -133,7 +128,7 @@ def globus_load_menu(file_name)
   # fn = File.dirname(File.expand_path(__dir__)) + '/menus.yaml'
   # fn = File.dirname(File.expand_path(__dir__))
   # yaml = YAML.load(File.read(fn)).select { |key, value| key.to_s == menu_name }.values[0]
-  # 
+  #
   file = 'content/menus/' + file_name + '.yaml'
   yaml = YAML.load(File.read(file))
   if !yaml
@@ -170,13 +165,13 @@ def globus_build_menu(menu_name)
   #   items =  menu[:items]
   #   rendered_menus.push(globus_render_menu(items, options))
   # end
-  
+
   # puts '+++++++'
-  # puts 
+  # puts
   # puts '-----------'
 
   # abort
-  
+
   # abort
   # globus_render_menu(items, options)
 end

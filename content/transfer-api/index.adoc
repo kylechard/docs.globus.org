@@ -30,13 +30,6 @@ and post your questions there. Note that the list web server uses
 a self-signed certificate - you will need to accept this certificate
 to subscribe.
 
-=== GlobusWorld 2013 Tutorial
-
-This link:/transfer-api/gw13/[tutorial]
-(link:/transfer-api/GlobusWorld2013_TransferAPITutorial.pdf[slides]) from the GlobusWorld
-conference steps through using the Python client library to perform different
-tasks using the API.
-
 == Example Clients
 
 The client libraries are hosted on github:
