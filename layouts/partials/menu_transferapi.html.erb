@@ -1,15 +1,5 @@
 <aside class="sidebar-block">
     <ul class="nav nav-pills nav-stacked">
-        <% x = @items.select{ |x| x.identifier.start_with?("/transfer-api/docs/v0.10/reference") } %>
-
-        <% x.each do |i|
-                item_url = i[:title].to_s.downcase
-                trim = item_url.index('(')
-                item_name = item_url[0, trim.to_i]
-                unless item_name.nil? or item_name.empty? %>
-                        <li class="<%= 'active' if i.identifier == @item.identifier %>">
-                            <a href = "<%= i.identifier %>"><%= item_name %></a></li>
-                <% end %>
-        <% end %>
+        <%= globus_navigation_for("/transfer-api/", :collection_tag => 'ul') %>
     </ul>
 </aside>

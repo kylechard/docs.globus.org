@@ -47,3 +47,49 @@ aside.sidebar-block .nav>li.active>a:focus {
     border-left-width: 2px;
     padding-left: 18px;
 }
+
+/* 2nd depth */
+aside.sidebar-block .nav .nav {
+    margin-bottom: 0;
+}
+aside.sidebar-block .nav .nav .nav>li>a {
+    padding-left: 40px;
+    font-size: .8em;
+}
+aside.sidebar-block .nav .nav .nav>li>a:hover,
+aside.sidebar-block .nav .nav .nav>li>a:focus,
+aside.sidebar-block .nav .nav .nav>li.active>a,
+aside.sidebar-block .nav .nav .nav .nav>li.active>a:hover,
+aside.sidebar-block .nav .nav .nav>li.active>a:focus {
+    background-color: transparent;
+    border-left: solid 1px #06C;
+    padding-left: 39px;
+    color: #06C;
+}
+aside.sidebar-block .nav .nav .nav>li.active>a,
+aside.sidebar-block .nav .nav .nav>li.active>a:hover,
+aside.sidebar-block .nav .nav .nav>li.active>a:focus {
+    border-left-width: 2px;
+    padding-left: 38px;
+}
+
+/* 3rd depth */
+aside.sidebar-block .nav .nav .nav .nav>li>a {
+    padding-left: 60px;
+}
+aside.sidebar-block .nav .nav .nav .nav>li>a:hover,
+aside.sidebar-block .nav .nav .nav .nav>li>a:focus,
+aside.sidebar-block .nav .nav .nav .nav>li.active>a,
+aside.sidebar-block .nav .nav .nav .nav .nav>li.active>a:hover,
+aside.sidebar-block .nav .nav .nav .nav>li.active>a:focus {
+    background-color: transparent;
+    border-left: solid 1px #06C;
+    padding-left: 59px;
+    color: #06C;
+}
+aside.sidebar-block .nav .nav .nav .nav>li.active>a,
+aside.sidebar-block .nav .nav .nav .nav>li.active>a:hover,
+aside.sidebar-block .nav .nav .nav .nav>li.active>a:focus {
+    border-left-width: 2px;
+    padding-left: 58px;
+}

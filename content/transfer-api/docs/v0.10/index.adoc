@@ -1,9 +1,7 @@
-= Globus Transfer API
+= v0.10
 :toc:
 :toc-placement: manual
 :toc-title: Contents
-
-*Version:* __TRANSFER_VERSION__
 
 This API provides a REST-style interface to the
 link:http://www.globus.org[globus] reliable file transfer service.

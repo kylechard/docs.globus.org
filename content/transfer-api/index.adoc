@@ -1,6 +1,4 @@
-== Transfer API Versions
-
-*Latest Version:* link:/transfer-api/docs/__LATEST_TRANSFER_VERSION__/index.html[__LATEST_TRANSFER_VERSION__]
+= Transfer API
 
 This API provides a REST-style interface to the
 link:https://www.globus.org[globus] reliable file transfer service.
@@ -9,41 +7,3 @@ tasks, managing file transfer endpoints, listing remote directories, and
 submitting new transfer and delete tasks. The API is ideal for integration into
 Portals or Gateways to provide complex reliable file transfer capabilities
 without having to develop and support these features on your own.
-
-== Documentation
-
-Different versions of the API can be accessed on this server using a different
-base URL; follow the links below for documentation on a particular version.
-0.X versions do not have a guarenteed lifetime, but old 0.X versions will
-remain up for at least a week after a new version is made available.
-
-* link:/transfer-api/docs/__LATEST_TRANSFER_VERSION__/index.html[/__LATEST_TRANSFER_VERSION__]
-
-There is no default version - all resource must be accessed using a particular
-version base URL.
-
-=== Mailing List
-
-For support join the transfer-api
-link:http://lists.globusonline.org/mailman/listinfo/transfer-api[mailing list]
-and post your questions there. Note that the list web server uses
-a self-signed certificate - you will need to accept this certificate
-to subscribe.
-
-== Example Clients
-
-The client libraries are hosted on github:
-
-* link:https://github.com/globusonline/transfer-api-client-python[Python client]
-* link: https://github.com/globusonline/transfer-api-client-java[Java client]
-
-The Python client is also link:http://pypi.python.org/pypi/globusonline-transfer-api-client/[available on PyPI], and can be installed with +easy_install+ or +pip+,
-e.g. +easy_install globusonline-transfer-api-client+. This will install the
-client library, but not the examples and the CA certificate.
-
-Note that both clients currently require passing the path to the GoDaddy
-CA certificate, which has signed the host certificate of
-+transfer.api.globusonline.org+. It is included in the source download of
-each client, and can also be
-link:/transfer-api/gd-bundle_ca.cert[downloaded directly]
-from this server.

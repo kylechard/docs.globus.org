@@ -8,6 +8,11 @@ module SideNavHelper extend self
         items.sort_by { |a| a[sort_by] }
     end
 
+    def menu_transfer(items)
+        i = items.select{|x| x.identifier.start_with?("/transfer-api/docs")}
+        self.sort_menuitems(i,':menu_weight')
+    end
+
     def menu_toolkit(items)
         i = items.select{|x| x.identifier.start_with?("/toolkit/docs")}
         self.sort_menuitems(i,':menu_weight')
@@ -37,6 +42,24 @@ def globus_breadcrumb_for(identifier, options={})
   # End Customer code
 
   render_menu(sections, options)
+end
+
+
+# File 'lib/nanoc/toolbox/helpers/navigation.rb', line 26
+
+def globus_navigation_for(identifier, options={})
+    options[:collection_tag]    ||= 'ul'
+    options[:collection_class]  ||= 'nav nav-pills nav-stacked'
+
+  # Get root item for which we need to draw the navigation
+  root = @items.find { |i| i.identifier == identifier }
+
+  # Do not render if there is no child
+  return nil unless root.children
+
+  # Find all sections, and render them
+  sections = find_item_tree(root, options)
+  globus_render_sidebar_menu(sections, options)
 end
 
 
@@ -122,6 +145,38 @@ def globus_render_menu(items, options={})
 
 end
 
+# Ref Nanoc::Toolbox::Helpers::Navigation#render_menu method
+def globus_render_sidebar_menu(items, options={})
+  options[:depth]            ||= 4
+  options[:collection_tag]   ||= 'ul'
+  options[:collection_class] ||= 'nav'
+  options[:item_tag]         ||= 'li'
+  options[:title_tag]        ||= 'h2'
+  options[:title]            ||= nil
+  options[:separator]        ||= ''
+
+
+  # Parse the title and remove it from the options
+  title =  options[:title] ? content_tag(options[:title_tag], options[:title]) : ''
+  options.delete(:title_tag)
+  options.delete(:title)
+
+  # Decrease the depth level
+  options[:depth] -= 1
+
+  rendered_menu = items.map do |item|
+    # Render only if there is depth left
+    if options[:depth].to_i  > 0 && item[:subsections]
+      output = render_menu(item[:subsections], options)
+      options[:depth] += 1 # Increase the depth level after the call of navigation_for
+    end
+    output ||= ""
+    content_tag(options[:item_tag], link_to_unless_current(item[:title].to_s.downcase, item[:link]) + options[:separator] + output)
+
+  end.join()
+
+  title + content_tag(options[:collection_tag], rendered_menu, :class => options[:collection_class]) unless rendered_menu.strip.empty?
+end
 
 # Load menu from menus.yaml file
 def globus_load_menu(file_name)
