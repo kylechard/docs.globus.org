@@ -1,0 +1,291 @@
+= CLI: Beyond the basics
+:toc:
+:toc-placement: manual
+:toc-title:
+
+This is a companion guide to link:../[Getting started with the Command Line Interface (CLI)]. New CLI users should be familiar with that introduction before proceeding.
+
+'''
+toc::[]
+
+'''
+
+== Endpoint Management
+In addition to serving as a discovery mechanism for community endpoints Globus enables users to create and (optionally) share their own endpoint definitions.
+
+Logical endpoints can be created using the +endpoint-add+ command. They can be continually modified (by adding physical addresses, renaming, etc.) and persist until explicitly deleted with the +endpoint-remove+ command.
+
+In the following example user +demodoc+ adds an endpoint with a standalone +ssh+ command. To demonstrate the Globus interactive shell mode, the user then adds two endpoints within an interactive Globus CLI session. Two logical endpoints are created, with +vpac+ having one associated physical address and +never+ having two:
+
+[source, bash]
+----
+$ ssh demodoc@cli.globusonline.org endpoint-add vpac -p gsiftp://arcs-df.vpac.org:2811/
+$ ssh demodoc@cli.globusonline.org
+Welcome to globusonline.org, demodoc. Type 'help' for help.
+$ endpoint-add -p never-1.ci.uchicago.edu never
+$ endpoint-add -p never-2.ci.uchicago.edu never
+$ exit
+Connection to cli.globusonline.org closed.
+----
+
+Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user demodoc makes an endpoint public, +demodoc#never+ in visible in the public list:
+
+[source, bash]
+----
+$ ssh demodoc@cli.globusonline.org
+$ endpoint-modify --public never
+Set 'never' to public
+$ endpoint-list -p
+alcf#dtn
+ci#pads
+go#ep1
+go#ep2
+demodoc#never
+nersc#dtn
+$ endpoint-list -p -v demodoc#never
+Name : demodoc#never
+Host(s) : gsiftp://never-2.ci.uchicago.edu:2811, gsiftp://never-1.ci.uchicago.edu:2811
+Subject(s) :
+MyProxy Server: n/a
+----
+
++endpoint-list+ with no options displays the user's list of previously-activated endpoints (both public and private), along with the remaining activation time for each endpoint:
+
+[source, bash]
+----
+$ ssh demodoc@cli.globusonline.org
+$ endpoint-list
+alcf#dtn 09:36:54
+ci#pads 08:54:51
+go#ep1 10:34:43
+go#ep2 10:34:43
+demodoc#never 09:36:54
+nersc#dtn 08:25:47
+----
+
+In addition to explicit creation, endpoints can be implicitly created by way of +transfer+ and +scp+. If the +transfer+ or +scp+ command refers to a hostname instead of a logical name, a private endpoint will be automatically created to represent it. Further information about implicit endpoint creation can be found in the +transfer+ and  +scp+ +man+ pages.
+
+== Data Management
+Globus provides two commands for moving files: +transfer+ and +scp+. The +transfer+ command is the more feature-rich of the two; +scp+ supports a well-known interface and is easy to use. Globus also supports features such as file synchronization and idempotent submission.
+
+The following example shows a detached recursive +scp+. By default scp will be canceled if your ssh session is disconnected or you press Ctrl-C. However, Globus provides the -D option so you can create a detached scp task that runs in the background even if your ssh session is disconnected:
+
+[source, bash]
+----
+$ scp -D -r ucrcc#midway:/demodoc/sdata/10Kfiles100M/ nersc#dtn:/project/mpccc1/dest/sdata/alcf20100122/
+Task ID: 4a3c471e-edef-11df-aa30-1231350018b1
+----
+
+In contrast to +scp+, the +transfer+ command reads an EOF or Ctrl-D terminated list of source and destination pairs from stdin and attempts to transfer all of the files in the list until successful or the user specified deadline has been reached. The following example directs Globus to recursively copy the contents of a directory from UChicago RCC to NERSC. It is the equivalent to the previous +scp+ command, with the exception that any outstanding transfer requests not completed after the 6 hour deadline (+-d 6h+) will be ignored:
+
+[source, bash]
+----
+$ echo "ucrcc#midway/demodoc/sdata/10Kfiles100M/ nersc#dtn/project/mpccc1/dest/sdata/alcf20100122/ -r" | ssh demodoc@cli.globusonline.org transfer -d 6h
+Task ID: 427b63ec-ee04-11df-aa30-1231350018b1
+Created transfer task with 1 file(s)
+----
+
+Another way to specify a transfer dataset is via a file list. A file list can contain a mix of directory source/dest pairs and individual file source/dest pairs. The following example specifies that the 10,000 individual files listed in file +10Kmidway-nersc100MB.dat+ should be transferred:
+
+[source, bash]
+----
+$ cat ./10Kmidway-nersc100MB.dat | ssh demodoc@cli.globusonline.org transfer
+Task ID: 28d854ae-ee18-11df-aa30-1231350018b1
+Created transfer task with 10000 file(s)
+----
+
+The following two examples highlight the Globus one-way file synchronization feature. The first executes a file size-based check, the second executes a full md5sum check:
+
+[source, bash]
+----
+$ echo "go#ep1/share/godata/ go#ep2/~/ -r -s 1" | ssh demodoc@cli.globusonline.org transfer
+Task ID: 609b53fc-ebff-11df-aa30-1231350018b1
+Created transfer task with 1 file(s)
+----
+
+[source, bash]
+----
+$ echo "ucrcc#midway/demodoc/sdata/10Kfiles100M/ nersc#dtn/project/mpccc1/dest/sdata/alcf20100122/ -r -s 3" | ssh demodoc@cli.globusonline.org transfer
+Task ID: 1c05440a-ee57-11df-aa30-1231350018b1
+Created transfer task with 1 file(s)
+----
+
+The following example demonstrates both inline endpoint creation and activation (note the automatically-generated private endpoint definition):
+
+[source, bash]
+----
+$ gsissh demodoc@cli.globusonline.org scp -g alcf#dtn:~/samplefile.txt gridftp.lonestar.tacc.xsede.org:~/samplefile.txt
+Activating 'gridftp.lonestar.tacc.xsede.org:2811'
+Activating 'alcf#dtn:2811'
+Task ID: 3f4c2cc6-ee20-11df-aa30-1231350018b1
+[XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 867.00 mbps
+$ ssh demodoc@cli.globusonline.org endpoint-list *lone* -v
+Name : _gsiftp_gridftp.lonestar.tacc.xsede.org_2811
+Host(s) : gsiftp://gridftp.lonestar.tacc.teragrid.org:2811
+Subject(s) :
+MyProxy Server : n/a
+Credential Status : ACTIVE
+Credential Expires: 2010-11-12 16:47:16Z
+Credential Subject: /DC=org/DC=doegrids/OU=People/CN=Logan Detmers 319918/CN=1686987609/CN=1586129810
+Name : xsede#lonestar
+Host(s) : gsiftp://tg-gridftp.lonestar.tacc.xsede.org:2811
+Subject(s) :
+MyProxy Server : myproxy.teragrid.org
+Credential Status : EXPIRED
+Credential Expires: 2010-11-12 05:56:46Z
+Credential Subject: /C=US/O=National Center for Supercomputing Applications/CN=Logan Detmers
+----
+
+Once-and-only-once submission:
+
+[source, bash]
+----
+$ ssh demodoc@cli.globusonline.org transfer --generate-id 7f2fb1d6-ee76-11df-aa30-1231350018b1
+$ cat ./10Kmidway-nersc100MB.dat | ssh demodoc@cli.globusonline.org transfer --taskid=7f2fb1d6-ee76-11df-aa30-1231350018b1
+Killed by signal 2.
+$ cat ./10Kmidway-nersc100MB.dat | ssh demodoc@cli.globusonline.org transfer --taskid=7f2fb1d6-ee76-11df-aa30-1231350018b1
+Deadline : 2010-11-12 19:24:31Z
+Task ID: 7f2fb1d6-ee76-11df-aa30-1231350018b1
+Created transfer task with 10000 file(s)
+$ cat ./10Kmidway-nersc100MB.dat | ssh demodoc@cli.globusonline.org transfer --taskid=7f2fb1d6-ee76-11df-aa30-1231350018b1
+Notice: Task ID already created
+----
+
+== Monitoring
+Globus provides users with realtime and historical information about their tasks. Push mechanisms include email notifications of interesting events such as task completion, credential expiration, and account creation. Pull mechanisms return metadata at the task level (the task id returned by the +scp+ and +transfer+ commands) and the subtask level (each individual file transfer is considered a subtask and has a unique id.)
+
+The default +status+ command lists all pending tasks:
+
+[source, bash]
+----
+$ status
+Task ID : 28d854ae-ee18-11df-aa30-1231350018b1
+Request Time: 2010-11-12 04:48:57Z
+Command : transfer (+10000 input lines)
+Status : ACTIVE
+----
+
+The +status+ command also provides a way to list the last n tasks (+-l n+) regardless of state (+-a+):
+
+[source, bash]
+----
+$ status -l 4 -a
+Task ID : 3f4c2cc6-ee20-11df-aa30-1231350018b1
+Request Time: 2010-11-12 05:46:51Z
+Command : scp -g alcf#dtn:~/samplefile.txt gridftp.lonestar.tacc.xsede.org:~/samplefile.txt
+Status : SUCCEEDED
+
+Task ID : 28d854ae-ee18-11df-aa30-1231350018b1
+Request Time: 2010-11-12 04:48:57Z
+Command : transfer (+10000 input lines)
+Status : ACTIVE
+
+Task ID : 427b63ec-ee04-11df-aa30-1231350018b1
+Request Time: 2010-11-12 02:26:30Z
+Command : transfer -d 6h (+1 input line)
+Status : SUCCEEDED
+
+Task ID : 4a3c471e-edef-11df-aa30-1231350018b1
+Request Time: 2010-11-11 23:56:24Z
+Command : scp -D -r ucrcc#midway:/demodoc/sdata/10Kfiles100M/ nersc#dtn:/project/mpccc1/dest/sdata/alcf20100122/
+Status : SUCCEEDED
+----
+
+The default +details+ command provides an overview of a transfer’s state:
+
+[source, bash]
+----
+$ details 28d854ae-ee18-11df-aa30-1231350018b1
+Task ID : 28d854ae-ee18-11df-aa30-1231350018b1
+Task Type : TRANSFER
+Parent Task ID : n/a
+Status : ACTIVE
+Request Time : 2010-11-12 04:48:57Z
+Deadline : 2010-11-13 04:48:57Z
+Completion Time : n/a
+Total Tasks : 10000
+Tasks Successful : 8831
+Tasks Expired : 0
+Tasks Canceled : 0
+Tasks Failed : 0
+Tasks Pending : 1169
+Tasks Retrying : 8
+Command : transfer (+10000 input lines)
+Files : 10000
+Directories : 0
+Bytes Transferred: 925997465600
+MBits/sec : 2224.619
+----
+
+The +details -t+ command lists subtasks (i.e. individual files) for an +scp+ or +transfer+ task. In the following example the command produces a 10,001 line file (a header, plus one line for each file):
+
+    $ ssh demodoc@cli.globusonline.org details -t -f all -O csvh 28d854ae-ee18-11df-aa30-1231350018b1 > details.csv
+
+The +events+ command provides information about events that occurred while executing a task. In this first example user +demodoc+ is inspecting the progress of an earlier checksum-based sync by examining the "files_summed=" counts:
+
+[source, bash]
+----
+$ ssh demodoc@cli.globusonline.org events 1c05440a-ee57-11df-aa30-1231350018b1 | tail -10
+Code : PROGRESS
+Description : Performance monitoring event
+Details : bytes_summed=349700096000 files_summed=3335
+Task ID : 1c05440b-ee57-11df-aa30-1231350018b1
+Parent Task ID: 1c05440a-ee57-11df-aa30-1231350018b1
+Time : 2010-11-12 13:20:09.578755Z
+Code : PROGRESS
+Description : Performance monitoring event
+Details : bytes_summed=355886694400 files_summed=3394
+----
+
+In this example, user +demodoc+ is extracting all events that occurred while transferring a 1TB dataset (and storing them in a file for later inspection):
+
+    $ ssh demodoc@cli.globusonline.org events -f all -O csvh 28d854ae-ee18-11df-aa30-1231350018b1 > events.csv
+
+Once your Globus task has finished an email will be sent to the address specified in your profile. Here is an example transfer completion notification:
+
+[source, bash]
+----
+Subject: Task 28d854ae-ee18-11df-aa30-1231350018b1: SUCCEEDED
+From: "Globus Notification" &LT;notify@globus.org&GT;
+To: ldemters@abc.edu
+
+=== Task Details ===
+Task ID : 28d854ae-ee18-11df-aa30-1231350018b1
+Task Type : TRANSFER
+Parent Task ID : n/a
+Status : SUCCEEDED
+Request Time : 2010-11-12 04:48:57Z
+Deadline : 2010-11-13 04:48:57Z
+Completion Time : 2010-11-12 05:51:08Z
+Total Tasks : 10000
+Tasks Successful : 10000
+Tasks Expired : 0
+Tasks Canceled : 0
+Tasks Failed : 0
+Tasks Pending : 0
+Tasks Retrying : 0
+Command : transfer (+10000 input lines)
+Files : 10000
+Directories : 0
+Bytes Transferred: 1048576000000
+MBits/sec : 2248.957
+----
+
+== Cancel
+The +cancel+ command enables you to kill pending transfers for a given task. Files already copied by Globus are unaffected by +cancel+. Information about the state of each file can be extracted with +details+ (+SUCCEEDED+ files were transferred prior to the cancel):
+
+[source, bash]
+----
+$ ssh demodoc@cli.globusonline.org cancel 639bb59a-bccc-11df-b9bf-1231391536db
+Canceling task '639bb59a-bccc-11df-b9bf-1231391536db'.... OK
+$ ssh demodoc@cli.globusonline.org details -t -f status,src_file -O csv 639bb59a-bccc-11df-b9bf-1231391536db | grep SUCCEEDED
+SUCCEEDED,/intrepid-fs0/users/demodoc/persistent/datasrc/sdata/10Kfiles100M/cf8-165
+SUCCEEDED,/intrepid-fs0/users/demodoc/persistent/datasrc/sdata/10Kfiles100M/cf0-140
+SUCCEEDED,/intrepid-fs0/users/demodoc/persistent/datasrc/sdata/10Kfiles100M/cf7-192
+...
+$ ssh demodoc@cli.globusonline.org details -t -f status,src_file -O csv 639bb59a-bccc-11df-b9bf-1231391536db | grep FAILED
+FAILED,/intrepid-fs0/users/demodoc/persistent/datasrc/sdata/10Kfiles100M/cf1-419
+FAILED,/intrepid-fs0/users/demodoc/persistent/datasrc/sdata/10Kfiles100M/cf8-418
+FAILED,/intrepid-fs0/users/demodoc/persistent/datasrc/sdata/10Kfiles100M/cf8-212
+...
+----
