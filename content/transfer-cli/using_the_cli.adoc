@@ -12,7 +12,7 @@ toc::[]
 '''
 
 == Prerequisites
-To use the CLI you must have a link:http://www.globus.org/SignUp[Globus account] with ssh access enabled. To enable your account for ssh access you must add your ssh public key to your Globus account by link:https://www.globus.org/account/ManageIdentities[visiting the Manage Identities page] and clicking "add linked identity", followed by "Add SSH Public Key". If you do not have an ssh key, follow the directions here to create one.
+To use the CLI you must have a link:http://www.globus.org/SignUp[Globus account] with ssh access enabled. To enable your account for ssh access you must add your ssh public key to your Globus account by link:https://www.globus.org/account/ManageIdentities[visiting the Manage Identities page] and clicking "add linked identity", followed by "Add SSH Public Key". If you do not have an ssh key, follow the directions link:https://support.globus.org/entries/23690606-Generating-SSH-Keys[here] to create one.
 
 
 == CLI Structure
@@ -135,4 +135,4 @@ Activating 'ci#pads'
 
 Endpoints can also be activated inline by specifying the -g option with the +transfer+ and +scp+ commands.
 
-Now that you've familiarized yourself with the CLI you can learn about some of the more powerful features available by reading the +man+ pages and the Beyond the Basics guide. As always, please feel free to link:https://www.globus.org/contact-us[contact us] if you have any questions.
+Now that you've familiarized yourself with the CLI you can learn about some of the more powerful features available by reading the +man+ pages and the link:../cli_beyond_basics[Beyond the Basics guide]. As always, please feel free to link:https://www.globus.org/contact-us[contact us] if you have any questions.
