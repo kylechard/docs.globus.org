@@ -15,8 +15,8 @@ It will take a few minutes for the SSH key to propagate through the system. You 
 
 [source,bash]
 ----
-$ ssh <my_globus_online_user_name>@cli.globusonline.org
-Welcome to globusonline.org, <my_globus_online_user_name>. Type ‘help’ for help.
+$ ssh <my_globus_user_name>@cli.globusonline.org
+Welcome to globus.org, <my_globus_user_name>. Type ‘help’ for help.
 $ _
 ----
 
