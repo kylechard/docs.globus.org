@@ -78,4 +78,4 @@ the task has a fatal error, fails to complete by the deadline, or is canceled.
 
 == SEE ALSO
 
-*delete (1)*, *glob(7)*
+link:../delete[*delete (1)*], link:../glob[*glob(7)*]
