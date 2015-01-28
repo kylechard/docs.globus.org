@@ -15,7 +15,7 @@ In addition to serving as a discovery mechanism for community endpoints Globus e
 
 Logical endpoints can be created using the +endpoint-add+ command. They can be continually modified (by adding physical addresses, renaming, etc.) and persist until explicitly deleted with the +endpoint-remove+ command.
 
-In the following example user +demodoc+ adds an endpoint with a standalone +ssh+ command. To demonstrate the Globus interactive shell mode, the user then adds two endpoints within an interactive Globus CLI session. Two logical endpoints are created, with +vpac+ having one associated physical address and +never+ having two:
+In the following example user demodoc adds an endpoint with a standalone +ssh+ command. To demonstrate the Globus interactive shell mode, the user then adds two endpoints within an interactive Globus CLI session. Two logical endpoints are created, with vpac having one associated physical address and never having two:
 
 [source, bash]
 ----
@@ -28,7 +28,7 @@ $ exit
 Connection to cli.globusonline.org closed.
 ----
 
-Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user demodoc makes an endpoint public, +demodoc#never+ in visible in the public list:
+Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user demodoc makes an endpoint public, demodoc#never in visible in the public list:
 
 [source, bash]
 ----
@@ -63,12 +63,12 @@ demodoc#never 09:36:54
 nersc#dtn 08:25:47
 ----
 
-In addition to explicit creation, endpoints can be implicitly created by way of +transfer+ and +scp+. If the +transfer+ or +scp+ command refers to a hostname instead of a logical name, a private endpoint will be automatically created to represent it. Further information about implicit endpoint creation can be found in the +transfer+ and  +scp+ +man+ pages.
+In addition to explicit creation, endpoints can be implicitly created by way of +transfer+ and +scp+. If the +transfer+ or +scp+ command refers to a hostname instead of a logical name, a private endpoint will be automatically created to represent it. Further information about implicit endpoint creation can be found in the +transfer+ and +scp+ +man+ pages.
 
 == Data Management
 Globus provides two commands for moving files: +transfer+ and +scp+. The +transfer+ command is the more feature-rich of the two; +scp+ supports a well-known interface and is easy to use. Globus also supports features such as file synchronization and idempotent submission.
 
-The following example shows a detached recursive +scp+. By default scp will be canceled if your ssh session is disconnected or you press Ctrl-C. However, Globus provides the -D option so you can create a detached scp task that runs in the background even if your ssh session is disconnected:
+The following example shows a detached recursive +scp+. By default scp will be canceled if your ssh session is disconnected or you press +Ctrl-C+. However, Globus provides the +-D+ option so you can create a detached scp task that runs in the background even if your ssh session is disconnected:
 
 [source, bash]
 ----
@@ -85,7 +85,7 @@ Task ID: 427b63ec-ee04-11df-aa30-1231350018b1
 Created transfer task with 1 file(s)
 ----
 
-Another way to specify a transfer dataset is via a file list. A file list can contain a mix of directory source/dest pairs and individual file source/dest pairs. The following example specifies that the 10,000 individual files listed in file +10Kmidway-nersc100MB.dat+ should be transferred:
+Another way to specify a transfer dataset is via a file list. A file list can contain a mix of directory source/dest pairs and individual file source/dest pairs. The following example specifies that the 10,000 individual files listed in file 10Kmidway-nersc100MB.dat should be transferred:
 
 [source, bash]
 ----
@@ -221,7 +221,7 @@ The +details -t+ command lists subtasks (i.e. individual files) for an +scp+ or 
 
     $ ssh demodoc@cli.globusonline.org details -t -f all -O csvh 28d854ae-ee18-11df-aa30-1231350018b1 > details.csv
 
-The +events+ command provides information about events that occurred while executing a task. In this first example user +demodoc+ is inspecting the progress of an earlier checksum-based sync by examining the "files_summed=" counts:
+The +events+ command provides information about events that occurred while executing a task. In this first example user demodoc is inspecting the progress of an earlier checksum-based sync by examining the "files_summed=" counts:
 
 [source, bash]
 ----
@@ -237,7 +237,7 @@ Description : Performance monitoring event
 Details : bytes_summed=355886694400 files_summed=3394
 ----
 
-In this example, user +demodoc+ is extracting all events that occurred while transferring a 1TB dataset (and storing them in a file for later inspection):
+In this example, user demodoc is extracting all events that occurred while transferring a 1TB dataset (and storing them in a file for later inspection):
 
     $ ssh demodoc@cli.globusonline.org events -f all -O csvh 28d854ae-ee18-11df-aa30-1231350018b1 > events.csv
 
@@ -272,7 +272,7 @@ MBits/sec : 2248.957
 ----
 
 == Cancel
-The +cancel+ command enables you to kill pending transfers for a given task. Files already copied by Globus are unaffected by +cancel+. Information about the state of each file can be extracted with +details+ (+SUCCEEDED+ files were transferred prior to the cancel):
+The +cancel+ command enables you to kill pending transfers for a given task. Files already copied by Globus are unaffected by +cancel+. Information about the state of each file can be extracted with +details+ (SUCCEEDED files were transferred prior to the cancel):
 
 [source, bash]
 ----
