@@ -88,7 +88,9 @@ end
 
 compile '/site-docs/*' do
   if !item.binary?
-    if ["txt", "adoc"].include?item[:extension].split('.').last
+    if item.identifier.include?('/raw')
+      # do not filter
+    elsif ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
       layout 'default'
     else
@@ -120,6 +122,8 @@ compile '*' do
     # don’t filter javascripts
   elsif item[:extension] == 'cert'
     # don't filter cert files
+  elsif item[:extension] == 'adoc' && item.identifier.include?('/raw')
+    # don't filter raw files
   elsif item.binary?
     # don’t filter binary items
   # elsif item[:kind] == 'page'
@@ -163,6 +167,9 @@ route '*' do
   elsif item[:extension] == 'cert'
     # Write item with identifier /foo/ to /foo.cert
     item.identifier.chop + '.cert'
+  elsif item[:extension] == 'adoc' && item.identifier.include?('/raw')
+    # Write item with identifier /foo/ to /foo.adoc
+    item.identifier.chop + '.adoc'
   elsif item.binary?
     # Write item with identifier /foo/ to /foo.ext
     item.identifier.chop + '.' + item[:extension]
