@@ -44,25 +44,6 @@ def globus_breadcrumb_for(identifier, options={})
   render_menu(sections, options)
 end
 
-
-# File 'lib/nanoc/toolbox/helpers/navigation.rb', line 26
-
-def globus_navigation_for(identifier, options={})
-    options[:collection_tag]    ||= 'ul'
-    options[:collection_class]  ||= 'nav nav-pills nav-stacked'
-
-  # Get root item for which we need to draw the navigation
-  root = @items.find { |i| i.identifier == identifier }
-
-  # Do not render if there is no child
-  return nil unless root.children
-
-  # Find all sections, and render them
-  sections = find_item_tree(root, options)
-  globus_render_sidebar_menu(sections, options)
-end
-
-
 # Ref Nanoc::Toolbox::Helpers::Navigation#render_menu method
 def globus_render_menu(items, options={})
   options[:depth]            ||= 3
@@ -94,7 +75,7 @@ def globus_render_menu(items, options={})
     if item[:link]
       options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : ''
 
-      # Set link active if hide_item_tag is true
+      # Set link active if hide_item_tag is true (toolkit)
       if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]))
         options[:link_attr][:class] = options[:link_attr][:class] + ' active'
       end
@@ -116,7 +97,7 @@ def globus_render_menu(items, options={})
 
       options[:depth] += 1 # Increase the depth level after the call of navigation_for
 
-      options[:collection_class] = collection_class #reset value to preivous value
+      options[:collection_class] = collection_class #reset value to previous value
       # Toggle item and link dropdowns
       options[:item_class] = 'dropdown'
 
@@ -145,16 +126,52 @@ def globus_render_menu(items, options={})
 
 end
 
+# ------------------------
+# Sidebar Menus
+#------------------------
+
+# File 'lib/nanoc/toolbox/helpers/navigation.rb', line 26
+
+def globus_navigation_for(identifier, options={})
+
+  # Get root item for which we need to draw the navigation
+  root = @items.find { |i| i.identifier == identifier }
+
+  # Do not render if there is no child
+  return nil unless root.children
+
+  # Find all sections, and render them
+  sections = globus_find_item_tree(root)
+  globus_render_sidebar_menu(sections, options)
+end
+
+# Recursive method that extract from an XPath pattern the document structure
+# and return the "permalinks" in a Array of Hash that could be used by the
+# rendering method
+def globus_find_item_tree(root)
+    return nil unless root.children
+    # For each child call the find_item_tree on it and then render the generate the hash
+    sections = root.children.map do |child|
+      subsections = globus_find_item_tree(child)
+      { :title        => (child[:short_title] || child[:title] || child.identifier),
+        :link         => (child.identifier || relative_path_to(child)),
+        :subsections  => subsections }
+    end
+    sections
+end
+
+
 # Ref Nanoc::Toolbox::Helpers::Navigation#render_menu method
 def globus_render_sidebar_menu(items, options={})
-  options[:depth]            ||= 4
-  options[:collection_tag]   ||= 'ul'
-  options[:collection_class] ||= 'nav'
-  options[:item_tag]         ||= 'li'
+  options[:collection_tag]    ||= 'div'
+  options[:collection_class]  ||= 'panel panel-default'
+  options[:depth]             ||= 2
+  options[:item_tag]         ||= 'div'
   options[:title_tag]        ||= 'h2'
   options[:title]            ||= nil
   options[:separator]        ||= ''
-
+  options[:header_tag]       ||= 'div'
+  options[:header_class]     ||= 'panel-heading'
 
   # Parse the title and remove it from the options
   title =  options[:title] ? content_tag(options[:title_tag], options[:title]) : ''
@@ -165,14 +182,57 @@ def globus_render_sidebar_menu(items, options={})
   options[:depth] -= 1
 
   rendered_menu = items.map do |item|
+    # Reset item and link options
+    item_class = item[:class] ? item[:class] : ''
+
+    options[:item_class] = nil
+
+    # Set item active class
+    if item[:link]
+        if @item.identifier == item[:link] || @item.identifier.start_with?(item[:link])
+            item_class += ' active'
+        end
+    end
+
     # Render only if there is depth left
     if options[:depth].to_i  > 0 && item[:subsections]
-      output = render_menu(item[:subsections], options)
-      options[:depth] += 1 # Increase the depth level after the call of navigation_for
-    end
-    output ||= ""
-    content_tag(options[:item_tag], link_to_unless_current(item[:title].to_s.downcase, item[:link]) + options[:separator] + output)
 
+      # Save previously set collection_class for later
+      collection_class = options[:collection_class]
+
+      options[:collection_class] = 'panel-collapse collapse'
+
+      if @item.identifier == item[:link] || @item.identifier.start_with?(item[:link])
+        options[:collection_class] = 'panel-collapse collapse in'
+      end
+
+      output = content_tag(options[:header_tag], globus_render_sidebar_menu(item[:subsections], options), :class => 'list-group')
+
+      # Add caret to drop-downs in main menu
+      item[:title] = ' ' + item[:title]
+      item[:title] = content_tag('span', '', :class => 'caret') + item[:title]
+
+      options[:depth] += 1 # Increase the depth level after the call of navigation_for
+
+      options[:collection_class] = collection_class #reset value to previous value
+
+      options[:link_attr] = { :class => item_class }
+
+        output ||=""
+        link = link_to(item[:title], item[:link], options[:link_attr])
+        content_tag(options[:header_tag], link + options[:separator], :class => options[:header_class]) + output
+
+    else
+    output ||= ""
+
+    # Update item's classes
+    item_class += ' list-group-item'
+
+    options[:link_attr] = { :class => item_class }
+
+    link_to(item[:title], item[:link], options[:link_attr]) + output
+
+    end
   end.join()
 
   title + content_tag(options[:collection_tag], rendered_menu, :class => options[:collection_class]) unless rendered_menu.strip.empty?

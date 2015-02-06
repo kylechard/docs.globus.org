@@ -20,23 +20,9 @@ ignore '/site-docs/asciiguide_old*'
 preprocess do
   # Iterate each item
   items.each do |i|
-    if i.identifier.start_with?("/transfer-api") || i.identifier.start_with?("/site-docs/asciiguide")
-      if i[:title].nil?
-        # Match transfer API titles from raw content
-        m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
-        if !m.nil?
-          i[:title] = m[:title]
-          # i[:subtitle] = items['/docs/transfer-api/'][:version]
-        else
-          # Grab titles from index item
-          # i[:title] = items['/docs/transfer-api/'][:title]
-          # i[:subtitle] = items['/docs/transfer-api/'][:version]
-        end
-      end
-    end
 
-    if i.identifier.start_with?("/transfer-cli") && i[:title].nil?
-      if i[:extension].split('.').last == 'txt' or i[:extension].split('.').last == 'adoc'
+    if i[:title].nil?
+      if i[:extension] == 'txt' or i[:extension] == 'adoc'
         m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
         if !m.nil?
           i[:title] = m[:title]
@@ -45,10 +31,10 @@ preprocess do
     end
 
     # Adjust adoc include & image paths to be absolute
-    if i.identifier.start_with?("/transfer-cli/docs")
+    if i.identifier.start_with?("/cli/reference")
       # Add full path for adoc includes
       raw = i.raw_content
-      raw.gsub!(/include::include/, 'include::content/transfer-cli/docs/include')
+      raw.gsub!(/include::include/, 'include::content/cli/reference/include')
     end
     if i.identifier.start_with?("/site-docs") && i[:extension].split('.').last == 'adoc'
       # Add full path for adoc includes
@@ -65,9 +51,16 @@ preprocess do
         raw = i.raw_content
         raw.gsub!(/__TRANSFER_VERSION__/, 'v0.10')
     end
+    if i.identifier.start_with?("/cli") && i[:title].nil?
+      if i[:extension].split('.').last == 'txt' or i[:extension].split('.').last == 'adoc'
+        m = /^[\=]{1}[[:blank:]](?<title>.*)/.match(i.raw_content)
+        if !m.nil?
+          i[:title] = m[:title]
+        end
+      end
+    end
   end
 end
-
 
 compile '/transfer-api/*' do
   if !item.binary?
@@ -81,14 +74,14 @@ compile '/transfer-api/*' do
   end
 end
 
-compile '/transfer-cli/*' do
+compile '/cli/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout item[:layout] || 'transfer-cli'
+      layout item[:layout] || 'cli'
     else
       filter :erb
-      layout item[:layout] || 'transfer-cli'
+      layout item[:layout] || 'cli'
     end
   end
 end
@@ -125,10 +118,15 @@ compile '*' do
     # don’t filter stylesheets
   elsif item[:extension] == 'js'
     # don’t filter javascripts
+  elsif item[:extension] == 'cert'
+    # don't filter cert files
   elsif item.binary?
     # don’t filter binary items
   # elsif item[:kind] == 'page'
     # layout 'page'
+  elsif item[:extension] == 'adoc'
+      filter :asciidoc
+      layout item[:layout] || 'default'
   else
     filter :erb
     layout item[:layout] || 'default'
@@ -162,6 +160,9 @@ route '*' do
   elsif item[:extension] == 'js'
     # Write item with identifier /foo/ to /foo.js
     item.identifier.chop + '.js'
+  elsif item[:extension] == 'cert'
+    # Write item with identifier /foo/ to /foo.cert
+    item.identifier.chop + '.cert'
   elsif item.binary?
     # Write item with identifier /foo/ to /foo.ext
     item.identifier.chop + '.' + item[:extension]

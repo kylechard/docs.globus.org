@@ -1,0 +1,76 @@
+= Command Line Interface (CLI) Reference
+
+link:cancel[cancel]::
+cancel stops all processing of a task. If the task has already completed, a notice will be displayed.
+
+link:delete[delete]::
+The delete command can be used to script multi-line delete operations as a single batch.
+
+link:details[details]::
+details displays detailed information about tasks. By default, details displays all currently running or pending tasks. Use the -a option to display all tasks, including completed tasks. Tasks are sorted by request time in descending order.
+
+link:endpoint-activate[endpoint-activate]::
+endpoint-activate assigns a short term security credential to specified endpoint(s). If pattern is not specified, it defaults to '*', which matches all endpoints shown by endpoint-list.
+
+link:endpoint-add[endpoint-add]::
+endpoint-add creates a logical endpoint with a user specified name. endpoint-add can also add a physical server to an existing logical endpoint if the -p option is given.
+
+link:endpoing-deactivate[endpoint-deactivate]::
+endpoint-deactivate removes credentials previously assigned to a logical endpoint by endpoint-activate. If pattern is not specified, it defaults to '*'.
+
+link:endpoing-list[endpoint-list]::
+endpoint-list shows information about endpoints. Each logical endpoint has one or more servers, represented by a URL and an optional subject DN. Each logical endpoint may also have a short term security credential which has been assigned by the endpoint-activate command.
+
+link:endpoing-modify[endpoint-modify]::
+endpoint-modify can set attributes of endpoint(s). One attribute can be set or unset against one or more endpoints at a time. See the options below for details. Use the empty string ('') to unset a text attribute. Run endpoint-list -v to view current attributes.
+
+link:endpoing-remove[endpoint-remove]::
+endpoint-remove can remove logical endpoint(s) with names matching a pattern. endpoint-remove can also remove (unmap) a physical server from a specific logical endpoint.
+
+link:endpoing-rename[endpoint-rename]::
+endpoint-rename renames the logical endpoint oldname to newname.
+
+link:events[events]::
+events displays events for a task. Events are sorted by time in ascending order.
+
+link:glob[glob]::
+Certain CLI commands, like rm and ls, will expand a shell-compatibile glob pattern in the final path component. For example, 'rm go#ep1/tmp/*.txt' would look for all files in /tmp that match '*.txt'.
+
+link:labels[labels]::
+Globus Online tasks may be given a user created, arbitrary label to enable easy categorization and management of lots of tasks.
+
+link:ls[ls]::
+The ls command lists files and subdirectories on an endpoint.
+
+link:mkdir[mkdir]::
+The mkdir command creates a directory. Currently, the parent directory must exist (-p is not supported).
+
+link:modify[modify]::
+The modify command can change properties of task(s), such as deadline and label.
+
+link:profile[profile]::
+profile is used to view and modify your user settings. If no arguments are given, the profile command will display your user name, DN(s), sshkeys, email address, and notification settings.
+
+link:quoting[quoting]::
+The Globus Online CLI behaves much like a normal shell such as bash with respect to the use of quotes and escaping.
+
+link:rename[rename]::
+The rename command renames a file or directory on an endpoint.
+
+link:rm[rm]::
+The rm command is a quick and easy way to delete a single file, directory, or pattern. Its semantics are as close as possible to UNIX rm.
+
+link:scp[scp]::
+Globus Online's scp command provides a simple way to copy a file or directory between servers. source and dest must be logical endpoint names.
+
+link:status[status]::
+status displays basic information about tasks. By default, all pending (ACTIVE or INACTIVE) tasks are shown. If the -a option is given, status displays all tasks, including completed tasks. Tasks are sorted by request time in descending order.
+
+link:transfer[transfer]::
+transfer creates a task that copies files and/or directories between endpoints. If multiple input lines are given over stdin, all lines must have the same source and destination endpoint.
+
+link:versions[versions]::
+versions displays a list of service / version strings that are supported by the server. A specific version can be requested for a command or a shell by using the v=VERSION:USER_AGENT prefix when running a command or starting the interactive shell. If the server does not support the requested version, the command will fail and an error message will be displayed.
+
+link:wait[wait]::
+wait will wait until a task completes successfully, is canceled, or expires.

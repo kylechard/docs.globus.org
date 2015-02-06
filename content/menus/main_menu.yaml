@@ -1,21 +1,37 @@
-menus: 
+menus:
   -
     options:
       collection_class: 'nav navbar-nav navbar-right'
     items:
       -
         title: 'Transfer API'
+        link: '/transfer-api/'
+      -
+        title: 'Documentation'
         link: '#'
         subsections:
-          -
-            title: 'Documentation'
-            link: '/transfer-api/docs/'
-          -
-            title: 'Tutorials'
-            link: '/#/'
-          -
-            title: 'Transfer CLI Reference'
-            link: '/transfer-cli/'
-      - 
+            -
+                title: 'Command Line Interface'
+                link: '/cli/guides/'
+            -
+                title: 'Resource Provider Guide'
+                link: '/resource-provider-guide/'
+      -
+        title: 'Toolkit'
+        link: 'http://toolkit.globus.org/toolkit/'
+      -
         title: 'Support'
-        link: '/support/'
+        link: '#'
+        subsections:
+            -
+                title: 'Help Center'
+                link: 'https://support.globus.org'
+            -
+                title: 'Downloads'
+                link: '/downloads/'
+            -
+                title: 'Contact Us'
+                link: 'https://www.globus.org/contact-us'
+            -
+                title: 'Check Support Tickets'
+                link: 'https://support.globus.org/requests'

@@ -45,5 +45,5 @@ Note that both clients currently require passing the path to the GoDaddy
 CA certificate, which has signed the host certificate of
 +transfer.api.globusonline.org+. It is included in the source download of
 each client, and can also be
-link:/transfer-api/gd-bundle_ca.cert[downloaded directly]
+link:/transfer-api/resources/gd-bundle_ca.cert[downloaded directly]
 from this server.
