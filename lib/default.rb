@@ -7,16 +7,6 @@ module SideNavHelper extend self
     def sort_menuitems(items, sort_by)
         items.sort_by { |a| a[sort_by] }
     end
-
-    def menu_transfer(items)
-        i = items.select{|x| x.identifier.start_with?("/transfer-api/docs")}
-        self.sort_menuitems(i,':menu_weight')
-    end
-
-    def menu_toolkit(items)
-        i = items.select{|x| x.identifier.start_with?("/toolkit/docs")}
-        self.sort_menuitems(i,':menu_weight')
-    end
 end
 
 
@@ -244,7 +234,7 @@ def globus_load_menu(file_name)
   # fn = File.dirname(File.expand_path(__dir__))
   # yaml = YAML.load(File.read(fn)).select { |key, value| key.to_s == menu_name }.values[0]
   #
-  file = 'content/menus/' + file_name + '.yaml'
+  file = 'static/menus/' + file_name + '.yaml'
   yaml = YAML.load(File.read(file))
   if !yaml
     abort 'Menu file cannot be empty in ' + file

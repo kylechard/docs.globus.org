@@ -2,7 +2,6 @@
 
 require 'nokogiri'
 
-
 module Nanoc::Filters
 
   # @since 3.2.0
@@ -31,7 +30,7 @@ module Nanoc::Filters
 
     def run(content, params={})
       doc = Nokogiri::HTML(content)
-      
+
       doc.css('head')[0].remove
 
       doc.css('div.titlepage')[0].remove
@@ -39,7 +38,7 @@ module Nanoc::Filters
 
       doc.css('table').add_class('table').remove_attr('width')
       doc.css("table[border='1']").add_class('table-bordered')
-      
+
       doc.css("div.note").remove_attr('style').add_class('alert alert-info')
       doc.css("div.important").remove_attr('style').add_class('alert alert-warning')
       doc.css("div.warning").remove_attr('style').add_class('alert alert-danger')

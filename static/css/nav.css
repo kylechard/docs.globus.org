@@ -25,6 +25,7 @@ header.navbar-inverse .nav {
     font-weight: 100;
 }
 header.navbar .navbar-form {
+    position: relative;
     margin-top: 6px;
     margin-bottom: 6px;
 }

@@ -18,6 +18,9 @@ ignore '/menus/*/'
 ignore '/site-docs/asciiguide_old*'
 
 preprocess do
+  # Reset search-index by deleting it every time
+  File.delete("output/search-index.json") if File.exists?("output/search-index.json")
+
   # Iterate each item
   items.each do |i|
 
@@ -62,8 +65,12 @@ preprocess do
   end
 end
 
+compile '/static/*' do
+end
+
 compile '/transfer-api/*' do
   if !item.binary?
+    filter :search
     if item[:extension] == 'adoc'
       filter :asciidoc
       layout item[:layout] || 'api'
@@ -76,6 +83,7 @@ end
 
 compile '/cli/*' do
   if !item.binary?
+    #filter :search
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
       layout item[:layout] || 'cli'
@@ -102,12 +110,12 @@ end
 
 compile '/toolkit/*' do
   if !item.binary? && item[:extension] == 'html'
+    #filter :search
     filter :erb
     # Parse toolkit HTML doc files if ignoreParse is NOT set
     if item.identifier.start_with?('/toolkit/docs') && item[:ignoreParse].nil?
       filter :parse_toolkit
     end
-
     layout item[:layout] || 'toolkit'
   end
 end
@@ -155,6 +163,10 @@ route '/toolkit/docs/*/' do
     # Write item with identifier /foo/ to /foo/index.html
     item.identifier + 'index.html'
   end
+end
+
+route '/static/*' do
+  item.identifier[7..-2]
 end
 
 route '*' do

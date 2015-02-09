@@ -1,0 +1,24 @@
+{
+  "pages": [
+    {
+      "url": "/transfer-api/",
+      "title": "Transfer API",
+      "section": "test section"
+    },
+    {
+      "url": "/transfer-api/docs/",
+      "title": "Versions",
+      "section": "test section"
+    },
+    {
+      "url": "/transfer-api/docs/v0.10/",
+      "title": "v0.10",
+      "section": "test section"
+    },
+    {
+      "url": "/transfer-api/docs/v0.10/reference/acl_management/",
+      "title": "Endpoint ACL Management",
+      "section": "test section"
+    }
+  ]
+}
