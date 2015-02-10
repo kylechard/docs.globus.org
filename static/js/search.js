@@ -1,4 +1,5 @@
 $(function() {
+
     // add active class to show search input
     $('#search-container').click(function(event) {
         event.stopPropagation();
