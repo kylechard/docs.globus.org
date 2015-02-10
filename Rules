@@ -83,7 +83,7 @@ end
 
 compile '/cli/*' do
   if !item.binary?
-    #filter :search
+    filter :search
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
       layout item[:layout] || 'cli'

@@ -9,9 +9,9 @@ $(function() {
 
     if (localStorageHasExpired())
       loadSearchIndex();
-  } else {
-    loadSearchIndex();
-  }
+    } else {
+      loadSearchIndex();
+    }
 
   function loadSearchIndex() {
     $.getJSON('/search-index.json', function(data) {
@@ -23,11 +23,10 @@ $(function() {
 
   function localStorageHasExpired() {
     // Expires in one day (86400000 ms)
-    //if (new Date().getTime() - parseInt(localStorage['updated'],10) > 86400000) {
+    if (new Date().getTime() - parseInt(localStorage['updated'],10) > 86400000) {
       return true;
-    //}
-
-    //return false;
+    }
+    return false;
   }
 
   // Expand and activate search if the page loaded with a value set for the search field
@@ -43,67 +42,6 @@ $(function() {
     searchForString($(this).val());
   });
 
-  // Global keyboard shortcuts
-  $("body").keyup(function(e) {
-    if (e.keyCode == 83) {
-      // S key
-      if ($("#searchfield").is(":focus"))
-        return;
-
-      e.preventDefault();
-      $("#searchfield").focus();
-    }
-  });
-
-  // Keyboard support for the search field
-  $("#searchfield").keyup(function(e) {
-    if (e.keyCode == 27) {
-      // ESC
-      e.preventDefault();
-      $("#searchfield").val().length > 0 ? cancelSearch() : $("#searchfield").blur();
-    } else if (e.keyCode == 13) {
-      // Return/enter
-      e.preventDefault();
-      goToSelectedSearchResult();
-    }  else if (e.keyCode == 8 || e.keyCode == 46) {
-      // Update search if backspace/delete was pressed
-      // IE9 doesn't trigger the input event on backspace/delete,
-      // but they do trigger keyUp
-      $(this).val().length > 0 ? $("#search-container").addClass("active") : $("#search-container").removeClass("active");
-
-      searchForString($(this).val());
-    }
-  }).keydown(function(e) {
-    if (e.keyCode == 38) {
-      // Arrow up
-      e.preventDefault();
-      moveSearchSelectionUp();
-    } else if (e.keyCode == 40) {
-      // Arrow down
-      e.preventDefault();
-      moveSearchSelectionDown();
-    } else if (e.keyCode == 27) {
-      // Prevent default on ESC key
-      // IE inputs come with some native behaviors that will
-      // prevent the DOM from updating correctly unless prevented
-      e.preventDefault();
-    }
-  });
-
-  // Make clicking the label focus the input label
-  // for browsers (IE) that doesn't support pointer-events: none
-  $("#search-container .search-placeholder").click(function(e) {
-    $("#searchfield").focus();
-  });
-
-  $(".cancel-search").click(function(e) {
-    cancelSearch();
-  });
-
-  function cancelSearch() {
-    $("#searchfield").val("");
-    $("#search-container").removeClass("active");
-  }
 
   function searchForString(searchString) {
     searchHits = [];
@@ -114,11 +52,10 @@ $(function() {
       var page = searchIndex[i];
 
       // Add the page to the array of hits if there's a match
-      if (page.title.toLowerCase().indexOf(searchString) !== -1) {
+      //if (page.title.toLowerCase().indexOf(searchString) !== -1) {
         searchHits.push(page);
-      }
+      //}
     }
-
     renderResultsForSearch(searchString);
   }
 
@@ -132,8 +69,8 @@ $(function() {
       return;
     }
 
-    // Render results (max 8)
-    for (var i = 0; i < Math.min(searchHits.length, 8); i++) {
+    // Render results (max 6)
+    for (var i = 0; i < Math.min(searchHits.length, 50); i++) {
       var page = searchHits[i];
 
       $('<li class="result"><a href="' + page.url + '"><em>' + page.title + '</em><small>' + page.section + '</small></a></li>').appendTo("#search-results");

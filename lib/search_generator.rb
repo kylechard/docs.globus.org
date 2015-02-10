@@ -26,7 +26,7 @@ class SearchFilter < Nanoc::Filter
       section += title + '/'
     end
 
-    page = { :url => @item.identifier, :title => @item[:title], :section => "test section" }
+    page = { :url => @item.identifier, :title => @item[:title], :section => section }
 
     $search_file_contents[:pages] << page
     $search_file_contents[:pages] = merge_sort($search_file_contents[:pages])

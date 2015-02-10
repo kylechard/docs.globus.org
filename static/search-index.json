@@ -1,24 +1,249 @@
 {
   "pages": [
     {
+      "url": "/cli/",
+      "title": "The Command Line Interface (CLI)",
+      "section": ""
+    },
+    {
+      "url": "/cli/guides/",
+      "title": "Getting started with the Command Line Interface (CLI)",
+      "section": "CLI/"
+    },
+    {
+      "url": "/cli/guides/cli_beyond_basics/",
+      "title": "CLI: Beyond the basics",
+      "section": "CLI/Guides/"
+    },
+    {
+      "url": "/cli/guides/using_the_cli/",
+      "title": "Using the Command Line Interface (CLI)",
+      "section": "CLI/Guides/"
+    },
+    {
+      "url": "/cli/reference/",
+      "title": "Command Line Interface (CLI) Reference",
+      "section": "CLI/"
+    },
+    {
+      "url": "/cli/reference/acl-add/",
+      "title": "ACL-ADD(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/acl-list/",
+      "title": "ACL-LIST(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/acl-remove/",
+      "title": "ACL-REMOVE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/cancel/",
+      "title": "CANCEL(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/delete/",
+      "title": "DELETE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/details/",
+      "title": "DETAILS(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/diagnose/",
+      "title": "DIAGNOSE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-activate/",
+      "title": "ENDPOINT-ACTIVATE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-add/",
+      "title": "ENDPOINT-ADD(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-deactivate/",
+      "title": "ENDPOINT-DEACTIVATE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-list/",
+      "title": "ENDPOINT-LIST(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-modify/",
+      "title": "ENDPOINT-MODIFY(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-remove/",
+      "title": "ENDPOINT-REMOVE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/endpoint-rename/",
+      "title": "ENDPOINT-RENAME(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/events/",
+      "title": "EVENTS(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/glob/",
+      "title": "GLOB(7)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/more_acl/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_deadline/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_encrypt/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_label/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_output/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_preserve_mtime/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_synclevel/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_unsafe/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/opt_verify_checksum/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/task_statuses/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/include/task_types/",
+      "title": null,
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/labels/",
+      "title": "LABELS(7)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/ls/",
+      "title": "LS(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/mkdir/",
+      "title": "MKDIR(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/modify/",
+      "title": "MODIFY(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/profile/",
+      "title": "PROFILE(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/quoting/",
+      "title": "QUOTING(7)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/rename/",
+      "title": "RENAME(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/rm/",
+      "title": "RM(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/scp/",
+      "title": "SCP(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/status/",
+      "title": "STATUS(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/transfer/",
+      "title": "TRANSFER(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/versions/",
+      "title": "VERSIONS(1)",
+      "section": "CLI/Reference/"
+    },
+    {
+      "url": "/cli/reference/wait/",
+      "title": "WAIT(1)",
+      "section": "CLI/Reference/"
+    },
+    {
       "url": "/transfer-api/",
       "title": "Transfer API",
-      "section": "test section"
+      "section": ""
     },
     {
       "url": "/transfer-api/docs/",
       "title": "Versions",
-      "section": "test section"
+      "section": "Transfer API/"
     },
     {
       "url": "/transfer-api/docs/v0.10/",
       "title": "v0.10",
-      "section": "test section"
+      "section": "Transfer API/Versions/"
     },
     {
       "url": "/transfer-api/docs/v0.10/reference/acl_management/",
       "title": "Endpoint ACL Management",
-      "section": "test section"
+      "section": "Transfer API/Versions/v0.10/"
     }
   ]
 }
