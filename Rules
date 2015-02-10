@@ -18,8 +18,6 @@ ignore '/menus/*/'
 ignore '/site-docs/asciiguide_old*'
 
 preprocess do
-  # Reset search-index by deleting it every time
-  File.delete("output/search-index.json") if File.exists?("output/search-index.json")
 
   # Iterate each item
   items.each do |i|
@@ -70,7 +68,6 @@ end
 
 compile '/transfer-api/*' do
   if !item.binary?
-    filter :search
     if item[:extension] == 'adoc'
       filter :asciidoc
       layout item[:layout] || 'api'
@@ -83,7 +80,6 @@ end
 
 compile '/cli/*' do
   if !item.binary?
-    filter :search
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
       layout item[:layout] || 'cli'
@@ -110,7 +106,6 @@ end
 
 compile '/toolkit/*' do
   if !item.binary? && item[:extension] == 'html'
-    #filter :search
     filter :erb
     # Parse toolkit HTML doc files if ignoreParse is NOT set
     if item.identifier.start_with?('/toolkit/docs') && item[:ignoreParse].nil?
