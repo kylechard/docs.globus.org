@@ -6,34 +6,28 @@ hide_breadcrumb: true
 ---
 
 <% @site.sorted_articles[0, 10].each do |article| %>
-<p><strong> 
+<p><strong>
 <%= link_to(article[:title], article.path) %> </strong><br/>
 <%= article[:created_at] %> <br/>
 <%= tags_for(article) %> <br/></p>
 <% end %>
 
 <div class="row">
-	<div class="col-sm-4 text-center">
-		<i class="fa fa-code fa-2x"></i>
-		<h3>Get Started</h3>
-		<p>Nulla commodo felis non sem consequat, quis faucibus risus ultricies. Morbi in mi vel nibh ultrices venenatis. Curabitur lectus neque, ultrices molestie magna at, bibendum sagittis ipsum.</p>
-	</div>
-	<div class="col-sm-4 text-center">
-		<i class="fa fa-terminal fa-2x"></i>
-		<h3>Learn How</h3>
-		<p>Nulla commodo felis non sem consequat, quis faucibus risus ultricies. Morbi in mi vel nibh ultrices venenatis. Curabitur lectus neque, ultrices molestie magna at, bibendum sagittis ipsum.</p>
-	</div>
-	<div class="col-sm-4 text-center">
-		<i class="fa fa-envelope-o fa-2x"></i>
-		<h3>Find Help</h3>
-		<p>Nulla commodo felis non sem consequat, quis faucibus risus ultricies. Morbi in mi vel nibh ultrices venenatis. Curabitur lectus neque, ultrices molestie magna at, bibendum sagittis ipsum.</p>
-	</div>
-
-	<div class="col-sm-12 text-center">
-		<hr>
-		<% doc_link = '/toolkit/docs/' + @config[:docs][:toolkit] %>
-		<p>Globus services leverage the tried and tested components of the <a href="/toolkit/">Globus Toolkit</a> including <a href="<%= doc_link %>#gridftp">GridFTP</a>, <a href="<%= doc_link %>#gsic">GSI C</a>, and <a href="<%= doc_link %>#myproxy">MyProxy</a>.</p>
-	</div>
+    <div class="col-sm-4 text-center">
+        <a href="transfer-api/"><img src="images/home/transfer.png" width="66" height="66"/></a>
+        <h2><a href="transfer-api/">Transfer API</a></h2>
+        <p class="text-left">Assertively coordinate robust mindshare after professional leadership. Proactively transform extensible meta-services for effective processes. Quickly orchestrate resource sucking data through quality e-markets. </p>
+    </div>
+    <div class="col-sm-4 text-center">
+        <a href="resource-provider-guide/"><img src="images/home/resource_providers.png" width="66" height="66"/></a>
+        <h2><a href="resource-provider-guide/">Resource Providers</a></h2>
+        <p class="text-left">Rapidiously innovate world-class customer service after revolutionary partnerships. Authoritatively iterate cross functional products and virtual architectures. Appropriately morph bricks-and-clicks opportunities through synergistic best practices. </p>
+    </div>
+    <div class="col-sm-4 text-center">
+        <a href="http://toolkit.globus.org/toolkit"><img src="images/home/toolkit.png" width="66" height="66"/></a>
+        <h2><a href="http://toolkit.globus.org/toolkit">Toolkit</a></h2>
+        <p class="text-left">Collaboratively harness an expanded array of internal or "organic" sources for market positioning strategic theme areas. Distinctively mesh 24/7 methods of empowerment with flexible ideas. Authoritatively underwhelm error-free networks and long-term high-impact total linkage.</p>
+    </div>
 </div>
 
 

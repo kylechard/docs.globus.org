@@ -43,12 +43,12 @@ table.gsc-search-box td.gsc-search-button input.gsc-search-button {
     padding-right: 10px !important;
     min-width: 36px !important;
     border-radius: 4px !important;
-    border-color: #357EBD !important;
-    background-color: #428BCA !important;
+    border-color: #186eb8 !important;
+    background-color: #186eb8 !important;
 }
 table.gsc-search-box td.gsc-search-button input.gsc-search-button:hover {
-    background-color: #3276B1 !important;
-    border-color: #285E8E !important;
+    background-color: #468cc8 !important;
+    border-color: #468cc8 !important;
 }
 table.gsc-completion-container {
     font-size: 13px !important;
