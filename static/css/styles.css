@@ -179,7 +179,7 @@ pre {
   font-size: 16px;
 }
 .home .page-content .col-sm-4 a {
-    display: block;
+    display: inline-block;
 }
 .home .page-content .col-sm-4 a:hover {
     text-decoration: none;
