@@ -45,6 +45,7 @@ table.gsc-search-box td.gsc-search-button input.gsc-search-button {
     border-radius: 4px !important;
     border-color: #186eb8 !important;
     background-color: #186eb8 !important;
+    outline: none;
 }
 table.gsc-search-box td.gsc-search-button input.gsc-search-button:hover {
     background-color: #468cc8 !important;
