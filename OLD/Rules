@@ -66,9 +66,6 @@ end
 compile '/static/*' do
 end
 
-compile '/OLD/*' do
-end
-
 compile '/transfer-api/*' do
   if !item.binary?
     if item[:extension] == 'adoc'
@@ -107,6 +104,17 @@ compile '/site-docs/*' do
   end
 end
 
+compile '/toolkit/*' do
+  if !item.binary? && item[:extension] == 'html'
+    filter :erb
+    # Parse toolkit HTML doc files if ignoreParse is NOT set
+    if item.identifier.start_with?('/toolkit/docs') && item[:ignoreParse].nil?
+      filter :parse_toolkit
+    end
+    layout item[:layout] || 'toolkit'
+  end
+end
+
 compile '*' do
   # if item[:extension] == 'adoc'
   #   filter :asciidoc
@@ -129,6 +137,26 @@ compile '*' do
   else
     filter :erb
     layout item[:layout] || 'default'
+  end
+end
+
+# Toolkit routing
+passthrough '/toolkit/docs/*/gt-server-ca/'
+passthrough '/toolkit/docs/*/a.rsl/'
+
+route '/toolkit/docs/*/' do
+  if item[:extension] == 'txt'
+    # Write item with identifier /foo/ to /foo.txt
+    item.identifier.chop + '.txt'
+  elsif item[:extension] == 'config'
+    # Write item with identifier /foo/ to /foo.config
+    item.identifier.chop + '.config'
+  elsif item.binary?
+    # Write item with identifier /foo/ to /foo.ext
+    item.identifier.chop + '.' + item[:extension]
+  else
+    # Write item with identifier /foo/ to /foo/index.html
+    item.identifier + 'index.html'
   end
 end
 
