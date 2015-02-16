@@ -129,8 +129,8 @@ aside.sidebar-block .list-group .panel-collapse a:hover {
     background-color: #eee;
 }
 aside.sidebar-block .list-group .panel-collapse a.active {
-    padding-left: 28px;
+    padding-left: 26px;
     border-color: #ddd;
     color: #333;
-    border-left: solid 2px #ccc;
+    border-left: solid 4px #7ab3e4;
 }

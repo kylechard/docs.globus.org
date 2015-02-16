@@ -12,7 +12,7 @@ menus:
         subsections:
             -
                 title: 'Command Line Interface'
-                link: '/cli/guides/'
+                link: '/cli/'
             -
                 title: 'Resource Provider Guide'
                 link: '/resource-provider-guide/'
