@@ -162,6 +162,8 @@ def globus_render_sidebar_menu(items, options={})
   options[:separator]        ||= ''
   options[:header_tag]       ||= 'div'
   options[:header_class]     ||= 'panel-heading'
+  options[:mobile]           ||= ''
+  options[:caret_class]      ||= 'caret'
 
   # Parse the title and remove it from the options
   title =  options[:title] ? content_tag(options[:title_tag], options[:title]) : ''
@@ -187,30 +189,41 @@ def globus_render_sidebar_menu(items, options={})
     # Render only if there is depth left
     if options[:depth].to_i  > 0 && item[:subsections]
 
-      # Save previously set collection_class for later
+      # Save previously set collection_class & caret for later
       collection_class = options[:collection_class]
+      caret_class = options[:caret_class]
 
       options[:collection_class] = 'panel-collapse collapse'
 
       if @item.identifier == item[:link] || @item.identifier.start_with?(item[:link])
-        options[:collection_class] = 'panel-collapse collapse in'
+        options[:collection_class] += ' in'
+        options[:caret_class] += ' open'
       end
 
       output = content_tag(options[:header_tag], globus_render_sidebar_menu(item[:subsections], options), :class => 'list-group')
 
       # Add caret to drop-downs in main menu
-      item[:title] = ' ' + item[:title]
-      item[:title] = content_tag('span', '', :class => 'caret') + item[:title]
+      #item[:title] = ' ' + item[:title]
+      #item[:title] = content_tag('span', '', :class => 'caret') + item[:title]
+      caret = ''
+      #if(options[:mobile] == 'true')
+        caret = content_tag('a', content_tag('span','', :class => 'caret'), :class => options[:caret_class])
+      #else
+      #  item[:title] = ' ' + item[:title]
+      #  item[:title] = content_tag('span', '', :class => 'caret') + item[:title]
+      #end
 
       options[:depth] += 1 # Increase the depth level after the call of navigation_for
 
-      options[:collection_class] = collection_class #reset value to previous value
+      #reset value to previous values
+      options[:collection_class] = collection_class
+      options[:caret_class] = caret_class
 
       options[:link_attr] = { :class => item_class }
 
         output ||=""
         link = link_to(item[:title], item[:link], options[:link_attr])
-        content_tag(options[:header_tag], link + options[:separator], :class => options[:header_class]) + output
+        content_tag(options[:header_tag], link + options[:separator] + caret, :class => options[:header_class]) + output
 
     else
     output ||= ""
