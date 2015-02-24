@@ -118,12 +118,13 @@ aside.sidebar-block .panel-heading a.caret {
     top: 0;
     right: 0;
     height: 100%;
+    width: 40px;
 }
 aside.sidebar-block .panel-heading a.caret span.caret {
     border-bottom: 6px solid transparent;
     border-top: 6px solid transparent;
     border-left: 6px solid #999;
-    margin: -5px 0 0 -1px;;
+    margin: -7px 0 0 4px;
 }
 aside.sidebar-block .panel-heading a.caret.open span.caret {
     border-top: solid 6px #999;
