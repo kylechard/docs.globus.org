@@ -161,12 +161,19 @@ aside.sidebar-block .list-group .panel-collapse a.active {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-
+html,
+body,
+.st-container,
+.st-pusher,
+.st-page-content,
+.st-content {
+    height: 100%;
+}
 .st-content {
     overflow-y: scroll;
     background: #f3efe0;
 }
-
+.st-page-content,
 .st-content,
 .st-content-inner {
     position: relative;
@@ -175,6 +182,7 @@ aside.sidebar-block .list-group .panel-collapse a.active {
 .st-container {
     position: relative;
     /* overflow: hidden; */
+    overflow-x: hidden;
 }
 
 .st-pusher {
