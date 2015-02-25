@@ -1,11 +1,8 @@
-Globus Resource Provider Guide
-==============================
-:author: The Globus Team <support@globus.org>
+= Globus Resource Provider Guide
 :revdate: February 19, 2015
 :revnumber: 0.0.2
 :toc:
 :toclevels: 3
-:icons:
 :numbered:
 
 // Define some attributes to reuse in-line
@@ -27,81 +24,82 @@ Globus allows you, as a resource provider, to easily offer reliable, secure,
 high-performance research data management capabilities to your users
 and their collaborators, directly from your own storage.
 Globus is software as a service (SaaS), enabled by the cloud and
-designed to let users manage their research files, 
-regardless of number and size, 
+designed to let users manage their research files,
+regardless of number and size,
 as effortlessly as they manage their photos with popular cloud-based services.
-Globus lets you provide authorized users web, command line, and REST interfaces 
-for listing, transferring, replicating, and sharing 
+Globus lets you provide authorized users web, command line, and REST interfaces
+for listing, transferring, replicating, and sharing
 directories and files on your Globus-connected storage resources.
 If you are new to Globus, you can learn more about Globus
 capabilities and benefits from the
 {researchers}[researcher]
-and 
+and
 {providers}[resource provider] overview pages.
 
 This guide is written primarily for system administrators of multi-user Linux
-systems who want to optimize the connection of their resources 
+systems who want to optimize the connection of their resources
 to the Globus ecosystem and take full advantage of the resource data
 management capabilities Globus offers.
 Administrators who are new to Globus, as well as those with
 considerable experience, should all find helpful information in this
 document.
 
-Starting with the basics, this guide covers the initial 
-installation of 
-_Globus Connect Server_ and the creation of a Globus _endpoint_ that 
+Starting with the basics, this guide covers the initial
+installation of
+_Globus Connect Server_ and the creation of a Globus _endpoint_ that
 lets authorized users transfer files between your storage and other
 Globus endpoints.
-The Globus Connect Server installation 
-downloads 
+The Globus Connect Server installation
+downloads
 (1) Globus versions of 'GridFTP', 'MyProxy', and 'OAuth for MyProxy';
 (2) scripts for set up/configuration and integration into the Globus
-ecosystem; and 
+ecosystem; and
 (3) other Globus-maintained dependency packages needed to make the
 preceding function.
-The initial installation, also referred to as the default installation, 
-authorizes endpoint users via password-based authentication that 
-uses MyProxy and relies on the PAM modules configured in 
+The initial installation, also referred to as the default installation,
+authorizes endpoint users via password-based authentication that
+uses MyProxy and relies on the PAM modules configured in
 +/etc/pam.d/login+--the same ones used by the +login+ command.
 
-Progressing from the initial foundation, 
-additional configuration options and 
-advanced deployment scenarios 
+Progressing from the initial foundation,
+additional configuration options and
+advanced deployment scenarios
 for your Globus endpoint
 are described,
 covering a range of authentication, optimization, and premium
 features.
-Later sections discuss 
-endpoint maintenance, 
-tools for monitoring your Globus deployment, 
-creating an endpoint on Amazon S3, 
-enabling Globus Plus for your users, 
+Later sections discuss
+endpoint maintenance,
+tools for monitoring your Globus deployment,
+creating an endpoint on Amazon S3,
+enabling Globus Plus for your users,
 and various avenues for getting help.
-Appendices contain comprehensive reference materials 
+Appendices contain comprehensive reference materials
 and technical descriptions that go beyond the installation and
 configuration instructions found in the main sections of the guide.
 
 .Provider Plan Features
-***********************************************************************
-Globus can be used for file transfer by 
+[NOTE]
+====
+Globus can be used for file transfer by
 non-profit research and educational institutions free-of-charge.
 Usage-based {provider_plans}[Provider Plan subscriptions] are available for
-commercial users and for non-profit institutions who want to 
+commercial users and for non-profit institutions who want to
 use premium features.
-The Provider Plan subscriptions help ensure that Globus can 
-continue to serve the research data management needs of 
+The Provider Plan subscriptions help ensure that Globus can
+continue to serve the research data management needs of
 non-profit users for many years to come.
 
 Some premium Globus features described in this guide are only available to
 Provider Plan subscribers; Provider Plan features are marked with *^PP^*.
-***********************************************************************
+====
 
 == Globus Connect Server Prerequisites
 
 Before you install Globus Connect Server on your system you should
 confirm that the prerequisites listed in this section are met.
 If they are not, the installation will not be successful.
-Please {support}[submit a support ticket] if you have problems understanding 
+Please {support}[submit a support ticket] if you have problems understanding
 or satisfying the prerequisites.
 
 === Supported Linux distributions
@@ -117,12 +115,12 @@ distributions:
 - Ubuntu 10.04 LTS, 12.04 LTS, 14.04 LTS and 14.10
 
 === Administrator privileges
-You must have administrator (root) privileges on your system 
-to install Globus Connect Server; 
+You must have administrator (root) privileges on your system
+to install Globus Connect Server;
 `sudo` can be used to perform the installation.
 
 === System time synchronization
-Ensure that `ntpd`, or another daemon for synchronizing 
+Ensure that `ntpd`, or another daemon for synchronizing
 with standard time servers, is running on your system.
 
 === Internet-accessible system
@@ -132,15 +130,15 @@ More specifically, your organization's public Domain Name Service
 that is assigned or forwarded to the system where you will be installing
 Globus Connect Server.
 
-To check accessibility, first execute this command 
+To check accessibility, first execute this command
 on the system where
-you plan to install Globus Connect Server: 
+you plan to install Globus Connect Server:
 --------------------------------------------------------------------------------
 # hostname -f
 --------------------------------------------------------------------------------
-Confirm that a fully qualified domain name (FQDN) of the form 
+Confirm that a fully qualified domain name (FQDN) of the form
 +'xxx.yyy.zzz'+
-(with 2 dots) or 
+(with 2 dots) or
 +'www.xxx.yyy.zzz'+ (with 3 dots) is returned.
 
 Next, use a public DNS server operated by a different organization to
@@ -156,14 +154,14 @@ Verify that you [underline]#do not# get
 a message of the form: +`** server can't find xxx.yyy.zzz: NXDOMAIN'+.
 
 Some sites use network address translation (NAT) with a private
-internal IP, private internal DNS, and a public DNS tied to a public 
-IP that gets forwarded to the private IP by the firewall/router. 
+internal IP, private internal DNS, and a public DNS tied to a public
+IP that gets forwarded to the private IP by the firewall/router.
 Globus can be successfully installed at these sites, but requires
 additional configuration beyond what is covered in the default
 Globus Connect Server installation.
-Please see 
+Please see
 [yellow-background]#add pointer to later text in guide or direct them to
-email support# 
+email support#
 if your site uses NAT.
 
 === Open TCP ports
@@ -177,15 +175,15 @@ ports be open:
 - Port 2223 outbound to 184.73.255.160
 - Ports 50000--51000 inbound and outbound to/from Any
 
-Non-default installations have slightly different requirements and 
+Non-default installations have slightly different requirements and
 advanced configuration options also allow other port settings.
-Please refer to Appendix 
-[yellow-background]#?the one on firewalls and maybe also on 
+Please refer to Appendix
+[yellow-background]#?the one on firewalls and maybe also on
 MyProxy/OAuth authentication ?#
 for further information.
 
-=== Globus account for your organization 
-You will need a master Globus account for your organization that is 
+=== Globus account for your organization
+You will need a master Globus account for your organization that is
 distinct from your personal Globus account.
 The Globus username associated with the master account should be
 something your users will recognize so they can easily
@@ -193,17 +191,17 @@ find endpoint(s) administered by your organization.
 For example, the University of Chicago Research Computing Center has
 `ucrcc' as their master Globus username.
 
-If your organization doesn't already have a master Globus account, 
-create one using the form at 
+If your organization doesn't already have a master Globus account,
+create one using the form at
 {sign_up}[globus.org/signup].
 If the link takes you to your personal Globus dashboard rather than to
-the blank sign up form, 
-you can access the form by 
+the blank sign up form,
+you can access the form by
 selecting +Log Out+ from the pull-down menu attached to your
-personal username in the upper right corner of the dashboard window, 
+personal username in the upper right corner of the dashboard window,
 and then selecting +Sign Up+ from the top menu bar of the Sign In page.
 
-=== No previously installed Globus components 
+=== No previously installed Globus components
 Globus components previously installed on your system must be
 removed before a new Globus Connect Server installation is
 started.
@@ -215,7 +213,7 @@ components"#.
 
 == Globus Connect Server Installation and Endpoint Creation
 Globus Connect Server lets you quickly and easily set up a
-Globus endpoint on your system, 
+Globus endpoint on your system,
 enabling authorized users to transfer files between your storage and other
 Globus endpoints.
 This section covers the installation of Globus Connect Server and
@@ -224,17 +222,17 @@ recommended starting point for new resource providers.
 You will be able to fine-tune this configuration later without doing a
 reinstall.
 
-Before continuing, it is important to confirm that the prerequisites 
+Before continuing, it is important to confirm that the prerequisites
 detailed in the previous section [yellow-background]#add link#
 have been met.
 
 === Install Globus Connect Server
 Skip to the appropriate section for your Linux distribution and
-follow the instructions to install Globus Connect Server 
+follow the instructions to install Globus Connect Server
 on your system.
 
 ==== CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux
-First, add the Globus Connect Server repository to your package management 
+First, add the Globus Connect Server repository to your package management
 system:
 --------------------------------------------------------------------------------
 # curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
@@ -242,7 +240,7 @@ system:
 # yum install globus-connect-server-repo-latest.noarch.rpm
 --------------------------------------------------------------------------------
 
-Next, if you are running 
+Next, if you are running
 CentOS 5, Red Hat Enterprise Linux 5, or Scientific Linux 5,
 add the additional required repository:
 --------------------------------------------------------------------------------
@@ -256,7 +254,7 @@ Finally, install Globus Connect Server:
 --------------------------------------------------------------------------------
 
 ==== SuSE Linux Enterprise Server
-First, add the Globus Connect Server repository to your package management 
+First, add the Globus Connect Server repository to your package management
 system:
 --------------------------------------------------------------------------------
 # curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
@@ -280,7 +278,7 @@ Finally, install Globus Connect Server:
 --------------------------------------------------------------------------------
 
 ==== Debian, Ubuntu
-First, add the Globus Connect Server repository to your package management 
+First, add the Globus Connect Server repository to your package management
 system:
 --------------------------------------------------------------------------------
 # curl -LOs
@@ -295,15 +293,15 @@ Then, install Globus Connect Server:
 --------------------------------------------------------------------------------
 
 === Create Globus Endpoint
-Before creating your Globus endpoint, 
+Before creating your Globus endpoint,
 edit the Globus Connect Server configuration file, installed at
 +/etc/globus-connect-server.conf+,
 and make two changes so that authorized users can find and access your endpoint.
 Specifically, in the +[Endpoint]+ section of the file,
-(1) set +Name+ to something that identifies your resource, 
+(1) set +Name+ to something that identifies your resource,
 such as the system hostname or a descriptive term that is well-known within
-your organization, and 
-(2) set +Public+ to +'True'+. 
+your organization, and
+(2) set +Public+ to +'True'+.
 For example:
 --------------------------------------------------------------------------------
 [Endpoint]
@@ -316,37 +314,37 @@ After editing the configuration file, run:
 # globus-connect-server-setup
 --------------------------------------------------------------------------------
 
-When prompted, enter the Globus username and password for your 
-organization's master Globus account. 
+When prompted, enter the Globus username and password for your
+organization's master Globus account.
 When the +globus-connect-server-setup+ command completes, your Globus
-endpoint is ready to be accessed by users with logins on your system. 
+endpoint is ready to be accessed by users with logins on your system.
 
 === Access Globus Endpoint
 
-You (or any user on your system who has signed up for a Globus account) 
-can access the Globus endpoint 
-you just created by navigating to the Globus {transfer}[Transfer Files] 
+You (or any user on your system who has signed up for a Globus account)
+can access the Globus endpoint
+you just created by navigating to the Globus {transfer}[Transfer Files]
 page and using the Globus pattern-match capabilities to find your
 endpoint.
 Enter either your organization's Globus username or the resource name
-you chose in the configuration file ('hpc-15' in the example above) 
+you chose in the configuration file ('hpc-15' in the example above)
 in the 'Endpoint' box, then select the full endpoint name from the
 list of matches.
 You will be asked to authenticate to access the endpoint; enter the
 username and password you use to log in to your system to complete the
 authentication.
 
-== Globus Connect Server Configuration 
+== Globus Connect Server Configuration
 
-<Tell them then can change config & rerun command to 
+<Tell them then can change config & rerun command to
 change config after initial install>
 
-In the initial (default) installation of Globus Connect Server, 
-you edited two configuration options in the 
-+/etc/globus-connect-server.conf+ file, 
+In the initial (default) installation of Globus Connect Server,
+you edited two configuration options in the
++/etc/globus-connect-server.conf+ file,
 the +Name+ and +Public+ options in the +[Endpoint]+ section.
 You probably noticed that there are many, many other options
-that can be configured. 
+that can be configured.
 This section of the guide covers some of the most common configuration
 options; see the full reference for the Globus Connect Server
 Configuration file in Appendix [yellow-background]#add link#.
@@ -366,7 +364,7 @@ x
 === RestrictedPaths
 x
 
-=== Sharing *^PP^* 
+=== Sharing *^PP^*
 also Sharing restricted paths, SharingStateDir, etc.
 
 == Advanced Deployment Scenarios
@@ -495,8 +493,8 @@ See us about skinned sites, mass storage, ...
 [appendix]
 == Firewalls
 
-Add information about what ports are open and why.  
-Also, note the configuration options that can be used to change the defaults.  
+Add information about what ports are open and why.
+Also, note the configuration options that can be used to change the defaults.
 And, for the one that only needs to be open during install (and
 debugging, tell them they can close it, but may need to be opened
 later).
@@ -507,7 +505,7 @@ aren't open (or put that in separate section of Troubleshooting part).
 This content should be about the how to, maybe with a little why.
 Most of the why would be in main body of guide.  Will need to tease
 out content in these posts & decide now to place it in the outline (or
-modify outline).   
+modify outline).
 
 https://support.globus.org/entries/23861366-Using-Globus-Connect-Server-with-Firewalls
 https://support.globus.org/entries/20999723-What-ports-does-Globus-Connect-Server-need-open-
@@ -534,7 +532,7 @@ More detailed description of software that is included in the ID node
 package.
 Any other useful information for configuring an node, e.g. pointers to
 MyProxy reference documentation.
-Reference for configuring using the command line tools: 
+Reference for configuring using the command line tools:
 https://support.globus.org/entries/24030266-Command-Line-Tools-for-Configuring-a-Globus-Connect-Server-ID-Node
 
 [appendix]
@@ -544,7 +542,7 @@ More detailed description of software that is included in the Web node
 package.
 Any other useful information for configuring a Web node, e.g. optimal
 Apache config options.
-Reference for configuring using the command line tools: 
+Reference for configuring using the command line tools:
 https://support.globus.org/entries/24032757-Command-Line-Tools-for-Configuring-a-Globus-Connect-Server-Web-Node
 
 [appendix]
@@ -584,7 +582,7 @@ Detailed description of how sharing works
 endpoint::
   add definition
 Globus Connect Server::
-  add definition 
+  add definition
 GridFTP::
   GridFTP is an extension of the standard File Transfer Protocol (FTP)
   for high-speed, reliable, and secure data transfer.
@@ -592,7 +590,7 @@ GridFTP::
 MyProxy::
   MyProxy is open source software for managing X.509 Public Key
   Infrastructure (PKI) security credentials (certificates and private
-  keys). 
+  keys).
   See the {myproxy}[MyProxy website] for more information.
 OAuth for MyProxy::
   OAuth for MyProxy provides an OAuth-compliant REST web interface to
