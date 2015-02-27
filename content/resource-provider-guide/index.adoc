@@ -3,6 +3,7 @@
 :revnumber: 0.0.2
 :toc:
 :toclevels: 3
+:toc-title: Contents
 :numbered:
 
 // Define some attributes to reuse in-line
