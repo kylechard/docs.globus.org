@@ -30,7 +30,7 @@ body {
 h1 { font-size: 30px; }
 h2 { font-size: 26px; }
 h3 { font-size: 22px; }
-h2, h3 {
+h2, h3, h4 {
     color: #708FCA;
     font-weight: 100;
 }
@@ -84,6 +84,27 @@ dd {
 #header div:last-child {
     margin-bottom: 30px;
 }
+.doc-info {
+  float: right;
+  color: #aaa;
+  font-weight: 100;
+}
+#content .sect1:first-child h2:first-child {
+  margin-top: 0;
+}
+.numbered .sect1 {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: solid 1px #eee;
+}
+.numbered .sect2 {
+  margin-top: 40px;
+  margin-left: 30px;
+}
+.numbered .sect3 {
+  margin-top: 30px;
+  margin-left: 30px;
+}
 
 /* ToC */
 #toctitle {
@@ -98,9 +119,11 @@ dd {
   margin-left: 20px;
   margin-bottom: 30px;
 }
-#toc .toclevel2 { margin-left: 2.4em; font-size: .9em; font-weight: 100;}
-#toc .toclevel3 { margin-left: 4.2em; font-size: .8em; font-weight: 100;}
-#toc .toclevel2 + .toclevel1 { margin-top:10px; }
+#toc .toclevel1 {font-size: 1.3em;}
+#toc .toclevel2 { margin-left: 2.4em; font-size: 1.1em; font-weight: 100; line-height: 1.7em;}
+#toc .toclevel3 { margin-left: 4.2em; font-size: 1em; font-weight: 100; line-height: 1.7em;}
+#toc div.toclevel1 { margin-top:15px; }
+#toc .toclevel3 + .toclevel2 {margin-top: 5px;}
 
 /* Lists */
 ol.arabic {
@@ -152,6 +175,39 @@ pre {
     font-size: 1.3em;
 }
 
+/* Blockquotes and Code */
+blockquote, .blockquote, code, .code  {
+    background-color: #F4F6F9;
+    color: #5273b1;
+    line-height: 1.45em;
+}
+code {
+  background-color: #F6F6ff;
+  border: 1px solid #DEDEDE;
+  padding: 0 4px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.terminal {
+  background-color: #444;
+  color: #fff;
+  border-radius: 3px;
+  border: none;
+  position: relative;
+}
+
+.terminal em {
+  color: #f9fe64;
+}
+
+.terminal span.comment {
+  color: #ccc;
+}
+
+.terminal span.output {
+  color: #63E463;
+}
 /* Site Footer */
 .page-content + footer {
     font-size: 13px;
@@ -182,6 +238,11 @@ pre {
 
 /* Media Queries */
 @media (max-width: 767px) {
+  .doc-info {
+    float: none;
+    margin-bottom: 20px;
+    margin-top: -10px;
+  }
   .page-masthead {
     background-position: left top;
     background-size: 1500px;
