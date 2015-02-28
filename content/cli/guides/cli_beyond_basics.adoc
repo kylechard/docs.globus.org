@@ -17,8 +17,7 @@ Logical endpoints can be created using the +endpoint-add+ command. They can be c
 
 In the following example user demodoc adds an endpoint with a standalone +ssh+ command. To demonstrate the Globus interactive shell mode, the user then adds two endpoints within an interactive Globus CLI session. Two logical endpoints are created, with vpac having one associated physical address and never having two:
 
-[source, bash]
-----
+----terminal
 $ ssh demodoc@cli.globusonline.org endpoint-add vpac -p gsiftp://arcs-df.vpac.org:2811/
 $ ssh demodoc@cli.globusonline.org
 Welcome to globusonline.org, demodoc. Type 'help' for help.
@@ -26,7 +25,7 @@ $ endpoint-add -p never-1.ci.uchicago.edu never
 $ endpoint-add -p never-2.ci.uchicago.edu never
 $ exit
 Connection to cli.globusonline.org closed.
-----
+----terminal
 
 Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user demodoc makes an endpoint public, demodoc#never in visible in the public list:
 

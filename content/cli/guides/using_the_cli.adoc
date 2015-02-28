@@ -27,7 +27,7 @@ The Globus transfer service provides two commands for moving files: +transfer+ a
 All Globus accounts are provisioned with two endpoints for exploratory use, so as soon as you have an account you should be able to transfer /share/godata/file1.txt from endpoint go#ep1 to your home directory on go#ep2, as shown below by user demodoc:
 
 [source, bash]
-----
+--
 $ ssh demodoc@cli.globusonline.org scp go#ep1:/share/godata/file1.txt go#ep2:~/myfile.txt
 Contacting 'myproxy.tutorial.globusonline.org'...
 Activating 'ep2'
@@ -36,7 +36,7 @@ Task ID: 19029d64-ecec-11df-aa30-1231350018b1
 [XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 0.00 mbps
 $ ssh demodoc@cli.globusonline.org ls go#ep2/~/
 myfile.txt
-----
+--
 
 == Online Help
 You can execute the +help+ command to view the current Globus CLI command set:

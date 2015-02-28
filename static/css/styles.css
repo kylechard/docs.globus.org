@@ -189,7 +189,7 @@ code {
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
-.terminal {
+.terminal pre {
   background-color: #444;
   color: #fff;
   border-radius: 3px;
@@ -197,15 +197,15 @@ code {
   position: relative;
 }
 
-.terminal em {
+.terminal pre em {
   color: #f9fe64;
 }
 
-.terminal span.comment {
+.terminal pre span.comment {
   color: #ccc;
 }
 
-.terminal span.output {
+.terminal pre span.output {
   color: #63E463;
 }
 /* Site Footer */
