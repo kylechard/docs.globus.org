@@ -148,7 +148,7 @@ where 'xxx.yyy.zzz' is
 the output of your earlier +hostname -f+ command and +'8.8.4.4'+
 specifies one of Google's public DNS servers:
 ----terminal
-# nslookup xxx.yyy.zzz 8.8.4.4
+# nslookup 'xxx.yyy.zzz' 8.8.4.4
 ----terminal
 Verify that you [underline]#do not# get
 a message of the form: +`** server can't find xxx.yyy.zzz: NXDOMAIN'+.
@@ -303,11 +303,11 @@ such as the system hostname or a descriptive term that is well-known within
 your organization, and
 (2) set +Public+ to +'True'+.
 For example:
-----terminal
+----
 [Endpoint]
 Name = hpc-15
 Public = True
-----terminal
+----
 
 After editing the configuration file, run:
 ----terminal
@@ -441,16 +441,22 @@ Issue the commands shown below for your Linux distribution
 to remove previously installed Globus components:
 
 .Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
- yum remove \*globus\*·
- yum remove \*myproxy\*·
+----terminal
+# yum remove \*globus\*·
+# yum remove \*myproxy\*·
+----terminal
 
 .SuSE Linux Enterprise Server
- zypper remove \*globus\*
- zypper remove \*myproxy\*
+----terminal
+# zypper remove \*globus\*
+# zypper remove \*myproxy\*
+----terminal
 
 .Debian, Ubuntu
- apt-get purge ".*globus.*"
- apt-get purge ".*myproxy.*"
+----terminal
+# apt-get purge ".*globus.*"
+# apt-get purge ".*myproxy.*"
+----terminal
 
 == Management Console *^PP^*
 
