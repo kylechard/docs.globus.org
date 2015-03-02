@@ -3,7 +3,6 @@
 :revnumber: 0.0.2
 :toc:
 :toclevels: 3
-:toc-title: Contents
 :numbered:
 
 // Define some attributes to reuse in-line
@@ -134,9 +133,9 @@ Globus Connect Server.
 To check accessibility, first execute this command
 on the system where
 you plan to install Globus Connect Server:
---------------------------------------------------------------------------------
+----terminal
 # hostname -f
---------------------------------------------------------------------------------
+----terminal
 Confirm that a fully qualified domain name (FQDN) of the form
 +'xxx.yyy.zzz'+
 (with 2 dots) or
@@ -148,9 +147,9 @@ More concretely, run this command,
 where 'xxx.yyy.zzz' is
 the output of your earlier +hostname -f+ command and +'8.8.4.4'+
 specifies one of Google's public DNS servers:
---------------------------------------------------------------------------------
+----terminal
 # nslookup xxx.yyy.zzz 8.8.4.4
---------------------------------------------------------------------------------
+----terminal
 Verify that you [underline]#do not# get
 a message of the form: +`** server can't find xxx.yyy.zzz: NXDOMAIN'+.
 
@@ -235,63 +234,63 @@ on your system.
 ==== CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux
 First, add the Globus Connect Server repository to your package management
 system:
---------------------------------------------------------------------------------
+----terminal
 # curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
 # rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
 # yum install globus-connect-server-repo-latest.noarch.rpm
---------------------------------------------------------------------------------
+----terminal
 
 Next, if you are running
 CentOS 5, Red Hat Enterprise Linux 5, or Scientific Linux 5,
 add the additional required repository:
---------------------------------------------------------------------------------
+----terminal
 # curl -LOs http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 # yum install epel-release-5-4.noarch.rpm
---------------------------------------------------------------------------------
+----terminal
 
 Finally, install Globus Connect Server:
---------------------------------------------------------------------------------
+----terminal
 # yum install globus-connect-server
---------------------------------------------------------------------------------
+----terminal
 
 ==== SuSE Linux Enterprise Server
 First, add the Globus Connect Server repository to your package management
 system:
---------------------------------------------------------------------------------
+----terminal
 # curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
 # rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
 # zypper install globus-connect-server-repo-latest.noarch.rpm
---------------------------------------------------------------------------------
+----terminal
 
 Next, retrieve and install the additional required repositories:
---------------------------------------------------------------------------------
+----terminal
 # zypper ar http://download.opensuse.org/repositories/Apache/SLE_11_SP3/Apache.repo
 # zypper ar http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/Apache:Modules.repo
 # rpm --import http://download.opensuse.org/repositories/Apache/SLE_11_SP3/repodata/repomd.xml.key
 # rpm --import http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/repodata/repomd.xml.key
 # zypper remove libapr1
---------------------------------------------------------------------------------
+----terminal
 
 Finally, install Globus Connect Server:
---------------------------------------------------------------------------------
+----terminal
 # rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Globus
 # zypper install globus-connect-server
---------------------------------------------------------------------------------
+----terminal
 
 ==== Debian, Ubuntu
 First, add the Globus Connect Server repository to your package management
 system:
---------------------------------------------------------------------------------
+----terminal
 # curl -LOs
 # http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo_latest_all.deb
 # dpkg -i globus-connect-server-repo_latest_all.deb
 # apt-get update
---------------------------------------------------------------------------------
+----terminal
 
 Then, install Globus Connect Server:
---------------------------------------------------------------------------------
+----terminal
 # apt-get install globus-connect-server
---------------------------------------------------------------------------------
+----terminal
 
 === Create Globus Endpoint
 Before creating your Globus endpoint,
@@ -304,16 +303,16 @@ such as the system hostname or a descriptive term that is well-known within
 your organization, and
 (2) set +Public+ to +'True'+.
 For example:
---------------------------------------------------------------------------------
+----terminal
 [Endpoint]
 Name = hpc-15
 Public = True
---------------------------------------------------------------------------------
+----terminal
 
 After editing the configuration file, run:
---------------------------------------------------------------------------------
+----terminal
 # globus-connect-server-setup
---------------------------------------------------------------------------------
+----terminal
 
 When prompted, enter the Globus username and password for your
 organization's master Globus account.
