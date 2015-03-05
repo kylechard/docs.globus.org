@@ -1,4 +1,4 @@
-= v0.10
+= Transfer API – v0.10
 :toc:
 :toc-placement: manual
 :toc-title: Contents

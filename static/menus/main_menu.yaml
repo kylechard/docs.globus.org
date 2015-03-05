@@ -4,10 +4,10 @@ menus:
       collection_class: 'nav navbar-nav navbar-right'
     items:
       -
-        title: 'API'
-        link: '/transfer-api/'
+        title: 'Transfer API'
+        link: '/api/transfer/'
       -
-        title: 'Documentation'
+        title: 'Guides'
         link: '#'
         subsections:
             -
