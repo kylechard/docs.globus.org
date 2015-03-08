@@ -1,4 +1,4 @@
-= Transfer API – Versions
+= Transfer API
 
 [doc-info]*Last Updated: {docdate}*
 

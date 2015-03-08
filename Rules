@@ -47,7 +47,7 @@ preprocess do
         raw = i.raw_content
         raw.gsub!(/__LATEST_TRANSFER_VERSION__/, 'v0.10')
     end
-    if i.identifier.start_with?("/api/transfer/versions/v0.10") && i[:extension].split('.').last == 'adoc'
+    if i.identifier.start_with?("/api/transfer/v0.10") && i[:extension].split('.').last == 'adoc'
         # Replace transfer version
         raw = i.raw_content
         raw.gsub!(/__TRANSFER_VERSION__/, 'v0.10')
