@@ -1,5 +1,7 @@
 = Getting started with the Command Line Interface (CLI)
 
+[doc-info]*Last Updated: {docdate}*
+
 You will need an SSH key in order to access the Globus command line interface (CLI). *If you don’t already have an SSH key, instructions for creating one are link:https://support.globus.org/entries/23690606-Generating-SSH-Keys[available here].*
 
 Once you have an SSH key, follow the directions below to associate your SSH key with your Globus account:

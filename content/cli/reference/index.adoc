@@ -1,5 +1,7 @@
 = Command Line Interface (CLI) Reference
 
+[doc-info]*Last Updated: {docdate}*
+
 link:cancel[cancel]::
 cancel stops all processing of a task. If the task has already completed, a notice will be displayed.
 

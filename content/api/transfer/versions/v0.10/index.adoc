@@ -3,6 +3,8 @@
 :toc-placement: manual
 :toc-title: Contents
 
+[doc-info]*Last Updated: {docdate}*
+
 This API provides a REST-style interface to the
 link:http://www.globus.org[globus] reliable file transfer service.
 The API is still in beta and is subject to change.

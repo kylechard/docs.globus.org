@@ -1,5 +1,7 @@
 = Transfer API – Versions
 
+[doc-info]*Last Updated: {docdate}*
+
 *Latest Version:* link:/api/transfer/docs/__LATEST_TRANSFER_VERSION__/index.html[__LATEST_TRANSFER_VERSION__]
 
 This API provides a REST-style interface to the

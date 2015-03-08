@@ -3,6 +3,8 @@
 :toc-placement: manual
 :toc-title:
 
+[doc-info]*Last Updated: {docdate}*
+
 This is a companion guide to link:../[Getting started with the Command Line Interface (CLI)]. New CLI users should be familiar with that introduction before proceeding.
 
 '''
