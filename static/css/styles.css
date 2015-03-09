@@ -23,7 +23,7 @@ body {
   position: relative;
   font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 300;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* Overide Bootstrap */
@@ -183,13 +183,20 @@ blockquote, .blockquote, code, .code  {
     color: #5273b1;
     line-height: 1.45em;
 }
-code {
+code, .uservars {
   background-color: #F6F6ff;
   border: 1px solid #DEDEDE;
   padding: 0 4px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
+}
+.uservars {
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    font-size: 85%;
+    background-color: #fcfdd6;
+    border: solid 1px #e0e46e;
+    color: #666633;
 }
 .terminal pre {
   background-color: #444;
@@ -198,18 +205,16 @@ code {
   border: none;
   position: relative;
 }
-
-.terminal pre em {
-  color: #f9fe64;
-}
-
-.terminal pre span.comment {
+.terminal span.comment {
   color: #ccc;
 }
-
-.terminal pre span.output {
+.terminal span.output {
   color: #63E463;
 }
+.terminal span.input {
+    color: #F9FE64;
+}
+
 /* Site Footer */
 .page-content + footer {
     font-size: 13px;

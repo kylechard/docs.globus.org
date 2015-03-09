@@ -145,6 +145,19 @@ ____
 Use: cite somebody
 ____
 
+.Terminal Block
+----terminal
+$ ssh [input]#demodoc@cli.globusonline.org# endpoint-add vpac -p gsiftp://arcs-df.vpac.org:2811/
+$ ssh demodoc@cli.globusonline.org
+[output]#Welcome to globusonline.org, demodoc. Type 'help' for help.#
+$ endpoint-add -p never-1.ci.uchicago.edu never
+$ endpoint-add -p never-2.ci.uchicago.edu never
+$ exit
+[output]#Connection to cli.globusonline.org closed.#
+----terminal
+
+Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user [uservars]#demodoc# makes an endpoint public, [uservars]#demodoc\#never# in visible in the public list:
+
 == Text
 forced +
 line break

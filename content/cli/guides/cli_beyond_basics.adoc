@@ -3,7 +3,7 @@
 :toc-placement: manual
 :toc-title:
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]#Last Updated: {docdate}#
 
 This is a companion guide to link:../[Getting started with the Command Line Interface (CLI)]. New CLI users should be familiar with that introduction before proceeding.
 
@@ -20,16 +20,16 @@ Logical endpoints can be created using the +endpoint-add+ command. They can be c
 In the following example user demodoc adds an endpoint with a standalone +ssh+ command. To demonstrate the Globus interactive shell mode, the user then adds two endpoints within an interactive Globus CLI session. Two logical endpoints are created, with vpac having one associated physical address and never having two:
 
 ----terminal
-$ ssh demodoc@cli.globusonline.org endpoint-add vpac -p gsiftp://arcs-df.vpac.org:2811/
+$ ssh [input]#demodoc@cli.globusonline.org# endpoint-add vpac -p gsiftp://arcs-df.vpac.org:2811/
 $ ssh demodoc@cli.globusonline.org
-Welcome to globusonline.org, demodoc. Type 'help' for help.
+[output]#Welcome to globusonline.org, demodoc. Type 'help' for help.#
 $ endpoint-add -p never-1.ci.uchicago.edu never
 $ endpoint-add -p never-2.ci.uchicago.edu never
 $ exit
-Connection to cli.globusonline.org closed.
+[output]#Connection to cli.globusonline.org closed.#
 ----terminal
 
-Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user demodoc makes an endpoint public, demodoc#never in visible in the public list:
+Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user [uservars]#demodoc# makes an endpoint public, [uservars]#demodoc\#never# in visible in the public list:
 
 [source, bash]
 ----
