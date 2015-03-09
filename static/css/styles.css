@@ -194,12 +194,12 @@ code, .uservars {
 .uservars {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
     font-size: 85%;
-    background-color: #fcfdd6;
-    border: solid 1px #e0e46e;
-    color: #666633;
+    background-color: #fdfde6;
+    border: solid 1px #f3f79e;
+    color: #5273b1;
 }
 .terminal pre {
-  background-color: #444;
+  background-color: #424242;
   color: #fff;
   border-radius: 3px;
   border: none;
