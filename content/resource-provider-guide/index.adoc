@@ -91,7 +91,7 @@ continue to serve the research data management needs of
 non-profit users for many years to come.
 
 Some premium Globus features described in this guide are only available to
-Provider Plan subscribers; Provider Plan features are marked with *^PP^*.
+Provider Plan subscribers; Provider Plan features are marked [go-icon-pp]#with#
 ====
 
 == Globus Connect Server Prerequisites
@@ -364,7 +364,7 @@ x
 === RestrictedPaths
 x
 
-=== Sharing *^PP^*
+=== [go-icon-pp]#Sharing#
 also Sharing restricted paths, SharingStateDir, etc.
 
 == Advanced Deployment Scenarios
@@ -404,7 +404,7 @@ x
 ==== Customizing Filesystem Access
 x
 
-==== Enabling Sharing on GridFTP Servers *^PP^*
+==== [go-icon-pp]#Enabling Sharing on GridFTP Servers#
 (do we want this? - how is it different than enabling sharing)
 
 ==== Setting up an anonymous endpoint
@@ -458,14 +458,14 @@ to remove previously installed Globus components:
 # apt-get purge ".*myproxy.*"
 ----terminal
 
-== Management Console *^PP^*
+== [go-icon-pp]#Management Console#
 
-== Usage Reporting *^PP^*
+== [go-icon-pp]#Usage Reporting#
 
-== Installing an S3 endpoint *^PP^*
+== [go-icon-pp]#Installing an S3 endpoint#
 https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 
-== Enabling Globus Plus for Users *^PP^*
+== [go-icon-pp]#Enabling Globus Plus for Users#
 
 == Generating and Monitoring Log Files
 

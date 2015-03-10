@@ -144,6 +144,34 @@ ol.upperroman {
   list-style-type: upper-roman;
 }
 
+/* Provider Plans */
+.go-icon-pp {
+  position: relative;
+}
+.go-icon-pp:after {
+  background: url('../images/go-icon-pp.png') no-repeat;
+  position: relative;
+  height: 42px;
+  width: 42px;
+  background-size: 42px 42px;
+  content: "";
+    display: block;
+    position: absolute;
+    right: -45px;
+    top: -10px;
+}
+h3 .go-icon-pp:after,
+h4 .go-icon-pp:after {
+  height: 32px;
+  width: 32px;
+  background-size: 32px 32px;
+  right: -35px;
+  top: -5px;
+}
+h4 .go-icon-pp:after {
+    top: -8px;
+}
+
 /* Tables */
 pre {
         background-color: #fbfbfb;
