@@ -149,7 +149,8 @@ ol.upperroman {
   position: relative;
 }
 .go-icon-pp:after {
-  background: url('../images/go-icon-pp.png') no-repeat;
+  background: url('../images/i_provider_plan.png') no-repeat; /* fallback in case svg not supported */
+  background: url('../images/i_provider_plan.svg');
   position: relative;
   height: 42px;
   width: 42px;
@@ -157,19 +158,26 @@ ol.upperroman {
   content: "";
     display: block;
     position: absolute;
-    right: -45px;
-    top: -10px;
+    right: -50px;
+    top: -15px;
 }
 h3 .go-icon-pp:after,
 h4 .go-icon-pp:after {
   height: 32px;
   width: 32px;
   background-size: 32px 32px;
-  right: -35px;
-  top: -5px;
+  right: -37px;
+  top: -9px;
 }
 h4 .go-icon-pp:after {
-    top: -8px;
+    top: -12px;
+}
+p .go-icon-pp:after {
+  height: 25px;
+  width: 25px;
+  background-size: 25px 25px;
+  right: -30px;
+  top: -10px;
 }
 
 /* Tables */
