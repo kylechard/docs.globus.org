@@ -78,7 +78,7 @@ Appendices contain comprehensive reference materials
 and technical descriptions that go beyond the installation and
 configuration instructions found in the main sections of the guide.
 
-.Provider Plan Features
+.[go-icon-pp]#Provider Plan Features#
 [NOTE]
 ====
 Globus can be used for file transfer by
@@ -91,7 +91,7 @@ continue to serve the research data management needs of
 non-profit users for many years to come.
 
 Some premium Globus features described in this guide are only available to
-Provider Plan subscribers; Provider Plan features are marked [go-icon-pp]#with#
+Provider Plan subscribers.
 ====
 
 == Globus Connect Server Prerequisites
