@@ -10,18 +10,17 @@ Once you have an SSH key, follow the directions below to associate your SSH key 
 . link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
 . Click "add linked identity".
 . Click “Add SSH Public Key”.
-. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
+. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in +~/.ssh/id_rsa.pub+.
 . Click “Submit” to save.
 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
 
-[source,bash]
-----
-$ ssh <my_globus_user_name>@cli.globusonline.org
-Welcome to globus.org, <my_globus_user_name>. Type ‘help’ for help.
+----terminal
+$ ssh [input]#<globus_username>#@cli.globusonline.org
+[output]#Welcome to globus.org, <globus_username>. Type \'help' for help.#
 $ _
-----
+----terminal
 
-NOTE: If you receive a “permission denied” error, please ensure that your key files have permissions set to read-only (e.g. on Linux/Mac, run: chmod 400 ~/.ssh/id_*)
+NOTE: If you receive a “permission denied” error, please ensure that your key files have permissions set to read-only (e.g. on Linux/Mac, run: chmod 400 +~/.ssh/id_*+)
 
 For more information about using the CLI, see the guide to link:using_the_cli[Using the CLI] and link:cli_beyond_basics[CLI: Beyond the basics].

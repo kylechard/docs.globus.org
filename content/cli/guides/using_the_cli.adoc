@@ -15,39 +15,38 @@ toc::[]
 == Prerequisites
 To use the CLI you must have a link:http://www.globus.org/SignUp[Globus account] with ssh access enabled. To enable your account for ssh access you must add your ssh public key to your Globus account by link:https://www.globus.org/account/ManageIdentities[visiting the Manage Identities page] and clicking "add linked identity", followed by "Add SSH Public Key". If you do not have an ssh key, follow the directions link:https://support.globus.org/entries/23690606-Generating-SSH-Keys[here] to create one.
 
-
 == CLI Structure
 There is no need to install custom client software. CLI users interact with Globus via a secure shell. The general structure of a CLI request is:
 
-    ssh <username>@cli.globusonline.org <command> <options> <params>
+----terminal
+$ ssh [input]#<username>#@cli.globusonline.org [input]#<command> <options> <params>#
+----terminal
 
-where: <username> is your Globus user name, <command> is the Globus command to execute, <options> are the options available for <command>, and <params> are the parameters passed to <command>. If desired, gsissh can be used in place of ssh.
+where: [uservars]#<username># is your Globus user name, [uservars]#<command># is the Globus command to execute, [uservars]#<options># are the options available for [uservars]#<command>#, and [uservars]#<params># are the parameters passed to [uservars]#<command>#. If desired, gsissh can be used in place of ssh.
 
 == File Transfer
 The Globus transfer service provides two commands for moving files: +transfer+ and +scp+. The +scp+ command offers a subset of +transfer+ ’s functionality but is packaged in a way that should be familiar to users of the standalone scp command.
 
-All Globus accounts are provisioned with two endpoints for exploratory use, so as soon as you have an account you should be able to transfer /share/godata/file1.txt from endpoint go#ep1 to your home directory on go#ep2, as shown below by user demodoc:
+All Globus accounts are provisioned with two endpoints for exploratory use, so as soon as you have an account you should be able to transfer [uservars]#/share/godata/file1.txt# from endpoint [uservars]#go#ep1# to your home directory on [uservars]#go#ep2#, as shown below by user [uservars]#demodoc#:
 
-[source, bash]
---
-$ ssh demodoc@cli.globusonline.org scp go#ep1:/share/godata/file1.txt go#ep2:~/myfile.txt
-Contacting 'myproxy.tutorial.globusonline.org'...
-Activating 'ep2'
-Activating 'ep1'
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org scp [input]#go#ep1:/share/godata/file1.txt go#ep2:\~/myfile.txt#
+[output]#Contacting \'myproxy.tutorial.globusonline.org'...
+Activating \'ep2'
+Activating \'ep1'
 Task ID: 19029d64-ecec-11df-aa30-1231350018b1
-[XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 0.00 mbps
-$ ssh demodoc@cli.globusonline.org ls go#ep2/~/
-myfile.txt
---
+[XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 0.00 mbps#
+$ ssh [input]#demodoc#@cli.globusonline.org ls [input]#go#ep2/~/#
+[output]#myfile.txt#
+----terminal
 
 == Online Help
 You can execute the +help+ command to view the current Globus CLI command set:
 
-[source, bash]
-----
-$ ssh demodoc@cli.globusonline.org help
-Type '<command> -h' for basic help on a command.
-Type 'man <command>' for detailed help.
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org help
+[output]#Type \'<command> -h' for basic help on a command.
+Type \'man <command>' for detailed help.
 
 Task Management:        cancel                 modify
                         details                status
@@ -67,72 +66,67 @@ Endpoint Management:    endpoint-add           endpoint-remove
 
 Other:                  help                   profile
                         history                versions
-                        man
-----
+                        man#
+----terminal
 
 In addition, +<command> -h+ displays a command syntax summary and +man <command>+ displays the command's manual page.
 
 == Endpoint Activation
 Activation is Globus endpoint user authentication mechanism; it enables endpoint owners to determine who is transferring files. Transfers will only proceed when both the source and destination endpoints are activated. You can practice by activating the Globus endpoints:
 
-[source, bash]
-----
-$ ssh demodoc@cli.globusonline.org endpoint-activate go#*
-Contacting 'myproxy.tutorial.globusonline.org'...
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]##go#*##
+[output]#Contacting \'myproxy.tutorial.globusonline.org'...
 Credential Subject : /O=Grid/OU=GlobusTutorial/CN=demodoc
 Credential Time Left: 12:00:00
-Activating 'go#ep1'
-Activating 'go#ep2'
-----
+Activating \'go#ep1'
+Activating \'go#ep2'#
+----terminal
 
 In the following example user demodoc activates NERSC endpoints using the +ssh -t+ option to prevent the passphrase from being echoed to stdout. Note that even if an endpoint is activated transfers will fail if the user is not authorized to use it. Access to a given endpoint is entirely within the endpoint owner's control, so you must contact owners directly to obtain permission to use their endpoints.
 
-[source, bash]
-----
-$ ssh -t demodoc@cli.globusonline.org endpoint-activate nersc#*
-Enter username for 'nerscca.nersc.gov' (Default: 'demodoc'):
-Enter password for 'nerscca.nersc.gov':
+----terminal
+$ ssh -t [input]#demodoc#@cli.globusonline.org endpoint-activate [input]##nersc#*##
+[output]#Enter username for \'nerscca.nersc.gov' (Default: \'demodoc'):
+Enter password for \'nerscca.nersc.gov':
 Credential Subject: /DC=gov/DC=nersc/OU=People/CN=Demo Docuser 43645234
 Credential Time Left: 23:59:56
-Activating 'nersc#carver'
-Activating 'nersc#dtn'
-Activating 'nersc#dtn_jgi'
-Activating 'nersc#hopper'
-Activating 'nersc#hpss'
-Activating 'nersc#pdsf'
-Connection to cli.globusonline.org closed.
-----
+Activating \'nersc#carver'
+Activating \'nersc#dtn'
+Activating \'nersc#dtn_jgi'
+Activating \'nersc#hopper'
+Activating \'nersc#hpss'
+Activating \'nersc#pdsf'
+Connection to cli.globusonline.org closed.#
+----terminal
 
-Because \'carver' and \'hopper' have been activated using NERSC credentials, and the \'carver' and \'hopper' owners have authorized the user to access their endpoints, demodoc is able to transfer a file:
+Because [uservars]#\'carver'# and [uservars]#\'hopper'# have been activated using NERSC credentials, and the [uservars]#\'carver'# and [uservars]#\'hopper'# owners have authorized the user to access their endpoints, [uservars]#demodoc# is able to transfer a file:
 
-[source, bash]
-----
-$ ssh demodoc@cli.globusonline.org scp nersc#carver:~/carver-file.txt nersc#hopper:~/to-hopper.txt
-Task ID: 6356aa16-ed20-11df-aa30-1231350018b1
-[XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 0.00 mbps
-----
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org scp [input]##nersc#carver:\~/carver-file.txt nersc#hopper:~/to-hopper.txt##
+[output]#Task ID: 6356aa16-ed20-11df-aa30-1231350018b1
+[XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 0.00 mbps#
+----terminal
 
-Now, user demodoc activates the XSEDE endpoint \'stampede'. The endpoint owner requires that the user go to the XSEDE OAuth service so that the user's password does not flow through Globus. This requires copying the URL shown in the terminal window to a web browser and following the prompts. Once the user has authenticated on XSEDE's OAuth server, a confirmation message is displayed in the terminal:
+Now, user [uservars]#demodoc# activates the XSEDE endpoint [input]#\'stampede'#. The endpoint owner requires that the user go to the XSEDE OAuth service so that the user's password does not flow through Globus. This requires copying the URL shown in the terminal window to a web browser and following the prompts. Once the user has authenticated on XSEDE's OAuth server, a confirmation message is displayed in the terminal:
 
-[source, bash]
-----
-$ ssh -t demodoc@cli.globusonline.org endpoint-activate xsede#stampede
-*** Please use this URL to activate the endpoint(s) ***
+----terminal
+$ ssh -t [input]#demodoc#@cli.globusonline.org endpoint-activate [input]##xsede#stampede##
+[output]#\*\** Please use this URL to activate the endpoint(s) \*\**
 https://www.globusonline.org/activate?ep=xsede%23stampede
-*** Waiting... Press CTRL-C to cancel ***
-*** Credential Received! ***
-Connection to cli.globusonline.org closed.
-----
+\*\** Waiting... Press CTRL-C to cancel \*\**
+\*\** Credential Received! \*\**
+Connection to cli.globusonline.org closed.#
+----terminal
 
 An endpoint can also be activated using +gsissh+:
 
-[source, bash]
-----
-$ gsissh demodoc@cli.globusonline.org endpoint-activate -g ci#pads
-Credential Subject : /DC=org/DC=doegrids/OU=People/CN=Demo Docuser 595766/CN=576965990/CN=436543765
+----terminal
+$ gsissh [input]#demodoc#@cli.globusonline.org endpoint-activate -g [input]##ci#pads##
+[output]#Credential Subject : /DC=org/DC=doegrids/OU=People/CN=Demo Docuser 595766/CN=576965990/CN=436543765
 Credential Time Left: 11:59:54
-Activating 'ci#pads'
-----
+Activating \'ci#pads'#
+----terminal
 
 Endpoints can also be activated inline by specifying the -g option with the +transfer+ and +scp+ commands.
 

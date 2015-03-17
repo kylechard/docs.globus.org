@@ -57,8 +57,9 @@ auth over SSL using your Globus username and password:
 
 Using the curl command line program with a prompt for your password:
 
-[source,bash]
-curl --user exampleuser 'https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials'
+----terminal
+$ curl --user [input]#USERNAME# \'https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials'
+----terminal
 
 Make sure that your https client program or library verifies the server
 certificate to authenticate the server, ensuring that the password is only sent
@@ -69,9 +70,9 @@ The Nexus token service returns a JSON document with the following format:
 
 [source,javascript]
 ----
-    {'access_token': 'un=exampleuser|tokenid=...',
+    {'access_token': 'un=USERNAME|tokenid=...',
      'access_token_hash': '...',
-     'client_id': 'exampleuser',
+     'client_id': 'USERNAME',
      'expires_in': '31536000',
      'expiry': '1397334772',
      'issued_on': '1365798772',
@@ -79,17 +80,17 @@ The Nexus token service returns a JSON document with the following format:
      'scopes': "[u'https://transfer.api.globusonline.org']",
      'token_id': '...',
      'token_type': 'Bearer',
-     'user_name': 'exampleuser'}
+     'user_name': 'USERNAME'}
 ----
 
 The token that you need for authentication is the value of the +access_token+
 key. It needs to be passed to the API in the +Authorization+ header with
 custom method +Globus-Goauthtoken+:
 
-    Authorization: Globus-Goauthtoken un=exampleuser|tokenid=...
+    Authorization: Globus-Goauthtoken un=USERNAME|tokenid=...
 
 You can test this by copying the +access_token+ value from the Nexus response
-to a file, for example +/tmp/goauth-token.secret+, and then passing it to
+to a file, for example [uservars]#/tmp/goauth-token.secret#, and then passing it to
 curl with the -H option:
 
 [source,bash]
@@ -125,11 +126,12 @@ mailing list.
 
 SSL authentication requires an X.509 credential signed by a CA trusted
 by Globus, and associated with the user's Globus
-account. If you can login to +cli.globusonline.org+ using
+account. If you can login to cli.globusonline.org using
 this credential with gsissh, like this:
 
-[source,bash]
-gsissh USERNAME@cli.globusonline.org -o PubkeyAuthentication=no
+----terminal
+$ gsissh [input]#USERNAME#@cli.globusonline.org -o PubkeyAuthentication=no
+----terminal
 
 then it should also work for the Transfer
 API. RFC3820 proxy certificates based on your account certificate
@@ -142,43 +144,40 @@ Globus username to sign in as, since a user could have
 multiple accounts associated with the same certificate DN.
 
 Here is an example using curl and standard globus toolkit certificate
-locations; replace USERNAME with your globus username.
+locations; replace [uservars]#USERNAME# with your globus username.
 
-[source,bash]
-----
-$ curl --cert ~/.globus/usercert.pem \
+----terminal
+$ curl --cert \~/.globus/usercert.pem \
    --key ~/.globus/userkey.pem \
-   --header "X-Transfer-API-X509-User: USERNAME" \
-   # or --cookie "x509-user=USERNAME" \
-   'https://transfer.api.globusonline.org/__TRANSFER_VERSION__/tasksummary'
-----
+   --header "X-Transfer-API-X509-User: [input]#USERNAME#" \
+   [comment]### or --cookie "x509-user=USERNAME" \ ##
+   \'https://transfer.api.globusonline.org/__TRANSFER_VERSION__/tasksummary\'
+----terminal
 
 ===== Browser Setup
 
-In order to access the API directly with your web browser and use the
-[interactive demo](try.html) client, you need to install your certificate and
+In order to access the API directly with your web browser, you need to install your certificate and
 key in your browser. This is not necessary to use the API with a standard
 client, but it's useful for experimenting with the API.
 
 For firefox, you will first need to convert your key to pkcs12:
 
-[source,bash]
-----
-# You will be prompted for a passphrase; when you import the p12 into
-# a browser you will be prompted again. A strong passphrase is
-# recommended if you are going to keep the p12 and copy it to different
-# machines; if you are just going to delete it afterwards, there is a
-# -nodes option to disable the key encryption.
+----terminal
+[comment]#You will be prompted for a passphrase; when you import the p12 into
+a browser you will be prompted again. A strong passphrase is
+recommended if you are going to keep the p12 and copy it to different
+machines; if you are just going to delete it afterwards, there is a
+-nodes option to disable the key encryption.#
 
 $ openssl pkcs12 -export \
--in ~/.globus/usercert.pem \
--inkey ~/.globus/userkey.pem \
+-in \~/.globus/usercert.pem \
+-inkey \~/.globus/userkey.pem \
 -out ~/.globus/usercred.p12
 
-# Import into firefox.
+[comment]#Import into firefox.
 
-# If you used -nodes, remove the p12.
-----
+If you used -nodes, remove the p12.#
+----terminal
 
 To import the p12 into firefox, go to the preference dialog
 (+Edit->Preferences+ in Linux), choose +Advanced+,
@@ -191,7 +190,7 @@ you just created. Consider deleting the p12 file if you used the
 
 Here are some common SSL errors and what they mean:
 
-* SSL3_READ_BYTES:tlsv1 alert unknown ca
+* [error]#SSL3_READ_BYTES:tlsv1 alert unknown ca#
 +
 This means that the client certificate used for authentication is signed by
 a certificate authority (CA) that is not trusted by Globus.  Globus
@@ -204,7 +203,7 @@ have about your CA - e.g. the subject, why it's not in IGTF,
 and what it's used for. If you have Globus Toolkit installed, sending
 us the output of grid-cert-info is very helpful.
 
-* SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+* [error]#SSL3_GET_SERVER_CERTIFICATE:certificate verify failed#
 +
 This means that the client was unable to verify the server certificate.
 The Transfer API server certificate is signed by the InCommon CA -
@@ -261,8 +260,8 @@ constructing resource URLs, to simplify changing versions.
 === URL Patterns and Links
 
 The API exposes lists of resources and allows fetching single resources
-by name. For example, a list of tasks is available at */task_list*, and a
-task with id +123-abc+ is accessed with */task/123-abc*.  This
+by name. For example, a list of tasks is available at [uservars]#/task_list#, and a
+task with id [uservars]#123-abc# is accessed with [uservars]#/task/123-abc#.  This
 convention is used for all resource URL patterns.
 
 Many resources provide links to related resources; these can be used instead
@@ -311,7 +310,7 @@ When an error occurs an HTTP status code >=400 will be used, and the body of
 the response will contain an X-Transfer-API-Error header with an error code and
 a body with details about the link:https://transfer.api.globusonline.org/v0.10/document_type/error?format=html[error], in the
 requested format (or the default json if the error has to do with format
-selection). In extreme cases a plaintext or html 500 error may be returned;
+selection). In extreme cases a plaintext or [error]#html 500# error may be returned;
 this indicates a bug in the API or a deployment issue. Here is an example error
 returned when a property name in the fields query parameter is mispelled:
 
@@ -326,7 +325,7 @@ returned when a property name in the fields query parameter is mispelled:
 }
 ----
 
-A 400 status code is used for this response. The code field has the same
+A [error]#400 status code# is used for this response. The code field has the same
 value as the X-Transfer-API-Error header, for convenient access. The first
 part of the code, "ClientError" in this example, indicates the category of the
 error. There are four categories - ClientError, ServerError, ExternalError, and
@@ -598,7 +597,7 @@ Content-Type: application/json
 +
     GET /endpoint_list
 +
-List all endpoints owned by USERNAME, along with all public endpoints. Note that the results are paged, and only the first 10 results are returned by default; the users own endpoints are sorted first.
+List all endpoints owned by [uservars]#USERNAME#, along with all public endpoints. Note that the results are paged, and only the first 10 results are returned by default; the users own endpoints are sorted first.
 +
 [source,json]
 ----
@@ -683,8 +682,8 @@ Content-Type: application/json
 +
     GET /endpoint/go%23ep1
 +
-Note that the endpoint name is 'go#ep1', but the '#' must be percent
-encoded as '%23', since it is used as the fragment identifier in the url.
+Note that the endpoint name is \'[uservars]##go#ep1##\', but the \'#' must be percent
+encoded as \'%23', since it is used as the fragment identifier in the url.
 +
 [source,json]
 ----
@@ -754,8 +753,8 @@ At least one server sub-document is required. Any extra fields in the
 representation will be ignored, except that the username and name fields
 must match canonical_name if present. The canonical_name field also accepts
 a non-username qualified name, in which case the current logged in user is
-assumed, e.g. if user "jdoe" uses canonical_name "myep", it will be
-interpreted as "jdoe#myep".
+assumed, e.g. if user "[uservars]#jdoe#" uses canonical_name "[uservars]#myep#", it will be
+interpreted as "[uservars]##jdoe#myep##".
 +
 myproxy_server is optional, and specifies a default myproxy server to
 use when obtaining a credential for activation.
@@ -813,7 +812,7 @@ Location: https://transfer.api.globusonline.org/__TRANSFER_VERSION__/endpoint/US
 }
 ----
 +
-The globus_connect_setup_key will also be available in the endpoint representation until it is used to complete setup. It is deleted after first use.
+The +globus_connect_setup_key+ will also be available in the endpoint representation until it is used to complete setup. It is deleted after first use.
 
 * Endpoint update.
   (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_update_create?format=html[Reference])
@@ -866,10 +865,10 @@ on an endpoint document when creating or updating the endpoint.
 Globus also maintains several sets of commonly used endpoints under
 special usernames:
 
-* go#ep1, go#ep2 - Globus tutorial endpoints All users have
+* [uservars]##go#ep1##, [uservars]##go#ep2## - Globus tutorial endpoints All users have
   access to this endpoint with a limited disk quota, for use in testing
   without having to optain other credentials.
-* tg#bigred, tg#ranger, etc - TeraGrid endpoints.
+* [uservars]##tg#bigred##, [uservars]##tg#ranger##, etc - TeraGrid endpoints.
 
 === Endpoint Directory Listing
 
@@ -900,7 +899,7 @@ link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_activate?form
 
 ===== Auto-Activation
 
-The Globus tutorial endpoints (go#ep1, go#ep2) and all Globus Connect
+The Globus tutorial endpoints (+go#ep1+, +go#ep2+) and all Globus Connect
 endpoints do not require external credentials, and can be activated without
 specifying any myproxy credentials. This is done by POSTing an empty body to link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_autoactivate?format=html[/endpoint/NAME/autoactivate].
 
@@ -934,7 +933,7 @@ Directory listing on an endpoint is exposed as a sub-resource of the endpoint:
 
 If the endpoint connection succeeds and the path is a valid directory with appropriate permission for the user, a link:https://transfer.api.globusonline.org/v0.10/document_type/file_list?format=html[file_list] is returned.
 
-/~/ is an alias for the users' home directory on the server. _path_ can be an empty string, in which case the "default" directory is used, currently */~/*.
+/\~/ is an alias for the users' home directory on the server. _path_ can be an empty string, in which case the "default" directory is used, currently */~/*.
 
 Note that only directory listing is supported - if path points to a
 file, an error will be returned. Paging, filtering, ordering, and field
@@ -946,8 +945,7 @@ support partial listing, so the entrie list is always fetched.
 
 To create a directory on an endpoint, submit a
 link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir?format=html[mkdir] document to link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_mkdir?format=html[POST
-/endpoint/NAME/mkdir] (where NAME is the
-endpoint name):
+/endpoint/NAME/mkdir] (where [uservars]#NAME# is the endpoint name):
 
 [source,json]
 ----
@@ -958,7 +956,7 @@ endpoint name):
 ----
 
 If the path field does not contain an absolute path, it's assumed to be
-relative to the users home directory (~).
+relative to the user's home directory (~).
 
 A standard error document is returned on failure; on sucess a
 link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir_result?format=html[mkdir_result] is returned, with status 202
@@ -1109,11 +1107,11 @@ To avoid breaking backward compatibility in 0.10, delete tasks are not included 
 
 == Common Query Parameters
 
-Most resources support field selection using the *fields* paramater. List resources support pagination using *limit* and *offset*, filtering on certain fields using a *filter* parameter, and sorting on certain fields using *orderby*.
+Most resources support field selection using the +fields+ paramater. List resources support pagination using +limit+ and +offset+, filtering on certain fields using a +filter+ parameter, and sorting on certain fields using +orderby+.
 
 === Paging
 
-List resources which link:https://transfer.api.globusonline.org/v0.10/resource?format=html&fields=name,method,self_link,url_patterns&paging=True[use paging] can be controlled with the *offset* and *limit* query parameters; the default is +offset=0+ and +limit=10+. A maximum page size is configured on the server, and is currently set at 100. Typical usage involves starting with +offset=0+, choosing a page size and passing with +limit=PAGE_SIZE+, and incrementing +offset+ by +PAGE_SIZE+ to display successive pages.
+List resources which link:https://transfer.api.globusonline.org/v0.10/resource?format=html&fields=name,method,self_link,url_patterns&paging=True[use paging] can be controlled with the +offset+ and +limit+ query parameters; the default is [uservars]#offset=0# and [uservars]#limit=10#. A maximum page size is configured on the server, and is currently set at 100. Typical usage involves starting with [uservars]#offset=0#, choosing a page size and passing with +limit=PAGE_SIZE+, and incrementing +offset+ by +PAGE_SIZE+ to display successive pages.
 
 For example, with a page size of 50:
 
@@ -1139,13 +1137,13 @@ This example for the task list returns ACTIVE and SUCCESSFUL tasks submitted bef
 
 === Sorting
 
-The *orderby* parameter sets a sort field and direction. Only fields
+The +orderby+ parameter sets a sort field and direction. Only fields
 which support filtering are sortable. The value is a comma separated
 list of field names, with an option direction specifier. For example:
 
     GET /task_list?orderby=status,request_time desc
 
-returns tasks first ordered by status, in ascending alphabetical order, then within tasks with the same status sorts by request_time, with newer tasks first (descending).
+returns tasks first ordered by status, in ascending alphabetical order, then within tasks with the same status sorts by +request_time+, with newer tasks first (descending).
 
 === Choosing Result Fields
 
@@ -1153,13 +1151,13 @@ You may choose to have the results contain only certain fields you care about. F
 
     GET /task_list?fields=task_id,status
 
-will return a task list with only task_id and status fields in each task. This can save bandwidth and parsing time if you know you only need certain fields.
+will return a task list with only +task_id+ and status fields in each task. This can save bandwidth and parsing time if you know you only need certain fields.
 
 Field selection can also be done on sub-documents, by prefixing the field name with the document type name. For example:
 
     GET /endpoint_list?fields=canonical_name,server.uri
 
-will display only the canonical_name of each endpoint, and server sub-documents with only the +uri+ field.
+will display only the +canonical_name+ of each endpoint, and server sub-documents with only the +uri+ field.
 
 The special name +ALL+ selects all fields at a given level, not including sub-documents. For Example:
 

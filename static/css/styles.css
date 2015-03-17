@@ -30,10 +30,11 @@ body {
 h1 { font-size: 30px; }
 h2 { font-size: 26px; }
 h3 { font-size: 22px; }
-h2, h3, h4 {
+h2, h3, h4, h5 {
     color: #708FCA;
     font-weight: 100;
 }
+h5 { font-size: 16px; }
 .toc { font-size: 12px; margin-bottom: 20px; }
 .toc dl { margin-bottom: 0; }
 .toc dt { font-weight: 300; }
@@ -199,7 +200,8 @@ p .go-icon-pp:after {
 
 /* Tables */
 pre {
-        background-color: #fbfbfb;
+    background-color: #fbfbfb;
+    word-wrap: normal;
 }
 .table-borderless>tbody>tr>td {
     border: 0;
@@ -266,6 +268,13 @@ code, .uservars {
 }
 .terminal span.input {
     color: #F9FE64;
+}
+.error {
+    background-color: #f9f2f4;
+    color: #c7254e;
+    font-size: 90%;
+    padding: 2px 4px;
+    border-radius: 4px;
 }
 
 /* Site Footer */
