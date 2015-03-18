@@ -12,8 +12,6 @@ The API is still in beta and is subject to change.
 '''
 toc::[]
 
-'''
-
 == Overview
 
 The Transfer API supports monitoring the progress of a user's file transfer

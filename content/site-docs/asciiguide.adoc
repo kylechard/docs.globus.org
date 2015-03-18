@@ -6,6 +6,8 @@
 :toc:
 :toc-placement: manual
 
+[doc-info]*Last Updated: {docdate}*
+
 == About this Guide
 *We are currently supporting asciidoc version {asciidoc-version}*
 
@@ -16,8 +18,6 @@ NOTE: *For specific syntax examples, check out the link:../raw/asciiguide.adoc[r
 
 '''
 toc::[]
-
-'''
 
 == Attributes
 There a lot of predefined attributes in AsciiDoc, plus you can add your own. To get attribute value use \{attributename} syntax.

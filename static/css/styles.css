@@ -95,18 +95,23 @@ dd {
 #content .sect1:first-child h2:first-child {
   margin-top: 0;
 }
-.numbered .sect1 {
+.hasToc + #content .sect1 {
   margin-top: 50px;
   padding-top: 20px;
   border-top: solid 1px #eee;
 }
-.numbered .sect2 {
+.hasToc + #content .sect2 {
   margin-top: 40px;
-  margin-left: 30px;
 }
-.numbered .sect3 {
+.hasToc + #content .sect3 {
   margin-top: 30px;
-  margin-left: 30px;
+}
+.hasToc + #content .sect4 {
+    margin-top: 20px;
+}
+.numbered .sect2,
+.numbered .sect3 {
+    margin-left: 30px;
 }
 
 /* ToC */

@@ -10,8 +10,6 @@ This guide provides a brief introduction to the Globus command-line interface (C
 '''
 toc::[]
 
-'''
-
 == Prerequisites
 To use the CLI you must have a link:http://www.globus.org/SignUp[Globus account] with ssh access enabled. To enable your account for ssh access you must add your ssh public key to your Globus account by link:https://www.globus.org/account/ManageIdentities[visiting the Manage Identities page] and clicking "add linked identity", followed by "Add SSH Public Key". If you do not have an ssh key, follow the directions link:https://support.globus.org/entries/23690606-Generating-SSH-Keys[here] to create one.
 

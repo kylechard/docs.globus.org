@@ -10,8 +10,6 @@ This is a companion guide to link:../[Getting started with the Command Line Inte
 '''
 toc::[]
 
-'''
-
 == Endpoint Management
 In addition to serving as a discovery mechanism for community endpoints Globus enables users to create and (optionally) share their own endpoint definitions.
 
