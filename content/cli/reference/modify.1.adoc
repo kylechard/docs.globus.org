@@ -23,7 +23,7 @@ or "d" may be specified to indicate minutes, hours, or days.
 
 *--label* 'LABEL'::
 
-Set the task's label.  See *labels(7)* for details on labels.
+Set the task's label.  See link:../labels[*labels(7)*] for details on labels.
 
 == EXAMPLES
 

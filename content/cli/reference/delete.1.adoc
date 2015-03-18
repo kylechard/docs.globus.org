@@ -60,7 +60,7 @@ include::include/opt_unsafe.adoc[]
 *--generate-id*::
 *--taskid* 'TASKID'::
 
-See *transfer(1)* for details on atomic task submission.
+See link:../transfer[*transfer(1)*] for details on atomic task submission.
 
 == EXAMPLES
 

@@ -2,6 +2,15 @@
 
 [doc-info]*Last Updated: {docdate}*
 
+link:acl-add[acl-add]::
+acl-add adds a new rule to the endpoint’s access control list (ACL).
+
+link:acl-list[acl-list]::
+acl-list displays all rules in an endpoint’s access control list (ACL).
+
+link:acl-remove[acl-remove]::
+acl-remove deletes a specified rule from the endpoint’s ACL.
+
 link:cancel[cancel]::
 cancel stops all processing of a task. If the task has already completed, a notice will be displayed.
 
