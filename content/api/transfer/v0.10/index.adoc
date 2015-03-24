@@ -68,17 +68,17 @@ The Nexus token service returns a JSON document with the following format:
 
 [source,javascript]
 ----
-    {'access_token': 'un=USERNAME|tokenid=...',
-     'access_token_hash': '...',
-     'client_id': 'USERNAME',
-     'expires_in': '31536000',
-     'expiry': '1397334772',
-     'issued_on': '1365798772',
-     'lifetime': '31536000',
-     'scopes': "[u'https://transfer.api.globusonline.org']",
-     'token_id': '...',
-     'token_type': 'Bearer',
-     'user_name': 'USERNAME'}
+    {"access_token": "un=USERNAME|tokenid=...",
+     "access_token_hash": "...",
+     "client_id": "USERNAME",
+     "expires_in": 31536000,
+     "expiry": 1397334772,
+     "issued_on": 1365798772,
+     "lifetime": 31536000,
+     "scopes": ["https://transfer.api.globusonline.org"],
+     "token_id": "...",
+     "token_type": "Bearer",
+     "user_name": "USERNAME"}
 ----
 
 The token that you need for authentication is the value of the +access_token+
