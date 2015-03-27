@@ -3,8 +3,6 @@
 == Other Site Docs
 link:asciiguide[Adoc Guide] (link:raw/asciiguide.adoc[RAW])
 
-link:raw/asciiguide.adoc[RAW Adoc Guide]
-
 link:highlight-test/index.html[Highlight Test]
 
 == Custom Dev Site Styles
