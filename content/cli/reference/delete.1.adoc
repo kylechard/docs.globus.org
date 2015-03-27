@@ -27,9 +27,9 @@ Symbolic links are never followed - only unlinked (deleted).
 
 An 'INPUT-LINE' has the following format:
 
-----terminal
+----
 endpoint/path
-----terminal
+----
 
 
 == OPTIONS
@@ -66,12 +66,12 @@ See link:../transfer[*transfer(1)*] for details on atomic task submission.
 
 Remove files matching patterns:
 
-----terminal
+----
 $ delete
 go#ep1/~/Downloads/*.tmp
 go#ep1/~/Downloads/*.txt
 <EOF>
-----terminal
+----
 
 
 == SEE ALSO

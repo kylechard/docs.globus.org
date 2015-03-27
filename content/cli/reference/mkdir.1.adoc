@@ -26,15 +26,15 @@ Activate the endpoint using your gsi-ssh credential
 
 Create a directory under your home directory:
 
-----terminal
+----
 mkdir go#ep1/~/testfolder
-----terminal
+----
 
 Alternate, SCP-like home directory path syntax:
 
-----terminal
+----
 mkdir go#ep1:testfolder
-----terminal
+----
 
 
 == EXIT STATUS

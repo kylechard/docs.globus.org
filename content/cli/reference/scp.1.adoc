@@ -85,15 +85,15 @@ include::include/opt_synclevel.adoc[]
 
 Transfer a directory using gsi-ssh for activation:
 
-----terminal
+----
 scp -g -r tiger:/projects/myproject-dir bear:/tmp
-----terminal
+----
 
 Transfer a file from a home directory:
 
-----terminal
+----
 scp my_endpoint_1:file1.txt my_endpoint_2:/tmp
-----terminal
+----
 
 
 == EXIT STATUS

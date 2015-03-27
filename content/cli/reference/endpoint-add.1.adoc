@@ -76,15 +76,15 @@ Specifies the subscription ID to use with *--managed-endpoint*.
 Create a logical endpoint called "my_endpoint", specifying the scheme, port,
 and subject:
 
-----terminal
+----
 endpoint-add -p gsiftp://gridftp2.com:1234 -s "/O=Grid/OU=GlobusTest/CN=gridftp2.com" my_endpoint
-----terminal
+----
 
 Create a Globus Connect endpoint called "laptop" and receive a setup key:
 
-----terminal
+----
 endpoint-add --gc laptop
-----terminal
+----
 
 == EXIT STATUS
 

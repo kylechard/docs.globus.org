@@ -81,12 +81,12 @@ the control channel and do not require data ports for Globus Online use.
 
 Mark the current user's endpoints "foo" and "bar" as public:
 
-----terminal
+----
 endpoint-modify --public foo bar
-----terminal
+----
 
 Mark all of the current user's endpoints as public:
 
-----terminal
+----
 endpoint-modify --public *
-----terminal
+----

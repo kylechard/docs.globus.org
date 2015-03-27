@@ -25,9 +25,9 @@ Be quiet; display no alerts or progress bar
 
 Wait for a transfer task to complete:
 
-----terminal
+----
 wait a04d9872-aec7-11df-9563-1231380722ca
-----terminal
+----
 
 == EXIT STATUS
 

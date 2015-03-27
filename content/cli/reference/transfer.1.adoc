@@ -175,21 +175,21 @@ Set pipeline depth (Files in flight per control channel).  Allowed values are
 
 Transfer a file to a user's home directory, and assign a task label:
 
-----terminal
+----
 $ transfer --label 'demo 1' -- go#ep1/share/godata/file1.txt xsede#forge/~/mynewfile.txt
-----terminal
+----
 
 Transfer a directory, recursively, using encrypted data channels:
 
-----terminal
+----
 $ transfer --encrypt -- go#ep1/share/godata/  go#ep2/~/godatacopy/ -r 
-----terminal
+----
 
 Synchronize a directory and file using checksums (sync level 3) for comparison:
 
-----terminal
+----
 $ transfer -s 3
 demo#tiger/etc/forest/ demo#bear/etc/woods/ -r 
 demo#tiger/etc/specialfile demo#bear/etc/specialfile-copy
 <EOF>
-----terminal
+----

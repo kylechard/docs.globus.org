@@ -16,6 +16,6 @@ endpoint-rename - Rename a logical endpoint
 
 Rename an endpoint called "test_endpoint" to "myep1":
 
-----terminal
+----
 endpoint-rename test_endpoint myep1
-----terminal
+----

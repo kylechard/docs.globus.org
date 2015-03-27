@@ -29,15 +29,15 @@ Set the task's label.  See link:../labels[*labels(7)*] for details on labels.
 
 Set a task's deadline to be 3 days from the current time:
 
-----terminal
+----
 modify --deadline 3d 8eaa7f3e-32ef-11e0-82be-12313804dcd1
-----terminal
+----
 
 Set a task's label to "foo bar":
 
-----terminal
+----
 modify --label "foo bar" 8eaa7f3e-32ef-11e0-82be-12313804dcd1
-----terminal
+----
 
 == EXIT STATUS
 

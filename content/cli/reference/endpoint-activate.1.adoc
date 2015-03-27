@@ -56,19 +56,19 @@ default lifetime is 24 hours, or what the endpoint defines.
 
 Activate all endpoints using a gsi-ssh credential:
 
-----terminal
+----
 endpoint-activate -g *
-----terminal
+----
 
 Activate public endpoints using their default myproxy servers and add them to
 the current user's endpoint list:
 
-----terminal
+----
 endpoint-activate teragrid#* nersc#*
-----terminal
+----
 
 Activate an endpoint using a specific myproxy server:
 
-----terminal
+----
 endpoint-activate -m myproxy.test.com myep1
-----terminal
+----
