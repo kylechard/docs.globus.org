@@ -45,6 +45,6 @@ Don't send an email notification.
 
 Share the `/~/share/` directory with "alice":
 
-----
+----terminal
 acl-add bob#myep/~/share/ --user alice --perm r
-----
+----terminal

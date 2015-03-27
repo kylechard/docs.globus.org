@@ -52,21 +52,21 @@ include::include/opt_unsafe.adoc[]
 
 Remove files matching a pattern:
 
-----
+----terminal
 rm go#ep1/~/Downloads/*.tmp
-----
+----terminal
 
 Remove directories matching a pattern:
 
-----
+----terminal
 rm -rf go#ep1/~/Work/testdir*
-----
+----terminal
 
 Alternate, SCP-like home directory path syntax:
 
-----
+----terminal
 rm -rf go#ep1:Work/testdir*
-----
+----terminal
 
 
 == EXIT STATUS

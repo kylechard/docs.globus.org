@@ -47,15 +47,15 @@ Activate using your gsi-ssh credential
 
 List your home directory in long format:
 
-----
+----terminal
 ls -l go#ep1/~/
-----
+----terminal
 
 List all files matching a pattern, using SCP-like path syntax:
 
-----
+----terminal
 ls -l go#ep1:*.txt
-----
+----terminal
 
 
 == EXIT STATUS

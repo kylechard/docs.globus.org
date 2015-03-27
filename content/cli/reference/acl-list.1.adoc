@@ -21,6 +21,6 @@ include::include/more_acl.adoc[]
 
 Show all ACL rules for the endpoint "myep":
 
-----
+----terminal
 acl-list bob#myep
-----
+----terminal

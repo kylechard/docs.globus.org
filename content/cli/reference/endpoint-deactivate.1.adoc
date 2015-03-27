@@ -18,12 +18,12 @@ to `*`.
 
 Deactivate all endpoints:
 
-----
+----terminal
 endpoint-deactivate *
-----
+----terminal
 
 Deactivate endpoints with names matching a pattern:
 
-----
+----terminal
 endpoint-deactivate testendpoint*
-----
+----terminal

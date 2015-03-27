@@ -142,18 +142,18 @@ The task's total number of subtasks
 
 Show details of last 5 tasks:
 
-----
+----terminal
 details -a -l 5
-----
+----terminal
 
 Show details of a transfer task:
 
-----
+----terminal
 details a04d9872-aec7-11df-9563-1231380722ca
-----
+----terminal
 
 Show details of all transfer tasks with label matching pattern:
 
-----
+----terminal
 details label=*data*
-----
+----terminal

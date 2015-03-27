@@ -78,24 +78,24 @@ include::include/opt_output.adoc[]
 
 List all public endpoints:
 
-----
+----terminal
 endpoint-list -p
-----
+----terminal
 
 List endpoints I own or have recently used:
 
-----
+----terminal
 endpoint-list *
-----
+----terminal
 
 List public endpoints of the "teragrid" user:
 
-----
+----terminal
 endpoint-list -p teragrid#*
-----
+----terminal
 
 List detailed information about endpoints:
 
-----
+----terminal
 endpoint-list -v my_endpoint1 my_endpoint2
-----
+----terminal

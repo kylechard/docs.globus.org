@@ -23,12 +23,12 @@ Turn all email notifications on or off.
 
 View your username and all profile settings:
 
-----
+----terminal
 profile
-----
+----terminal
 
 Disable all notifications:
 
-----
+----terminal
 profile -n off
-----
+----terminal

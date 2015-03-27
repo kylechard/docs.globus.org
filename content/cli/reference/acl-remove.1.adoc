@@ -28,9 +28,9 @@ The rule ID to remove
 
 Remove an access rule:
 
-----
+----terminal
 acl-remove karl#myep --id 3
-----
+----terminal
 
 == EXIT STATUS
 

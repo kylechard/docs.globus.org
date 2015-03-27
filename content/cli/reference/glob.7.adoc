@@ -54,9 +54,9 @@ interpretation, so one must double up a backslash to send it to a command.
 
 For example, this would require a file with a literal asterisk in its name:
 
-----
+----terminal
 ls go#ep1/tmp/\\*.txt
-----
+----terminal
 
 
 == SEE ALSO
