@@ -5,13 +5,6 @@ hide_pageheader: true
 hide_breadcrumb: true
 ---
 
-<% @site.sorted_articles[0, 10].each do |article| %>
-<p><strong>
-<%= link_to(article[:title], article.path) %> </strong><br/>
-<%= article[:created_at] %> <br/>
-<%= tags_for(article) %> <br/></p>
-<% end %>
-
 <div class="row">
     <div class="col-sm-4 text-center">
         <a href="api/transfer/"><img src="images/home/transfer.png" width="66" height="66"/></a>

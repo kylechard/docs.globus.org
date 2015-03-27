@@ -1,0 +1,20 @@
+= Site Docs
+
+== Other Site Docs
+link:asciiguide[Adoc Guide] (link:raw/asciiguide.adoc[RAW])
+
+link:raw/asciiguide.adoc[RAW Adoc Guide]
+
+link:highlight-test/index.html[Highlight Test]
+
+== Custom Dev Site Styles
+[go-icon-pp]#go-icon-pp class#
+
+[uservars]#uservars class#
+
+.Terminal Blocks
+----terminal
+example of a terminal block with [input]#input# and [output]#output# classes
+----terminal
+
+NOTE: To use a terminal block, instead of using "----" as you would for a normal listing block, you would use "----terminal"
