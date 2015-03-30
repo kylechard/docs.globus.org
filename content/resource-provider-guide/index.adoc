@@ -1,5 +1,5 @@
 = Globus Resource Provider Guide
-:revnumber: 0.0.2a
+:revnumber: 0.0.2c
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -138,7 +138,7 @@ To check accessibility, first execute this command
 on the system where
 you plan to install Globus Connect Server:
 ----terminal
-# hostname -f
+$ hostname -f
 ----terminal
 Confirm that a fully qualified domain name (FQDN) of the form
 +'xxx.yyy.zzz'+
@@ -152,7 +152,7 @@ where 'xxx.yyy.zzz' is
 the output of your earlier +hostname -f+ command and +'8.8.4.4'+
 specifies one of Google's public DNS servers:
 ----terminal
-# nslookup 'xxx.yyy.zzz' 8.8.4.4
+$ nslookup 'xxx.yyy.zzz' 8.8.4.4
 ----terminal
 Verify that you [underline]#do not# get
 a message of the form: +`** server can't find xxx.yyy.zzz: NXDOMAIN'+.
@@ -239,61 +239,60 @@ on your system.
 First, add the Globus Connect Server repository to your package management
 system:
 ----terminal
-# curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
-# rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
-# yum install globus-connect-server-repo-latest.noarch.rpm
+$ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
+$ sudo rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
+$ sudo yum install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
 Next, if you are running
 CentOS 5, Red Hat Enterprise Linux 5, or Scientific Linux 5,
 add the additional required repository:
 ----terminal
-# curl -LOs http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
-# yum install epel-release-5-4.noarch.rpm
+$ sudo curl -LOs http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+$ sudo yum install epel-release-5-4.noarch.rpm
 ----terminal
 
 Finally, install Globus Connect Server:
 ----terminal
-# yum install globus-connect-server
+$ sudo yum install globus-connect-server
 ----terminal
 
 ==== SuSE Linux Enterprise Server
 First, add the Globus Connect Server repository to your package management
 system:
 ----terminal
-# curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
-# rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
-# zypper install globus-connect-server-repo-latest.noarch.rpm
+$ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
+$ sudo rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
+$ sudo zypper install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
 Next, retrieve and install the additional required repositories:
 ----terminal
-# zypper ar http://download.opensuse.org/repositories/Apache/SLE_11_SP3/Apache.repo
-# zypper ar http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/Apache:Modules.repo
-# rpm --import http://download.opensuse.org/repositories/Apache/SLE_11_SP3/repodata/repomd.xml.key
-# rpm --import http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/repodata/repomd.xml.key
-# zypper remove libapr1
+$ sudo zypper ar http://download.opensuse.org/repositories/Apache/SLE_11_SP3/Apache.repo
+$ sudo zypper ar http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/Apache:Modules.repo
+$ sudo rpm --import http://download.opensuse.org/repositories/Apache/SLE_11_SP3/repodata/repomd.xml.key
+$ sudo rpm --import http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/repodata/repomd.xml.key
+$ sudo zypper remove libapr1
 ----terminal
 
 Finally, install Globus Connect Server:
 ----terminal
-# rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Globus
-# zypper install globus-connect-server
+$ sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Globus
+$ sudo zypper install globus-connect-server
 ----terminal
 
 ==== Debian, Ubuntu
 First, add the Globus Connect Server repository to your package management
 system:
 ----terminal
-# curl -LOs
-# http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo_latest_all.deb
-# dpkg -i globus-connect-server-repo_latest_all.deb
-# apt-get update
+$ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo_latest_all.deb
+$ sudo dpkg -i globus-connect-server-repo_latest_all.deb
+$ sudo apt-get update
 ----terminal
 
 Then, install Globus Connect Server:
 ----terminal
-# apt-get install globus-connect-server
+$ sudo apt-get install globus-connect-server
 ----terminal
 
 === Create Globus Endpoint
@@ -315,7 +314,7 @@ Public = True
 
 After editing the configuration file, run:
 ----terminal
-# globus-connect-server-setup
+$ sudo globus-connect-server-setup
 ----terminal
 
 When prompted, enter the Globus username and password for your
@@ -365,18 +364,6 @@ x
 === Public
 x
 
-=== RestrictedPaths
-x
-
-=== [go-icon-pp]#Sharing#
-also Sharing restricted paths, SharingStateDir, etc.
-
-== Advanced Deployment Scenarios
-This section covers some of the more advanced deployment scenarios.
-
-<Ruth: still need to sort out what will go here & what may go in
-previous section>
-
 === Authentication
 (might move this into previous section)
 <Add reference to how-things-work appendix, and there include or point
@@ -394,6 +381,18 @@ x
 
 ==== Using an Existing MyProxy Server
 x
+
+=== RestrictedPaths
+x
+
+=== [go-icon-pp]#Sharing#
+also Sharing restricted paths, SharingStateDir, etc.
+
+== Advanced Deployment Scenarios
+This section covers some of the more advanced deployment scenarios.
+
+<Ruth: still need to sort out what will go here & what may go in
+previous section>
 
 === Performance Optimizations
 x
@@ -444,22 +443,35 @@ latest bug fixes and improvements.  <Edit these for reality>
 Issue the commands shown below for your Linux distribution
 to remove previously installed Globus components:
 
+////
+Internal note:
+Because terminal blocks allow formatting within them, you have to 
+be careful to escape characters correctly or the rendered text will
+be incorrect. The commands should be:
+$ sudo yum remove \*globus\*
+$ sudo yum remove \*myproxy\*
+$ sudo zypper remove \*globus\*
+$ sudo zypper remove \*myproxy\*
+$ sudo apt-get purge ".*globus.*"
+$ sudo apt-get purge ".*myproxy.*"
+////
+
 .Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
 ----terminal
-# yum remove \*globus\*·
-# yum remove \*myproxy\*·
+$ sudo yum remove \\*globus\*
+$ sudo yum remove \\*myproxy\*
 ----terminal
 
 .SuSE Linux Enterprise Server
 ----terminal
-# zypper remove \*globus\*
-# zypper remove \*myproxy\*
+$ sudo zypper remove \\*globus\*
+$ sudo zypper remove \\*myproxy\*
 ----terminal
 
 .Debian, Ubuntu
 ----terminal
-# apt-get purge ".*globus.*"
-# apt-get purge ".*myproxy.*"
+$ sudo apt-get purge ".\*globus.\*"
+$ sudo apt-get purge ".\*myproxy.*"
 ----terminal
 
 == [go-icon-pp]#Management Console#
