@@ -10,6 +10,8 @@ link:highlight-test/index.html[Highlight Test]
 
 [uservars]#uservars class#
 
+[yellow-background]#yellow-background class#
+
 .Terminal Blocks
 ----terminal
 example of a terminal block with [input]#input# and [output]#output# classes
