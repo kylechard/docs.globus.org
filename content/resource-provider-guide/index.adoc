@@ -1,7 +1,7 @@
 = Globus Resource Provider Guide
-:revdate: February 19, 2015
-:revnumber: 0.0.2
+:revnumber: 0.0.2a
 :toc:
+:toc-placement: manual
 :toclevels: 3
 :numbered:
 
@@ -17,6 +17,10 @@
 
 // Other sites
 :myproxy: http://grid.ncsa.illinois.edu/myproxy/
+
+[doc-info]*Last Updated: {docdate}*
+
+toc::[]
 
 == Introduction
 
@@ -586,7 +590,7 @@ Detailed description of how sharing works
 [glossary]
 == List of Terms
 endpoint::
-  add definition
+  add definition here
 Globus Connect Server::
   add definition
 GridFTP::
