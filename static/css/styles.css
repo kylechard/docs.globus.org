@@ -392,3 +392,8 @@ code, .uservars {
     width: 870px;
   }
 }
+
+/* other custom classes */
+.yellow-background {
+  background-color: #fff600;
+}
