@@ -397,3 +397,6 @@ code, .uservars {
 .yellow-background {
   background-color: #fff600;
 }
+.underline {
+  text-decoration: underline;
+}
