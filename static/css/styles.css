@@ -82,12 +82,6 @@ dd {
 }
 
 /* Asciidoc */
-#header div:last-child {
-    margin-bottom: 30px;
-}
-#header .doc-info {
-    margin-bottom: 20px;
-}
 .doc-info {
   color: #aaa;
   font-weight: 100;
