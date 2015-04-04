@@ -140,6 +140,7 @@ end
 # rendering method
 def globus_find_item_tree(root)
     return nil unless root.children
+
     # For each child call the find_item_tree on it and then render the generate the hash
     sections = root.children.map do |child|
       subsections = globus_find_item_tree(child)
@@ -187,7 +188,8 @@ def globus_render_sidebar_menu(items, options={})
     end
 
     # Render only if there is depth left
-    if options[:depth].to_i  > 0 && item[:subsections]
+    # Had to use .length because of /foo/ to /foo/index.html routing
+    if options[:depth].to_i  > 0 && item[:subsections].length > 1
 
       # Save previously set collection_class & caret for later
       collection_class = options[:collection_class]
