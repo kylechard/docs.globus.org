@@ -189,7 +189,7 @@ def globus_render_sidebar_menu(items, options={})
 
     # Render only if there is depth left
     # Had to use .length because of /foo/ to /foo/index.html routing
-    if options[:depth].to_i  > 0 && item[:subsections].length > 1
+    if options[:depth].to_i  > 0 && item[:subsections].length > 0
 
       # Save previously set collection_class & caret for later
       collection_class = options[:collection_class]
