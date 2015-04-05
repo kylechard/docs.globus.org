@@ -11,8 +11,9 @@
 :researchers: http://www.globus.org/researchers/
 :providers: http://www.globus.org/providers/
 :provider_plans: http://www.globus.org/providers/provider-plans/
+:commercial_plans: http://www.globus.org/providers/provider-plans/commercial-subscription-inquiry/
 :sign_up: http://www.globus.org/signup/
-:support: http://support.globus.org/anonymous_requests/new/
+:contact_us: http://www.globus.org/contact-us/
 :transfer: http://www.globus.org/xfer/StartTransfer#/
 
 // Other sites
@@ -31,20 +32,18 @@ Globus is software as a service (SaaS), enabled by the cloud and
 designed to let users manage their research files,
 regardless of number and size,
 as effortlessly as they manage their photos with popular cloud-based services.
-Globus lets you provide authorized users web, command line, and REST interfaces
+Globus lets you provide authorized users with web, command line, and REST interfaces
 for listing, transferring, replicating, and sharing
 directories and files on your Globus-connected storage resources.
-If you are new to Globus, you can learn more about Globus
-capabilities and benefits from the
+You can learn more about Globus capabilities and benefits from the
 {researchers}[researcher]
 and
 {providers}[resource provider] overview pages.
 
 This guide is written primarily for system administrators of multi-user Linux
-systems who want to optimize the connection of their resources
-to the Globus ecosystem and take full advantage of the resource data
-management capabilities Globus offers.
-Administrators who are new to Globus, as well as those with
+systems who want to take full advantage of Globus capabilities and optimize 
+the connection of their resources to the Globus ecosystem.
+Administrators who are installing Globus for the first time, as well as those with
 considerable experience, should all find helpful information in this
 document.
 
@@ -53,17 +52,15 @@ installation of
 _Globus Connect Server_ and the creation of a Globus _endpoint_ that
 lets authorized users transfer files between your storage and other
 Globus endpoints.
-The Globus Connect Server installation
-downloads
+The Globus Connect Server installation downloads
 (1) Globus versions of 'GridFTP', 'MyProxy', and 'OAuth for MyProxy';
 (2) scripts for set up/configuration and integration into the Globus
 ecosystem; and
-(3) other Globus-maintained dependency packages needed to make the
-preceding function.
-The initial installation, also referred to as the default installation,
+(3) Globus-maintained dependency packages needed by the other components.
+The initial installation, also referred to as the [underline]#default installation#,
 authorizes endpoint users via password-based authentication that
 uses MyProxy and relies on the PAM modules configured in
-+/etc/pam.d/login+--the same ones used by the +login+ command.
++/etc/pam.d/login+ (the same modules used by the +login+ command).
 
 Progressing from the initial foundation,
 additional configuration options and
@@ -85,25 +82,21 @@ configuration instructions found in the main sections of the guide.
 .[go-icon-pp]#Provider Plan Features#
 [NOTE]
 ====
-Globus can be used for file transfer by
-non-profit research and educational institutions free-of-charge.
-Usage-based {provider_plans}[Provider Plan subscriptions] are available for
-commercial users and for non-profit institutions who want to
-use premium features.
-The Provider Plan subscriptions help ensure that Globus can
+Globus file transfer is free-of-charge for non-profit research and educational use.
+Some premium Globus features described in this guide are only available to
+{provider_plans}[Provider Plan subscribers].
+
+Provider Plan subscriptions and 
+{commercial_plans}[commercial Provider plans] help ensure that Globus can
 continue to serve the research data management needs of
 non-profit users for many years to come.
-
-Some premium Globus features described in this guide are only available to
-Provider Plan subscribers.
 ====
 
 == Globus Connect Server Prerequisites
 
-Before you install Globus Connect Server on your system you should
-confirm that the prerequisites listed in this section are met.
-If they are not, the installation will not be successful.
-Please {support}[submit a support ticket] if you have problems understanding
+Confirm that the prerequisites listed in this section are met before you 
+begin to install Globus Connect Server on your system.
+Please {contact_us}[contact us] if you have problems understanding
 or satisfying the prerequisites.
 
 === Supported Linux distributions
@@ -141,21 +134,23 @@ you plan to install Globus Connect Server:
 $ hostname -f
 ----terminal
 Confirm that a fully qualified domain name (FQDN) of the form
-+'xxx.yyy.zzz'+
+'xxx.yyy.zzz'
 (with 2 dots) or
-+'www.xxx.yyy.zzz'+ (with 3 dots) is returned.
+'www.xxx.yyy.zzz' (with 3 dots) is returned.
 
 Next, use a public DNS server operated by a different organization to
 verify that the returned FQDN is publicly resolvable.
 More concretely, run this command,
-where 'xxx.yyy.zzz' is
-the output of your earlier +hostname -f+ command and +'8.8.4.4'+
+where [uservars]#'xxx.yyy.zzz'# is
+the output of the previous +hostname -f+ command and '8.8.4.4'
 specifies one of Google's public DNS servers:
 ----terminal
-$ nslookup 'xxx.yyy.zzz' 8.8.4.4
+$ nslookup [input]#'xxx.yyy.zzz'# 8.8.4.4
 ----terminal
-Verify that you [underline]#do not# get
-a message of the form: +`** server can't find xxx.yyy.zzz: NXDOMAIN'+.
+If you get a message of the form '`** server can't find xxx.yyy.zzz: NXDOMAIN'',
+your system is not accessible and you need to 
+resolve the issue before continuing with the installation. 
+{contact_us}[Contact us] if you need assistance.
 
 Some sites use network address translation (NAT) with a private
 internal IP, private internal DNS, and a public DNS tied to a public
@@ -164,9 +159,8 @@ Globus can be successfully installed at these sites, but requires
 additional configuration beyond what is covered in the default
 Globus Connect Server installation.
 Please see
-[yellow-background]#add pointer to later text in guide or direct them to
-email support#
-if your site uses NAT.
+[yellow-background]#add pointer to later text in guide#
+or {contact_us}[contact us] if your site uses NAT.
 
 === Open TCP ports
 If your system is behind a firewall, some TCP ports must be open for
@@ -193,7 +187,7 @@ The Globus username associated with the master account should be
 something your users will recognize so they can easily
 find endpoint(s) administered by your organization.
 For example, the University of Chicago Research Computing Center has
-`ucrcc' as their master Globus username.
+[uservars]#ucrcc# as their master Globus username.
 
 If your organization doesn't already have a master Globus account,
 create one using the form at
@@ -206,14 +200,18 @@ personal username in the upper right corner of the dashboard window,
 and then selecting +Sign Up+ from the top menu bar of the Sign In page.
 
 === No previously installed Globus components
-Globus components previously installed on your system must be
+The default Globus Connect Server installation requires that no Globus 
+components are installed on your system.
+If Globus components have been previously installed, they must be
 removed before a new Globus Connect Server installation is
 started.
 
 If the directory +/etc/gridftp.d+ exists on your system,
-please refer to the section
-[yellow-background]#fix link to "Removing previously installed Globus
-components"#.
+then some Globus components are currently installed.
+Please refer to the 
+section link:#removing_previously_installed_globus_components[Removing 
+previously installed Globus components]
+and follow the instructions there before continuing.
 
 == Globus Connect Server Installation and Endpoint Creation
 Globus Connect Server lets you quickly and easily set up a
@@ -227,7 +225,7 @@ You will be able to fine-tune this configuration later without doing a
 reinstall.
 
 Before continuing, it is important to confirm that the prerequisites
-detailed in the previous section [yellow-background]#add link#
+detailed in the link:#globus_connect_server_prerequisites[previous section]
 have been met.
 
 === Install Globus Connect Server
