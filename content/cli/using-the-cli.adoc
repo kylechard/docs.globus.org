@@ -70,7 +70,7 @@ Other:                  help                   profile
 In addition, +<command> -h+ displays a command syntax summary and +man <command>+ displays the command's manual page.
 
 == Endpoint Activation
-Activation is Globus endpoint user authentication mechanism; it enables endpoint owners to determine who is transferring files. Transfers will only proceed when both the source and destination endpoints are activated. You can practice by activating the Globus endpoints:
+Activation is a Globus endpoint user authentication mechanism; it enables endpoint owners to determine who is transferring files. Transfers will only proceed when both the source and destination endpoints are activated. You can practice by activating the Globus endpoints:
 
 ----terminal
 $ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]##go#*##
@@ -81,7 +81,7 @@ Activating \'go#ep1'
 Activating \'go#ep2'#
 ----terminal
 
-In the following example user demodoc activates NERSC endpoints using the +ssh -t+ option to prevent the passphrase from being echoed to stdout. Note that even if an endpoint is activated transfers will fail if the user is not authorized to use it. Access to a given endpoint is entirely within the endpoint owner's control, so you must contact owners directly to obtain permission to use their endpoints.
+In the following example user demodoc activates NERSC endpoints using the +ssh -t+ option to prevent the passphrase from being echoed to stdout. Activation gives you authorization to the endpoint itself, but you still need to be authorized (have permissions) to the given resources on an endpoint before you can access them through Globus. Being authorized to access an endpoint is separate from being further authorized to access specific resources on and endpoint. Access to a given endpoint is entirely within the endpoint owner's control, so you must contact owners directly to obtain permission to use their endpoints.
 
 ----terminal
 $ ssh -t [input]#demodoc#@cli.globusonline.org endpoint-activate [input]##nersc#*##

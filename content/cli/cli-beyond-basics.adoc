@@ -27,7 +27,7 @@ $ exit
 [output]#Connection to cli.globusonline.org closed.#
 ----terminal
 
-Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user [uservars]#demodoc# makes an endpoint public, [uservars]#demodoc\#never# in visible in the public list:
+Globus endpoint definitions are either public or private. Public endpoints are visible to all Globus users; private endpoints are visible only to those who created them. Here we see that after user [uservars]#demodoc# makes an endpoint public, [uservars]#demodoc#never# in visible in the public list:
 
 ----terminal
 $ ssh [input]#demodoc#@cli.globusonline.org
@@ -106,8 +106,8 @@ The following example demonstrates both inline endpoint creation and activation 
 
 ----terminal
 $ gsissh [input]#demodoc#@cli.globusonline.org scp -g [input]#alcf#dtn:\~/samplefile.txt gridftp.lonestar.tacc.xsede.org:~/samplefile.txt#
-[output]#Activating 'gridftp.lonestar.tacc.xsede.org:2811'
-Activating 'alcf#dtn:2811'
+[output]#Activating \'gridftp.lonestar.tacc.xsede.org:2811'
+Activating \'alcf#dtn:2811'
 Task ID: 3f4c2cc6-ee20-11df-aa30-1231350018b1
 [XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 867.00 mbps#
 $ ssh [input]#demodoc#@cli.globusonline.org endpoint-list *lone* -v
@@ -148,6 +148,7 @@ Globus provides users with realtime and historical information about their tasks
 The default +status+ command lists all pending tasks:
 
 ----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org
 $ status
 [output]#Task ID : 28d854ae-ee18-11df-aa30-1231350018b1
 Request Time: 2010-11-12 04:48:57Z
@@ -158,6 +159,7 @@ Status : ACTIVE#
 The +status+ command also provides a way to list the last [uservars]#n# tasks (+-l n+) regardless of state (+-a+):
 
 ----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org
 $ status -l [input]#4# -a
 [output]#Task ID : 3f4c2cc6-ee20-11df-aa30-1231350018b1
 Request Time: 2010-11-12 05:46:51Z
@@ -183,6 +185,7 @@ Status : SUCCEEDED#
 The default +details+ command provides an overview of a transfer’s state:
 
 ----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org
 $ details [input]#28d854ae-ee18-11df-aa30-1231350018b1#
 [output]#Task ID : 28d854ae-ee18-11df-aa30-1231350018b1
 Task Type : TRANSFER
@@ -236,7 +239,7 @@ Once your Globus task has finished an email will be sent to the address specifie
 
 ----terminal
 [output]#Subject: Task 28d854ae-ee18-11df-aa30-1231350018b1: SUCCEEDED
-From: "Globus Notification" &LT;notify@globus.org&GT;
+From: "Globus Notification" <notify@globus.org>
 To: ldemters@abc.edu
 
 === Task Details ===
