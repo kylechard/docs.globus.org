@@ -146,6 +146,7 @@ def globus_find_item_tree(root)
       subsections = globus_find_item_tree(child)
       { :title        => (child[:short_title] || child[:title] || child.identifier),
         :link         => (child.identifier || relative_path_to(child)),
+        :menu_weight  => (child[:menu_weight] || 0),
         :subsections  => subsections }
     end
     sections
@@ -165,6 +166,7 @@ def globus_render_sidebar_menu(items, options={})
   options[:header_class]     ||= 'panel-heading'
   options[:mobile]           ||= ''
   options[:caret_class]      ||= 'caret'
+  options[:menu_weight]      ||= 0
 
   # Parse the title and remove it from the options
   title =  options[:title] ? content_tag(options[:title_tag], options[:title]) : ''
@@ -174,10 +176,13 @@ def globus_render_sidebar_menu(items, options={})
   # Decrease the depth level
   options[:depth] -= 1
 
+  # Sort items by menu_weight
+  items.sort!{|a,b| a[:menu_weight]<=>b[:menu_weight]}
+
   rendered_menu = items.map do |item|
     # Reset item and link options
     item_class = item[:class] ? item[:class] : ''
-
+    menu_weight = item[:menu_weight] ? item[:menu_weight].to_i : 0
     options[:item_class] = nil
 
     # Set item active class
@@ -205,15 +210,8 @@ def globus_render_sidebar_menu(items, options={})
       output = content_tag(options[:header_tag], globus_render_sidebar_menu(item[:subsections], options), :class => 'list-group')
 
       # Add caret to drop-downs in main menu
-      #item[:title] = ' ' + item[:title]
-      #item[:title] = content_tag('span', '', :class => 'caret') + item[:title]
       caret = ''
-      #if(options[:mobile] == 'true')
         caret = content_tag('a', content_tag('span','', :class => 'caret'), :class => options[:caret_class])
-      #else
-      #  item[:title] = ' ' + item[:title]
-      #  item[:title] = content_tag('span', '', :class => 'caret') + item[:title]
-      #end
 
       options[:depth] += 1 # Increase the depth level after the call of navigation_for
 
@@ -239,7 +237,6 @@ def globus_render_sidebar_menu(items, options={})
 
     end
   end.join()
-
   title + content_tag(options[:collection_tag], rendered_menu, :class => options[:collection_class]) unless rendered_menu.strip.empty?
 end
 

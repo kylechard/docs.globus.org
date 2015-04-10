@@ -1,3 +1,9 @@
+---
+full_title: "Command Line Interface (CLI) Reference"
+short_title: "Reference"
+menu_weight: 3
+---
+
 = Command Line Interface (CLI) Reference
 
 [doc-info]*Last Updated: {docdate}*

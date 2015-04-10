@@ -23,5 +23,7 @@ $(function(){
     $('.panel a.caret').click(function() {
       $( this ).parent().next('.list-group').children('.collapse').toggleClass( "in" );
       $( this ).toggleClass( "open" );
+      $( this ).parent().toggleClass( "open" );
+      $( this ).parent().next('.list-group').toggleClass( "open");
     });
 });
