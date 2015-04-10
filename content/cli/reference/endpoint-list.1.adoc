@@ -63,6 +63,26 @@ The subject DN of the credential
 *credential_time_left*::
 The hours, minutes, and seconds remaining until the credential expires.
 
+*location*::
+
+For a S3 endpoint, this is "n/a".  For a shared endpoint, this is 
+the location of its host endpoint.  For other endpoints, this is either
+"Automatic", meaning it has not been set by the administrator, or a
+"<latitude>,<longitude>" pair.  See *endpoint-modify* for details.
+
+
+*network_use*::
+*max_concurrency*::
+*preferred_concurrency*::
+*max_parallelism*::
+*preferred_parallelism*::
+
+See the *endpoint-modify* --network-use option for details.
++
+The max and preferred values show the current computed values for the endpoint, taking
+into account its number of physical endpoints.
+
+
 == OPTIONS
 
 *-p*::
@@ -79,23 +99,23 @@ include::include/opt_output.adoc[]
 List all public endpoints:
 
 ----
-endpoint-list -p
+$ endpoint-list -p
 ----
 
 List endpoints I own or have recently used:
 
 ----
-endpoint-list *
+$ endpoint-list *
 ----
 
 List public endpoints of the "teragrid" user:
 
 ----
-endpoint-list -p teragrid#*
+$ endpoint-list -p teragrid#*
 ----
 
 List detailed information about endpoints:
 
 ----
-endpoint-list -v my_endpoint1 my_endpoint2
+$ endpoint-list -v my_endpoint1 my_endpoint2
 ----

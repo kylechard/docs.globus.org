@@ -29,7 +29,7 @@ Cancel all of the current user's pending tasks
 Cancel a transfer task:
 
 ----
-cancel a04d9872-aec7-11df-9563-1231380722ca
+$ cancel a04d9872-aec7-11df-9563-1231380722ca
 ----
 
 == EXIT STATUS

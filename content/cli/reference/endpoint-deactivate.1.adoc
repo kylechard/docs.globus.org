@@ -19,11 +19,11 @@ to `*`.
 Deactivate all endpoints:
 
 ----
-endpoint-deactivate *
+$ endpoint-deactivate *
 ----
 
 Deactivate endpoints with names matching a pattern:
 
 ----
-endpoint-deactivate testendpoint*
+$ endpoint-deactivate testendpoint*
 ----

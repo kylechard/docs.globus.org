@@ -53,19 +53,19 @@ include::include/opt_unsafe.adoc[]
 Remove files matching a pattern:
 
 ----
-rm go#ep1/~/Downloads/*.tmp
+$ rm go#ep1/~/Downloads/*.tmp
 ----
 
 Remove directories matching a pattern:
 
 ----
-rm -rf go#ep1/~/Work/testdir*
+$ rm -rf go#ep1/~/Work/testdir*
 ----
 
 Alternate, SCP-like home directory path syntax:
 
 ----
-rm -rf go#ep1:Work/testdir*
+$ rm -rf go#ep1:Work/testdir*
 ----
 
 

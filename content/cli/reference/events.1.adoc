@@ -65,11 +65,11 @@ include::include/opt_output.adoc[]
 Show the most recent events for a task:
 
 ----
-events -l 10 4bc8990e-b47c-11df-92d2-12313807462b
+$ events -l 10 4bc8990e-b47c-11df-92d2-12313807462b
 ----
 
 Show all fault events for a task:
 
 ----
-events --faults 4bc8990e-b47c-11df-92d2-12313807462b
+$ events --faults 4bc8990e-b47c-11df-92d2-12313807462b
 ----

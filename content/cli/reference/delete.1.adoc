@@ -28,7 +28,7 @@ Symbolic links are never followed - only unlinked (deleted).
 An 'INPUT-LINE' has the following format:
 
 ----
-endpoint/path
+$ endpoint/path
 ----
 
 

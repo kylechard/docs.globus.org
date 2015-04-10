@@ -24,11 +24,11 @@ Turn all email notifications on or off.
 View your username and all profile settings:
 
 ----
-profile
+$ profile
 ----
 
 Disable all notifications:
 
 ----
-profile -n off
+$ profile -n off
 ----

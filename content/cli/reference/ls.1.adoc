@@ -48,13 +48,13 @@ Activate using your gsi-ssh credential
 List your home directory in long format:
 
 ----
-ls -l go#ep1/~/
+$ ls -l go#ep1/~/
 ----
 
 List all files matching a pattern, using SCP-like path syntax:
 
 ----
-ls -l go#ep1:*.txt
+$ ls -l go#ep1:*.txt
 ----
 
 

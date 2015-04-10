@@ -152,18 +152,23 @@ used as an argument to *--taskid* and exit.
 
 === Performance Tuning
 
-These options are for advanced users who want to override performance auto
-tuning.  By default, Globus Online will select tuning options appropriate for
-the number and sizes of files used in the task.
+These options are for advanced users who want to override the automatic tuning
+algorithm.
 
 *--perf-p* 'NUM'::
 
-Set parallelism level (Data streams per control channel).  Allowed values are
-1-16. 
+Set parallelism level (Data streams per control channel).
++
+NOTE: If this value exceeds the maximum parallelism limit set on the source or
+destination endpoint, the lowest limit will be used. 
+
 
 *--perf-cc* 'NUM'::
 
-Set concurrency level (Number of control channels).  Allowed values are 1-16.
+Set concurrency level (Number of control channels).
++
+NOTE: If this value exceeds the maximum concurrency limit set on the source or
+destination endpoint, the lowest limit will be used. 
 
 *--perf-pp* 'NUM'::
 

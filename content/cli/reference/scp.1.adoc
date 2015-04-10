@@ -86,13 +86,13 @@ include::include/opt_synclevel.adoc[]
 Transfer a directory using gsi-ssh for activation:
 
 ----
-scp -g -r tiger:/projects/myproject-dir bear:/tmp
+$ scp -g -r tiger:/projects/myproject-dir bear:/tmp
 ----
 
 Transfer a file from a home directory:
 
 ----
-scp my_endpoint_1:file1.txt my_endpoint_2:/tmp
+$ scp my_endpoint_1:file1.txt my_endpoint_2:/tmp
 ----
 
 

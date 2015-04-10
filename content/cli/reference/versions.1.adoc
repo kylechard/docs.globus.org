@@ -56,11 +56,11 @@ The client program "MyProgram/3.1" requests version 1.1 of the transfer
 service for a command:
 
 ----
-ssh cli.globusonline.org v=transfer/1.1:MyProgram/3.1 status -a
+$ ssh cli.globusonline.org v=transfer/1.1:MyProgram/3.1 status -a
 ----
 
 Request version 1.1 (transfer service assumed) for a shell:
 
 ----
-ssh -t cli.globusonline.org v=1.1:MyProgram/3.1
+$ ssh -t cli.globusonline.org v=1.1:MyProgram/3.1
 ----

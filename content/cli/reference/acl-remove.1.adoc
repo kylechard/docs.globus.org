@@ -29,7 +29,7 @@ The rule ID to remove
 Remove an access rule:
 
 ----
-acl-remove karl#myep --id 3
+$ acl-remove karl#myep --id 3
 ----
 
 == EXIT STATUS

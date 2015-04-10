@@ -68,23 +68,23 @@ include::include/task_types.adoc[]
 Show all pending tasks:
 
 ----
-status
+$ status
 ----
 
 Show last 20 tasks, including completed:
 
 ----
-status -a -l 20
+$ status -a -l 20
 ----
 
 Show all tasks containing the label string "data":
 
 ----
-status label=*data*
+$ status label=*data*
 ----
 
 Print just the status and request_time fields of a certain task:
 
 ----
-status -f status,request_time -O csv b9582054-aad4-11df-8cd0-12313806cd95
+$ status -f status,request_time -O csv b9582054-aad4-11df-8cd0-12313806cd95
 ----

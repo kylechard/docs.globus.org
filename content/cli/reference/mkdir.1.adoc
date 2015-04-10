@@ -27,13 +27,13 @@ Activate the endpoint using your gsi-ssh credential
 Create a directory under your home directory:
 
 ----
-mkdir go#ep1/~/testfolder
+$ mkdir go#ep1/~/testfolder
 ----
 
 Alternate, SCP-like home directory path syntax:
 
 ----
-mkdir go#ep1:testfolder
+$ mkdir go#ep1:testfolder
 ----
 
 

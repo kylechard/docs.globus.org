@@ -30,17 +30,17 @@ scheme is assumed to be `gsiftp://`.
 Remove a logical endpoint:
 
 ----
-endpoint-remove testep1
+$ endpoint-remove testep1
 ----
 
 Remove endpoints with names matching a pattern:
 
 ----
-endpoint-remove testep*
+$ endpoint-remove testep*
 ----
 
 Unmap the server "gsiftp://gridftp1.com" from endpoint "myep1":
 
 ----
-endpoint-remove -p gsiftp://gridftp1.com myep1
+$ endpoint-remove -p gsiftp://gridftp1.com myep1
 ----

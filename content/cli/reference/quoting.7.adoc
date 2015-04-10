@@ -47,28 +47,28 @@ Use a backslash to escape a space in a file path:
 
 ----
 # creates "foo bar" file
-scp go#ep1:/etc/group go#ep2:/tmp/foo\ bar
+$ scp go#ep1:/etc/group go#ep2:/tmp/foo\ bar
 ----
 
 Use double quotes to escape a space in a file path:
 
 ----
 # creates "foo bar" file
-scp go#ep1:/etc/group "go#ep2:/tmp/foo bar"
+$ scp go#ep1:/etc/group "go#ep2:/tmp/foo bar"
 ----
 
 Using double quotes and a backslash will result in a backslash in the name:
 
 ----
 # creates "foo\ bar" file
-scp go#ep1:/etc/group "go#ep2:/tmp/foo\ bar"
+$ scp go#ep1:/etc/group "go#ep2:/tmp/foo\ bar"
 ----
 
 An unquoted backslash preceding a normal character is a NOOP:
 
 ----
 # lists /tmp/foobar on go#ep2
-ls go#ep2/tmp/foo\bar
+$ ls go#ep2/tmp/foo\bar
 ----
 
 Remove a file with literal wildcard characters in the name.  Note that we have
@@ -77,9 +77,9 @@ to work around the shell doing a first level of backslash interpretation:
 ----
 # delete the file "foo*" but leave other files beginning 
 # with foo untouched
-rm "go#ep2/tmp/foo\*"
+$ rm "go#ep2/tmp/foo\*"
 # OR
-rm go#ep2/tmp/foo\\*
+$ rm go#ep2/tmp/foo\\*
 ----
 
 === Remote Shell
@@ -88,7 +88,7 @@ Handling a space in a file path:
 
 ----
 # local shell eats the quotes but leaves the backslash
-ssh user@cli.globusonline.org scp go#ep1:/etc/group "go#ep2:/tmp/a/foo\ bar"
+$ ssh user@cli.globusonline.org scp go#ep1:/etc/group "go#ep2:/tmp/a/foo\ bar"
 ----
 
 == SEE ALSO

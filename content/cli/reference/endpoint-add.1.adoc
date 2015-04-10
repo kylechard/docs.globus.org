@@ -77,13 +77,13 @@ Create a logical endpoint called "my_endpoint", specifying the scheme, port,
 and subject:
 
 ----
-endpoint-add -p gsiftp://gridftp2.com:1234 -s "/O=Grid/OU=GlobusTest/CN=gridftp2.com" my_endpoint
+$ endpoint-add -p gsiftp://gridftp2.com:1234 -s "/O=Grid/OU=GlobusTest/CN=gridftp2.com" my_endpoint
 ----
 
 Create a Globus Connect endpoint called "laptop" and receive a setup key:
 
 ----
-endpoint-add --gc laptop
+$ endpoint-add --gc laptop
 ----
 
 == EXIT STATUS

@@ -77,16 +77,72 @@ outside of this range will time out.
 NOTE: New versions of Globus GridFTP server support directory listings over
 the control channel and do not require data ports for Globus Online use.
 
+
+*--location* "Automatic" | 'LATITUDE,LONGITUDE'::
+
+Set the endpoint's location to explicit coordinates (in decimal degrees), or
+"Automatic", which uses a potentially innaccurate or incomplete GeoIP
+database.  The default is "Automatic", but setting it explicitly is
+recommended for fixed-location endpoints (See EXAMPLES section).
++
+The location information is used for automatic tuning of GridFTP transfer
+parameters.
++
+May not be set for S3 endpoints or shared endpoints.
+
+
+*--network-use* 'LEVEL'::
+
+Set the endpoint's network usage level.  For transfer tasks, the settings from
+both the source and destination endpoints are used to calculate appropriate
+values for concurrency and parallelism.   
++
+Allowed values for 'LEVEL' are:
++
+"normal";;
+The default setting.  Uses an average level of concurrency and parallelism.
+The levels depend on the number of physical servers in the endpoint; use
+*endpoint-list -v* to display the exact values.
++
+"minimal";;
+Uses a minimal level of concurrency and parallelism.
++
+"aggressive";;
+Uses a high level of concurrency and parallelism.
++
+"custom";;
+Uses custom values of concurrency and parallelism set by the endpoint admin.
+When setting this level, you must also set the *--max-concurrency*,
+*--preferred-concurrency*, *--max-parallelism*, and *--preferred-parallelism*
+options.
+(Note: S3 endpoints do not support the parallelism options, only concurrency)
+
+
 == EXAMPLES
+
+Set the location of the "midway" endpoint, using the latitude and longitude of
+Midway airport as an example:
+
+----
+$ endpoint-modify midway --location "41.79,-87.75"
+----
+
+Set the "midway" endpoint to a custom network use setting:
+
+----
+$ endpoint-modify midway --network-use custom \
+    --max-concurrency 10 --preferred-concurrency 5 \
+    --max-parallelism 8 --preferred-parallelism 4
+----
 
 Mark the current user's endpoints "foo" and "bar" as public:
 
 ----
-endpoint-modify --public foo bar
+$ endpoint-modify --public foo bar
 ----
 
 Mark all of the current user's endpoints as public:
 
 ----
-endpoint-modify --public *
+$ endpoint-modify --public *
 ----

@@ -33,13 +33,13 @@ Activate the endpoint using your gsi-ssh credential
 Rename a directory:
 
 ----
-rename go#ep1/~/tempdir go#ep1/~/project-foo
+$ rename go#ep1/~/tempdir go#ep1/~/project-foo
 ----
 
 Alternate, SCP-like home directory path syntax:
 
 ----
-rename go#ep1:tempdir go#ep1:project-foo
+$ rename go#ep1:tempdir go#ep1:project-foo
 ----
 
 

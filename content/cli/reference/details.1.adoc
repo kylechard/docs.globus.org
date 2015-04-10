@@ -143,17 +143,17 @@ The task's total number of subtasks
 Show details of last 5 tasks:
 
 ----
-details -a -l 5
+$ details -a -l 5
 ----
 
 Show details of a transfer task:
 
 ----
-details a04d9872-aec7-11df-9563-1231380722ca
+$ details a04d9872-aec7-11df-9563-1231380722ca
 ----
 
 Show details of all transfer tasks with label matching pattern:
 
 ----
-details label=*data*
+$ details label=*data*
 ----
