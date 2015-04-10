@@ -1,3 +1,7 @@
+---
+menu_weight: 2
+---
+
 = CLI: Beyond the basics
 :toc:
 :toc-placement: manual

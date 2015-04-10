@@ -20,3 +20,18 @@ example of a terminal block with [input]#input# and [output]#output# classes
 ----terminal
 
 NOTE: To use a terminal block, instead of using "----" as you would for a normal listing block, you would use "----terminal"
+
+== Customizing the Sidebar Menu
+The sidebar menu can be customized for adoc pages under /cli/ and /api/ by adding a "menu_weight" variable in a yaml format at the top of the file. So the top of your file should look like:
+
+[source]
+....
+----
+menu_weight: 2
+----
+
+= Page Title
+
+Page content...
+
+....

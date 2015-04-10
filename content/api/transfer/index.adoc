@@ -1,3 +1,8 @@
+---
+full_title: "Transfer API"
+short_title: "Transfer"
+---
+
 = Transfer API
 
 [doc-info]*Last Updated: {docdate}*
