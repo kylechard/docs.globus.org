@@ -28,6 +28,8 @@ toc::[]
 Globus allows you, as a resource provider, to easily offer reliable, secure,
 high-performance research data management capabilities to your users
 and their collaborators, directly from your own storage.
+[yellow-background]#instead of 'directly from your own storage' may want to 
+say 'directly from storage chosen by you.'#
 Globus is software as a service (SaaS), enabled by the cloud and
 designed to let users manage their research files,
 regardless of number and size,
@@ -236,6 +238,7 @@ on your system.
 ==== CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux
 First, add the Globus Connect Server repository to your package management
 system:
+[yellow-background]#should the one-time commands to add repo to pkg mngmnt system be moved up to pre-reqs?  Or is that just harder to follow?#
 ----terminal
 $ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
 $ sudo rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
@@ -363,15 +366,16 @@ x
 x
 
 === Authentication
-(might move this into previous section)
 <Add reference to how-things-work appendix, and there include or point
 back to the diagrams that show the different routes used w/ various
 authentication schemes.>
 
-<Note that default was MyProxy & PAM.  Maybe section for it in case
-they change then want to go back.>
+<Note that default was MyProxy & PAM.  Maybe include a section for it 
+here as well in case they change then want to go back.>
 
 ==== Using MyProxy and OAuth
+<note that other port needs to be opened beyond what those listed earlier for default install. 
+and that they can close the one for PAM if desired.>
 x
 
 ==== Single Sign-On with InCommon/CILogon
