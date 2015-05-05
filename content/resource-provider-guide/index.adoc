@@ -377,7 +377,7 @@ options in the +globus-connect-server.conf+ file. A detailed
 discussion of each option in the file can be found in the file itself 
 link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[here]. After updating settings in the 
 +/etc/globus-connect-server.conf+ file you must run the 
-`globus-connect-server-setup`command (as root) before the settings
+`globus-connect-server-setup` command (as root) before the settings
 will take effect on your endpoint.
 
 === [Globus] section
