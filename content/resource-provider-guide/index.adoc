@@ -123,34 +123,27 @@ Ensure that `ntpd`, or another daemon for synchronizing
 with standard time servers, is running on your system.
 
 === Internet-accessible system
-Your system must be accessible from the Internet.
-More specifically, your organization's public Domain Name Service
-(DNS) must have a record pointing to a public IP address
-that is assigned or forwarded to the system where you will be installing
-Globus Connect Server.
+Before you can install Globus Connect Server onto a server, you must ensure that 
+other hosts on the Internet can initiate connections to your server. If your 
+server is NATed then see below. Otherwise, you must ensure that your server
+is assigned a publicly resolvable DNS name that points to a public IP address that is properly assigned to your server. 
 
 To check accessibility, first execute this command
-on the system where
-you plan to install Globus Connect Server:
+on the system where you plan to install Globus Connect Server:
 ----terminal
 $ hostname -f
 ----terminal
-Confirm that a fully qualified domain name (FQDN) of the form
-'xxx.yyy.zzz'
-(with 2 dots) or
-'www.xxx.yyy.zzz' (with 3 dots) is returned.
+Confirm that a fully qualified domain name (FQDN) is returned, e.g. ep1.transfer.globus.org.
 
 Next, use a public DNS server operated by a different organization to
 verify that the returned FQDN is publicly resolvable.
-More concretely, run this command,
-where [uservars]#'xxx.yyy.zzz'# is
-the output of the previous +hostname -f+ command and '8.8.4.4'
-specifies one of Google's public DNS servers:
+More concretely, you could use `nslookup` to check that your server's 
+FQDN resolves against one of Google's public DNS servers:
 ----terminal
-$ nslookup [input]#'xxx.yyy.zzz'# 8.8.4.4
+$ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
 ----terminal
-If you get a message of the form '`** server can't find xxx.yyy.zzz: NXDOMAIN'',
-your system is not accessible and you need to 
+If you get a message of the form '`** server can't find ep1.transfer.globus.org: NXDOMAIN'',
+your system's hostname is not resolvable via public DNS, and you need to 
 resolve the issue before continuing with the installation. 
 {contact_us}[Contact us] if you need assistance.
 
@@ -165,22 +158,25 @@ Please see
 or {contact_us}[contact us] if your site uses NAT.
 
 === Open TCP ports
-If your system is behind a firewall, some TCP ports must be open for
-Globus to work.
+If your system is behind a firewall, TCP ports must be open as specified 
+for Globus to work.
 The default Globus Connect Server installation requires these TCP
 ports be open:
 
 - Port 2811 inbound from 184.73.189.163 and 174.129.226.69
-- Port 7512 inbound from 174.129.226.69
-- Port 2223 outbound to 184.73.255.160
+* This is for GridFTP control channel traffic
 - Ports 50000--51000 inbound and outbound to/from Any
-
-Non-default installations have slightly different requirements and
-advanced configuration options also allow other port settings.
-Please refer to Appendix
-[yellow-background]#?the one on firewalls and maybe also on
-MyProxy/OAuth authentication ?#
-for further information.
+* This is for GridFTP data channel traffic
+- Port 2223 outbound to 184.73.255.160
+* This is to pull cert info from our backend
+- Port 443 outbound to nexus.api.globusonline.org, 184.73.189.163, and 174.129.226.69
+* This is to communicate with our REST API
+- Port 7512 inbound from 174.129.226.69
+* This is for MyProxy traffic
+* Needed if server will run MyProxy service
+- Port 443 inbound and outbound to/from Any
+* This is for OAuth traffic
+* Needed if server will run OAuth service
 
 === Globus account for your organization
 You will need a master Globus account for your organization that is
@@ -188,8 +184,8 @@ distinct from your personal Globus account.
 The Globus username associated with the master account should be
 something your users will recognize so they can easily
 find endpoint(s) administered by your organization.
-For example, the University of Chicago Research Computing Center has
-[uservars]#ucrcc# as their master Globus username.
+For example, Globus itself uses [uservars]#go# as the master Globus 
+username for our test endpoints.
 
 If your organization doesn't already have a master Globus account,
 create one using the form at
@@ -208,12 +204,42 @@ If Globus components have been previously installed, they must be
 removed before a new Globus Connect Server installation is
 started.
 
-If the directory +/etc/gridftp.d+ exists on your system,
-then some Globus components are currently installed.
-Please refer to the 
-section link:#removing_previously_installed_globus_components[Removing 
-previously installed Globus components]
-and follow the instructions there before continuing.
+If you have an old Globus Connect Server install that you are replacing, be sure to delete your endpoint definition so that it can be recreated cleanly during the new install:
+
+.All Distributions
+----terminal
+$ sudo globus-connect-server-cleanup -d
+----terminal
+
+After cleaning up your old endpoint definition (if appropriate) remove the old Globus packages like so:
+
+.Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
+----terminal
+$ sudo yum remove \\*globus\*
+$ sudo yum remove \\*myproxy\*
+----terminal
+
+.SuSE Linux Enterprise Server
+----terminal
+$ sudo zypper remove \\*globus\*
+$ sudo zypper remove \\*myproxy\*
+----terminal
+
+.Debian, Ubuntu
+----terminal
+$ sudo apt-get purge ".\*globus.\*"
+$ sudo apt-get purge ".\*myproxy.*"
+----terminal
+
+Finally, ensure that you remove old config that might still be left behind after removing the packages:
+
+.All Distributions
+----terminal
+$ sudo rm /etc/globus-connect-server.conf 
+$ sudo rm -r /etc/grid-security 
+$ sudo rm -r /var/lib/globus-connect-server
+$ sudo rm /etc/gridftp.conf
+----terminal
 
 == Globus Connect Server Installation and Endpoint Creation
 Globus Connect Server lets you quickly and easily set up a
@@ -238,7 +264,7 @@ on your system.
 ==== CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux
 First, add the Globus Connect Server repository to your package management
 system:
-[yellow-background]#should the one-time commands to add repo to pkg mngmnt system be moved up to pre-reqs?  Or is that just harder to follow?#
+
 ----terminal
 $ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
 $ sudo rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
@@ -309,7 +335,7 @@ your organization, and
 For example:
 ----
 [Endpoint]
-Name = hpc-15
+Name = ep1
 Public = True
 ----
 
@@ -340,55 +366,94 @@ authentication.
 
 == Globus Connect Server Configuration
 
-<Tell them then can change config & rerun command to
-change config after initial install>
-
 In the initial (default) installation of Globus Connect Server,
 you edited two configuration options in the
 +/etc/globus-connect-server.conf+ file,
 the +Name+ and +Public+ options in the +[Endpoint]+ section.
 You probably noticed that there are many, many other options
 that can be configured.
-This section of the guide covers some of the most common configuration
-options; see the full reference for the Globus Connect Server
-Configuration file in Appendix [yellow-background]#add link#.
+This section briefly covers a few of the most commonly changed
+options in the +globus-connect-server.conf+ file. A detailed 
+discussion of each option in the file can be found in the file itself 
+link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[here]. After updating settings in the 
++/etc/globus-connect-server.conf+ file you must run the 
+`globus-connect-server-setup`command (as root) before the settings
+will take effect on your endpoint.
 
-<note, probably want to use words, not names of options, as section
-headings>
+=== [Globus] section
 
-<note, originally had advanced config options here too... maybe need
-it back if some topics from deployment get migrated back here>
+==== +User+ and +Password+ options
+These options can be used to set the username and password
+of the Globus user that will be used when creating or updating
+the endpoint definition.
 
-=== Name
-x
+=== [Endpoint] section
 
-=== Public
-x
+==== +Name+ option
+This sets the name of the endpoint.
 
-=== Authentication
-<Add reference to how-things-work appendix, and there include or point
-back to the diagrams that show the different routes used w/ various
-authentication schemes.>
+==== +Public+ option
+This determines if the endpoint is publicly visible to all Globus users.
 
-<Note that default was MyProxy & PAM.  Maybe include a section for it 
-here as well in case they change then want to go back.>
+==== +DefaultDirectory+ option
+This sets the default directory that users will be sent to when
+first accessing an endpoint.
 
-==== Using MyProxy and OAuth
-<note that other port needs to be opened beyond what those listed earlier for default install. 
-and that they can close the one for PAM if desired.>
-x
+=== [Security] section
 
-==== Single Sign-On with InCommon/CILogon
-x
+==== +IdentityMethod+ option
+This option has three legal values: MyProxy, OAuth, and CILogon. 
+If you wish to use MyProxy as your endpoint's identity method, then
+you need to be sure to specify the +Server+ option in the [MyProxy]
+section. If you wish to use OAuth as your endpoint's identity method, 
+then you need to be sure to specify the +Server+ option in the [OAuth]
+section, and may also need to specify the +Server+ option in the [MyProxy]
+section if you are using MyProxy on the server to provide authentication 
+for the OAuth service. If you are using CILogon, then you will also need to
+specify the +CILogonIdentityProvider+ option in the [Security] section.
 
-==== Using an Existing MyProxy Server
-x
+==== +CILogonIdentityProvider+ option
+This option specifies the identity provider to use with CILogon. 
+See https://cilogon.org/ for a list of valid providers.
 
-=== RestrictedPaths
-x
+=== [GridFTP] section
 
-=== [go-icon-pp]#Sharing#
-also Sharing restricted paths, SharingStateDir, etc.
+==== +Server+ option
+This option specifies the hostname of the GridFTP server. This should
+match the hostname of the server except, possibly, if NAT is being used. Can
+be left blank if you don't want to configure a GridFTP server on this host.
+
+==== +ServerBehindNAT+ option
+This option specifies that the server is NATed. See the NAT section for details.
+
+==== +RestrictPaths+ option
+This option can be used to prevent Globus users accessing the endpoint from 
+accessing certain paths, or it can be used to restrict Globus users so that they 
+can only access certain paths.
+
+=== [MyProxy] section
+
+==== +Server+ option
+This option specifies the hostname of the MyProxy server. If you are running
+the MyProxy server on this host, then this should match the hostname of this server 
+except, possibly, if NAT is being used. If you are using a MyProxy server on a 
+different host, then use the hostname of that host. Can be left blank if you don't 
+want to configure a MyProxy server at all.
+
+==== +ServerBehindNAT+ option
+This option specifies that the server is NATed. See the NAT section for details.
+
+=== [OAuth] section
+
+==== +Server+ option
+This option specifies the hostname of the OAuth server. If you are running
+the OAuth server on this host, then this should match the hostname of this server 
+except, possibly, if NAT is being used. If you are using an OAuth server on a 
+different host, then use the hostname of that host. Can be left blank if you don't 
+want to configure an OAuth server at all.
+
+==== +ServerBehindNAT+ option
+This option specifies that the server is NATed. See the NAT section for details.
 
 == Advanced Deployment Scenarios
 This section covers some of the more advanced deployment scenarios.
@@ -445,37 +510,6 @@ latest bug fixes and improvements.  <Edit these for reality>
 Issue the commands shown below for your Linux distribution
 to remove previously installed Globus components:
 
-////
-Internal note:
-Because terminal blocks allow formatting within them, you have to 
-be careful to escape characters correctly or the rendered text will
-be incorrect. The commands should be:
-$ sudo yum remove \*globus\*
-$ sudo yum remove \*myproxy\*
-$ sudo zypper remove \*globus\*
-$ sudo zypper remove \*myproxy\*
-$ sudo apt-get purge ".*globus.*"
-$ sudo apt-get purge ".*myproxy.*"
-////
-
-.Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
-----terminal
-$ sudo yum remove \\*globus\*
-$ sudo yum remove \\*myproxy\*
-----terminal
-
-.SuSE Linux Enterprise Server
-----terminal
-$ sudo zypper remove \\*globus\*
-$ sudo zypper remove \\*myproxy\*
-----terminal
-
-.Debian, Ubuntu
-----terminal
-$ sudo apt-get purge ".\*globus.\*"
-$ sudo apt-get purge ".\*myproxy.*"
-----terminal
-
 == [go-icon-pp]#Management Console#
 
 == [go-icon-pp]#Usage Reporting#
@@ -486,6 +520,83 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 == [go-icon-pp]#Enabling Globus Plus for Users#
 
 == Generating and Monitoring Log Files
+
+=== GridFTP Server Log Files
+
+On recent versions of Globus Connect Server, the GridFTP log is located at:
+
+`/var/log/gridftp.log`
+
+On recent versions of Globus Connect Server, the configuration settings 
+for the GridFTP log file are found at:
+
+`/etc/gridftp.d/globus-connect-server-gridftp-logging`
+
+On older versions of Globus Connect Server, logging for the GridFTP service is
+ not enabled by default. In order to enable logging, it is necessary to specify 
+the appropriate options in the GridFTP configuration files. One way to do this 
+would be to create a text file named:
+
+`/etc/gridftp.d/globus-connect-server-gridftp-logging`
+
+Next, place the following options into the file:
+
+----terminal
+log_single /var/log/gridftp.log
+log_level ERROR,WARN
+----terminal
+
+After saving the file, restart the GridFTP server with this command:
+
+----terminal
+$ sudo service globus-gridftp-server restart
+----terminal
+
+At this point, the GridFTP server will log all ERROR and WARN events to the
+ `/var/log/gridftp.log` file. Additional details concerning logging for the 
+GridFTP server are available in the `globus-gridftp-server` man page.
+
+=== MyProxy Server Log Files
+
+By default, the MyProxy server logs events to the LOG_DAEMON facility. This 
+means that, by default, MyProxy events will be found in the following locations:
+
+*CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux:*
+
+`/var/log/syslog`
+
+*Debian/Ubuntu:*
+
+`/var/log/syslog`
+
+*SuSE Linux Enterprise Server:*
+
+`/var/log/messages`
+
+Please note that if the logging location for the LOG_DAEMON facility has been 
+changed from the default in your syslogd config, then MyProxy events may be found 
+in a different location. For further details concerning MyProxy please see the
+ link:http://grid.ncsa.illinois.edu/myproxy/adminguide.html[MyProxy Admin Guide].
+
+=== MyProxy Delegation Service (myproxy­-oauth) Log Files
+
+Events for myproxy­-oauth will be logged to the apache log file directory. By 
+default, this will be found at the following locations:
+
+*CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux:*
+
+`/var/log/httpd/`
+
+*Debian/Ubuntu:*
+
+`/var/log/apache2/`
+
+*SuSE Linux Enterprise Server:*
+
+`/var/log/apache2/`
+
+For further info on the MyProxy Delegation Service see the 
+link:https://github.com/globus/globus-toolkit/blob/globus_6_branch/myproxy/oauth/source/README.md[README].
 
 == Getting Help
 
@@ -505,7 +616,21 @@ x
 x
 
 ==== Support Tickets
-x
+When submitting a ticket for an issue with Globus Connect Server please 
+include the endpoint name, a description of your issue, and screenshot/text 
+dumps of any errors you are seeing.
+
+Please also include the outputs of the following commands, run as root 
+from the server hosting the GCS endpoint:
+
+----terminal
+uname -a
+cat /etc/issue
+cat /etc/gridftp.d/*
+cat /etc/gridftp.conf
+globus-gridftp-server --version
+grep -v "^$\|;" /etc/globus-connect-server.conf
+----terminal
 
 == Additional Capabilities
 
