@@ -72,7 +72,7 @@ Globus provides two commands for moving files: +transfer+ and +scp+. The +transf
 The following example shows a detached recursive +scp+. By default scp will be canceled if your ssh session is disconnected or you press +Ctrl-C+. However, Globus provides the +-D+ option so you can create a detached scp task that runs in the background even if your ssh session is disconnected:
 
 ----terminal
-$ scp -D -r [input]#ucrcc#midway:/demodoc/sdata/10Kfiles100M/ nersc#dtn:/project/mpccc1/dest/sdata/alcf20100122/#
+$ ssh [input]#demodoc#@cli.globusonline.org scp -D -r [input]#ucrcc#midway:/demodoc/sdata/10Kfiles100M/ nersc#dtn:/project/mpccc1/dest/sdata/alcf20100122/#
 [output]#Task ID: 4a3c471e-edef-11df-aa30-1231350018b1#
 ----terminal
 
