@@ -629,7 +629,7 @@ cat /etc/issue
 cat /etc/gridftp.d/*
 cat /etc/gridftp.conf
 globus-gridftp-server --version
-grep -v "^$\|;" /etc/globus-connect-server.conf
+grep -v "\^$\|^;" /etc/globus-connect-server.conf
 ----terminal
 
 == Additional Capabilities
@@ -724,7 +724,89 @@ OAuth).
 https://support.globus.org/entries/27825216-Globus-Connect-Server-Authentication-Authorization-Flows
 Detailed description of how sharing works
 
+[appendix]
+== NAT/Firewall support and configuration
+The Globus Connect Server package provides configuration tools for several related services to enable administrators to easily configure a Globus endpoint. The globus-connect-server.conf file controls how the services used by Globus are configured, and includes configuration options to manage firewall-related configuration of services. Each service provided by the Globus Connect Server packages may be configured separately as described below.
 
+Note that the descriptions below include examples of Globus Connect Server service configurations only. Configuring the firewalls themselves to allow the ports and host connections is not discussed. See the Open TCP ports section for a discussions of 
+the ports used by Globus Connect Server.
+
+=== Configuring I/O Nodes
+Globus Connect Server I/O nodes provide a GridFTP service to Globus. Options related to firewalls in the [GridFTP] section of the configuration file are: Server, ServerBehindNAT, IncomingPortRange, OutgoingPortRange, and DataInterface.
+
+By default, Globus Connect Server configures the GridFTP server assuming that incoming TCP connections are allowed to port 2811, and the range 50000-51000 on the GridFTP server node.
+
+==== Using GridFTP behind a NAT Firewall
+To use a GridFTP behind a NAT firewall, set the Server option to the public name of the GridFTP server, and set the ServerBehindNAT option to True. This causes globus-connect-server-io-setup to generate GridFTP configuration for the node even if the Server name doesn't match the node's local hostname. This requires that the GridFTP server is visible from Globus at the address associated on the public internet with the name that is the Server value.
+
+==== NAT Firewall Example
+As an example, this configures the GridFTP server to run on the current host, using public-gridftp.example.org as its public name and listening on port 22811 instead of the default 2811. In order for this to work, the NAT firewall must allow connections to TCP port 22811 and the range 50000-51000 on the I/O node. By default, the Server name is used to construct the data interface name as well, but this behavior can be changed (see Using GridFTP with a Particular Data Interface).
+
+----terminal
+[GridFTP]
+Server = public-gridftp.example.org:22811
+ServerBehindNAT = True
+----terminal
+
+==== Using GridFTP with Firewall Port Restrictions
+To use a GridFTP server with a firewall with incoming and/or outgoing port restrictions, use the IncomingPortRange and OutgoingPortRange configuration options. The former restricts the TCP port range that the GridFTP server listens on for ephemeral connections to a port range. The OutgoingPortRange restricts the TCP source port range that the GridFTP server uses when creating outgoing data connection sockets. For both of these items, the syntax of the port range is startport,endport, e.g. 50000,51000.
+
+==== Port Restrictions Example
+As an example, this configures the GridFTP server to listen for TCP connections on ports from 4000 to 5000 instead of the default 50000 to 51000. This will require configuration on the firewall to allow those ports to connect directly to the I/O node.
+
+----terminal
+[GridFTP]
+Server = public-gridftp.example.org:22811
+IncomingPortRange = 4000,5000
+----terminal
+
+==== Using GridFTP with a Particular Data Interface
+The GridFTP server can also be configured to use a different IP address for its incoming data connections by setting the DataInterface option in the configuration file. By default, the GridFTP server will use the same IP address as that associated with the Server value. This can be altered, for example, to create a limited-use endpoint that uses a high-speed interconnect between I/O resources, but is not generally accessible from the internet.
+
+==== Data Interface Example
+As an example, this configures the GridFTP server to listen for TCP data connections on gig-e.example.org.
+
+----terminal
+[GridFTP]
+Server = public-gridftp.example.org:22811
+DataInterface = gig-e.example.org
+----terminal
+
+=== Configuring an ID Node
+The Globus Connect Server ID node provides a MyProxy service. This service generates short-lived credentials which are used to authenticate with the GridFTP server. Globus may be configured to access this service directly, or access it via a web-based OAuth interface. This is chosen by the presence or absence of an [OAuth] section in the globus-connect-server.conf file.
+
+By default, the MyProxy service listens on TCP port 7512. It makes no outgoing TCP connections. Like the GridFTP servers on the I/O nodes, the [MyProxy] section contains Server and ServerBehindNAT configuration options, which function like the ones in the GridFTP section.
+
+If the MyProxy service is not being used directly by the Globus service (that is, if a OAuth server is being used), then the MyProxy service need only be reachable by the Web node and, during initial configuration, by the I/O nodes. No other nodes will require access the MyProxy service in normal operation.
+
+==== Using MyProxy behind a NAT Firewall
+To use a MyProxy server behind a NAT firewall, set the Server option to the public name of the MyProxy server, and set the ServerBehindNAT option to True. This causes globus-connect-server-id-setup to generate MyProxy configuration for the node even if the Server name doesn't match the node's local hostname. If you are configuring an OAuth server, the Server option must be accessible from the Web node and I/O nodes (during configuration); otherwise, it must be accessible from Globus.
+
+==== NAT Firewall Example
+As an example, this configures the MyProxy server to run on the current host, using public-myproxy.example.org as its public name and listening on port 17512 instead of the default 7512. In order for this to work, the NAT firewall must allow connections to the TCP port 17512 on the ID node.
+
+----terminal
+[MyProxy]
+Server = public-myproxy.example.org:17512
+ServerBehindNAT = True
+----terminal
+
+=== Configuring a Web Node
+The Globus Connect Server Web node provides OAuth service to Globus. There are a few configuration options related to firewalls in the [OAuth] section of the configuration file. These are Server and ServerBehindNAT.
+
+Unlike the other service nodes, the Web node is somewhat less configurable, as it relies on an external Apache server to accept TCP connections. Configuring the Apache server to listen on a different TCP port is out of scope of this note. The Server value may only contain a hostname, and the port 443 (https) is used. Globus does not support OAuth servers on alternate ports.
+
+==== Using OAuth behind a NAT Firewall
+To use an OAuth server behind a NAT firewall, set the Server option to the public name of the OAuth server, and set the ServerBehindNAT option to True. This causes globus-connect-server-web-setup to generate OAuth configuration for the node even if the Server name doesn't match the node's local hostname. This requires that the OAuth server is visible from Globus at the address associated on the public internet with the name that is the Server value.
+
+==== NAT Firewall Example
+As an example, this configures the OAuth server to run on the current host, using public-oauth.example.org as its public name. In order for this to work, the NAT firewall must allow connections to TCP port 433 on the web node.
+
+----terminal
+[OAuth]
+Server = public-oauth.example.org
+ServerBehindNAT = True
+----terminal
 
 [glossary]
 == List of Terms
