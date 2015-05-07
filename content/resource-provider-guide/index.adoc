@@ -169,12 +169,15 @@ ports be open:
 * This is for GridFTP data channel traffic
 - Port 2223 outbound to 184.73.255.160
 * This is to pull cert info from our backend
-- Port 443 outbound to nexus.api.globusonline.org, 184.73.189.163, and 174.129.226.69
+- Port 443 outbound to nexus.api.globusonline.org and 174.129.226.69
+* nexus.api.globusonline.org is a CNAME for an Amazon 
+link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
+are subject to change
 * This is to communicate with our REST API
 - Port 7512 inbound from 174.129.226.69
 * This is for MyProxy traffic
 * Needed if server will run MyProxy service
-- Port 443 inbound and outbound to/from Any
+- Port 443 inbound from Any
 * This is for OAuth traffic
 * Needed if server will run OAuth service
 
