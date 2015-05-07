@@ -176,6 +176,8 @@ proxied/intermediated by Globus servers
 link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
 in the ELB are subject to change
 * This is to communicate with our REST API
+- Port 80 outbound to 192.5.186.47
+* This is to pull packages from our repo
 - Port 7512 inbound from 174.129.226.69
 * This is for MyProxy traffic
 * Needed if server will run MyProxy service
@@ -274,7 +276,7 @@ system:
 
 ----terminal
 $ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
-$ sudo rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
+$ sudo rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
 $ sudo yum install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
@@ -296,7 +298,7 @@ First, add the Globus Connect Server repository to your package management
 system:
 ----terminal
 $ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
-$ sudo rpm --import http://www.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
+$ sudo rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
 $ sudo zypper install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
