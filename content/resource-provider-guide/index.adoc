@@ -174,7 +174,7 @@ proxied/intermediated by Globus servers
 - Port 443 outbound to nexus.api.globusonline.org and 174.129.226.69
 * nexus.api.globusonline.org is a CNAME for an Amazon 
 link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
-are subject to change
+in the ELB are subject to change
 * This is to communicate with our REST API
 - Port 7512 inbound from 174.129.226.69
 * This is for MyProxy traffic
