@@ -705,6 +705,42 @@ See us about skinned sites, mass storage, ...
 :numbered!:
 
 [appendix]
+== Understanding Data Channel Traffic
+The data channel (default port range TCP 50000 to 51000) is where Globus 
+Connect Server actually transmits the data that is being moved between
+endpoints. We strongly recommend that all endpoints be configured to use the 
+default data port range, as this will provide maximum compatibility with other
+endpoints that are also configured to use the default data port range and have
+their firewall rules configured to allow traffic in this range. If your endpoint 
+uses a non-default data port range, then you are - in effect - requiring other 
+sites to potentially have to create additional firewall rules in order to be able
+to communicate properly with your endpoint. Many sites will not want to do this, 
+which will thus limit the ability of your endpoint to interoperate with the majority 
+of endpoints which are configured to use the default port range. 
+
+If two endpoints (ep1 and ep2) are to be able to successfully conduct
+transfers, then those endpoints must each be able to connect to each other
+in their configured data port ranges. For example, consider the following:
+
+Globus Connect Server ep1 uses data port range 40000 to 41000
+Globus Connect Server ep2 uses data port range 50000 to 51000
+
+In such a case, in order for ep1 and ep2 to be able to properly conduct transfers, 
+it would be necessary for ep1 to be able to accept connections inbound on its'
+own data port range of 40000 to 41000 from ep2, as well as to be able to connect 
+outbound to ep2 on ep2's data port range of 50000 to 51000.
+
+Likewise, it would be necessary for ep2 to be able to accept connections inbound on 
+its' own data port range of 50000 to 51000 from ep1, as well as to be able to connect 
+outbound to ep1 on ep1's data port range of 40000 to 41000.
+
+If these conditions were not met, then there would be problems when attempting to
+conduct transfers between ep1 and ep2.
+
+PUT MORE DETAILS, EXPLAIN EXACTLY HOW TRANSFERS GET INITIATED (GCS to GCS, GCP to GCS
+, GCS to GCP) AND EXPLAIN WHO PICKS THE PORT
+
+[appendix]
 == Firewalls
 
 Add information about what ports are open and why.
