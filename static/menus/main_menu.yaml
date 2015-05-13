@@ -27,9 +27,6 @@ menus:
                 title: 'Help Center'
                 link: 'https://support.globus.org'
             -
-                title: 'Downloads'
-                link: '/downloads/'
-            -
                 title: 'Contact Us'
                 link: 'https://www.globus.org/contact-us'
             -
