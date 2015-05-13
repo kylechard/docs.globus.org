@@ -737,8 +737,37 @@ outbound to ep1 on ep1's data port range of 40000 to 41000.
 If these conditions were not met, then there would be problems when attempting to
 conduct transfers between ep1 and ep2.
 
-PUT MORE DETAILS, EXPLAIN EXACTLY HOW TRANSFERS GET INITIATED (GCS to GCS, GCP to GCS
-, GCS to GCP) AND EXPLAIN WHO PICKS THE PORT
+*** MAKE THIS GENERIC***
+
+This will be a problem when attempting to transfer *to* a GCS endpoint using a non-standard data port range *from* the aaa#aaa endpoint as, in such cases, it's the endpoint *to* which the data is being transferred that picks the port to use for the data connection.
+
+>1) I was able to reproduce this error trying to copy from the readonly endpoint (bbb#bbb) to ccc#ccc endpoint.
+
+This is as expected, because these GCS endpoints are configured to use a data port range outside of the standard range, and are thus telling aaa#aaa (which hosts bbb#bbb) to initiate a connection on an outbound port that appears to be blocked by network/firewall policy.
+
+>2) The xxx admin was able to successfully copy from ddd#ddd endpoint as well as a Globus Connect one to the aaa#aaa production endpoint.
+
+These cases are both different. In both instances here, it will be the aaa#aaa endpoint telling the other endpoints which data port to use for the transfer, so we wouldn't expect to see a problem, since it will pick a port in the 50000 to 51000 range as it's configured to do, and since we would expect that local firewall policy will permit connections in this range.
+
+>2) I also was able to copy from bbb#bbb to my laptop Globus Connect Personal installation without error
+
+Again, when doing GCS to GCP or GCP to GCS, it's the GCS server that picks that data port - so we wouldn't expect to see an issue here.
+
+>4) Admin xxx reconfigured the aaa#aaa configuration to explicitly set the OutgoingPortRange to 50,000-51,000. This did not change the results.
+
+This won't affect anything. In a GCS to GCS transfer, it's the destination GCS endpoint that picks the data port to be used for the transfer.
+
+>Does this point to a specific problem or can you suggest additional tests we can do?
+
+The Globus service and GCS are working as expected - as explained. When doing a GCS to GCS transfer, the destination GCS endpoint picks the data port used in the transfer, so if the endpoint that is on the *send* end of the transfer is blocked from initiating an outbound connection on the port that the endpoint which is on the *receive* end of the transfer picked to be used, then you will see errors exactly like this in the log. This isn't an indication of an error with GCS or with the Globus service, but is rather simply a statement about the reality of the network from the point of view of the endpoint - i.e. it can't connect to the server it has been told to connect to on the port it has been told to connect on.
+
+There are two possible solutions in a case like this:
+
+1) The endpoint using the non-standard data port range (ep1) can change its configuration such as to use the standard 50000 to 51000 port range. This will allow the other endpoint (ep2) with the firewall rules that don't allow it to connect out on the non-standard range to conduct transfers normally against it.
+
+2) The endpoint with the firewall rules that don't allow it to connect out on the non-standard data port range (ep2) can change its firewall rules such that it can connect outbound on the non-standard data port range. This will allow it to conduct transfers normally against an endpoint (ep1) that uses a non-standard data port range.
+
+***
 
 [appendix]
 == Firewalls
