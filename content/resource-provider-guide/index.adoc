@@ -714,9 +714,9 @@ See us about skinned sites, mass storage, ...
 [appendix]
 [[data_channel_traffic]]
 == Understanding Data Channel Traffic
-The data channel (default port range TCP 50000 to 51000) is where Globus 
-Connect Server actually transmits the data that is being moved between
-endpoints. We strongly recommend that all endpoints be configured to use the 
+The data channel is where Globus Connect Server actually transmits the data that is 
+being moved between endpoints. The default port range used for data channel connections 
+is TCP 50000 to 51000. We strongly recommend that all endpoints be configured to use the 
 default data port range, as this will provide maximum compatibility with other
 endpoints that are also configured to use the default data port range and have
 their firewall rules configured to allow traffic in this range. If your endpoint 
@@ -730,20 +730,9 @@ If two endpoints (ep1 and ep2) are to be able to successfully conduct
 transfers, then those endpoints must each be able to connect to each other
 in their configured data port ranges. For example, consider the following:
 
-Globus Connect Server ep1 uses data port range 40000 to 41000
+Globus Connect Server ep1 uses data port range 40000 to 41000 
+
 Globus Connect Server ep2 uses data port range 50000 to 51000
-
-In such a case, in order for ep1 and ep2 to be able to properly conduct transfers, 
-it would be necessary for ep1 to be able to accept connections inbound on its'
-own data port range of 40000 to 41000 from ep2, as well as to be able to connect 
-outbound to ep2 on ep2's data port range of 50000 to 51000.
-
-Likewise, it would be necessary for ep2 to be able to accept connections inbound on 
-its' own data port range of 50000 to 51000 from ep1, as well as to be able to connect 
-outbound to ep1 on ep1's data port range of 40000 to 41000.
-
-If these conditions were not met, then there would be problems when attempting to
-conduct transfers between ep1 and ep2.
 
 When two Globus Connect Server endpoints attempt to conduct a transfer, the endpoint 
 that will be the recipient in that transfer picks out a port (or ports) in its configured 
@@ -758,14 +747,14 @@ To illustrate, consider the case of ep1 and ep2 mentioned above. If ep1 wanted t
 file, then ep2 would pick out a port (or ports) in its configured data port range of 50000 to 
 51000. For the sake of example let's say that port 50021 has been chosen. This value would 
 then get communicated from ep2 to ep1, via the Globus Service through the GridFTP control channel 
-that both ep1 and ep2 are listening to on port 2811. At that point, ep1 would then initiate a 
+that both ep1 and ep2 are listening to. At that point, ep1 would then initiate a 
 connection out to port 50021 on ep2. 
 
 To further illustrate, consider again the case of ep1 and ep2 mentioned above. If ep2 wanted 
 to send ep1 a file, then ep1 would pick out a port (or ports) in its configured data port 
 range of 40000 to 41000. For the sake of example let's say that port 40331 has been chosen. 
 This value would then get communicated from ep1 to ep2, via the Globus Service through the GridFTP 
-control channel that both ep1 and ep2 are listening to on port 2811. At that point, ep2 would 
+control channel that both ep1 and ep2 are listening to. At that point, ep2 would 
 then initiate a connection out to port 40331 on ep1.
 
 It is also important to consider what happens in cases where one endpoint is a Globus Connect 
@@ -777,6 +766,16 @@ case irrespective of which endpoint is the sender or the recipient. As discussed
 information gets communicated from the Globus Connect Server endpoint to the Globus Connect 
 Personal endpoint via the Globus Service.  
 
+After looking at the example given we can see that, in terms of firewall rules, the outbound
+rules for ep1 must allow it to connect outbound to ep2 on ep2's configured data port range if 
+ep1 is to be able to send files to ep2. In terms of inbound rules, the firewall rules for 
+ep1 must be configured to allow it to accept inbound connections on its own configured data 
+port range for it to be able to receive files from other endpoints. The firewall rules for the 
+data port range of any endpoint will be similar, and must allow outbound connections to the 
+configured data port range of a remote endpoint for the local endpoint to be able to send files to 
+the remote endpoint, and must allow inbound connections to the configure data port range of the 
+local endpoint for that endpoint to be able to receive files from other endpoints.
+
 As illustrated, an endpoint must be able to receive inbound connections on its own configured 
 data port range, as well as be able to make outbound connections on the data port range of any 
 endpoint it wishes to communicate with. If all Globus Connect Server admins pick their own 
@@ -787,7 +786,7 @@ manageable. It is for this reason that we recommend that everyone use the defaul
 range for their endpoint. Those who use a custom data port range may find that they have 
 problems with their endpoint being able to communicate with other endpoints, for the reasons 
 detailed above. Those using custom data port ranges may also find that the admins of other 
-sites and endpoint may not be willing to set up custom firewall rules to accommodate custom 
+sites and endpoints may not be willing to set up custom firewall rules to accommodate custom 
 data port range choices.
 
 [appendix]
