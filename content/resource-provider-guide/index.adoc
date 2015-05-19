@@ -777,7 +777,7 @@ the remote endpoint, and must allow inbound connections to the configure data po
 local endpoint for that endpoint to be able to receive files from other endpoints.
 
 As illustrated, an endpoint must be able to receive inbound connections on its own configured 
-data port range, as well as be able to make outbound connections on the data port range of any 
+data port range, as well as be able to make outbound connections to the data port range of any 
 endpoint it wishes to communicate with. If all Globus Connect Server admins pick their own 
 custom port ranges, then this quickly leads to a situation in which site firewall policies 
 become littered with custom rules for these various port ranges and endpoints. However, if 
@@ -790,34 +790,88 @@ sites and endpoints may not be willing to set up custom firewall rules to accomm
 data port range choices.
 
 [appendix]
-== Globus Connect Server I/O Nodes
+== Globus Connect Server Configuration Packages
+Globus Connect Server is delivered as a set of packages that may be used to configure and update services for use on a Globus endpoint. The most commonly used package is globus-connect-server. It is used to configure all services for a Globus endpoint on a server and creates configuration files for the various services based on a common Globus endpoint configuration file. Using the default configuration file will configure and enable all services needed to create a single-server endpoint (see configuration file example here).
 
-More detailed description of software that is included in the I/O node
-package.
-Any other useful information for configuring distinct I/O nodes, e.g.
-shared file system configuration.
-Reference for configuring using the command line tools:
-https://support.globus.org/entries/24028833-Command-Line-Tools-for-Configuring-Globus-Connect-Server-I-O-Nodes
+In addition to the consolidated globus-connect-server package, there are sub-packages, each with their own configuration programs which operate on the Globus Connect Server configuration file. Each sub-package operates on one of the services as described below, and depends on the packages needed to configure that service. The sub-packages are:
+
+- globus-connect-server-io may be used to install a Globus GridFTP server that implements a file transfer service.
+- globus-connect-server-id may be used to install a Globus MyProxy server that implements an identity provider service.
+- globus-connect-server-web may be used to install a MyProxy OAuth server that integrates the MyProxy service with a branded web interface.
+
+Installing one of these sub-packages does not configure the services. The administrator must run the setup program associated with that package in order to actually do the configuration. Likewise, when one of the sub-packages is removed, it does not disable the service that was it was used to configure; this is done by running the cleanup program associated with the sub-package.
+
+=== Globus Connect Server I/O
+
+The *globus-connect-server-io* package configures a GridFTP server. The main actions executed by this package during setup and cleanup are described below. This package depends on the authorization callouts, MyProxy (client side) programs, and the GridFTP server program.
+
+globus-connect-server-io-setup (link to man page)
+
+- Fetch a certificate from the Globus Connect CA and write GridFTP configuration to use it
+- Write GridFTP configuration to enable sharing (note: sharing may only be enabled on managed endpoints with a valid Provider plan subscription)
+- Fetch MyProxy trust roots (if configured to use a MyProxy server)
+- Write GridFTP configuration for authorization callouts
+* If using CILogon, install CILogon CA and CRLs in the globus-connect-server certificate directory and add a cron job to refresh the CRL
+* If using a remote MyProxy server, fetch the MyProxy service certificate and trust roots and install them into the globus-connect-server certificate directory
+- (Re)start the GridFTP server
+- Enable the GridFTP server to start on reboots
+- Bind the GridFTP server to a Globus endpoint
+
+globus-connect-server-io-cleanup (link to man page)
+
+- Remove Globus Connect CA certificate if used
+- Remove GridFTP service configuration
+- Remove the Globus endpoint binding
+- Remove CILogon CRL cron job
+- Stop the GridFTP service
+- Disable the GridFTP service
+
+Please see the command line tools for managing an I/O node configuration for more information.
+
+=== Globus Connect Server Identity
+
+The *globus-connect-server-id* package is used to configure a MyProxy identity service. This service can be configured as an identity provider using system passwords or as a certificate store for certificates generated elsewhere. The default configuration method for Globus Connect Server is as an identity provider. As an identity provider it will generate short-lived certificates for users if they are able to authenticate with their login password. As a certificate store, certificates are generated by some process outside of MyProxy and may be added to the store by the normal MyProxy Commands. This package depends on the MyProxy server and globus-simple-ca.
+
+globus-connect-server-id-setup (link to man page)
+
+- Fetch a certificate from the Globus Connect CA and write MyProxy server configuration to use it
+- Set up the MyProxy CA if acting as an identity provider
+- (Re)start the MyProxy server
+- Enable the MyProxy server to start on reboots
+
+globus-connect-server-id-cleanup (link to man page)
+
+- Stop the MyProxy CA service
+- Disable the MyProxy CA service
+
+=== Globus Connect Server Web
+
+The globus-connect-server-web package is used to configure a MyProxyOAuth identity service. This service provides a web interface to a MyProxy service, which may be running on the same node or elsewhere. This web interface may be customized by adding site-specific style sheets and images to make it conform to the look of the organization running the service.
+
+globus-connect-server-web-setup (link to man page)
+
+- Enable mod_ssl and the default SSL site if needed
+- Copy the OAuth site configuration to /etc/httpd/conf.d (rpm) or /etc/apache2/conf.d (deb)
+- Restart the web server
+- Enable the web server to start on reboots
+
+globus-connect-server-web-cleanup (link to man page)
+
+- Disable mod_ssl and the default SSL site if we enabled it during setup
+- Remove the OAuth site configuration file from /etc/httpd/conf.d or /etc/apache2/conf.d
+- Restart the web server
+
+[appendix]
+== Globus Connect Server I/O Nodes
+Still needed?
 
 [appendix]
 == Globus Connect Server ID Nodes
-
-More detailed description of software that is included in the ID node
-package.
-Any other useful information for configuring an node, e.g. pointers to
-MyProxy reference documentation.
-Reference for configuring using the command line tools:
-https://support.globus.org/entries/24030266-Command-Line-Tools-for-Configuring-a-Globus-Connect-Server-ID-Node
+Still needed?
 
 [appendix]
 == Globus Connect Server Web Nodes
-
-More detailed description of software that is included in the Web node
-package.
-Any other useful information for configuring a Web node, e.g. optimal
-Apache config options.
-Reference for configuring using the command line tools:
-https://support.globus.org/entries/24032757-Command-Line-Tools-for-Configuring-a-Globus-Connect-Server-Web-Node
+Still needed?
 
 [appendix]
 == Globus Connect Server Configuration Reference
