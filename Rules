@@ -99,10 +99,10 @@ compile '/site-docs/*' do
       # do not filter
     elsif ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout 'default'
+      layout item[:layout] || 'site-docs'
     else
       filter :erb
-      layout 'default'
+      layout item[:layout] || 'site-docs'
     end
   end
 end
