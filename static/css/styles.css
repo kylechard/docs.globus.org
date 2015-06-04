@@ -86,6 +86,9 @@ dd {
   color: #aaa;
   font-weight: 100;
 }
+.sect1, .sect2, .sect3, .sect4 {
+  overflow: hidden;
+}
 #content .sect1:first-child h2:first-child {
   margin-top: 0;
 }
@@ -353,6 +356,7 @@ code, .uservars {
   .page-content + footer {
      padding: 30px 0;
    }
+}
 @media (max-width: 991px) {
   .page-content + footer {
      padding: 30px 0;
@@ -394,3 +398,29 @@ code, .uservars {
 .underline {
   text-decoration: underline;
 }
+.sourceblock, .resultblock {
+  margin: 10px 0;
+}
+.resultblock > .content {
+  padding: 9.5px;
+  margin: 0 0 10px;
+  line-height: 1.42857143;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  clear:both;
+}
+.label,
+.blocklabel,
+.sourceblock .title,
+.resultblock .title {
+  font-size: .7em;
+  text-transform: uppercase;
+  color: #708FCA;
+}
+.resultblock + div,
+.resultblock + h2,
+.resultblock + p {
+  content:'';
+  clear:both;
+}
+.red { color: red; }
