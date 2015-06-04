@@ -14,7 +14,7 @@
 *This file is based off of http://powerman.name/doc/asciidoc*
 Some styles can be created multiple ways; for simplicity and consistency, I've tried to limit this doc to preferred methods.
 
-NOTE: *For specific syntax examples, check out the link:../raw/asciiguide.adoc[raw text]*
+*View link:../raw/asciiguide.adoc[raw text]*
 
 '''
 toc::[]
