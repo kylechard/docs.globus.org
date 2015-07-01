@@ -28,8 +28,6 @@ toc::[]
 Globus allows you, as a resource provider, to easily offer reliable, secure,
 high-performance research data management capabilities to your users
 and their collaborators, directly from your own storage.
-[yellow-background]#instead of 'directly from your own storage' may want to 
-say 'directly from storage chosen by you.'#
 Globus is software as a service (SaaS), enabled by the cloud and
 designed to let users manage their research files,
 regardless of number and size,
@@ -44,7 +42,7 @@ and
 
 This guide is written primarily for system administrators of multi-user Linux
 systems who want to take full advantage of Globus capabilities and optimize 
-the connection of their resources to the Globus ecosystem.
+the connection of their resources to the globus.org SaaS service.
 Administrators who are installing Globus for the first time, as well as those with
 considerable experience, should all find helpful information in this
 document.
@@ -56,30 +54,8 @@ lets authorized users transfer files between your storage and other
 Globus endpoints.
 The Globus Connect Server installation downloads
 (1) Globus versions of 'GridFTP', 'MyProxy', and 'OAuth for MyProxy';
-(2) scripts for set up/configuration and integration into the Globus
-ecosystem; and
-(3) Globus-maintained dependency packages needed by the other components.
-The initial installation, also referred to as the [underline]#default installation#,
-authorizes endpoint users via password-based authentication that
-uses MyProxy and relies on the PAM modules configured in
-+/etc/pam.d/login+ (the same modules used by the +login+ command).
-
-Progressing from the initial foundation,
-additional configuration options and
-advanced deployment scenarios
-for your Globus endpoint
-are described,
-covering a range of authentication, optimization, and premium
-features.
-Later sections discuss
-endpoint maintenance,
-tools for monitoring your Globus deployment,
-creating an endpoint on Amazon S3,
-enabling Globus Plus for your users,
-and various avenues for getting help.
-Appendices contain comprehensive reference materials
-and technical descriptions that go beyond the installation and
-configuration instructions found in the main sections of the guide.
+(2) scripts for set up/configuration and integration into the globus.org SaaS service; 
+and (3) Globus-maintained dependency packages needed by the other components.
 
 .[go-icon-pp]#Provider Plan Features#
 [NOTE]
@@ -125,9 +101,10 @@ with standard time servers, is running on your system.
 === Internet-accessible system
 Before you can install Globus Connect Server onto a server, you must ensure that 
 other hosts on the Internet can initiate connections to your server. If your 
-server is NATed then see below. Otherwise, you must ensure that your server
+server is NATed then xref:nat_section[see below]. Otherwise, you must ensure that your server
 is assigned a publicly resolvable DNS name that points to a public IP address that is properly assigned to your server. 
 
+==== Check hostname local DNS resolution
 To check accessibility, first execute this command
 on the system where you plan to install Globus Connect Server:
 ----terminal
@@ -135,6 +112,7 @@ $ hostname -f
 ----terminal
 Confirm that a fully qualified domain name (FQDN) is returned, e.g. ep1.transfer.globus.org.
 
+==== Check hostname external DNS resolution
 Next, use a public DNS server operated by a different organization to
 verify that the returned FQDN is publicly resolvable.
 More concretely, you could use `nslookup` to check that your server's 
@@ -150,12 +128,9 @@ resolve the issue before continuing with the installation.
 Some sites use network address translation (NAT) with a private
 internal IP, private internal DNS, and a public DNS tied to a public
 IP that gets forwarded to the private IP by the firewall/router.
-Globus can be successfully installed at these sites, but requires
-additional configuration beyond what is covered in the default
-Globus Connect Server installation.
+Globus can be successfully installed at these sites, but, you will need to the edit the configuration file (a default config will not work). Please see the xref:nat_section[NAT] section if your site uses NAT.
 
-Please see the xref:nat_section[NAT] section if your site uses NAT.
-
+[[open-tcp-ports]]
 === Open TCP ports
 If your system is behind a firewall, TCP ports must be open as specified 
 for Globus to work.
@@ -188,34 +163,11 @@ in the ELB are subject to change
 service, and will not be proxied/intermediated by Globus servers
 
 === Globus account for your organization
-You will need a master Globus account for your organization that is
-distinct from your personal Globus account.
-The Globus username associated with the master account should be
-something your users will recognize so they can easily
-find endpoint(s) administered by your organization.
-For example, Globus itself uses [uservars]#go# as the master Globus 
-username for our test endpoints.
-
-If your organization doesn't already have a master Globus account,
-create one using the form at
-{sign_up}[globus.org/signup].
-If the link takes you to your personal Globus dashboard rather than to
-the blank sign up form,
-you can access the form by
-selecting +Log Out+ from the pull-down menu attached to your
-personal username in the upper right corner of the dashboard window,
-and then selecting +Sign Up+ from the top menu bar of the Sign In page.
-
-=== Upgrading from a version of Globus Connect Server prior to GT6
-If you are using a version of Globus Connect Server released prior to GT 6,
-then please see our upgrade instructions xref:upgrade_section[here]
+You will need a Globus xref:organization-account-anchor[organization account] 
+or your organization that is distinct from your personal Globus account.
 
 [[install_section]]
 == Globus Connect Server Installation and Endpoint Creation
-Globus Connect Server lets you quickly and easily set up a
-Globus endpoint on your system,
-enabling authorized users to transfer files between your storage and other
-Globus endpoints.
 This section covers the installation of Globus Connect Server and
 the set up of a Globus endpoint with the default configuration--the
 recommended starting point for new resource providers.
@@ -297,12 +249,7 @@ Before creating your Globus endpoint,
 edit the Globus Connect Server configuration file, installed at
 +/etc/globus-connect-server.conf+,
 and make two changes so that authorized users can find and access your endpoint.
-Specifically, in the +[Endpoint]+ section of the file,
-(1) set +Name+ to something that identifies your resource,
-such as the system hostname or a descriptive term that is well-known within
-your organization, and
-(2) set +Public+ to +'True'+.
-For example:
+The first thing you need to do is to choose a suitable xref:endpoint-name-anchor[endpoint name]. Next, edit the Globus Connect Server configuration file, installed at /etc/globus-connect-server.conf and set the Name to what you chose and set Public to true like in the example below:
 ----
 [Endpoint]
 Name = ep1
@@ -315,28 +262,17 @@ $ sudo globus-connect-server-setup
 ----terminal
 
 When prompted, enter the Globus username and password for your
-organization's master Globus account.
+organization's Globus account.
 When the +globus-connect-server-setup+ command completes, your Globus
 endpoint is ready to be accessed by users with logins on your system.
 
 === Access Globus Endpoint
 
-You (or any user on your system who has signed up for a Globus account)
-can access the Globus endpoint
-you just created by navigating to the Globus {transfer}[Transfer Files]
-page and using the Globus pattern-match capabilities to find your
-endpoint.
-Enter either your organization's Globus username or the resource name
-you chose in the configuration file ('hpc-15' in the example above)
-in the 'Endpoint' box, then select the full endpoint name from the
-list of matches.
-You will be asked to authenticate to access the endpoint; enter the
-username and password you use to log in to your system to complete the
-authentication.
+You (or any user on your system who has signed up for a Globus account) can now access the Globus endpoint you just created by navigating to the Globus link:https://www.globus.org/xfer/StartTransfer[Transfer Files] page. At this point, it's probably a good idea to run a couple of test transfers to ensure the functionality of your endpoint. For instructions on how to do this, click xref:testing_basic_endpoint_functionality[here].
 
 == Globus Connect Server Configuration
 
-In the initial (default) installation of Globus Connect Server,
+From the initial (default) installation of Globus Connect Server,
 you edited two configuration options in the
 +/etc/globus-connect-server.conf+ file,
 the +Name+ and +Public+ options in the +[Endpoint]+ section.
@@ -344,7 +280,7 @@ You probably noticed that there are many, many other options
 that can be configured.
 This section briefly covers a few of the most commonly changed
 options in the +globus-connect-server.conf+ file. A detailed 
-discussion of each option in the file can be found in the file itself 
+description of each option can be found 
 link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[here]. After updating settings in the 
 +/etc/globus-connect-server.conf+ file you must run the 
 `globus-connect-server-setup` command (as root) before the settings
@@ -372,7 +308,7 @@ first accessing an endpoint.
 === [Security] section
 
 ==== +IdentityMethod+ option
-This option has three legal values: MyProxy, OAuth, and CILogon. 
+This option has three legal values: MyProxy, OAuth, and CILogon. For a graphical overview of the authentication flows each of these methods use, see link:https://support.globus.org/entries/27825216-Globus-Connect-Server-Authentication-Authorization-Flows[here].
 If you wish to use MyProxy as your endpoint's identity method, then
 you need to be sure to specify the +Server+ option in the [MyProxy]
 section. If you wish to use OAuth as your endpoint's identity method, 
@@ -432,7 +368,7 @@ for details.
 == NAT/Firewall support and configuration
 The Globus Connect Server package provides configuration tools for several related services to enable administrators to easily configure a Globus endpoint. The globus-connect-server.conf file controls how the services used by Globus are configured, and includes configuration options to manage firewall-related configuration of services. Each service provided by the Globus Connect Server packages may be configured separately as described below.
 
-Note that the descriptions below include examples of Globus Connect Server service configurations only. Configuring the firewalls themselves to allow the ports and host connections is not discussed. See the Open TCP ports section for a discussions of 
+Note that the descriptions below include examples of Globus Connect Server service configurations only. Configuring the firewalls themselves to allow the ports and host connections is not discussed. See the xref:open-tcp-ports[Open TCP ports] section for a discussions of 
 the ports used by Globus Connect Server.
 
 === Configuring I/O Nodes
@@ -512,84 +448,6 @@ Server = public-oauth.example.org
 ServerBehindNAT = True
 ----
 
-== Advanced Deployment Scenarios
-This section covers some of the more advanced deployment scenarios.
-
-<Ruth: still need to sort out what will go here & what may go in
-previous section>
-
-=== Performance Optimizations
-x
-
-==== Configuring multiple IO servers
-x
-
-=== Miscellaneous
-<what belongs here & what moves back to config section?>
-
-
-==== Customizing Filesystem Access
-x
-
-==== [go-icon-pp]#Enabling Sharing on GridFTP Servers#
-(do we want this? - how is it different than enabling sharing)
-
-==== Setting up an anonymous endpoint
-x
-
-==== Using a host certificate for GridFTP
-
-
-== Maintaining Endpoint(s)
-
-=== Creating a managed endpoint
-<what do they need to do after getting a PP?>
-
-=== Finding out about new releases
-<subscribe to email, support twitter feed, ...>
-< and what to do if they have questions>
-
-=== Continuity of service when new release installed
-<what do they need to tell their users, if anything.  when will
-in-progress transfers be interrupted (never?).  Help them understand &
-plan>
-
-=== How to update a Globus Connect Server install
-The Globus team is improving the Globus Connect Server software all
-the time, occasionally, you should update your software to get all the
-latest bug fixes and improvements.  
-
-.Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
-----terminal
-$ sudo yum update globus-connect-server
-----terminal
-
-.SuSE Linux Enterprise Server
-----terminal
-$ sudo zypper refresh
-$ sudo zypper update globus-connect-server
-----terminal
-
-.Debian, Ubuntu
-----terminal
-$ sudo apt-get update
-$ sudo apt-get upgrade globus-connect-server
-----terminal
-
-=== Removing previously installed Globus components
-
-Issue the commands shown below for your Linux distribution
-to remove previously installed Globus components:
-
-== [go-icon-pp]#Management Console#
-
-== [go-icon-pp]#Usage Reporting#
-
-== [go-icon-pp]#Installing an S3 endpoint#
-https://www.globus.org/amazon-web-services/s3-endpoint-configuration
-
-== [go-icon-pp]#Enabling Globus Plus for Users#
-
 == Generating and Monitoring Log Files
 
 === GridFTP Server Log Files
@@ -634,7 +492,7 @@ means that, by default, MyProxy events will be found in the following locations:
 
 *CentOS, Fedora, Red Hat Enterprise Linux, Scientific Linux:*
 
-`/var/log/syslog`
+`/var/log/messages`
 
 *Debian/Ubuntu:*
 
@@ -647,7 +505,7 @@ means that, by default, MyProxy events will be found in the following locations:
 Please note that if the logging location for the LOG_DAEMON facility has been 
 changed from the default in your syslogd config, then MyProxy events may be found 
 in a different location. For further details concerning MyProxy please see the
- link:http://grid.ncsa.illinois.edu/myproxy/adminguide.html[MyProxy Admin Guide].
+ link:http://toolkit.globus.org/toolkit/docs/latest-stable/myproxy/[MyProxy Admin Guide].
 
 === MyProxy Delegation Service (myproxy­-oauth) Log Files
 
@@ -672,22 +530,17 @@ link:https://github.com/globus/globus-toolkit/blob/globus_6_branch/myproxy/oauth
 == Getting Help
 
 === Troubleshooting Common Problems
-where to find most relevant log files, other things that will help you
-use these venues more effectively..
+When experiencing problems with a transfer or an endpoint, it is a good idea
+to run some basic tests to verify the basic functionality of the endpoint. This 
+can help to narrow down the potential causes of the issue you are experiencing 
+and simplify troubleshooting. 
 
-=== Other Resources
+[[testing_basic_endpoint_functionality]]
+==== Testing Basic Endpoint Functionality
+One important test to run to verify endpoint health is to check that the endpoint is able to properly conduct transfers to and from other endpoints. Globus maintains two test endpoints (go#ep1 and go#ep2) which are always available that users can leverage to test the functionality of their own endpoints. A good test is to attempt to transfer the contents of the `/share/godata/` directory on the go#ep1 endpoint to your own endpoint. After that, attempt to transfer those same files to the `/~/` directory on the go#ep2 endpoint. If these tests work, then you know that your endpoint is functional and is able to transfer files. For more detailed instructions on how to use the Globus service to transfer files, see link:https://www.globus.org/researchers/getting-started[here].
 
-==== FAQs
-x
-
-==== Documentation
-x
-
-==== Community Forums
-x
-
-==== Support Tickets
-When submitting a ticket for an issue with Globus Connect Server please 
+=== Support Tickets
+When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server please 
 include the endpoint name, a description of your issue, and screenshot/text 
 dumps of any errors you are seeing.
 
@@ -704,11 +557,6 @@ cat /etc/gridftp.conf
 globus-gridftp-server --version
 grep -v "\^$\|^;" /etc/globus-connect-server.conf
 ----terminal
-
-== Additional Capabilities
-
-See us about skinned sites, mass storage, ...
-
 
 :numbered!:
 
@@ -802,7 +650,7 @@ In addition to the consolidated globus-connect-server package, there are sub-pac
 - globus-connect-server-id may be used to install a Globus MyProxy server that implements an identity provider service.
 - globus-connect-server-web may be used to install a MyProxy OAuth server that integrates the MyProxy service with a branded web interface.
 
-Installing one of these sub-packages does not configure the services. The administrator must run the setup program associated with that package in order to actually do the configuration. Likewise, when one of the sub-packages is removed, it does not disable the service that was it was used to configure; this is done by running the cleanup program associated with the sub-package.
+Installing one of these sub-packages does not configure the services. The administrator must run the setup program associated with that package in order to actually do the configuration. Likewise, when one of the sub-packages is removed, it does not disable the service that it was used to configure; this is done by running the cleanup program associated with the sub-package.
 
 === Globus Connect Server I/O
 
@@ -865,39 +713,6 @@ globus-connect-server-web-cleanup (link to man page link:http://globus.github.io
 - Restart the web server
 
 [appendix]
-== Globus Connect Server I/O Nodes
-Still needed?
-
-[appendix]
-== Globus Connect Server ID Nodes
-Still needed?
-
-[appendix]
-== Globus Connect Server Web Nodes
-Still needed?
-
-[appendix]
-== Globus Connect Server Configuration Reference
-
-https://support.globus.org/entries/24005071-Globus-Connect-Server-Configuration-File-Reference
-
-
-[appendix]
-== Globus Connect Server Man Page
-Still needed?
-
-[appendix]
-== Overview of Globus Operations
-Brief description of how the SaaS operates, including:
-How we ensure reliability (retries, timeouts, etc.)
-What information we store, and for how long
-  The objective here is to assuage user privacy concerns
-Our policy and process for identifying/mitigating threats
-...
-
-
-
-[appendix]
 == Globus Research Data Management Workflows
 
 Detailed description an end-to-end file transfer session using globus,
@@ -905,6 +720,36 @@ including the endpoint authentication workflows (using MyProxy and
 OAuth).
 https://support.globus.org/entries/27825216-Globus-Connect-Server-Authentication-Authorization-Flows
 Detailed description of how sharing works
+
+[appendix]
+[[update_section]]
+=== How to update a Globus Connect Server install
+The Globus team is improving the Globus Connect Server software all
+the time, occasionally, you should update your software to get all the
+latest bug fixes and improvements.  
+
+If you are using a version of Globus Connect Server released prior to GT 6,
+then please see our upgrade instructions xref:upgrade_section[here].
+
+If you are using a Globus Connect Server version based on GT 6 or later, then
+follow these instructions to update your install:
+
+.Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
+----terminal
+$ sudo yum update globus-connect-server
+----terminal
+
+.SuSE Linux Enterprise Server
+----terminal
+$ sudo zypper refresh
+$ sudo zypper update globus-connect-server
+----terminal
+
+.Debian, Ubuntu
+----terminal
+$ sudo apt-get update
+$ sudo apt-get upgrade globus-connect-server
+----terminal
 
 [appendix]
 [[upgrade_section]]
@@ -954,10 +799,33 @@ At this point, your environment is clean and you can follow the instructions
 xref:install_section[here] to put down a clean install of Globus Connect Server to recreate 
 and upgrade your endpoint.
 
+[appendix]
+[[s3_setup_section]]
+=== Setting up an Amazon S3 based endpoint
+Organizations that have a Globus link:https://www.globus.org/providers/provider-plans[Provider Plan] can set up an Amazon S3 based endpoint by following the documentation provided at the following link:
+
+https://www.globus.org/amazon-web-services/s3-endpoint-configuration
+
 [glossary]
 == List of Terms
-endpoint::
+[[endpoint-anchor]]endpoint::
   add definition here
+[[endpoint-definition-anchor]]endpoint definition::
+  add definition here
+[[endpoint-name-anchor]]endpoint name::
+  The name of your endpoint uniquely identifies it and allows others to 
+  search for and find your endpoint via the Globus service. A full endpoint 
+  name takes the form of: ORGANIZATION_ACCOUNT_NAME#UNIQUE_SHORT_NAME.
+  As shown, the first part of an endpoint's full name is the name of the
+  xref:organization-account-anchor[organization account] that was used to 
+  create it. The first part of the name will be the same for all endpoints 
+  in your organization. The second part of the endpoint name will be unique 
+  within your organization to that particular endpoint. It is a good idea to 
+  pick the second part of the name to be something descriptive to the purpose 
+  of the endpoint, so as to make it easier for users to search for and find
+  the endpoint they are looking for. For example, if ABC University (with an 
+  organization account name of "abcu") had a geosciences related endpoint, they 
+  might name it something such as: abcu#geosciences.
 Globus Connect Server::
   add definition
 GridFTP::
@@ -974,4 +842,13 @@ OAuth for MyProxy::
   the MyProxy service for providing user certificates to Globus.
   See the 'OAuth' section of the {myproxy}[MyProxy webpage] for more
   information.
-
+[[organization-account-anchor]]Organization account::
+  This is the Globus account that will be used to create and manage endpoints
+  for your organization. It is a good idea to pick a name that is easily
+  recognized as being associated with your endpoint, as the name of your
+  Organization account will be the first part of the 
+  xref:endpoint-name-anchor[endpoint] name for every endpoint created for your 
+  organization. For example, ABC University might register an organization 
+  account of "abc" or "abcu". Please do not choose account names that 
+  correspond to copyrighted or trademarked terms unless your organization has 
+  rights to those terms. 
