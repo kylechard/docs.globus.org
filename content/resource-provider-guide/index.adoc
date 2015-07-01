@@ -164,7 +164,7 @@ service, and will not be proxied/intermediated by Globus servers
 
 === Globus account for your organization
 You will need a Globus xref:organization-account-anchor[organization account] 
-or your organization that is distinct from your personal Globus account.
+for your organization that is distinct from your personal Globus account.
 
 [[install_section]]
 == Globus Connect Server Installation and Endpoint Creation
