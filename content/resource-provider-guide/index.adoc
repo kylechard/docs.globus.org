@@ -713,15 +713,6 @@ globus-connect-server-web-cleanup (link to man page link:http://globus.github.io
 - Restart the web server
 
 [appendix]
-== Globus Research Data Management Workflows
-
-Detailed description an end-to-end file transfer session using globus,
-including the endpoint authentication workflows (using MyProxy and
-OAuth).
-https://support.globus.org/entries/27825216-Globus-Connect-Server-Authentication-Authorization-Flows
-Detailed description of how sharing works
-
-[appendix]
 [[update_section]]
 === How to update a Globus Connect Server install
 The Globus team is improving the Globus Connect Server software all
