@@ -826,8 +826,6 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   the endpoint they are looking for. For example, if ABC University (with an 
   organization account name of "abcu") had a geosciences related endpoint, they 
   might name it something such as: abcu#geosciences.
-Globus Connect Server::
-  add definition here
 GridFTP::
   GridFTP is an extension of the standard File Transfer Protocol (FTP)
   for high-speed, reliable, and secure data transfer.
