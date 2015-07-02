@@ -807,7 +807,8 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 * The endpoint’s file system is fast
 [[endpoint-definition-anchor]]endpoint definition::
   This term refers to the metadata about the endpoint, stored as an object in the 
-  Globus.org database, used to simplify using and referring to the endpoint (link) for 
+  Globus.org database, used to simplify using and referring to the 
+  xref:endpoint-anchor[endpoint] for 
   users.  Some such metadata includes the hostname, port, OAuth server, default directory, 
   etc... Much of the information in the endpoint definition is sent to Globus when the 
   globus-connect-server-setup command is run.
