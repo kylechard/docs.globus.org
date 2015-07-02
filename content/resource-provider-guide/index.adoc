@@ -798,11 +798,19 @@ Organizations that have a Globus link:https://www.globus.org/providers/provider-
 https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 
 [glossary]
-== List of Terms
+== Glossary
 [[endpoint-anchor]]endpoint::
-  add definition here
+  This is general term used to refer to a specific service that Globus can use to perform 
+  file transfers and other functions. For example:
+* I transferred files to the endpoint
+* I created a share for you on the endpoint
+* The endpoint’s file system is fast
 [[endpoint-definition-anchor]]endpoint definition::
-  add definition here
+  This term refers to the metadata about the endpoint, stored as an object in the 
+  Globus.org database, used to simplify using and referring to the endpoint (link) for 
+  users.  Some such metadata includes the hostname, port, OAuth server, default directory, 
+  etc... Much of the information in the endpoint definition is sent to Globus when the 
+  globus-connect-server-setup command is run.
 [[endpoint-name-anchor]]endpoint name::
   The name of your endpoint uniquely identifies it and allows others to 
   search for and find your endpoint via the Globus service. A full endpoint 
@@ -818,7 +826,7 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   organization account name of "abcu") had a geosciences related endpoint, they 
   might name it something such as: abcu#geosciences.
 Globus Connect Server::
-  add definition
+  add definition here
 GridFTP::
   GridFTP is an extension of the standard File Transfer Protocol (FTP)
   for high-speed, reliable, and secure data transfer.
