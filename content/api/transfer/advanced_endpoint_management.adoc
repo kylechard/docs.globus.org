@@ -1,0 +1,1243 @@
+= Advanced Endpoint Management
+:toc:
+:toclevels: 3
+:numbered:
+
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+// See https://github.com/jbake-org/jbake/issues/80, github requires
+// going through hoops to get the TOC to render.
+ifdef::env-github[]
+toc::[]
+endif::[]
+
+== Overview
+
+The advanced endpoint management API is available to
+http://www.globus.org/providers/provider-plans[Provider Plan] subscribers.
+This API allows site administrators to manage the transfers to and from their
+endpoints, to aid in proactive debugging of user transfers. All operations
+listed below require the user to have +Endpoint Manager+ privileges on an
+endpoint, and the endpoint must be marked as +Managed+ and associated with a
+provider subscription. In particular, for +TRANSFER+ tasks the user must have
+manager privileges on either the source or destination endpoint to view the
+task or to cancel or pause the task.
+
+Managed endpoints and manager privileges are currently set by Globus
+administrators. Endpoint administrators with a provider subscription should
+open a support ticket to request updates to their managed endpoints or grant
+or revoke manager privileges. A single user can have manager privileges on
+at most 100 endpoints.
+
+All resources in this part of the API are prefixed with +/endpoint_manager+.
+This prefix is used to denote that the operation will be run with elevated
+privileges.
+
+If the user does not have any manager privileges, +PermissionDenied+ will be
+returned by all resources under +/endpoint_manager+.
+
+NOTE: This API is *alpha* and is likely to change between releases without
+a change to the API version.
+
+== Document Types
+
+=== Task Document
+
+The +task+ document includes all fields from the user facing task resources
+(see the link:../task#_document_types[Task Documentation]), with the
+following additions:
+
+==== Extra Fields
+
+Also includes descriptions for fields that behave differently from their
+counterpart in the single user document returned by +/task_list+, notably
++source_endpoint+ and +destination_endpoint+ which have extra visibility
+rules.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| source_endpoint
+| string
+| Canonical name of the source endpoint. If the endpoint is private, not
+  owned by the current user, and not hosted by an endpoint the current user
+  has manager privileges on, this will be null.
+
+| destination_endpoint
+| string
+| Canonical name of the destination endpoint for tasks of type +TRANSFER+,
+  null for tasks of type +DELETE+. If the endpoint is private, not
+  owned by the current user, and not hosted by an endpoint the current user
+  has manager privileges on, this will be null, just like for
+  +source_endpoint+.
+
+| source_host_endpoint
+| string
+| Canonical name of the endpoint hosting the source_endpoint if the
+  source endpoint is a shared endpoint. If the source is not a shared
+  endpoint, or if the user does not have manager privileges on the host
+  endpoint, this will be null.
+
+| destination_host_endpoint
+| string
+| Canonical name of the endpoint hosting the destination_endpoint if the
+  destination endpoint is a shared endpoint.
+  If the destination is not
+  a shared endpoint, if the user does not have manager privileges on the
+  host endpoint, or if the task is a +DELETE+ task, this will be +null+.
+
+| source_host_path
+| string
+| If the source endpoint is a shared endpoint, the path the share is located
+  on at the host endpoint.
+  If the source is not a shared
+  endpoint, or if the user does not have manager privileges on the host
+  endpoint, this will be null.
+
+| destination_host_path
+| string
+| If the source endpoint is a shared endpoint, the path the share is located
+  on at the host endpoint.
+  If the destination is not
+  a shared endpoint, if the user does not have manager privileges on the
+  host endpoint, or if the task is a +DELETE+ task, this will be +null+.
+
+| is_ok
+| boolean
+| For active tasks, this will be True if +nice_status+ is either +OK+ or
+  +Queued+. Always null for completed tasks, which do not have +nice_status+.
+|===================
+
+=== Admin cancel document
+
+The admin cancel document is used to request and track cancellation of
+one or more tasks by id.
+
+.Admin cancel document example
+-----------------------
+{
+  "DATA_TYPE": "admin_cancel", 
+  "id": 985,
+  "message": "Disk failure on GridFTP server",
+  "task_id_list": ["041751b8-d6e3-4452-82a7-aa98200f4557",
+                   "b30c7cb0-946e-4397-aaa4-a541a2c3ee77"],
+  "done": false
+}
+-----------------------
+
+==== Admin cancel fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| DATA_TYPE
+| string
+| Always has value "admin_cancel" to indicate this document type.
+
+| message
+| string
+| Message to users as to why the tasks are being canceled. This will be
+  included in the email notification sent to the owners of each canceled task.
+  This field is required and must be non-empty, with a maximum of 256
+  characters. Unicode is supported. Not included in create response or later
+  GET responses.
+
+| id
+| string
+| Unique id of this bulk cancel request. This should not be set in create
+  requests, and will be generated by the system and set in the create
+  response.
+
+| done
+| boolean
+| "true" when all tasks in the list have been canceled or finished on their
+  own, "false" otherwise. Returned in the create response and the status
+  request, not used on in the create request body.
+
+| task_id_list
+| string list
+| List of task ids, maximum 1000. Not included in the create response or
+  later GET responses to save bandwidth on large cancel requests. Note that
+  the limit of 1000 is larger than the limit on the +filter_task_id+ parameter
+  on +task_list+.
+|===================
+
+
+=== Admin pause document
+
+The admin pause document is used to request pause for one or more tasks by id.
+This is tracked separately from pause rules.
+
+.Admin pause document example
+-----------------------
+{
+  "DATA_TYPE": "admin_pause", 
+  "message": "Scratch is getting full",
+  "task_id_list": ["041751b8-d6e3-4452-82a7-aa98200f4557",
+                   "b30c7cb0-946e-4397-aaa4-a541a2c3ee77"],
+}
+-----------------------
+
+==== Admin pause fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| DATA_TYPE
+| string
+| Always has value "admin_pause" to indicate this document type.
+
+| message
+| string
+| Message to users as to why the tasks are being canceled. This will be
+  included in the email notification sent to the owners of each canceled task.
+  This field is required and must be non-empty, with a maximum of 256
+  characters. Unicode is supported.
+
+| task_id_list
+| string list
+| List of task ids, maximum 1000. Not included in the create response or
+  later GET responses to save bandwidth on large pause requests.
+|===================
+
+=== Admin resume document
+
+The admin resume document is used to request resume of
+one or more tasks by id.
+
+.Admin resume document example
+-----------------------
+{
+  "DATA_TYPE": "admin_resume", 
+  "task_id_list": ["041751b8-d6e3-4452-82a7-aa98200f4557",
+                   "b30c7cb0-946e-4397-aaa4-a541a2c3ee77"],
+}
+-----------------------
+
+==== Admin resume fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| DATA_TYPE
+| string
+| Always has value "admin_resume" to indicate this document type.
+
+| task_id_list
+| string list
+| List of task ids, maximum 1000. Note that
+  the limit of 1000 is larger than the limit on the +filter_task_id+ parameter
+  on +task_list+.
+|===================
+
+
+=== Pause rule document
+
+The pause rule document represents a rule that causes tasks and certain
+operation to be paused.
+
+.Pause rule document example
+-----------------------
+{
+  "DATA_TYPE": "pause_rule", 
+  "id": 985,
+  "message": "Quota exceeded, please delete data from /scratch",
+  "endpoint": "bob#ep1",
+  "user": "eve",
+  "start_time": null,
+  "modified_by": "alice",
+  "modified_time": "2015-05-04 16:32:39+00:00"
+  "pause_ls": False,
+  "pause_mkdir": True,
+  "pause_rename": True,
+  "pause_task_delete": True,
+  "pause_task_transfer_write": True,
+  "pause_task_transfer_read": False,
+}
+-----------------------
+
+==== Pause rule fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| DATA_TYPE
+| string
+| Always has value "pause_rule" to indicate this document type.
+
+| id
+| string
+| Unique id of this pause rule. This should not be set in create
+  requests, and will be generated by the system and set in the create
+  response.
+
+| message
+| string
+| Message to users as to why the tasks are being paused. This will be
+  included in the email notification sent to the owners of each canceled task.
+  This field is required and must be non-empty, with a maximum of 256
+  characters. Unicode is supported.
+
+| start_time
+| ISO 8601 datetime string, null,  or "now"
+| If null (the default value), pause existing tasks and all future tasks. If
+  specified, only pause tasks created at or after the specified time. If the
+  special string "now", exact case, is specified, uses the current time on
+  the server at the time the request is received.
+
+| endpoint
+| string
+| Canonical name of the endpoint to pause new tasks on. Required.
+
+| user
+| string
+| Username of a user to pause tasks for on the endpoint, or null
+  to indicate all users on the endpoint.
+
+| modified_time
+| ISO 8601 datetime string
+| Time the rule was created or last updated. This is set by the server on
+  create and update and can't be modified by clients.
+
+| modified_by
+| string
+| Username of the user who last updated or created the pause rule.
+  Note that this field will not be included in the
+  link:../task#_limited_pause_rule_document[pause_rule_limited]
+  documents returned by the get task pause info and get my effective pause rule
+  operations.
+
+| pause_ls
+| boolean
+| Whether to 'pause' or prevent ls operations against the
+  endpoint. Default "true".
+
+| pause_mkdir
+| boolean
+| Whether to 'pause' or prevent mkdir operations against the
+  endpoint that match the rule. Default "true". Note that this only affects
+  the API mkdir resource and CLI mkdir command - if +pause_transfer_write+ is
+  "false", then directories can be created as part of the transfer operation.
+
+| pause_rename
+| boolean
+| Whether to 'pause' or prevent rename operations against the
+  endpoint that match the rule. Default 'true'.
+
+| pause_task_delete
+| boolean
+| Whether to pause matching tasks of type "DELETE". Default "true".
+
+| pause_task_transfer_write
+| boolean
+| Whether to pause matching tasks of type "TRANSFER" with the endpoint as
+  destination.
+
+| pause_task_transfer_read
+| boolean
+| Whether to pause matching tasks of type "TRANSFER" with the endpoint as
+  source.
+|===================
+
+
+////
+=== Fault (v2)
+
+The "fault" resource represents a parsed error event.
+
+Note: hostname can be parsed from the () in Server:;  for GCP it's hidden and
+just shows "Globus Connect". If server != managed ep, we could expose only
+code and description. See source/conn/error.cpp.
+
+"fields" in details from conn/error:
+Error (state)
+
+.Fault Document Example
+------------------------
+{
+    "path": "/home/user/project1/data1.txt",
+    "server_hostname": "gridftp.genericu.edu",
+    "time": "2014-....",
+    "message": "explosions!"
+}
+------------------------
+////
+ 
+
+== Common Query Parameters
+
+[cols="1,8",options="header"]
+|===================
+| Name   | Description
+| fields | Comma separated list of fields to include in the response. This can
+           be used to save bandwidth on large list responses when not all
+           fields are needed. For list document types (with +DATA_TYPE+ ending
+           in "_list"), this selects the fields of the item documents,
+           not the top level paging and list meta data fields.
+|===================
+
+
+== Common Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| EndpointNotFound  |404  | If <endpoint_name> not found
+
+| TaskNotFound      |404  | If the task specified by <task_id> is not found
+
+| PauseRuleNotFound |404  | If the pause rule specified by
+                         <pause_rule_id> is not found
+
+| PermissionDenied  |403  | If user does not have manager privileges on one
+                            or more of the specified tasks, endpoints, or
+                            pause rules.
+
+| ServiceUnavailable|503  | If the service is down for maintenance.
+|===================
+
+
+== URL Arguments
+
+The operations below make use of the following arguments in the URL. In this
+documentation parameter names are denoted by +<+ and +>+; these should not be
+included literally in the request.
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+
+| endpoint_name   | string
+| Canonical name of an endpoint, of the form "user#endpoint".
+  Note that the endpoint name must be percent escaped; in particular +#+ is
+  a reserved character.
+
+| task_id  | string | Unique id string of a task.
+|===================
+
+
+== Operations
+
+=== Get tasks
+
+Get a list of tasks involving the endpoints the user has manager privileges
+for. All requests will implicitly filter based on the privileges of the user.
+The results can be sorted and filtered in different ways, and paging is
+required unless a filter to show only active tasks is used.
+
+To facilitate paging, the result has fields +last_key+, +has_next_page+, and
++limit+ at the top level. If +has_next_page+ is true, +last_key+ can be passed
+as a query parameter to fetch the next page. If +has_next_page+ is false, there
+are no more results at the time of the request. The +limit+ field echoes the
+client specified limit from the query string, or the default if none was
+specified.
+
+NOTE: The name of the source and destination endpoints (fields
++source_endpoint+ and +destination_endpoint+) will be visible if the endpoint
+is public or if it's owned by the current user, just like standard visibility
+in +/endpoint_list+. As a special case, if the endpoint is private and not
+owned by the current user (and would normally be hidden), but the current user
+has manager privileges on the host, then the name will be visible.  This is the
+same as the visibility rules for +/endpoint_manager/endpoint/<endpoint_name>+.
+See the extra field descriptions above for visibility of the host endpoint name
+and path.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/task_list
+
+| Method
+| GET
+
+| Response Body a| List of Task documents.
+------------------------------------
+{
+    "DATA_TYPE": "task_list",
+    "limit": 10,
+    "last_key": "123abc",
+    "has_next_page": true,
+    "DATA": [
+        {
+            "DATA_TYPE": "task",
+
+            "source_endpoint": "bob#myshare",
+            "source_host_endpoint": "org1#server3",
+            "source_host_path": "/projects/experiment7/",
+
+            "destination_endpoint": "bob#laptop",
+            "destination_host_endpoint": null,
+            "destination_host_path": null,
+
+            "username": "jsmith",
+            "task_id": "12345678-9abc-def0-1234-56789abcde03",
+            "type": "TRANSFER",
+            "status": "ACTIVE",
+            "request_time": "2000-01-02 03:45:06+00:00",
+            "completion_time": null,
+            "deadline": "2000-01-03 03:45:06+00:00",
+
+            "nice_status": "OK",
+            "nice_status_short_description": "OK",
+            "nice_status_details": null,
+            "nice_status_expires_in": -1,
+            "is_ok": true,
+
+            "bytes_checksummed": 10,
+            "bytes_transferred": 10240,
+            "effective_bytes_per_second": 171,
+
+            "delete_destination_extra": false,
+            "sync_level": null,
+            "verify_checksum": false
+            "encrypt_data": false,
+            "preserve_timestamp": false,
+
+            "history_deleted": false,
+            "command": "transfer",
+            "label": null,
+
+            "faults": 0,
+            "directories": 10,
+            "files": 10,
+            "files_skipped": 3,
+            "subtasks_canceled": 10,
+            "subtasks_expired": 10,
+            "subtasks_failed": 10,
+            "subtasks_pending": 10,
+            "subtasks_retrying": 10,
+            "subtasks_succeeded": 10,
+            "subtasks_total": 10,
+        }
+    ]
+}
+------------------------------------
+|============
+
+==== Query Parameters
+
+[cols="1,1,1,8",options="header"]
+|===================
+| Query Parameter | Type | Default | Description
+
+| last_key
+| string
+| null
+| Opaque value representing the last element in the previous result set
+  page, used to fetch the following page. This will return all results
+  starting from but not including the last element of the previous page.
+
+| limit
+| int
+| 100
+| Maximum number of results to return. The maximum allowed limit is
+  1000. If +filter_status+ is a subset of ("ACTIVE", "INACTIVE"), +limit=0+
+  is supported as a shortcut for +limit=1000+. It was originally designed
+  to return all active tasks, but this was a mistake in the original design
+  because the number of active tasks is not bounded. It's unlikely we will
+  have more than 1000 active tasks any time soon, but it's not the kind of
+  thing we want to risk. For this reason +limit=0+ is deprecated, but
+  for now the UX can safely assume that it will return all active tasks
+  (which it will with very high probability, just not 100%).
+
+| filter_*
+| string
+| null
+| See filter documentation below.
+
+|===================
+
+==== Ordering
+
+Tasks that are still in progress are always sorted by +request_time+ descending
+(newest first). Completed tasks are sorted by +completion_time+ descending.
+In progress tasks will be sorted before completed tasks.
+
+==== Filters
+
+===== Filter Syntax
+
+Filters are passed as separate query parameters, of the form
++filter_FILTERNAME=FILTERVALUE+. Many of the filters are named after a field
+they apply to, but a few are custom filters with more complex behavior.
+
+If multiple filters are set in the request, only results matching all filters
+will be returned - there is an implicit logical AND between filters, unless
+otherwise specified. Within a single filter that accepts multiple values, there
+is typically an implicit OR. For example, specifying
++filter_task_id=123,456,678+ will return tasks with id 123 OR 456 OR 678.
+
+Filter values, like any other query parameter value, must be percent encoded.
+The query parameter names will always be safe to pass without further
+encoding, because they use a subset of characters that do not require
+encoding.
+
+[[task_filters]]
+===== Task List Filters
+
+All task list filters are subject to the user's endpoint manager privileges.
+For example, filtering on user will only return tasks submitted by that user if
+they involve an endpoint the requesting user has manager privileges on. Some
+requests will result in an error: specifying a task_id filter for a task that
+does not involve an endpoint the user has manager privileges on will result in
+a +PermissionDenied+ error.
+
+For any query that doesn't specify a +filter_status+ that is a subset of
+("ACTIVE", "INACTIVE"), at least one of +filter_task_id+, +filter_username+, or
++filter_endpoint+ is required. This requirement is present because completed
+tasks are stored separately in a very large table and it is very expensive to
+query without making use of an index, which can be done only if an appropriate
+filter is present.
+
+[cols="1,1,8",options="header"]
+|===================
+| Query Parameter | Filter Type | Description
+
+| filter_status
+| equality list
+| Comma separated list of task statuses.
+  Return only tasks with any of the specified statuses. Note that in-progress
+  tasks will have status "ACTIVE" or "INACTIVE", and completed tasks will
+  have status "SUCCEEDED" or "FAILED".
+
+| filter_task_id
+| equality list
+| Comma separated list of task_ids, limit 50. Return only tasks with any
+  of the specified ids. If any of the specified tasks does not involve an
+  endpoint the user has manager privileges for, a +PermissionDenied+ error
+  will be returned. This filter can't be combined with any other filter.
+  If another filter is passed, a +BadRequest+ will be returned.
+
+| filter_username
+| equality
+| A Globus username. Limit results to tasks submitted by the specified Globus
+  user. Returns +UserNotFound+ if the user does not exist. If no tasks
+  were submitted by this user to an endpoint the current user has manager
+  privileges on, an empty result set will be returned.
+
+| filter_endpoint
+| equality
+| Single endpoint canonical name. Return only tasks with a matching source or
+  destination endpoint or matching source or destination host endpoint.
+
+| filter_is_paused
+| boolean equality
+| Return only tasks with the specified +is_paused+ value. Requires that
+  +filter_status+ is also passed and contains a subset of "ACTIVE" and
+  "INACTIVE". Completed tasks always have +is_paused+ equal to "false" and
+  filtering on their paused state is not useful and not supported.
+  Note that pausing is an async operation, and after a pause rule
+  is inserted it will take time before the is_paused flag is set on all
+  affected tasks. Tasks paused by id will have the +is_paused+ flag set
+  immediately.
+
+| filter_completion_time
+| datetime range
+| Start and end date-times separated by a comma. Each datetime should be
+  specified as a string in ISO 8601 format: YYYY-MM-DDTHH:MM:SS, where the "T"
+  separating date and time is literal, with optional
+  \+/-HH:MM for timezone. If no timezone is specified, UTC is assumed, or a
+  trailing "Z" can be specified to make UTC explicit. A space
+  can be used between the date and time instead of a space.
+  A blank string may be used for either the start or end (but not both)
+  to indicate no limit on that side.
+  Returns only complete tasks with +completion_time+ in the specified
+  range. If the end date is blank, it will also include all active tasks,
+  since they will complete some time in the future.
+
+| filter_min_faults
+| int
+| Minimum number of cumulative faults, inclusive.
+  Return only tasks with +faults >= N+, where N is the filter value.
+  Use +filter_min_faults=1+ to find all tasks with at least one fault.
+  Note that many errors are not fatal and the task may still be successful
+  even if +faults >= 1+.
+  See the link:../task#_task_fields[faults field] documentation for
+  details.
+
+|===================
+
+////
+| filter_is_ok
+| boolean
+| 1 for True, 0 for False. If 1, return only tasks with a +nice_status+
+  indicating the job is not currently having problems (+OK+ or +Queued+).
+  If 0, return only tasks that are encountering errors. This filter is
+  only supported when +filter_status+ is a subset of ("ACTIVE", "INACTIVE"),
+  because completed tasks do not have a +nice_status+.
+////
+
+=== Get task
+
+Get details of a single task by id. The result will include the
+link:../task#_task_fields[standard task fields]
+and the <<_extra_fields,extra task fields>> described above.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/task/<task_id>
+
+| Method
+| GET
+
+| Response Body | Task document.
+|============
+
+
+=== Get task events
+
+Get list of events for a single task. Paging is done using the old
++limit+ and +offset+ parameters.
+
+See the link:../task#_event[event document] documentation for
+details.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/task/<task_id>/event_list
+
+| Method
+| GET
+
+| Response Body | List of event documents
+|============
+
+==== Query Parameters
+
+[cols="1,1,1,8",options="header"]
+|===================
+| Query Parameter | Type | Default | Description
+
+| offset
+| int
+| 0
+| Return results starting from this offset within the total result set. Note
+  that for active tasks this results set will be changing, and as the result
+  set changes so will the meaning of the offset. For this reason, paging
+  through events on active tasks may return unexpected results.
+
+| limit
+| int
+| 100
+| Maximum number of results to return. The maximum allowed limit is
+  1000.
+
+| filter_*
+| string
+| null
+| See filter documentation below.
+
+|===================
+
+==== Ordering
+
+Results are sorted by time descending (newest first).
+
+==== Filters
+
+[cols="1,1,8",options="header"]
+|===================
+| Query Parameter | Filter Type | Description
+
+| filter_is_error
+| flag
+| 1 for True. Return only events that are errors. The inverted form
+  (returning only non-errors) is not supported. By default all events
+  are returned.
+|===================
+
+
+=== Get task pause info as admin
+
+This operation returns the same information as the
+link:../task#_get_task_pause_info[normal user get task pause info
+operation],
+but has different authorization requirements. Note that +pause_rule_limited+
+documents are still returned instead of the full +pause_rule+,
+since the result can include pause rules for endpoints the current
+user does not have manager privileges on.
+
+.Authorization
+Requires endpoint management rights on the source or destination endpoint of
+the task. Note that if the user owns the task but does not have management
+rights on an endpoint this will return a "PermissionDenied" error.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/task/<task_id>/pause_info
+
+| Method
+| GET
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "pause_info_limited",
+    "pause_rules": [... list of pause_rule_limited documents...],
+    "source_pause_message": null,
+    "destination_pause_message": "Disk problems, pausing all tasks until we resolve",
+}
+-------------------------------------------------------------------
+|============
+
+
+=== Get task successful transfers as admin
+
+For a "TRANSFER" type task, get a list of files transferred successfully, after
+a task is complete (with +status+ "FAILED" or "SUCCEEDED"). Returns a
+"BadRequest" error if called on a task that is still running or a task that
+is not of type "TRANSFER".
+
+.Authorization
+
+Requires endpoint management privileges on the source or destination endpoint
+of the task. Note that if the user owns the task but does not have management
+privielges on an endpoint this will return a "PermissionDenied" error. If the
+current user has management privileges on only one of the endpoints, the
+paths corresponding to the other endpoint will be "null".
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/task/<task_id>/successful_transfers
+
+| Method
+| GET
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+  "DATA_TYPE": "successful_transfers"
+  "marker": 0, 
+  "next_marker": 93979, 
+  "DATA": [
+    {
+      "destination_path": "/path/to/destination", 
+      "source_path": "/path/to/source", 
+      "DATA_TYPE": "successful_transfer"
+    }
+  ], 
+}
+-------------------------------------------------------------------
+|============
+
+
+=== Get endpoint
+
+Get details of an endpoint. If the user does not have manager privileges on the
+endpoint or it's host endpoint, this behaves identically to +GET
+/endpoint/<endpoint_name>+.
+
+If the user does have manager privileges on the endpoint or it's host
+endpoint:
+
+* Private shared endpoints will be visible.
+* The +host_path+ field of a shared endpoint will be visible.
+
+See the link:../endpoint#_endpoint_fields[endpoint document]
+documentation for details.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/endpoint/<endpoint_name>
+
+| Method
+| GET
+
+| Response Body | Endpoint document.
+|============
+
+
+=== Get hosted shared endpoints
+
+Get a list of shared endpoints hosted on a specified endpoint that the user has
+manager privileges on. This will include even private endpoints.
+
+.Fields
+* canonical_name
+* user_rule_count (include user and email rules)
+* group_rule_count
+* all_rule_count (0 or 1)
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/endpoint/<endpoint_name>/hosted_endpoint_info_list
+
+| Method
+| GET
+
+| Response Body a|
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "hosted_endpoint_info_list",
+    "DATA": [
+        {
+            "DATA_TYPE": "hosted_endpoint_info",
+            "canonical_name": "bob#project1share",
+            "user_rule_count": 4,
+            "group_rule_count": 1,
+            "all_rule_count": 0
+        }
+    ]
+}
+-------------------------------------------------------------------
+|============
+
+==== Ordering
+
+Results are ordered by +canonical_name+.
+
+==== Filtering
+
+No filtering options are supported at this time.
+
+
+=== Get monitored endpoints
+
+Get a list of the canonical names of all endpoints the current users has
+manager privileges on. Like all endpoint manager resources, a 403 response
+with a PermissionDenied error code body will be returned if the user has
+no permissions.
+
+NOTE: +/users/flight_control+ is different in that it returns the actual
+flight control rules, which could be of the form +owner#*+ to indicate
+all managed endpoints owned by a user. We are reviewing the policy on
+supporting wildcard rules, so this may change in the future. This resource
+returns the full list of endpoint names, so it shouldn't need to change
+as the policy changes. We will likely deprecate +/users/flight_control+.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/monitored_endpoints
+
+| Method
+| GET
+
+| Response Body a|
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "monitored_endpoints",
+    "DATA": [
+        {
+            "DATA_TYPE": "monitored_endpoint",
+            "canonical_name": "someorg#server1",
+        },
+        {
+            "DATA_TYPE": "monitored_endpoint",
+            "canonical_name": "someorg#server2",
+        },
+        {
+            "DATA_TYPE": "monitored_endpoint",
+            "canonical_name": "thisotherorg#newserver",
+        }
+    ]
+}
+-------------------------------------------------------------------
+|============
+
+==== Ordering
+
+Results are ordered by +canonical_name+.
+
+
+[[admin_cancel]]
+=== Cancel tasks as admin
+
+Cancel one or more tasks by task id as an endpoint administrator. If a task is
+already complete or canceled at the time of the submission it will not raise an
+error, which allows clients to re-submit the request if there was a network
+error.
+
+Task owners will be notified via email that their task(s) were canceled by an
+administrator. One email will be sent for each task, and they will be sent
+even if the user has notifications disabled in their profile.
+
+NOTE: Admin cancel requests still involve processing each task individually,
+so it's possible that some tasks will succeed before the cancel request is
+processed, and others will get canceled by this request or even a concurrent
+cancel request. The +done+ field indicates when all tasks in the request
+have status "FAILED" or "SUCCEEDED" and are no longer running.
+
+.Authorization
+Requires manager privileges on either the source or destination endpoint of
+each task in the request.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/admin_cancel
+
+| Method
+| POST
+
+| Request Body | Admin cancel document with +task_id_list+ and +message+
+                 fields.
+
+| Response Body | Admin cancel document with +id+ and +done+ fields.
+|============
+
+
+=== Get cancel status by id
+
+Returns an +admin_cancel+ document without the +task_id_list+; clients can
+check the +done+ field to determine if the cancel request is complete. Only
+the user who submitted the request has permission to get the status; other
+users will get a "PermissionDenied" error.
+
+NOTE: If an id never existed, this will still return a success response with
++done+ set to "true". This is because done status is determined on the server
+by absence of any outstanding cancel records associated with the id. For this
+reason clients should take even more care than usual not to corrupt the id.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/admin_cancel/<admin_cancel_id>
+
+| Method
+| GET
+
+| Response Body | Admin cancel document with +id+ and +done+ fields.
+|============
+
+
+=== Pause tasks as admin
+
+Pause one or more tasks by task id as an endpoint administrator. If a task is
+already complete or paused at the time of the submission it will not raise an
+error, which allows clients to re-submit the request if there was a network
+error.
+
+Task owners will be notified via email that their task(s) were paused by an
+administrator. One email will be sent for each task, and they will be sent even
+if the user has notifications disabled in their profile.
+
+NOTE: Admin pause requests are asynchronous, and it's possible that some tasks
+will succeed before the pause request is processed.
+
+.Authorization
+Requires manager privileges on either the source or destination endpoint of
+each task in the request. If this check fails for any of the tasks, the entire
+request will fail with a "PermissionDenied" error.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/admin_pause
+
+| Method
+| POST
+
+| Request Body | 'admin_pause' document
+
+| Response Body | 'result' document with code "PauseAccepted"
+|============
+
+
+=== Resume tasks as admin
+
+Resuming a task involves removing the per-task pause on the task, and
+overriding existing pause rules that affect the task. Both the per-task pause
+and pause rules are associated with a single endpoint, and for transfer
+tasks this will be the source or destination endpoint. For a task to actually
+run, there must be no pause blocks on either endpoint. This call removes and
+overrides pause on whichever endpoints the current user has manager privileges
+on. The pause rule override will take effect at the time the request is
+received, and override existing pause rules but not any new pause rules created
+after the resume request.
+
+To resume all tasks affected by a +pause_rule+, use
+<<_delete_pause_rule_by_id,Delete pause rule by id>>.
+
+This API call will not raise an error if the task is already running and no
+per-task pause exists - it will simply set the pause rule override timestamp
+for the task to the specified value.
+
+If there are no other pauses on the task, the task will resume. Otherwise
+it will only resume once an administrator of the other endpoint removes the
+remaining pauses. When the task actually begins running again, a resume
+email will be sent to the user. Just like pause, this is an async process.
+
+.Authorization
+Requires manager privileges on either the source or destination endpoint of
+each task in the request. If this check fails for any of the tasks, the entire
+request will fail with a "PermissionDenied" error.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/admin_resume
+
+| Method
+| POST
+
+| Request Body | 'admin_resume' document
+
+| Response Body | 'result' document with code "ResumeAccepted"
+|============
+
+
+=== Get pause rules
+
+Get a list of pause rules that the current user can manage. If the result set
+contains over 1000 rules, a +LimitExceeded+ error will be returned and the
+client must pass +filter_endpoint+ to get the rules one endpoint at a time.
+
+.Authorization
+Returns only rules for which the user has endpoint management rights on. Note
+that rules are always accessible to any user via the
+endpoint link:../endpoint#_get_endpoint_pause_rules[Get endpoint pause rules]
+API, but the +created_by+ fields is hidden from non administrators. The purpose
+of this API is to list with the purpose of adding, removing and updating the
+rules, so it only shows rules for which the user has appropriate rights on.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/pause_rule_list
+
+| Method
+| GET
+
+| Response Body | Pause rule list document.
+|============
+
+==== Pause Rule Filtering
+
+[cols="1,1,8",options="header"]
+|===================
+| Query Parameter | Filter Type | Description
+
+| filter_endpoint
+| string equality
+| Single endpoint canonical name. Include only pause rules with the specified
+  endpoint.
+|===================
+
+
+=== Create pause rule
+
+Create a new pause rule. New tasks matching the rule will be paused
+immediately. If +start_time+ is not set, any existing tasks
+that match will be paused asynchronously. If set, only tasks submitted after
+the specified time will be paused.
+
+If the appropriate flags are set, the rule will also prevent foreground
+operations for +ls+, +mkdir+, and +rename+. Clients requesting these operation
+on the specified endpoint and matching the user clause will receive an
++OperationPaused+ error containing the pause message (or the most specific
+pause message if multiple pause messages are in effect).
+
+.Authorization
+Requires endpoint management rights on the endpoint in the rule.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/pause_rule
+
+| Method
+| POST
+
+| Request Body | Pause rule document without +id+ field.
+
+| Response Body | Pause rule document with server generated +id+ field added.
+|============
+
+
+=== Get pause rule
+
+Get a pause rule by id.
+
+.Authorization
+Requires endpoint management rights on the endpoint in the rule.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/pause_rule/<pause_rule_id>
+
+| Method
+| GET
+
+| Response Body | Pause rule document
+|============
+
+
+=== Update pause rule
+
+Update a pause rule by id. Only the +start_time+, +message+, and pause type
+fields (with the +pause_+ prefix) can be updated. It is recommended that
+clients include only the fields to be updated in the request. If non-updatable
+fields are included, they will be ignored.
+
+The +modified_time+ and +modified_by+ fields will be updated based on the
+time of the request and the user updating the rule. The response will contain
+these updated fields. Any manual task resume requests made in the past that
+overrode this pause rule will no longer be in effect, and such tasks will
+become paused.
+
+.Authorization
+Requires endpoint management rights on the endpoint in the rule.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/pause_rule/<pause_rule_id>
+
+| Method
+| PUT
+
+| Request Body | Partial pause rule document (containing fields to be updated).
+| Response Body | Pause rule document
+|============
+
+
+=== Delete pause rule
+
+Delete an existing pause rule by id. Any tasks that were paused by this rule
+and are not affected by any other rule or per-task pause will resume.
+
+.Authorization
+Requires endpoint management rights on the endpoint in the rule.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/pause_rule
+
+| Method
+| DELETE
+
+| Response Body | Result document.
+|============
+
+
+== Changelog
+
+=== 4.3
+
+* Add admin pause/resume API
+* Add pause_rule CRUD API
+* Add +task_list+ filter parameter +filter_is_paused+
+* Add task pause info for admins
+
+=== 4.2
+
+* Add admin cancel API
+
+=== 3.9
+
+* Initial alpha release

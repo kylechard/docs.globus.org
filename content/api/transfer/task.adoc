@@ -1,0 +1,616 @@
+= Task Management
+:toc:
+:toclevels: 3
+:numbered:
+
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+// See https://github.com/jbake-org/jbake/issues/80, github requires
+// going through hoops to get the TOC to render.
+ifdef::env-github[]
+toc::[]
+endif::[]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+Transfer and delete are asynchronous operations, and result in a background
+task being created. The task id is returned from successful submission, and can
+be used to monitor the progress of the task.
+
+NOTE: Detailed per-file status, errors, and information events are retained
+for 30 days and then deleted. When this happens, the +history_deleted+ flag
+will be set on the task document.
+
+== Document Types
+
+[[task_document]]
+=== Task
+
+The "task" document type represents a single transfer or delete submission.
+Other task types may be added in the future.
+
+TODO: expose transfer settings (including concurrency), mode of submission
+
+.Task Document Example
+------------------------
+{
+    "username": "jsmith",
+    "bytes_transferred": 10240,
+    "DATA_TYPE": "task",
+    "sync_level": null,
+    "completion_time": "2000-01-02 03:45:06+00:00",
+    "deadline": "2000-01-02 03:45:06+00:00",
+    "type": "TRANSFER",
+    "destination_endpoint": null,
+    "files": 10,
+    "delete_destination_extra": false,
+    "nice_status_details": "Error from gridftp server foo.com: 500 I am too busy",
+    "request_time": "2000-01-02 03:45:06+00:00",
+    "nice_status": "OK",
+    "subtasks_expired": 10,
+    "subtasks_canceled": 10,
+    "label": null,
+    "subtasks_total": 10,
+    "nice_status_expires_in": 123,
+    "subtask_link": {
+        "href": "task/12345678-9abc-def0-1234-56789abcde03/subtask_list?format=json",
+        "resource": "subtask list",
+        "DATA_TYPE": "link",
+        "rel": "child",
+        "title": "child subtask list"
+    },
+    "status": "ACTIVE",
+    "bytes_checksummed": 10,
+    "subtasks_failed": 10,
+    "history_deleted": false,
+    "files_skipped": 3,
+    "subtasks_retrying": 10,
+    "nice_status_short_description": null,
+    "preserve_timestamp": false,
+    "task_id": "12345678-9abc-def0-1234-56789abcde03",
+    "event_link": {
+        "href": "task/12345678-9abc-def0-1234-56789abcde03/event_list?format=json",
+        "resource": "event list",
+        "DATA_TYPE": "link",
+        "rel": "child",
+        "title": "child event list"
+    },
+    "encrypt_data": false,
+    "source_endpoint": null,
+    "subtasks_succeeded": 10,
+    "command": "transfer",
+    "subtasks_pending": 10,
+    "verify_checksum": false,
+    "directories": 10,
+    "canceled_by_admin": null,
+    "is_paused": false
+}
+------------------------
+
+
+==== Task Fields
+
+See the
+https://transfer.api.globusonline.org/v0.10/document_type/task/field_list?fields=name%2Ctype%2Cself_link%2Cdescription&format=html[legacy documentation]
+for a complete field list, this is a work in progress.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "task" to indicate this document type.
+| task_id        | string
+                 | Globally unique uuid for this task.
+| type           | string
+                 | The type of task - either "TRANSFER" or "DELETE".
+| status         | string
+                 a|One word indicating the progress of the task:
+
+                    "ACTIVE":: The task is in progress.
+                    "INACTIVE":: The task has been suspended and will not
+                                 continue without intervention. Currently,
+                                 only credential expiration will cause this
+                                 state.
+                    "SUCCEEDED":: The task completed successfully.
+                    "FAILED":: The task or one of its subtasks failed, expired,
+                               or was canceled.
+| label          | string
+                 | User defined label to make finding tasks simpler.
+| username       | string
+                 | Globus username of the user who created the task.
+| request_time   | string
+                 | The date and time the task was created, in ISO 8601 format.
+| completion_time| string
+                 | The date and time the task was completed or failed,
+                   in ISO 8601 format. If the task is still in progress
+                   (status "ACTIVE" or "INACTIVE"), this will be null.
+| deadline       | string
+                 | If set when the task is created, cancel the task if it's not
+                   finished when this date and time is reached. By default
+                   tasks will not be canceled as long as they are making
+                   progress.
+| source_endpoint| string
+                 | Canonical name of the source endpoint for +type+ "TRANSFER"
+                   and the name of the only endpoint for +type+ "DELETE".
+                   If the endpoint is private this name will be hidden from the
+                   admin.
+| destination_endpoint| string
+                 | Canonical name of the destination endpoint for +type+
+                   "TRANSFER", null for +type+ "DELETE".
+                   If the endpoint is private this name will be hidden from the
+                   admin.
+| faults | int   | The number of errors this task encountered. Note that
+                   certain types of faults are not fatal (for example, network
+                   communication errors) and can be successfully retried. A
+                   CANCELED or EXPIRED event is not included in this fault
+                   count.
+| subtasks_retrying | int
+                 | The number of pending subtasks that have had one or more
+                   faults while processing. This is a subset of
+                   +subtasks_pending+.
+| effective_bytes_per_second | int
+                 | A simplistic calculation of bytes/second based on the start
+                   time of the task and its completion time, if applicable, or
+                   the current time. Valid for transfer tasks. Always 0 for
+                   other task types.
+| nice_status    | string
+                 | [ALPHA] For tasks with status +ACTIVE+ or +INACTIVE+, a
+                   string indicating a more detailed status of the task.
+                   For completed tasks, this will always be empty or null.
+                   If it has value +OK+ or +Queued+, the task is waiting
+                   for other tasks to complete or proceeding normally, and
+                   no intervention should be required. All other values
+                   indicate that some error is being encountered, which
+                   may or may not resolve on it's own. Examples:
+                   +Creds Expired+, +PERMISSION_DENIED+, +ENDPOINT_ERROR+,
+                   +CONNECT_FAILED+, +PAUSED_BY_ADMIN+.
+| canceled_by_admin | string
+                 a|[ALPHA] If the task completes successfully, is
+                   canceled by the task owner using the standard cancel
+                   resource, or hits the deadline before
+                   completing, this will be null. It is set only for tasks
+                   canceled by an endpoint administrator using the
+                   link:../advanced_endpoint_management[Advanced Endpoint Management API]. For such tasks, it will have one of the following
+                   values:
+                 
+                    "SOURCE":: An administrator of the source endpoint of the
+                       task canceled the task. Also set for "DELETE" type tasks
+                       which involve only one endpoint
+                    "DESTINATION":: An administrator of the
+                       destination endpoint of the task canceled the task
+                    "BOTH":: An administrator of both the source and
+                       destination endpoint canceled the task.
+| canceled_by_admin_message | string
+                    | [ALPHA] For tasks with +canceled_by_admin+ set to a
+                      non-null value, this will contain a message from the
+                      administrator who canceled the task.
+| is_paused         | boolean
+                    | "true" if the task is in progress
+                      (status "ACTIVE" or "INACTIVE") and
+                      has been paused by the administrator of the source or
+                      destination endpoint, "false" if the task has not been
+                      paused or is complete (status "SUCCEEDED" or "FAILED").
+                      Use <<_get_task_pause_info,Get task pause info>> to get
+                      information about why the task is paused.
+|===================
+
+
+=== Event
+
+Events are logged as a task makes progress or runs into errors.
+
+.Event Document Example
+------------------------
+{
+    "DATA_TYPE": "event",
+    "code": "PERMISSION_DENIED",
+    "description": "Permission denied",
+    "details": "Error (transfer)\nServer: ballen#uc-laptop (Globus Connect)\nFile: /~/Downloads/plus-plan-exposure.png\nCommand: STOR ~/Downloads/plus-plan-exposure.png\nMessage: Fatal FTP response\n---\n500 Command failed. : Path not allowed.\n",
+    "is_error": True,
+    "time": "2014-07-08 18:50:18+00:00"
+}
+------------------------
+
+==== Event Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "event" to indicate this document type.
+| code           | string
+                 | A code indicating the type of the event.
+| is_error       | boolean
+                 | true if event is an error event
+| description    | string
+                 | A discription of the event.
+| details        | string
+                 | Type specific details about the event.
+| time           | string
+                 | The date and time the event occurred,
+                   in ISO 9660 format (YYYY-MM-DD HH:MM:SS) and UTC.
+|===================
+
+
+=== Limited pause rule document
+
+The limited pause rule document is a pause rule document with the fields
+viewable only to administrators with endpoint manager privileges removed, with
++DATA_TYPE+ "pause_rule_limited". In particular, +modified_by+ is not part
+of "pause_rule_limited" documents. See
+link:../advanced_endpoint_management#_pause_rule_document[pause_rule
+document] for details.
+
+== URL Arguments
+
+The operations below make use of the following arguments in the URL,
+delimited by <> in the descriptions.
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| endpoint_name   | string
+| Canonical name of an endpoint, of the form user#endpoint. For backward
+  compatibility, a bare endpoint name is also supported and the user portion
+  is assumed to be the user accessing the API. This behavior is deprecated
+  and should not be relied upon - all new code should use a full
+  canonical endpoint name. Also note that the endpoint name must be percent
+  escaped; in particular +#+ is a reserved character.
+                                
+| task_id  | string | Unique id string of a task.
+
+|===================
+
+
+== Common Query Parameters
+
+[cols="1,1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all
+  fields are needed.
+
+| format | string
+| "json" or "html". Note that the "html" format is subject to change
+  and should not be relied upon for programs. It is used to render
+  the self-hosted, auto-generated API documentation.
+
+| limit  | int
+| For paged resources, change the default page size. The default page size is
+  10 and the maximum is 1000, although a few resources support limit=0 to
+  specify no limit.
+
+| offset | int
+| For paged resources, specify an offset within the full result set. Typically
+  a fixed page size is specified with limit, and offset is incremented by
+  the page size to fetch each page.
+
+| orderby | string
+| For paged resources, a comma separated list of order by options. Each order
+  by option is either a field name, or a field name followed by space and 'ASC'
+  or 'DESC' for ascending and descending; ascending is the default. Note that
+  only certain fields are supported for ordering; see the specific operation
+  documentation for details.
+
+| filter | string
+| For paged resources, return only resources that match all of the specified
+  filter criteria.
+|===================
+
+
+== Common Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| EndpointNotFound  |404  | If <endpoint_name> not found
+| TaskNotFound      |404  | If task specified by <task_id> is not found
+| ServiceUnavailable|503  | If the service is down for maintenance.
+|===================
+
+
+== Operations
+
+=== Get task list
+
+Get a paged list of all tasks submitted by the current user.
+
+[cols="h,5"]
+|============
+| URL
+| /task_list
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+    "DATA_TYPE": "task_list",
+    "length": 2,
+    "limit": 10,
+    "offset": 20,
+    "total": 125,
+    "DATA": [
+        {
+            "username": "jsmith",
+            "bytes_transferred": 10240,
+            "faults": 0,
+            "DATA_TYPE": "task",
+            "sync_level": null,
+            "completion_time": "2000-01-02 03:45:06+00:00",
+            "deadline": "2000-01-02 03:45:06+00:00",
+            "type": "TRANSFER",
+            "destination_endpoint": "go#ep1",
+            "files": 10,
+            "delete_destination_extra": false,
+            "nice_status_details": "Error from gridftp server foo.com: 500 I am too busy",
+            "request_time": "2000-01-02 03:45:06+00:00",
+            "nice_status": "OK",
+            "subtasks_expired": 10,
+            "subtasks_canceled": 10,
+            "label": null,
+            "subtasks_total": 10,
+            "nice_status_expires_in": 123,
+            "subtask_link": {
+                "href": "task/12345678-9abc-def0-1234-56789abcde03/subtask_list?format=json",
+                "resource": "subtask list",
+                "DATA_TYPE": "link",
+                "rel": "child",
+                "title": "child subtask list"
+            },
+            "status": "ACTIVE",
+            "bytes_checksummed": 10,
+            "subtasks_failed": 10,
+            "history_deleted": false,
+            "files_skipped": 3,
+            "subtasks_retrying": 10,
+            "nice_status_short_description": null,
+            "preserve_timestamp": false,
+            "task_id": "12345678-9abc-def0-1234-56789abcde03",
+            "event_link": {
+                "href": "task/12345678-9abc-def0-1234-56789abcde03/event_list?format=json",
+                "resource": "event list",
+                "DATA_TYPE": "link",
+                "rel": "child",
+                "title": "child event list"
+            },
+            "encrypt_data": false,
+            "source_endpoint": "bob#laptop",
+            "subtasks_succeeded": 10,
+            "command": "transfer",
+            "subtasks_pending": 10,
+            "verify_checksum": false,
+            "directories": 10
+        }
+    ]
+
+}
+------------------------------------
+|============
+
+
+=== Get task by id
+
+Get a single task by task id. All fields are included by default,
+but the +fields+ query parameter can be used to fetch only specific fields.
+
+[cols="h,5"]
+|============
+| URL
+| /task/<task_id>
+
+| Method
+| GET
+
+| Response Body | Task document (see above).
+|============
+
+
+=== Update task by id
+
+Update a single task by task id. Only the +label+ and +deadline+ fields can
+be updated, and +deadline+ can't be updated on completed tasks. A complete
+copy of the task body with one of those fields modified can be used, or a
+partial document containing only +DATA_TYPE+ and the fields to be modified.
+
+[cols="h,5"]
+|============
+| URL
+| /task/<task_id>
+
+| Method
+| PUT
+
+| Response Body | Task document (see above).
+|============
+
+
+=== Cancel task by id
+
+Submit a cancel request for an active task, by id. Cancel requests are
+processed asynchronously, but this API call will wait up to 10 seconds for the
+cancel request to be completed before returning a response. If the task was
+already complete, result code "TaskComplete" is returned. If the cancel request
+is processed within 10 seconds, result code "Canceled" is returned. Note that
+when "Canceled" is returned, it's still possible that the task completed
+successfully just as the request was processed but after the check was made to
+see if the task was already complete. Clients should always check the +status+
+field of the task to verify what happened if they care about whether the task
+succeeded or failed. What will always be true when "Canceled" or "TaskComplete"
+is returned is that the task is no longer active. If the cancel request can't
+be processed in 10 seconds, code "CancelAccepted" is returned, and the client
+can use "Get task by id" to fetch the task and see when it's status changes
+from "ACTIVE" to "FAILED" or "SUCCEEDED".
+
+Only the owner of a task can cancel it via this API resource. If the owner is
+an administrator on one of the endpoints involved in the task, tasks canceled
+with this resource will still NOT be marked as as +canceled_by_admin+. This
+resource is designed for when the user is acting as a normal user, regardless
+of any higher level authority they have been granted.
+
+[cols="h,5"]
+|============
+| URL
+| /task/<task_id>
+
+| Method
+| POST
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "result",
+    "code": "Canceled",
+    "message": "The task has been cancelled successfully.",
+    "resource": "/endpoint/user#ep1/cancel",
+    "request_id": "ABCdef789"
+}
+-------------------------------------------------------------------
+|============
+
+
+=== Get event list
+
+Get a paged list of all events, including error and info events.
+
+
+[cols="h,5"]
+|============
+| URL
+| /task/<task_id>/event_list
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+
+    "DATA_TYPE": "event_list",
+    "length": 2,
+    "limit": 2,
+    "offset": 0,
+    "total": 125,
+    "DATA": [
+        {
+            "code": "PROGRESS",
+            "description": null,
+            "DATA_TYPE": "event",
+            "is_error": false,
+            "details": null,
+            "time": "2000-01-02 03:45:06+00:00"
+        },
+        {
+            "code": "FILE_NOT_FOUND",
+            "description": "No such file or directory",
+            "DATA_TYPE": "event",
+            "is_error": true,
+            "details": "Error (transfer)\nServer: go#ep1 (endpoint1.tutorial.globusonline.org:2811)\nFile: /~/doesnotexist\nCommand: MLST ~/doesnotexist\nMessage: Fatal FTP response\n---\n500-Command failed : System error in stat: No such file or directory\r\n500-A system call failed: No such file or directory\r\n500 End.\n",
+            "time": "2014-07-28 02:35:10+00:00"
+        }
+    ]
+}
+------------------------------------
+|============
+
+
+==== Filter Options
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| is_errors   | boolean
+| 
+  compatibility, a bare endpoint name is also supported and the user portion
+  is assumed to be the user accessing the API. This behavior is deprecated
+  and should not be relied upon - all new code should use a full
+  canonical endpoint name. Also note that the endpoint name must be percent
+  escaped; in particular +#+ is a reserved character.
+|===================
+
+
+==== Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code             | HTTP Status | Description
+
+| HistoryDeleted   | 409
+| After 30 days, the event list for a task is no longer available and this
+  error will be returned.
+
+|===================
+
+
+=== Get task pause info
+
+Get details about why a task is paused (or possibly about to be paused). This
+incudes pause rules on both source and destination endpoints that affect the
+owner of the task, and per-task pause flags set by source endpoint and
+destination endpoint administrators. Any pause rules that have been overridden
+by an administrator are not listed.
+
+If the task is not paused, this may still return pause rules that have been
+created but not yet applied to the task. This is because pause rules are
+processed asynchronously.
+
+If the task is complete, this will return an empty result set, meaning that
++pause_rules+ list will be empty and both pause messages will be null.
+
+.Authorization
+Requires the user to be the owner of the task. To access pause info
+as an administrator with endpoint manager privileges, use the
+link:../advanced_endpoint_management#_get_task_pause_info_as_admin[endpoint manager pause info operation].
+
+.Pause Rule
+A pause rule is set by the administrator of an endpoint and causes all matching
+tasks to or from that endpoint to be paused. The rules returned by this
+operation have some sensitive fields removed, see the
+<<_limited_pause_rule_document,pause_rule_limited document>>.
+
+[cols="h,5"]
+|============
+| URL
+| /task/<task_id>/pause_info
+
+| Method
+| GET
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "pause_info_limited",
+    "pause_rules": [... list of pause_rule_limited documents...],
+    "source_pause_message": null,
+    "destination_pause_message": "Disk problems, pausing all tasks until we resolve",
+}
+-------------------------------------------------------------------
+
+|============
+
+
+== Change History
+
+=== 4.3
+
+* Add "Get task pause info"
+
+=== 4.2
+
+* task document: add field "canceled_by_admin"
+* task cancel: allow endpoint task managers to cancel tasks

@@ -1,0 +1,682 @@
+= Endpoint
+:toc:
+:toclevels: 3
+:numbered:
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+// See https://github.com/jbake-org/jbake/issues/80, github requires
+// going through hoops to get the TOC to render.
+ifdef::env-github[]
+toc::[]
+endif::[]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+Endpoints are bookmarks for a gridftp or other file transfer service server,
+with a convenient name. Full endpoint names (called the canonical name) are of
+the form USERNAME#NAME, where USERNAME is the user who created the endpoint,
+and NAME is the endpoint name. The API for manipulating endpoint definitions
+is located under +/endpoint/+.
+
+For operations that can be performed on an endpoint's filesystem, see
+link:../file_operations[File Operations].
+
+For delegating rights for managing various aspects of the endpoint's
+administration to other users, see link:../endpoint_roles[Endpoint
+Roles].
+
+== Document Types
+
+=== Endpoint Document
+
+The "endpoint" document type represents a single transfer endpoint, and
+containa a list of "server" documents in the "DATA" section, representing the
+GridFTP server or servers used to access the endpoint.
+
+==== Types of Endpoints
+
+.Globus Connect Server endpoints
+This category includes manually configured GridFTP servers, and servers
+configured using the Globus Connect Server package. These endpoints will
+have +is_globus_connect+ set to "false", +host_endpoint+ equal to "null",
+and +s3_url+ equal to "null". To function, they must have at least one
++server+ sub-document.
+
+.Globus Connect Personal endpoints
+Globus Connect Personal endpoints have +is_globus_connect+ set to "true",
+and the server sub-documents are virtual and can't be set by the user. The
++is_connected+ field of the virtual server sub-document can be used to
+determine if the Globus Connect Personal client is currently running and
+connected to Globus.
+
+.Shared endpoints
+Shared endpoints will have +host_endpoint+ set to a non-null value. They have
+no server sub-documents, and must always be +public+.
+
+.S3 endpoints
+S3 endpoints will have +s3_url+ set to a non-null value. They have no server
+sub-documents.
+
+
+.Endpoint Document Example
+------------------------
+{
+  "DATA_TYPE": "endpoint", 
+  "canonical_name": "auser#myserver", 
+  "name": "myserver", 
+  "username": "auser", 
+  "description": "Example gridftp endpoint.", 
+  "public": false, 
+  "is_globus_connect": false, 
+  "globus_connect_setup_key": null, 
+  "s3_url": null, 
+  "s3_owner_activated": false, 
+  "host_endpoint": null, 
+  "host_path": null
+  "disable_verify": false, 
+  "force_encryption": false, 
+  "myproxy_server": null, 
+  "myproxy_dn": null, 
+  "oauth_server": null, 
+  "default_directory": null, 
+  "activated": false, 
+  "expires_in": 0, 
+  "expire_time": "2000-01-02 03:45:06+00:00", 
+  "shareable": true, 
+  "acl_available": false, 
+  "acl_editable": false, 
+  "in_use": false, 
+  "DATA": [
+    {
+      "is_paused": false, 
+      "DATA_TYPE": "server", 
+      "hostname": "gridftp.example.org", 
+      "uri": "gsiftp://gridftp.example.org:2811", 
+      "port": 2811, 
+      "scheme": "gsiftp", 
+      "is_connected": true, 
+      "id": 985, 
+      "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
+    }
+  ], 
+}
+------------------------
+
+==== Endpoint Fields
+
+Only +canonical_name+ is required on create.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "endpoint" to indicate this document type.
+| name           | string
+                 | A friendly name for the endpoint. Limited to 128 characters,
+                   and must match the regex "^[0-9a-zA-Z][-0-9a-zA-Z_.]*$".
+| canonical_name | string
+                 | The username qualified endpoint name, of the form
+                   USERNAME#ENDPOINTNAME. The username portion must match
+                   the current user.
+| username       | string
+                 | The Globus username of the endpoint owner. If specified
+                   it must match the current user on create, and can't be
+                   updated.
+| description    | string
+                 | A description of the endpoint. Max length 256.
+| public         | boolean
+                 | True if the endpoint definition should be visible to other
+                   Globus users.
+| default_directory
+                 | string
+                 | Default directory to display when an endpoint is first
+                   accessed on the globus.org web interface. The default
+                   is "/~/" for GridFTP endpoints, and "/" for shared endpoints
+                   and S3 endpoints. The mapping of "/~/" depends on the
+                   configuration of the GridFTP server but is typically the
+                   local user's home directory on Linux systems.
+| force_encryption
+                 | boolean
+                 | Forces encryption of all network data for transfers to and
+                   from the endpoint. If this is set, all transfer jobs will
+                   have the encryption option automatically turned on
+                   regardless of the user's initial submission options. If
+                   this is not set, users can decide whether or not to enable
+                   encryption. Default: false.
+| disable_verify
+                 | boolean
+                 | This option indicates that the endpoint does not support
+                   computing MD5 checksums, needed for the verify_checksum
+                   option of transfer. When this is set, new job submissions
+                   will default to not use the verify_checksum option.
+| expire_time    | string
+                 | Date and time the endpoint activation expires, or null if
+                   not activated. Formatted as ISO 9660 but with space instead
+                   of "T" separating the date and time portions.
+| expires_in     | int
+                 | Seconds until the endpoint expires, 0 if the endpoint is
+                  expired or not activated, or -1 if the endpoint never expires
+                  (for endpoints that use globus online credentials).
+| activated      | boolean
+                 | "true" if the endpoint is activated, "false" otherwise.
+| myproxy_server | string
+                 | The default MyProxy server to use when activating this
+                   endpoint, or "null" if no associated proxy server.
+| myproxy_dn     | string
+                 | A non-standard subject DN to use with the default MyProxy
+                   server. This is only necessary if the subject DN in the
+                   server's certificate does not match it's hostname. Can
+                   be "null".
+| oauth_server   | string
+                 | hostname of server for getting credentials via oauth. For
+                   this to work, the oauth server must be registered with
+                   Globus Nexus and have the appropriate paths set up. Contact
+                   support@globus.org for more information.
+| is_globus_connect
+                 | boolean
+                 | "true" if the endpoint was created for Globus Connect
+                   Personal, "false" otherwise. Not that this will be "false"
+                   for Globus Connect Server endpoints.
+| globus_connect_setup_key
+                 | string
+                 | Key needed to complete Globus Connect Personal installation.
+                   "null" when installation/setup is complete, the key can
+                   only be used once. Also "null" for non personal endpoints.
+| host_endpoint  | string
+                 | Standard endpoint hosting the shared endpoint; "null" for
+                   non-shared endpoints.
+| host_path      | string
+                 | Root path being shared on the host endpoint; "null" for
+                   non-shared endpoints. Only visible by the owner of the
+                   endpoint, "null" for other users even if the ACL gives
+                   them access to the files on the endpoint.
+| s3_url         | string
+                 | [ALPHA] For S3 endpoints, the url to the S3 bucket
+| s3_owner_activated
+                 | boolean
+                 | [ALPHA] For S3 endpoints, true if the endpoint is activated
+                   by the owner with Amazon credentials, and can be
+                   auto-activated by other users.
+| acl_available  | boolean
+                 | [ALPHA] "true" for endpoints that support the ACL resources
+| acl_editable   | boolean
+                 | [DEPRECATED] True if the user has the "access_manager"
+                   role on the endpoint. This is deprecated, and
+                   +my_effective_roles+ should be used instead.
+| in_use         | boolean
+                 | "true" if any active tasks owned by the user are using the
+                   endpoint
+| my_effective_roles | list of string
+                 | [ALPHA] List of roles the current user has on the endpoint.
+|===================
+
+
+=== Server Document
+
+The server document represents a network service that provides access to
+a filesystem. The most common type is a GridFTP server, which is
+represented by +scheme+ "gsiftp". This is also the default +scheme+.
+
+.Server Document Example
+-----------------------
+{
+  "DATA_TYPE": "server", 
+  "id": 985, 
+  "scheme": "gsiftp", 
+  "hostname": "gridftp.example.org", 
+  "port": 2811, 
+  "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
+  "uri": "gsiftp://gridftp.example.org:2811", 
+  "is_paused": false, 
+  "is_connected": true, 
+}
+-----------------------
+
+==== Server Fields
+
+Only +hostname+ is required on create.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "server" to indicate this document type.
+| id             | int
+                 | Unique identifier for a server in an endpoint.
+| hostname       | string
+                 | Hostname of the server.
+| port           | int
+                 | Port the server is listening on. Default: 2811.
+| scheme         | string
+                 | URI scheme (protocol) used by the endpoint. Must be
+                   "gsiftp" or "ftp". Default: "gsiftp".
+| subject        | string
+                 | subject of the x509 certificate of the server. If not
+                   specified, the CN in the subject must match it's hostname.
+| uri            | string
+                 | URI of the server. This is a derived field combining the
+                   scheme, hostname, and port, and is not used when creating
+                   servers.
+| is_connected   | boolean
+                 | For globus connect personal endpoints, indicates if the
+                   endpoint is available for operations; always true
+                   for other endpoints. When false, check the value of
+                   is_paused to determine if the user requested a
+                   temporary disconnect, or if globus connect is not
+                   running or not connected to a network.
+| is_paused      | boolean
+                 | For globus connect endpoints, indicates if the
+                   endpoint has been paused by the user. Note that
+                   when this is true, is_connected will always be
+                   false, because the endpoint is not available for
+                   any operations when paused. For non globus connect
+                   endpoints, is_paused will always be false.
+|===================
+
+
+=== Shared Endpoint Document
+
+The shared endpoint document is used to create shared endpoints only. Once
+created, a shared endpoint is accessed and updated using the standard endpoint
+resources. Shared endpoints can be distinguished from other endpoints by
+checking that the +host_endpoint+ field is set to a non-null value.
+
+.Shared Endpoint Document Example
+-----------------------
+{
+  "DATA_TYPE": "shared_endpoint",
+  "name": "myshare",
+  "host_endpoint": "go#ep1",
+  "host_path": "/~/",
+  "description": "Share my home directory on go ep1"
+}
+-----------------------
+
+==== Shared Endpoint Fields
+
++description+ is optional, other fields are required.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "shared_endpoint" to indicate this
+                   document type.
+| name           | string
+                 | A friendly name for the endpoint. Limited to 128 characters,
+                   and must match the regex "^[0-9a-zA-Z][-0-9a-zA-Z_.]*$".
+| host_endpoint  | string
+                 | Standard endpoint hosting the shared endpoint.
+| host_path      | string
+                 | Path to share on the host endpoint. On the shared endpoint
+                   this path will appear to be the root of the endpoint, and
+                   nothing outside this path will be accessible. In Unix
+                   parlance, this is called a chroot or change root.
+| description    | string
+                 | A description of the endpoint. Max length 256.
+|===================
+
+
+== URL Arguments
+
+The operations below make use of the following arguments in the URL,
+delimited by <> in the descriptions.
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| endpoint_name   | string
+| Canonical name of an endpoint, of the form user#endpoint. For backward
+  compatibility, a bare endpoint name is also supported and the user portion
+  is assumed to be the user accessing the API. This behavior is deprecated
+  and should not be relied upon - all new code should use a full
+  canonical endpoint name. Also note that the endpoint name must be percent
+  escaped; in particular +#+ is a reserved character.
+|===================
+
+
+== Common Query Parameters
+
+[cols="1,1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all
+  fields are needed.
+
+| format | string
+| "json" or "html". Note that the "html" format is subject to change
+  and should not be relied upon for programs. It is used to render
+  the self-hosted, auto-generated API documentation.
+
+| limit  | int
+| For paged resources, change the default page size. The default page size is
+  10 and the maximum is 1000, although a few resources support limit=0 to
+  specify no limit.
+
+| offset | int
+| For paged resources, specify an offset within the full result set. Typically
+  a fixed page size is specified with limit, and offset is incremented by
+  the page size to fetch each page.
+
+| orderby | string
+| For paged resources, a comma separated list of order by options. Each order
+  by option is either a field name, or a field name followed by space and 'ASC'
+  or 'DESC' for ascending and descending; ascending is the default. Note that
+  only certain fields are supported for ordering; see the specific operation
+  documentation for details.
+
+| filter | string
+| For paged resources, return only resources that match all of the specified
+  filter criteria.
+|===================
+
+
+== Common Errors
+
+The resources in this document use old error codes conventions, with a dotted
+code hierarchy.
+
+[cols="1,1,8",options="header"]
+|===================
+| Code                  | HTTP Status  | Description
+
+| ClientError.NotFound  |404
+| If <endpoint_name> not found
+
+| ClientError.PermissionDenied |403
+| If user does not have privileges to get, modify, or delete the specified
+  endpoint(s).
+
+| ClientError.Conflict  |409
+| If an endpoint with the same name already exists or if a role assignment
+  with the same principal and role already exists.
+
+| ServiceUnavailable    |503
+| If the service is down for maintenance.
+|===================
+
+
+== Operations
+
+=== Get endpoint list
+
+Get a paged list of all endpoints visible to the current user. Most fields are
+returned by default, but some more expensive fields are omitted by default (see
+the fields list above). Specific fields can be requested using the +fields+
+query parameter, and the value "ALL" can be used to fetch all fields.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_list
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+
+    "DATA_TYPE": "endpoint_list",
+    "length": 1,
+    "limit": 1,
+    "offset": 0,
+    "total": 125,
+    "DATA": [
+        {
+            "DATA_TYPE": "endpoint",
+            "activated": false,
+            "disable_verify": false,
+            "myproxy_server": null,
+            "sharing_target_root_path": null,
+            "DATA": [
+                {
+                    "is_paused": false,
+                    "DATA_TYPE": "server",
+                    "hostname": "gridftp.example.org",
+                    "uri": "gsiftp://gridftp.example.org:2811",
+                    "port": 2811,
+                    "scheme": "gsiftp",
+                    "is_connected": true,
+                    "id": 985,
+                    "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
+                }
+            ],
+            "ls_link": {
+                "href": "endpoint/auser%23myserver/ls?format=json",
+                "resource": "directory_listing",
+                "DATA_TYPE": "link",
+                "rel": "child",
+                "title": "child directory_listing"
+            },
+            "expires_in": 0,
+            "canonical_name": "auser#myserver",
+            "sharing_target_endpoint": null,
+            "acl_available": false,
+            "s3_url": null,
+            "public": false,
+            "default_directory": null,
+            "username": "auser",
+            "globus_connect_setup_key": null,
+            "description": "Example gridftp endpoint.",
+            "in_use": false,
+            "is_go_storage": false,
+            "force_encryption": false,
+            "myproxy_dn": null,
+            "expire_time": "2000-01-02 03:45:06+00:00",
+            "acl_editable": false,
+            "oauth_server": null,
+            "host_endpoint": null,
+            "name": "myserver",
+            "is_globus_connect": false,
+            "s3_owner_activated": false,
+            "shareable": true,
+            "host_path": null
+        }
+    ]
+
+}
+------------------------------------
+|============
+
+==== Ordering
+
+The +orderby+ query parameter supports the following values, optionally
+followed by a space and "ASC" or "DESC" for ascending or descending.
+Ascending is the default. If no order is specified, "canonical_name ASC"
+is used.
+
+[cols="1,8",options="header"]
+|===================
+| Name     | Description
+| name     | Sort by the bare endpoint name.
+| canonical_name
+           | Sort by the username qualified canonical name. This is the
+             default.
+| username | Sort by the owner of the endpoint.
+| public   | [DEPRECATED] Sort by whether the endpoint is public or private.
+             In ascending order, "false" is sorted before "true".
+| expire_time
+           | Sort by the expire time of the credential used to activate
+             the endpoint. In "ASC" order, expired and not activated endpoints
+             will be listed first ("null" is treated like 0).
+|===================
+
+
+=== Get endpoint by name
+
+Get a single endpoint by canonical name. All fields are included by default,
+but the +fields+ query parameter can be used to fetch only specific fields.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>
+
+| Method
+| GET
+
+| Response Body | Endpoint document (see above).
+|============
+
+
+=== Create endpoint
+
+Create an endpoint. Which fields are required depends on the type of endpoint.
+
+.Globus Connect Server endpoints
+Only +canonical_name+ is required, but at least one "server" sub document must
+be created for it to function.
+
+.Globus Connect Personal endpoints
+Requires +canonical_name+, and +is_globus_connect+ must be set to "true".
+Once created, the setup key can be obtained from the endpoint document
+in field +globus_connect_setup_key+.
+
+.Shared endpoints
+Shared endpoints are created using a different resource, see
+<<Create shared endpoint>>.
+
+.S3 endpoints
+The REST API does not yet support creating S3 endpoints, this must be done
+using the CLI.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint
+
+| Method
+| POST
+
+| Request Body  | Partial endpoint document (see above).
+
+| Response Body | Result document (see above).
+|============
+
+
+=== Create shared endpoint
+
+[cols="h,5"]
+|============
+| URL
+| /shared_endpoint
+
+| Method
+| POST
+
+| Request Body  | +shared_endpoint+ document (see above).
+
+| Response Body | Result document (see above).
+|============
+
+
+=== Update endpoint by name
+
+Update an endpoint. This can be done using a partial document by specifying
+only +DATA_TYPE+ and the fields to be updated, or doing a +GET+ on the
+endpoint, changing the appropriate fields, and doing a +PUT+ of the full
+document.
+
+NOTE: Changing the +name+ or +canonical_name+ will cause the
+endpoint to be renamed, which will change it's resource address.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>
+
+| Method
+| PUT
+
+| Request Body  | Partial endpoint document (see above).
+
+| Response Body | Result document (see above).
+|============
+
+Which fields can be updated depends on the type of endpoint:
+
+[cols="h,5"]
+|============
+| Type | Updatable fields
+| Globus Connect Server
+| +name+/+canonical_name+, +description+, +public+,
+  +default_directory+, +force_encryption+, +disable_verify+,
+  +myproxy_server+, +myproxy_dn+, +oauth_server+,
+
+| Globus Connect Personal
+| +name+/+canonical_name+, +description+
+
+| Shared endpoint
+| +name+/+canonical_name+, +description+
+
+| S3 endpoint
+| +name+/+canonical_name+, +description+
+|============
+
+
+=== Delete endpoint by name
+
+Delete an endpoint by canonical name. Only the owner can delete the endpoint.
+Note that all data associated with the endpoint, including roles and the ACL,
+will be deleted as well. If the hostname of the server has changed, the
++server+ document(s) in the endpoint should be changed rather than deleting and
+recreating the endpoint with different servers.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>
+
+| Method
+| DELETE
+
+| Response Body | Result document (see above).
+|============
+
+
+=== Get my effective endpoint pause rules
+
+Get all pause rules on an endpoint that affect the current user, with
+sensitive administrator only fields removed.
+
+See also: link:../task#_limited_pause_rule_document[pause_rule_limited document].
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>/my_effective_pause_rule_list
+
+| Method
+| GET
+
+| Response Body | List of pause_rule_limited.
+|============
+
+
+== Change History
+
+=== 4.3
+
+* Add <<_get_my_effective_endpoint_pause_rules,Get my effective endpoint pause rules>>.
+
+[[changes_42]]
+=== 4.2
+
+* endpoint document: add +my_effective_roles+, update
+description for +acl_editable+
+* new sub role resources: add link to endpoint role documentation

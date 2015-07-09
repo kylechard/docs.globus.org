@@ -34,3 +34,13 @@ menu_weight: 2
 Page content...
 
 ....
+
+[role="terminal"]
+----
+test terminal block with [input]#input# and [output]#output# classes
+----
+
+[role="terminal"]
+--
+test terminal block 2 with [input]#input# and [output]#output# classes
+--

@@ -1,0 +1,280 @@
+= Endpoint Roles
+:toc:
+:toclevels: 3
+:numbered:
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+The owner of an endpoint has full control over every aspect of the endpoint
+definition, including the attributes and the ACL. Roles allow the owner to
+delegate some administration rights to other users or groups.
+
+Roles can be assigned to either a single Globus user or to a Globus group,
+called the "principal". An endpoint can have at most 100 role assignments.
+Only the owner of the endpoint can manipulate roles, all resources in this
+API will return a "PermissionDenied" error for other users.
+
+Non owners can get a list of roles they have on an endpoint, using the
++my_effective_roles+ field on the +endpoint+ document. This includes roles
+assigned directly to the user, and roles assigned to groups the user is a
+member of.
+
+=== Supported Roles
+
+Role "access_manager":: The principal can view, add, and delete all access
+ rules on the endpoint. This role is only supported on endpoints that have
+ an ACL. Adding a principal with this role implicitly gives the principal
+ read-write access to the endpoint, equivalent to access rule with
+ permissions "rw" on path "/". Note that this implicit rule will be visible
+ when calling
+ link:../acl#rest_access_get_list[Get list of access rules], with
+ +role_id+ set instead of +id+. Removing the implicit access rule requires
+ deleting the corresponding endpoint role, and the access rule can't be
+ modified with the acl API.
+
+
+== Document Types
+
+=== Role Document
+
+The "role" document type represents the assignment of a role on the endpoint to
+a Globus user or group.
+
+.Role Document Example
+------------------------
+{
+  "DATA_TYPE": "role", 
+  "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+  "principal_type": "user",
+  "principal": "alice",
+  "role": "access_manager",
+}
+------------------------
+
+==== Role Document Fields
+
+Fields are required for create unless otherwise specified.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "role" to indicate this document type.
+                   Optional in create requests.
+| id             | string
+                 | Globally unique id string for this role assignment. This is
+                   system generated and should not be included in create
+                   requests.
+| principal_type | string
+                 | Type of principal that the rule applies to.
+                   One of "user" or "group".
+| principal      | string
+                 a|The subject of the access rule; the interpretation
+                   depends on +principal_type+:
+
+                   Type "user":: a Globus username
+                   Type "group":: a Globus group uuid
+
+| role           | string
+                 | The role to assign to the principal. See the Supported
+                   Roles section above.
+|===================
+
+
+== URL Arguments
+
+The operations below make use of the following arguments in the URL,
+delimited by <> in the descriptions.
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| endpoint_name     | string
+| Canonical name of an endpoint, of the form user#endpoint. For backward
+  compatibility, a bare endpoint name is also supported and the user portion
+  is assumed to be the user accessing the API. This behavior is deprecated
+  and should not be relied upon - all new code should use a full
+  canonical endpoint name. Also note that the endpoint name must be percent
+  escaped; in particular +#+ is a reserved character.
+| role_id           | string
+| Unique identifier for a role assignment.
+|===================
+
+
+== Common Query Parameters
+
+[cols="1,1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all
+  fields are needed.
+|===================
+
+
+== Common Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| EndpointNotFound  |404  | If <endpoint_name> not found
+| RoleNotFound      |404  | If <role_id> not found
+| PermissionDenied  |403  | If user does not have privileges to get, modify, or
+                            delete the specified role(s).
+| Exists            |409  | If a role assignment with the same principal
+                            and role already exists.
+| NotSupported      |409  | If the endpoint does not support the specified
+                            role.
+| LimitExceeded     |409  | If the endpoint role list already has the maximum
+                            of 100 role assignments.
+| ServiceUnavailable|503  | If the service is down for maintenance.
+|===================
+
+
+== Operations
+
+=== Get list of endpoint roles
+
+Get a list of role assignments on an endpoint. Since an endpoint can have at
+most 100 roles, this list is not paged and will return at most 100 roles.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>/role_list
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+
+    "DATA_TYPE": "role_list",
+    "DATA": [
+        {
+            "DATA_TYPE": "role",
+            "id": "06fa8417-aa29-4b7a-a315-27868f8189dc",
+            "principal_type": "user",
+            "principal": "alice",
+            "role": "access_manager"
+        },
+        {
+            "DATA_TYPE": "role",
+            "id": "0f683bc9-0c8a-4fcf-813b-2a1b7bc171a1",
+            "principal_type": "group",
+            "principal": "594ef8be-21e6-4137-969a-d9d2c4d46d92",
+            "role": "access_manager"
+        }
+    ]
+}
+------------------------------------
+|============
+
+
+=== Create endpoint role
+
+Assign a role to a user or group for the given endpoint. On success returns
+a copy of the created role with the system generated id added.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>/role
+
+| Method
+| POST
+
+| Request Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "role",
+    "principal_type": "user",
+    "principal": "alice",
+    "role": "access_manager"
+}
+-------------------------------------------------------------------
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "role",
+    "id": "e1d00e93-e93e-4dc0-9550-faeba473d6c0",
+    "principal_type": "user",
+    "principal": "alice",
+    "role": "access_manager"
+}
+-------------------------------------------------------------------
+|============
+
+
+=== Get endpoint role by id
+
+Get a single role assignment by id.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>/role/<role_id>
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+    "DATA_TYPE": "role",
+    "id": "e1d00e93-e93e-4dc0-9550-faeba473d6c0",
+    "principal_type": "user",
+    "principal": "alice",
+    "role": "access_manager"
+}
+------------------------------------
+|============
+
+
+=== Delete endpoint role by id
+
+Delete a single role assignment by id. Returns a result document on
+success.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_name>/role/<role_id>
+
+| Method
+| DELETE
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "result",
+    "code": "Deleted",
+    "message": "Role assignment 'c67b666f-e1ad-4f67-af2c-48340dd12ada' deleted successfully",
+    "resource": "/endpoint/user#ep1/role/123",
+    "request_id": "ABCdef789"
+}
+-------------------------------------------------------------------
+|============
+
+
+== Change History
+
+=== 4.2 (targeted)
+
+* initial role API with support for single "access_manager" role
