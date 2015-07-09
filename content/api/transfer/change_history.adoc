@@ -1,0 +1,82 @@
+= Transfer API Change History
+:toc:
+:toclevels: 3
+:numbered:
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== 4.3
+
+* Admin task pause (new feature)
+** Task
+*** Added field +is_paused+ to the
+    link:../task#task_document[task document]
+*** Added
+    link:../task#_get_task_pause_info[Get task pause info]
+** Advanced Endpoint Management
+*** Added
+    link:../advanced_endpoint_management#_pause_rule_document[pause rule document]
+    and
+    link:../advanced_endpoint_management#_get_pause_rules[CRUD APIs]
+*** Added
+    link:../advanced_endpoint_management#_pause_tasks_as_admin[admin pause]
+    API, which supports pausing specific tasks by task id, and
+    link:../advanced_endpoint_management#_resume_tasks_as_admin[admin resume]
+    for removing the per-task pause and overriding pause rules for the task.
+** File Operations
+*** Added link:../file_operations#_common_errors[OperationPaused]
+    error code.
+** Endpoint
+*** Added
+    link:../endpoint#_get_my_effective_endpoint_pause_rules[Get my effective endpoint pause rules]
+
+* Admin task successful transfers (new feature)
+** Advanced Endpoint Management
+*** Added
+    link:../advanced_endpoint_management#_get_task_successful_transfers_as_admin[Get task successful transfers as admin]
+
+== 4.2
+
+* Endpoint ACL management delegation (new feature)
+** Added new role api, see
+link:../endpoint_roles[Endpoint Roles].
+Granting a user or group the "access_manager" role will allow them to manage
+the access rules on an endpoint.
+** Added fields to +endpoint+ document type, see
+link:../endpoint#changes_42[Endpoint change history]
+** Added section to acl document, see
+link:../acl#rest_access_delegation[ACL Management Permissions and Delegation]
+** Added field to access rule document type, see
+link:../acl#changes_42[ACL Management change history]
+
+* Admin task cancel (new feature)
+** Task
+*** Added fields +canceled_by_admin+ and +canceled_by_admin_message+ to the
+link:../task#task_document[task document]
+** Events
+*** Change details of the "CANCELED" event. This replaces the current details
+of "num_subtasks=N":
+**** if canceled by the owner: "Canceled by the task owner"
+**** if canceled by an administrator:
+"Canceled by the administrator of X",
+where X is either "the source endpoint", "the destination endpoint" or
+"both source and destination endpoints".
+** Advanced Endpoint Management
+*** Add new admin cancel API, see
+link:../advanced_endpoint_management#admin_cancel[Cancel tasks as admin]. A notification email is sent to the task owner when an administrator
+cancels a task.
+*** All users with read only +Endpoint Monitor+ management console privileges
+on an endpoint will be upgraded to +Endpoint Manager+ privileges, meaning they
+will be able to cancel tasks on the endpoints they were monitoring. We do not
+yet provide a way of giving a user the ability to monitor tasks without being
+able to cancel them.
