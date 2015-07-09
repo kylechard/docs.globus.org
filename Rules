@@ -45,11 +45,6 @@ preprocess do
     if i.identifier.start_with?("/api/transfer/") && i[:extension].split('.').last == 'adoc'
         # Replace transfer version
         raw = i.raw_content
-        raw.gsub!(/__LATEST_TRANSFER_VERSION__/, 'v0.10')
-    end
-    if i.identifier.start_with?("/api/transfer/v0.10") && i[:extension].split('.').last == 'adoc'
-        # Replace transfer version
-        raw = i.raw_content
         raw.gsub!(/__TRANSFER_VERSION__/, 'v0.10')
     end
     if i.identifier.start_with?("/cli") && i[:title].nil?
@@ -149,6 +144,9 @@ route '*' do
   elsif item[:extension] == 'adoc' && item.identifier.include?('/raw')
     # Write item with identifier /foo/ to /foo.adoc
     item.identifier.chop + '.adoc'
+  #elsif item[:extension] == 'adoc' && item.identifier.include?('/transfer') && !item.raw_filename.include?('index')
+    # Write item with identifier /foo/ to /foo.html
+    #item.identifier.chop + '.html'  
   elsif item.binary?
     # Write item with identifier /foo/ to /foo.ext
     item.identifier.chop + '.' + item[:extension]

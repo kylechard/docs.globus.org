@@ -1,0 +1,546 @@
+= File Operations
+:toc:
+:toclevels: 3
+:numbered:
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+This document describes operations that can be performed on a remote
+endpoint's filesystem. For manipulating the endpoint definition itself,
+see link:../endpoint[Endpoint Documentation].
+
+The operations described in this document are short foreground operations, that
+don't return data until completed or an error is encountered. The API resources
+for these operations have prefix '/operation/'. This is used to indicate that
+they involve communication with the external server described by the endpoint,
+and could raise errors related to network communication or authentication
+failures.
+
+Long running operations, including delete and transfer, are documented
+elsewhere, and result in the creation of a task to track progress. See
+link:../task[Task Documentation] for details.
+
+TODO: document activate and autoactivate here (or in separate doc???).
+
+TODO: document delete and transfer and link from here.
+
+NOTE: All operations in this document require the endpoint to be activated.
+
+[[path_encoding,Path Encoding]]
+== Path Encoding
+
+All Linux systems used with Globus should be configured to use UTF-8 encoding.
+This is required by Mac OS X, and is the default on most Linux system. However
+Linux does allow each user to choose their own encoding. The low level
+filesystem layer uses raw bytes, which are interpreted as characters when
+displaying to the user according to the user's environment, which can override
+the system default. If other encoding are used, the characters may end up
+misrepresented in the filesystem.
+
+Windows systems use UTF-16 encoding. It is recommended that windows users limit
+themselves to ASCII characters for file names. Non-ascii special characters,
+accented characters, and non-english characters could end up encoded in the
+wrong way, resulting in name corruption. We plan on fixing this in a future
+update to Globus Connect Personal for Windows, by having the GridFTP server
+convert everything to/from UTF-8 for communication with Globus. Please contact
+support@globus.org if you have concerns.
+
+The API uses JSON as its data format, and all strings in JSON are Unicode. If
+the endpoints involved in the operation use UTF-8 encoding, then things work
+seamlessly in that the clients can use Unicode to display things to the user
+and accept user input, and the system transparently encodes that as UTF-8 when
+interacting with GridFTP servers and their local filesystems.
+
+NOTE: Globus will handle non UTF-8 filesystems in a limited fashion. If the
+bytes received from the GridFTP server can't be decoded as UTF-8, they will
+be decoded as latin-1 and prefixed with unicode character "\uFFFD", which
+renders as a question mark. These paths will not display to the user as
+intended but can be manipulated by passing to other API calls. The rendering
+used is round trip safe, in that it will be converted back to bytes in
+a reliable way if passed back to the API for an operation like mkdir or
+rename. Problems are still likely to arise though, from transferring data
+to other systems that do use UTF-8 encoding or a different non UTF-8 encoding,
+or from accepting user input which will be encoded as UTF-8. This also means
+that if the user provides a path component beginning with the unicode character
+"\uFFFD", then it will be misinterpreted by the system. This character was
+chosen because it's very unlikely to be used in actual filenames, and has
+an appearance that helps indicate that the path may not be displayed
+correctly.
+
+=== Invalid Path Names
+
+Globus does not allow the string "\r\n" in any file or directory names, and
+passing such a path will result in an error from the API.
+
+Depending on the filesystem of the endpoint, other characters or strings may
+be disallowed. For example, Windows filesystem do not allow several common
+punctuation characters, including '<', '>', and '*'. Globus attempts to
+classify such errors with code +InvalidPath+, but there may be combinations
+of GridFTP server and filesystem that result in a generic +EndpointError+ code.
+
+
+== Document Types
+
+=== Result
+
+The "result" family document types, which includes resource specific result
+types like "mkdir_result", represents the result to a foreground operation.
+If the operation fails, an error result we be returned, but some operations
+have multiple success cases.
+
+.Result Document Example
+------------------------
+{
+  "DATA_TYPE": "result",
+  "code": "EndpointUpdated",
+  "message": "The endpoint 'user#ep1' was updated successfully.",
+
+  "resource": "/operation/endpoint/user#ep1",
+  "request_id": "ABCdef789"
+}
+------------------------
+
+==== Result Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Has value "result" or "(subtype)_result" to indicate
+                   a result family document type. Some result subtypes have
+                   additional fields.
+| code           | string
+                 | Code indicating how the operation succeeded. Depends on
+                   the specific operation.
+| message        | string
+                 | Message describing how the operation succeeded in more
+                   detail.
+| resource       | Path relative to the API version root of the request.
+| request_id     | Id of the request, which can be used by Globus admins to
+                   look up the request in the server logs. Useful when
+                   submitting support requests or posting to the mailing list.
+|===================
+
+
+== URL Arguments
+
+The operations below make use of the following arguments in the URL,
+delimited by <> in the descriptions.
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| endpoint_name   | string
+| Canonical name of an endpoint, of the form user#endpoint. For backward
+  compatibility, a bare endpoint name is also supported and the user portion
+  is assumed to be the user accessing the API. This behavior is deprecated
+  and should not be relied upon - all new code should use a full
+  canonical endpoint name. Also note that the endpoint name must be percent
+  escaped; in particular +#+ is a reserved character.
+|===================
+
+
+== Common Query Parameters
+
+[cols="1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all
+  fields are needed.
+
+|===================
+
+
+== Common Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| ServiceUnavailable|503  | If the service is down for maintenance.
+| OperationPaused   |409  | If the administrator of the endpoint has set
+                            a pause rule for the operation. The error response
+                            will include a 'pause_message' string field that
+                            contains a message from the administrator about
+                            why the pause rule was set.
+|===================
+
+
+== Operations
+
+=== List Directory Contents
+
+List the contents of the directory at the specified path on an endpoint's
+filesystem. The endpoint must be activated before performing this operation.
+
+The path is specified in the +path+ query parameter. If the parameter is not
+passed, the default path depends on the type of endpoint:
+
+* For shared endpoints, S3 endpoints, and anonymous FTP endpoints, the default
+  is '/'.
+* For GridFTP endpoints, the default is '/~/'. Most of the time this will
+  map to the user's home directory. However the administrator of the GridFTP
+  server can configure it to point elsewhere. Also as a special case, if
+  the restricted paths configuration on the server does not allow the user's
+  home directory, it will fall back to '/'.
+
+[cols="h,5"]
+|============
+| URL
+| /operation/endpoint/<endpoint_name>/ls [?path=/path/to/dir/]
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+    "DATA_TYPE": "file_list",
+    "path": "/~/path/to/dir",
+    "endpoint": "auser#epname",
+    "DATA": [
+        {
+            "DATA_TYPE": "file",
+
+            "name": "somefile",
+            "type": "file",
+            "link_target": null,
+
+            "user": "auser",
+            "group": "agroup",
+            "permissions": "0644",
+
+            "last_modified": "2000-01-02 03:45:06+00:00",
+            "size": 1024
+        }
+    ]
+}
+------------------------------------
+|============
+
+==== Dir Listing Query Parameters
+
+[cols="1,8",options="header"]
+|===================
+| Name   | Description
+| path   | Path to a directory on the remote endpoint to list.
+|===================
+
+==== Dir Listing Response
+
+The "file" document represents a single file or directory. The response is
+an encapsulated list of "file" documents, with some additional fields providing
+directory level data.
+
+.File Document Example
+----------------------
+{
+    "DATA_TYPE": "file",
+    "name": "somefile",
+    "type": "file",
+
+    "user": "auser",
+    "group": "agroup",
+    "permissions": "0644",
+
+    "last_modified": "2000-01-02 03:45:06+00:00",
+    "link_target": null,
+    "size": 1024
+}
+----------------------
+
+.File List Document Example
+----------------------
+{
+    "DATA_TYPE": "file_list"
+
+    "path": "/~/path/to/dir",
+    "endpoint": "go#ep1",
+
+    "DATA": [
+        {
+            "DATA_TYPE": "file",
+            ...
+        },
+        ...
+    ],
+}
+----------------------
+
+==== File Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "file" to indicate this document type.
+
+| name           | string
+                 | The name of the file or directory.
+
+| type           | string
+                 | The type of the listing; possible values include 'dir' and
+                   'file', and for unix special files 'chr', 'blk', 'pipe',
+                   and 'other'.
+
+| link_target    | string
+                 | For symlinks, the absolute path of the target,
+                   otherwise null.
+
+| permissions    | string
+                 | The unix permissions, as an octal mode string.
+
+| size           | int
+                 | The file size in bytes.
+
+| user           | string
+                 | The user owning the file or directory, if applicable on
+                   the endpoint's filesystem.
+
+| group          | string
+                 | The group owning the file or directory, if applicable.
+
+| last_modified  | string
+                 | The date and time the file or directory was last modified,
+                   in modified ISO 9660 format: YYYY-MM-DD HH:MM:SS+00:00, i.e.
+                   using space instead of "T" to separate date and time.
+                   Always in UTC, indicated explicitly with a trailing "+00:00"
+                   timezone.
+|===================
+
+==== File List Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "file_list" to indicate this document type.
+| endpoint       | string
+                 | Canonical name of endpoint the listing is for.
+| path           | string
+                 | Path on endpoint the listing is for. Particularly useful
+                   when listing with the default path, to see what the default
+                   was actually mapped to which can depend on the endpoint type
+                   and the configuration of the server.
+| DATA           | list
+                 | List of "file" documents.
+|===================
+
+
+=== Make Directory
+
+Create a directory at the specified path on an endpoint filesystem. The
+endpoint must be activated before performing this operation.
+
+[cols="h,5"]
+|============
+| URL
+| /operation/endpoint/<endpoint_name>/mkdir
+
+| Method
+| POST
+
+| Request Body  a|
+------------------------------------
+{
+  "DATA_TYPE": "mkdir"
+  "path": "/~/newdir",
+}
+------------------------------------
+
+| Response Body a| 
+------------------------------------
+{
+  "DATA_TYPE": "mkdir_result",
+  "code": "DirectoryCreated",
+  "message": "The directory was created successfully",
+  "request_id": "ShbIUzrWT",
+  "resource": "/operation/endpoint/go%23ep1/mkdir"
+}
+------------------------------------
+|============
+
+==== Result Codes
+
+The "code" field of the result document will be one of the following:
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| DirectoryCreated  | 202 | Directory created successfully.
+|===================
+
+==== Mkdir Request Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "mkdir" to indicate this document type.
+| path           | string
+                 | Absolute path on remote endpoint.
+|===================
+
+==== Errors
+
+TODO: use same codes as rename.
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| ClientError.NotFound  |404  | If <endpoint_name> not found.
+
+| ExternalError.MkdirFailed.Exists |502
+  | If <endpoint_name> is not activated.
+
+| ExternalError.MkdirFailed.PermissionDenied  |403
+  | If the user does not have permission to read or
+    write one of the specified file or directories.
+
+| EndpointError     |502  | Catch all for errors returned by endpoint server
+                            that don't have specific types.
+|===================
+
+
+=== Rename
+
+Rename or move a file or directory on an endpoint filesystem. The endpoint must
+be activated before performing this operation. When moving to a different
+parent directory, the parent directory of the new path must already exist.
+
+NOTE: Most servers will require that the new path is on the same filesystem as
+the old path, so this is not a general purpose move operation.
+
+[cols="h,5"]
+|============
+| URL
+| /operation/endpoint/<endpoint_name>/rename
+
+| Method
+| POST
+
+| Request Body  a|
+------------------------------------
+{
+  "DATA_TYPE": "rename", 
+  "old_path": "/~/typo_name.txt",
+  "new_path": "/~/fixed_name.txt"
+}
+------------------------------------
+
+| Response Body a| 
+------------------------------------
+{
+  "DATA_TYPE": "result",
+  "code": "FileRenamed",
+  "message": "File or directory renamed successfully"
+  "request_id": "ShbIUzrWT",
+  "resource": "/operation/endpoint/go%23ep1/mkdir"
+}
+------------------------------------
+|============
+
+==== Result Codes
+
+The "code" field of the result document will be one of the following:
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| FileRenamed  | 200 | File or directory renamed successfully.
+|===================
+
+==== Rename Request Fields
+
+JSON strings are Unicode, but will be encoded as UTF-8 to interact with byte
+oriented filesystems. See the <<path_encoding,Path Encoding>> section for
+details. Directories paths must end in '/'.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "rename" to indicate this document type.
+| old_path       | string
+                 | Current absolute path of a file or directory on the endpoint.
+| new_path       | string
+                 | New absolute path to rename/move the file or directory to.
+|===================
+
+==== Errors
+
+NOTE: New error codes may be added in the future. Clients should have a generic
+handler which displays the message field to the user.
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+
+| NotSupported      |409
+                    | <endpoint_name> does not support the rename operation.
+                      Currently S3 endpoints do not support rename.
+                      
+| EndpointNotFound  |404  | <endpoint_name> doesn't exist or is not visible
+                            to the current user.
+
+| NoCredException   |409  | <endpoint_name> is not activated.
+
+| NoPhysicalsException |409
+                    | <endpoint_name> has no active servers.
+                      Note: 'physical endpoint' or 'physical' for short is an
+                      alternate name for 'server' used by the CLI.
+
+| GCDisconnectedException |409
+                    | <endpoint_name> is a Globus Connect Personal
+                      endpoint and is not currently connected.
+
+| GCPausedException |409
+                    | <endpoint_name> is a Globus Connect Personal
+                      endpoint and is paused.
+
+| EndpointPermissionDenied |403
+                    | The user does not have permission to read or
+                      write one of the specified paths.
+
+| NotFound          |404
+                    | +old_path+ doesn't exist. Note: if the parent
+                      directory of +new_path+ does not exist, then
+                      EndpointError is returned instead.
+                      
+
+| InvalidPath       |400
+                    | One of the specified paths contains characters that
+                      are not supported by the remote filesystem or is
+                      otherwise not valid.
+
+| Exists            |409  | +new_path+ already exists
+
+| EndpointError     |502
+                    | Catch all for other errors received from the server.
+                      Examples include connection failure,
+                      authentication failure,
+                      and filesystem failures like +new_path+ being on
+                      a different filesystem from +old_path+ or the
+                      parent directory of +new_path+ not existing. The
+                      +message+ field of the error document will contain
+                      the actual message returned by the server, and
+                      should be displayed to the user for further
+                      interpretation. It may include complex details
+                      not understood by some users, but it can be used
+                      in support requests with Globus and endpoint
+                      administrators.
+|===================
