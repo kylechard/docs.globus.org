@@ -13,7 +13,6 @@
 :provider_plans: http://www.globus.org/providers/provider-plans/
 :commercial_plans: http://www.globus.org/providers/provider-plans/commercial-subscription-inquiry/
 :sign_up: http://www.globus.org/signup/
-:contact_us: http://www.globus.org/contact-us/
 :transfer: http://www.globus.org/xfer/StartTransfer#/
 
 // Other sites
@@ -74,7 +73,7 @@ non-profit users for many years to come.
 
 Confirm that the prerequisites listed in this section are met before you 
 begin to install Globus Connect Server on your system.
-Please {contact_us}[contact us] if you have problems understanding
+Please xref:where_to_ask_for_help[contact us] if you have problems understanding
 or satisfying the prerequisites.
 
 === Supported Linux distributions
@@ -123,7 +122,7 @@ $ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
 If you get a message of the form '`** server can't find ep1.transfer.globus.org: NXDOMAIN'',
 your system's hostname is not resolvable via public DNS, and you need to 
 resolve the issue before continuing with the installation. 
-{contact_us}[Contact us] if you need assistance.
+xref:where_to_ask_for_help[Contact us] if you need assistance.
 
 Some sites use network address translation (NAT) with a private
 internal IP, private internal DNS, and a public DNS tied to a public
@@ -336,6 +335,12 @@ for details.
 ==== +RestrictPaths+ option
 This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this endpoint. By default, all paths are enabled for access. 
 
+==== +Sharing+ option - link:{provider_plans}[*Provider Plan*] feature
+This is a boolean value that determines if sharing is enabled on this particular endpoint. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
+
+==== +SharingRestrictPaths+ option - link:{provider_plans}[*Provider Plan*] feature
+This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a Shared Endpoint through Globus, the Sharing Restrict Paths can only set further access restrictions to the Endpoint Owner’s local unix file system permissions.  Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
+
 === [MyProxy] section
 
 ==== +Server+ option
@@ -448,6 +453,7 @@ ServerBehindNAT = True
 
 == Generating and Monitoring Log Files
 
+[[gridftp_server_log_files]]
 === GridFTP Server Log Files
 
 On recent versions of Globus Connect Server, the GridFTP log is located at:
@@ -483,6 +489,7 @@ At this point, the GridFTP server will log all ERROR and WARN events to the
  `/var/log/gridftp.log` file. Additional details concerning logging for the 
 GridFTP server are available in the `globus-gridftp-server` man page link:man/globus-gridftp-server/[here].
 
+[[myproxy_server_log_files]]
 === MyProxy Server Log Files
 
 By default, the MyProxy server logs events to the LOG_DAEMON facility. This 
@@ -537,7 +544,70 @@ and simplify troubleshooting.
 ==== Testing Basic Endpoint Functionality
 One important test to run to verify endpoint health is to check that the endpoint is able to properly conduct transfers to and from other endpoints. Globus maintains two test endpoints (go#ep1 and go#ep2) which are always available that users can leverage to test the functionality of their own endpoints. A good test is to attempt to transfer the contents of the `/share/godata/` directory on the go#ep1 endpoint to your own endpoint. After that, attempt to transfer those same files to the `/~/` directory on the go#ep2 endpoint. If these tests work, then you know that your endpoint is functional and is able to transfer files. For more detailed instructions on how to use the Globus service to transfer files, see link:https://www.globus.org/researchers/getting-started[here].
 
-=== Support Tickets
+==== Verifying globus-gridftp-server Service Is Running
+Another important test to run on servers hosting a Globus endpoint is to verify that the 
+globus-gridftp-server service has properly started and is running. One thing to check is to use the `ps` command to see if there is an instance of globus-gridftp-server running:
+
+----terminal
+# ps aux | grep globus-gridftp-server
+root       604  0.0  0.7  97924  7312 ?        Ss   14:18   0:00 /usr/sbin/globus-gridftp-server -c /etc/gridftp.conf -C /etc/gridftp.d -pidfile /var/run/globus-gridftp-server.pid -no-detach -config-base-path /
+----terminal
+
+If you do not see an instance of globus-gridftp-server running, then the service has not started. You can try to start it by running the `globus-connect-server-setup` command and then checking to see if an instance of globus-gridftp-server appears in the `ps` output. If you still don't see an instance of globus-gridftp-server running after using the `globus-connect-server-setup` command, you can take a look in the xref:gridftp_server_log_files[logs] for clues as to what might be wrong.
+
+Provided that there is an instance of globus-gridftp-server running, you can then check to see if you can at least connect to it locally via the `telnet` command: 
+
+----terminal
+# telnet 127.0.0.1 2811
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+220 ip-172-31-31-13.us-west-2.compute.internal GridFTP Server 7.26 (gcc64, 1433516164-85) [Globus Toolkit 6.0.1428430525 GCS-4.0.18] ready.
+----terminal
+
+If there is an instance of globus-gridftp-server running, but you can't connect locally, then there is probably a local firewall rule on the server that is interfering with your attempt to connect. If you are successful with this test, then try it again using the public FQDN associated with your server and see if that works as well. If you're not able to connect when using the public FQDN, then you may have a firewall issue or a name resolution issue that is preventing you from being able to connect properly.
+
+==== Verifying myproxy-server Service Is Running
+Another important test to run on servers hosting a Globus endpoint is to verify that the 
+myproxy-server service has properly started and is running. Not all endpoints will use the MyProxy service, so this test is only useful if your endpoint uses MyProxy for endpoint authentication. One thing to check is to use the `ps` command to see if there is an instance of myproxy-server running:
+
+----terminal
+# ps aux | grep myproxy-server
+root       602  0.0  0.1 110812  1112 ?        S    14:18   0:00 /usr/sbin/myproxy-server -s /var/lib/myproxy -c /var/lib/globus-connect-server/myproxy-server.conf -s /var/lib/globus-connect-server/myproxy-ca/store
+----terminal
+
+If you do not see an instance of myproxy-server running, then the service has not started. You can try to start it by running the `globus-connect-server-setup` command and then checking to see if an instance of myproxy-server appears in the `ps` output. If you still don't see an instance of globus-gridftp-server running after using the `globus-connect-server-setup` command, you can take a look in the xref:myproxy_server_log_files[logs] for clues as to what might be wrong.
+
+Provided that there is an instance of myproxy-server running, you can then check to see if you can at least connect to it locally via the `telnet` command:
+
+----terminal
+# telnet 127.0.0.1 7512
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+type something here and hit enter
+VERSION=MYPROXYv2
+RESPONSE=1
+ERROR=authentication failed
+Connection closed by foreign host.
+----terminal
+
+If there is an instance of myproxy-server running, but you can't connect locally, then there is probably a local firewall rule on the server that is interfering with your attempt to connect. If you are successful with this test, then try it again using the public FQDN associated with your server and see if that works as well. If you're not able to connect when using the public FQDN, then you may have a firewall issue or a name resolution issue that is preventing you from being able to connect properly.
+
+[[where_to_ask_for_help]]
+=== Where to ask for help
+
+==== Globus Mailing List
+Questions or issues that pertain to the Globus Toolkit components that are not relevant to the globus.org SaaS or PaaS offering should be submitted to the gt-user@lists.globus.org email list. Some examples of issues that should be directed to gt-user@lists.globus.org:
+
+- using custom MyProxy PAM modules e.g. LDAP with Globus Connect Server
+- GridFTP DSIs
+- compiling custom software against the Globus Toolkit
+- custom compiled versions of software in the Globus Toolkit
+
+==== Globus Support
+Questions or issues pertaining to any client or service that is used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to support@globus.org to create a ticket.
+
 When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server please 
 include the endpoint name, a description of your issue, and screenshot/text 
 dumps of any errors you are seeing.
@@ -558,12 +628,10 @@ grep -v "\^$\|^;" /etc/globus-connect-server.conf
 
 [[sharing_section]]
 == Sharing
-
-Sharing goes here
+Sharing is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that makes it very simple to share particular folders on an existing endpoint with other Globus users. You can read more about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. Instruction on how to create a share on an exiting managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
 
 == Management Console
-
-MC goes here
+The Management Console is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that provides a graphical web interface used to monitor activity on Endpoints, as well as to identify and troubleshoot faults that may indicate underlying infrastructure issues. An organization’s Provider Plan support contact(s) make the decision who has access to the Management Console. You can read more about the details and benefits of the Management Console link:https://globus.org/blog/globus-management-console[here].
 
 :numbered!:
 
