@@ -576,7 +576,7 @@ myproxy-server service has properly started and is running. Not all endpoints wi
 root       602  0.0  0.1 110812  1112 ?        S    14:18   0:00 /usr/sbin/myproxy-server -s /var/lib/myproxy -c /var/lib/globus-connect-server/myproxy-server.conf -s /var/lib/globus-connect-server/myproxy-ca/store
 ----terminal
 
-If you do not see an instance of myproxy-server running, then the service has not started. You can try to start it by running the `globus-connect-server-setup` command and then checking to see if an instance of myproxy-server appears in the `ps` output. If you still don't see an instance of globus-gridftp-server running after using the `globus-connect-server-setup` command, you can take a look in the xref:myproxy_server_log_files[logs] for clues as to what might be wrong.
+If you do not see an instance of myproxy-server running, then the service has not started. You can try to start it by running the `globus-connect-server-setup` command and then checking to see if an instance of myproxy-server appears in the `ps` output. If you still don't see an instance of myproxy-server running after using the `globus-connect-server-setup` command, you can take a look in the xref:myproxy_server_log_files[logs] for clues as to what might be wrong.
 
 Provided that there is an instance of myproxy-server running, you can then check to see if you can at least connect to it locally via the `telnet` command:
 
