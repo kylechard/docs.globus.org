@@ -1,21 +1,19 @@
 ---
-full_title: "Transfer API – v0.10"
-short_title: "v0.10"
+menu_weight: 0
 ---
 
-= Transfer API – v0.10
+= API Overview 
 :toc:
-:toc-placement: manual
-:toc-title: Contents
+:toclevels: 3
+:numbered:
 
-[doc-info]*Last Updated: {docdate}*
+ifdef::env-github[:outfilesuffix: .adoc]
 
-This API provides a REST-style interface to the
-link:http://www.globus.org[globus] reliable file transfer service.
-The API is still in beta and is subject to change.
-
-'''
+// See https://github.com/jbake-org/jbake/issues/80, github requires
+// going through hoops to get the TOC to render.
+ifdef::env-github[]
 toc::[]
+endif::[]
 
 == Overview
 
@@ -29,18 +27,9 @@ standard status codes.
 
 === Authentication
 
-The Transfer API supports two types of authentication: Globus Goauth and SSL
-client auth. Goauth supports an OAuth 2.0 compatibile redirection workflow, and
-a client credential workflow.
-
-SSL client auth is most useful for portal integration when the portal already
-has access to an X.509 credential for each user and the users are
-pre-registered with Globus, or where a single Globus community
-identity is used for all portal users. For other portals, the OAuth workflow
-is available.
-
-The simplest method to use for development is GOAuth with the client credential
-workflow. This is also appropriate for thick clients, like a trusted Java
+Authentication to the Transfer API requires using the Goauth Nexus API to
+obtain credentials. Goauth supports an OAuth 2.0 compatibile redirection
+workflow, and a client credential workflow.
 
 ==== Globus Goauth: Client Credential
 
@@ -60,9 +49,10 @@ auth over SSL using your Globus username and password:
 
 Using the curl command line program with a prompt for your password:
 
-----terminal
-$ curl --user [input]#USERNAME# \'https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials'
-----terminal
+----------------------
+curl --user exampleuser \
+ 'https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials'
+----------------------
 
 Make sure that your https client program or library verifies the server
 certificate to authenticate the server, ensuring that the password is only sent
@@ -71,7 +61,6 @@ httplib does not verify the server certificate.
 
 The Nexus token service returns a JSON document with the following format:
 
-[source,javascript]
 ----
     {"access_token": "un=USERNAME|tokenid=...",
      "access_token_hash": "...",
@@ -92,11 +81,10 @@ custom method +Globus-Goauthtoken+:
 
     Authorization: Globus-Goauthtoken un=USERNAME|tokenid=...
 
-You can test this by copying the +access_token+ value from the Nexus response
-to a file, for example [uservars]#/tmp/goauth-token.secret#, and then passing it to
-curl with the -H option:
+You can test this by copying the `access_token` value from the Nexus
+response to a file, for example `/tmp/goauth-token.secret`, and then
+passing it to curl with the -H option:
 
-[source,bash]
 ----
 TOKEN=$(cat /tmp/goauth-token.secret)
 curl -H "Authorization : Globus-Goauthtoken $TOKEN" \
@@ -125,109 +113,12 @@ the same way as for the client credential workflow (in the Authorization
 header). For more information about using OAuth please contact us on the
 mailing list.
 
-==== SSL Authentication
-
-SSL authentication requires an X.509 credential signed by a CA trusted
-by Globus, and associated with the user's Globus
-account. If you can login to cli.globusonline.org using
-this credential with gsissh, like this:
-
-----terminal
-$ gsissh [input]#USERNAME#@cli.globusonline.org -o PubkeyAuthentication=no
-----terminal
-
-then it should also work for the Transfer
-API. RFC3820 proxy certificates based on your account certificate
-are also supported.
-
-The X.509 certificate must be passed for standard SSL client
-authentication. An +X-Transfer-API-X509-User+ header
-or an +x509-user+ cookie is also required to specify which
-Globus username to sign in as, since a user could have
-multiple accounts associated with the same certificate DN.
-
-Here is an example using curl and standard globus toolkit certificate
-locations; replace [uservars]#USERNAME# with your globus username.
-
-----terminal
-$ curl --cert \~/.globus/usercert.pem \
-   --key ~/.globus/userkey.pem \
-   --header "X-Transfer-API-X509-User: [input]#USERNAME#" \
-   [comment]### or --cookie "x509-user=USERNAME" \ ##
-   \'https://transfer.api.globusonline.org/__TRANSFER_VERSION__/tasksummary\'
-----terminal
-
-===== Browser Setup
-
-In order to access the API directly with your web browser, you need to install your certificate and
-key in your browser. This is not necessary to use the API with a standard
-client, but it's useful for experimenting with the API.
-
-For firefox, you will first need to convert your key to pkcs12:
-
-----terminal
-[comment]#You will be prompted for a passphrase; when you import the p12 into
-a browser you will be prompted again. A strong passphrase is
-recommended if you are going to keep the p12 and copy it to different
-machines; if you are just going to delete it afterwards, there is a
--nodes option to disable the key encryption.#
-
-$ openssl pkcs12 -export \
--in \~/.globus/usercert.pem \
--inkey \~/.globus/userkey.pem \
--out ~/.globus/usercred.p12
-
-[comment]#Import into firefox.
-
-If you used -nodes, remove the p12.#
-----terminal
-
-To import the p12 into firefox, go to the preference dialog
-(+Edit->Preferences+ in Linux), choose +Advanced+,
-+Encryption+, and then +View Certificates+. Choose
-the +Your Certificates+ tab and +Import..+ the p12
-you just created. Consider deleting the p12 file if you used the
-+-nodes+ option while exporting.
-
-===== Troubleshooting
-
-Here are some common SSL errors and what they mean:
-
-* [error]#SSL3_READ_BYTES:tlsv1 alert unknown ca#
-+
-This means that the client certificate used for authentication is signed by
-a certificate authority (CA) that is not trusted by Globus.  Globus
-Online trusts all CAs in IGTF and several others. If you have different
-grid certificate, try adding that to your profile and using it to
-authenticate to the API. Otherwise
-link:https://www.globus.org/support/[contact support]
-with any information you
-have about your CA - e.g. the subject, why it's not in IGTF,
-and what it's used for. If you have Globus Toolkit installed, sending
-us the output of grid-cert-info is very helpful.
-
-* [error]#SSL3_GET_SERVER_CERTIFICATE:certificate verify failed#
-+
-This means that the client was unable to verify the server certificate.
-The Transfer API server certificate is signed by the InCommon CA -
-most browsers should trust it by default. If not you can download
-the CA directly from
-link:https://spaces.internet2.edu/display/InCCollaborate/InCommon+Cert+Types#InCommonCertTypes-SSL%2FTLSCertificates[InCommon]. In particular you will need
-AddTrust External CA Root.
-
-If you need further assistance or encounter other errors,
-send a message to the transfer-api mailing list
-link:http://lists.globusonline.org/mailman/listinfo/transfer-api[mailing list]
-for support.
-
 === Terminology
 
 ==== Transfer Terminology
 
 * *task* - a batch of file transfers operations that were submitted together,
   identified by an ID string.
-* *subtask* - an inividual file transfer operation, such as copying a single
-  file or expanding a directory.
 * *endpoint* - a bookmark for a gridftp server (or other file transfer
   source / destination), with a convenient name. Full endpoint names
   (called the canonical name) are of the form USERNAME#NAME, where
@@ -273,7 +164,7 @@ versions of the API.
 
 === Paged Lists
 
-The task_list, subtask_list, event_list, and endpoint_list
+The task_list, event_list, and endpoint_list
 link:https://transfer.api.globusonline.org/v0.10/resource_list?format=html&fields=name,method,self_link,url_patterns&filter=paging:True[resources]
 are all paged, with a default page size of 10. If you call them without
 any query paremeters, you will only get the first 10 records. Getting
@@ -317,7 +208,6 @@ selection). In extreme cases a plaintext or [error]#html 500# error may be retur
 this indicates a bug in the API or a deployment issue. Here is an example error
 returned when a property name in the fields query parameter is mispelled:
 
-[source,javascript]
 ----
 {
   "message": "'task' resource has no property 'request_tiem'",
@@ -368,7 +258,6 @@ the BASE_URL should be set in one place and re-used, not hard coded
 into each request. The actual raw HTTP request will typically include many
 headers:
 
-[source,bash]
 ----
 GET /__TRANSFER_VERSION__/tasksummary HTTP/1.1
 Host: transfer.api.globusonline.org
@@ -389,7 +278,6 @@ For examples that involve sending data, the body is included inline, just
 like it would be in an HTTP request. For example endpoint creation is
 described like this:
 
-[source,bash]
 ----
 POST /endpoint
 Content-Type: application/json
@@ -432,7 +320,6 @@ Lists the first 10 tasks belonging to the currently logged in user, showing
 only the task_id and request_time fields, ordered by request_time
 (ascending/oldest first).
 +
-[source,json]
 ----
 200 OK
 X-Transfer-API-Version: 0.10
@@ -464,89 +351,17 @@ Content-Type: application/json
 }
 ----
 
-* Subtask list.
-  (link:https://transfer.api.globusonline.org/v0.10/resource/task_subtask_list?format=html[Reference])
-+
-    GET /task/3949cec8-7cc8-11e0-82be-12313932c1e0/subtask_list
-+
-List all subtasks under the top level task with ID specified in the parentheses after 'task'.
-+
-[source,json]
-----
-200 OK
-X-Transfer-API-Version: 0.10
-Content-Type: application/json
-
-{
-  "DATA_TYPE": "subtask_list",
-  "length": 1,
-  "limit": "10",
-  "offset": "0",
-  "total": "1",
-  "DATA": [
-    {
-      "status": "SUCCEEDED",
-      "parent_link": {
-        "href": "task/3949cec8-7cc8-11e0-82be-12313932c1e0?format=json",
-        "resource": "task",
-        "DATA_TYPE": "link",
-        "rel": "parent",
-        "title": "parent task"
-      },
-      "bytes_transferred": 3103,
-      "completion_code": "SUCCEEDED",
-      "DATA_TYPE": "subtask",
-      "task_id": "8cb34a9e-7cc8-11e0-82be-12313932c1e0",
-      "completion_time": "2011-05-12 18:49:25",
-      "event_link": {
-        "href": "subtask/8cb34a9e-7cc8-11e0-82be-12313932c1e0/event_list?format=json",
-        "resource": "event list",
-        "DATA_TYPE": "link",
-        "rel": "child",
-        "title": "child event list"
-      },
-      "destination_path": "/~/copy-ep1-bashrc",
-      "source_path": "/~/.bashrc",
-      "source_endpoint": "go#ep1 (Deleted 2011-06-09 01:12:28)",
-      "destination_endpoint": "go#ep2 (Deleted 2011-06-09 01:12:30)",
-      "parent_task_id": "3949cec8-7cc8-11e0-82be-12313932c1e0",
-      "destination_endpoint_link": {
-        "href": "endpoint/go%23ep2%20%28Deleted%202011-06-09%2001%3A12%3A30%29?format=json",
-        "resource": "endpoint",
-        "DATA_TYPE": "link",
-        "rel": "destination",
-        "title": "destination endpoint"
-      },
-      "source_endpoint_link": {
-        "href": "endpoint/go%23ep1%20%28Deleted%202011-06-09%2001%3A12%3A28%29?format=json",
-        "resource": "endpoint",
-        "DATA_TYPE": "link",
-        "rel": "source",
-        "title": "source endpoint"
-      },
-      "faults": 0,
-      "completion_description": "The operation succeeded",
-      "type": "FILE_COPY"
-    }
-  ]
-}
-----
-
 * Event list.
-  (link:https://transfer.api.globusonline.org/v0.10/resource/task_event_list?format=html[Task Reference],
-   link:https://transfer.api.globusonline.org/v0.10/resource/subtask_event_list?format=html[Subtask Reference])
+  (link:https://transfer.api.globusonline.org/v0.10/resource/task_event_list?format=html[Task Reference])
 +
-[source,bash]
 ----
 GET /task/3949cec8-7cc8-11e0-82be-12313932c1e0/event_list
-GET /subtask/8cb34a9e-7cc8-11e0-82be-12313932c1e0/event_list
 ----
 +
-List all events associated with all subtasks of a task, or with a specific
-subtask. Events include starting and finishing the transfer, cancelation,
+List all events associated with a task.
+Events include starting and finishing the transfer, cancelation,
 progress reports of bytes transferred so far, and any errors encountered.
 +
-[source,json]
 ----
 200 OK
 X-Transfer-API-Version: 0.10
@@ -564,13 +379,6 @@ Content-Type: application/json
       "description": "The operation succeeded",
       "DATA_TYPE": "event",
       "parent_task_id": "8cb34a9e-7cc8-11e0-82be-12313932c1e0",
-      "parent_subtask_link": {
-        "href": "subtask/8cb34a9e-7cc8-11e0-82be-12313932c1e0?format=json",
-        "resource": "subtask",
-        "DATA_TYPE": "link",
-        "rel": "parent",
-        "title": "parent subtask"
-      },
       "details": "bytes=3103 mbps=0.000",
       "time": "2011-05-12 18:49:25"
     },
@@ -579,13 +387,6 @@ Content-Type: application/json
       "description": "The operation was started or restarted",
       "DATA_TYPE": "event",
       "parent_task_id": "8cb34a9e-7cc8-11e0-82be-12313932c1e0",
-      "parent_subtask_link": {
-        "href": "subtask/8cb34a9e-7cc8-11e0-82be-12313932c1e0?format=json",
-        "resource": "subtask",
-        "DATA_TYPE": "link",
-        "rel": "parent",
-        "title": "parent subtask"
-      },
       "details": "Starting at offset 0",
       "time": "2011-05-12 18:49:25"
     }
@@ -602,7 +403,6 @@ Content-Type: application/json
 +
 List all endpoints owned by [uservars]#USERNAME#, along with all public endpoints. Note that the results are paged, and only the first 10 results are returned by default; the users own endpoints are sorted first.
 +
-[source,json]
 ----
 200 OK
 X-Transfer-API-Version: 0.10
@@ -688,7 +488,6 @@ Content-Type: application/json
 Note that the endpoint name is \'[uservars]##go#ep1##\', but the \'#' must be percent
 encoded as \'%23', since it is used as the fragment identifier in the url.
 +
-[source,json]
 ----
 200 OK
 X-Transfer-API-Version: 0.10
@@ -729,7 +528,6 @@ Content-Type: application/json
 * Endpoint create.
   (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_create?format=html[Reference])
 +
-[source,json]
 ----
 POST /endpoint
 Content-Type: application/json
@@ -762,7 +560,6 @@ interpreted as "[uservars]##jdoe#myep##".
 myproxy_server is optional, and specifies a default myproxy server to
 use when obtaining a credential for activation.
 +
-[source,json]
 ----
 201 Created
 X-Transfer-API-Version: 0.10
@@ -783,7 +580,6 @@ Content-Type: application/json
 * Globus Connect endpoint create.
   (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_create?format=html[Reference])
 +
-[source,json]
 ----
 POST /endpoint
 Content-Type: application/json
@@ -798,7 +594,6 @@ Content-Type: application/json
 +
 To complete installation of globus connect, you must enter the setup key, which you get from the create response:
 +
-[source,json]
 ----
 201 Created
 Content-Type: application/json
@@ -820,7 +615,6 @@ The +globus_connect_setup_key+ will also be available in the endpoint representa
 * Endpoint update.
   (link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_update_create?format=html[Reference])
 +
-[source,json]
 ----
 PUT /endpoint/USERNAME#ENDPOINT_NAME
 Content-Type: application/json
@@ -844,7 +638,6 @@ Note that the name is in the URL, not the representation itself. Renaming is als
 +
 Endpoint creation via PUT is also allowed, but this behavior is deprecated. In the next release using PUT on an endpoint name that does not exist will return an error.
 +
-[source,json]
 ----
 200 OK
 X-Transfer-API-Version: 0.10
@@ -950,7 +743,6 @@ To create a directory on an endpoint, submit a
 link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir?format=html[mkdir] document to link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_mkdir?format=html[POST
 /endpoint/NAME/mkdir] (where [uservars]#NAME# is the endpoint name):
 
-[source,json]
 ----
 {
   "path": "/~/newdir",
@@ -965,7 +757,6 @@ A standard error document is returned on failure; on sucess a
 link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir_result?format=html[mkdir_result] is returned, with status 202
 and code +DirectoryCreated+:
 
-[source,json]
 ----
 {
   "message": "The directory was created successfully",
@@ -1004,7 +795,6 @@ The submission id should be saved in case the submission is interrupted before a
 
 The transfer itself is submitted via link:https://transfer.api.globusonline.org/v0.10/resource/transfer?format=html[POST /transfer]:
 
-[source,javascript]
 ----
 {
   "submission_id": "VAwPR1dFRhAHQn93dmd3EkETBSs2ejJnVQRWIyp6YytFUl8O",
@@ -1035,7 +825,6 @@ The transfer itself is submitted via link:https://transfer.api.globusonline.org/
 
 and returns a link:https://transfer.api.globusonline.org/v0.10/document_type/transfer_result?format=html[transfer_result]:
 
-[source,javascript]
 ----
 {
   "submission_id": "UAlfRFdDQEsHQn8tJGd3EkETBStoemJnVQRWIyp6YytFUl8O",
@@ -1080,7 +869,6 @@ happened.
 
 Remote files and directories can be deleted on an endpoint by submitting a link:https://transfer.api.globusonline.org/v0.10/document_type/delete?format=html[delete document] to link:https://transfer.api.globusonline.org/v0.10/resource/delete?format=html[POST /delete]:
 
-[source,javascript]
 ----
 {
   "submission_id": "AA1bFgMUEBgHQn8ufWd3EkETBSgzdGZnAgYBd39zYn0RCANT",
@@ -1112,13 +900,13 @@ To avoid breaking backward compatibility in 0.10, delete tasks are not included 
 
 Most resources support field selection using the +fields+ paramater. List resources support pagination using +limit+ and +offset+, filtering on certain fields using a +filter+ parameter, and sorting on certain fields using +orderby+.
 
+[[paging]]
 === Paging
 
 List resources which link:https://transfer.api.globusonline.org/v0.10/resource?format=html&fields=name,method,self_link,url_patterns&paging=True[use paging] can be controlled with the +offset+ and +limit+ query parameters; the default is [uservars]#offset=0# and [uservars]#limit=10#. A maximum page size is configured on the server, and is currently set at 100. Typical usage involves starting with [uservars]#offset=0#, choosing a page size and passing with +limit=PAGE_SIZE+, and incrementing +offset+ by +PAGE_SIZE+ to display successive pages.
 
 For example, with a page size of 50:
 
-[source,bash]
 ----
 # page 1
 GET /task_list?offset=0&limit=50
@@ -1164,7 +952,6 @@ will display only the +canonical_name+ of each endpoint, and server sub-document
 
 The special name +ALL+ selects all fields at a given level, not including sub-documents. For Example:
 
-[source,bash]
 ----
 # displays only top level endpoint fields; no server sub-documents are
 # included.
@@ -1177,12 +964,3 @@ GET /endpoint_list?fields=ALL,server.uri
 # displays canonical_name, and server sub-documents with all fields.
 GET /endpoint_list?fields=canonical_name,server.ALL
 ----
-
-== API Reference
-
-API reference documentation is exposed via dynamically generated documentation resources. This can be browsed conveniently using the HTML representation:
-
-* link:https://transfer.api.globusonline.org/v0.10/resource_list?format=html&fields=name,method,self_link,url_patterns,description[Resources] - a list of all the resources in the API, describing their purpose, what document types they take as input and return as output, what query parameters they accept, and what errors they can return.
-* link:https://transfer.api.globusonline.org/v0.10/document_type_list?format=html[Document Types] - a list of all the document types used in the API, describing their purpose, and linking to a list of their fields and example representations.
-
-A shortcut for accessing resource path documentation is to append "*/\_doc_*" to a valid resource URL, for example link:https://transfer.api.globusonline.org/v0.10/task/ID/_doc_?format=html[/task/ID/\_doc_] links to +/resource/task+. Patterns that support multiple methods, like link:https://transfer.api.globusonline.org/v0.10/endpoint/NAME/_doc_?format=html[/endpoint/NAME/\_doc_], display links to all the supported operations using that url pattern. When using "/\_doc_", the identifiers in the URL are ignored.
