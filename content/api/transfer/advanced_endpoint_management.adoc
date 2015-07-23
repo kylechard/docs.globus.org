@@ -1,5 +1,5 @@
 ---
-menu_weight: 6
+menu_weight: 7
 ---
 
 = Advanced Endpoint Management

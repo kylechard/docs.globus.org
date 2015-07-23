@@ -1,5 +1,5 @@
 ---
-menu_weight: 7
+menu_weight: 8
 ---
 
 = S3 Integration
