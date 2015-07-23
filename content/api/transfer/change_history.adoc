@@ -1,8 +1,8 @@
 ---
-menu_weight: 8
+menu_weight: 9
 ---
 
-= Transfer API Change History
+= Change History
 :toc:
 :toclevels: 3
 :numbered:
