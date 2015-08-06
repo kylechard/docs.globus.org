@@ -269,6 +269,10 @@ endpoint is ready to be accessed by users with logins on your system.
 
 You (or any user on your system who has signed up for a Globus account) can now access the Globus endpoint you just created by navigating to the Globus link:https://www.globus.org/xfer/StartTransfer[Transfer Files] page. At this point, it's probably a good idea to run a couple of test transfers to ensure the functionality of your endpoint. For instructions on how to do this, click xref:testing_basic_endpoint_functionality[here].
 
+=== Update Globus Endpoint
+
+Improvements to the set of software components that make up Globus Connect Server are updated and released frequently. To stay current, we encourage admins to update your local installation with that from the Globus repo at least every 3 months. The steps for doing this are xref:update_section[here].
+
 == Globus Connect Server Configuration
 
 From the initial (default) installation of Globus Connect Server,
@@ -598,12 +602,10 @@ If there is an instance of myproxy-server running, but you can't connect locally
 === Where to ask for help
 
 ==== Globus Toolkit Mailing List
-Questions or issues that pertain to the Globus Toolkit components that are not relevant to the globus.org SaaS or PaaS offering should be submitted to the gt-user@lists.globus.org email list. Some examples of issues that should be directed to gt-user@lists.globus.org:
+Questions or issues that pertain to the Globus Toolkit components that are not relevant to the globus.org SaaS or PaaS offering should be submitted to the gt-user@lists.globus.org email list. 
 
-- using custom MyProxy PAM modules e.g. LDAP with Globus Connect Server
-- GridFTP DSIs
-- compiling custom software against the Globus Toolkit
-- custom compiled versions of software in the Globus Toolkit
+==== Globus Forums
+The link:https://support.globus.org/[Globus Knowledge Base] contain a wealth of knowledge about Globus services and software. It is often possible to find a solution to many common issues by simply browsing around the Knowledge Base and reading the articles there.
 
 ==== Globus Support
 Questions or issues pertaining to any client or service that is used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to support@globus.org to create a ticket.
@@ -816,6 +818,8 @@ $ sudo zypper update globus-connect-server
 $ sudo apt-get update
 $ sudo apt-get upgrade globus-connect-server
 ----terminal
+
+After updating your packages, be sure to run the `globus-connect-server-setup` command (as root) to restart the services and ensure that the update takes full effect.
 
 [appendix]
 [[upgrade_section]]
