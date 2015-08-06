@@ -424,3 +424,40 @@ code, .uservars {
   clear:both;
 }
 .red { color: red; }
+.more-caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-left: 4px solid;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+}
+/**********************************
+ * GO-Icon
+ **********************************/
+.more-link a {
+    display: block;
+    float: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    position: relative;
+}
+.more-link a:after {
+  background-image: url("../images/sprite_globus_40.png");
+  background-image: -webkit-image-set(url(../images/sprite_globus_40.png) 1x, url(../images/sprite_globus_40@2x.png) 2x);
+  background-repeat: no-repeat;
+  content: "";
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  background-position: -87px -7px;
+  right: -32px;
+  top: -6px;
+  display: inline;
+  float: left;
+}
+.more-link a:hover:after {
+    background-position: -127px -7px;
+}

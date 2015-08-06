@@ -1,4 +1,8 @@
-= Endpoint
+---
+menu_weight: 4
+---
+
+= Endpoint Management
 :toc:
 :toclevels: 3
 :numbered:
