@@ -605,7 +605,7 @@ If there is an instance of myproxy-server running, but you can't connect locally
 Questions or issues that pertain to the Globus Toolkit components that are not relevant to the globus.org SaaS or PaaS offering should be submitted to the gt-user@lists.globus.org email list. 
 
 ==== Globus Forums
-The link:https://support.globus.org/[Globus Knowledge Base] contain a wealth of knowledge about Globus services and software. It is often possible to find a solution to many common issues by simply browsing around the Knowledge Base and reading the articles there.
+The link:https://support.globus.org/[Globus Forums] contain a wealth of knowledge about Globus services and software. It is often possible to find a solution to many common issues by simply browsing around the Forum and reading the articles there. For quickest results, the Globus Forums should be the first place you check when looking for a resolution to any issue you are having with Globus services or software.
 
 ==== Globus Support
 Questions or issues pertaining to any client or service that is used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to support@globus.org to create a ticket.
