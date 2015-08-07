@@ -110,6 +110,18 @@ dd {
 .numbered .sect3 {
     margin-left: 30px;
 }
+.imageblock {
+  margin: 20px 0;
+  text-align: center;
+}
+.imageblock img {
+  border: solid 1px #ccc;
+}
+.imageblock .content + .title {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
 
 /* ToC */
 #toctitle {
