@@ -1,5 +1,5 @@
 = Globus Resource Provider Guide
-:revnumber: 0.0.2c
+:revnumber: 0.0.2d
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -27,7 +27,7 @@ toc::[]
 Globus allows you, as a resource provider, to easily offer reliable, secure,
 high-performance research data management capabilities to your users
 and their collaborators, directly from your own storage.
-Globus is software as a service (SaaS), enabled by the cloud and
+Globus is software-as-a-service (SaaS), enabled by the cloud and
 designed to let users manage their research files,
 regardless of number and size,
 as effortlessly as they manage their photos with popular cloud-based services.
@@ -73,7 +73,7 @@ non-profit users for many years to come.
 
 Confirm that the prerequisites listed in this section are met before you 
 begin to install Globus Connect Server on your system.
-Please xref:where_to_ask_for_help[contact us] if you have problems understanding
+Please xref:contact-us[contact us] if you have problems understanding
 or satisfying the prerequisites.
 
 === Supported Linux distributions
@@ -122,12 +122,13 @@ $ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
 If you get a message of the form '`** server can't find ep1.transfer.globus.org: NXDOMAIN'',
 your system's hostname is not resolvable via public DNS, and you need to 
 resolve the issue before continuing with the installation. 
-xref:where_to_ask_for_help[Contact us] if you need assistance.
+xref:contact-us[Contact us] if you need assistance.
 
 Some sites use network address translation (NAT) with a private
 internal IP, private internal DNS, and a public DNS tied to a public
 IP that gets forwarded to the private IP by the firewall/router.
-Globus can be successfully installed at these sites, but, you will need to the edit the configuration file (a default config will not work). Please see the xref:nat_section[NAT] section if your site uses NAT.
+Globus can be successfully installed at these sites, but, you will need to the edit the 
+configuration file (a default config will not work). Please see the xref:nat_section[NAT] section if your site uses NAT.
 
 [[open-tcp-ports]]
 === Open TCP ports
@@ -598,23 +599,29 @@ Connection closed by foreign host.
 
 If there is an instance of myproxy-server running, but you can't connect locally, then there is probably a local firewall rule on the server that is interfering with your attempt to connect. If you are successful with this test, then try it again using the public FQDN associated with your server and see if that works as well. If you're not able to connect when using the public FQDN, then you may have a firewall issue or a name resolution issue that is preventing you from being able to connect properly.
 
-[[where_to_ask_for_help]]
-=== Where to ask for help
+[[globus-help-resources]]
+=== Globus Help Resources
 
-==== Globus Toolkit Mailing List
-Questions or issues that pertain to the Globus Toolkit components that are not relevant to the globus.org SaaS or PaaS offering should be submitted to the gt-user@lists.globus.org email list. 
+==== Globus Knowledge Base and Forums
+The link:https://support.globus.org/[Globus Knowledge Base and Forums] contain a wealth of information about 
+Globus services and software. 
+Many common issues can be resolved quickly by searching or browsing these resources and reading 
+the relevant articles. 
+We recommend consulting the Globus Knowledge Base and Forums first when looking for fast resolution to any issue you are having with Globus services or software.
 
-==== Globus Forums
-The link:https://support.globus.org/[Globus Forums] contain a wealth of knowledge about Globus services and software. It is often possible to find a solution to many common issues by simply browsing around the Forum and reading the articles there. For quickest results, the Globus Forums should be the first place you check when looking for a resolution to any issue you are having with Globus services or software.
-
+[[contact-us]]
 ==== Globus Support
-Questions or issues pertaining to any client or service that is used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to support@globus.org to create a ticket.
+Questions or issues that pertain to 
+Globus Connect Server installation
+or to any client or service that is 
+used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering
+can be directed to the Globus support team by submitting a link:https://www.globus.org/contact-us[ticket].
+{provider_plans}[Provider Plan subscribers] have a guaranteed support service level as part of their subscription.
 
-When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server please 
+When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server, please 
 include the endpoint name, a description of your issue, and screenshot/text 
 dumps of any errors you are seeing.
-
-Please also include the outputs of the following commands, run as root 
+Please also include the output of the following commands, run as root, 
 from the server hosting the GCS endpoint:
 
 ----terminal
@@ -627,6 +634,11 @@ cat /etc/gridftp.conf
 globus-gridftp-server --version
 grep -v "\^$\|^;" /etc/globus-connect-server.conf
 ----terminal
+
+==== Globus Toolkit Mailing List
+Questions or issues that pertain to Globus Toolkit components that are not relevant to the globus.org·
+software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to the·
+gt-user@lists.globus.org email list.·
 
 [[sharing_section]]
 == Sharing
