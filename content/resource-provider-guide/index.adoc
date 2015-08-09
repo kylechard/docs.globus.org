@@ -1,5 +1,5 @@
 = Globus Resource Provider Guide
-:revnumber: 0.0.2e
+:revnumber: 0.0.2f
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -100,7 +100,8 @@ with standard time servers, is running on your system.
 === Internet-accessible system
 Before you can install Globus Connect Server onto a server, you must ensure that 
 other hosts on the Internet can initiate connections to your server. If your 
-server is NATed then xref:nat_section[see below]. Otherwise, you must ensure that your server
+server is behind a network address translation (NAT) firewall/router, then xref:nat_section[see below]. 
+Otherwise, you must ensure that your server
 is assigned a publicly resolvable DNS name that points to a public IP address that is properly assigned to your server. 
 
 ==== Check hostname local DNS resolution
@@ -109,12 +110,12 @@ on the system where you plan to install Globus Connect Server:
 ----terminal
 $ hostname -f
 ----terminal
-Confirm that a fully qualified domain name (FQDN) is returned, e.g. ep1.transfer.globus.org.
+Confirm that a fully qualified domain name (FQDN) is returned (e.g., ep1.transfer.globus.org).
 
 ==== Check hostname external DNS resolution
 Next, use a public DNS server operated by a different organization to
 verify that the returned FQDN is publicly resolvable.
-More concretely, you could use `nslookup` to check that your server's 
+More concretely, you can use `nslookup` to check that your server's 
 FQDN resolves against one of Google's public DNS servers:
 ----terminal
 $ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
@@ -132,10 +133,8 @@ configuration file (a default config will not work). Please see the xref:nat_sec
 
 [[open-tcp-ports]]
 === Open TCP ports
-If your system is behind a firewall, TCP ports must be open as specified 
-for Globus to work.
-The default Globus Connect Server installation requires these TCP
-ports be open:
+If your system is behind a firewall, specified TCP ports must be open for Globus to work.
+The default Globus Connect Server installation requires these TCP ports be open:
 
 - Port 2811 inbound from 184.73.189.163 and 174.129.226.69
 * This is for GridFTP control channel traffic
@@ -145,12 +144,12 @@ ports be open:
 proxied/intermediated by Globus servers
 * We strongly recommend the use of the default range (read why xref:data_channel_traffic[here])
 - Port 2223 outbound to 184.73.255.160
-* This is to pull cert info from our backend
+* This is to pull cert information from our backend
 - Port 443 outbound to nexus.api.globusonline.org and 174.129.226.69
+* This is to communicate with our REST API
 * nexus.api.globusonline.org is a CNAME for an Amazon 
 link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
 in the ELB are subject to change
-* This is to communicate with our REST API
 - Port 80 outbound to 192.5.186.47
 * This is to pull packages from our repo
 - Port 7512 inbound from 174.129.226.69
@@ -246,13 +245,13 @@ $ sudo apt-get install globus-connect-server
 
 === Create Globus Endpoint
 Before creating your Globus endpoint,
-edit the Globus Connect Server configuration file, installed at
-+/etc/globus-connect-server.conf+,
-and make two changes so that authorized users can find and access your endpoint.
-The first thing you need to do is to choose a suitable xref:endpoint-name-anchor[endpoint name]. Next, edit the Globus Connect Server configuration file, installed at /etc/globus-connect-server.conf and set the Name to what you chose and set Public to true like in the example below:
+choose a suitable second part for your xref:endpoint-name-anchor[endpoint name]. 
+Then, edit the Globus Connect Server configuration file installed at /etc/globus-connect-server.conf,
+set Name to your choice (geosciences in the example shown), and Public to True.
+These two changes will allow authorized users to find and access your endpoint.
 ----
 [Endpoint]
-Name = ep1
+Name = geosciences
 Public = True
 ----
 
@@ -262,17 +261,21 @@ $ sudo globus-connect-server-setup
 ----terminal
 
 When prompted, enter the Globus username and password for your
-organization's Globus account.
+xref:organization-account-anchor[organization's Globus account].
 When the +globus-connect-server-setup+ command completes, your Globus
 endpoint is ready to be accessed by users with logins on your system.
 
 === Access Globus Endpoint
 
-You (or any user on your system who has signed up for a Globus account) can now access the Globus endpoint you just created by navigating to the Globus link:https://www.globus.org/xfer/StartTransfer[Transfer Files] page. At this point, it's probably a good idea to run a couple of test transfers to ensure the functionality of your endpoint. For instructions on how to do this, click xref:test_basic_endpoint_functionality[here].
+You (or any user on your system who has signed up for a Globus account) should now be able to access the Globus endpoint you just created by navigating to the Globus link:https://www.globus.org/xfer/StartTransfer[Transfer Files] page. 
+We recommend that you confirm your endpoint is functioning properly by running a couple of test transfers, as described 
+xref:test_basic_endpoint_functionality[here].
 
 === Update Globus Endpoint
 
-Improvements to the set of software components that make up Globus Connect Server are updated and released frequently. To stay current, we encourage admins to update your local installation with that from the Globus repo at least every 3 months. The steps for doing this are xref:update_section[here].
+The set of software components that make up Globus Connect Server are improved and released on an ongoing basis. 
+To stay current, we encourage you to update your local installation from the Globus repo at least every 3 months. 
+The steps for doing an update are found xref:update_section[here].
 
 == Globus Connect Server Configuration
 
@@ -334,7 +337,7 @@ match the hostname of the server except, possibly, if NAT is being used. Can
 be left blank if you don't want to configure a GridFTP server on this host.
 
 ==== +ServerBehindNAT+ option
-This option specifies that the server is NATed. See the xref:nat_section[NAT] section 
+This option specifies that the server is behind a NAT firewall/router. See the xref:nat_section[NAT] section 
 for details.
 
 ==== +RestrictPaths+ option
@@ -397,7 +400,7 @@ ServerBehindNAT = True
 ----
 
 ==== Using GridFTP with Firewall Port Restrictions
-To use a GridFTP server with a firewall with incoming and/or outgoing port restrictions, use the IncomingPortRange and OutgoingPortRange configuration options. The former restricts the TCP port range that the GridFTP server listens on for ephemeral connections to a port range. The OutgoingPortRange restricts the TCP source port range that the GridFTP server uses when creating outgoing data connection sockets. For both of these items, the syntax of the port range is startport,endport, e.g. 50000,51000.
+To use a GridFTP server with a firewall with incoming and/or outgoing port restrictions, use the IncomingPortRange and OutgoingPortRange configuration options. The former restricts the TCP port range that the GridFTP server listens on for ephemeral connections to a port range. The OutgoingPortRange restricts the TCP source port range that the GridFTP server uses when creating outgoing data connection sockets. For both of these items, the syntax of the port range is startport,endport (e.g., 50000,51000).
 
 ==== Port Restrictions Example
 As an example, this configures the GridFTP server to listen for TCP connections on ports from 4000 to 5000 instead of the default 50000 to 51000. This will require configuration on the firewall to allow those ports to connect directly to the I/O node.
@@ -545,11 +548,11 @@ These tests can help you narrow down the potential causes of the issue and simpl
 
 [[test_basic_endpoint_functionality]]
 ==== Test Basic Endpoint Functionality
-One important check to verify endpoint health is to confirm that the endpoint is able to successfully conduct transfers to and from other endpoints.
+An important verification of endpoint health is to confirm that the endpoint is able to successfully participate in transfers from and to other endpoints.
 Globus maintains two test endpoints, go#ep1 and go#ep2, that are always available for users to access when checking the functionality of their own endpoints.
-A good test is to attempt to transfer the contents of the `/share/godata/` directory on the go#ep1 endpoint to your own endpoint. 
+First, attempt to transfer the contents of the `/share/godata/` directory on the go#ep1 endpoint to your own endpoint. 
 After that, attempt to transfer those same files to the `/~/` directory on the go#ep2 endpoint. 
-If these tests succeed, then you know that your endpoint is functional and is able to serve as the destination and source of transfers. 
+If these tests both succeed, then your endpoint is functional and able to serve as the destination and the source of transfers. 
 For more detailed instructions on how to use the Globus service to transfer files, see link:https://www.globus.org/researchers/getting-started[here].
 
 ==== Verify globus-gridftp-server Service 
@@ -627,7 +630,7 @@ Globus Connect Server installation
 or to any client or service that is 
 used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering
 can be directed to the Globus support team by submitting a link:https://www.globus.org/contact-us[ticket].
-{provider_plans}[Provider Plan subscribers] have a guaranteed support service level as part of their subscription.
+link:{provider_plans}[*Provider Plan*] subscriptions come with a guaranteed support service level.
 
 When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server, please 
 include the endpoint name, a description of your issue, and screenshot/text 
@@ -918,19 +921,18 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   etc... Much of the information in the endpoint definition is sent to Globus when the 
   globus-connect-server-setup command is run.
 [[endpoint-name-anchor]]Endpoint Name::
-  The name of your endpoint uniquely identifies it and allows others to 
-  search for and find your endpoint via the Globus service. A full endpoint 
+  The name of your endpoint uniquely identifies it among all Globus endpoints 
+  and allows others to search for and find your endpoint via the Globus service. A full endpoint 
   name takes the form of: ORGANIZATION_ACCOUNT_NAME#UNIQUE_SHORT_NAME.
-  As shown, the first part of an endpoint's full name is the name of the
+  As indicated, the first part of an endpoint's full name is the name of the
   xref:organization-account-anchor[organization account] that was used to 
-  create it. The first part of the name will be the same for all endpoints 
+  create the endpoint. The first part of the endpoint name will be the same for all endpoints 
   in your organization. The second part of the endpoint name will be unique 
-  within your organization to that particular endpoint. It is a good idea to 
-  pick the second part of the name to be something descriptive to the purpose 
-  of the endpoint, so as to make it easier for users to search for and find
-  the endpoint they are looking for. For example, if ABC University (with an 
-  organization account name of "abcu") had a geosciences related endpoint, they 
-  might name it something such as: abcu#geosciences.
+  within your organization. It is a good idea choose something that describes
+  the purpose of the endpoint as the second part of the endpoint name;
+  doing so makes it easier for users to find the particular endpoint they are looking for. 
+  For example, if ABC University (with an organization account name of "abcu") had a geosciences-related endpoint, 
+  they might name it abcu#geosciences.
 [[gridftp-anchor]]GridFTP::
   GridFTP is an extension of the standard File Transfer Protocol (FTP)
   for high-speed, reliable, and secure data transfer.
