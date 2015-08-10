@@ -89,6 +89,7 @@ aside.sidebar-block .nav .nav .nav .nav>li.active>a:focus {
 aside.sidebar-block .panel-heading {
     background-color: transparent;
     position: relative;
+    padding: 0;
 }
 aside.sidebar-block .panel-heading:last-child {
     border-bottom: 0;
@@ -97,10 +98,26 @@ aside.sidebar-block .panel-heading a {
     display: block;
     font-weight: 600;
     color: #555;
+    padding: 10px 15px;
+}
+aside.sidebar-block .panel-heading a.active {
+    background-color: #428bca;  
+    color: #fff;
+}
+aside.sidebar-block .panel-heading a.active + a.caret span.caret {
+    border-left-color: #fff;
+}
+aside.sidebar-block .panel-heading a.active + a.caret.open span.caret {
+    border-left-color:transparent;
+    border-top-color: #fff;
 }
 aside.sidebar-block .panel-heading a:hover {
     text-decoration: none;
     color: #06c;
+}
+aside.sidebar-block .panel-heading a.active:hover {
+    text-decoration: none;
+    color: #fff;
 }
 aside.sidebar-block .panel-heading a.caret {
     border-top: 0;
@@ -337,14 +354,16 @@ body,
 .st-menu .panel > .panel-heading {
     border-top: solid 1px #092b5d;
 }
+.st-menu .panel > .panel-heading a.active {
+    background-color: #428bca; 
+}
 .panel-heading a.caret {
     position: absolute;
     z-index: 999;
     top: 0px;
     right: 0;
-    height: 48px;
+    height: 50px;
     display: inline-block;
-
     text-align: center;
     border: 0;
     box-shadow: none;
@@ -352,14 +371,16 @@ body,
 .st-menu .panel-heading a.caret {
     width: 50px;
     background: #acaca1;
-    background: rgba(0, 0, 0, 0.075);
+    background: rgba(0, 0, 0, 0.045);
 }
 .st-menu .panel-heading:first-child a.caret {
     top: 1px;
 }
-.st-menu .panel-heading a.caret:hover {
+.st-menu .panel-heading a.caret:hover,
+.st-menu .panel-heading a.active + a.caret:hover {
     cursor: pointer;
-    background-color: #092b5d;
+    background-color:#092b5d;
+    background: rgba(0, 0, 0, 0.085);
 }
 .st-menu .panel-heading a.caret span.caret {
     border-bottom: 6px solid transparent;
