@@ -37,6 +37,12 @@ preprocess do
       raw = i.raw_content
       raw.gsub!(/include::include/, 'include::content/cli/reference/include')
     end
+    if i.raw_filename.include?("index")
+      # Change imagesdir variable for index files (since they don't need to look up a directory)
+      raw = i.raw_content
+      raw.gsub!(/(^= )(\w)/, ':imagesdir: .
+\1\2')
+    end
     if i.identifier.start_with?("/site-docs") && i[:extension].split('.').last == 'adoc'
       # Add full path for adoc includes
       raw = i.raw_content

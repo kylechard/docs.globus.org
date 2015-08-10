@@ -152,10 +152,13 @@ aside.sidebar-block .list-group .panel-collapse a:hover {
     background-color: #eee;
 }
 aside.sidebar-block .list-group .panel-collapse a.active {
-    padding-left: 26px;
     border-color: #ddd;
+    /*
+    padding-left: 26px;
     color: #333;
-    border-left: solid 4px #7ab3e4;
+    border-left: solid 4px #7ab3e4;*/
+    color: #fff;
+    background-color: #428bca;    
 }
 .panel-heading+.list-group .list-group-item:first-child {
     border-top-width: 1px;
@@ -308,7 +311,7 @@ body,
     border-bottom: solid 1px #092b5d;
 }
 .st-menu a.list-group-item.active{
-    border-left: solid 5px #2a579a;
+    background-color: #428bca;    
 }
 .st-menu .panel-heading:first-child a {
     border-top: solid 2px #092b5d;
