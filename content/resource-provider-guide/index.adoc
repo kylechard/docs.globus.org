@@ -282,12 +282,15 @@ the +Name+ and +Public+ options in the +[Endpoint]+ section.
 You probably noticed that there are many, many other options
 that can be configured.
 This section briefly covers a few of the most commonly changed
-options in the +globus-connect-server.conf+ file. A detailed 
-description of each option can be found 
-link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[here]. After updating settings in the 
+options in the +globus-connect-server.conf+ file. After updating settings in the 
 +/etc/globus-connect-server.conf+ file you must run the 
 `globus-connect-server-setup` command (as root) before the settings
 will take effect on your endpoint.
+
+[NOTE]
+A detailed 
+description of each option can be found in the 
+link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[globus-connect-server.conf] source file on github.
 
 === [Globus] section
 
@@ -323,14 +326,14 @@ specify the +CILogonIdentityProvider+ option in the [Security] section.
 
 ==== +CILogonIdentityProvider+ option
 This option specifies the identity provider to use with CILogon. 
-See https://cilogon.org/ for a list of valid providers.
+See https://cilogon.org/ for a list of valid providers. Be sure to also set "IdentityMethod=CILogon" in the [Security] section of the config file if you intend to use CILogon for your endpoint.
 
 === [GridFTP] section
 
 ==== +Server+ option
 This option specifies the hostname of the GridFTP server. This should
 match the hostname of the server except, possibly, if NAT is being used. Can
-be left blank if you don't want to configure a GridFTP server on this host.
+be left blank if you don't want to configure a GridFTP server on this host. If a GridFTP service is to be run on this server, then the default value of "Server = %(HOSTNAME)s" is suitable to most cases, so long as the configured hostname on the server matches the public FQDN that is going to be used for the server.
 
 ==== +ServerBehindNAT+ option
 This option specifies that the server is NATed. See the xref:nat_section[NAT] section 
@@ -352,7 +355,7 @@ This option specifies the hostname of the MyProxy server. If you are running
 the MyProxy server on this host, then this should match the hostname of this server 
 except, possibly, if NAT is being used. If you are using a MyProxy server on a 
 different host, then use the hostname of that host. Can be left blank if you don't 
-want to configure a MyProxy server at all.
+want to configure a MyProxy server at all. If the MyProxy service for the endpoint is to be run on this server, then the default value of "Server = %(HOSTNAME)s" is suitable to most cases, so long as the configured hostname on the server matches the public FQDN that is going to be used for the server. Be sure to also set "IdentityMethod=MyProxy" in the [Security] section of the config file if you intend to use MyProxy for your endpoint.
 
 ==== +ServerBehindNAT+ option
 This option specifies that the server is NATed. See the xref:nat_section[NAT] section 
@@ -365,7 +368,7 @@ This option specifies the hostname of the OAuth server. If you are running
 the OAuth server on this host, then this should match the hostname of this server 
 except, possibly, if NAT is being used. If you are using an OAuth server on a 
 different host, then use the hostname of that host. Can be left blank if you don't 
-want to configure an OAuth server at all.
+want to configure an OAuth server at all. If the OAuth service for the endpoint is to be run on this server, then the default value of "Server = %(HOSTNAME)s" is suitable to most cases, so long as the configured hostname on the server matches the public FQDN that is going to be used for the server. Be sure to also set "IdentityMethod=OAuth" in the [Security] section of the config file if you intend to use OAuth for your endpoint.
 
 ==== +ServerBehindNAT+ option
 This option specifies that the server is NATed. See the xref:nat_section[NAT] section 
@@ -832,7 +835,7 @@ during the new install:
 
 .All Distributions
 ----terminal
-$ sudo globus-connect-server-cleanup -d
+$ sudo globus-connect-server-cleanup
 ----terminal
 
 After cleaning up your old endpoint definition (if appropriate) remove the old Globus packages like so:
@@ -868,6 +871,21 @@ $ sudo rm /etc/gridftp.conf
 At this point, your environment is clean and you can follow the instructions 
 xref:install_section[here] to put down a clean install of Globus Connect Server to recreate 
 and upgrade your endpoint.
+
+[appendix]
+[[myproxy_identity_provider_section]]
+=== Configuring an endpoint to use the MyProxy identity provider
+To configure an endpoint to use the MyProxy identity provider, set "IdentityMethod = MyProxy" in the [Security] section of the config file and set the +Server+ option in the [MyProxy] section to the hostname of the MyProxy server to be used for the endpoint. The default settings in the +/etc/globus-connect-server.conf+ file will configure an endpoint to use MyProxy as the identity provider. If the servers on your endpoint are using NAT, then be sure to reference the xref:nat_section[NAT] section for additional configuration details.
+
+[appendix]
+[[oauth_identity_provider_section]]
+=== Configuring an endpoint to use the OAuth identity provider
+To configure an endpoint to use the OAuth identity provider, set "IdentityMethod = OAuth" in the [Security] section of the config file and set the +Server+ option in the [OAuth] section to the hostname of the OAuth server to be used for the endpoint. If the servers on your endpoint are using NAT, then be sure to reference the xref:nat_section[NAT] section for additional configuration details.
+
+[appendix]
+[[cilogon_identity_provider_section]]
+=== Configuring an endpoint to use the CILogon identity provider
+To configure an endpoint to use the CILogon identity provider, set "IdentityMethod = CILogon" in the [Security] section of the config file and set the +CILogonIdentityProvider+ option in the [Security] section to the name of the CILogon provider to be used with the endpoint. See https://cilogon.org/ for a list of valid providers. 
 
 [appendix]
 [[s3_setup_section]]
