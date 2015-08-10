@@ -446,6 +446,19 @@ code, .uservars {
   border-bottom: 4px solid transparent;
   border-top: 4px solid transparent;
 }
+[id*="span_class_text_right"],
+.text-right {
+  text-align: right;
+}
+.next-link {
+  color: #333;
+  font-weight: bold;
+  padding-right: 7px;
+
+}
+.next-link a {
+  font-weight: 100;
+}
 /**********************************
  * GO-Icon
  **********************************/
@@ -470,6 +483,19 @@ code, .uservars {
   display: inline;
   float: left;
 }
+.next-link a:after {
+  background-image: url("../images/sprite_globus_40.png");
+  background-image: -webkit-image-set(url(../images/sprite_globus_40.png) 1x, url(../images/sprite_globus_40@2x.png) 2x);
+  background-repeat: no-repeat;
+  content: "";
+  width: 27px;
+  height: 27px;
+  background-position: -87px -7px;
+  display: inline;
+  float: right;
+  margin-top: -2px;
+}
+.next-link a:hover:after,
 .more-link a:hover:after {
     background-position: -127px -7px;
 }
