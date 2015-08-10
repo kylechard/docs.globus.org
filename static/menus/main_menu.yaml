@@ -16,6 +16,9 @@ menus:
             -
                 title: 'Resource Provider Guide'
                 link: '/resource-provider-guide/'
+            -
+                title: 'Management Console Guide'
+                link: '/management-console-guide/'
       -
         title: 'Toolkit'
         link: 'http://toolkit.globus.org/toolkit/'

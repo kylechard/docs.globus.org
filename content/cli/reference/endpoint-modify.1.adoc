@@ -97,6 +97,9 @@ Set the endpoint's network usage level.  For transfer tasks, the settings from
 both the source and destination endpoints are used to calculate appropriate
 values for concurrency and parallelism.   
 +
+This option may only be used on managed endpoints.  If a managed endpoint
+becomes unmanaged, the "normal" level will be automatically used.
++
 Allowed values for 'LEVEL' are:
 +
 "normal";;
