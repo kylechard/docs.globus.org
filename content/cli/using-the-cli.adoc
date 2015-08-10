@@ -128,4 +128,6 @@ Activating \'ci#pads'#
 
 Endpoints can also be activated inline by specifying the -g option with the +transfer+ and +scp+ commands.
 
-Now that you've familiarized yourself with the CLI you can learn about some of the more powerful features available by reading the +man+ pages and the link:../cli_beyond_basics[Beyond the Basics guide]. As always, please feel free to link:https://www.globus.org/contact-us[contact us] if you have any questions.
+//Now that you've familiarized yourself with the CLI you can learn about some of the more powerful features available by reading the +man+ pages and the link:../cli-beyond-basics[Beyond the Basics guide]. As always, please feel free to link:https://www.globus.org/contact-us[contact us] if you have any questions.
+
+=== [text-right next-link]#Next: link:../cli-beyond-basics[CLI: Beyond the Basics]#
