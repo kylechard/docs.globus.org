@@ -6,6 +6,3 @@ menus:
       -
         title: 'Legal'
         link: '//globus.org/legal'
-      -
-        title: 'Privacy'
-        link: '/privacy'
