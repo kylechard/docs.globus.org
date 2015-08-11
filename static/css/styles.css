@@ -307,6 +307,10 @@ code, .uservars {
 .page-content + footer .nav li {
     display: inline-block;
 }
+.page-content + footer .nav>li>a:hover {
+  text-decoration: underline;
+  background-color: transparent;
+}
 
 /* Home */
 .home .page-content .col-sm-4 {
