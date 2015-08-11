@@ -51,7 +51,7 @@ link:events[events]::
 events displays events for a task. Events are sorted by time in ascending order.
 
 link:glob[glob]::
-Certain CLI commands, like rm and ls, will expand a shell-compatibile glob pattern in the final path component. For example, 'rm go#ep1/tmp/*.txt' would look for all files in /tmp that match '*.txt'.
+Certain CLI commands, like rm and ls, will expand a shell-compatibile glob pattern in the final path component. For example, \'rm go#ep1/tmp/\*.txt' would look for all files in /tmp that match \'*.txt'.
 
 link:labels[labels]::
 Globus Online tasks may be given a user created, arbitrary label to enable easy categorization and management of lots of tasks.
