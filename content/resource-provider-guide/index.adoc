@@ -662,7 +662,7 @@ gt-user@lists.globus.org email list.·
 Sharing is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that makes it very simple to share particular folders on an existing endpoint with other Globus users. You can read more about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. Instruction on how to create a share on an exiting managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
 
 == Management Console
-The Management Console is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that provides a graphical web interface used to monitor activity on Endpoints, as well as to identify and troubleshoot faults that may indicate underlying infrastructure issues. An organization’s Provider Plan support contact(s) make the decision who has access to the Management Console. You can read more about the details and benefits of the Management Console link:https://globus.org/blog/globus-management-console[here].
+The Management Console is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that provides a graphical web interface used to monitor activity on Endpoints, as well as to identify and troubleshoot faults that may indicate underlying infrastructure issues. An organization’s Provider Plan support contact(s) make the decision who has access to the Management Console. You can read more about the details and benefits of the Management Console link:../management-console-guide/[here].
 
 :numbered!:
 
@@ -906,7 +906,11 @@ To configure an endpoint to use the MyProxy identity provider, set "IdentityMeth
 [appendix]
 [[oauth_identity_provider_section]]
 === Configuring an endpoint to use the OAuth identity provider
-To configure an endpoint to use the OAuth identity provider, set "IdentityMethod = OAuth" in the [Security] section of the config file and set the +Server+ option in the [OAuth] section to the hostname of the OAuth server to be used for the endpoint. If the servers on your endpoint are using NAT, then be sure to reference the xref:nat_section[NAT] section for additional configuration details.
+To configure an endpoint to use the OAuth identity provider, set "IdentityMethod = OAuth" in the [Security] section of the config file and set the +Server+ option in the [OAuth] section to the hostname of the OAuth server to be used for the endpoint. If the servers on your endpoint are using NAT, then be sure to reference the xref:nat_section[NAT] section for additional configuration details. If you wish to use OAuth then you may wish to consider these additional options as well:
+
+- You may wish to use a CA issued ssl/tls server certificate for your web server. The exact details for setting this up will vary depending on the format that your CA provides your certificate to you in, your apache web server configuration, as well as the OS and version you are using. In all cases you'll need to edit your apache configuration to set the "SSLCertificateFile" directive to point at the cert file you were issued by your CA. You may also need to set the "SSLCertificateKeyFile" and "SSLCertificateChainFile" directives as well, depending on the format of your certificate and the instructions you received from your CA concerning how to install the cert.
+
+- You may wish to use a custom logo or custom CSS to give your OAuth page a look and feel more consistent with your organization. You can configure a custom CSS by setting the +Stylesheet+ option in the [OAuth] section of the +/etc/globus-connect-server.conf+ file to the file containing the style sheet you wish to use. You can set a custom logo by setting the +Logo+ option in the [OAuth] section of the +/etc/globus-connect-server.conf+ file to the image file of the logo you wish to use.
 
 [appendix]
 [[cilogon_identity_provider_section]]
