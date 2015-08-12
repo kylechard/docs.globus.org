@@ -132,6 +132,16 @@ def globus_navigation_for(identifier, options={})
 
   # Find all sections, and render them
   sections = globus_find_item_tree(root)
+
+  # add root item to top of list. pretty sure there's a better way to do this but couldn't find it.
+  theroot={}
+  theroot[:title] = root[:short_title] || root[:title] || root.identifier
+  theroot[:link] = root.identifier || relative_path_to(root)
+  theroot[:menu_weight]  = root[:menu_weight] || 0
+  theroot[:subsections] = ""
+
+  sections.unshift(theroot)
+
   globus_render_sidebar_menu(sections, options)
 end
 
@@ -149,15 +159,6 @@ def globus_find_item_tree(root)
         :menu_weight  => (child[:menu_weight] || 0),
         :subsections  => subsections }
     end
-
-    # add root item to top of list. pretty sure there's a better way to do this but couldn't find it.
-    theroot={}
-    theroot[:title] = root[:short_title] || root[:title] || root.identifier
-    theroot[:link] = root.identifier || relative_path_to(root)
-    theroot[:menu_weight]  = root[:menu_weight] || 0
-    theroot[:subsections] = ""
-
-    sections.unshift(theroot)
 
     sections
 end
@@ -204,7 +205,7 @@ def globus_render_sidebar_menu(items, options={})
 
     # Render only if there is depth left
     # Had to use .length because of /foo/ to /foo/index.html routing
-    if options[:depth].to_i  > 0 && item[:subsections].length > 1
+    if options[:depth].to_i  > 0 && item[:subsections].length > 0
 
       # Save previously set collection_class & caret for later
       collection_class = options[:collection_class]

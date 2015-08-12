@@ -32,19 +32,19 @@ endpoint-activate assigns a short term security credential to specified endpoint
 link:endpoint-add[endpoint-add]::
 endpoint-add creates a logical endpoint with a user specified name. endpoint-add can also add a physical server to an existing logical endpoint if the -p option is given.
 
-link:endpoing-deactivate[endpoint-deactivate]::
+link:endpoint-deactivate[endpoint-deactivate]::
 endpoint-deactivate removes credentials previously assigned to a logical endpoint by endpoint-activate. If pattern is not specified, it defaults to '*'.
 
-link:endpoing-list[endpoint-list]::
+link:endpoint-list[endpoint-list]::
 endpoint-list shows information about endpoints. Each logical endpoint has one or more servers, represented by a URL and an optional subject DN. Each logical endpoint may also have a short term security credential which has been assigned by the endpoint-activate command.
 
-link:endpoing-modify[endpoint-modify]::
+link:endpoint-modify[endpoint-modify]::
 endpoint-modify can set attributes of endpoint(s). One attribute can be set or unset against one or more endpoints at a time. See the options below for details. Use the empty string ('') to unset a text attribute. Run endpoint-list -v to view current attributes.
 
-link:endpoing-remove[endpoint-remove]::
+link:endpoint-remove[endpoint-remove]::
 endpoint-remove can remove logical endpoint(s) with names matching a pattern. endpoint-remove can also remove (unmap) a physical server from a specific logical endpoint.
 
-link:endpoing-rename[endpoint-rename]::
+link:endpoint-rename[endpoint-rename]::
 endpoint-rename renames the logical endpoint oldname to newname.
 
 link:events[events]::

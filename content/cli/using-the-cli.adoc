@@ -5,7 +5,7 @@
 
 [doc-info]*Last Updated: {docdate}*
 
-This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:../cli_beyond_basics[CLI: Beyond the Basics].
+This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:../cli-beyond-basics[CLI: Beyond the Basics].
 
 '''
 toc::[]
