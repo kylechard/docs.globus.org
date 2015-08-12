@@ -202,8 +202,4 @@ image::images/cancel-selected.png[Cancel Selected Tasks]
 As before, the admin will be prompted to supply a reason that the tasks are being canceled, and this reason will be sent out in a message to those users whose jobs are affected by the cancel operation.
 
 == Globus Support
-Questions or issues pertaining to any client or service that is used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to support@globus.org to create a ticket.
-
-When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server please 
-include the endpoint name, a description of your issue, and screenshot/text 
-dumps of any errors you are seeing.
+Please submit any questions on the management console to support@globus.org. 
