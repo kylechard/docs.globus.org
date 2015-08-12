@@ -23,7 +23,7 @@ customDomain=true
 
 # The url of your production site
 # prodUrl="dev.globus.org"
-prodDomain="dev.globuscs.info"
+prodDomain="dev.globus.org"
 
 # The url of your dev/staging site
 # devUrl="staging.dev.globus.org"
