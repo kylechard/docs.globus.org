@@ -70,6 +70,9 @@ end
 compile '/OLD/*' do
 end
 
+compile '/google*' do
+end
+
 compile '/api/transfer/*' do
   if !item.binary?
     if item[:extension] == 'adoc'
