@@ -1,5 +1,5 @@
 = Globus Resource Provider Guide
-:revnumber: 0.0.2f
+:revnumber: 0.0.2g
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -98,7 +98,7 @@ Ensure that `ntpd`, or another daemon for synchronizing
 with standard time servers, is running on your system.
 
 === Internet-accessible system
-Before you can install Globus Connect Server onto a server, you must ensure that 
+Before you can install Globus Connect Server on your server, you must ensure that 
 other hosts on the Internet can initiate connections to your server. If your 
 server is behind a network address translation (NAT) firewall/router, then xref:nat_section[see below]. 
 Otherwise, you must ensure that your server
@@ -120,7 +120,7 @@ FQDN resolves against one of Google's public DNS servers:
 ----terminal
 $ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
 ----terminal
-If you get a message of the form '`** server can't find ep1.transfer.globus.org: NXDOMAIN'',
+If you get a message of the form '"** server can't find ep1.transfer.globus.org: NXDOMAIN"',
 your system's hostname is not resolvable via public DNS, and you need to 
 resolve the issue before continuing with the installation. 
 xref:contact_us[Contact us] if you need assistance.
@@ -151,7 +151,7 @@ proxied/intermediated by Globus servers
 link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
 in the ELB are subject to change
 - Port 80 outbound to 192.5.186.47
-* This is to pull packages from our repo
+* This is to pull packages from our repository
 - Port 7512 inbound from 174.129.226.69
 * This is for MyProxy traffic
 * Needed if server will run MyProxy service
@@ -246,9 +246,9 @@ $ sudo apt-get install globus-connect-server
 === Create Globus Endpoint
 Before creating your Globus endpoint,
 choose a suitable second part for your xref:endpoint-name-anchor[endpoint name]. 
-Then, edit the Globus Connect Server configuration file installed at /etc/globus-connect-server.conf,
-set Name to your choice (geosciences in the example shown), and Public to True.
-These two changes will allow authorized users to find and access your endpoint.
+Then, edit the Globus Connect Server configuration file, +/etc/globus-connect-server.conf+,
+and set +Name+ to your choice (_geosciences_ in the example shown), and +Public+ to _True_.
+These two changes in the +Endpoint+ section of the file will allow authorized users to find and access your endpoint.
 ----
 [Endpoint]
 Name = geosciences
@@ -268,27 +268,29 @@ endpoint is ready to be accessed by users with logins on your system.
 === Access Globus Endpoint
 
 You (or any user on your system who has signed up for a Globus account) should now be able to access the Globus endpoint you just created by navigating to the Globus link:https://www.globus.org/xfer/StartTransfer[Transfer Files] page. 
-We recommend that you confirm your endpoint is functioning properly by running a couple of test transfers, as described 
+We recommend that you confirm your endpoint is functioning properly by performing some test transfers, as described 
 xref:test_basic_endpoint_functionality[here].
 
 === Update Globus Endpoint
 
 The set of software components that make up Globus Connect Server are improved and released on an ongoing basis. 
-To stay current, we encourage you to update your local installation from the Globus repo at least every 3 months. 
+To stay current, we encourage you to update your local installation from the Globus repository at least every 3 months. 
 The steps for doing an update are found xref:update_section[here].
 
 == Globus Connect Server Configuration
 
-From the initial (default) installation of Globus Connect Server,
+During the initial (default) installation of Globus Connect Server,
 you edited two configuration options in the
 +/etc/globus-connect-server.conf+ file,
 the +Name+ and +Public+ options in the +[Endpoint]+ section.
 You probably noticed that there are many, many other options
 that can be configured.
-This section briefly covers a few of the most commonly changed
+This section of the Globus Resource Provider Guide briefly covers a few of the most commonly changed
 options in the +globus-connect-server.conf+ file. A detailed 
-description of each option can be found 
-link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[here]. After updating settings in the 
+description of every option can be found 
+link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[here]. 
+
+Note that any time you update settings in the 
 +/etc/globus-connect-server.conf+ file you must run the 
 `globus-connect-server-setup` command (as root) before the settings
 will take effect on your endpoint.
@@ -656,7 +658,7 @@ gt-user@lists.globus.org email list.·
 
 [[sharing_section]]
 == Sharing
-Sharing is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that makes it very simple to share particular folders on an existing endpoint with other Globus users. You can read more about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. Instruction on how to create a share on an exiting managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
+Sharing is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that makes it very simple to share particular folders on an existing endpoint with other Globus users. You can read more about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. Instruction on how to create a share on an existing managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
 
 == Management Console
 The Management Console is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that provides a graphical web interface used to monitor activity on Endpoints, as well as to identify and troubleshoot faults that may indicate underlying infrastructure issues. An organization’s Provider Plan support contact(s) make the decision who has access to the Management Console. You can read more about the details and benefits of the Management Console link:https://globus.org/blog/globus-management-console[here].
@@ -939,9 +941,9 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   See the {gridftp}[GridFTP documents] for more information.
 [[managed-endpoint-anchor]]Managed Endpoint::
   A Managed Endpoint is an xref:endpoint-anchor[endpoint] that is covered under a 
-  link:https://www.globus.org/providers/provider-plans[provider plan] that 
+  link:https://www.globus.org/providers/provider-plans[provider plan] and 
   allows advanced features (like xref:sharing_section[Sharing]) to be enabled. To convert an existing 
-  endpoint into a managed endpoint see this link:https://support.globus.org/entries/103577526-How-do-I-convert-an-existing-endpoint-into-a-managed-endpoint-[doc]. 
+  endpoint into a managed endpoint see this link:https://support.globus.org/entries/103577526-How-do-I-convert-an-existing-endpoint-into-a-managed-endpoint-[writeup]. 
 [[myproxy-anchor]]MyProxy::
   MyProxy is open source software for managing X.509 Public Key
   Infrastructure (PKI) security credentials (certificates and private
@@ -952,10 +954,10 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   the MyProxy service for providing user certificates to Globus.
   See the 'OAuth' section of the {myproxy}[MyProxy webpage] for more
   information.
-[[organization-account-anchor]]Organization account::
+[[organization-account-anchor]]Organization Account::
   This is the Globus account that will be used to create and manage endpoints
   for your organization. It is a good idea to pick a name that is easily
-  recognized as being associated with your endpoint, as the name of your
+  recognized as being associated with your endpoints, as the name of your
   Organization account will be the first part of the 
   xref:endpoint-name-anchor[endpoint] name for every endpoint created for your 
   organization. For example, ABC University might register an organization 
@@ -966,6 +968,5 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   A Shared Endpoint enables a particular folder to be shared with other Globus users.  Only 
   authorized users of a Managed Endpoint may create Shared Endpoints.  One or more Shared Endpoints 
   may be created on a xref:managed-endpoint-anchor[Managed Endpoint]. The Shared Endpoint owner can 
-  then grant read/write permissions, or delegate the xref:access-manager-anchor[access manager] role, 
-  to other Globus users.
+  grant read/write permissions and assign the xref:access-manager-anchor[access manager] role for the Shared Endpoint.
 
