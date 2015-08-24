@@ -77,6 +77,7 @@ cd $sitesDir
 git checkout gh-pages
 git add -u
 git rm -r *
+rm -rf *
 
 
 
@@ -105,7 +106,7 @@ fi
 echo "Adding and committing changes"
 cp -R ../output/* .
 git add -A
-git commit -a -m "$message"
+git commit -m "$message"
 git push origin gh-pages
 
 # Remove site directory

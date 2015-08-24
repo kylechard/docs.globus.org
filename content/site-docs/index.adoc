@@ -44,3 +44,7 @@ test terminal block with [input]#input# and [output]#output# classes
 --
 test terminal block 2 with [input]#input# and [output]#output# classes
 --
+
+----
+testing staging
+----
