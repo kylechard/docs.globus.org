@@ -33,10 +33,10 @@ devDomain="dev.staging.globuscs.info"
 ### Setup for staging deployment
 if [ $env == 'stg' ]
 then
-  # Make sure on master branch
-  if [ $branch != 'master' ]
+  # Make sure on staging branch
+  if [ $branch != 'staging' ]
   then
-    echo "Sorry! You must be on 'master' branch to deploy to staging."
+    echo "Sorry! You must be on 'staging' branch to deploy to staging."
     exit 1
   fi
 
@@ -48,7 +48,7 @@ fi
 ### Setup for prod deployment
 if [ $env == 'prod' ]
 then
-  # Make sure on master branch
+  # Make sure on staging branch
   if [ $branch != 'prod' ]
   then
     echo "Sorry! You must be on 'prod' branch to deploy to production."
