@@ -5,4 +5,4 @@
 //:toclevels: 3
 //:numbered:
 
-== Coming soon!
+We're still working on this page. Come back soon!
