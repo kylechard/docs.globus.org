@@ -1,0 +1,8 @@
+= Data Publication Guide
+//:revnumber: 0.0.2g
+//:toc:
+//:toc-placement: manual
+//:toclevels: 3
+//:numbered:
+
+== Coming soon!
