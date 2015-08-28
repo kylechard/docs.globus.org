@@ -292,23 +292,23 @@ code, .uservars {
 }
 
 /* Site Footer */
-.page-content + footer {
+footer {
     font-size: 13px;
     margin-top: 30px;
     padding: 30px 15px;
 }
-.page-content + footer .container {
+footer .container {
     border-top: 1px solid #E8E8E8;
     padding-top: 30px;
     padding-bottom: 30px;
 }
-.page-content + footer p {
+footer p {
     padding: 10px 0;
 }
-.page-content + footer .nav li {
+footer .nav li {
     display: inline-block;
 }
-.page-content + footer .nav>li>a:hover {
+footer .nav>li>a:hover {
   text-decoration: underline;
   background-color: transparent;
 }
@@ -326,7 +326,7 @@ code, .uservars {
 
 /* Media Queries */
 @media (max-width: 991px) {
-  .page-content + footer {
+  footer {
      padding: 30px 0;
    }
   .page-masthead {
@@ -391,7 +391,7 @@ code, .uservars {
   .page-masthead {
     background-position: 0px top;
   }
-  .page-content + footer {
+  footer {
      padding: 30px 0;
    }
 }
@@ -515,4 +515,8 @@ code, .uservars {
 #cookie_notice {
   margin-top: 30px;
   margin-bottom: 0;
+}
+
+#cookie_notice + footer {
+  margin-top: 0;
 }
