@@ -112,7 +112,8 @@ If you are installing on an link:http://aws.amazon.com/ec2/[Amazon EC2] instance
 you can skip ahead to the xref:open-tcp-ports_section[Open TCP ports] section.
 
 If your system is behind a network address translation (NAT) firewall/router, you cannot use the 
-default configuration to install Globus; please see the configuration instructions in the xref:nat_section[NAT/firewall] section.
+default configuration to install Globus--please see the configuration instructions in 
+the xref:nat_section[NAT/firewall] section.
 Otherwise, perform the checks shown below to confirm that your system meets the default accessibility requirements.
 
 Your network administrator may be able to offer assistance if you run into problems, or 
@@ -151,25 +152,24 @@ together with brief descriptions of each, are listed here:
 * Used for GridFTP control channel traffic. 
 - Ports 50000--51000 inbound and outbound to/from Any
 * Used for GridFTP data channel traffic. 
-* Data channel traffic is sent directly between endpoints, and is not proxied/intermediated by Globus servers.
-* We strongly recommend the use of the default port range (read why xref:data_channel_traffic[here])
+* Data channel traffic is sent directly between endpoints--it is not relayed by the Globus service.
+* The use of the default port range is strongly recommended (read why xref:data_channel_traffic[here]).
 - Port 2223 outbound to 184.73.255.160
-* Used to pull certificate information from the Globus backend.
-- Port 443 outbound to nexus.api.globusonline.org and 174.129.226.69
-* Used to communicate with the Globus REST API.
+* Used to pull certificate information from the Globus service.
+- Port 443 outbound to 174.129.226.69 and nexus.api.globusonline.org
+* Used to communicate with the Globus service via its REST API.
 * nexus.api.globusonline.org is a CNAME for an Amazon 
-link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
-in the ELB are subject to change
+link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses 
+in the ELB are subject to change.
 - Port 80 outbound to 192.5.186.47
-* Used to pull packages from the Globus repository.
+* Used to pull Globus Connect Server install packages from the Globus repository.
 - Port 7512 inbound from 174.129.226.69
 * Used for MyProxy traffic.
-* Needed if server will run MyProxy service
+* Needed if your server will run MyProxy service.
 - Port 443 inbound from Any
 * Used for OAuth traffic.
-* Needed if server will run OAuth service
-* OAuth traffic will come directly from clients using your OAuth 
-service, and will not be proxied/intermediated by Globus servers
+* Needed if your server will run OAuth service.
+* OAuth traffic comes directly from clients using your OAuth service--it is not relayed by the Globus service.
 
 
 [[install_section]]
