@@ -1,5 +1,5 @@
 = Globus Resource Provider Guide
-:revnumber: 0.0.2g
+:revnumber: 0.0.2h
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -41,19 +41,23 @@ and
 
 This guide is written primarily for system administrators of multi-user Linux
 systems who want to take full advantage of Globus capabilities and optimize 
-the connection of their resources to the globus.org SaaS service.
+the connection of their resources to the Globus service.
 Administrators who are installing Globus for the first time, as well as those with
 considerable experience, should all find helpful information in this
 document.
 
 Starting with the basics, this guide covers the initial
 installation of
-_Globus Connect Server_ and the creation of a Globus _endpoint_ that
+_Globus Connect Server_ and the creation of a Globus server
+xref:endpoint-anchor[endpoint] that
 lets authorized users transfer files between your storage and other
 Globus endpoints.
 The Globus Connect Server installation downloads
-(1) Globus versions of 'GridFTP', 'MyProxy', and 'OAuth for MyProxy';
-(2) scripts for set up/configuration and integration into the globus.org SaaS service; 
+(1) Globus versions of 
+xref:gridftp-anchor[GridFTP], 
+xref:myproxy-anchor[MyProxy], and 
+xref:oauth-for-myproxy-anchor[OAuth for MyProxy];
+(2) scripts for set up/configuration and integration into the Globus service; 
 and (3) Globus-maintained dependency packages needed by the other components.
 
 .[go-icon-pp]#Provider Plan Features#
@@ -64,16 +68,17 @@ Some premium Globus features described in this guide are only available to
 {provider_plans}[Provider Plan subscribers].
 
 Provider Plan subscriptions and 
-{commercial_plans}[commercial Provider plans] help ensure that Globus can
+{commercial_plans}[commercial subscriptions] help ensure that Globus can
 continue to serve the research data management needs of
 non-profit users for many years to come.
 ====
 
 == Globus Connect Server Prerequisites
 
-Confirm that the prerequisites listed in this section are met before you 
+[IMPORTANT]
+The prerequisites listed in this section must be met before you 
 begin to install Globus Connect Server on your system.
-Please xref:contact_us[contact us] if you have problems understanding
+link:https://www.globus.org/contact-us[Contact us] if you have problems understanding
 or satisfying the prerequisites.
 
 === Supported Linux distributions
@@ -94,26 +99,35 @@ to install Globus Connect Server;
 `sudo` can be used to perform the installation.
 
 === System time synchronization
-Ensure that `ntpd`, or another daemon for synchronizing
-with standard time servers, is running on your system.
+Your system must be running `ntpd` or another daemon for synchronizing with standard time servers.
+
+=== Globus account for your organization
+You must have a Globus xref:organization-account-anchor[organization account] 
+that is distinct from your personal Globus account.
 
 === Internet-accessible system
-Before you can install Globus Connect Server on your server, you must ensure that 
-other hosts on the Internet can initiate connections to your server. If your 
-server is behind a network address translation (NAT) firewall/router, then xref:nat_section[see below]. 
-Otherwise, you must ensure that your server
-is assigned a publicly resolvable DNS name that points to a public IP address that is properly assigned to your server. 
+Other hosts on the Internet must be able to initiate connections to the system where you will be installing Globus Connect Server.
+
+If you are installing on an link:http://aws.amazon.com/ec2/[Amazon EC2] instance, 
+you can skip ahead to the xref:open-tcp-ports_section[Open TCP ports] section.
+If your system is behind a network address translation (NAT) firewall/router, you cannot use the 
+default configuration to install Globus--please see the configuration instructions in 
+the xref:nat_section[NAT/firewall] section.
+Otherwise, perform the checks shown below to confirm that your system meets the default accessibility requirements.
+
+Your network administrator may be able to offer assistance if you run into problems, or 
+link:https://www.globus.org/contact-us[contact us].
 
 ==== Check hostname local DNS resolution
-To check accessibility, first execute this command
+Execute this command
 on the system where you plan to install Globus Connect Server:
 ----terminal
 $ hostname -f
 ----terminal
-Confirm that a fully qualified domain name (FQDN) is returned (e.g., ep1.transfer.globus.org).
+Confirm that a fully qualified domain name (FQDN) is returned (e.g., 'ep1.transfer.globus.org').
 
 ==== Check hostname external DNS resolution
-Next, use a public DNS server operated by a different organization to
+Use a public DNS server operated by a different organization to
 verify that the returned FQDN is publicly resolvable.
 More concretely, you can use `nslookup` to check that your server's 
 FQDN resolves against one of Google's public DNS servers:
@@ -121,49 +135,41 @@ FQDN resolves against one of Google's public DNS servers:
 $ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
 ----terminal
 If you get a message of the form '"** server can't find ep1.transfer.globus.org: NXDOMAIN"',
-your system's hostname is not resolvable via public DNS, and you need to 
-resolve the issue before continuing with the installation. 
-xref:contact_us[Contact us] if you need assistance.
+your system's hostname is not resolvable via public DNS and you need to 
+address the issue before continuing with the installation. 
 
-Some sites use network address translation (NAT) with a private
-internal IP, private internal DNS, and a public DNS tied to a public
-IP that gets forwarded to the private IP by the firewall/router.
-Globus can be successfully installed at these sites, but, you will need to the edit the 
-configuration file (a default config will not work). Please see the xref:nat_section[NAT] section if your site uses NAT.
 
-[[open-tcp-ports]]
+[[open-tcp-ports_section]]
 === Open TCP ports
-If your system is behind a firewall, specified TCP ports must be open for Globus to work.
-The default Globus Connect Server installation requires these TCP ports be open:
+If your system is behind a firewall, select TCP ports must be open for Globus to work.
+You may need to coordinate with your network or security administrator to open the ports.
+
+The TCP ports that must be open for the default Globus Connect Server installation, 
+together with brief descriptions of each, are listed here:
 
 - Port 2811 inbound from 184.73.189.163 and 174.129.226.69
-* This is for GridFTP control channel traffic
+* Used for GridFTP control channel traffic. 
 - Ports 50000--51000 inbound and outbound to/from Any
-* This is for GridFTP data channel traffic
-* Data channel traffic is sent directly between endpoints, and is not
-proxied/intermediated by Globus servers
-* We strongly recommend the use of the default range (read why xref:data_channel_traffic[here])
+* Used for GridFTP data channel traffic. 
+* Data channel traffic is sent directly between endpoints--it is not relayed by the Globus service.
+* The use of the default port range is strongly recommended (read why xref:data_channel_traffic[here]).
 - Port 2223 outbound to 184.73.255.160
-* This is to pull cert information from our backend
-- Port 443 outbound to nexus.api.globusonline.org and 174.129.226.69
-* This is to communicate with our REST API
+* Used to pull certificate information from the Globus service.
+- Port 443 outbound to 174.129.226.69 and nexus.api.globusonline.org
+* Used to communicate with the Globus service via its REST API.
 * nexus.api.globusonline.org is a CNAME for an Amazon 
-link:http://aws.amazon.com/elasticloadbalancing/[ELB], IP addresses 
-in the ELB are subject to change
+link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses 
+in the ELB are subject to change.
 - Port 80 outbound to 192.5.186.47
-* This is to pull packages from our repository
+* Used to pull Globus Connect Server install packages from the Globus repository.
 - Port 7512 inbound from 174.129.226.69
-* This is for MyProxy traffic
-* Needed if server will run MyProxy service
+* Used for MyProxy traffic.
+* Needed if your server will run MyProxy service.
 - Port 443 inbound from Any
-* This is for OAuth traffic
-* Needed if server will run OAuth service
-* OAuth traffic will come directly from clients using your OAuth 
-service, and will not be proxied/intermediated by Globus servers
+* Used for OAuth traffic.
+* Needed if your server will run OAuth service.
+* OAuth traffic comes directly from clients using your OAuth service--it is not relayed by the Globus service.
 
-=== Globus account for your organization
-You will need a Globus xref:organization-account-anchor[organization account] 
-for your organization that is distinct from your personal Globus account.
 
 [[install_section]]
 == Globus Connect Server Installation and Endpoint Creation
@@ -350,7 +356,7 @@ This option is used to both enable and/or disable specified file paths for all G
 This is a boolean value that determines if sharing is enabled on this particular endpoint. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
 
 ==== +SharingRestrictPaths+ option - link:{provider_plans}[*Provider Plan*] feature
-This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a Shared Endpoint through Globus, the Sharing Restrict Paths can only set further access restrictions to the Endpoint Owner’s local unix file system permissions.  Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
+This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a Shared Endpoint through Globus, the Sharing Restrict Paths can only set further access restrictions to the Endpoint Owner’s local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
 
 === [MyProxy] section
 
@@ -382,7 +388,7 @@ for details.
 == NAT/Firewall support and configuration
 The Globus Connect Server package provides configuration tools for several related services to enable administrators to easily configure a Globus endpoint. The globus-connect-server.conf file controls how the services used by Globus are configured, and includes configuration options to manage firewall-related configuration of services. Each service provided by the Globus Connect Server packages may be configured separately as described below.
 
-Note that the descriptions below include examples of Globus Connect Server service configurations only. Configuring the firewalls themselves to allow the ports and host connections is not discussed. See the xref:open-tcp-ports[Open TCP ports] section for a discussions of 
+Note that the descriptions below include examples of Globus Connect Server service configurations only. Configuring the firewalls themselves to allow the ports and host connections is not discussed. See the xref:open-tcp-ports_section[Open TCP ports] section for a discussions of 
 the ports used by Globus Connect Server.
 
 === Configuring I/O Nodes
@@ -621,10 +627,11 @@ If you are successful with the local telnet connection, then try telnet again us
 
 ==== Globus Knowledge Base and Forums
 The link:https://support.globus.org/[Globus Knowledge Base and Forums] contain a wealth of information about 
-Globus services and software. 
+the Globus service and software. 
 Many common issues can be resolved quickly by searching or browsing these resources and reading 
 the relevant articles. 
-We recommend consulting the Globus Knowledge Base and Forums first when looking for fast resolution to any issue you are having with Globus services or software.
+We recommend consulting the Globus Knowledge Base and Forums first when looking for fast resolution to any issue you are 
+having with the Globus service or software.
 
 [[contact_us]]
 ==== Globus Support
@@ -651,11 +658,6 @@ cat /etc/gridftp.conf
 globus-gridftp-server --version
 grep -v "\^$\|^;" /etc/globus-connect-server.conf
 ----terminal
-
-==== Globus Toolkit Mailing List
-Questions or issues that pertain to Globus Toolkit components that are not relevant to the globus.org·
-software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering should be submitted to the·
-gt-user@lists.globus.org email list.·
 
 [[sharing_section]]
 == Sharing
@@ -693,7 +695,7 @@ When two Globus Connect Server endpoints attempt to conduct a transfer, the endp
 that will be the recipient in that transfer picks out a port (or ports) in its configured 
 data port range that it will listen on to receive the the transfer from the sender endpoint. 
 This port value gets communicated back from the receiver endpoint to the sender endpoint 
-via GridFTP control channel data mediated by the Globus Service, which both the sender and 
+via GridFTP control channel data mediated by the Globus service, which both the sender and 
 recipient are listening to on port 2811. Once the sender endpoint receives the data port 
 range info for the recipient endpoint, it then initiates an outbound connection to the 
 recipient to that port (or ports) on the recipient to conduct the actual data transfer. 
@@ -701,14 +703,14 @@ recipient to that port (or ports) on the recipient to conduct the actual data tr
 To illustrate, consider the case of ep1 and ep2 mentioned above. If ep1 wanted to send ep2 a 
 file, then ep2 would pick out a port (or ports) in its configured data port range of 50000 to 
 51000. For the sake of example let's say that port 50021 has been chosen. This value would 
-then get communicated from ep2 to ep1, via the Globus Service through the GridFTP control channel 
+then get communicated from ep2 to ep1, via the Globus service through the GridFTP control channel 
 that both ep1 and ep2 are listening to. At that point, ep1 would then initiate a 
 connection out to port 50021 on ep2. 
 
 To further illustrate, consider again the case of ep1 and ep2 mentioned above. If ep2 wanted 
 to send ep1 a file, then ep1 would pick out a port (or ports) in its configured data port 
 range of 40000 to 41000. For the sake of example let's say that port 40331 has been chosen. 
-This value would then get communicated from ep1 to ep2, via the Globus Service through the GridFTP 
+This value would then get communicated from ep1 to ep2, via the Globus service through the GridFTP 
 control channel that both ep1 and ep2 are listening to. At that point, ep2 would 
 then initiate a connection out to port 40331 on ep1.
 
@@ -719,7 +721,7 @@ Connect Server endpoint for the transfer. Thus, it will always be the Globus Con
 endpoint that picks the port (or ports) on which it will listen for that connection. This is the 
 case irrespective of which endpoint is the sender or the recipient. As discussed previously, this 
 information gets communicated from the Globus Connect Server endpoint to the Globus Connect 
-Personal endpoint via the Globus Service.  
+Personal endpoint via the Globus service. 
 
 After looking at the example given we can see that, in terms of firewall rules, the outbound
 rules for ep1 must allow it to connect outbound to ep2 on ep2's configured data port range if 
@@ -823,7 +825,7 @@ globus-connect-server-web-cleanup (link to man page link:http://globus.github.io
 === How to update a Globus Connect Server install
 The Globus team is improving the Globus Connect Server software all
 the time, occasionally, you should update your software to get all the
-latest bug fixes and improvements.  
+latest bug fixes and improvements.
 
 If you are using a version of Globus Connect Server released prior to GT 6,
 then please see our upgrade instructions xref:upgrade_section[here].
@@ -939,7 +941,7 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   This term refers to the metadata about the endpoint, stored as an object in the 
   Globus.org database, used to simplify using and referring to the 
   xref:endpoint-anchor[endpoint] for 
-  users.  Examples of such metadata include the hostname, port, OAuth server, default directory, 
+  users. Examples of such metadata include the hostname, port, OAuth server, default directory, 
   etc... Much of the information in the endpoint definition is sent to Globus when the 
   globus-connect-server-setup command is run.
 [[endpoint-name-anchor]]Endpoint Name::
@@ -985,8 +987,9 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   correspond to copyrighted or trademarked terms unless your organization has 
   rights to those terms. 
 [[shared-endpoint-anchor]]Shared Endpoint::
-  A Shared Endpoint enables a particular folder to be shared with other Globus users.  Only 
-  authorized users of a Managed Endpoint may create Shared Endpoints.  One or more Shared Endpoints 
+  A Shared Endpoint enables a particular folder to be shared with other Globus users. Only 
+  authorized users of a Managed Endpoint may create Shared Endpoints. One or more Shared Endpoints 
   may be created on a xref:managed-endpoint-anchor[Managed Endpoint]. The Shared Endpoint owner can 
   grant read/write permissions and assign the xref:access-manager-anchor[access manager] role for the Shared Endpoint.
+
 
