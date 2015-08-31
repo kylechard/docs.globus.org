@@ -110,7 +110,6 @@ Other hosts on the Internet must be able to initiate connections to the system w
 
 If you are installing on an link:http://aws.amazon.com/ec2/[Amazon EC2] instance, 
 you can skip ahead to the xref:open-tcp-ports_section[Open TCP ports] section.
-
 If your system is behind a network address translation (NAT) firewall/router, you cannot use the 
 default configuration to install Globus--please see the configuration instructions in 
 the xref:nat_section[NAT/firewall] section.
