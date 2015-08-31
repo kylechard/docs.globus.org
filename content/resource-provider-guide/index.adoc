@@ -6,17 +6,18 @@
 :numbered:
 
 // Define some attributes to reuse in-line
-:website: http://www.globus.org/
-:gridftp: http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/
-:researchers: http://www.globus.org/researchers/
-:providers: http://www.globus.org/providers/
-:provider_plans: http://www.globus.org/providers/provider-plans/
-:commercial_plans: http://www.globus.org/providers/provider-plans/commercial-subscription-inquiry/
-:sign_up: http://www.globus.org/signup/
-:transfer: http://www.globus.org/xfer/StartTransfer#/
+:website_url: http://www.globus.org/
+:gridftp_url: http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/
+:researchers_url: http://www.globus.org/researchers/
+:providers_url: http://www.globus.org/providers/
+:provider-plans_url: http://www.globus.org/providers/provider-plans/
+:commercial-plans_url: http://www.globus.org/providers/provider-plans/commercial-subscription-inquiry/
+:signup_url: http://www.globus.org/signup/
+:transfer_url: http://www.globus.org/xfer/StartTransfer#/
+:contact-us_url: http://www.globus.org/contact-us/
 
 // Other sites
-:myproxy: http://grid.ncsa.illinois.edu/myproxy/
+:myproxy_url: http://grid.ncsa.illinois.edu/myproxy/
 
 [doc-info]*Last Updated: {docdate}*
 
@@ -35,9 +36,9 @@ Globus lets you provide authorized users with web, command line, and REST interf
 for listing, transferring, replicating, and sharing
 directories and files on your Globus-connected storage resources.
 You can learn more about Globus capabilities and benefits from the
-{researchers}[researcher]
+link:{researchers_url}[researcher]
 and
-{providers}[resource provider] overview pages.
+link:{providers_url}[resource provider] overview pages.
 
 This guide is written primarily for system administrators of multi-user Linux
 systems who want to take full advantage of Globus capabilities and optimize 
@@ -65,10 +66,10 @@ and (3) Globus-maintained dependency packages needed by the other components.
 ====
 Globus file transfer is free-of-charge for non-profit research and educational use.
 Some premium Globus features described in this guide are only available to
-{provider_plans}[Provider Plan subscribers].
+link:{provider-plans_url}[Provider Plan subscribers] and 
+link:{commercial-plans_url}[commercial subscribers].
 
-Provider Plan subscriptions and 
-{commercial_plans}[commercial subscriptions] help ensure that Globus can
+Subscriptions help ensure that Globus can
 continue to serve the research data management needs of
 non-profit users for many years to come.
 ====
@@ -78,7 +79,7 @@ non-profit users for many years to come.
 [IMPORTANT]
 The prerequisites listed in this section must be met before you 
 begin to install Globus Connect Server on your system.
-link:https://www.globus.org/contact-us[Contact us] if you have problems understanding
+link:{contact-us_url}[Contact us] if you have problems understanding
 or satisfying the prerequisites.
 
 === Supported Linux distributions
@@ -116,7 +117,7 @@ the xref:nat_section[NAT/firewall] section.
 Otherwise, perform the checks shown below to confirm that your system meets the default accessibility requirements.
 
 Your network administrator may be able to offer assistance if you run into problems, or 
-link:https://www.globus.org/contact-us[contact us].
+link:{contact-us_url}[contact us].
 
 ==== Check hostname local DNS resolution
 Execute this command
@@ -273,7 +274,8 @@ endpoint is ready to be accessed by users with logins on your system.
 
 === Access Globus Endpoint
 
-You (or any user on your system who has signed up for a Globus account) should now be able to access the Globus endpoint you just created by navigating to the Globus link:https://www.globus.org/xfer/StartTransfer[Transfer Files] page. 
+You (or any user on your system who has signed up for a Globus account) should now be able to access the Globus endpoint you just created by navigating to the Globus 
+link:{transfer_url}[Transfer Files] page. 
 We recommend that you confirm your endpoint is functioning properly by performing some test transfers, as described 
 xref:test_basic_endpoint_functionality[here].
 
@@ -352,11 +354,13 @@ for details.
 ==== +RestrictPaths+ option
 This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this endpoint. By default, all paths are enabled for access. 
 
-==== +Sharing+ option - link:{provider_plans}[*Provider Plan*] feature
-This is a boolean value that determines if sharing is enabled on this particular endpoint. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
+==== +Sharing+ [go-icon-pp]#option# 
+This is a boolean value that determines if sharing is enabled on this particular endpoint. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored 
+[go-icon-pp]#otherwise.#
 
-==== +SharingRestrictPaths+ option - link:{provider_plans}[*Provider Plan*] feature
-This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a Shared Endpoint through Globus, the Sharing Restrict Paths can only set further access restrictions to the Endpoint Owner’s local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
+==== +SharingRestrictPaths+ option 
+This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a Shared Endpoint through Globus, the Sharing Restrict Paths can only set further access restrictions to the Endpoint Owner’s local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored 
+[go-icon-pp]#otherwise.#
 
 === [MyProxy] section
 
@@ -370,7 +374,6 @@ want to configure a MyProxy server at all. If the MyProxy service for the endpoi
 ==== +ServerBehindNAT+ option
 This option specifies that the server is NATed. See the xref:nat_section[NAT] section 
 for details.
-
 === [OAuth] section
 
 ==== +Server+ option
@@ -633,16 +636,16 @@ the relevant articles.
 We recommend consulting the Globus Knowledge Base and Forums first when looking for fast resolution to any issue you are 
 having with the Globus service or software.
 
-[[contact_us]]
 ==== Globus Support
 Questions or issues that pertain to 
 Globus Connect Server installation
 or to any client or service that is 
 used in the globus.org software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering
-can be directed to the Globus support team by submitting a link:https://www.globus.org/contact-us[ticket].
-link:{provider_plans}[*Provider Plan*] subscriptions come with a guaranteed support service level.
+can be directed to the Globus support team by submitting a 
+link:{contact-us_url}[ticket].
+link:{provider-plans_url}[*Provider Plan*] subscriptions come with a guaranteed support service level.
 
-When submitting a link:https://www.globus.org/contact-us[ticket] for an issue with Globus Connect Server, please 
+When submitting a link:{contact-us_url}[ticket] for an issue with Globus Connect Server, please 
 include the endpoint name, a description of your issue, and screenshot/text 
 dumps of any errors you are seeing.
 Please also include the output of the following commands, run as root, 
@@ -661,10 +664,10 @@ grep -v "\^$\|^;" /etc/globus-connect-server.conf
 
 [[sharing_section]]
 == Sharing
-Sharing is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that makes it very simple to share particular folders on an existing endpoint with other Globus users. You can read more about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. Instruction on how to create a share on an existing managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
+Sharing is a link:{provider-plans_url}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that makes it very simple to share particular folders on an existing endpoint with other Globus users. You can read more about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. Instruction on how to create a share on an existing managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
 
 == Management Console
-The Management Console is a link:{provider_plans}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that provides a graphical web interface used to monitor activity on Endpoints, as well as to identify and troubleshoot faults that may indicate underlying infrastructure issues. An organization’s Provider Plan support contact(s) make the decision who has access to the Management Console. You can read more about the details and benefits of the Management Console link:../management-console-guide/[here].
+The Management Console is a link:{provider-plans_url}[*Provider Plan*] feature, available only on xref:managed-endpoint-anchor[Managed Endpoints], that provides a graphical web interface used to monitor activity on Endpoints, as well as to identify and troubleshoot faults that may indicate underlying infrastructure issues. An organization’s Provider Plan support contact(s) make the decision who has access to the Management Console. You can read more about the details and benefits of the Management Console link:../management-console-guide/[here].
 
 :numbered!:
 
@@ -960,7 +963,7 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 [[gridftp-anchor]]GridFTP::
   GridFTP is an extension of the standard File Transfer Protocol (FTP)
   for high-speed, reliable, and secure data transfer.
-  See the {gridftp}[GridFTP documents] for more information.
+  See the link:{gridftp_url}[GridFTP documents] for more information.
 [[managed-endpoint-anchor]]Managed Endpoint::
   A Managed Endpoint is an xref:endpoint-anchor[endpoint] that is covered under a 
   link:https://www.globus.org/providers/provider-plans[provider plan] and 
@@ -970,11 +973,11 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   MyProxy is open source software for managing X.509 Public Key
   Infrastructure (PKI) security credentials (certificates and private
   keys).
-  See the {myproxy}[MyProxy website] for more information.
+  See the link:{myproxy_url}[MyProxy website] for more information.
 [[oauth-for-myproxy-anchor]]OAuth for MyProxy::
   OAuth for MyProxy provides an OAuth-compliant REST web interface to
   the MyProxy service for providing user certificates to Globus.
-  See the 'OAuth' section of the {myproxy}[MyProxy webpage] for more
+  See the 'OAuth' section of the link:{myproxy_url}[MyProxy webpage] for more
   information.
 [[organization-account-anchor]]Organization Account::
   This is the Globus account that will be used to create and manage endpoints
