@@ -1,3 +1,15 @@
+<!-- cookie notice -->
+<div class="modal" id="cookie_notice">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body clearfix">
+        <p>This site uses Google Site Search and Google Analytics. These services use <strong>cookies</strong> as described <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/cookie-usage" target="_blank">here</a> to allow you to search this site and provide us with information for making reports that help us improve the site. By continuing to use our website without changing your browser's cookie settings, you are agreeing to our use of cookies.</p>
+        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header id="masthead" class="navbar navbar-inverse navbar-static-top">
   <div class="container"><div class="row">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -17,18 +29,18 @@
 
       <div id="search-container" class="navbar-form navbar-right">
           <script>
-              (function() {
-                var cx = '013279408114358323190:7unzbwmu0ga';
-                var gcse = document.createElement('script');
-                gcse.type = 'text/javascript';
-                gcse.async = true;
-                gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-                    '//www.google.com/cse/cse.js?cx=' + cx;
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(gcse, s);
-              })();
-            </script>
-            <gcse:search></gcse:search>
+            (function() {
+              var cx = '013279408114358323190:7unzbwmu0ga';
+              var gcse = document.createElement('script');
+              gcse.type = 'text/javascript';
+              gcse.async = true;
+              gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                  '//www.google.com/cse/cse.js?cx=' + cx;
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(gcse, s);
+            })();
+          </script>
+          <gcse:search></gcse:search>
         </div>
 
       <%= globus_build_menu('main_menu') %>
