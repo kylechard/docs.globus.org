@@ -138,6 +138,9 @@ NOTE: This is an example
 This is an example
 single-paragraph note.
 
+NOTE: This is an example
+      single-paragraph note.
+
 TIP: Tip.
 
 IMPORTANT: Important.
@@ -157,6 +160,10 @@ NOTE: This is an example
 [NOTE]
 This is an example
 single-paragraph note.
+
+
+NOTE: This is an example
+      single-paragraph note with no title.
 
 TIP: Tip.
 

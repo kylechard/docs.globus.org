@@ -187,10 +187,10 @@ p .go-icon-pp:after {
   right: -30px;
   top: -10px;
 }
-.admonitionblock .title .go-icon-pp:after {
+.alert .title .go-icon-pp:after {
     display: none;
 }
-.admonitionblock .title .go-icon-pp:before {
+.alert .title .go-icon-pp:before {
     background: url('../images/i_provider_plan.png') no-repeat; /* fallback in case svg not supported */
   background: url('../images/i_provider_plan.svg');
   position: relative;
@@ -203,7 +203,7 @@ p .go-icon-pp:after {
     left: -40px;
     top: -12px;
 }
-.admonitionblock .title .go-icon-pp {
+.alert .title .go-icon-pp {
     margin-left: 40px;
     line-height: 40px;
 }
@@ -223,20 +223,30 @@ pre {
   margin-right: 10px;
   text-transform: capitalize;
 }
-.alert .note {
-  background-color: #f5f5f5;
-}
-.alert .tip {
-  background-color: #effaea;
-}
-.alert .important {
+.alert.alert-note {
+  color: #31708f;
   background-color: #d9edf7;
+  border-color: #bce8f1;
 }
-.alert .warning {
+.alert.alert-tip {
+  color: #7d7441;
+  background-color: #fcfae3;
+  border-color: #f9efc0;
+}
+.alert.alert-important {
+  color: #a94442;
   background-color: #f2dede;
+  border-color: #ebccd1;
 }
-.alert .caution {
-  background-color: #fcf8e3;
+.alert.alert-warning {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert.alert-caution {
+  color: #825d1e;
+  background-color: #fdeecf;
+  border-color: #efd6b7;
 }
 
 /* Blockquotes and Code */
