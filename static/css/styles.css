@@ -223,13 +223,16 @@ pre {
   margin-right: 10px;
   text-transform: capitalize;
 }
+.alert a { color: #444; }
+.alert a:hover { text-decoration: underline; }
+
 .alert.alert-note {
   color: #31708f;
   background-color: #d9edf7;
   border-color: #bce8f1;
 }
 .alert.alert-tip {
-  color: #7d7441;
+  color: #8C803D;
   background-color: #fcfae3;
   border-color: #f9efc0;
 }
