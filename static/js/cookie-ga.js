@@ -27,7 +27,6 @@ $(function() {
             type: 'POST', 
             dataType: 'jsonp',
             success: function(location) {
-                console.log(location.country_code);
                 if($.inArray(location.country_code, eu_countries) > -1) {
                     $('#cookie_notice').modal('show'); // show cookie notice if EU country
                     $('#cookie_notice').on('hidden.bs.modal', function () {
