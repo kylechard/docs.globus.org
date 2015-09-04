@@ -22,6 +22,11 @@ $(function() {
             "DE", "GR", "HU", "IS", "IE", "IT", "KZ", "XK", "LV", "LI", "LT", "LU", "MK", "MT", "MD", "MC", "ME", "NL", "NO", "PL", 
             "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "TR", "UA", "GB", "VA"];
 
+        // set cookie expiration date for 25 years
+        var d = new Date();
+        d.setTime(d.getTime() + (9131*24*60*60*1000));
+        var expires = "expires="+d.toUTCString();
+
         $.ajax( { 
             url: '//freegeoip.net/json/', // NOTE: limited to 10,000 queries per hour
             type: 'POST', 
@@ -30,10 +35,10 @@ $(function() {
                 if($.inArray(location.country_code, eu_countries) > -1) {
                     $('#cookie_notice').modal('show'); // show cookie notice if EU country
                     $('#cookie_notice').on('hidden.bs.modal', function () {
-                        document.cookie="gdev_cookies=true"; // set cookie status to true
+                        document.cookie = "gdev_cookies=true; " + expires; // set cookie status to true
                     })
                 }else{
-                    document.cookie="gdev_cookies=true"; // set cookie status to true
+                    document.cookie = "gdev_cookies=true; " + expires; // set cookie status to true
                 }
             }
         });
