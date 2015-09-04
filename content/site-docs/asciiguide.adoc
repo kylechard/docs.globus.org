@@ -131,47 +131,46 @@ Not a code in next paragraph.
 ....
 .Optional Title
 NOTE: This is an example
-      single-paragraph note.
+      single-paragraph note with a link:/index.html[link] inside.
 
 .Optional Title
 [NOTE]
 This is an example
-single-paragraph note.
+single-paragraph note with a link:/index.html[link] inside.
 
 NOTE: This is an example
-      single-paragraph note.
+      single-paragraph note with a link:/index.html[link] inside.
 
-TIP: Tip.
+TIP: Tip with a link:/index.html[link] inside.
 
-IMPORTANT: Important.
+IMPORTANT: Important with a link:/index.html[link] inside.
 
-WARNING: Warning.
+WARNING: Warning with a link:/index.html[link] inside.
 
-CAUTION: Caution.
+CAUTION: Caution with a link:/index.html[link] inside.
 ....
 
 [blocklabel]#Result#
 
 .Optional Title
 NOTE: This is an example
-      single-paragraph note.
+      single-paragraph note with a link:/index.html[link] inside.
 
 .Optional Title
 [NOTE]
 This is an example
-single-paragraph note.
-
+single-paragraph note with a link:/index.html[link] inside.
 
 NOTE: This is an example
-      single-paragraph note with no title.
+      single-paragraph note with a link:/index.html[link] inside.
 
-TIP: Tip.
+TIP: Tip with a link:/index.html[link] inside.
 
-IMPORTANT: Important.
+IMPORTANT: Important with a link:/index.html[link] inside.
 
-WARNING: Warning.
+WARNING: Warning with a link:/index.html[link] inside.
 
-CAUTION: Caution.
+CAUTION: Caution with a link:/index.html[link] inside.
 
 == Blocks
 
