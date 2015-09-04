@@ -23,7 +23,7 @@ $(function() {
             "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "TR", "UA", "GB", "VA"];
 
         $.ajax( { 
-            url: '//freegeoip.net/json/', // limited to 10,000 queries per hour
+            url: '//freegeoip.net/json/', // NOTE: limited to 10,000 queries per hour
             type: 'POST', 
             dataType: 'jsonp',
             success: function(location) {

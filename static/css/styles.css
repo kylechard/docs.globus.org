@@ -305,12 +305,8 @@ footer .container {
 footer p {
     padding: 10px 0;
 }
-footer .nav li {
-    display: inline-block;
-}
-footer .nav>li>a:hover {
-  text-decoration: underline;
-  background-color: transparent;
+footer #legal {
+    margin-left: 15px;
 }
 
 /* Home */

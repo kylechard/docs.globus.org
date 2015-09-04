@@ -1,19 +1,16 @@
-<% # Get current year for copyright
-  time = Time.new
-  currentYear = time.year
-%>
 <footer>
   <div class="container">
       <div class="row">
-          <div class="col-xs-12 col-sm-9">
-            <p>© 2010-<%= currentYear %> Computation Institute, University of Chicago, Argonne National Laboratory</p>
+          <div class="col-xs-12">
+            <p>&copy; 2010-<span id="current-year"></span> Computation Institute, University of Chicago, Argonne National Laboratory <span id="legal"><a href="https://www.globus.org/legal" target="_blank">Legal</a></p>
           </div>
-          <div class="col-xs-12 col-sm-3">
-          	<%= globus_build_menu('footer_menu') %>
-      	</div>
       </div>
   </div>
 </footer>
 
 <script src="/js/classie.js"></script>
 <script src="/js/sidebarEffects.js"></script>
+<script>
+  var currentYear = (new Date).getFullYear();
+  $("#current-year").text(currentYear);
+</script>
