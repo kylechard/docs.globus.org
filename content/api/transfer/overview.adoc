@@ -664,7 +664,6 @@ special usernames:
 * [uservars]##go#ep1##, [uservars]##go#ep2## - Globus tutorial endpoints All users have
   access to this endpoint with a limited disk quota, for use in testing
   without having to optain other credentials.
-* [uservars]##tg#bigred##, [uservars]##tg#ranger##, etc - TeraGrid endpoints.
 
 === Endpoint Directory Listing
 
