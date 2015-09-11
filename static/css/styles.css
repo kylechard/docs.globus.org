@@ -155,13 +155,13 @@ ol.upperroman {
   list-style-type: upper-roman;
 }
 
-/* Provider Plans */
+/* Provider Plan Icon */
 .go-icon-pp {
   position: relative;
 }
 .go-icon-pp:after {
   background: url('../images/i_provider_plan.png') no-repeat; /* fallback in case svg not supported */
-  background: url('../images/i_provider_plan.svg');
+  background: url('../images/i_provider_plan.svg') no-repeat;
   position: relative;
   height: 32px;
   width: 32px;
@@ -170,39 +170,37 @@ ol.upperroman {
     display: block;
     position: absolute;
     right: -35px;
-    top: -18px;
+    top: -17px;
 }
-h3 .go-icon-pp:after,
-h4 .go-icon-pp:after {
-  right: -37px;
-  top: -18px;
+h3 .go-icon-pp:after {
+  right: -36px;
+  top: -15px;
+  background-size: 26px;
 }
 h4 .go-icon-pp:after {
-    top: -22px;
+    top: -16px;
+    background-size: 24px;
+    right: -34px;
+}
+h4[id*="go_icon_pp"] {
+  margin-top: 12px;
+}
+.alert .title .go-icon-pp:after {
+  height: 26px;
+  width: 26px;
+  background-size: 26px;
+  right: -30px;
+  top: -16px;
+}
+p .go-icon-pp {
+  padding-right: 30px;
 }
 p .go-icon-pp:after {
-  height: 25px;
-  width: 25px;
-  background-size: 25px 25px;
-  right: -30px;
+  height: 22px;
+  width: 22px;
+  background-size: 22px;
+  right: 5px;
   top: -10px;
-}
-.go-icon-pp-before:before {
-    background: url('../images/i_provider_plan.png') no-repeat; /* fallback in case svg not supported */
-  background: url('../images/i_provider_plan.svg');
-  position: relative;
-  height: 32px;
-  width: 32px;
-  background-size: 32px 32px;
-  content: "";
-    display: block;
-    position: absolute;
-    left: -40px;
-    top: -12px;
-}
-.go-icon-pp-before {
-    margin-left: 40px;
-    line-height: 40px;
 }
 
 /* Tables */
