@@ -48,3 +48,17 @@ test terminal block 2 with [input]#input# and [output]#output# classes
 ----
 testing staging
 ----
+
+== [go-icon-pp]#Go icon pp usage#
+
+=== [go-icon-pp]#Go icon pp usage on h3#
+
+==== [go-icon-pp]#Go icon pp usage on h4#
+
+.[go-icon-pp]#Provider Plan Features in a block title#
+[NOTE]
+====
+Globus file transfer is free-of-charge for non-profit research and educational use.
+Some premium Globus features described in this guide are only available to
+{provider_plans}[Provider Plan subscribers].
+====
