@@ -1,4 +1,4 @@
-= Data Publication Guide
+= Data Publication Admin Guide
 //:revnumber: 0.0.2g
 //:toc:
 //:toc-placement: manual
