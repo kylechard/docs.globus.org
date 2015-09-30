@@ -38,10 +38,9 @@ $(function() {
                     $('#cookie-btn').on('click', function () {
                         document.cookie = "gdev_cookies=true; path=/; " + expires; // set cookie status to true
                         $('#search-container').show(); // show search
-                        $('#cookie_notice').slideUp();
+                        $('#cookie_notice').slideUp(); // hide cookie notice
                     })
                 }else{
-                    //document.cookie = "gdev_cookies=true; " + expires; // set cookie status to true
                     //do nothing
                 }
             }
