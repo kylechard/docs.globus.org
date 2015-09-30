@@ -1,5 +1,6 @@
 $(function() {
     window['ga-disable-UA-19656330-29'] = true; // Turn off GA for now
+    $('#search-container').hide(); // Hide search for now
 
     // Check if user has already said ok to cookies
     function getCookie(cname) {
@@ -20,7 +21,7 @@ $(function() {
         // Check if user from EU country
         var eu_countries = ["AL", "AD", "AM", "AT", "AZ", "BY", "BE", "BA", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "GE", 
             "DE", "GR", "HU", "IS", "IE", "IT", "KZ", "XK", "LV", "LI", "LT", "LU", "MK", "MT", "MD", "MC", "ME", "NL", "NO", "PL", 
-            "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "TR", "UA", "GB", "VA"];
+            "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "TR", "UA", "GB", "VA", "US"];
 
         // set cookie expiration date for 25 years
         var d = new Date();
@@ -33,12 +34,15 @@ $(function() {
             dataType: 'jsonp',
             success: function(location) {
                 if($.inArray(location.country_code, eu_countries) > -1) {
-                    $('#cookie_notice').modal('show'); // show cookie notice if EU country
-                    $('#cookie_notice').on('hidden.bs.modal', function () {
-                        document.cookie = "gdev_cookies=true; " + expires; // set cookie status to true
+                    $('#cookie_notice').show(); // show cookie notice if EU country
+                    $('#cookie-btn').on('click', function () {
+                        document.cookie = "gdev_cookies=true; path=/; " + expires; // set cookie status to true
+                        $('#search-container').show(); // show search
+                        $('#cookie_notice').slideUp();
                     })
                 }else{
-                    document.cookie = "gdev_cookies=true; " + expires; // set cookie status to true
+                    //document.cookie = "gdev_cookies=true; " + expires; // set cookie status to true
+                    //do nothing
                 }
             }
         });
