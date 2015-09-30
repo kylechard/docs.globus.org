@@ -510,10 +510,10 @@ footer #legal {
  **********************************/
 
 #cookie_notice {
-  margin-top: 30px;
-  margin-bottom: 0;
-}
-
-#cookie_notice + footer {
-  margin-top: 0;
+  display: none; /* hide for now */
+  margin: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  font-size: .8em;
 }
