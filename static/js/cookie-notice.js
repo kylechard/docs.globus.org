@@ -17,11 +17,12 @@ $(function() {
     var cookie_status=getCookie("gdev_cookies");
     if (cookie_status!="") {
         window['ga-disable-UA-19656330-29'] = false; // Turn on GA
+        $('#search-container').show(); // show search
     }else{
         // Check if user from EU country
         var eu_countries = ["AL", "AD", "AM", "AT", "AZ", "BY", "BE", "BA", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "GE", 
             "DE", "GR", "HU", "IS", "IE", "IT", "KZ", "XK", "LV", "LI", "LT", "LU", "MK", "MT", "MD", "MC", "ME", "NL", "NO", "PL", 
-            "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "TR", "UA", "GB", "VA"];
+            "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "TR", "UA", "GB", "VA", "US"];
 
         // set cookie expiration date for 25 years
         var d = new Date();
@@ -41,7 +42,8 @@ $(function() {
                         $('#cookie_notice').slideUp(); // hide cookie notice
                     })
                 }else{
-                    //do nothing
+                    document.cookie = "gdev_cookies=true; path=/; " + expires; // set cookie status to true
+                    $('#search-container').show(); // show search
                 }
             }
         });
