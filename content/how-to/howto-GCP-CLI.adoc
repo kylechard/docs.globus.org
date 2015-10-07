@@ -1,1 +1,96 @@
 = How To Install Globus Connect Personal for Linux Using the Command Line
+
+You may install Globus Connect Personal for Linux using only the command line. Before getting started ensure that you have a valid SSH key associated with your Globus account. If you do not have an SSH key, link:../../faq/faq-SSHkey[see this guide for instructions on generating one]. Once you have an SSH key, follow the instructions here to associate the SSH key with your Globus account.
+
+NOTE: Instructions are also available for link:../howto-GCP-LINUX[installing a Globus Online Personal endpoint using your Web browser].
+
+== Installation
+. Download and unpack the Globus Connect Personal for Linux installer:
++
+----terminal
+$ wget https://s3.amazonaws.com/connect.globusonline.org/linux/stable/globusconnect-latest.tgz
+[output]#--2013-06-07 00:14:10-- https://s3.amazonaws.com/connect.globusonline.org/linux/stable/glob...
+Resolving s3.amazonaws.com (s3.amazonaws.com)... 72.21.214.199
+Connecting to s3.amazonaws.com (s3.amazonaws.com)|72.21.214.199|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 8291206 (7.9M) [application/x-tar]
+Saving to: \`globusconnect-latest.tgz'
+
+100%[==============================================================================>] 8,291,206 1010K/s in 8.0s
+
+2013-06-07 00:14:18 (1018 KB/s) - \`globusconnect-latest.tgz' saved [8291206/8291206]#
+$ tar xzf globusconnect-latest.tgz
+$ cd globusconnectpersonal-[input]#x.y.z#
+----terminal
++
+NOTE: In the last line above, replace [uservars]#x.y.z# with the version number from the downloaded file, e.g. globusconnectpersonal-2.0.2.
+
+. Generate a setup key for your endpoint via the Globus command line interface. The example below shows Globus user [uservars]#demodoc# generating a setup key for an endpoint called [uservars]#my-linux-laptop#:
++
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org
+Welcome to globusonline.org, demodoc. Type \'help' for help.
+$ endpoint-add [input]#my-linux-laptop# --gc
+[output]#Created the Globus Connect endpoint \'demodoc#my-linux-laptop'.
+Use this setup key when installing Globus Connect: 
+    2a0a5d39-a534-4fe7-b78a-acdb00542c52#
+$ exit
+----terminal
+
+. Back in your local machine shell run the following commands to complete the installation (note that you will need to copy and paste the setup key generated in step 2 above):
++
+----terminal
+$ ./globusconnectpersonal -setup [input]#2a0a5d39-a534-4fe7-b78a-acdb00542c52#
+[output]#Configuration directory: /home/go_user/.globusonline/lta
+Contacting relay.globusonline.org:2223
+Installing certificate and key
+Creating /home/go_user/.globusonline/lta/gridmap
+Done!#
+----terminal
+
+Globus Connect Personal is now installed and your Globus endpoint is configured.
+
+== Running Globus Connect
+To transfer and share files using Globus, start Globus Connect Personal (and, optionally, activate your endpoint) as follows:
+
+----terminal
+$ ./globusconnectpersonal -start &
+[output]#[1] 15268#
+$ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]#my-linux-laptop#
+----terminal
+
+You should now see your endpoint listed (with active credentials) if you run:
+
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org endpoint-list
+[output]#go#ep1
+go#ep2
+demodoc#my-linux-laptop 23:59:55#
+----terminal
+
+The status of Globus Connect Personal running in the background can be controlled using the +-status+ or +-trace+ options. The +-trace+ option provides more detailed information:
+
+----terminal
+$ ./globusconnectpersonal -status
+[output]#Globus Online: connected
+Transfer Status: idle
+$ sh globusconnect -trace
+#gsissh connected
+#gridftp 0
+#gsissh connected
+Got connection from (\'127.0.0.1', 47677)
+Sock fd: 9
+debug1: client_input_channel_open: ctype forwarded-tcpip rchan 2 win 87380 max 32768
+debug1: client_request_forwarded_tcpip: listen localhost port 0, originator 10.207.43.146 port 44326
+debug1: connect_next: host 127.0.0.1 ([127.0.0.1]:1024) in progress, fd=5
+debug1: channel 1: new [10.207.43.146]
+debug1: confirm forwarded-tcpip
+debug1: channel 1: connected to 127.0.0.1 port 1024
+#gridftp 1
+#gsissh connected
+#gridftp 1
+#gsissh connected
+#gridftp 1
+[...]#
+----terminal
+
