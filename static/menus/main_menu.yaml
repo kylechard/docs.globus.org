@@ -7,6 +7,9 @@ menus:
         title: 'Transfer API'
         link: '/api/transfer/'
       -
+        title: 'How To'
+        link: '/how-to/'
+      -
         title: 'Guides'
         link: '#'
         subsections:
