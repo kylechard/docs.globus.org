@@ -662,12 +662,51 @@ grep -v "\^$\|^;" /etc/globus-connect-server.conf
 ----terminal
 
 [[sharing_section]]
-== [go-icon-pp]#Sharing#
-Sharing is a feature that makes it simple to share particular folders on an 
-existing xref:managed-endpoint-anchor[managed endpoint] with other Globus users. 
-You can read about the details and benefits of Globus sharing link:https://globus.org/data-sharing[here]. 
-Instructions on how to create a share on an existing managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
+== Sharing
+=== Description
+Sharing makes it easier for an endpoint's users to grant and control access to their data stored on the endpoint. A more detailed description of the benefits and features of sharing can be found link:https://www.globus.org/data-sharing[here].
 
+To illustrate let's consider a case in which Adam, who is employed by ABC University and is the admin of the abcu#ep1 endpoint, wants to enable sharing on his endpoint for some of his users - such as Bob, Sue, etc. - so as to allow them to share with their collaborators (e.g. Ann) who do not have local accounts.  In this case, Adam has decided that he wants to allow users to share out of the "globus" directory in their home directory and nowhere else.
+
+=== Requirements
+Sharing can only be enabled on a link:http://dev.globus.org/resource-provider-guide/#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:https://www.globus.org/providers/provider-plans[Provider Plan] are able to create managed endpoints.
+
+For Adam to be able to enable sharing on his abcu#ep1 endpoint he will first need to be sure that ABC University has a provider plan with Globus.
+
+=== Make an endpoint managed
+Instructions for how an organization with a provider plan can promote an existing endpoint to managed status can be found link:https://support.globus.org/entries/103577526[here].
+
+After ensuring that ABC University has a provider plan with Globus, Adam will next need to make his endpoint managed. To do this he will log in to the Globus CLI server using the "abcu" Globus account (instructions for how to do this can be found link:http://dev.globus.org/cli/[here]) and he will then execute the following command:
+
+----terminal
+$ endpoint-modify --managed-endpoint abcu#ep1
+----terminal
+
+=== How to enable and disable sharing in Globus Connect Server
+To enable sharing on a managed endpoint, “Sharing = True” must be set in the [GridFTP] section of the /etc/globus-connect-server.conf file. Once this option is set, and the globus-connect-server-setup command is run to effect the configuration change, a managed endpoint will have sharing enabled. Similarly, setting "Sharing = False" will disable sharing on the endpoint. Note: This configuration option will have no effect on an endpoint that is not managed.
+Looking back to our use case with Adam, he will next need to log in (as root) to the server hosting the abcu#ep1 endpoint. He will then edit the /etc/globus-connect-server.conf file so as to set "Sharing = True" in the [GridFTP] section.
+
+=== How to control sharing in Globus Connect Server
+==== Controlling *what* can be shared
+It is possible to control which file system paths on the endpoint are allowed for sharing via the “SharingRestrictPaths” option, which is also in the [GridFTP] section of the /etc/globus-connect-server.conf file. Remember, after making changes to the /etc/globus-connect-server.conf file it is necessary to run the ‘globus-connect-server-setup’ command before those changes will take effect. Additional details about these configuration options can be found xref:gridftp_section[here] and also in the link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[globus-connect-server.conf] file itself.
+
+==== Controlling *who* can share
+Recall that our use case with Adam required that sharing be enabled for only certain users. At this point sharing is enabled for all users on the server hosting the abcu#ep1 endpoint. By editing the SharingUsersAllow, SharingGroupsAllow, SharingUsersDeny, and SharingGroupsDeny options in the [GridFTP] section of the /etc/globus-connect-server.conf file, Adam can restrict which local users on the server are allowed to create shares on the abcu#ep1 endpoint. By default, when no value is set for any of these options, GCS will allow sharing for all local user accounts. Any users or groups listed in the SharingGroupsDeny or SharingUsersDeny options will not be allowed to share. If any value is set for SharingUsersAllow or SharingGroupsAllow, then only users and groups explicitly listed in these options will be allowed to share.
+
+[NOTE]
+Any user who is listed in both the SharingUsersAllow and SharingUsersDeny options, or that has a group memberships such that the user is covered by both the SharingGropsAllow and SharingGroupsDeny options, will not be allowed to share.
+
+Since Adam only wants to allow certain users to be able to share, he has decided to create a local unix group on his system and adds the users he wants to allow to share to that unix group. Adam thus creates the globus_sharing_allow unix group and then adds Bob's local user account to that group. Adam then edits his /etc/globus-connect-server.conf file and sets "SharingGroupsAllow = globus_sharing_allow". Adam next runs the globus-connect-server-setup command so that his configuration changes will take effect. With this change made, now all users who are members of the globus_sharing_allow group - such as Bob - will be able to share. Sue, who Adam has not yet added to the globus_sharing_allow group, is still unable to share. To address this, Adam adds Sue's local user account to the globus_sharing_allow group and Sue is then able to share. 
+
+=== How to create and manage shares
+Instructions for how to create and manage access to a share on a managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
+
+=== Details on effective share permissions
+The share permissions you grant to a Globus user are just one part of the puzzle in determining that user’s actual level of access to a shared endpoint. To accurately determine the effective permissions that a user will have to a share we must also consider local file system permissions. In the case of a shared endpoint, all users accessing the share have the same local file system permissions as the local user that was used to activate on the endpoint to create the share. When considering the effective permissions that a user has to a share, it is important to remember that the most restrictive of the Globus permissions and the local file system permissions will determine access.
+
+To illustrate with an example, let's consider Bob who wants to create a share on endpoint abcu#ep1. Bob has a local account on the server hosting abcu#ep1 with username of bob_local. Bob's Globus account is bob_globus. When Bob wants to create his share hosted by abcu#ep1, he will log into the Globus website using his bob_globus credentials. He will then activate on the abcu#ep1 endpoint using his bob_local credentials. At that point, Bob can create his share. Let's say Bob creates a share named bob_globus#myshare, which points to the /home/bob_local/globus directory. Now, Bob can assign share permissions to other users that he wants to have access to his share. He can give Globus users read or write permissions to the share as he desires. Let's say that Bob gives Sue - who has a Globus account of sue_globus and a local account of sue_local - read and write access to the share. Now, if Sue wants to access the bob_local#myshare share, she will log into the Globus website using her sue_globus credentials. At this point, Sue's ability to access the bob_local#myshare share depends on both the share permissions that Bob granted the sue_globus Globus user to the share, as well as the file system permissions that the local bob_local account has to the file system that the share points to. Even if Sue has read and write access at the share level, she still won't - for example - be able to write to the share if the bob_local local user doesn't have write permissions at the file system level in the file system space that the share points to. Notice that the permissions (or lack thereof) for the sue_local account played no role in determining Sue's access to the share. Along the same lines let's consider what happens when Bob grants share access to Ann, who has a Globus account of ann_globus - and no local account on the server. For this example let's say that Bob grants the ann_globus account read and write access to the bob_local#myshare share - which are the same permissions that he granted Sue. As sue_globus and ann_globus have identical share permissions, they now have identical levels of access to the share. 
+
+To sum up, both the share permissions granted to a Globus user, as well as the file system rights of the local user that the Globus user who owns the share activated on the endpoint with when the share was created, must be taken into account when determining effective permissions to a share. 
 
 == [go-icon-pp]#Management Console#
 The management console, available on xref:managed-endpoint-anchor[managed endpoints], 
