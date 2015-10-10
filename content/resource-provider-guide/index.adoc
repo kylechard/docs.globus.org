@@ -718,7 +718,7 @@ Along the same lines let's consider what happens when Bob grants share access to
 
 ==== Summary
 
-To sum up, both the share permissions granted to a Globus user, as well as the file system rights of the local user that the Globus user (who owns the share) activated on the endpoint with when the share was created, must be taken into account when determining effective permissions to a share. 
+To sum up, both the share permissions granted to a Globus user, as well as the file system rights of the local user that the Globus user who owns the share activated on the endpoint with when the share was created, must be taken into account when determining effective permissions to a share. 
 
 == [go-icon-pp]#Management Console#
 The management console, available on xref:managed-endpoint-anchor[managed endpoints], 
