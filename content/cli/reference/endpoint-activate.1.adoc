@@ -6,69 +6,72 @@ endpoint-activate - Add or renew security credentials
 
 == SYNOPSIS
 
-*endpoint-activate* ['OPTIONS'] ['PATTERN'...]
+*endpoint-activate* ['OPTIONS'] 'ENDPOINT'
+
+*endpoint-activate* *-g* 'ENDPOINT'...
 
 == DESCRIPTION
 
 *endpoint-activate* assigns a short term security credential to specified
-endpoint(s).  If 'PATTERN' is not specified, it defaults to "`*`", which
-matches all endpoints shown by *endpoint-list*.  
+endpoint(s).   
 
-A security credential is a X.509 proxy certificate delegated through gsi-ssh
-or myproxy.  A pass phrase must be entered when retrieving a credential from a
-myproxy server.  
+If no *-m*, *-g*, or *--s3* options are given, *endpoint-activate* will
+do the following:
 
-If no *-m* or *-g* option is given, *endpoint-activate* will attempt to use
-the default myproxy server for the selected endpoint(s).  Use the
-*endpoint-modify* command to set a default myproxy server.
+. If the endpoint is already activated, do nothing and exit.
 
-'PATTERN' may contain asterisk (`*`) characters for wildcard matching of
-endpoint names.  Additionally, 'PATTERN' may contain a "`user#`" prefix, which
-matches public endpoints owned by another user.  Activated public endpoint(s)
-are automatically added to the current user's endpoint list.
+. Try to autoactivate it, like other CLI commands (*ls*, *transfer*, etc.) do.
+If this succeeds, exit.
+
+. If the endpoint has a default OAuth Identity Provider, display the web-based
+activation URL and exit.
+
+. If the endpoint has a default MyProxy Identity Provider, do interactive
+MyProxy authentication (equivalent to the *-m* option)
+  
+Use the *endpoint-modify* command to set a default MyProxy or OAuth Identity
+Provider.
+
+
+include::include/cli_bookmarks_no_paths.adoc[]
+
 
 == OPTIONS
 
 *-g*::
-Use a gsi-ssh delegated credential
+Use a GSI-SSH delegated credential
 
 *-m* 'HOST'::
-Retrieve a credential from the specified myproxy server 
+Retrieve a credential from the specified Myproxy server.  A port may also be
+specified.
 
 *-U* 'USER'::
 
-Set the myproxy username.  If this is not set, the command will prompt for a
+Set the Myproxy username.  If this is not set, the command will prompt for a
 user name.
 
 *--dn* 'DN'::
 
-Set the myproxy server's subject DN.  Sometimes the myproxy server's
+Set the Myproxy server's subject DN.  Sometimes the Myproxy server's
 certificate differs from its host name, causing an error.
 
 *--myproxy-lifetime* 'HOURS'::
 
-Set the requested myproxy credential lifetime.  The myproxy server may still
+Set the requested Myproxy credential lifetime.  The Myproxy server may still
 provide a shorter lived credential depending on its configuration.  The
 default lifetime is 24 hours, or what the endpoint defines.
 
 
 == EXAMPLES
 
-Activate all endpoints using a gsi-ssh credential:
+Activate an endpoint using its default activation method:
 
 ----
-$ endpoint-activate -g *
+$ endpoint-activate go#ep1
 ----
 
-Activate public endpoints using their default myproxy servers and add them to
-the current user's endpoint list:
+Activate an endpoint using a specific Myproxy server hostname and port:
 
 ----
-$ endpoint-activate teragrid#* nersc#*
-----
-
-Activate an endpoint using a specific myproxy server:
-
-----
-$ endpoint-activate -m myproxy.test.com myep1
+$ endpoint-activate -m myproxy.test.com:1234 myep1
 ----

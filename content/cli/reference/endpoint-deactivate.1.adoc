@@ -6,24 +6,19 @@ endpoint-deactivate - Remove authentication credentials
 
 == SYNOPSIS
 
-*endpoint-deactivate* ['PATTERN'...]
+*endpoint-deactivate* 'ENDPOINT'...
 
 == DESCRIPTION
 
-*endpoint-deactivate* removes credentials previously assigned to a logical
-endpoint by *endpoint-activate*.  If 'PATTERN' is not specified, it defaults
-to `*`.
+*endpoint-deactivate* removes the credential previously assigned to a logical
+endpoint by *endpoint-activate*.  
+
+include::include/cli_bookmarks_no_paths.adoc[]
 
 == EXAMPLES
 
-Deactivate all endpoints:
+Deactivate an endpoint:
 
 ----
-$ endpoint-deactivate *
-----
-
-Deactivate endpoints with names matching a pattern:
-
-----
-$ endpoint-deactivate testendpoint*
+$ endpoint-deactivate go#ep1
 ----

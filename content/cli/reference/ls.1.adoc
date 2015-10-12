@@ -8,7 +8,6 @@ ls - List files and directories on an endpoint
 
 *ls* ['OPTIONS'] 'ENDPOINT/PATH'
 
-*ls* ['OPTIONS'] 'ENDPOINT:PATH'
 
 == DESCRIPTION
 
@@ -17,14 +16,17 @@ The *ls* command lists files and subdirectories on an endpoint.
 User relative paths may be specified as "`/~/`", "`/~/path/`", or
 "`/~otheruser/path`/".  Absolute paths are specified as "`/path/`".  
 
-If SCP like name:path syntax is used, relative paths may be specified as
-"`:path`" or "`:~/path`", and absolute paths as "`:/path`".
-
 Files and directories are printed with one entry per line in alphabetical
 order.  Directories are always displayed with a trailing "/".
 
 The 'PATH' may have a shell-compatible wild card pattern in its final
 component.  Type 'man glob' for details.
+
+include::include/cli_autoactivate.adoc[]
+
+include::include/cli_bookmarks_and_paths.adoc[]
+
+include::include/cli_path_url_escaped.adoc[]
 
 == OPTIONS
 
@@ -38,9 +40,6 @@ character.
 Use long listing format.  This is similar to UNIX ls except that the link
 count column is not displayed.  Dates and times are displayed in UTC time.
 
-*-g*::
-
-Activate using your gsi-ssh credential 
 
 
 == EXAMPLES
@@ -51,11 +50,11 @@ List your home directory in long format:
 $ ls -l go#ep1/~/
 ----
 
-List all files matching a pattern, using SCP-like path syntax:
+List all files matching a pattern:
 
-----
-$ ls -l go#ep1:*.txt
-----
+-----
+$ ls -l go#ep1/~/*.txt
+-----
 
 
 == EXIT STATUS

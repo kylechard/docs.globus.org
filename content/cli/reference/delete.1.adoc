@@ -22,6 +22,10 @@ pattern in its final component.  Type "man glob" for details.
 
 Symbolic links are never followed - only unlinked (deleted).
 
+include::include/cli_autoactivate.adoc[]
+
+include::include/cli_bookmarks_and_paths.adoc[]
+
 
 === INPUT LINE
 
@@ -44,10 +48,6 @@ have to be directories and symlinks are never followed.
 Ignore nonexistent files and directories.  The operation succeeds if the path
 does not exist.
 
-
-*-g*::
-
-Activate the endpoint using your gsi-ssh credential
 
 
 include::include/opt_label.adoc[]

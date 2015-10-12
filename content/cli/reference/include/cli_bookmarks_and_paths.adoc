@@ -1,0 +1,18 @@
+=== Endpoint Naming
+
+This command supports the following endpoint identification formats: 
+
+- UUID: `"7865988a-aeb3-4e55-b8cd-938c258e7854"`
+
+- Bookmark: `"^test_bookmark"`.  The bookmark name must be prepended with a
+  +"^"+ character.   The bookmark name may have URL-escaped characters.
+  If the bookmark name contains a "/", it must be URL-escaped as "%2F".
++
+NOTE: When a bookmark is used, the bookmark's path is prepended to the input
+path.
+
+- Legacy Name: `"bob#test_endpoint"`.  This contains the user
+  who owns the endpoint and the endpoint legacy name.
+
+- Unqualified Legacy Name: `"test_endpoint"`.  The user name defaults to the current
+  logged in user.

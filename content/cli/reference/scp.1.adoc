@@ -12,6 +12,9 @@ scp - Simple transfer command that has syntax similiar to SCP
 
 == DESCRIPTION
 
+WARNING: The *scp* command is deprecated.  Please use the *transfer* command
+instead.
+
 Globus Online's *scp* command provides a simple way to copy a file or
 directory between servers.  'source' and 'dest' must be logical endpoint
 names.
@@ -38,6 +41,8 @@ SCP's directory semantics are different than the *transfer* command: the
 *scp* command (like UNIX cp and scp) will check whether the target is an
 existing directory or not.  
 
+include::include/cli_path_url_escaped.adoc[]
+
 == OPTIONS
 
 === Standard SCP Options
@@ -53,9 +58,6 @@ Enable verbose output.  Show endpoint and credential details.
 
 === Globus Online Extensions
 
-*-g*::
-Use your gsi-ssh proxy credential to activate the source and destination
-endpoints.  You must be using gsi-ssh, not regular ssh.
 
 include::include/opt_deadline.adoc[]
 
@@ -83,11 +85,6 @@ include::include/opt_synclevel.adoc[]
 
 == EXAMPLES
 
-Transfer a directory using gsi-ssh for activation:
-
-----
-$ scp -g -r tiger:/projects/myproject-dir bear:/tmp
-----
 
 Transfer a file from a home directory:
 

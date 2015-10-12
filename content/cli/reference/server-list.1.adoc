@@ -1,0 +1,26 @@
+= SERVER-LIST(1)
+
+== NAME
+
+server-list - Show servers for an endpoint
+
+== SYNOPSIS
+
+*server-list* 'ENDPOINT'
+
+== DESCRIPTION
+
+Display all servers for an endpoint.
+
+The current output format is JSON. 
+
+'ENDPOINT' can use these formats:
+
+include::include/cli_endpoint_unique_id.adoc[]
+
+
+== EXAMPLES
+
+----
+$ server-list 55c27fe2-572b-11e5-84dd-22000bb3f45d
+----

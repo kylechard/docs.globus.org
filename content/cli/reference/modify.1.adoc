@@ -11,7 +11,7 @@ modify - Change a task's properties
 == DESCRIPTION
 
 The *modify* command can change properties of task(s), such as deadline and
-label.
+label.  
 
 == OPTIONS
 
@@ -41,5 +41,4 @@ $ modify --label "foo bar" 8eaa7f3e-32ef-11e0-82be-12313804dcd1
 
 == EXIT STATUS
 
-If *--deadline* was specified, *modify* returns a non-zero exit code if the
-task had already completed.
+The *modify* command will fail if the task has already completed.

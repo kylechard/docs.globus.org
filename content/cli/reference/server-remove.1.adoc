@@ -1,0 +1,36 @@
+= SERVER-REMOVE(1)
+
+== NAME
+
+server-remove - Remove a server from an endpoint
+
+== SYNOPSIS
+
+*server-remove* {--id 'ID' | -p 'SERVER'} 'ENDPOINT'
+
+== DESCRIPTION
+
+This command removes a server from an endpoint.  Use the *server-list* command
+to view servers and their IDs.
+
+'ENDPOINT' can use these formats:
+
+include::include/cli_endpoint_unique_id.adoc[]
+
+== OPTIONS
+
+*-p* 'SERVER'::
+
+'SERVER' is a URL or hostname of a file server.  See *server-add* for details.
+
+*--id* 'ID'::
+
+The ID of the server.
+
+
+== EXAMPLES
+
+----
+$ server-remove -p gsiftp://gridftp.test.com:2811 
+    55c27fe2-572b-11e5-84dd-22000bb3f45d
+----

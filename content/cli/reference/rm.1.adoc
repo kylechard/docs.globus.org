@@ -8,7 +8,6 @@ rm - Delete files and directories on a server
 
 *rm* ['OPTIONS'] 'ENDPOINT/PATH'
 
-*rm* ['OPTIONS'] 'ENDPOINT:PATH'
 
 == DESCRIPTION
 
@@ -19,6 +18,12 @@ The 'PATH' may have a shell-compatible wild card pattern in its final
 component.  Type 'man glob' for details.
 
 Like UNIX rm, symbolic links are never followed - only unlinked (deleted).
+
+include::include/cli_autoactivate.adoc[]
+
+include::include/cli_bookmarks_and_paths.adoc[]
+
+include::include/cli_path_url_escaped.adoc[]
 
 
 == OPTIONS
@@ -34,9 +39,6 @@ followed.
 Ignore nonexistent files and directories.  The operation succeeds if the path
 does not exist.
 
-*-g*::
-
-Activate the endpoint using your gsi-ssh credential
 
 include::include/opt_label.adoc[]
 
@@ -62,11 +64,6 @@ Remove directories matching a pattern:
 $ rm -rf go#ep1/~/Work/testdir*
 ----
 
-Alternate, SCP-like home directory path syntax:
-
-----
-$ rm -rf go#ep1:Work/testdir*
-----
 
 
 == EXIT STATUS

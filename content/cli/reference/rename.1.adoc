@@ -6,7 +6,7 @@ rename - Quickly rename a file or directory
 
 == SYNOPSIS
 
-*rename* ['OPTIONS'] 'ENDPOINT:OLD-PATH' 'ENDPOINT:NEW-PATH'
+*rename* 'ENDPOINT/OLD-PATH' 'ENDPOINT/NEW-PATH'
 
 == DESCRIPTION
 
@@ -22,10 +22,12 @@ rename across a filesystem boundary).
 The endpoint name must be entered twice (in the old and new paths) for the
 sake of path syntax consistency.
 
-== OPTIONS
+include::include/cli_autoactivate.adoc[]
 
-*-g*::
-Activate the endpoint using your gsi-ssh credential
+include::include/cli_bookmarks_and_paths.adoc[]
+
+include::include/cli_path_url_escaped.adoc[]
+
 
 
 == EXAMPLES
@@ -36,11 +38,6 @@ Rename a directory:
 $ rename go#ep1/~/tempdir go#ep1/~/project-foo
 ----
 
-Alternate, SCP-like home directory path syntax:
-
-----
-$ rename go#ep1:tempdir go#ep1:project-foo
-----
 
 
 == EXIT STATUS

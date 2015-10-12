@@ -1,0 +1,5 @@
+=== Path Escaping
+
+File and directory path(s) given as input are assumed to be URL-encoded.  For
+example, "%20" is equivalent to a space (" ").  A literal "%" character must
+be encoded as "%25".
