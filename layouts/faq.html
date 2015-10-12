@@ -1,11 +1,11 @@
 <%= render 'partials/head' %>
-<body class="cli-page">
+<body class="faq-page">
     <!-- sidebar for mobile -->
     <div id="st-container" class="st-container">
         <div class="st-pusher">
             <div class="panel-group st-menu st-effect-3">
-                <h1 class="st-heading">CLI Menu</h1>
-                <%= globus_navigation_for("/cli/", :mobile => 'true') %>
+                <h1 class="st-heading">FAQ Categories</h1>
+                <%= globus_navigation_for("/faq/", :mobile => 'true') %>
             </div>
             <div class="st-page-content">
                 <%= render 'partials/header' %>
@@ -22,7 +22,7 @@
                 <div class="st-content">
                     <div class="st-content-inner">
                         <div id="st-trigger-effects">
-                            <button data-effect="st-effect-3">CLI Menu</button>
+                            <button data-effect="st-effect-3">FAQ Categories</button>
                         </div>
                     </div><!-- /st-content-inner -->
                 </div><!-- /st-content -->
@@ -33,7 +33,7 @@
                                 <%= yield %>
                             </div>
                             <div class="col-sm-4 col-md-3 sidebar">
-                                <%= render 'partials/menu_cli' %>
+                                <%= render 'partials/menu_faq' %>
                             </div>
                         </div>
                     </div>

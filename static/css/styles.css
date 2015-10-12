@@ -321,6 +321,13 @@ footer #legal {
     text-decoration: none;
 }
 
+/* Page Type Specific */
+.api-page {}
+.cli-page {}
+.default-page {}
+.faq-page {}
+.site-docs-page {}
+
 /* Media Queries */
 @media (max-width: 991px) {
   footer {

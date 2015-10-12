@@ -1,0 +1,11 @@
+---
+menu_weight: 2
+---
+:toc-placement: manual
+:toc:
+:toclevels: 1
+:toc-title:
+
+= Globus Connect
+
+toc::[]

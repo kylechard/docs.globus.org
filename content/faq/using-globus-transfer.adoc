@@ -1,0 +1,44 @@
+---
+menu_weight: 1
+---
+:toc-placement: manual
+:toc:
+:toclevels: 1
+:toc-title:
+
+= Using Globus Transfer
+
+toc::[]
+
+== Which browsers does the Globus web user interface support?
+The Globus web user interface is tested and verified to work on the most recent desktop version of Chrome, Edge, Firefox, Internet Explorer, and Safari.
+
+Earlier versions of these browsers, as well as other desktop browsers (e.g. Opera) and mobile/touch-based browsers, may experience loss of functionality and/or distorted visual effects. Limited or no support may be available for such browsers.
+
+== How much does Globus cost?
+Globus is free for researchers at non-profit institutions to use for file transfer, thanks to the generous support of sponsors who fund our research.
+
+As a non-profit institution, our goal from day one has been to make Globus a self-sustaining service, so that we can continue to serve the needs of academic and non-profit research organizations for many years to come. Most of our funding is intended for research and early software development, not to cover operation, support, and ongoing evolutionary improvement of the service. As usage grows, our costs have grown and we decided that charging a usage-based subscription fee for additional features that go beyond file transfer is the best way to ensure that we can continue to provide a high-quality research data management service.
+
+To this end, certain Globus features are available only by subscribing to a link:http://www.globus.org/providers/provider-plans[Globus Provider plan}. Such features include the ability to share files directly from existing storage, access to data publication functionality, and performing various administrative tasks for Globus endpoints at your institution. Globus Provider plans also offer higher levels of support from the Globus team, with priority response times.
+
+If you are a commercial user, you may use Globus by signing up for a link:https://www.globus.org/providers/provider-plans#commercial-pricing[commercial Provider plan]. We are unable to offer the service free of charge to commercial users, but believe that you will find Globus provides valuable capabilities at a reasonable price. Thanks!
+
+== How do I "refresh my credentials" (or "activate an endpoint")?
+Because Globus does not store usernames/passwords for your endpoints, periodic re-authentication is required. This means you need to log on with the appropriate username and password for the given endpoint (this is called endpoint "link:#what_is_activation[activation]"). There are two ways to refresh your credentials in Globus:
+
+1. Sign in to your account via the web GUI and go to the link:https://www.globusonline.org/xfer/ManageEndpoints[Manage Endpoints page]. Click the "activate" links for the source and destination endpoints relevant to your current transfers.
++
+-OR-
++
+2. Sign in to the command line interface (ssh cli.globusonline.org) and use the +endpoint-activate+ command to refresh your credentials. For example, enter +endpoint-activate nersc#dtn+, and it should prompt you for your NERSC login and password.
+
+Usage Notes:
+
+- You can refresh any credential from any network-connected computer at any time using the above mechanisms.
+- Globus Connect Personal endpoints do not need to be explicitly activated. If a Globus Connect Personal endpoint is part of an active transfer request, its credentials will be automatically refreshed as needed.
+- You do not need to resubmit a previously inactive transfer after you've reactivated the relevant endpoints; Globus will automatically resume transferring files when both the source and destination endpoints are activated.
+
+== What is \'activation'?
+Activation is the mechanism Globus uses to authenticate a user on an endpoint. It enables users to specify which identity should be used to authenticate with an endpoint. For example if I wanted to transfer a file from NERSC to ALCF, I could sign in to Globus using my Globus account name and password, and activate the nersc#dtn endpoint using my NERSC username and password, and finally activate the alcf#dtn endpoint using my ALCF username and pin+OTP.
+
