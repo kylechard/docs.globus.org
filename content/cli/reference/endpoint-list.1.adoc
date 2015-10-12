@@ -10,9 +10,12 @@ endpoint-list - Show information about endpoints
 
 == DESCRIPTION
 
-*endpoint-list* shows information about endpoints.  Each logical endpoint has
+WARNING: This command is deprecated.  Please use *endpoint-details* and
+*endpoint-search*.
+
+*endpoint-list* shows information about endpoints.  Each endpoint has
 one or more servers, represented by a URL and an optional subject DN.  Each
-logical endpoint may also have a short term security credential which has been
+endpoint may also have a short term security credential which has been
 assigned by the *endpoint-activate* command.  
 
 By default, *endpoint-list* displays concise output and only lists the
@@ -33,7 +36,13 @@ any public endpoints that have previously been activated by the current user.
 See *endpoint-modify* for advanced options not listed here.
 
 *name*::
-The user specified name of this logical endpoint
+The user specified legacy name (DEPRECATED)
+
+*id*::
+The system-generated, globally-unique UUID
+
+*display_name*::
+The user specified name
 
 *hosts*::
 A comma separated list of server URL(s) associated with this endpoint.

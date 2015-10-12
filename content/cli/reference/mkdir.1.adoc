@@ -6,20 +6,19 @@ mkdir - Create a directory on an endpoint
 
 == SYNOPSIS
 
-*mkdir* ['OPTIONS'] 'ENDPOINT/PATH'
+*mkdir* 'ENDPOINT/PATH'
 
-*mkdir* ['OPTIONS'] 'ENDPOINT:PATH'
 
 == DESCRIPTION
 
 The *mkdir* command creates a directory.  Currently, the parent directory must
 exist (-p is not supported).
 
+include::include/cli_autoactivate.adoc[]
 
-== OPTIONS
+include::include/cli_bookmarks_and_paths.adoc[]
 
-*-g*::
-Activate the endpoint using your gsi-ssh credential
+include::include/cli_path_url_escaped.adoc[]
 
 
 == EXAMPLES
@@ -28,12 +27,6 @@ Create a directory under your home directory:
 
 ----
 $ mkdir go#ep1/~/testfolder
-----
-
-Alternate, SCP-like home directory path syntax:
-
-----
-$ mkdir go#ep1:testfolder
 ----
 
 

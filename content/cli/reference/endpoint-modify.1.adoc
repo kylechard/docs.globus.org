@@ -2,40 +2,101 @@
 
 == NAME
 
-endpoint-modify - Change attributes of endpoint(s)
+endpoint-modify - Change attributes of an endpoint
 
 == SYNOPSIS
 
-*endpoint-modify* ['OPTIONS'] 'PATTERN'...
+*endpoint-modify* 'OPTIONS' 'ENDPOINT'
 
 == DESCRIPTION
 
-*endpoint-modify* can set attributes of endpoint(s).   One attribute can be
-set or unset against one or more endpoints at a time.  See the options below
-for details.  Use the empty string ("") to unset a text attribute.  Run
-*endpoint-list -v* to view current attributes.
+*endpoint-modify* can set attributes of an endpoint.   One attribute can be
+set or unset at a time.  See the options below for details.  Use the empty
+string ("") to unset a text attribute.  Run *endpoint-details* to view current
+attributes.
 
-The default myproxy server (regular or oauth based) for an endpoint can be
-used by the *endpoint-activate* command and all commands that attempt auto
-activation, such as *scp*.
+The default MyProxy server (regular or OAuth based) for an endpoint is used by
+the *endpoint-activate* command.
+
+'ENDPOINT' can use these formats:
+
+include::include/cli_endpoint_unique_id.adoc[]
 
 
 == OPTIONS
 
+*--display-name* 'DISPLAY_NAME'::
+
+Set the display name.  'DISPLAY_NAME' is unique for all endpoints owned by the
+current user, but is not globally unique.  'DISPLAY_NAME' must not contain a
+newline character.  Example: "NERSC HPSS", "UChicago RCC Midway cluster"
+
+*--description* 'TEXT'::
+Description of the endpoint displayed to users and used in search to
+differentiate this endpoint from similarly named endpoints. e.g. "This endpoint
+is used to access data from the NERSC HPSS archive".
+
+*--organization* 'TEXT'::
+Organization with which this endpoint is associated. e.g. "The University of
+Chicago", "NERSC"
+
+*--department* 'TEXT'::
+Department with which this endpoint is associated. e.g. "Research Computing
+Center, Department of Physics"
+
+*--keywords* 'TEXT'::
+Additional text that may be used in search by users to discover this endpoint.
+e.g. "UChicago, Midway RCC".  Keywords may be separated by whitespace or
+commas.  This entirely replaces the current keyword text.
+
+
+*--contact-info* 'TEXT'::
+Address for an end user to get help using this endpoint.  e.g. address, phone,
+etc.
+
+*--contact-email* 'EMAIL'::
+Email address for an end user to get help using this endpoint. e.g.
+"help@xsede.org"
+
+*--info-link* 'LINK'::
+A URL to a webpage that provides more information to end users about using the
+endpoint. e.g. "https://bluewaters.ncsa.illinois.edu/data-transfer-doc"
+
+
+
 *--public*::
 
-Set public visibility for endpoints.  Public endpoints can be seen by other
-users running *endpoint-list -p*.
+Set public visibility.  Other users can see public endpoints by
+running *endpoint-search* or *endpoint-details*.  This does not mean all users
+can actually login and access files on the endpoint.
 
 *--private*::
 
-Set private visibility for endpoints.  By default, newly created endpoints are
+Set private visibility.  By default, newly created endpoints are
 private and are only visible to the current user.
 
 *--default-directory* 'DIRECTORY'::
 
 Use DIRECTORY as the initial path for directory listings in the Globus Online
 web site.  If this is unset (the default), "`~`" is used.
+
+
+*--myproxy-oauth-server* 'SERVER'::
+
+Set the default myproxy server (oauth based), in the form host[:port].  The
+server should previously have been registered with the Globus Online web site.
+Please contact Globus Online support for details.
+
+*--myproxy-server* 'SERVER'::
+
+Set the default myproxy server (regular), in the form host[:port].
+
+*--myproxy-dn* 'DN'::
+
+Set the X.509 subject DN of the myproxy server.  This is required if the
+certificate subject does not match the hostname.
+
+
 
 *--force-encryption*::
 *--no-force-encryption*::
@@ -53,42 +114,22 @@ checksums, needed for the *--verify-checksum* option of *transfer*.  When this
 is set, new job submissions will default to not use the *--verify-checksum*
 option.
 
-*--myproxy-oauth-server* 'SERVER'::
-
-Set the default myproxy server (oauth based), in the form host[:port].  The
-server should previously have been registered with the Globus Online web site.
-Please contact Globus Online support for details.
-
-*--myproxy-server* 'SERVER'::
-
-Set the default myproxy server (regular), in the form host[:port].
-
-*--myproxy-dn* 'DN'::
-
-Set the X.509 DN for the *--myproxy-server*.  This is required if the reverse
-DNS hostname does not match its host certificate.
-
-*--port-range* 'START_PORT,END_PORT'::
-
-DEPRECATED: Sets the outbound TCP ports used for directory listings.  The
-default range is 50000,51000.  The allowed range is 40000-51000.  Anything
-outside of this range will time out.
-+
-NOTE: New versions of Globus GridFTP server support directory listings over
-the control channel and do not require data ports for Globus Online use.
 
 
-*--location* "Automatic" | 'LATITUDE,LONGITUDE'::
+*--managed-endpoint*::
 
-Set the endpoint's location to explicit coordinates (in decimal degrees), or
-"Automatic", which uses a potentially innaccurate or incomplete GeoIP
-database.  The default is "Automatic", but setting it explicitly is
-recommended for fixed-location endpoints (See EXAMPLES section).
-+
-The location information is used for automatic tuning of GridFTP transfer
-parameters.
-+
-May not be set for S3 endpoints or shared endpoints.
+Set the endpoint subscription ID.  If the current user has more than one
+subscription ID, use the *--subscription* option to select the desired
+subscription ID.
+
+*--no-managed-endpoint*::
+
+Remove the endpoint subscription ID
+
+*--subscription* 'UUID'::
+
+Specifies the subscription id to use for *--managed-endpoint*
+
 
 
 *--network-use* 'LEVEL'::
@@ -105,7 +146,7 @@ Allowed values for 'LEVEL' are:
 "normal";;
 The default setting.  Uses an average level of concurrency and parallelism.
 The levels depend on the number of physical servers in the endpoint; use
-*endpoint-list -v* to display the exact values.
+*endpoint-details* to display the exact values.
 +
 "minimal";;
 Uses a minimal level of concurrency and parallelism.
@@ -119,6 +160,21 @@ When setting this level, you must also set the *--max-concurrency*,
 *--preferred-concurrency*, *--max-parallelism*, and *--preferred-parallelism*
 options.
 (Note: S3 endpoints do not support the parallelism options, only concurrency)
+
+
+*--location* "Automatic" | 'LATITUDE,LONGITUDE'::
+
+Set the endpoint's location to explicit coordinates (in decimal degrees), or
+"Automatic", which uses a potentially innaccurate or incomplete GeoIP
+database.  The default is "Automatic", but setting it explicitly is
+recommended for fixed-location endpoints (See EXAMPLES section).
++
+The location information is used for automatic tuning of GridFTP transfer
+parameters.
++
+May not be set for S3 endpoints or shared endpoints.
+
+
 
 
 == EXAMPLES
@@ -138,14 +194,8 @@ $ endpoint-modify midway --network-use custom \
     --max-parallelism 8 --preferred-parallelism 4
 ----
 
-Mark the current user's endpoints "foo" and "bar" as public:
+Set the current user's endpoint "penguin" as public:
 
 ----
-$ endpoint-modify --public foo bar
-----
-
-Mark all of the current user's endpoints as public:
-
-----
-$ endpoint-modify --public *
+$ endpoint-modify penguin --public 
 ----

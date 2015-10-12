@@ -17,6 +17,15 @@ acl-list displays all rules in an endpoint’s access control list (ACL).
 link:acl-remove[acl-remove]::
 acl-remove deletes a specified rule from the endpoint’s ACL.
 
+link:bookmark-add[bookmark-add]::
+bookmark-add creates a new bookmark.  A bookmark is linked to an endpoint and path.
+
+link:bookmark-list[bookmark-list]::
+bookmark-list shows bookmarks owned by the current user.  The output format is JSON.
+
+link:bookmark-remove[bookmark-remove]::
+bookmark-remove deletes a bookmark. 
+
 link:cancel[cancel]::
 cancel stops all processing of a task. If the task has already completed, a notice will be displayed.
 
@@ -35,6 +44,9 @@ endpoint-add creates a logical endpoint with a user specified name. endpoint-add
 link:endpoint-deactivate[endpoint-deactivate]::
 endpoint-deactivate removes credentials previously assigned to a logical endpoint by endpoint-activate. If pattern is not specified, it defaults to '*'.
 
+link:endpoint-details[endpoint-details]::
+enpoint-details shows attributes of endpoint(s).
+
 link:endpoint-list[endpoint-list]::
 endpoint-list shows information about endpoints. Each logical endpoint has one or more servers, represented by a URL and an optional subject DN. Each logical endpoint may also have a short term security credential which has been assigned by the endpoint-activate command.
 
@@ -46,6 +58,9 @@ endpoint-remove can remove logical endpoint(s) with names matching a pattern. en
 
 link:endpoint-rename[endpoint-rename]::
 endpoint-rename renames the logical endpoint oldname to newname.
+
+link:endpoint-search[endpoint-search]::
+endpoint-search searches for endpoints which have attributes (display name, legacy name, description, organization, department, keywords) that match the 'SEARCH' text.  The current result size limit is 100 endpoints.
 
 link:events[events]::
 events displays events for a task. Events are sorted by time in ascending order.
@@ -76,6 +91,15 @@ The rename command renames a file or directory on an endpoint.
 
 link:rm[rm]::
 The rm command is a quick and easy way to delete a single file, directory, or pattern. Its semantics are as close as possible to UNIX rm.
+
+link:server-add[server-add]::
+server-add adds a server to an existing endpoint.
+
+link:server-list[server-list]::
+server-list displays all servers for an endpoint.
+
+link:server-remove[server-remove]::
+server-remove removes a server from an endpoint.
 
 link:scp[scp]::
 Globus Online's scp command provides a simple way to copy a file or directory between servers. source and dest must be logical endpoint names.

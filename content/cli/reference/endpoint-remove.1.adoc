@@ -2,28 +2,24 @@
 
 == NAME
 
-endpoint-remove - Remove a logical endpoint or unmap a physical server 
+endpoint-remove - Remove an endpoint
 
 == SYNOPSIS
 
-*endpoint-remove* 'PATTERN'...
-
-*endpoint-remove* *-p* 'SERVER' 'ENDPOINT'
+*endpoint-remove* 'ENDPOINT'
 
 == DESCRIPTION
 
-*endpoint-remove* can remove logical endpoint(s) with names matching a
-'PATTERN'.
+*endpoint-remove* removes a logical endpoint.  
 
-*endpoint-remove* can also remove (unmap) a physical server from a specific
-logical endpoint, if the *-p* option is used.
+WARNING: Removing an endpoint will permanently disable all existing shared
+endpoints that are hosted by it.
 
-== OPTIONS
+'ENDPOINT' can use these formats:
 
-*-p* 'SERVER'::
+include::include/cli_endpoint_unique_id.adoc[]
 
-'SERVER' is a URL or hostname of a file server.  If a hostname is given, the
-scheme is assumed to be `gsiftp://`.
+
 
 == EXAMPLES
 
@@ -31,16 +27,4 @@ Remove a logical endpoint:
 
 ----
 $ endpoint-remove testep1
-----
-
-Remove endpoints with names matching a pattern:
-
-----
-$ endpoint-remove testep*
-----
-
-Unmap the server "gsiftp://gridftp1.com" from endpoint "myep1":
-
-----
-$ endpoint-remove -p gsiftp://gridftp1.com myep1
 ----

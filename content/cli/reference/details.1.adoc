@@ -98,8 +98,16 @@ transfer tasks.
 *request_time*::
 The date and time this task was created
 
-*src_endpoint, dst_endpoint*::
-The source and destination logical endpoint names
+*endpoint, src_endpoint, dst_endpoint*::
+An endpoint ID (UUID)
+
+*endpoint_name, src_endpoint_name, dst_endpoint_name*::
+For tasks created on or after version 4.4, this is the name of the endpoint at
+the time of task submission.  This will be the endpoint display name, if it is
+set, otherwise it is the legacy name.  
++
+For tasks created prior to version 4.4, this is the current legacy name of the
+endpoint, even if the endpoint is private or deleted.  
 
 include::include/task_statuses.adoc[]
 

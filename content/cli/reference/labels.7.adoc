@@ -9,7 +9,7 @@ labels - Task labeling
 Globus Online tasks may be given a user created, arbitrary label to enable easy
 categorization and management of lots of tasks.  
 
-Commands that create tasks, like *scp* and *rm*, accept a *--label*
+Commands that create tasks, like *transfer* and *delete*, accept a *--label*
 option to initially set a label.  The *modify* command can set or change a
 label of a previously created task, even if the task has already completed.  
 

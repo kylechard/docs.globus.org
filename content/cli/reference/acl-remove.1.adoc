@@ -16,6 +16,10 @@ returned by *acl-list*.
 NOTE: You can not remove the built in rule that gives the endpoint owner full
 access.
 
+'ENDPOINT' can use these formats:
+
+include::include/cli_endpoint_unique_id.adoc[]
+
 include::include/more_acl.adoc[]
 
 == OPTIONS

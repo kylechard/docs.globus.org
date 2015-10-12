@@ -6,9 +6,11 @@ transfer - Advanced file and directory transfer command
 
 == SYNOPSIS
 
-*transfer* ['OPTIONS'] *--* 'INPUT-LINE'
+*transfer* ['OPTIONS'] -- SOURCE-ENDPOINT/FILE DESTINATION-ENDPOINT/FILE
 
-*transfer* ['OPTIONS'] *<* 'INPUT-LINE'...
+*transfer* ['OPTIONS'] -- SOURCE-ENDPOINT/DIRECTORY/ DESTINATION-ENDPOINT/DIRECTORY/ -r
+
+*transfer* ['OPTIONS'] *<* 'INPUT-LINE(s)'...
 
 *transfer --generate-id*
 
@@ -19,17 +21,12 @@ transfer - Advanced file and directory transfer command
 endpoints.  If multiple input lines are given over stdin, all lines must have
 the same source and destination endpoint.
 
-The endpoints used must be activated or transfer will fail and not create a
-task.  Use the *-g* option to automatically (re)activate both endpoints using
-your gsi-ssh credential or use the *endpoint-activate* command for all other
-endpoint activation methods such as myproxy.
-
-The *transfer* command is different from the *scp* command in that *transfer*
-will always place the destination files in a consistent, deterministic
-location.  The contents of a source directory will be placed inside the
-destination directory.  A source file will be copied to the destination file
-path, which must not be a directory.  All intermediate / parent directories on
-the destination will be created if they don't exist. 
+The *transfer* command will always place the destination files in a
+consistent, deterministic location.  The contents of a source directory will
+be placed inside the destination directory.  A source file will be copied to
+the destination file path, which must not be an existing  directory.  All
+intermediate / parent directories on the destination will be automatically
+created if they don't exist. 
 
 // NB: use backticks to disable ~ (subscript) quoting
 Paths relative to a user's home directory may be specified by using "`/~/path`"
@@ -42,26 +39,29 @@ are ever created on the destination.
 *transfer* will print its task id in this format: "Task ID: <taskid>".  This
 task id may be passed to other task management commands.
 
+Globbing ("*") is not supported.
+
+include::include/cli_autoactivate.adoc[]
+
+include::include/cli_bookmarks_and_paths.adoc[]
+
 == Input Lines
 
-An input line has the following format:
+A single input line may be given on the command line, after a "--" option
+break.  Alternatively, one or more lines may be written to standard input as a
+"batch input" method.
+
+An input line has the following syntax:
 
 // NB: whitespace not being preserved easily in the labeled list data. bug?
 File::
-*source-endpoint/file dest-endpoint/file [-vs SIZE]*
+*source-endpoint/file dest-endpoint/file*
 
 Directory::
 *source-endpoint/dir/ dest-endpoint/dir/ -r*
 
-An input line must contain a source and destination endpoint and path.  In
-addition, options and parameters may be appended to an input line.  These
-options apply only to the line they are on.
-
-One or more input lines may be piped through stdin, terminated by CTRL-D or
-EOF.  A simpler method is also supported: a single input line can be given
-directly on the command line, after a "--" option break.
-
-These options apply to an individual input line:
+An input line must contain a source and destination endpoint and path.  
+An input line may also contain the following options:
 
 *-r*::
 
@@ -71,25 +71,19 @@ The destination directory (and its parent directories) will be created if it
 does not exist.  Both the source and destination paths must end with a slash
 ("/") character.  
 
-*-vs* 'SIZE'::
-
-Verify file size before and after transfer.  The size specified, in
-bytes, must match the source file size before transfer and the destination
-file size after transfer.   If either check does not match, an error event
-will be recorded (error codes VERIFY_SOURCE_SIZE and VERIFY_DEST_SIZE) and the
-file will be retried. 
 
 === Handling Special Characters
 
-An input line accepts two ways of encoding characters:
+The simple (single line) input method assumes paths given on the command line
+are URL-encoded, which is the common convention for Globus CLI commands.
+
+The batch input method supports the following:
 
 URL Escaped::
 
 If an endpoint/path token does not begin with a double quote ("), it is
 assumed to have URL-escaped bytes.  Thus, sequences like "%20" and "%25" will
-be transformed to a space (" ") and literal "%" byte, respectively.  This
-method is highly recommended, particularly when using the single line only
-syntax.
+be transformed to a space (" ") and literal "%" byte, respectively.  
 
 Quoted Bytes::
 
@@ -103,9 +97,6 @@ spaces and "%" characters are allowed and preserved.  An embedded double quote
 
 These options apply to the transfer command itself:
 
-*-g*::
-Activate all endpoints that are part of this transfer task via
-gsi-ssh credential delegation.
 
 include::include/opt_synclevel.adoc[]
 
@@ -190,7 +181,8 @@ Transfer a directory, recursively, using encrypted data channels:
 $ transfer --encrypt -- go#ep1/share/godata/  go#ep2/~/godatacopy/ -r 
 ----
 
-Synchronize a directory and file using checksums (sync level 3) for comparison:
+Use the batch input method to submit multiple lines.  Synchronize a directory
+and a file, using checksums (sync level 3) for comparison:
 
 ----
 $ transfer -s 3

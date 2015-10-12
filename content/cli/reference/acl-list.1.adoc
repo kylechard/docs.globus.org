@@ -8,11 +8,16 @@ acl-list - Show all Access Rules on an endpoint
 
 acl-list 'ENDPOINT' 
 
+
 == DESCRIPTION
 
 Display all rules in an endpoint's access control list (ACL).
 
 The current output format is JSON.  Paths are URL-encoded.
+
+'ENDPOINT' can use these formats:
+
+include::include/cli_endpoint_unique_id.adoc[]
 
 include::include/more_acl.adoc[]
 

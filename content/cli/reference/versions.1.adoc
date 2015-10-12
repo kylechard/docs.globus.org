@@ -12,14 +12,14 @@ versions - List versions supported by the server, request a specific version
 
 == DESCRIPTION
 
+WARNING: The *versions* command is deprecated.  Please use the REST-API for
+long term supported scripting.
+
 *versions* displays a list of service / version strings that are supported by
 the server.  A specific version can be requested for a command or a shell by
 using the *v=VERSION:USER_AGENT* prefix when running a command or starting the
 interactive shell.   If the server does not support the requested version, the
 command will fail and an error message will be displayed.
-
-NOTE: It is highly recommended that *all automated clients* use the *v=*
-prefix on commands in order to have long term support by Globus Online.
 
 A shell's version may only be specified when it is created and may not be
 modified afterward.  If a version is not specified for a command or shell, it
