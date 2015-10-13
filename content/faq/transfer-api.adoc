@@ -1,11 +1,12 @@
 ---
 menu_weight: 4
+short_title: Transfer API
 ---
 :toc-placement: manual
 :toc:
 :toclevels: 1
 :toc-title:
 
-= Transfer API
+= FAQs: Transfer API
 
 toc::[]

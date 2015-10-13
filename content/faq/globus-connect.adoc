@@ -1,11 +1,12 @@
 ---
 menu_weight: 2
+short_title: Globus Connect
 ---
 :toc-placement: manual
 :toc:
 :toclevels: 1
 :toc-title:
 
-= Globus Connect
+= FAQs: Globus Connect
 
 toc::[]

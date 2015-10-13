@@ -1,12 +1,13 @@
 ---
 menu_weight: 5
+short_title: Globus Command Line Interface (CLI)
 ---
 :toc-placement: manual
 :toc:
 :toclevels: 1
 :toc-title:
 
-= Globus Command Line Interface (CLI)
+= FAQs: Globus Command Line Interface (CLI)
 
 toc::[]
 
