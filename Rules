@@ -97,6 +97,18 @@ compile '/cli/*' do
   end
 end
 
+compile '/faq/*' do
+  if !item.binary?
+    if ["txt", "adoc"].include?item[:extension].split('.').last
+      filter :asciidoc
+      layout item[:layout] || 'faq'
+    else
+      filter :erb
+      layout item[:layout] || 'faq'
+    end
+  end
+end
+
 compile '/site-docs/*' do
   if !item.binary?
     if item.identifier.include?('/raw')

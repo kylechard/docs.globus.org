@@ -29,6 +29,8 @@ menus:
         title: 'Support'
         link: '#'
         subsections:
+            -   title: 'FAQs'
+                link: '/faq/'
             -
                 title: 'Help Center'
                 link: 'https://support.globus.org'

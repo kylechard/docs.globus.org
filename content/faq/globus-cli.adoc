@@ -1,0 +1,75 @@
+---
+menu_weight: 5
+short_title: Globus Command Line Interface (CLI)
+---
+:toc-placement: manual
+:toc:
+:toclevels: 1
+:toc-title:
+
+= FAQs: Globus Command Line Interface (CLI)
+
+toc::[]
+
+== How do I generate an SSH key to use with the Globus command line interface?
+
+=== Mac OSX/Linux/Unix
+
+Generate Keys:
+
+The _ssh-keygen_ command is used to create keys. There are many options for it. We recommend that you run it this way:
+
+----terminal
+$ ssh-keygen -t rsa -b 2048
+----terminal
+
+This will create and store both your public and private keys in your ~/.ssh directory. It will overwrite any existing keys as well. To generate these keys, simply type _ssh-keygen -t rsa -b 2048_ and follow the prompts. To install the keys to the default location, just press enter when prompted for a file name. +We strongly encourage the use of a passphrase.+
+
+Some machines may put these files in a different spot. If this is the case, make a note of where it puts them and what it names them. The id_rsa.pub is your public key and the id_rsa (and, if they exist, id_dsa or identity) file is your private key.
+
+=== Windows Systems
+
+Generate Keys: 
+
+==== SecureCRT
+
+Simply generate your key by clicking "Tools", then "Generate Public Key". Follow the prompts (RSA keys are fine, despite what the text above the selection box says). +We strongly encourage the use of a passphrase.+
+
+2048 is an adequate key length. Make note of where it's installing the key. It is probably something like:
+
+----
+C:\Documents and Settings\USERNAME\Application Data\VanDyke\Identity 
+----
+
+If you upgraded from an old version, it might be:
+
+----
+C:\Documents and Settings\USERNAME\Application Data\Van Dyke Technologies\Identity 
+----
+
+Say "Yes" to the global public key question.
+
+Now, the tricky part. SecureCRT stores your public key in a funky format. You have a few options to get it into the format you need, do any one of the below.
+
+- Use link:https://svnkeys.berkeley.edu/[Berkeley's SSH-key converter] - quick and easy.
+- Copy the public key (identity.pub) to a machine that has OpenSSH installed and run: _ssh-keygen -i -f identity.pub > id_rsa.pub_
+
+Now, make SecureCRT use the key.
+
+- Click "File" then "connect", and for each existing entry, in the list (or for new ones you add) click the "Properties" button (it looks like a hand holding a card).
+- In the Authentication section under "Connection", change "Primary" to be "PublicKey". Choose "Properties" and make sure it's using your global file.
+- Click "Options", "Global Options", and under SSH2 heading, check both boxes in the "Agent" section.
+
+Now, the first SecureCRT session you open will ask the passphrase for the key you generated, and any subsequent ones will not (as long as SecureCRT is running.)
+
+NOTE: If you converted a previously SSH1 session to use SSH2, check your port forwarding configuration. It may have been messed up. The checkbox for local IP address restrictions should be unchecked. If it's not, uncheck it.
+
+==== PuTTY
+
+If you would like to use PuTTY as your ssh client, the first thing you should do is download the latest client. We have found that various older versions create odd problems when trying to use version2 keys. It only takes 10 seconds - no fancy installer, no rebooting.
+
+Close any current PuTTY connections, move the current PuTTY executable (putty.exe) to the recycle bin, and download a new putty.exe from link:http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html[here]. Your current preferences and saved connections will not go away. When you open the new PuTTY, all those things will still be there.
+
+While you are grabbing the latest client, also grab link:http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe[PuTTYgen (puttygen.exe)], which is the tool you will use to generate a new ssh key pair.
+
+After downloading PuTTYgen, double-click on the PuTTYgen icon. At the very bottom of the dialog box, there is a section called "Parameters". Under "Type of key to generate:", click the radio button for "SSH2 RSA". You should set the "Number of bits in a generated key:" at the default value of 2048 or higher.

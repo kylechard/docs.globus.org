@@ -1,0 +1,12 @@
+---
+menu_weight: 3
+short_title: Globus Providers
+---
+:toc-placement: manual
+:toc:
+:toclevels: 1
+:toc-title:
+
+= FAQs: Globus Providers
+
+toc::[]
