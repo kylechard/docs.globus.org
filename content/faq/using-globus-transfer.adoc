@@ -43,6 +43,9 @@ Usage Notes:
 == What is \'activation'?
 Activation is the mechanism Globus uses to authenticate a user on an endpoint. It enables users to specify which identity should be used to authenticate with an endpoint. For example if I wanted to transfer a file from NERSC to ALCF, I could sign in to Globus using my Globus account name and password, and activate the [uservars]#nersc#dtn+# endpoint using my NERSC username and password, and finally activate the [uservars]#alcf#dtn# endpoint using my ALCF username and pin+OTP.
 
+=== Authentication
+Globus uses an X.509 proxy credential to authenticate with the GridFTP servers on the endpoints. Users can delegate a proxy credential to Globus using gsissh, or allow the service fetch a proxy credential from a MyProxy (or MyProxy via OAuth) server.
+
 == How can I transfer files to/from my server?
 In order to transfer files to/from a server using Globus the server must be set up as a Globus endpoint. This requires that you link:http://dev.globus.org/resource-provider-guide/#install_section[install Globus Connect Server] which will allow all users with a local account on the server to access the endpoint. Before installing, check to link:https://www.globus.org/xfer/ManageEndpoints[see if an endpoint is already defined for your server]; many campuses, research communities, and national cyberinfrastructure providers (e.g., XSEDE, NERSC, etc.) have created Globus endpoints on their systems.
 
@@ -84,3 +87,8 @@ Use link:https://www.globusonline.org/globus_connect/[Globus Connect Personal], 
 == How do I transfer files?
 Once you sign up you can initiate transfers using the Web interface or using the transfer and scp commands on the command-line interface. Please see link:../../how-to/signup-transfer/[this how-to guide] for more details.
 
+== How will I know when my transfer is completed?
+Globus sends a notification message to the e-mail address link:https://www.globus.org/account/UpdateProfile#[stored in your account profile].
+
+== How can I create an endpoint?
+If there is already a GridFTP server running on your machine you can use the endpoint-add command or the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. If there is no existing GridFTP deployment then you have two options, depending on whether the endpoint is a machine for personal use (Globus Connect Personal) or a multi-user server (Globus Connect Server). For personal use, link:https://www.globus.org/globus-connect-personal[please see the instructions on this page]. For a multi-user machine such as a campus cluster or lab server, link:https://www.globus.org/globus-connect-server[please see the instructions on this page].

@@ -11,6 +11,27 @@ short_title: Globus Command Line Interface (CLI)
 
 toc::[]
 
+== What is an SSH key? Why do I need one?
+An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli[CLI]. In order to login to the Globus CLI, you must have a valid public SSH key (or an link:adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
+
+== How do I add an SSH key to my Globus account?
+NOTE: If you don’t already have an SSH key, instructions for creating one are available link:#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here for Mac OSX, Linux, and Windows systems].
+
+. link:https://www.globus.org/SignIn[Sign in to your Globus account].
+. link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
+. Click "add linked identity".
+. Click “Add SSH Public Key”.
+. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
+. Click “Submit” to save.
+
+It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
+
+----terminal
+$ ssh [input]#<my_globus_online_user_name>#@cli.globusonline.org
+----terminal
+
+For more information about the Globus Online CLI, see the link:../../cli/using-the-cli[Using the CLI guide].
+
 == How do I generate an SSH key to use with the Globus command line interface?
 
 === Mac OSX/Linux/Unix
@@ -73,3 +94,25 @@ Close any current PuTTY connections, move the current PuTTY executable (putty.ex
 While you are grabbing the latest client, also grab link:http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe[PuTTYgen (puttygen.exe)], which is the tool you will use to generate a new ssh key pair.
 
 After downloading PuTTYgen, double-click on the PuTTYgen icon. At the very bottom of the dialog box, there is a section called "Parameters". Under "Type of key to generate:", click the radio button for "SSH2 RSA". You should set the "Number of bits in a generated key:" at the default value of 2048 or higher.
+
+== What is the difference between the transfer and scp commands in the Globus CLI?
+The +scp+ command is designed for ease of use, whereas the +transfer+ command is designed for greater control over all aspects of a Transfer operation. The two commands share a common underlying implementation based on GridFTP.
+
+== How is the Globus scp command different from standard scp?
+The Globus +scp+ command does not actually use standard scp, but it supports many scp syntax conventions, and has the added benefit of being more reliable and better performing than the standard scp implementation. See the link:../../cli/reference/scp/[+scp+ documentation] for more details.
+
+== How do I set up Globus so I can connect to cli.globusonline.org using GSI SSH?
+To use GSI SSH you need to configure your Globus profile with the X.509 Certificate that you will use to login.
+
+=== Adding an X.509 certificate to a Globus account
+. link:https://www.globus.org/SignIn[Sign in to your Globus account].
+. link:https://www.globus.org/account/ManageIdentities[Click here] to go to the Manage Identities page.
+. Click "add linked identity".
+. Click “Add an X.509 Credential”.
+. Copy and paste the contents of your certificate PEM file (NOT your private key). Note that proxy certificates are not supported. Optionally, enter an identifying label.
+. Click “Submit” to save
+
+To find your PEM file, run +grid-proxy-info+ at a command prompt. This will print the “path” of your certificate PEM file (e.g. /tmp/x509up_u502), as well as the 'type'. Make sure that the 'type' is 'end entity credential', and not some form of proxy. Note that many certificates fetched via the +myproxy-logon+ command are still end entity credentials and can be used for this purpose. List the contents of this file, and then copy and paste the portion of the file between, and including, the lines: —–BEGIN CERTIFICATE—– and —–END CERTIFICATE—–.
+
+=== Activating an Endpoint
+You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli/[CLI tutorial] for more details on using GSI SSH.

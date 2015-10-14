@@ -14,18 +14,8 @@ toc::[]
 == How do I sign up and transfer files with Globus?
 To sign up and transfer files with Globus, please follow this link:../../how-to/signup-transfer/[How-To Guide].
 
-== How do I add an SSH key to my Globus account?
-NOTE: If you don’t already have an SSH key, instructions for creating one are available link:faq/generate-SSHkey[here for Mac OSX, Linux, and Windows systems].
-
-. link:https://www.globus.org/SignIn[Sign in to your Globus account].
-. link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
-. Click "add linked identity".
-. Click “Add SSH Public Key”.
-. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
-. Click “Submit” to save.
-
-It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing: +$ ssh <my_globus_online_user_name>@cli.globusonline.org+. For more information about the Globus Online CLI, see the link:../../cli/using-the-cli[Using the CLI guide].
-
 == Does Globus need credentials when accessing my system? Does it store these permanently?
 Globus uses only temporary credentials to act on your behalf when making a transfer request, and never keeps your password nor long-term credentials to access a site.
 
+== How do I remove the association between my Google account and Globus?
+Sign on to Globus and go to the link:https://www.globus.org/account/ManageIdentities[Manage Identities page]. Click the “Delete” button next to the Google identity you wish to remove.
