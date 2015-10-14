@@ -14,8 +14,30 @@ toc::[]
 == How do I sign up and transfer files with Globus?
 To sign up and transfer files with Globus, please follow this link:../../how-to/signup-transfer/[How-To Guide].
 
+== What’s the difference between Globus and GridFTP?
+Globus is software-as-a-service (SaaS) for file transfer. It is a hosted service, operated by the Globus development team, that acts as a third-party mediator/facilitator of file transfers between endpoints that are owned and managed by their respective end users. GridFTP is user-installable software that is part of the Globus Toolkit and is used by grid installers and developers building large-scale data movement solutions. Globus uses the GridFTP protocol for transferring files and currently requires that a GridFTP server be installed on both source and destination endpoints, although HTTP support is planned for a future release. Many HPC resources worldwide already have a GridFTP server installed and can hence be used as Globus endpoints. For individual users, Globus Connect Personal provides a point-and-click way to install a pre-configured GridFTP on your local laptop or desktop. If you are an owner or administrator of a campus cluster or other shared HPC resource, link:https://www.globus.org/globus-connect-server[click here to see how you can turn your resource into a Globus endpoint].
+
 == Does Globus need credentials when accessing my system? Does it store these permanently?
 Globus uses only temporary credentials to act on your behalf when making a transfer request, and never keeps your password nor long-term credentials to access a site.
 
-== How do I remove the association between my Google account and Globus?
-Sign on to Globus and go to the link:https://www.globus.org/account/ManageIdentities[Manage Identities page]. Click the “Delete” button next to the Google identity you wish to remove.
+== How does Globus use my Google account?
+We provide the option of mapping your Google identity to your Globus account, enabling you to sign on to Globus using your Google credentials instead of your Globus username/password. To add your Google identity to your account follow the "Add External Identity" link on the link:https://www.globus.org/account/ManageIdentities[Manage Identities page] and select the "Google" account provider.
+
+Once your Google identity is mapped to your Globus account you will allow you to log in to Globus as described link:#how_to_use_a_third_party_login_e_g_incommon_xsede_to_access_globus[here].
+
+To remove the association between my Google account and Globus click the “Delete” button next to the Google identity you wish to remove.
+
+== How to use a third-party login (e.g. InCommon, XSEDE) to access Globus
+Use the following steps to use a third-party login to access Globus:
+
+. Go to the Sign In page and click on 'alternate login' link
++
+[role="img-responsive center-block"]
+image::images/AlternateLogin_highlight.png[]
+. Click on the third-party login you wish to use. (login providers with a box/arrow icon next to them will redirect to their own log in page, just click the *Proceed* button)
+. Enter your username/pass associated with the third party if prompted
+. On your first use of a third-party login, you will be prompted to *Make a Connection* to link that login with your Globus account - this is a one-time process (if you don't already have a Globus account you will be prompted to create one)
+. Your accounts are now linked, click *Let's Go»* to enter the site.
+
+== How do I remove a MyProxy account from Globus?
+Sign in to Globus and go to the link:https://www.globus.org/account/ManageIdentities[Manage Identities page]. Click the “Delete” button next to the MyProxy identity you wish to remove.

@@ -11,11 +11,13 @@ short_title: Globus Connect
 
 toc::[]
 
+== What is Globus Connect?
+Globus Connect is easy-to-install, pre-configured software that turns your laptop, server, cluster or other local resource into a Globus link:../../faq/using-globus-transfer#what_is_an_endpoint[endpoint].
+
+There are two versions of Globus Connect, one for use with personal machines such as your laptop, and another for use with server-class machines such as campus computing clusters and lab servers. Use link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] to enable file transfer to and from your personal machine (laptop or desktop.) A Globus Connect Personal endpoint is intended to be used only by a single user. link:https://www.globus.org/globus-connect-server[Globus Connect Server] enables system administrators to turn shared resources such as campus clusters and lab servers into a Globus endpoint. If it is made publicly visible, a Globus Connect Server endpoint can be used by multiple Globus users.
+
 == How does Globus Connect Personal work?
 link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] uses GSI SSH to maintain a control connection to Globus and await commands. Globus manages transfers to and from the Globus Connect Personal endpoint. Note that file data is still always transferred directly between Globus Connect Personal and a GridFTP server for maximum speed – it is not proxied through Globus.
-
-== What is the difference between Globus Connect Personal and Globus Connect Server?
-Use link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] to enable file transfer to and from your personal machine (laptop or desktop.) A Globus Connect Personal endpoint is intended to be used only by a single user. link:https://www.globus.org/globus-connect-server[Globus Connect Server] enables system administrators to turn shared resources such as campus clusters and lab servers into a Globus endpoint. If it is made publicly visible, a Globus Connect Server endpoint can be used by multiple Globus users.
 
 == Are transfers between Globus Connect Personal endpoints possible?
 Yes. You must be a link:https://www.globus.org/researchers/plus-plans[Globus Plus] user to transfer files between two Globus Connect Personal endpoints. If the two endpoints are owned by different Globus users, both users must be Globus Plus users. You account may be upgraded to Globus Plus if your institution subscribes to a link:https://www.globus.org/provider-plans[Globus Provider plan].
@@ -25,4 +27,13 @@ NOTE: You do not need to be a Plus user to transfer files between a link:https:/
 == How do I specify paths on Globus Connect Personal running on Windows?
 link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on Windows will translate a path beginning with /~/ into your home directory, e.g. [uservars]#C:\Users\Anatoly\#. To access paths and drives outside of your home directory, use the syntax +/drive_letter/path+, for example [uservars]#/C/xinfo# lists the C:\xinfo directory.
 
-== 
+== Where does Globus Connect Personal store its settings?
+Globus Connect stores a few configuration files, such as its private certificate and key, in this location:
+
+- Windows XP: %APPDATA%\Globus Connect
+- Windows Vista and 7: %LOCALAPPDATA%\Globus Connect
+- OS X and Linux: ~/.globusonline/lta
+- On OS X, Globus Connect stores preferences in ~/Library/Preferences/org.globusonline.Globus-Connect.plist
+
+== How do I enable my campus cluster or lab server for moving data to and from other Globus endpoints?
+Use link:https://www.globus.org/globus-connect-server[Globus Connect Server], which enables system administrators to create Globus endpoints on shared resources. Globus Connect Server will allow your users to access the Globus endpoint on the server with their existing UNIX user accounts. If you already have a GridFTP and/or MyProxy server installed, please link:https://www.globus.org/contact-us[contact us] for additional information and guidance.
