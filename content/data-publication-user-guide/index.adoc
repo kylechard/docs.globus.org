@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.2
+:revnumber: 0.0.3
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -36,9 +36,9 @@ A dataset in the Globus data publication service is composed of
 data file(s) and link:#glossary-metadata[_metadata_].
 The data files may be of arbitrary size and format, 
 allowing virtually any type of data (e.g., text files, 
-formatted documents, images, source code, raw data from sensors,
-control parameters) to be associated and published in a single
-dataset.
+formatted documents, images, source code, executables, 
+raw data from sensors, control parameters) to be associated 
+and published in a single dataset.
 Depending on the collection's policy, a curator may need to 
 review and approve a submitted dataset before it is published.
 
@@ -47,10 +47,10 @@ which provides a description of the dataset and links to the data
 on the collection owner's storage. 
 A link:#glossary-pid[_persistent identifier (PID)_] 
 is generated for every landing page, facilitating citation. 
-Globus provides search and browse capabilities, allowing authorized
-users to discover and retrieve published datasets of interest. 
-Globus maintains a copy of the metadata to facilite the discovery 
-process; another copy is stored with the data on the owner's storage.
+Globus provides search and browse capabilities, allowing
+authorized users to discover and retrieve datasets of interest.
+Globus retains a copy of the metadata to facilite the discovery 
+process; another copy is kept with the data on the owner's storage.
 
 === Production and Trial Services
 The production Globus data publication service is located at
@@ -69,7 +69,7 @@ Any Globus user can submit datasets to both the
 "Curated Trial Collection" and the "Uncurated Trial Collection"
 that are found in the "Open Trial" 
 link:#glossary-community[_community_] on the trial service.
-All data on the trial service will be remove periodically and should
+All data on the trial service will be removed periodically and should
 not be cited elsewhere.
 
 === User Guide Overview
@@ -78,17 +78,18 @@ established collections (including the trial collections).
 It introduces the Globus data publication web interface
 and steps through the submission and curation workflows 
 that are part of the publication process.
-Administrators setting up and configuring collections should consult 
-the link:{publish_admin_guide_url}[Data Publication Administrator Guide]. 
+A link:#glossary[glossary] is included at the end of the guide.
 
-Screenshots and links in later sections of this guide 
-reference the 
+Screen shots and links in later sections of this guide reference the 
 link:{trial_publish_url}[trial Globus data publication service],
 as it is open to all Globus users.
 The instructions in this guide also apply to the 
 link:{production_publish_url}[production Globus 
 data publication service], with workflow details varying
 from collection to collection.
+
+Administrators setting up and configuring collections should consult 
+the link:{publish_admin_guide_url}[Data Publication Administrator Guide]. 
 
 [[prerequisites]]
 == Prerequisites
@@ -103,13 +104,13 @@ link:{getting_started_url}[step-by-step guide]
 will help you sign up for a Globus account and become
 comfortable with the Globus Transfer Files page.
 For the impatient, skip the details and use the 
-link:{sign_up_url}[“Sign-Up” page] to create your Globus identity
+link:{sign_up_url}[Sign Up page] to create your Globus identity.
 
 [[home-page]]
 == Publication Home Page / Logging In
 
 The link:{trial_publish_url}[Globus data publication home page] 
-(for the trial service) is shown below: 
+(for the trial service) is shown here: 
 
 .Publication Home Page
 [role="img-responsive center-block"]
@@ -118,26 +119,25 @@ image::images/publication-home-page.png[Publication Home Page]
 The publication home page is displayed when you first access 
 the publication site.
 It can also be reached via the `Browse & Discover` link 
-that will appear on most publication pages after you log in.
+that appears on most publication pages after you log in.
 
 The publication home page is a starting point for browsing 
-communities and their collections, 
-and for discovering published datasets based on 
-Author, Subject (Keywords), and Issue (Publication) Date.
-The `Search` box near the top of the page can be used to
-find published datasets whose metadata contains the entered text.
+communities and their collections, and for discovering 
+published datasets of interest through facet-based filtering 
+(author, subject, and issue date).
+The `Search` box located near the top of the page is 
+another way to find datasets of interest--keywords 
+entered in the box are used to match descriptive text of 
+published datasets.
 
-The communities, collections, and datasets you can see are
-determined by access controls set by their owners.
-Some have unrestricted access, while others 
-rely on the Globus service to enforce
-access restrictions based on your Globus identity.
+Globus makes sure you see only the communities, collections, 
+facet values, and datasets that you have permission to access.
 
 After familiarizing yourself with the home page, select `Log In` from
 the navigation bar at the top of the page. 
-If an active (unexpired) Globus session already exists, `Log In` will 
-immediately re-direct you to the data publication dashboard.
-If no session is active, a "Sign In" page will prompt for your 
+If an active (unexpired) Globus session already exists, you will 
+immediately be re-directed to the data publication dashboard.
+If no session is active, a Sign In page will prompt for your 
 Globus username and password (you may use any linked Globus identity
 and credentials) before displaying the data publication dashboard.
 
@@ -158,10 +158,15 @@ datasets
 by facet-based browsing `(Browse & Discover)` or 
 by viewing link:#glossary-community[communities] and
 link:#glossary-collection[collections] `(Communities & Collections)`.
-Keywords entered in the search box are used to 
-match descriptive text of published datasets.
-Globus makes sure you see only the communities, collections, 
-facet values, and datasets that you have permission to access.
+
+xxxxxxxxxx text I may want.
+After the dataset is published, it is discoverable using 
+faceted search that allows the researcher to progressively 
+filter results and rapidly narrow in on the data of interest.
+Globus offers faceted search capabilities that allow
+authorized users to progressively filter results and easily 
+narrow in on published datasets of interest.
+xxxxxxxxxx
 
 Selecting “Start a New Submission” will launch the
 submission workflow described in the
@@ -453,8 +458,8 @@ or remove it.
   in the Globus data publiction service.
   The data files may be of arbitrary size and format, allowing 
   virtually any type of data (e.g., text files, formatted documents, 
-  images, source code, raw data from sensors, control parameters) to 
-  be associated and published together.
+  images, source code, executables, raw data from sensors, 
+  control parameters) to be associated and published together.
 
 [[glossary-metadata]]Metadata::
   In the context of the Globus data publication service, 
