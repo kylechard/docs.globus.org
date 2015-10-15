@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.3
+:revnumber: 0.0.4
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -12,7 +12,7 @@
 :trial_publish_url: http://trial.publish.globus.org
 :trial_publish: trial.publish.globus.org
 :publish_admin_guide_url: http://dev.globus.org/data-publication-admin-guide
-:getting_started_url: http://www.globus.org/researchers/getting-started
+:how_to_sign_up_url: http://www.globus.org/researchers/getting-started
 :sign_up_url: http://www.globus.org/SignUp
 
 [doc-info]*Last Updated: {docdate}*
@@ -78,6 +78,10 @@ established collections (including the trial collections).
 It introduces the Globus data publication web interface
 and steps through the submission and curation workflows 
 that are part of the publication process.
+Although this guide does not explicitly cover the 
+publication search and browse features, it does document 
+access points to those features from the publication home page
+and dashboard.
 A link:#glossary[glossary] is included at the end of the guide.
 
 Screen shots and links in later sections of this guide reference the 
@@ -100,14 +104,17 @@ Familiarity with the Globus transfer interface will also be helpful,
 as it is used to assemble datasets in the submission process.
 
 If you are new to Globus, this 
-link:{getting_started_url}[step-by-step guide] 
+link:{how_to_sign_up_url}[how to guide] 
 will help you sign up for a Globus account and become
 comfortable with the Globus Transfer Files page.
 For the impatient, skip the details and use the 
 link:{sign_up_url}[Sign Up page] to create your Globus identity.
 
+[[getting-started]]
+== Getting Started
+
 [[home-page]]
-== Publication Home Page / Logging In
+=== Publication Home Page 
 
 The link:{trial_publish_url}[Globus data publication home page] 
 (for the trial service) is shown here: 
@@ -133,44 +140,94 @@ published datasets.
 Globus makes sure you see only the communities, collections, 
 facet values, and datasets that you have permission to access.
 
-After familiarizing yourself with the home page, select `Log In` from
-the navigation bar at the top of the page. 
+[[logging-in]]
+=== Logging In
+
+To submit a dataset for publication you must be logged in to
+the publication service with your Globus identity. 
+
+To log in, select `Log In` on the navigation bar at the top of 
+the publication home page. 
 If an active (unexpired) Globus session already exists, you will 
 immediately be re-directed to the data publication dashboard.
 If no session is active, a Sign In page will prompt for your 
 Globus username and password (you may use any linked Globus identity
 and credentials) before displaying the data publication dashboard.
 
+[TIP]
+====
+On occassion you may notice that your Globus ID is displayed 
+in the navagation bar, indicating that you are logged in, but
+when you interact with the service you are asked to log in again.
+This typically occurs when you have been inactive for awhile and
+your session has timed out. 
+Since your browser window is not automatically refreshed,
+it continues to display your Globus ID from your previously
+active session.
+This behavior can be confusing when you first encounter it.
+====
+
 [[data-publication-dashboard]]
 == Data Publication Dashboard
 
-The data publication dashboard, shown here, is the starting
+The data publication dashboard is the starting
 point for most publication-related operations in Globus.
 
-.Data Publication Dashboard
+[[empty-dashboard]] 
+=== Empty Dashboard 
+The first time you use the Globus data publication service, 
+and other times when you do not have any work-in-progress, 
+your dashboard will be empty and will look like this:
+
+.Empty Data Publication Dashboard 
 [role="img-responsive center-block"]
-image::images/data-publication-dashboard.png[Data Publication Dashboard]
+image::images/data-publication-dashboard.png[Empty Data Publication Dashboard]
 
-RUTH'S UPDATES STOP HERE AND CONTINUE IN GLOSSARY
+The navigation bar at the top of the dashboard has `Publish` highlighted
+to show that you are using the Globus data publication service.
+Your Globus ID is displayed on the far right of the bar,
+indicating that you are logged in.
+The navigation bar menus and options provide quick access to many other
+Globus features outside of the publication service.
 
-Links provide direct access to methods for discovering published 
-datasets 
-by facet-based browsing `(Browse & Discover)` or 
-by viewing link:#glossary-community[communities] and
-link:#glossary-collection[collections] `(Communities & Collections)`.
+Just below the navigation bar, the `Browse & Discover` option will 
+take you to the data publication home page that was
+link:#home-page[discussed earlier]
+The `Communities & Collections` option will take you to
+an alternate interface for exploring the publication service's
+participants and their holdings.
 
-xxxxxxxxxx text I may want.
-After the dataset is published, it is discoverable using 
-faceted search that allows the researcher to progressively 
-filter results and rapidly narrow in on the data of interest.
-Globus offers faceted search capabilities that allow
-authorized users to progressively filter results and easily 
-narrow in on published datasets of interest.
-xxxxxxxxxx
+The `Search` box works exactly like it did on the home 
+page--keywords  
+entered in the box are used to match descriptive text of 
+published datasets.
 
-Selecting “Start a New Submission” will launch the
-submission workflow described in the
-link:#the-submission-workflow[next section].
+With all browse, discover, explore, and search operations, 
+Globus makes sure you see only the information that you have 
+permission to access.
+
+Located in the Data Publication Dashboard area of the screen,
+`Submit a New Dataset` will launch a new submission workflow, and
+`View My Published Datasets` will open a display showing all of 
+your submitted datasets that have been accepted for publication.
+
+[[populated-dashboard]] 
+=== Populated Dashboard 
+
+To give you an idea of the dashboard contents when you do have
+work-in-progress, a screen shot of a populated dashboard is 
+shown here:
+
+.Populated Data Publication Dashboard 
+[role="img-responsive center-block"]
+image::images/populated-dashboard.png[Populated Data Publication Dashboard]
+
+
+RUTH STOPPING HERE FOR TONIGHT
+You can see that while the top of the screen looks the same, the
+dashboard area provides updates on all of the datasets in the
+submission or curation workflows that are of interest to you.
+
 The dashboard will provide updates on all of your datasets that 
 are in the submission or curation stages of the publication process.
 If you have a curator role for one or more collections,
