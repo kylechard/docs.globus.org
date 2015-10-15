@@ -113,6 +113,11 @@ image::images/130725_Encryption_option.png[]
 
 You should be aware that encryption adds processing overhead, resulting in slower transfers. Encrypted transfers use the SSL cipher configured on the endpoints (the default for OpenSSL is AES256-SHA).
 
+== Which protocols does Globus support?
+Globus transfer tasks can be initiated and managed using our GUI, REST, and CLI interfaces.
+
+The GridFTP protocol is used to transfer the data files themselves.  We have also received requests to support UDT, and will consider implementing this protocol if there is sufficient demand from our users.
+
 == What does "Beta" mean in the Globus context?
 We use "Beta" as an indicator of what an end user may expect from a newly-released Globus feature. We will usually tag something as "Beta" when we have a new feature that we want to expose to users for feedback, but that we know is not fully tested and quality assured. When a Globus feature/page is tagged as "Beta" it means that we expect it to work as intended, but that you may experience some issues in your context. This means that we cannot provide performance guarantees and suggest that you not rely on the feature for production use.
 
