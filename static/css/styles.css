@@ -93,14 +93,14 @@ dd {
   padding-top: 20px;
   border-top: solid 1px #eee;
 }
-.hasToc + #content .sect2 {
-  margin-top: 40px;
-}
-.hasToc + #content .sect3 {
+.hasToc + #content.numbered .sect2 {
   margin-top: 30px;
 }
-.hasToc + #content .sect4 {
-    margin-top: 20px;
+.hasToc + #content.numbered .sect3 {
+  margin-top: 20px;
+}
+.hasToc + #content.numbered .sect4 {
+    margin-top: 15px;
 }
 .numbered .sect2,
 .numbered .sect3 {

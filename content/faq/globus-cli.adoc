@@ -20,9 +20,9 @@ NOTE: If you don’t already have an SSH key, instructions for creating one are 
 . link:https://www.globus.org/SignIn[Sign in to your Globus account].
 . link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
 . Click "add linked identity".
-. Click “Add SSH Public Key”.
+. Click "Add SSH Public Key".
 . Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
-. Click “Submit” to save.
+. Click "Submit" to save.
 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
 
@@ -108,11 +108,21 @@ To use GSI SSH you need to configure your Globus profile with the X.509 Certific
 . link:https://www.globus.org/SignIn[Sign in to your Globus account].
 . link:https://www.globus.org/account/ManageIdentities[Click here] to go to the Manage Identities page.
 . Click "add linked identity".
-. Click “Add an X.509 Credential”.
+. Click "Add an X.509 Credential".
 . Copy and paste the contents of your certificate PEM file (NOT your private key). Note that proxy certificates are not supported. Optionally, enter an identifying label.
-. Click “Submit” to save
+. Click "Submit" to save
 
-To find your PEM file, run +grid-proxy-info+ at a command prompt. This will print the “path” of your certificate PEM file (e.g. /tmp/x509up_u502), as well as the 'type'. Make sure that the 'type' is 'end entity credential', and not some form of proxy. Note that many certificates fetched via the +myproxy-logon+ command are still end entity credentials and can be used for this purpose. List the contents of this file, and then copy and paste the portion of the file between, and including, the lines: —–BEGIN CERTIFICATE—– and —–END CERTIFICATE—–.
+To find your PEM file, run +grid-proxy-info+ at a command prompt. This will print the "path" of your certificate PEM file (e.g. /tmp/x509up_u502), as well as the "type". Make sure that the "type" is "end entity credential", and not some form of proxy. Note that many certificates fetched via the +myproxy-logon+ command are still end entity credentials and can be used for this purpose. List the contents of this file, and then copy and paste the portion of the file between, and including, the lines: —–BEGIN CERTIFICATE—– and —–END CERTIFICATE—–.
 
 === Activating an Endpoint
 You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli/[CLI tutorial] for more details on using GSI SSH.
+
+== Can I force encryption on an endpoint?
+The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
+See link:http://dev.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
+
+----terminal
+$ endpoint-modify --force-encryption [input]#my#endpoint#
+----terminal
+
+Then all transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that selection marked in the Web.
