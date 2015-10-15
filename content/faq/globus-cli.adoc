@@ -12,7 +12,7 @@ short_title: Globus Command Line Interface (CLI)
 toc::[]
 
 == What is an SSH key? Why do I need one?
-An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli[CLI]. In order to login to the Globus CLI, you must have a valid public SSH key (or an link:adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
+An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli[CLI]. In order to login to the Globus CLI, you must have a valid public SSH key (or an link:#adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
 
 == How do I add an SSH key to my Globus account?
 NOTE: If you don’t already have an SSH key, instructions for creating one are available link:#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here for Mac OSX, Linux, and Windows systems].
