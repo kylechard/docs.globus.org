@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.5
+:revnumber: 0.0.6
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -80,13 +80,16 @@ not be cited elsewhere.
 
 === User Guide Overview
 This guide is aimed at users who want to publish datasets in 
-established collections (including the trial collections). 
-It introduces the Globus data publication web interface
+existing collections, including the trial collections.
+Administrators setting up and configuring collections should consult 
+the link:{publish_admin_guide_url}[Data Publication Administrator Guide]. 
+
+This user guide introduces the Globus data publication web interface,
 and steps through the submission and curation workflows 
-that are part of the publication process.
-Although this guide does not cover the publication search and 
-browse features in detail, it does document access points 
-to them on the publication home page and dashboard.
+that make up the data publication process.
+Although the publication search and browse features 
+are not covered in detail, access points to them on the 
+publication home page and dashboard are documented.
 A link:#glossary[glossary] is included at the end of the guide.
 
 Screen shots and links in later sections of this guide reference the 
@@ -97,9 +100,6 @@ link:{production_publish_url}[production Globus
 data publication service], with workflow details varying
 from collection to collection.
 
-Administrators setting up and configuring collections should consult 
-the link:{publish_admin_guide_url}[Data Publication Administrator Guide]. 
-
 [[prerequisites]]
 == Prerequisites
 
@@ -108,8 +108,8 @@ the Globus data publication service.
 Familiarity with the Globus transfer interface will also be helpful,
 as it is used to assemble datasets in the submission process.
 
-If you are new to Globus, this 
-link:{how_to_sign_up_url}[how to guide] 
+If you are new to Globus, 
+link:{how_to_sign_up_url}[this how to guide] 
 will help you sign up for a Globus account and become
 comfortable with the Globus Transfer Files page.
 For the impatient, skip the details and use the 
@@ -153,7 +153,7 @@ the publication service with your Globus identity.
 
 To log in, select `Log In` on the navigation bar at the top of 
 the publication home page. 
-If an active (unexpired) Globus session already exists, you will 
+If an active Globus session already exists, you will 
 immediately be re-directed to the data publication dashboard.
 If no session is active, a Sign In page will prompt for your 
 Globus username and password (you may use any linked Globus identity
@@ -165,7 +165,7 @@ On occasion, you may notice that your Globus ID is displayed
 in the navagation bar (indicating that you are logged in), but
 when you interact with the service you are asked to log in again.
 This typically occurs when you have been inactive for awhile and
-your session has timed out. 
+your session has expired. 
 Since your browser window is not automatically refreshed,
 it continues to display your Globus ID from your previously
 active session.
@@ -198,6 +198,9 @@ Globus features outside of the publication service.
 Just below the navigation bar, the `Browse & Discover` option will 
 take you to the data publication home page that was
 link:#home-page[discussed earlier].
+The `Data Publication Dashboard` option is not selectable while
+you are on the dashboard page, but from other publication pages it will
+take you to the dashboard page.
 The `Communities & Collections` option will take you to
 an alternate interface for exploring the publication service's
 participants and their holdings.
@@ -206,7 +209,6 @@ The `Search` box works exactly as it did on the home
 page--keywords  
 entered in the box are used to match descriptive text of 
 published datasets.
-
 With all browse, discover, explore, and search operations, 
 Globus makes sure you see only the information that you have 
 permission to access.
@@ -247,8 +249,8 @@ submitted but not yet approved for publication.
 Collections exist in communities.
 Collection names must be unique within a community, but need not be
 unique across communities.
-To fully specify a collection for display purposes, 
-the notation "Collection Name << Community Name" is used.
+To fully identify a collection, both the collection and the community are
+displayed using the notation "Collection Name << Community Name". 
 ====
 
 Before leaving this section, notice that the
@@ -257,25 +259,49 @@ collection "Curated Trial Collection << Open Trial"
 appears in two sections of the Populated Data Publication Dashboard
 figure.
 Typically, a user would not be offered the option of curating their
-own dataset This option is allowed for the Curated Trial Collection,
+own dataset. 
+This option is allowed for the Curated Trial Collection,
 so that users can take a dataset through both the submission 
 and curation stages of the publication process.
 
 [[the-submission-workflow]]
 == The Submission Workflow
 
-[NOTE]
-.Ruth's Comments on section changes
-===
-- Edits for more consistent use of terms (publication, submission, workflow, ...)
-- QUESTION:  Why are there 2 "Describe" step boxes in the 2nd figure in this section?   I just see one in my trial submission.
-- QUESTION/CHANGE REQUEST: I think the "Globus Transfer" step box should be changed to Assemble.
-===
+=== Overview 
+The submission workflow, described in this section, is the 
+first stage of the publication process. 
+The submission workflow is used to create
+a new dataset and submit it for publication in a collection.
 
-The publication process is divided into two stages: 
-submission and curation.
-The submission workflow, described in this section, is used to create
-a new dataset.
+Collection adminstrators have the ability to customize the 
+submission workflow, specifying which steps to include 
+and the order in which the steps are performed.
+Submission workflow steps can include _License_, _Describe_, 
+_Assemble_, _Verify_, and _Complete_.
+Collection administrators also control the 
+license terms that must be accepted in the _License_ step and
+descriptive (metadata) information that can and must be entered
+in the _Describe_ step(s).
+
+In this guide, a dataset will be submitted to the collection
+"Curated Trial Collection" in the community "Open Trial".
+The workflow steps and metadata requirements for that
+collection are representative of those found in many others.
+The general submission process is the same, regardless of the 
+collection-specific details.
+
+=== Navigation
+
+RUTH STOPPED HERE FOR NOW
+
+A progress bar at the top of each page shows which steps of the workflow
+have been completed, and which are still to be performed. The current
+step of the workflow is highlighted in dark blue and the previously
+performed steps steps are in light blue. Any of the light blue step names
+can be clicked to return to that step in the workflow directly.
+
+image:images/Submit%20Workflow%20Access.png[Workflow Progress Bar]
+
 The bottom right section of each page of the
 workflow contains navigation buttons for moving forward, backward, or
 leaving the current workflow.
@@ -288,22 +314,11 @@ or saving the state. Saving
 the state is particularly helpful if a long running operation, such as
 a large transfer, is taking place and you wish to exit and
 return later to check progress and continue. 
+
 The saved submission workflow will
 be displayed on your dashboard to open to continue editing or to
 remove if the submission is no longer needed.
 
-A progress bar at the top of each page shows which steps of the workflow
-have been completed, and which are still to be performed. The current
-step of the workflow is highlighted in dark blue and the previously
-performed steps steps are in light blue. Any of the light blue step names
-can be clicked to return to that step in the workflow directly.
-
-image:images/Submit%20Workflow%20Access.png[Workflow Progress Bar]
-
-The rest of this section describes the steps commonly found in the
-submission workflow. Usually, the steps will be performed in the
-sequence presented, but collections may re-order or add or remove
-steps in highly customized cases.
 
 [[selecting-a-collection]]
 === Selecting a Collection
