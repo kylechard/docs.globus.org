@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.4
+:revnumber: 0.0.5
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -24,16 +24,23 @@ toc::[]
 
 === Globus Data Publication Overview
 The link:{publication_webpage_url}[Globus data publication] 
-service makes it easy for institutions and projects to establish 
-searchable link:#glossary-collection[_collections_] with customized 
-metadata schema, curation policies, licenses, and access controls.
+service makes it easy for 
+link:#glossary-community[_communities_] 
+to establish searchable 
+link:#glossary-collection[_collections_] 
+with customized 
+link:#glossary-metadata[_metadata_] 
+schema, 
+link:#glossary-curation[_curation_] 
+policies, licenses, and access controls.
 
-To submit a link:#glossary-dataset[_dataset_] for publication, 
-authorized users follow a 
+To submit a 
+link:#glossary-dataset[_dataset_] 
+for publication, authorized users follow a 
 web-based workflow that employs fillable forms for collection-specific 
-parameters and the Globus transfer interface for dataset assembly. 
+metadata and the Globus transfer interface for dataset assembly. 
 A dataset in the Globus data publication service is composed of
-data file(s) and link:#glossary-metadata[_metadata_].
+data file(s) and metadata.
 The data files may be of arbitrary size and format, 
 allowing virtually any type of data (e.g., text files, 
 formatted documents, images, source code, executables, 
@@ -67,8 +74,7 @@ to let individuals and
 groups explore what Globus publication offers.
 Any Globus user can submit datasets to both the 
 "Curated Trial Collection" and the "Uncurated Trial Collection"
-that are found in the "Open Trial" 
-link:#glossary-community[_community_] on the trial service.
+that are found in the "Open Trial" community on the trial service.
 All data on the trial service will be removed periodically and should
 not be cited elsewhere.
 
@@ -78,10 +84,9 @@ established collections (including the trial collections).
 It introduces the Globus data publication web interface
 and steps through the submission and curation workflows 
 that are part of the publication process.
-Although this guide does not explicitly cover the 
-publication search and browse features, it does document 
-access points to those features from the publication home page
-and dashboard.
+Although this guide does not cover the publication search and 
+browse features in detail, it does document access points 
+to them on the publication home page and dashboard.
 A link:#glossary[glossary] is included at the end of the guide.
 
 Screen shots and links in later sections of this guide reference the 
@@ -155,9 +160,9 @@ Globus username and password (you may use any linked Globus identity
 and credentials) before displaying the data publication dashboard.
 
 [TIP]
-====
-On occassion you may notice that your Globus ID is displayed 
-in the navagation bar, indicating that you are logged in, but
+=====
+On occasion, you may notice that your Globus ID is displayed 
+in the navagation bar (indicating that you are logged in), but
 when you interact with the service you are asked to log in again.
 This typically occurs when you have been inactive for awhile and
 your session has timed out. 
@@ -176,12 +181,12 @@ point for most publication-related operations in Globus.
 [[empty-dashboard]] 
 === Empty Dashboard 
 The first time you use the Globus data publication service, 
-and other times when you do not have any work-in-progress, 
-your dashboard will be empty and will look like this:
+and other times when you do not have any pending work or submissions, 
+your dashboard will be empty:
 
 .Empty Data Publication Dashboard 
 [role="img-responsive center-block"]
-image::images/data-publication-dashboard.png[Empty Data Publication Dashboard]
+image::images/empty-dashboard.png[Empty Data Publication Dashboard]
 
 The navigation bar at the top of the dashboard has `Publish` highlighted
 to show that you are using the Globus data publication service.
@@ -192,12 +197,12 @@ Globus features outside of the publication service.
 
 Just below the navigation bar, the `Browse & Discover` option will 
 take you to the data publication home page that was
-link:#home-page[discussed earlier]
+link:#home-page[discussed earlier].
 The `Communities & Collections` option will take you to
 an alternate interface for exploring the publication service's
 participants and their holdings.
 
-The `Search` box works exactly like it did on the home 
+The `Search` box works exactly as it did on the home 
 page--keywords  
 entered in the box are used to match descriptive text of 
 published datasets.
@@ -211,30 +216,50 @@ Located in the Data Publication Dashboard area of the screen,
 `View My Published Datasets` will open a display showing all of 
 your submitted datasets that have been accepted for publication.
 
+
 [[populated-dashboard]] 
 === Populated Dashboard 
-
-To give you an idea of the dashboard contents when you do have
-work-in-progress, a screen shot of a populated dashboard is 
-shown here:
+When you have pending work or submissions in the publication service, 
+the dashboard will be more fully populated:
 
 .Populated Data Publication Dashboard 
 [role="img-responsive center-block"]
 image::images/populated-dashboard.png[Populated Data Publication Dashboard]
 
-
-RUTH STOPPING HERE FOR TONIGHT
 You can see that while the top of the screen looks the same, the
 dashboard area provides updates on all of the datasets in the
-submission or curation workflows that are of interest to you.
+curation and submission stages of the publication 
+process that are relevant to the logged-in user. 
+The details will be explained in later sections as you step through the 
+publication process, but briefly:
 
-The dashboard will provide updates on all of your datasets that 
-are in the submission or curation stages of the publication process.
-If you have a curator role for one or more collections,
-submitted datasets awaiting
-link:#glossary-curation[curation] will also be displayed.
-Curation activities are described in 
-link:#the-curation-workflow[The Curation Workflow].
+* Curation Tasks Waiting to be Performed: Lists datasets you previously 
+agreed to curate but have not yet approved for publication.
+* Curation Tasks Waiting to be Claimed: Lists submitted datasets that 
+are waiting to be claimed by a curator.
+* Dataset Submissions in Progress: Lists your datasets that need further 
+work before being submitted.
+* Datasets Submitted for Approval: Lists your datasets that have been
+submitted but not yet approved for publication.
+
+[TIP]
+====
+Collections exist in communities.
+Collection names must be unique within a community, but need not be
+unique across communities.
+To fully specify a collection for display purposes, 
+the notation "Collection Name << Community Name" is used.
+====
+
+Before leaving this section, notice that the
+dataset "Thursday Curated Dataset" in the 
+collection "Curated Trial Collection << Open Trial"
+appears in two sections of the Populated Data Publication Dashboard
+figure.
+Typically, a user would not be offered the option of curating their
+own dataset This option is allowed for the Curated Trial Collection,
+so that users can take a dataset through both the submission 
+and curation stages of the publication process.
 
 [[the-submission-workflow]]
 == The Submission Workflow
@@ -493,7 +518,7 @@ or remove it.
 [[glossary-community]]Community::
   A community is the representation of an organization or
   institution in the Globus data publication service. 
-  An administrative group is associated with every community
+  An administrative group is associated with every community,
   and members of that group have the authorization to create or 
   delete collections or sub-communities within the community.
 
@@ -507,7 +532,8 @@ or remove it.
   domain knowledge is sufficient to insure that the submitted 
   dataset is of appropriate quality for the collection.
   Collection policies control the curation requirements for a given
-  dataset submission.
+  dataset submission, and not all collections require curation
+  of submitted datasets prior to publication.
 
 [[glossary-dataset]]Dataset::
   A dataset is composed of data file(s) and metadata that are 
@@ -527,7 +553,7 @@ or remove it.
   conforms to the schema and requirements defined by the collection 
   where the dataset will be published.
   The Globus publication service automatically includes the metadata
-  in the dataset when the dataset is published. 
+  in the dataset when the dataset is published.
 
 [[glossary-pid]]Persistent Identifier (PID)::
   A reference, often a URL or DOI, to a dataset or other resource 
