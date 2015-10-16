@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.4
+:revnumber: 0.0.5
 :toc:
 :toc-placement: manual
 :toclevels: 3
