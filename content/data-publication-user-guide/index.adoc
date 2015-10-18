@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.6
+:revnumber: 0.0.7
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -235,13 +235,13 @@ process that are relevant to the logged-in user.
 The details will be explained in later sections as you step through the 
 publication process, but briefly:
 
-* Curation Tasks Waiting to be Performed: Lists datasets you previously 
+* _Curation Tasks Waiting to be Performed_: Lists datasets you previously 
 agreed to curate but have not yet approved for publication.
-* Curation Tasks Waiting to be Claimed: Lists submitted datasets that 
+* _Curation Tasks Waiting to be Claimed_: Lists submitted datasets that 
 are waiting to be claimed by a curator.
-* Dataset Submissions in Progress: Lists your datasets that need further 
-work before being submitted.
-* Datasets Submitted for Approval: Lists your datasets that have been
+* _Dataset Submissions in Progress_: Lists your datasets that need 
+further work before being submitted.
+* _Datasets Submitted for Approval_: Lists your datasets that have been
 submitted but not yet approved for publication.
 
 [TIP]
@@ -292,33 +292,43 @@ collection-specific details.
 
 === Navigation
 
-RUTH STOPPED HERE FOR NOW
+Pages in the submission workflow have some common elements
+that help you navigate through, and exit from, the workflow.
 
-A progress bar at the top of each page shows which steps of the workflow
-have been completed, and which are still to be performed. The current
-step of the workflow is highlighted in dark blue and the previously
-performed steps steps are in light blue. Any of the light blue step names
-can be clicked to return to that step in the workflow directly.
+A progress bar at the top of each page shows the steps of the 
+submission workflow:
 
-image:images/Submit%20Workflow%20Access.png[Workflow Progress Bar]
+.Submission Workflow Progress Bar
+[role="img-responsive center-block"]
+image::images/submit-workflow-progress-bar.png[Submission Workflow Progress Bar]
 
-The bottom right section of each page of the
-workflow contains navigation buttons for moving forward, backward, or
-leaving the current workflow.
+In the progress bar, completed steps are colored light blue, 
+the current step is highlighed in dark blue,
+and still to be performed steps are shown in grey.
+You can return directly to any previously performed step to
+review or revise your entries by clickling on the (light blue) 
+step name in the progress bar.
 
-image:images/Submit%20Nav%20Buttons.png[Navigating the Workflow]
+The bottom right of many submission pages contains navigation buttons:
 
-Selecting the "Cancel/Save" button gives you the option of either
-removing the dataset being created in the submission workflow
-or saving the state. Saving
-the state is particularly helpful if a long running operation, such as
-a large transfer, is taking place and you wish to exit and
-return later to check progress and continue. 
+.Submission Navigation Buttons
+[role="img-responsive center-block"]
+image::images/submit-nav-buttons.png[Submission Navigation Buttons]
 
-The saved submission workflow will
-be displayed on your dashboard to open to continue editing or to
-remove if the submission is no longer needed.
+`Back` takes you to the previous step in workflow,
+`Continue` takes you to the next step,
+and `Save & Exit` saves the workflow and exits, 
+returning you to the publication dashboard.
+`Save & Exit` is particularly helpful if a long-running operation,
+such as a large transfer, is taking place and you want to exit
+and return later to check progress and continue.
 
+The saved submission workflow will be displayed 
+in the _Dataset Submissions in Progress_
+section of your dashboard.
+From there you can resume the submission process,
+view the dataset submission in its saved state,
+or remove the submission from the system.
 
 [[selecting-a-collection]]
 === Selecting a Collection
