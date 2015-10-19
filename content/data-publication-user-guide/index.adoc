@@ -391,31 +391,72 @@ or to remove the submission if you are not.
 Choose `I Accept the License Terms` to proceed to 
 the next workflow step.
 
-[[describing-the-publication]]
-=== Describing the Publication
+[[describe-dataset]]
+=== Describe the Dataset
 
-Forms are presented to prompt for entry of
-link:#glossary-metadata[metadata] describing the submission. Each
-collection defines a form to be used, so all submissions to the
-collection present the same form and store the same metadata, but
-different collections may have different forms. The figure shows a
-simple form with basic citation information.
+The next step in the submission workflow is to 
+enter metadata to describe the dataset you are 
+submitting for publication.
+You will be presented with a fillable form where
+you can enter your metadata.
+Each collection defines its own metadata and controls
+the prompts that appear on the form.
 
-image:images/Submit%20Describe%20More.png[Entering Metadata]
+If the collection's form contains many fields, it may 
+span multiple 'Describe' pages. 
+The progress bar at the top of the page provides a hint as to 
+how many pages the form spans. 
+Like other parts of the workflow, 
+you may save your work at any time and resume it at a later
+time.
+This may be helpful, for example, if you do not have all of the 
+required information when you start the submission process.
 
-In the form, field names marked with an asterisk `(*)` are required. Some
-fields, such as Authors in this example, may permit multiple values to
-be entered. When that is allowed, the "Add More" button is present to
-the right of the field entry. Clicking this button adds additional rows
-to the interface allowing more values to be entered. Values are removed
-by clicking "Remove Entry" next to the entry to be removed.
+The figures in this section show two of the three
+pages in the metadata form defined by the administrator of the 
+"Curated Trial Collection". 
+Different collections will have different forms, but the general
+process for entering metadata is the same across collections.
 
-Forms containing many fields may span multiple pages. The progress bar
-at the top of the page provides a hint as to how many pages the
-form spans. Like other parts of the workflow, progress may be
-saved and the user may return in the middle of the form. This may be
-helpful, for example, if required information is not available at the
-time the user starts the workflow.
+.Describe Dataset Page 1
+[role="img-responsive center-block"]
+image::images/submit-describe-dataset.png[Describe Dataset Page 1]
+
+In the form, field names marked with an asterisk (*) are required. 
+Some fields, such as "Authors" in this example, permit you to enter
+multiple values.
+When multiple values are allowed, the `Add More` button is shown to
+the right of the field entry. 
+Click this button to display additional rows so
+more values can be entered. 
+Values can be removed by clicking `Remove Entry` next to the 
+entry to be removed.
+
+.Describe Dataset Page 2
+[role="img-responsive center-block"]
+image::images/submit-describe2-dataset.png[Describe Dataset Page 2]
+
+The second page of the form gives you an idea of additional metadata.
+You can see that the Globus data publication service allows for
+considerable customization in terms of metadata schema and entry 
+prompts and fields, allowing collection administrators to tailor
+the system for their needs without a substantial burden to lay out
+forms and verify entries.
+
+Enter as much (or as little) descriptive metadata as you want on pages
+two and three of the _Describe_ workflow step.
+For the "Curated Trial Collection", none of the fields on those two
+pages are required.
+
+[TIP]
+=====
+In some cases, the metadata field entry prompts do not exactly match 
+the labels shown on the more generic publication pages. 
+For example, _Issue Date_ and _Publication Date_ refer to the same
+value and  _Subject_, _Subject Keywords_, and _Keywords_ are 
+used interchangeably.
+=====
+
 
 [[assembling-the-data]]
 === Assembling the Data
