@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.7
+:revnumber: 0.0.8
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -154,7 +154,7 @@ the publication service with your Globus identity.
 To log in, select `Log In` on the navigation bar at the top of 
 the publication home page. 
 If an active Globus session already exists, you will 
-immediately be re-directed to the data publication dashboard.
+immediately be redirected to the data publication dashboard.
 If no session is active, a Sign In page will prompt for your 
 Globus username and password (you may use any linked Globus identity
 and credentials) before displaying the data publication dashboard.
@@ -200,7 +200,7 @@ take you to the data publication home page that was
 link:#home-page[discussed earlier].
 The `Data Publication Dashboard` option is not selectable while
 you are on the dashboard page, but from other publication pages it will
-take you to the dashboard page.
+take you to the dashboard.
 The `Communities & Collections` option will take you to
 an alternate interface for exploring the publication service's
 participants and their holdings.
@@ -214,6 +214,8 @@ Globus makes sure you see only the information that you have
 permission to access.
 
 Located in the Data Publication Dashboard area of the screen,
+`Submit a New Dataset` will launch a new 
+link:#the-submission-workflow[submission workflow], and
 `Submit a New Dataset` will launch a new submission workflow, and
 `View My Published Datasets` will open a display showing all of 
 your submitted datasets that have been accepted for publication.
@@ -260,7 +262,7 @@ appears in two sections of the Populated Data Publication Dashboard
 figure.
 Typically, a user would not be offered the option of curating their
 own dataset. 
-This option is allowed for the Curated Trial Collection,
+This option is allowed for the "Curated Trial Collection",
 so that users can take a dataset through both the submission 
 and curation stages of the publication process.
 
@@ -295,7 +297,7 @@ collection-specific details.
 Pages in the submission workflow have some common elements
 that help you navigate through, and exit from, the workflow.
 
-A progress bar at the top of each page shows the steps of the 
+A progress bar at the top of the page shows the steps of the 
 submission workflow:
 
 .Submission Workflow Progress Bar
@@ -304,25 +306,27 @@ image::images/submit-workflow-progress-bar.png[Submission Workflow Progress Bar]
 
 In the progress bar, completed steps are colored light blue, 
 the current step is highlighed in dark blue,
-and still to be performed steps are shown in grey.
-You can return directly to any previously performed step to
+and upcoming steps are shown in grey.
+You can return directly to any completed step to
 review or revise your entries by clickling on the (light blue) 
 step name in the progress bar.
 
-The bottom right of many submission pages contains navigation buttons:
+Many of the submission workflow pages contain navigation buttons 
+at the bottom of the page:
 
 .Submission Navigation Buttons
 [role="img-responsive center-block"]
 image::images/submit-nav-buttons.png[Submission Navigation Buttons]
 
 `Back` takes you to the previous step in workflow,
-`Continue` takes you to the next step,
-and `Save & Exit` saves the workflow and exits, 
-returning you to the publication dashboard.
-`Save & Exit` is particularly helpful if a long-running operation,
-such as a large transfer, is taking place and you want to exit
-and return later to check progress and continue.
+`Continue` takes you to the next step, and
+`Save & Exit` saves the workflow and returns 
+you to the publication dashboard.
 
+The save and exit option can be particularly helpful 
+if a long-running operation, such as a large transfer, 
+is taking place and you want to exit and return later to 
+check progress and continue.
 The saved submission workflow will be displayed 
 in the _Dataset Submissions in Progress_
 section of your dashboard.
@@ -330,38 +334,62 @@ From there you can resume the submission process,
 view the dataset submission in its saved state,
 or remove the submission from the system.
 
-[[selecting-a-collection]]
-=== Selecting a Collection
+[[select-collection]]
+=== Select Collection
 
-The first step of the submission workflow is to select which
-link:#glossary-collection[collection] will be used.
+To begin a new dataset submission, choose 
+`Submit a New Dataset` from the data publication dashboard,
+link:#data-publication-dashboard[discussed earlier].
+You will be asked to select the 
+collection where you want to publish your dataset.
 
-image:images/Submit%20Select%20Collection.png[Selecting a Collection]
+.Select Collection
+[role="img-responsive center-block"]
+image::images/submit-select-collection.png[Select Collection]
 
-The dropdown list displays all collections the current user is
-permitted to submit to. In the dropdown, collection names are shown
-first followed by the community containing the collection. Once
-selected the collection _cannot_ be changed. Thus, a submission
-targeting and incorrect collection must be removed and re-started
-after selecting a different collection.
+The collections that you have permission to submit (and publish)
+to are shown in the dropdown list.  
+After you select a collection and leave this page, the
+collection _cannot_ be changed.
+If you accidentally specify the wrong collection for your
+dataset and continue beyond this page, 
+you must `Save & Exit` this submission
+workflow, remove this submission (via the dashboard), 
+and begin again by choosing `Submit a New Dataset`.
 
-[[approving-the-license]]
-=== Approving the License
+Select "Curated Trial Collection << Open Trial" to 
+most closely follow the figures in this user guide. 
 
-Collections will typically require the submitter to grant some license
-terms to the owner of the collection. These terms govern the terms
-under which the data is being shared with the owner of the collection.
-When such a license is present, the submitter must accept the license
-during the workflow. Normally, this is done as the first step of the
-workflow for the collection so that the license terms are clear prior to
-proceeding with the submission.
+[[accept-license]]
+=== Accept License Terms
 
-image:images/Submit%20License%202.png[License Approval]
+Collections typically require you to accept license
+terms that govern the conditions under which the data is being 
+shared with the owner of the collection.
+When such a license is present, you must accept the license terms
+during the submission workflow. 
+Normally, this is done as the first step of the collection's workflow 
+so that the license terms are clear early in the dataset submission
+process.
 
-When the license is present, the user cannot continue with the workflow
-without granting the license. Thus, the usual next and previous buttons
-are not present on this page. Choosing "I Grant the License" will
-advance the workflow to the next step.
+.Accept License Terms
+[role="img-responsive center-block"]
+image::images/submit-license.png[Accept License Terms]
+
+Since you cannot continue with the workflow until you accept 
+the license terms, the usual navigation buttons are not present
+on this page.
+
+If you choose `I Do Not Accept the License Terms`, the
+dataset submission will be saved and accessible via 
+the _Dataset Submission in Progress_ section of your dashboard.
+This gives you the option to clarify the license with 
+the collection owner and then resume the submission if you 
+are ready to accept the terms,
+or to remove the submission if you are not.
+
+Choose `I Accept the License Terms` to proceed to 
+the next workflow step.
 
 [[describing-the-publication]]
 === Describing the Publication
