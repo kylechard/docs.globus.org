@@ -1,43 +1,58 @@
 # dev.globus.org
 
-This is a private Globus Developer resource built with nanoc.
+This is the source repo for the docs.globus.org site.
+This repo supplies nanoc compiled HTML and assets for the production and
+staging versions of the docs site for developer, admin, and user documentation.
 
-## Setup
+The `deploy.sh` script can be used to push out a production or staging site
+version.
+More on this script below.
 
-Ruby 2.1.2 is required to build the site.
+To get setup to use this repo, check out the
+[Developer Setup Guide](/repo_metadoc/SETUP.md)
 
-Install the gems with Bundler. Bundler manages an application's dependencies through its entire life across many machines systematically and repeatably.
 
-See the bundler website http://bundler.io for information  on getting started.
-       
+## Deploying Site Versions
+
+Once you are setup, you can run the deploy script to roll out a site version.
+
+### Special Note for Virtualenv and RVM
+
+If you are running a virtualenv or RVM for deploy script dependencies, you will
+need to take an additional step in your shell before running the script.
+
+Run
 
 ```sh
-$ bundle install
+export PATH=$PATH
 ```
 
-You can see the available commands with nanoc:
+to expose the `PATH` variable -- modified by RVM and/or virtualenv -- to the
+deploy script.
+
+`export` in the shell ensures that scripts you invoke will get the variable
+being exported as part of their environment.
+
+This is necessary in order to ensure that the deploy script finds `nanoc` and
+other tools.
+
+### Staging
+
+A staging deployment consists of
 
 ```sh
-$ bundle exec nanoc -h
+git checkout staging # if you aren't already on staging
+./deploy.sh staging
 ```
 
-### Dev Build Environment
-##### Asciidoc Bootstrap backend
+Note that staging deployments don't strictly enforce that you are on the
+staging branch -- you can technically deploy staging from any branch.
 
-*** talk about how to run the install script here. ***
+### Production
 
+For production, the process is nearly identical
 
-___
-
-## Meta Data
-* ***title***
-	* Item page title
-* ***hide_pageheader***
-	* Hides item page header output.
-* ***hide_breadcrumb***
-	* Hides item breadcrumb output.
-
-
-## Resources
-
-http://rubular.com/ - a Ruby regular expression editor
+```sh
+git checkout prod # if you aren't already on prod
+./deploy.sh production
+```
