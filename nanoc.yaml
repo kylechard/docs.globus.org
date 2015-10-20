@@ -71,4 +71,4 @@ docs:
   transfer_api: 'v0.10'
   toolkit: '6.0'
 
-base_url: http://dev.globus.org
+base_url: http://docs.globus.org

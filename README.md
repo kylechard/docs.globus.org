@@ -1,4 +1,4 @@
-# dev.globus.org
+# docs.globus.org
 
 This is the source repo for the docs.globus.org site.
 This repo supplies nanoc compiled HTML and assets for the production and
