@@ -1,13 +1,13 @@
 ---
 menu_weight: 0
-short_title: Globus Accounts
+short_title: Security
 ---
 :toc:
 :toc-placement: manual
 :toclevels: 1
 :toc-title:
 
-= FAQs: Globus Accounts
+= FAQs: Security
 
 toc::[]
 

@@ -1,13 +1,13 @@
 ---
 menu_weight: 1
-short_title: Using Globus Transfer
+short_title: Transfer and Sharing
 ---
 :toc-placement: manual
 :toc:
 :toclevels: 1
 :toc-title:
 
-= FAQs: Using Globus Transfer
+= FAQs: Transfer and Sharing
 
 toc::[]
 
