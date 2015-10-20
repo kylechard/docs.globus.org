@@ -407,8 +407,7 @@ span multiple 'Describe' pages.
 The progress bar at the top of the page provides a hint as to 
 how many pages the form spans. 
 Like other parts of the workflow, 
-you may save your work at any time and resume it at a later
-time.
+you may save your work at any time and resume it later.
 This may be helpful, for example, if you do not have all of the 
 required information when you start the submission process.
 
@@ -457,40 +456,82 @@ value and  _Subject_, _Subject Keywords_, and _Keywords_ are
 used interchangeably.
 =====
 
+[[assemble-the-dataset]]
+=== Assemble the Dataset
 
-[[assembling-the-data]]
-=== Assembling the Data
+The assemble dataset workflow step encapsulates the task of
+copying the data files that will be included in the dataset 
+you are submitting to a storage location 
+allocated for the submission. 
 
-The assemble dataset step of the workflow encapsulates the task of
-moving data from the user's Globus endpoint to a storage location
-allocated for this data publication. The "Assemble Dataset" button
-links to the Globus Transfer interface which is used to copy data to
-the submission's storage location. In the unusual case where no dataset is
-considered part of a submission, dataset assembly can be skipped
-with the corresponding button.
+.Assemble Dataset
+[role="img-responsive center-block"]
+image::images/submit-assemble.png[Assemble Dataset]
 
-image:images/Submit%20Assemble.png[Beginning Assembly]
+The `Assemble Dataset` button
+links to the Globus Transfer Files page, also referred to
+as the transfer interface. 
+You will use this interface to copy your data 
+from one or more Globus endpoints where you have 
+read-access to the submission's storage location.
 
-The Globus Transfer interface is opened in a new browser window
-or tab. The right side pane of the interface is pre-populated with
-the submission's storage location. This location *should not* be
-changed. The left side pane is used to navigate to any endpoint and
-path desired to locate desired data files. Transfers in to the dataset
-are initiated using the right pointing arrow. Using this interface,
-any number of transfer tasks may be initiated, starting from various
-endpoints or paths, to complete assembly of the dataset. When all
-transfer tasks have been initiated, the transfer interface may be closed
-to return to the workflow.
+Click `Assemble Dataset` now to open the Globus transfer 
+interface in a new browser window or tab.
 
-image:images/Globus%20Transfer%20Window.png[Transfering Data]
+[TIP]
+=====
+In some browsers, if the Globus Transfer Files page 
+is already open in another tab when you click "Assemble Dataset", 
+the browser will not automatically raise and shift focus to the tab.
+Look for the tab labeled "Transfer Files | Globus" and manually 
+select it if you see this behavior with your browser.
+You may not notice the behavior the first time you assemble 
+a dataset, but you may run into it with later operations.
+====
 
-Once transfers have been initiated, the assemble dataset window will
-show updates on the progress of all of the transfer jobs when it is
-refreshed. The page can be refreshed periodically to monitor the
-progress of the transfer. The status of the task can also be monitored
-by clicking the link showing the status of the transfer ("SUCCEEDED"
-in the first example, "ACTIVE" in the second example). The Globus
-system will also send email to the user indicating the completion or
+.Globus Transfer Files Page
+[role="img-responsive center-block"]
+image::images/submit-transfer-files.png[Globus Transfer Files Page]
+
+The right pane of the Globus transfer interface is 
+pre-populated with the submission's storage location. 
+*Do not* change that location. 
+Use the left pane to navigate to the Globus endpoint and path 
+with data files you want to include in your dataset.
+Transfers are initiated using the right-pointing arrow.
+
+You can use the transfer inteface to initiate any number of transfers,
+starting from various endpoints or paths, to complete 
+assembly of your dataset. 
+
+In the figure above, we chose to transfer three small files
+from the universally-readable "go#ep1" endpoint and the 
+"/share/godata/" path.
+These files are copied in a single transfer and are the only
+data files we will include in the submitted dataset.
+You can also use one or more of these files for your trial
+submission, or choose others you create that contain fake data.
+
+After all transfer tasks have been initiated, the transfer 
+interface can be closed to return to the workflow.
+Alternatively, you can leave the transfer interface open and
+return to the submission workflow by selecting the
+"Assemble Dataset | Globus" tab or window.
+
+Your assemble dataset window can be refreshed periodically 
+to monitor the progress of all transfer jobs 
+associated with the submission. 
+You can also check the details of each transfer 
+task by clicking the link showing the status of 
+the transfer ("SUCCEEDED" in the next figure). 
+
+.Assemble Dataset Transfer Status
+[role="img-responsive center-block"]
+image::images/submit-assemble-status.png[Assemble Dataset Transfer Status]
+
+RUTH STOPPING HERE FOR NIGHT.
+
+The Globus system will also send email to the user indicating the completion or
 other status of transfers.
 
 image:images/Submit%20Assemble%20Complete.png[Transfers Complete]
