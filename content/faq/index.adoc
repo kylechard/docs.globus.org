@@ -1,8 +1,7 @@
 = FAQ Categories
 
-- link:globus-accounts[Globus Accounts]
-- link:using-globus-transfer[Using Globus Transfer]
-- link:globus-connect[Globus Connect]
-- link:globus-providers[Globus Providers]
-- link:transfer-api[Transfer API]
-- link:globus-cli[Globus Command Line Interface(CLI)]
+- link:security[Security]
+- link:transfer-sharing[Transfer and Sharing]
+- link:globus-connect-endpoints[Globus Connect and Endpoints]
+- link:subscriptions[Subscriptions]
+- link:command-line-interface[Command Line Interface(CLI)]
