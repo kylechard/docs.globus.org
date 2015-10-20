@@ -1,62 +1,53 @@
 #!/bin/bash
 set -e
 
-### Check proper usage
-if [[ -z $1 ]]
-then
-  echo "Usage: $0 'commit message' [env]"
-  exit 1
-fi
-
-
 ### Command line opts ###
-message=$1 #commit message
-env=${2-stg} # Environment: options are 'stg' and 'prod'. Defaults to 'stg'
+
+# Environment: options are {stg,staging,prod,production}. Defaults to staging
+# get value and convert aliases to canonical names
+env="$1"
+if [[ -z "$env" || "$env" == "stg" ]];
+then
+    env="staging"
+elif [ "$env" == "prod" ];
+then
+    env="production"
+fi
+# check for bad vals and exit if they are bad
+if [[ "$env" != "staging" && "$env" != "production" ]];
+then
+    echo "Bad environment value: $env" >&2
+    exit 1
+fi
 
 
 ### Config ###
 # Current branch
-branch=`git rev-parse --abbrev-ref HEAD`
-
-# Use custom domain?
-customDomain=true
-
-# The url of your production site
-# prodUrl="dev.globus.org"
-prodDomain="dev.globus.org"
-
-# The url of your dev/staging site
-# devUrl="staging.dev.globus.org"
-devDomain="dev.staging.globuscs.info"
+branch="$(git rev-parse --abbrev-ref HEAD)"
 
 
 ### Setup for staging deployment
-if [ $env == 'stg' ]
+if [ "$env" == "staging" ]
 then
-  # Make sure on staging branch
-  if [ $branch != 'staging' ]
-  then
-    echo "Sorry! You must be on 'staging' branch to deploy to staging."
-    exit 1
-  fi
-
-  sitesDir='dev.globus.org-staging'
-  repoUrl='git@github.com:globusonline/dev.globus.org-staging.git'
+    domain_name="docs.staging.globuscs.info"
+    repo_dir='docs.globus.org-staging'
+    repo_url='git@github.com:globusonline/docs.globus.org-staging.git'
 fi
 
 
 ### Setup for prod deployment
-if [ $env == 'prod' ]
+if [ "$env" == "production" ]
 then
-  # Make sure on staging branch
-  if [ $branch != 'prod' ]
-  then
-    echo "Sorry! You must be on 'prod' branch to deploy to production."
-    exit 1
-  fi
+    # ensure that current branch is prod
+    if [ "$branch" != "prod" ]
+    then
+        echo "Sorry! You must be on 'prod' branch to deploy to production."
+        exit 1
+    fi
 
-  sitesDir='dev.globus.org'
-  repoUrl='git@github.com:globusonline/dev.globus.org.git'
+    domain_name="docs.globus.org"
+    repo_dir='docs.globus.org'
+    repo_url='git@github.com:globusonline/docs.globus.org.git'
 fi
 
 
@@ -67,17 +58,17 @@ echo "Deploying to $env"
 ./install_asciidoc_backend.sh
 
 
-# Remove site directory if exists
-if [ -d $sitesDir ]; then
-  rm -rf $sitesDir
+# Remove repo if exists
+if [ -d "$repo_dir" ]; then
+  rm -rf "$repo_dir"
 fi
 # Clone repo and clean
-git clone $repoUrl $sitesDir
-cd $sitesDir
+git clone "$repo_url" "$repo_dir"
+cd "$repo_dir"
 git checkout gh-pages
 git add -u
-git rm -r *
-rm -rf *
+git rm -r ./*
+rm -rf ./*
 
 
 
@@ -91,27 +82,21 @@ nanoc
 
 # Build the correct CNAME file for the env
 # Commit and push the changes to the sites dir
-cd $sitesDir
+cd "$repo_dir"
 
-if [ $customDomain == true ]
-then
-  echo "Generating CNAME"
-  if [ $env == 'stg' ]; then
-    echo $devDomain > CNAME
-  else
-    echo $prodDomain > CNAME
-  fi
-fi
+echo "Generating CNAME"
+echo "$domain_name" > CNAME
+
 
 echo "Adding and committing changes"
 cp -R ../output/* .
 git add -A
-git commit -m "$message"
+git commit -v
 git push origin gh-pages
 
-# Remove site directory
+# Remove repo directory
 cd ..
-rm -rf $sitesDir
+rm -rf "$repo_dir"
 
 # Done
 echo "** Remember to commit your source files"
