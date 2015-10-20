@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
-
 gem 'nanoc', '~> 3.7.3'
 gem 'kramdown', '~> 1.4.1'
 gem 'asciidoc', '~> 0.0.2'
