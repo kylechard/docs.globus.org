@@ -1,5 +1,5 @@
 ---
-menu_weight: 7
+menu_weight: 9
 ---
 
 = Advanced Endpoint Management
@@ -392,7 +392,7 @@ Error (state)
 [cols="1,1,8",options="header"]
 |===================
 | Code              | HTTP Status  | Description
-| EndpointNotFound  |404  | If <endpoint_name> not found
+| EndpointNotFound  |404  | If <endpoint_xid> not found
 
 | TaskNotFound      |404  | If the task specified by <task_id> is not found
 
@@ -416,11 +416,10 @@ included literally in the request.
 [cols="1,1,8",options="header"]
 |===================
 | Name              | Type  | Description
-
-| endpoint_name   | string
-| Canonical name of an endpoint, of the form "user#endpoint".
-  Note that the endpoint name must be percent escaped; in particular +#+ is
-  a reserved character.
+| endpoint_xid      | string
+| The +id+ field of the endpoint, or for backward compatibility the
+  +canonical_name+ of the endpoint. The latter is deprecated, and all clients
+  should be updated to use +id+.
 
 | task_id  | string | Unique id string of a task.
 |===================
@@ -448,7 +447,7 @@ is public or if it's owned by the current user, just like standard visibility
 in +/endpoint_list+. As a special case, if the endpoint is private and not
 owned by the current user (and would normally be hidden), but the current user
 has manager privileges on the host, then the name will be visible.  This is the
-same as the visibility rules for +/endpoint_manager/endpoint/<endpoint_name>+.
+same as the visibility rules for +/endpoint_manager/endpoint/<endpoint_xid>+.
 See the extra field descriptions above for visibility of the host endpoint name
 and path.
 
@@ -839,7 +838,7 @@ paths corresponding to the other endpoint will be "null".
 
 Get details of an endpoint. If the user does not have manager privileges on the
 endpoint or it's host endpoint, this behaves identically to +GET
-/endpoint/<endpoint_name>+.
+/endpoint/<endpoint_xid>+.
 
 If the user does have manager privileges on the endpoint or it's host
 endpoint:
@@ -853,7 +852,7 @@ documentation for details.
 [cols="h,5"]
 |============
 | URL
-| /endpoint_manager/endpoint/<endpoint_name>
+| /endpoint_manager/endpoint/<endpoint_xid>
 
 | Method
 | GET
@@ -876,7 +875,7 @@ manager privileges on. This will include even private endpoints.
 [cols="h,5"]
 |============
 | URL
-| /endpoint_manager/endpoint/<endpoint_name>/hosted_endpoint_info_list
+| /endpoint_manager/endpoint/<endpoint_xid>/hosted_endpoint_info_list
 
 | Method
 | GET

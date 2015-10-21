@@ -21,10 +21,15 @@ without having to develop and support these features on your own.
   and renaming
   files (rename)
 * link:endpoint[Endpoint Management] -
-  create, update, and delete endpoint definitions
+  create, update, and delete endpoint definitions and servers
+* link:endpoint_search[Endpoint Search] -
+  find endpoints matching a search query, by display_name and other
+  endpoint fields
 * link:endpoint_roles[Endpoint Roles] -
   control which users have different administrator rights or 'roles' on an
   endpoint
+* link:endpoint_bookmarks[Endpoint Bookmarks] -
+  list, create, rename, and delete bookmarks for an endpoint and path
 * link:acl[Endpoint ACL Management] -
   view and modify access rules on endpoints that support an ACL
 * link:advanced_endpoint_management[Advanced Endpoint Management] -

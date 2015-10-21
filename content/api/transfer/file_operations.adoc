@@ -45,27 +45,16 @@ NOTE: All operations in this document require the endpoint to be activated.
 [[path_encoding,Path Encoding]]
 == Path Encoding
 
-All Linux systems used with Globus should be configured to use UTF-8 encoding.
-This is required by Mac OS X, and is the default on most Linux system. However
-Linux does allow each user to choose their own encoding. The low level
-filesystem layer uses raw bytes, which are interpreted as characters when
-displaying to the user according to the user's environment, which can override
-the system default. If other encoding are used, the characters may end up
-misrepresented in the filesystem.
+For maximum compatibility with different filesystems, it's recommended to
+use only ASCII characters in file and directory names. If using other
+characters is absolutely necessary, all systems involved should be configured
+to use UTF-8 encoding when possible. See platform notes below.
 
-Windows systems use UTF-16 encoding. It is recommended that windows users limit
-themselves to ASCII characters for file names. Non-ascii special characters,
-accented characters, and non-english characters could end up encoded in the
-wrong way, resulting in name corruption. We plan on fixing this in a future
-update to Globus Connect Personal for Windows, by having the GridFTP server
-convert everything to/from UTF-8 for communication with Globus. Please contact
-support@globus.org if you have concerns.
-
-The API uses JSON as its data format, and all strings in JSON are Unicode. If
-the endpoints involved in the operation use UTF-8 encoding, then things work
-seamlessly in that the clients can use Unicode to display things to the user
-and accept user input, and the system transparently encodes that as UTF-8 when
-interacting with GridFTP servers and their local filesystems.
+The API uses JSON as its data format, and all strings in JSON are Unicode.
+Since Linux filesystems and the GridFTP protocol use raw bytes for path names,
+the Transfer API service must decode the bytes in order to display them as
+characters. It does this assuming UTF-8 encoding, which is the most common
+encoding on Linux systems.
 
 NOTE: Globus will handle non UTF-8 filesystems in a limited fashion. If the
 bytes received from the GridFTP server can't be decoded as UTF-8, they will
@@ -93,6 +82,34 @@ be disallowed. For example, Windows filesystem do not allow several common
 punctuation characters, including '<', '>', and '*'. Globus attempts to
 classify such errors with code +InvalidPath+, but there may be combinations
 of GridFTP server and filesystem that result in a generic +EndpointError+ code.
+
+=== Linux and Unix
+
+In Linux and Unix filesystems, file names are stored as raw bytes. The common
+case is that the bytes will be UTF-8 encoded unicode, but it depends on
+user space configuration, which can be set system wide and overridden by
+individual users or even by individual applications or login shells. On most
+modern Linux systems, UTF-8 will be used everywhere unless a user goes out
+of their way to use something else. Transferring data between two such
+Linux systems using UTF-8 encoding is the best case scenario - no path name
+corruption will occur.
+
+=== Windows
+
+Windows systems use UTF-16 encoding. It is recommended that windows users limit
+themselves to ASCII characters for file names. Non-ascii special characters,
+accented characters, and non-english characters could end up encoded in the
+wrong way, resulting in name corruption. We plan on fixing this in a future
+update to Globus Connect Personal for Windows, by having the GridFTP server
+convert everything to/from UTF-8 for communication with Globus. Please contact
+support@globus.org if you have concerns.
+
+=== Mac OS X
+
+Mac OS X uses UTF-8 by default, but it also does NFD normalization. This can
+cause path name corruption when copying files with non-ASCII names between
+Mac OSX and Linux, if it contains any multi-byte characters that are altered
+by the normalization.
 
 
 == Document Types
@@ -146,13 +163,10 @@ delimited by <> in the descriptions.
 [cols="1,1,8",options="header"]
 |===================
 | Name              | Type  | Description
-| endpoint_name   | string
-| Canonical name of an endpoint, of the form user#endpoint. For backward
-  compatibility, a bare endpoint name is also supported and the user portion
-  is assumed to be the user accessing the API. This behavior is deprecated
-  and should not be relied upon - all new code should use a full
-  canonical endpoint name. Also note that the endpoint name must be percent
-  escaped; in particular +#+ is a reserved character.
+| endpoint_xid      | string
+| The +id+ field of the endpoint, or for backward compatibility the
+  +canonical_name+ of the endpoint. The latter is deprecated, and all clients
+  should be updated to use +id+.
 |===================
 
 
@@ -205,7 +219,7 @@ passed, the default path depends on the type of endpoint:
 [cols="h,5"]
 |============
 | URL
-| /operation/endpoint/<endpoint_name>/ls [?path=/path/to/dir/]
+| /operation/endpoint/<endpoint_xid>/ls [?path=/path/to/dir/]
 
 | Method
 | GET
@@ -353,7 +367,7 @@ endpoint must be activated before performing this operation.
 [cols="h,5"]
 |============
 | URL
-| /operation/endpoint/<endpoint_name>/mkdir
+| /operation/endpoint/<endpoint_xid>/mkdir
 
 | Method
 | POST
@@ -406,10 +420,10 @@ TODO: use same codes as rename.
 [cols="1,1,8",options="header"]
 |===================
 | Code              | HTTP Status  | Description
-| ClientError.NotFound  |404  | If <endpoint_name> not found.
+| ClientError.NotFound  |404  | If <endpoint_xid> not found.
 
 | ExternalError.MkdirFailed.Exists |502
-  | If <endpoint_name> is not activated.
+  | If <endpoint_xid> is not activated.
 
 | ExternalError.MkdirFailed.PermissionDenied  |403
   | If the user does not have permission to read or
@@ -432,7 +446,7 @@ the old path, so this is not a general purpose move operation.
 [cols="h,5"]
 |============
 | URL
-| /operation/endpoint/<endpoint_name>/rename
+| /operation/endpoint/<endpoint_xid>/rename
 
 | Method
 | POST
@@ -495,25 +509,25 @@ handler which displays the message field to the user.
 | Code              | HTTP Status  | Description
 
 | NotSupported      |409
-                    | <endpoint_name> does not support the rename operation.
+                    | <endpoint_xid> does not support the rename operation.
                       Currently S3 endpoints do not support rename.
                       
-| EndpointNotFound  |404  | <endpoint_name> doesn't exist or is not visible
+| EndpointNotFound  |404  | <endpoint_xid> doesn't exist or is not visible
                             to the current user.
 
-| NoCredException   |409  | <endpoint_name> is not activated.
+| NoCredException   |409  | <endpoint_xid> is not activated.
 
 | NoPhysicalsException |409
-                    | <endpoint_name> has no active servers.
+                    | <endpoint_xid> has no active servers.
                       Note: 'physical endpoint' or 'physical' for short is an
                       alternate name for 'server' used by the CLI.
 
 | GCDisconnectedException |409
-                    | <endpoint_name> is a Globus Connect Personal
+                    | <endpoint_xid> is a Globus Connect Personal
                       endpoint and is not currently connected.
 
 | GCPausedException |409
-                    | <endpoint_name> is a Globus Connect Personal
+                    | <endpoint_xid> is a Globus Connect Personal
                       endpoint and is paused.
 
 | EndpointPermissionDenied |403
