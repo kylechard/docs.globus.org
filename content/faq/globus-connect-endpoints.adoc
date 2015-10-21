@@ -60,3 +60,31 @@ Please note the ports that Globus Connect Personal needs open -      
 Globus Connect Personal uses only outbound TCP connections. However, it does use a relatively wide port range. It uses 2223 and 50000-51000 when talking to Globus, and when doing a transfer it also uses whatever port range that the other GridFTP server uses. For example, if Globus Connect Personal is transferring to or from a university GridFTP server that is configured to use ports 40000-41000 for data channels, Globus Connect will use those ports (outgoing only).
 
 For more information on the ports used by Globus Connect Personal, [yellow-background]#please see our FAQ page on this topic#.
+
+== How do I setup a Globus Connect Personal Endpoint Using the Command Line?
+If you prefer to use the command line interface (CLI) to setup a Globus Connect Personal endpoint, download the installer and run the application as described in one of the installation guides listed below.
+
+* link:../../how-to/howto-GCP-OSX/[Globus Connect Personal for Mac OS]
+* link:../../how-to/howto-GCP-WIN/[Globus Connect Personal for Windows]
+* link:../../how-to/howto-GCP-LINUX/[Globus Connect Personal for Linux]
+
+After downloading and installing Globus Connect Personal on your personal computer follow the steps below to complete the setup:
+
+. Log in to cli.globusonline.org using ssh or gsissh:
++
+----terminal
+$ ssh [input]#demodoc#@cli.globusonline.org
+----terminal
+. Run the following command to add the endpoint: +endpoint-add --gc <my_endpoint_name>+ and replace [uservars]#<my_endpoint_name># with a name of your choice (e.g. my_laptop).
++
+----terminal
+$ [input]#endpoint-add --gc my-laptop#
+[output]#Created the Globus Connect endpoint \'my-laptop'.
+Use this setup key when installing Globus Connect:
+7296f199-a347-48d9-800f-326133cb59be#
+----terminal
+. Select the setup key (ex: "7296f199-a347-48d9-800f-326133cb59be") with your mouse and copy it to the clipboard.
+. Return to the "Initial Setup" window of Globus Connect Personal and paste the setup key into the provided field. The "OK" button will be enabled if the key is valid. Click "OK" to complete the installation. (If the "OK" button is not enabled, please ensure you have properly copied the entire key generated in the previous step above.
+
+== What is the purpose of the Globus Connect Personal setup key?
+The setup key is a one-time credential used during the Globus Connect Personal installation process to uniquely identify your laptop/personal computer's endpoint to Globus. Once the endpoint is created and the installation is complete the key is discarded.
