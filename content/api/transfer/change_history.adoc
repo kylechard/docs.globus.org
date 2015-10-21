@@ -1,5 +1,5 @@
 ---
-menu_weight: 9
+menu_weight: 11
 ---
 
 = Change History
@@ -18,6 +18,46 @@ otherwise it shows up as monospace (?) in asciidoc.py.
 Also, using 'a' type cells when not needed makes asciidoc slower; it executes
 asciidoc for each cell of type 'a'.
 ////
+
+== 4.5
+
+* New link:../endpoint_search[Endpoint Search] API (this
+  was actually added in 4.4 but was incomplete).
+
+* Endpoint
+** Add +gcp_connected+ and +gcp_paused+ to
+   link:../endpoint#_endpoint_document[endpoint document].
+** Fix backward incompatible change in 4.4 causing an error when +myproxy_dn+
+   is set to an empty string. It is now mapped to null in endpoint update,
+   but clients are still encouraged to send null and not empty string.
+
+* Task
+** Add +files_transferred+
+   to link:../task#_task_document[task document].
+
+== 4.4
+
+* Endpoint
+** Add +id+ and +host_endpoint_id+,
+   +display_name+, +host_endpoint_display_name+, +subscription_id+,
+   +contact_info+, +contact_email+, +info_link+, +organization+,
+   +departement+, and +keywords+, +network_use+, +location+,
+   +subscription_id+, +min_concurrency+, +preferred_concurrency+,
+   +min_parallelism+, +preferred_parallelism+
+   to link:../endpoint#_endpoint_document[endpoint document].
+** All resources with an endpoint param in URI can now take an id. Using
+   a canonical name is still supported but is deprecated.
+** Add +id+ field to endpoint and shared endpoint create result documents.
+
+* Transfer and Delete
+** The +source_endpoint+ and +destination_endpoint+ fields can be id in
+   addition to canonical names. Using canonical name will be deprecated
+   and eventually removed.
+
+* Task
+** Add +source_endpoint_id+, +destination_endpoint_id+,
+   +source_endpoint_display_name+, +destination_endpoint_display_name+
+   to link:../task#_task_document[task document].
 
 == 4.3
 
@@ -66,7 +106,7 @@ link:../acl#changes_42[ACL Management change history]
 * Admin task cancel (new feature)
 ** Task
 *** Added fields +canceled_by_admin+ and +canceled_by_admin_message+ to the
-link:../task#task_document[task document]
+link:../task#_task_document[task document]
 ** Events
 *** Change details of the "CANCELED" event. This replaces the current details
 of "num_subtasks=N":

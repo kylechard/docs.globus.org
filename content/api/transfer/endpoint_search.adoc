@@ -1,0 +1,196 @@
+---
+menu_weight: 5
+---
+
+= Endpoint Search
+:toc:
+:toclevels: 3
+:numbered:
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+Endpoints are identified by a non-globally-unique name, called the
++display_name+. They are uniquely identified by an +id+ (and for legacy support
+by a +canonical_name+, but this will be removed in the future). Since names are
+no longer globally unique, a search interface is needed to help users find
+endpoints.
+
+The search matches against the following fields:
+
+* display_name
+* canonical_name
+* description
+* organization
+* department
+* keywords
+
+The search will be run against all endpoints owned by the current user
+(both public and private), and all public endpoints owned by other users.
+
+Results will be sorted based on how well the query matches the endpoint
+and the priority of the matching fields.
+
+== Document Types
+
+See link:../endpoint#_endpoint_document[Endpoint Document Type].
+
+== Common Query Parameters
+
+[cols="1,1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all fields are
+  needed.
+|===================
+
+
+== Common Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| ServiceUnavailable|503  | If the service is down for maintenance.
+|===================
+
+
+== Operations
+
+=== Endpoint search
+
+Get a list of endpoints matching the search filters in a given search scope.
+
+The +filter_fulltext+ query is processed and matched as follows:
+
+. remove punctuation
+. split query into terms, using space as the separator
+. canonicalize words using English dictionary, remove plurals and stop words
+. AND all terms
+. Look for endpoints with one of the fields described above matching
+  all terms, in any order and location
+
+The +limit+ query parameter sets how many results to return (max 100), and the
++offset+ parameter sets where to start within the total results set for paging
+(max 999).
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_search?filter_fulltext=QUERY&filter_scope=SCOPENAME&filter_owner_username=USERNAME&limit=N&offset=M
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+    "DATA_TYPE": "endpoint_list",
+    "offset": 0,
+    "limit": 100,
+    "has_next_page": false,
+    "DATA": [
+        {
+          "DATA_TYPE": "endpoint", 
+          ...
+        },
+        ...
+    ]
+}
+------------------------------------
+|============
+
+==== Query Parameters
+
+[cols="1,1,1,8",options="header"]
+|===================
+| Query Parameter | Type | Default | Description
+
+| offset
+| int
+| 0
+| Zero based offset into the result set, used for paging. Note that if the
+  results change between requests, e.g. if new endpoints are added or
+  existing endpoints are renamed, this may return duplicate results across
+  pages or skip results that existed when the original request was made.
+  Max 999.
+
+| limit
+| int
+| 100
+| Maximum number of results to return. The maximum allowed limit is 100.
+
+| filter_scope
+| string enum
+| all
+| String indicating which scope/class of endpoints to search. See the
+  Search Scope section below for details. Default "all".
+
+| filter_fulltext
+| string
+| null
+| Match endpoint fields against this string, as described
+  in detail above. This is required if the +filter_scope+ is "all", otherwise
+  it's optional.
+
+| filter_owner_username
+| string
+| null
+| Limit search to endpoints owned by the specified globus user, identified
+  by username. See also the +username+ field of the +endpoint+ document.
+  To get a list of the user's own endpoints, use +filter_scope+ "my-endpoints"
+  instead.
+|===================
+
+
+==== Search Scope
+
+The optional +filter_scope+ query parameter can be used to further restrict
+the endpoints searched. The supported values and their affect are described
+below. Note that some scopes require that the +filter_fulltext+ parameter
+also be specified, while others do not.
+
+[cols="1,8,1",options="header"]
+|===================
+| Value   | Description | filter_fulltext Required
+
+| all
+| Search all endpoints visible to the current user. This is the default.
+| True
+
+| my-endpoints
+| Search only endpoints owned by the current user.
+| False
+
+| recently-used
+| Search endpoints used recently by the current user.
+| False
+
+| in-use
+| Search endpoints that have an active task owned by the current user.
+| False
+
+| shared-by-me
+| Search shared endpoints owned by the current user.
+| False
+
+| shared-with-me
+| Search shared endpoints with access rules that give the current user
+  access. Does not include shared endpoints with public or all authenticated
+  access, e.g. that have access rules with +principal+
+  "all_authenticated_users".
+| False
+|===================
