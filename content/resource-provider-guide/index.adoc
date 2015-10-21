@@ -983,6 +983,8 @@ To configure an endpoint to use the OAuth identity provider, set "IdentityMethod
 === Configuring an endpoint to use the CILogon identity provider
 To configure an endpoint to use the CILogon identity provider, set "IdentityMethod = CILogon" in the [Security] section of the config file and set the +CILogonIdentityProvider+ option in the [Security] section to the name of the CILogon provider to be used with the endpoint. See https://cilogon.org/ for a list of valid providers. 
 
+An endpoint configured in this way will attempt to map the CILogon credential to a local account on the server hosting the endpoint by matching it with a local account with the same account name as provided in the InCommon eduPersonPrincipalName (ePPN) given with the CILogon credential. Organizations participating in CILogon must make certain that their Shibboleth server releases the ePPN attribute to CILogon for this to work. To check if an identity provider is supplying the ePPN check link:https://cilogon.org/secure/testidp/[here]. 
+
 [appendix]
 [[s3_setup_section]]
 === [go-icon-pp]#Setting up an endpoint on Amazon S3#
