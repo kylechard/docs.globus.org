@@ -283,7 +283,7 @@ _Assemble_, _Verify_, and _Complete_.
 Collection administrators also control the 
 license terms that must be accepted in the _License_ step and
 descriptive (metadata) information that can and must be entered
-in the _Describe_ step(s).
+in the _Describe_ step.
 
 In this guide, a dataset will be submitted to the collection
 "Curated Trial Collection" in the community "Open Trial".
@@ -292,6 +292,7 @@ collection are representative of those found in many others.
 The general submission process is the same, regardless of the 
 collection-specific details.
 
+[[navigation]]
 === Navigation
 
 Pages in the submission workflow have some common elements
@@ -330,7 +331,7 @@ check progress and continue.
 The saved submission workflow will be displayed 
 in the _Dataset Submissions in Progress_
 section of your dashboard.
-From there you can resume the submission process,
+From there, you can resume the submission process,
 view the dataset submission in its saved state,
 or remove the submission from the system.
 
@@ -354,11 +355,11 @@ collection _cannot_ be changed.
 If you accidentally specify the wrong collection for your
 dataset and continue beyond this page, 
 you must `Save & Exit` this submission
-workflow, remove this submission (via the dashboard), 
+workflow, remove this dataset submission (via the dashboard), 
 and begin again by choosing `Submit a New Dataset`.
 
-Select "Curated Trial Collection << Open Trial" to 
-most closely follow the figures in this user guide. 
+In this guide, the collection "Curated Trial Collection << Open Trial" 
+is selected.
 
 [[accept-license]]
 === Accept License Terms
@@ -383,7 +384,7 @@ on this page.
 If you choose `I Do Not Accept the License Terms`, the
 dataset submission will be saved and accessible via 
 the _Dataset Submission in Progress_ section of your dashboard.
-This gives you the option to clarify the license with 
+This gives you the opportunity to clarify the license with 
 the collection owner and then resume the submission if you 
 are ready to accept the terms,
 or to remove the submission if you are not.
@@ -394,11 +395,11 @@ the next workflow step.
 [[describe-dataset]]
 === Describe the Dataset
 
-The next step in the submission workflow is to 
+This step in the submission workflow is used to 
 enter metadata to describe the dataset you are 
 submitting for publication.
 You will be presented with a fillable form where
-you can enter your metadata.
+you can enter the metadata.
 Each collection defines its own metadata and controls
 the prompts that appear on the form.
 
@@ -407,8 +408,7 @@ span multiple 'Describe' pages.
 The progress bar at the top of the page provides a hint as to 
 how many pages the form spans. 
 Like other parts of the workflow, 
-you may save your work at any time and resume it at a later
-time.
+you may save your work at any time and resume it later.
 This may be helpful, for example, if you do not have all of the 
 required information when you start the submission process.
 
@@ -453,59 +453,109 @@ pages are required.
 In some cases, the metadata field entry prompts do not exactly match 
 the labels shown on the more generic publication pages. 
 For example, _Issue Date_ and _Publication Date_ refer to the same
-value and  _Subject_, _Subject Keywords_, and _Keywords_ are 
+metadata field, and  _Subject_, _Subject Keywords_, and _Keywords_ are 
 used interchangeably.
 =====
 
+[[assemble-the-dataset]]
+=== Assemble the Dataset
 
-[[assembling-the-data]]
-=== Assembling the Data
+The assemble dataset step encapsulates the task of
+copying the data files that will be included in 
+your dataset to a storage location 
+allocated for the submission. 
 
-The assemble dataset step of the workflow encapsulates the task of
-moving data from the user's Globus endpoint to a storage location
-allocated for this data publication. The "Assemble Dataset" button
-links to the Globus Transfer interface which is used to copy data to
-the submission's storage location. In the unusual case where no dataset is
-considered part of a submission, dataset assembly can be skipped
-with the corresponding button.
+.Assemble Dataset
+[role="img-responsive center-block"]
+image::images/submit-assemble.png[Assemble Dataset]
 
-image:images/Submit%20Assemble.png[Beginning Assembly]
+Click on the `Assemble Dataset` button to open 
+the Globus Transfer Files page (also referred to
+as the Globus transfer interface) in a new browser
+window or tab.
+You will use this interface to copy your data 
+from one or more Globus endpoints 
+to the submission's allocated storage location.
 
-The Globus Transfer interface is opened in a new browser window
-or tab. The right side pane of the interface is pre-populated with
-the submission's storage location. This location *should not* be
-changed. The left side pane is used to navigate to any endpoint and
-path desired to locate desired data files. Transfers in to the dataset
-are initiated using the right pointing arrow. Using this interface,
-any number of transfer tasks may be initiated, starting from various
-endpoints or paths, to complete assembly of the dataset. When all
-transfer tasks have been initiated, the transfer interface may be closed
-to return to the workflow.
+[TIP]
+=====
+In some browsers, if the Globus transfer interface 
+is already open in another tab when you click "Assemble Dataset", 
+the browser will not automatically raise and shift focus to 
+that tab.
+Look for the tab labeled "Transfer Files | Globus" and manually 
+select it if necessary.
+You may not notice this behavior the first time you assemble 
+a dataset, but you may run into it with later operations 
+that use the Globus transfer interface.
+====
 
-image:images/Globus%20Transfer%20Window.png[Transfering Data]
+.Globus Transfer Interface
+[role="img-responsive center-block"]
+image::images/submit-transfer-files.png[Globus Transfer Interface]
 
-Once transfers have been initiated, the assemble dataset window will
-show updates on the progress of all of the transfer jobs when it is
-refreshed. The page can be refreshed periodically to monitor the
-progress of the transfer. The status of the task can also be monitored
-by clicking the link showing the status of the transfer ("SUCCEEDED"
-in the first example, "ACTIVE" in the second example). The Globus
-system will also send email to the user indicating the completion or
-other status of transfers.
+The right pane of the Globus transfer interface is 
+pre-populated with the submission's storage location (endpoint and path). 
+*Do not* change this pre-populated location. 
+Use the left pane to navigate to the Globus endpoint and path 
+that has the data files you want to include in your dataset.
+Transfers are initiated using the right-pointing arrow.
 
-image:images/Submit%20Assemble%20Complete.png[Transfers Complete]
+You can use the transfer inteface to initiate multiple transfers,
+starting from various endpoints or paths, to complete 
+assembly of your dataset. 
+The files can be of any type and size, allowing you to assemble
+and publish a dataset with wide-ranging content.
 
-image:images/Transfer%20In%20Progress.png[In Progress Transfers]
+In the figure above, we chose to transfer three small files
+from the universally-readable "go#ep1" endpoint and the 
+"/share/godata/" path.
+The three files are copied in a single transfer task and 
+they are the only
+data files we will include in the submitted dataset.
+You can also use one or more of these files for your trial
+submission, or choose others you create that contain fake 
+data--you should not publish real data in the trial collections.
 
-TIP: When transfers are long running, it will often be desirable to save
-the current workflow and return at a later time to check progress. As
-described above, the state can be saved, and the submission will be
-displayed on the dashboard. The progress bar of the submission
-workflow allows direct access to the assemble page which will show the
-updated status of the transfers. It is recommended not to progress
-past the assemble step of the workflow prior to verifying that all
-transfers are complete to insure that no errors are encountered with
-data movement.
+After all transfer tasks have been initiated, you can 
+close the transfer interface to return to the 
+"Submit: Assemble Dataset" workflow page.
+Alternatively, you can leave the transfer interface open and
+return to the submission workflow by selecting the
+"Assemble Dataset | Globus" tab or window in your browser.
+
+Your assemble dataset window can be refreshed periodically 
+to monitor the progress of all transfer jobs 
+associated with the submission. 
+
+.Assemble Dataset Transfer Status
+[role="img-responsive center-block"]
+image::images/submit-assemble-status.png[Assemble Dataset Transfer Status]
+
+You can check the details of each transfer 
+task by clicking the link showing the status of 
+the transfer ("SUCCEEDED" in the previous figure). 
+Globus will also send you an email indicating the completion 
+or other status of your transfers.
+
+[TIP]
+=====
+When transfers are long-running, it is often desirable to save
+the current workflow and return later to check progress. 
+As described earlier in the
+link:#navigation[navigation] section, the state can be saved, 
+and the dataset submission will be displayed on the dashboard. 
+The progress bar of the submission workflow allows 
+you to access the assemble page directly to view the 
+updated status of the transfers for the dataset submission. 
+====
+
+Before continuing past the assemble step of the workflow,
+make sure that all of your transfers compeleted successfully.
+You can re-open the Globus transfer interface (via the
+`Assemble Dataset` button) to transfer additional files
+or to confirm the contents of the dataset submission's
+allocated storage location--a screen refresh may be needed.
 
 [[verifying-and-finalizing-the-submission]]
 === Verifying and Finalizing the Submission
@@ -518,7 +568,6 @@ steps to correct metadata or add additional files to the
 dataset. After this step, access to the endpoint and folder where the
 data has been assembled is also restricted so it cannot be altered
 after this step.
-
 
 image:images/Submit%20Verify.png[Verifying the Submission]
 
