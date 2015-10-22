@@ -12,7 +12,7 @@ short_title: Globus Connect and Endpoints
 toc::[]
 
 == What is Globus Connect?
-Globus Connect is easy-to-install, pre-configured software that turns your laptop, server, cluster or other local resource into a Globus link:../../faq/using-globus-transfer#what_is_an_endpoint[endpoint].
+Globus Connect is easy-to-install, pre-configured software that turns your laptop, server, cluster or other local resource into a Globus link:../../faq/transfer-sharing#what_is_an_endpoint[endpoint].
 
 There are two versions of Globus Connect, one for use with personal machines such as your laptop, and another for use with server-class machines such as campus computing clusters and lab servers. Use link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] to enable file transfer to and from your personal machine (laptop or desktop.) A Globus Connect Personal endpoint is intended to be used only by a single user. link:https://www.globus.org/globus-connect-server[Globus Connect Server] enables system administrators to turn shared resources such as campus clusters and lab servers into a Globus endpoint. If it is made publicly visible, a Globus Connect Server endpoint can be used by multiple Globus users.
 
