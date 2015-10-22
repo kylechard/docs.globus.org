@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.8
+:revnumber: 0.0.9
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -615,13 +615,18 @@ While your dataset is awaiting curation, it will be shown
 in the _Datasets Submitted for Approval_ section of the 
 publication dashboard.
 
+.Dashboard with Dataset Submitted for Approval 
+[role="img-responsive center-block"]
+image::images/dashboard-submitted.png[Dashboard with Dataset Submitted for Approval]
+
 If the collection does not require curation,
 your submitted dataset will be published immediately 
-and be available to users 
+and made available to users 
 who are allowed to access the collection.
 
 [[the-curation-workflow]]
 == The Curation Workflow
+RUTH HASN'T UPDATED THIS SECTION YET
 
 For users who have a curator role on one or more collections, the
 dashboard will inform them if there are any pending curation tasks to be
@@ -670,6 +675,11 @@ will be included in an email to the submitting user informing them
 that the submission was rejected. The submission will then appear on
 the user's dashboard where they can re-open it to update and re-submit
 or remove it.
+
+[[dataset-landing-page]]
+== Dataset Landing Page
+
+RUTH WILL ADD THIS SECTION
 
 
 :numbered!:
