@@ -118,6 +118,9 @@ dd {
   color: #999;
   margin-top: 5px;
 }
+ul p {
+  margin-top: 10px;
+}
 
 /* ToC */
 #toctitle {
@@ -246,6 +249,9 @@ pre {
   background-color: #fdeecf;
   border-color: #E8CEAE;
 }
+.alert>p+p {
+  margin-top: 10px;
+}
 
 /* Blockquotes and Code */
 blockquote, .blockquote, code, .code  {
@@ -260,6 +266,7 @@ code, .uservars {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
+  white-space: nowrap;
 }
 .uservars {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
@@ -470,6 +477,9 @@ footer #legal {
 }
 .next-link a {
   font-weight: 100;
+}
+.go-border-light {
+  border: solid 1px #aaa;
 }
 /**********************************
  * GO-Icon
