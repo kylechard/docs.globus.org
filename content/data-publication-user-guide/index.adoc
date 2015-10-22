@@ -186,7 +186,7 @@ your dashboard will be empty:
 
 .Empty Data Publication Dashboard 
 [role="img-responsive center-block"]
-image::images/empty-dashboard.png[Empty Data Publication Dashboard]
+image::images/dashboard-empty.png[Empty Data Publication Dashboard]
 
 The navigation bar at the top of the dashboard has `Publish` highlighted
 to show that you are using the Globus data publication service.
@@ -228,7 +228,7 @@ the dashboard will be more fully populated:
 
 .Populated Data Publication Dashboard 
 [role="img-responsive center-block"]
-image::images/populated-dashboard.png[Populated Data Publication Dashboard]
+image::images/dashboard-populated.png[Populated Data Publication Dashboard]
 
 You can see that while the top of the screen looks the same, the
 dashboard area provides updates on all of the datasets in the
@@ -418,9 +418,9 @@ pages in the metadata form defined by the administrator of the
 Different collections will have different forms, but the general
 process for entering metadata is the same across collections.
 
-.Describe Dataset Page 1
+.Describe Dataset, Page 1
 [role="img-responsive center-block"]
-image::images/submit-describe-dataset.png[Describe Dataset Page 1]
+image::images/submit-describe-dataset.png[Describe Dataset, Page 1]
 
 In the form, field names marked with an asterisk (*) are required. 
 Some fields, such as "Authors" in this example, permit you to enter
@@ -432,9 +432,9 @@ more values can be entered.
 Values can be removed by clicking `Remove Entry` next to the 
 entry to be removed.
 
-.Describe Dataset Page 2
+.Describe Dataset, Page 2
 [role="img-responsive center-block"]
-image::images/submit-describe2-dataset.png[Describe Dataset Page 2]
+image::images/submit-describe2-dataset.png[Describe Dataset, Page 2]
 
 The second page of the form gives you an idea of additional metadata.
 You can see that the Globus data publication service allows for
@@ -557,34 +557,68 @@ You can re-open the Globus transfer interface (via the
 or to confirm the contents of the dataset submission's
 allocated storage location--a screen refresh may be needed.
 
-[[verifying-and-finalizing-the-submission]]
-=== Verifying and Finalizing the Submission
+[[verify-dataset-and-finalize-submission]]
+=== Verify the Dataset and Finalize Submission
 
-The last step of the workflow provides the opportunity to review all
-data entered in previous steps. The values for all of the entered
-metadata and the status of the transfer operations are displayed. This
-is the last opportunity to review and potentially return to previous
-steps to correct metadata or add additional files to the
-dataset. After this step, access to the endpoint and folder where the
-data has been assembled is also restricted so it cannot be altered
-after this step.
+The verify step of the workflow gives you the opportunity 
+to review the contents of your dataset before submitting
+it for publication.
+This is your last chance to correct any problems
+with the metadata or data files that make up the dataset.
+After you finalize your submission, metadata cannot 
+be changed, and access to the endpoint and folder where 
+the data files have been assembled is restricted so 
+the included files cannot be altered.
 
-image:images/Submit%20Verify.png[Verifying the Submission]
+.Verify Dataset
+[role="img-responsive center-block"]
+image::images/submit-verify.png[Verify Dataset]
 
-In addition to the normal navigation and progress buttons, the summary
-information also provides buttons linking directly back to the
-corresponding steps of the workflow. Upon selecting "Finalize
-Submission" the submission will be entered in to the system. If the
-collection is configured for link:#glossary-curation[curation] to be
-performed, the submission will be queued for examination by a user
-with the curator role. While the submission is waiting
-to be curated, the state of the submission will be shown on the
-dashboard. If the collection does not require curation,
-the submission will be immediately entered in to the collection where
-it can be viewed by the users configured for viewing the
-collection. 
+All of the metadata values, as well as the status of 
+all transfer operations for the dataset,
+are displayed on the verify screen.
 
-image:images/Dashboard%20in%20Workflow.png[A Submission Awaiting Curation]
+If you need to make changes, you can use the normal
+progress bar to return to any step
+in the workflow, or the `Back` navigation 
+button to return to the previous step.
+Alternatively, the `Edit` buttons that appear with 
+each group of metadata can be used to go directly to 
+the relevant _Describe_ page to make corrections.
+Finally, the `Review Files` button 
+will open the Globus Transfer Files page,
+allowing you to review the data files that have been
+assembled for the dataset and to add
+(via new transfers) or delete files if necessary.
+
+After any updates, the Globus service will 
+re-create the metadata file that is included 
+in the dataset--this operation must
+complete before you can finalize your submission.
+
+When you are happy with the metadata and data files in 
+your dataset, select `Finalize Dataset Submission` to 
+submit the dataset for publication.
+You will see the following screen:
+
+.Dataset Submission Complete
+[role="img-responsive center-block"]
+image::images/submit-complete.png[Dataset Submission Complete]
+
+If the collection you submitted to requires a curation step
+prior to publication, your dataset submission will be 
+queued for review by a user with the curator role for the
+collection.
+The "Curated Trial Collection", used in the example shown, 
+does require curation.
+While your dataset is awaiting curation, it will be shown
+in the _Datasets Submitted for Approval_ section of the 
+publication dashboard.
+
+If the collection does not require curation,
+your submitted dataset will be published immediately 
+and be available to users 
+who are allowed to access the collection.
 
 [[the-curation-workflow]]
 == The Curation Workflow
