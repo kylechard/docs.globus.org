@@ -1,0 +1,72 @@
+= How To Install Globus Connect Personal for Mac OS X
+
+Globus Connect Personal allows you to share and transfer files to and from your Apple laptop or desktop computer — even if it's behind a firewall. Follow the steps below to turn your personal computer into a Globus endpoint.
+
+== Installation
+
+link:https://www.globus.org/xfer/ManageEndpoints?globus_connect=true[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
+
+. Enter a name for your endpoint. This name can be anything you choose, as long as you haven't previously created another endpoint with the same name.
+. Click "Generate Setup Key".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_install_01.png[]
+. Select the generated key with your mouse and copy it to the clipboard.
+. Click "for Mac OS X" to download the Mac OS X installer.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_install_02.png[]
+. Open the downloaded file and drag the Globus Connect Personal application into your Applications folder.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_install_03.png[]
+. Navigate to your Applications folder and double-click the Globus Connect Personal application to run it. If you are prompted to confirm that it is safe to run this application, click "Open".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_install_04.png[]
+. Since this is the first time you are running Globus Connect Personal, you will see the Setup window below where you are required to enter a setup key. Paste in the key you generated in step 2 above. The "OK" button will be enabled if the key is valid. Click "OK" to complete the installation. (If the "OK" button is not enabled, please ensure you have properly copied the entire key generated in step 2 above.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_install_05.png[]
++
+Globus Connect Personal will connect to Globus and await transfer commands. You will see an icon in the menu bar at the top of your screen, indicating that Globus Connect Personal is running.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_install_06.png[]
+
+== Configuration
+
+You may configure Globus Connect Personal by clicking on the Globus Connect Personal icon in the main menu bar and selecting "Preferences...".
+
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_options_01.png[]
+
+Options under the "General" tab allows you to specify how the Globus icon looks and whether the software should automatically check for updates. We recommend that you leave the "Automatically check for updates" box checked, to ensure that you are running the most stable and secure version of Globus Connect Personal at all times.
+
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_options_02.png[]
+
+The "Access" tab lists directories that will be accessible via Globus for file transfer and sharing. By default, the only directory listed is your home directory.
+
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_options_03.png[]
+
+You may add folders by clicking the "+" icon and selecting the folder you wish to make accessible. Note that, in most cases, you should not need to add folders other than the default home directory, unless you wish to share files in a different folder with other Globus users. To share a folder, add it to the accessible list and check the "Sharable" box. Note: you must be a link:https://www.globus.org/plus[Globus Plus] user to share files and folders. If you are not a Globus Plus user, click on the "Enable sharing" icon and follow the instructions.
+
+== Removing Globus Connect Personal
+
+Please note that if you remove Globus Connect Personal, you will not be able to transfer files to or from your personal computer using Globus, and any files you have shared with other Globus users will not be accessible to those users. To remove Globus Connect Personal:
+
+. Click on the Globus Connect Personal icon in the main menu bar and select "Preferences...".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_uninstall_01.png[]
+. Click "Delete Globus Connect Personal configuration and exit".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_uninstall_02.png[]
+. Click "Delete & Exit" to remove all Globus Connect Personal settings from your computer.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_MacOSX_uninstall_03.png[]
+. Navigate to your Applications directory and delete the Globus Connect Personal application.

@@ -6,6 +6,7 @@ menu_weight: 2
 :toc:
 :toc-placement: manual
 :toc-title:
+:toclevels: 1
 
 [doc-info]#Last Updated: {docdate}#
 

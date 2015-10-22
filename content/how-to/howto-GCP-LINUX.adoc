@@ -1,0 +1,46 @@
+= How To Install Globus Connect Personal for Linux
+
+Globus Connect Personal enables you to share and transfer files to and from your Linux laptop or desktop computer — even if it’s behind a firewall. Follow the easy steps below to turn your machine into a full-fledged Globus endpoint.
+
+NOTE: Instructions are also available for link:../howto-GCP-CLI[installing and running Globus Connect Personal using the command line].
+
+== Prerequisites
+- A Linux distribution with Tcl/Tk installed (if you do not have tcllib installed you can install and run Globus Connect Personal from the command line)
+- A Globus account (link:https://www.globus.org/signup[sign up at www.globus.org/signup])
+- A valid SSH key associated with your Globus account (link:../../faq/faq-SSHkey[please see instructions here])
+
+== Installation
+link:https://www.globusonline.org/xfer/ManageEndpoints?globus_connect=true[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
+
+[role="img-responsive center-block"]
+image::images/130524_GC_setup_panel.png[]
+
+. Enter a name for your endpoint. This name can be anything you choose, as long as you haven’t previously created another endpoint with the same name.
+. Click “Generate Setup Key”.
+. Select the generated key with your mouse and copy it to the clipboard.
++
+[role="img-responsive center-block"]
+image::images/130524_GC_generate_key.png[]
+. Click "for Linux" to download the installer tarball.
+. Extract the files from the downloaded tarball and run the installer:
++
+----terminal
+$ tar xzf globusconnect-latest.tgz
+$ cd globusconnect-n.m
+$ sh globusconnect &
+----terminal
+. Since this is the first time you are running Globus Connect Personal, you will see the Initial Setup window below where you are required to enter a setup key.
++
+[role="img-responsive center-block"]
+image::images/130524_GC_linux_setup_key.png[]
+. Paste in the key you generated in step 2 above. The ‘OK’ button will be enabled if the key is valid. Click ‘OK’ to complete the installation. (If the ‘OK’ button is not enabled, please ensure you have properly copied the entire key generated in step 2 above.
+
+NOTE: The configuration for Globus Connect Personal is stored in +~/.globusonline/lta+. The unique host certificate is stored here and must be kept private. By default, it is not readable by any other user.
+
+== Running
+Once the installation is complete, click the \'Connect' button to establish connection to Globus. You should see the status reflected below.
+
+[role="img-responsive center-block"]
+image::images/130524_GC_linux_running.png[]
+
+Both lights green indicate that Globus Connect Personal is running properly and is connected to Globus. If you have any problems connecting to Globus, you may start the application from the command line using the +-debug+ option (link:../../cli[see more information on running from the command line here]). You may minimize or hide this status window once Globus Connect Personal has connected successfully.

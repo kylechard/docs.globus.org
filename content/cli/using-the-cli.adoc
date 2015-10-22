@@ -1,6 +1,7 @@
 = Using the Command Line Interface (CLI)
 :toc:
 :toc-placement: manual
+:toclevels: 1
 :toc-title:
 
 [doc-info]*Last Updated: {docdate}*

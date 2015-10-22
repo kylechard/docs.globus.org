@@ -1,0 +1,294 @@
+---
+menu_weight: 7
+---
+
+= Endpoint Bookmarks
+:toc:
+:toclevels: 3
+:numbered:
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+Endpoint bookmarks allow a user to create an alias for an endpoint and path
+that they frequently use, and give it a custom name. The globus.org website
+will allows using the bookmark to quickly find commonly used endpoints and
+paths, and other clients are free to provide this as a convenience to users as
+well. The CLI also allows direct usage of bookmarks (see the man pages), but
+the REST API does not support using bookmark names in place of endpoints
+elsewhere in the API. They are purely provided as a convenience to users.
+Bookmarks are always private to the user identity that creates them, and can't
+be shared.
+
+NOTE: Each user can have at most 100 bookmarks.
+
+NOTE: If the endpoint pointed to by a bookmark is deleted, the bookmark
+will continue to exist and show up in bookmark_list results. This is to allow
+users to see that the deletion happened. Users can manually delete the bookmark
+once they see what happened.
+
+
+== Document Types
+
+=== Bookmark Document
+
+The "bookmark" document type represents a named alias for a Globus
+endpoint and path.
+
+.Bookmark Document Example
+------------------------
+{
+  "DATA_TYPE": "bookmark", 
+  "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+  "name": "genomics dataset1",
+  "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+  "path": "/projects/genomics/dataset1/",
+}
+------------------------
+
+==== Bookmark Document Fields
+
+Fields are required for create unless otherwise specified.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "bookmark" to indicate this
+                   document type. Optional in create requests.
+| id             | string
+                 | Globally unique id string for this bookmark. This is
+                   system generated and should not be included in create
+                   requests.
+| name           | string
+                 | Name of the bookmark, which will be used in searches.
+                   Unicode strings, with the following characters disallowed:
+                   '\n', '\r'. The name must be unique for each user. Note
+                   that spaces and special characters must be url encoded
+                   when using the bookmark in the Transfer CLI.
+| endpoint_id    | string
+                 | Id of the endpoint to bookmark.
+| path           | string
+                 | Path to a directory on the endpoint. Must end in "/".
+|===================
+
+
+== URL Arguments
+
+The operations below make use of the following arguments in the URL,
+delimited by <> in the descriptions.
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| bookmark_id           | string
+| Unique identifier for a bookmark.
+|===================
+
+
+== Common Query Parameters
+
+[cols="1,1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all
+  fields are needed.
+|===================
+
+
+== Common Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| BookmarkNotFound  |404  | If <bookmark_id> not found
+| EndpointNotFound  |404  | If +endpoint_id+ not found when creating a bookmark.
+| Conflict          |409  | If a bookmark with the same +name+ owned by
+                            the current user already exists.
+| Exists            |409  | If a bookmark with the same +endpoint_id+ and
+                            +path+ already exists.
+| LimitExceeded     |409  | If the user already has the maximum
+                            of 100 bookmarks.
+| ServiceUnavailable|503  | If the service is down for maintenance.
+|===================
+
+
+== Operations
+
+=== Get list of bookmarks
+
+Get a list of bookmarks created by the current user.
+
+[cols="h,5"]
+|============
+| URL
+| /bookmark_list
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+
+    "DATA_TYPE": "bookmark_list",
+    "DATA": [
+        {
+          "DATA_TYPE": "bookmark", 
+          "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+          "name": "genomics dataset1",
+          "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+          "path": "/projects/genomics/dataset1/"
+        },
+        {
+          "DATA_TYPE": "bookmark", 
+          "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+          "name": "physics dataset7",
+          "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+          "path": "/projects/physics/dataset7/"
+        }
+    ]
+}
+------------------------------------
+|============
+
+
+=== Create bookmark
+
+On success returns a copy of the created bookmark with the system generated id
+added.
+
+[cols="h,5"]
+|============
+| URL
+| /bookmark
+
+| Method
+| POST
+
+| Request Body a| 
+-------------------------------------------------------------------
+{
+  "name": "physics dataset7",
+  "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+  "path": "/projects/physics/dataset7/"
+}
+-------------------------------------------------------------------
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+  "DATA_TYPE": "bookmark",
+  "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+  "name": "physics dataset7",
+  "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+  "path": "/projects/physics/dataset7/"
+}
+-------------------------------------------------------------------
+|============
+
+
+=== Get bookmark by id
+
+Get a single bookmark by id.
+
+[cols="h,5"]
+|============
+| URL
+| /bookmark/<bookmark_id>
+
+| Method
+| GET
+
+| Response Body a| 
+------------------------------------
+{
+  "DATA_TYPE": "bookmark",
+  "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+  "name": "physics dataset7",
+  "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+  "path": "/projects/physics/dataset7/",
+}
+------------------------------------
+|============
+
+
+=== Update bookmark
+
+On success returns a copy of the updated bookmark. Only the +name+ field can
+be updated. If other fields are included, they will be ignored, but clients
+are encouraged to pass only the +name+.
+
+[cols="h,5"]
+|============
+| URL
+| /bookmark/<bookmark_id>
+
+| Method
+| POST
+
+| Request Body a| 
+-------------------------------------------------------------------
+{
+  "name": "physics dataset7",
+}
+-------------------------------------------------------------------
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+  "DATA_TYPE": "bookmark",
+  "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
+  "name": "physics dataset7",
+  "endpoint_id": "a624df8b-8de2-4a73-a5b1-85b0f4bff2a8",
+  "path": "/projects/physics/dataset7/",
+}
+-------------------------------------------------------------------
+|============
+
+
+=== Delete bookmark by id
+
+Delete a single bookmark by id. Returns a result document on
+success.
+
+[cols="h,5"]
+|============
+| URL
+| /bookmark/<bookmark_id>
+
+| Method
+| DELETE
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "result",
+    "code": "Deleted",
+    "message": "Bookmark 'c67b666f-e1ad-4f67-af2c-48340dd12ada' deleted successfully",
+    "resource": "/bookmark/a624df8b",
+    "request_id": "ABCdef789"
+}
+-------------------------------------------------------------------
+|============
+
+
+== Change History
+
+=== 4.4
+
+* initial bookmark API

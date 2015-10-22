@@ -1,0 +1,128 @@
+---
+menu_weight: 5
+short_title: Command Line Interface (CLI)
+---
+:toc-placement: manual
+:toc:
+:toclevels: 1
+:toc-title:
+
+= FAQs: Command Line Interface (CLI)
+
+toc::[]
+
+== What is an SSH key? Why do I need one?
+An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli[CLI]. In order to login to the Globus CLI, you must have a valid public SSH key (or an link:#adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
+
+== How do I add an SSH key to my Globus account?
+NOTE: If you don’t already have an SSH key, instructions for creating one are available link:#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here for Mac OSX, Linux, and Windows systems].
+
+. link:https://www.globus.org/SignIn[Sign in to your Globus account].
+. link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
+. Click "add linked identity".
+. Click "Add SSH Public Key".
+. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
+. Click "Submit" to save.
+
+It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
+
+----terminal
+$ ssh [input]#<my_globus_online_user_name>#@cli.globusonline.org
+----terminal
+
+For more information about the Globus Online CLI, see the link:../../cli/using-the-cli[Using the CLI guide].
+
+== How do I generate an SSH key to use with the Globus command line interface?
+
+=== Mac OSX/Linux/Unix
+
+Generate Keys:
+
+The _ssh-keygen_ command is used to create keys. There are many options for it. We recommend that you run it this way:
+
+----terminal
+$ ssh-keygen -t rsa -b 2048
+----terminal
+
+This will create and store both your public and private keys in your ~/.ssh directory. It will overwrite any existing keys as well. To generate these keys, simply type _ssh-keygen -t rsa -b 2048_ and follow the prompts. To install the keys to the default location, just press enter when prompted for a file name. +We strongly encourage the use of a passphrase.+
+
+Some machines may put these files in a different spot. If this is the case, make a note of where it puts them and what it names them. The id_rsa.pub is your public key and the id_rsa (and, if they exist, id_dsa or identity) file is your private key.
+
+=== Windows Systems
+
+Generate Keys: 
+
+==== SecureCRT
+
+Simply generate your key by clicking "Tools", then "Generate Public Key". Follow the prompts (RSA keys are fine, despite what the text above the selection box says). +We strongly encourage the use of a passphrase.+
+
+2048 is an adequate key length. Make note of where it's installing the key. It is probably something like:
+
+----
+C:\Documents and Settings\USERNAME\Application Data\VanDyke\Identity 
+----
+
+If you upgraded from an old version, it might be:
+
+----
+C:\Documents and Settings\USERNAME\Application Data\Van Dyke Technologies\Identity 
+----
+
+Say "Yes" to the global public key question.
+
+Now, the tricky part. SecureCRT stores your public key in a funky format. You have a few options to get it into the format you need, do any one of the below.
+
+- Use link:https://svnkeys.berkeley.edu/[Berkeley's SSH-key converter] - quick and easy.
+- Copy the public key (identity.pub) to a machine that has OpenSSH installed and run: _ssh-keygen -i -f identity.pub > id_rsa.pub_
+
+Now, make SecureCRT use the key.
+
+- Click "File" then "connect", and for each existing entry, in the list (or for new ones you add) click the "Properties" button (it looks like a hand holding a card).
+- In the Authentication section under "Connection", change "Primary" to be "PublicKey". Choose "Properties" and make sure it's using your global file.
+- Click "Options", "Global Options", and under SSH2 heading, check both boxes in the "Agent" section.
+
+Now, the first SecureCRT session you open will ask the passphrase for the key you generated, and any subsequent ones will not (as long as SecureCRT is running.)
+
+NOTE: If you converted a previously SSH1 session to use SSH2, check your port forwarding configuration. It may have been messed up. The checkbox for local IP address restrictions should be unchecked. If it's not, uncheck it.
+
+==== PuTTY
+
+If you would like to use PuTTY as your ssh client, the first thing you should do is download the latest client. We have found that various older versions create odd problems when trying to use version2 keys. It only takes 10 seconds - no fancy installer, no rebooting.
+
+Close any current PuTTY connections, move the current PuTTY executable (putty.exe) to the recycle bin, and download a new putty.exe from link:http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html[here]. Your current preferences and saved connections will not go away. When you open the new PuTTY, all those things will still be there.
+
+While you are grabbing the latest client, also grab link:http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe[PuTTYgen (puttygen.exe)], which is the tool you will use to generate a new ssh key pair.
+
+After downloading PuTTYgen, double-click on the PuTTYgen icon. At the very bottom of the dialog box, there is a section called "Parameters". Under "Type of key to generate:", click the radio button for "SSH2 RSA". You should set the "Number of bits in a generated key:" at the default value of 2048 or higher.
+
+== What is the difference between the transfer and scp commands in the Globus CLI?
+The +scp+ command is designed for ease of use, whereas the +transfer+ command is designed for greater control over all aspects of a Transfer operation. The two commands share a common underlying implementation based on GridFTP.
+
+== How is the Globus scp command different from standard scp?
+The Globus +scp+ command does not actually use standard scp, but it supports many scp syntax conventions, and has the added benefit of being more reliable and better performing than the standard scp implementation. See the link:../../cli/reference/scp/[+scp+ documentation] for more details.
+
+== How do I set up Globus so I can connect to cli.globusonline.org using GSI SSH?
+To use GSI SSH you need to configure your Globus profile with the X.509 Certificate that you will use to login.
+
+=== Adding an X.509 certificate to a Globus account
+. link:https://www.globus.org/SignIn[Sign in to your Globus account].
+. link:https://www.globus.org/account/ManageIdentities[Click here] to go to the Manage Identities page.
+. Click "add linked identity".
+. Click "Add an X.509 Credential".
+. Copy and paste the contents of your certificate PEM file (NOT your private key). Note that proxy certificates are not supported. Optionally, enter an identifying label.
+. Click "Submit" to save
+
+To find your PEM file, run +grid-proxy-info+ at a command prompt. This will print the "path" of your certificate PEM file (e.g. /tmp/x509up_u502), as well as the "type". Make sure that the "type" is "end entity credential", and not some form of proxy. Note that many certificates fetched via the +myproxy-logon+ command are still end entity credentials and can be used for this purpose. List the contents of this file, and then copy and paste the portion of the file between, and including, the lines: —–BEGIN CERTIFICATE—– and —–END CERTIFICATE—–.
+
+=== Activating an Endpoint
+You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli/[CLI tutorial] for more details on using GSI SSH.
+
+== Can I force encryption on an endpoint?
+The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
+See link:http://dev.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
+
+----terminal
+$ endpoint-modify --force-encryption [input]#my#endpoint#
+----terminal
+
+Then all transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that selection marked in the Web.

@@ -1,0 +1,349 @@
+---
+menu_weight: 1
+short_title: Transfer and Sharing
+---
+:toc-placement: manual
+:toc:
+:toclevels: 1
+:toc-title:
+
+= FAQs: Transfer and Sharing
+
+toc::[]
+
+== Which browsers does the Globus web user interface support?
+The Globus web user interface is tested and verified to work on the most recent desktop version of Chrome, Edge, Firefox, Internet Explorer, and Safari.
+
+Earlier versions of these browsers, as well as other desktop browsers (e.g. Opera) and mobile/touch-based browsers, may experience loss of functionality and/or distorted visual effects. Limited or no support may be available for such browsers.
+
+== How much does Globus cost?
+Globus is free for researchers at non-profit institutions to use for file transfer, thanks to the generous support of sponsors who fund our research.
+
+As a non-profit institution, our goal from day one has been to make Globus a self-sustaining service, so that we can continue to serve the needs of academic and non-profit research organizations for many years to come. Most of our funding is intended for research and early software development, not to cover operation, support, and ongoing evolutionary improvement of the service. As usage grows, our costs have grown and we decided that charging a usage-based subscription fee for additional features that go beyond file transfer is the best way to ensure that we can continue to provide a high-quality research data management service.
+
+To this end, certain Globus features are available only by subscribing to a link:http://www.globus.org/providers/provider-plans[Globus Provider plan]. Such features include the ability to share files directly from existing storage, access to data publication functionality, and performing various administrative tasks for Globus endpoints at your institution. Globus Provider plans also offer higher levels of support from the Globus team, with priority response times.
+
+If you are a commercial user, you may use Globus by signing up for a link:https://www.globus.org/providers/provider-plans#commercial-pricing[commercial Provider plan]. We are unable to offer the service free of charge to commercial users, but believe that you will find Globus provides valuable capabilities at a reasonable price. Thanks!
+
+== How do I "refresh my credentials" (or "activate an endpoint")?
+Because Globus does not store usernames/passwords for your endpoints, periodic re-authentication is required. This means you need to log on with the appropriate username and password for the given endpoint (this is called endpoint "link:#what_is_activation[activation]"). There are two ways to refresh your credentials in Globus:
+
+1. Sign in to your account via the web GUI and go to the link:https://www.globusonline.org/xfer/ManageEndpoints[Manage Endpoints page]. Click the "activate" links for the source and destination endpoints relevant to your current transfers.
++
+-OR-
++
+2. Sign in to the command line interface (ssh cli.globusonline.org) and use the +endpoint-activate+ command to refresh your credentials. For example, enter [uservars]#endpoint-activate nersc#dtn#, and it should prompt you for your NERSC login and password.
+
+Usage Notes:
+
+- You can refresh any credential from any network-connected computer at any time using the above mechanisms.
+- Globus Connect Personal endpoints do not need to be explicitly activated. If a Globus Connect Personal endpoint is part of an active transfer request, its credentials will be automatically refreshed as needed.
+- You do *not* need to resubmit a previously inactive transfer after you've reactivated the relevant endpoints; Globus will automatically resume transferring files when both the source and destination endpoints are activated.
+
+== What is an "endpoint"?
+An "endpoint" is one of the two file transfer locations – either the source or the destination – between which files can move. Once a resource (server, cluster, storage system, laptop, or other system) is defined as an endpoint, it will be available to authorized users who can transfer files to or from this endpoint.
+
+Globus endpoints are named using the following format: [uservars]#<globus-username>#<endpoint-name>#. For example, the XSEDE project has a Globus account under the username "xsede" and so it's endpoints are named [uservars]#xsede#stampede# (for the Stampede system at Texas Advanced Computing Center) and xsede#kraken (for the Kraken system at the National Institute for Computational Sciences). Likewise, an individual that has a Globus account under the username "maxim" might have a personal endpoint called [uservars]#maxim#mylaptop#.
+
+There are two classes of endpoints: personal endpoints and server endpoints. You can set up a personal endpoint on your laptop or other personal computer using link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] as described here. To set up a multi-user server as a Globus endpoint you must install link:https://www.globus.org/globus-connect-server[Globus Connect Server] as described here.
+
+== What is "activation"?
+Activation is the mechanism Globus uses to authenticate a user on an endpoint. It enables users to specify which identity should be used to authenticate with an endpoint. For example if I wanted to transfer a file from NERSC to ALCF, I could sign in to Globus using my Globus account name and password, and activate the [uservars]#nersc#dtn+# endpoint using my NERSC username and password, and finally activate the [uservars]#alcf#dtn# endpoint using my ALCF username and pin+OTP.
+
+=== Authentication
+Globus uses an X.509 proxy credential to authenticate with the GridFTP servers on the endpoints. Users can delegate a proxy credential to Globus using gsissh, or allow the service fetch a proxy credential from a MyProxy (or MyProxy via OAuth) server.
+
+== How can I transfer files to/from my server?
+In order to transfer files to/from a server using Globus the server must be set up as a Globus endpoint. This requires that you link:http://dev.globus.org/resource-provider-guide/#install_section[install Globus Connect Server] which will allow all users with a local account on the server to access the endpoint. Before installing, check to link:https://www.globus.org/xfer/ManageEndpoints[see if an endpoint is already defined for your server]; many campuses, research communities, and national cyberinfrastructure providers (e.g., XSEDE, NERSC, etc.) have created Globus endpoints on their systems.
+
+Once your endpoint is set up you can access it by going to the link:https://www.globus.org/xfer/StartTransfer[Transfer Files page] and entering its name in the Endpoint field. Endpoint names are of the form <globus-user-name>#<endpoint-name>; for example, if you registered a Globus user called [uservars]#myrcc# and wanted to create an endpoint for your cluster called [uservars]#capricorn# the resulting endpoint name would appear as [uservars]#myrcc#capricorn#. See the screenshot below: in this instance the endpoint being accessed is [uservars]#xsede#longhorn# which represents the Longhorn supercomputer managed by the XSEDE project.
+
+[role="img-responsive center-block"]
+image::images/140211_Transfer.png[]
+
+To access your Globus endpoint you may authenticate using your local username and password on that server or you may configure the endpoint to redirect users to an external identity provider such as your campus identity system. A common scenario for universities in the U.S. is using their campus credentials to authenticate via the institution's InCommon identity provider (link:http://dev.globus.org/resource-provider-guide/#security_section[see this page for details on configuring your Globus endpoint to use InCommon]).
+
+After accessing the endpoint, you may select the files to transfer, select the destination endpoint, and click the highlighted arrow button to start the transfer.
+
+[role="img-responsive center-block"]
+image::images/140211_Transfer_go.png[]
+
+== How do I see error logs for my transfers?
+You can access a detailed list of errors (and other status messages) for any Globus Online task using both the Web interface and the command line interface.
+
+*Using the Web interface:*
+
+. Click on the link:https://www.globusonline.org/xfer/ViewTransfers[View Transfers page].
+. Click on the label of the transfer you would like to examine. You will see a popup with the transfer details.
+. Click on the "View Event Log" link at the bottom of the popup to see a complete list of status messages. Note: this may be a very long list (potentially thousands of pages for a large transfer).
+
+*Using the command line interface (CLI):*
+
+. The +status+ command provides a summary of the transfer.
+. The +details+ command provides additional information like start and end times, number of files transferred, and average transfer speed. Adding the +-t+ provides information on each file in the task.
+. The +events+ command lists the complete event log for the transfer (this command returns a very long list but you can use various command options to find the event(s) of interest).
+
+All of the above commands have options that control the amount and format of the output returned. Please run +man+ for further details.
+
+== How do I check the status of my transfers?
+You can use the link:https://www.globus.org/xfer/ViewActivity[Web interface] or the link:../../cli/reference/status[+status+] and link:../../cli/reference/details[+details+] commands on the Globus command-line interface to check the status of your transfers. More information and examples are link:../../cli/using-the-cli/[available here].
+
+== How can I transfer files to and from my laptop or desktop?
+Use link:https://www.globusonline.org/globus_connect/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:#what-is-an-endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Globus Connect Personal is available for Mac OS X, Windows, and Linux. link:https://www.globus.org/globus-connect-personal[Get started here].
+
+== How do I transfer files?
+Once you sign up you can initiate transfers using the Web interface or using the transfer and scp commands on the command-line interface. Please see link:../../how-to/signup-transfer/[this how-to guide] for more details.
+
+== How will I know when my transfer is completed?
+Globus sends a notification message to the e-mail address link:https://www.globus.org/account/UpdateProfile#[stored in your account profile].
+
+== How can I create an endpoint?
+If there is already a GridFTP server running on your machine you can use the endpoint-add command or the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. If there is no existing GridFTP deployment then you have two options, depending on whether the endpoint is a machine for personal use (Globus Connect Personal) or a multi-user server (Globus Connect Server). For personal use, link:https://www.globus.org/globus-connect-personal[please see the instructions on this page]. For a multi-user machine such as a campus cluster or lab server, link:https://www.globus.org/globus-connect-server[please see the instructions on this page].
+
+== Does Globus support one-time passwords (OTP)?
+Yes, one-time passwords work with Globus and do not require any specialized configuration. To access a site that requires an OTP (e.g. ACLF), simply enter your password as you would normally when prompted.
+
+== How does Globus Online ensure my data is secure?
+Globus Online uses a "control channel" to communicate with the source and destination endpoints for a transfer. All control channel communications are encrypted.
+
+In addition to the control channel, the data is transferred over a "data channel" that exists only between the source and destination endpoints, i.e. Globus Online does not have access to this channel, it is only accessed by the servers on the endpoints. By default the data channel is authenticated, but unencrypted.  It can be encrypted by selecting the "encrypt transfer" option on the Transfer Files page (see screenshot below), or by including the +--encrypt+ option for the +scp+ and +transfer+ commands when using the command line interface.
+
+[role="img-responsive center-block"]
+image::images/130725_Encryption_option.png[]
+
+You should be aware that encryption adds processing overhead, resulting in slower transfers. Encrypted transfers use the SSL cipher configured on the endpoints (the default for OpenSSL is AES256-SHA).
+
+== Which protocols does Globus support?
+Globus transfer tasks can be initiated and managed using our GUI, REST, and CLI interfaces.
+
+The GridFTP protocol is used to transfer the data files themselves.  We have also received requests to support UDT, and will consider implementing this protocol if there is sufficient demand from our users.
+
+== What does "Beta" mean in the Globus context?
+We use "Beta" as an indicator of what an end user may expect from a newly-released Globus feature. We will usually tag something as "Beta" when we have a new feature that we want to expose to users for feedback, but that we know is not fully tested and quality assured. When a Globus feature/page is tagged as "Beta" it means that we expect it to work as intended, but that you may experience some issues in your context. This means that we cannot provide performance guarantees and suggest that you not rely on the feature for production use.
+
+== What are GridFTP concurrency, pipelining, parallelism, and striping? They all sound the same!
+Globus optimizes GridFTP transfers by choosing performance optimizations  based on the number and sizes of files in the workload. Thus, users do not have to be GridFTP and globus-url-copy experts to get high performance transfers. If you are an advanced user or resource owner, read on...
+
+concurrency:: opens multiple login sessions (also known as control channel sessions). Each login session starts a GridFTP process on the server, usually via xinetd. Thus, a concurrency (cc) of 4 would drive 4 gridGridFTPftp processes, so you have 4 processes driving IO (each one working on a different file).  Files are divided among the sessions, so this only works if you have multiple files in a job (most users do). Also note that each session may be to a different server if you had DNS round robining, a load balancer, or multiple physical endpoints defined in Globus. So concurrency is great for driving more filesystem processes, CPU cores, and even machine nodes, in addition to opening more network data streams.
+
+pipelining:: speeds up lots of tiny files by stuffing multiple FTP commands into each login session back-to-back without waiting for the first command's response. This reduces latency and keeps the GridFTP server constantly busy; it is never idle waiting for the next command. Note that a GridFTP server process currently only works on one command at a time (future protocol enhancements are planned to drive threaded, out of order processing of commands).
+
+parallelism:: is a network level optimization. Regular FTP sends a file over one TCP stream, which isn't ideal for high latency, high throughput links. Parallelism can divide and send a file's data blocks over multiple TCP streams, however, all the TCP streams have the same source and destination GridFTP server process. Large files over high latency links can benefit from higher parallelism.
+
+striping:: splits a single file's data blocks across multiple servers. Globus does not support striping, based on the observation that most users are actually transferring more than one file and that an endpoint often serves multiple users concurrently. Striping can actually be counter productive in these cases, since it adds additional overhead and complexity, and the other options listed above deliver excellent performance.
+
+Globus will enable concurrency, pipelining, and parallelism on nearly every transfer task.
+
+== How is www.globusonline.eu different from www.globus.org?
+There is no functional difference between the two web sites. We launched link:http://www.globusonline.eu/[www.globusonline.eu] to address requirements of EU-based researchers. When accessing either web site from an EU locale, you will be prompted to explicitly consent to our use of cookies on the Globus web site. As part of launching www.globusonline.eu we have also provided additional information describing our use of cookies and instructions for managing cookies in your browser. Please see the following links for more information:
+
+Globus cookies: https://www.globus.org/legal/cookie-types/
+
+Managing your cookies: https://www.globus.org/legal/manage-cookies/
+
+== Are there any limits on using the file transfer service?
+We enforce some limits on usage in order to provide reasonable performance to all users and protect against abuse. A Globus user is currently subject to the following limits:
+
+- 3 active transfer tasks
+- 100 pending transfer tasks
+- 100,000,000 files in a single transfer task
+- 5,000,000 files in a single directory
+- 10 active command line (CLI) sessions
+- 100 effective ACLs per user on an endpoint
+- 1,000 total ACLs per endpoint
+- 1,000 endpoints owned by a single user
+
+In addition, the Globus service will retain task details about events and completed files for up to 31 days.
+
+The above limits are set based on our experience to-date and should accommodate the needs of most transfer users. If you have requirements that are likely to exceed these limits, please contact us to discuss.
+
+== How can I activate an endpoint for the maximum amount of time?
+By default Globus will request activation for 11 days. However, some organizations' MyProxy servers maybe be configured to return a credential with a shorter lifetime – the maximum lifetime allowed is controlled by each organization, not Globus. If you would like credentials with a longer lifetime, please contact the administrator for the MyProxy server used by the endpoint you are activating.
+
+== What are the minimum permissions needed for shared storage accessible by Globus?
+When using sharing, all access to the file system will be done using the identity(uid) of the user sharing the endpoint. The users with shared access will be able to access anything the owning user has access to. This will be limited by any path restrictions or read only ACLs set up with the share or in the Globus Connect Server / Gloubs Connect Personal / GridFTP configuration.
+
+== Can I use Globus to transfer PHI or HIPAA protected data?
+We have received a number of inquiries (particularly from genomics researchers) regarding the use of Globus to transfer data that may contain Protected Health Information (PHI). This is a complex question and the way we address it is evolving. Here is our current view on this:
+
+1. *Globus can be used to transfer de-identified genomic data.* HIPAA regulations cover the transfer, storage, etc., of Protected Health Information (PHI). De-identified genomic data (i.e., genomic data that is not associated with PHI such as a patient name) is NOT PHI under current HHS regulations. Thus, Globus can be used to transfer such data,  and indeed many people use Globus for this purpose, either as part of their own research workflows, or by using link:http://www.globus.org/genomics[Globus Genomics] to run Galaxy pipelines on Amazon computers. Several genome sequencing centers (e.g., Perkin-Elmer, Broad Institute) operate Globus endpoints to facilitate such transfers.
++
+CAUTION: We do not currently recommend the use of Globus to transfer Personal Health Information such as non-de-identified medical records.
++
+2. *What are our future plans with respect to PHI, HIPAA etc.?* It is widely expected that de-identified genomic data will be classified as PHI in the future. For that reason, and to enable the use of Globus for other PHI, we want to undertake the work required for Globus to pass HIPAA audit. As far as we know, OCR/HSS does not provide any "seal of approval." Rather, it defines a HIPAA Audit Protocol that an entity that manages PHI needs to follow. An institution that relies on a third party to manage, transfer, etc. its PHI will want that third party to have passed a HIPAA Audit and to enter into an appropriate Business Associate Agreement (BAA) with it. We are investigating the steps required to allow Globus to be certified as compliant with the HIPAA Audit Protocol. The work involved seems quite straightforward; however, we do not yet have the funding to engage the auditors needed to complete that work.
+
+We appreciate any feedback or input that you may have regarding this issue.
+
+== How do I generate a VOMS-enabled proxy certificate and upload it to a MyProxy server?
+GSISSH-Term is a Java-based client that can be installed and launched with one simple click. link:https://www.lrz.de/[Leibniz Supercomputing Centre] maintains and develops a customized version of this client that generates a proxy certificate and uploads it to any MyProxy server with no additional setup. European EUGridPMA CA certificates are automatically installed and updated on the client machine.
+
+Virtual Organization Membership Service (VOMS) is a system for managing authorization data within multi-institutional collaborations. VOMS provides a database of user roles and capabilities, and a set of tools for managing the database and generating Grid credentials for users. If you are using VOMS, particularly a EGI VO, this tool is for you—all EGI VOs are automatically configured and updated by this client.
+
+To generate a proxy certificate (either a regular or VOMS-enabled) for use with a MyProxy server, click on the link below. Begin by selecting menu option "Tools" -> "MyProxy Tool".
+
+[role="img-responsive center-block"]
+image::images/hfjaigge.png[GSISSH-Term icon]
+
+NOTE: You must have a Java Runtime Environment (JRE 1.6 or later) installed to run this program.
+
+For more information on GSISSH-Term:
+
+- link:https://www.lrz.de/services/compute/grid_en/software_en/gsisshterm_en/[Full Documentation]
+- link:https://wiki.egi.eu/wiki/MyProxy_tool_GUI[EGI WIKI - MyProxy tool GUI]
+
+EGI users that have questions or need assistance with this tool should submit a ticket using link:https://ggus.eu/pages/home.php[GGUS]. All other users may contact the mailto:grid-admin@lrz.de[LRZ support team].
+
+== What is the Effective Transfer Rate reported by Globus?
+The "Effective Transfer Rate" included in e-mail notifications and reported by the +details+ command is the ratio of number of bits transferred to the _*total time taken to complete the transfer request*_. The total time is calculated from the time the transfer request is submitted to Globus to the time the transfer is completed. It includes retry time, downtime on the endpoints, time that the transfer is paused for credential renewal, and time for checksum calculations. Hence, the Effective Transfer Rate indicates the time taken for _reliable file transfer_ and should not be interpreted as raw bandwidth or throughput information.
+
+For example, if your credentials on either endpoint expire and it takes you a few hours to renew them, that idle time is included in the transfer rate calculation and can result in relatively low Effective Transfer Rates even though the actual end-to-end throughput on the network is relatively high.
+
+It is also worth noting that Globus allows each user to have up to three simultaneous transfers in progress, with additional transfers queued. If you submit more than three simultaneous transfer requests, the additional requests are queued while the three active requests are completed, and this queue time is also included in the Effective Transfer Rate calculation for those requests.
+
+NOTE: the "mbps" value shown in the event log is different, and is calculated every 10-60 second interval over a single concurrent connection.
+
+== How do I control file permissions with Globus Transfer?
+Globus does not preserve file permissions when performing a transfer. When you transfer files with Globus, their permissions are determined entirely by the destination endpoint's configuration. There are still ways that you can control the permissions of the files created by Globus, on a destination endpoint, but they do not operate on information about the original file permissions.
+
+=== Why We Don't Preserve Permissions
+An obvious question that arises is "Why doesn't Globus preserve permissions?" This behavior is an unfortunate result of the fact that it is not entirely clear what preserving permissions means for some transfer tasks.
+
+=== The Ideal Treatment of Permissions
+Ideally, given endpoints [uservars]#user#A# and [uservars]#user#B#, with files in [uservars]#user#A#, then transferring those files back and forth between [uservars]#user#A# and [uservars]#user#B# would not alter the permissions of those files. So, if we submitted a transfer task, copy [uservars]#user#A:/p/q/r# to [uservars]#user#B:/x/y/z#, the file at [uservars]#user#B:/x/y/z# will have exactly the same permissions as the original at [uservars]#user#A:/p/q/r#. Consider a second transfer in the other direction, copy [uservars]#user#B:/x/y/z# to [uservars]#user#A:/p/q/r_prime#. Since this should share the same property as the previous transer, [uservars]#user#A:/p/q/r# and [uservars]#user#A:/p/q/r_prime# should be completely indistinguishable -- there should be no way to tell which one is the original by content or permissions.
+
+=== The Problem With Ownership
+But what if the user authenticates to [uservars]#user#A# as a user with read permissions to [uservars]#user#A:/p/q/r#, but not ownership? Then when the file is transferred back to [uservars]#user#A:/p/q/r_prime#, the ownership will have changed. On most systems, only the superuser can change the owner of [uservars]#/p/q/r_prime# to match [uservars]#/p/q/r#. This is the basic issue with attempting to preserve ownership for files.
+
+=== The Problem With Permissions Bits
+Not all permissions settings are supported on all platforms. Consider what happens if [uservars]#user#A:/p/q/r# has UNIX octal permissions 0111 -- anyone can execute the file, but no one can read or write it -- and [uservars]#user#B# is a Windows endpoint. When the file is stored in Windows as [uservars]#user#B:/x/y/z#, it can't be given these same permissions because Windows does not support execute-only files. When [uservars]#user#B:/x/y/z# is transferred to [uservars]#user#A:/p/q/r_prime#, the only way for the transfer task to know to restore the original permissions is to keep track of all permissions of files transferred by Globus in case they are transferred again. Even with that extra information, it is difficult to know exactly what to do: what should Globus do if the file has been altered, or had permissions added or removed?
+
+What if the file is moved with scp from [uservars]#user#B:/x/y/z# to [uservars]#user#C:/w/t/u# and with Globus from [uservars]#user#C:/w/t/u# to [uservars]#user#A:/p/q/r_prime#? Because permissions schemes are not uniform across all platforms, and files may move locally or remotely by means other than the Globus service, we cannot guarantee the transitivity of permissions across a series of transfers.
+
+=== What Can You Do?
+Having stated that the permissions of your files cannot be consistently preserved by Globus for technical reasons, what recourse do you, as a user or endpoint administrator, have? Our team is always looking to improve Globus, and better permissions handling is on the To Do List. In the meantime, however, you can make some steps to better control your file permissions.
+
+=== Further Restricting Permissions for Globus Connect Server
+By default, the GridFTP server uses the system umask setting to determine the permissions of all files that it creates. There is an option, passed either through the command line as "-perms", or through the config file (by default, placed in +/etc/gridftp.conf+ ) as a line "perms <value>", which can be used to further restrict the permissions of new files. The option is specified as a three digit octal integer, as typical UNIX permissions are, and is documented in the Globus Toolkit 5.2 release here.
+
+"perms" does not override the umask, but is applied additively. Note that the "perms" option is written as a positive set of permissions bits, which are desired for new files, while the umask is a negative set of bits, which are forbidden. Since the GridFTP server attempts to create files with the "perms" permissions, the effective permissions of a new file are +<PERMS> AND (NOT <UMASK>)+ for regular files, rather than the default of +0666 AND (NOT <UMASK>)+. "perms" will not alter directory permissions, so those should still be +0777 AND (NOT <UMASK>)+.
+
+Because the "perms" value is ANDed together with the inverted umask, it cannot be used to apply wider permissions than the umask allows, but it can be used to further restrict access. For example, if the system umask is set to +0002+, but you want to forbid world read access and group write access to files, you could set "perms" to +0042+. The resulting permissions, in this case, would be +0042 AND (NOT 0002) = 0042 AND (0775) = 0040+, as the umask forbids the world write permission granted by "perms".
+
+=== Using Filesystem ACLs
+Because Globus delegates operations to the endpoint's filesystem without inspecting ACLs on the source or destination, you can leverage your endpoint's support of ACLs to control permissions tightly. By setting ACLs on the destination such that they are applied to all new files in a directory tree, you can effectively set ACLs on the files created by the GridFTP server. GridFTP and Globus will never attempt to explicitly get or set the filesystem ACLs, effectively leaving their application up to the destination endpoint's filesystem implementation. Since different filesystems and operating systems may implement ACLs differently, we do not provide explicit instructions for any particular local ACL setup.
+
+=== Setting the umask
+Setting the umask explicitly is the only way to increase the permissions offered on files created by the GridFTP server. The most consistent and successful way to do this is to alter the Globus Connect Server init script to set the umask immediately before launching the GridFTP server. Most typically, the script is found in */etc/init.d/globus-connect-server*
+
+If you do not feel comfortable modifying the init script, this option is likely a bad choice for you. The init script is the only supported way of launching GridFTP for a Globus Connect Server installation, so damaging alterations to the script could prevent you from launching Globus Connect Server altogether. (In other words, choose this option at your own peril.)
+
+=== Controlling Permissions for Globus Connect Personal
+The above techniques can be applied to Globus Connect Personal, but there are some caveats. Most notably, we do not officially support modified versions of the Globus Connect Personal client, so if you alter any files or configuration within the client application in order to achieve your desired permissions scheme, your endpoint will not necessarily qualify for support from Globus staff. At present, none of the forms of Globus Connect Personal support specifying "perms" to the GridFTP server.
+
+If you are running Globus Connect Personal for Linux, you may have some success altering your personal umask setting before launching the application, as your umask should propagate down the process tree to the GridFTP server process. Likewise, if you are running Globus Connect Personal on Mac OS X, you may be successful setting your umask before launching the Globus Connect Personal app through the command line. These actions are not guaranteed to be successful based on the exact behavior of your platform. Because Windows does not support a umask equivalent, there is no way to replicate this behavior in Globus Connect Personal for Windows.
+
+When supported by your platform, filesystem ACLs are respected, but they are not an option for all users.
+
+=== Use Globus Shared Endpoints
+In many situations, restricting read or write access to a file can be handled correctly using Globus controlled Read and Write permissions on a Shared Endpoint. This does not alter the underlying permissions of the files, but restricts permissions when using a Globus account to access the endpoint. Globus will deny users without the Read permission the rights to copy files or list directory contents, and denies users without the Write permission the rights to copy a file to the specified path or directory.
+
+These permissions settings do not alter the underlying endpoint's permissions scheme in any way, so users with local access to the endpoint may be able to bypass these permissions settings by accessing files directly. If you know that your files are only exposed via Globus, then this option may be right for you.
+
+== How Does Globus Handle Symlinks?
+At present, Globus skips symlinks in a wide class of transfers. The reason for this is that there are several notions of correct behavior for transfers of symlinks, especially with respect to their interaction with path restrictions in an endpoint's configuration. However, symlinks are not uniformly ignored, and in some actions, for which the behavior on symlinks is unambiguous, they will be followed.
+
+This behavior is identical between Globus Connect Personal and Globus Connect Server.
+
+=== Directory Listing
+When listing the contents of a directory, if the path includes symlinks, those symlinks will be followed. However, when the links are followed, they do not receive special treatment -- to Globus, they are considered indistinguishable from the directories to which they are links. This is very similar to the treatment of symlinks when doing local directory listings (i.e. ls in most shells), in which the fact that a directory is a link is not necessarily exposed.
+
+So, if you have a symlink [uservars]#/tmp/myhome -> /home/username/#, then when you attempt to list the contents of [uservars]#/tmp/myhome/Desktop/#, Globus will return a list of contents of [uservars]#/home/username/Desktop/#. Globus will not give any indication that /tmp/myhome is a symlink; there is no path rewriting or other indication that [uservars]#/tmp/myhome# is anything but an ordinary directory whose contents happen to be identical to [uservars]#/home/username/#.
+
+=== Recursive Directory Transfers
+When doing a recursive directory transfer, all symlinks in the directory tree are ignored. The one and only exception to this rule is the root of a directory transfer.
+
+Consider the previous example, [uservars]#/tmp/myhome -> /home/username/#. Doing a recursive directory transfer with a root directory of [uservars]#/tmp/myhome# will transfer all of the contents of [uservars]#/home/username/#, following the symlink [uservars]#/tmp/myhome#. However, a recursive directory transfer on [uservars]#/tmp# will skip [uservars]#/tmp/myhome#, not creating it as a directory, link, or file on the destination. Furthermore, this skipping behavior does not trigger any errors, faults, or warnings in the transfer history, as it is not considered an error condition.
+
+=== Single File Transfers
+Single file transfers follow the same basic rules that directory transfers do, in that they dereference symlinks to their destination files, and create the link on the destination as an ordinary file.
+
+If I have a link, [uservars]#/a/b/c -> /p/q/r# on my filesystem to an ordinary file, then transferring [uservars]#/a/b/c# to another endpoint will behave as though the contents of [uservars]#/p/q/r# were stored in [uservars]#/a/b/c#, not giving any special treatment to [uservars]#/a/b/c# or [uservars]#/p/q/r# on account of its status as a link.
+
+=== File and Directory Deletion
+Globus does not follow symlinks when doing file or directory deletions. However, following the semantics of a typical UNIX rm command, Globus will unlink symbolic links by deleting them during a directory or file removal.
+
+=== Symlinks and Path Restrictions
+Globus endpoint configuration supports restricting the parts of the filesystem that can be accessed via Globus. In Globus Connect Server and GridFTP this corresponds to the RestrictPaths and SharingRestrictPaths options. By default, these settings apply to non-symlinked files and directories, not allowing access when a symlink points outside of the explicitly allowed components of the filesystem.
+
+This behavior prevents abusive symlinks from breaking out of the path restrictions. Consider the case of an endpoint which only allows access to [uservars]#/p/q/r/#, and a symlink [uservars]#/p/q/r/root -> /#. If symlinks are followed irrespective of the path settings, [uservars]#/p/q/r/root/home/# would be accessible, even though [uservars]#/home/# is not included.
+
+If you trust users with access to an endpoint not to create this kind of exploitative symlink, you can override this behavior on Globus Connect Server endpoints with the +rp-follow-symlinks+ option to the GridFTP server. This option is not readily available with Globus Connect Personal installations.
+
+== How do I create a Globus endpoint on Amazon S3?
+Support for Amazon S3 endpoints is currently in *beta release*. We are encouraging users to create S3 endpoints but require that you contact us first so we can better understand your use case. This will help us refine the functionality before making it generally available. To get started, please complete link:https://www.globus.org/amazon-s3-endpoint-support-beta[this form].
+
+== How do I link directly to Globus application pages?
+Many of the pages in the Globus application can be linked with parameters that allow the page to open pre-configured for your needs.  When you link to a Globus application page, the application will ensure that the user is logged in to the Globus website (and prompt the user to authenticate if the user is not already logged in).  If you have a specific use case or application feature that isn’t covered in this document please let us know at support@globus.org.
+
+What follows is a list of pages that are configurable.
+
+=== Transfer Files (/xfer/StartTransfer)
+The Transfer Files page provides the following parameters to preselect the two sides of the Start Transfer page:
+
+- origin - represents is the endpoint and path for the left hand side of the page.
+- dest - represents is the endpoint and path for the left hand side of the page.
+
+Endpoints which are specified on the URL in this fashion will require activation if they are not already activated by the user.  Parameter values must be url encoded, especially ensuring that the "#" symbol is translated to "%23" for the path to work.    
+
+==== Some examples:
+
+* https://www.globus.org/xfer/StartTransfer?origin=go%23ep1
+** Sends the user to the Start Transfer page with the endpoint [uservars]#go#ep1# selected on the left side.
+* https://www.globus.org/xfer/StartTransfer?origin=go%23ep2&dest=go%23ep1
+** Sends the user to the Start Transfer page with the endpoint [uservars]#go#ep2# selected on the left side and [uservars]#go#ep2# on the right.
+* https://www.globus.org/xfer/StartTransfer?origin=go%23ep2/shareable
+** Sends the user to the Start Transfer page with the endpoint [uservars]#go#ep2# and the path [uservars]#/shareable# selected on the left side.
+
+=== Groups (/Groups)
+The groups page can be set up to automatically view a specific group by specifying the group id in the URL with the "id" parameter.  For example the "BIRN Community" group has an id of [uservars]#e34a302c-7f3b-11e1-aeb3-1231380dcd5a#, so the URL to automatically link to this group is "link:https://www.globus.org/Groups#id=e34a302c-7f3b-11e1-aeb3-1231380dcd5a[https://www.globus.org/Groups#id=e34a302c-7f3b-11e1-aeb3-1231380dcd5a]".  Groups with visibility policies that prevent visibility to non Globus members will display an error page if the user utilizing the link does not meet the visibility requirements.  
+
+The groups page also has a function for displaying the "administrative queue" which is a list of all the groups that have actions requiring the user’s attention.  This can be accessed by utilizing the +showQueue=true+ parameter.  It cannot be used in conjunction with the id at this time.  
+
+=== Activate Endpoints (/activate)
+The Activate Endpoints page provides the +ep+ parameter to specify one or more endpoints the user which will be prompted to activate if they are not already activated.  As with Start Transfer it is incredibly important to encode the endpoint names; for example [uservars]#go#ep1# should be sent as [uservars]#go%23ep1#
+
+==== Some examples:
+
+- https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken
+- https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken,xsede%23trestles
+- https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken,ucrcc%23midway
+ 
+=== SignUp (/SignUp)
+Often a site wants to encourage its users to create an account at Globus.org.  To help the process along, if you have a username and fullname preference, Globus will allow those fields to be prefilled by specifying them with the parameter names +username+ and +fullname+.  For example:
+
+- https://www.globus.org/SignUp?fullname=Alan+Turing&username=aturing
+
+Additionally, the page allows for the following parameters to be sent to ensure that the following steps are taken before the "Sign Up" process is complete:
+
+- +join_group+ - The value for this parameter is a group id (as seen in the Groups example above).  When this parameter is specified upon successful account creation a next step will appear requesting that the user join the specified group. As an example https://www.globus.org/SignUp?join_group=e34a302c-7f3b-11e1-aeb3-1231380dcd5a.  will prompt the user to join the BIRN Community before completing SignUp.  If the user is already a member of this group, no prompt will be shown.
+- +required_identity+ - The value for this parameter is the external identity provider url for an identity that the requester desires to have linked to the user’s account.  When this is specified, after a successful account creation the user will be prompted to sign in with the associated IDP, upon successful authentication with the identity the user will subsequently able to use this identity for signin purposes.  For example: https://www.globus.org/SignUp?required_identity=bluewaters.ncsa.illinois.edu will request a link to bluewaters, and https://www.globus.org/SignUp?required=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid will request a link to Google’s identity service.
+
+=== SignIn (/SignIn)
+The SignIn pages provides the following set of parameters that allow for minor customization of the SignIn experience:
+
+- +provider+ - This parameter when set properly will force the Sign In page to display the specified provider as the preselected identity provider.  Many universities wish to have their users loing to Globus with CI Logon, so the page can be set to preselect it using the URL https://www.globus.org/SignIn?provider=cilogon.org
+- +redirect+ - The redirect parameter allows the link to control where the Globus application will link to after successful sign in.  For example: https://www.globus.org/SignIn?redirect=/xfer/StartTransfer will send the user to the Transfer Files page.  This parameter can also be used to redirect back to an external site.  This can be a little jarring for users, but is useful for sites who utilize Globus as a group management and authentication portal.  It is important to escape the entire URL to ensure that the browser does not misunderstand the redirect request.  For example: https://www.globus.org/SignIn?redirect=https%3A%2F%2Fwww.google.com%2F%3Fq%3DGlobus will redirect the user to https://www.google.com/?q=Globus upon successful signin.
+
+Additionally, the SignIn page allows the same +join_group+ and +link_identity+ parameters as the Sign Up page to so as to ensure that a user has joined a group or linked a required identity. See the SignUp section for more details about the parameters +join_group+ and +required_identity+.
+
+=== OAuth (/OAuth)
+Globus can be used as an OAuth identity provider.  To set up Globus as an identity provider for your application, contact Globus support at support@globus.org.  Once your site is set up to communicate via OAuth the following parameters can be sent to the OAuth page:
+
+- +response_type+ - This should always be set to "code"
+- +client_id+ - This is a Globus username which must be whitelisted to be able to access OAuth data on behalf of the user.  (So if you are set up whitelisted with username [uservars]#joeuser# the client_id would be [uservars]#joeuser#.)
+- +state+ - This is a "pass-through" value which can be used on your side to validate the response was sent by your application.
+- +redirect_uri+ - Where Globus should redirect back to. NOTE: this uri must be whitelisted by Globus.
+
+For example:
+
+- https://www.globus.org/OAuth?redirect_uri=http://www.destination.com/oauth_response&client_id=myusername&state=AED823423EAE&response_type=code

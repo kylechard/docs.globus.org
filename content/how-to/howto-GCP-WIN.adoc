@@ -1,0 +1,89 @@
+= How To Install Globus Connect Personal for Windows
+
+Globus Connect Personal allows you to share and transfer files to and from your Windows laptop or desktop computer — even if it's behind a firewall. Follow the easy steps below to turn your personal computer into a full-fledged Globus endpoint.
+
+== Installation
+
+link:https://www.globus.org/xfer/ManageEndpoints?globus_connect=true[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
+
+NOTE: Globus Connect Personal is supported on Windows Vista, Windows 7, and Windows 8.
+
+. Enter a name for your endpoint. This name can be anything you choose, as long as you haven't previously created another endpoint with the same name.
+. Click "Generate Setup Key".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_01.png[]
+. Select the generated key with your mouse and copy it to the clipboard.
+. Click "for Windows" to download the Windows installer.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_02.png[]
+. Double click the downloaded file and follow the instructions to install Globus Connect Personal. If you're asked whether the program can make changes to your computer, please click "Yes".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_03.png[]
+. Confirm the directory where Globus Connect Personal will be installed and click "Install".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_04.png[]
+. When the installation completes, ensure that "Run Globus Connect Personal" is checked and click "Finish".
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_05.png[]
+. Since this is the first time you are running Globus Connect Personal, you will see the Setup window below where you are required to enter a setup key. Paste in the key you generated in step 2 above. The "OK" button will be enabled if the key is valid. Click "OK" to complete the installation. (If the "OK" button is not enabled, please ensure you have properly copied the entire key generated in step 2 above.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_06.png[]
+. You will be prompted to specify which directory may be accessed via Globus Connect Personal. For now, leave this as the default setting, which is your home directory. You can change this later, if necessary.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_07.png[]
++
+Globus Connect Personal will connect to Globus and await transfer commands. You will see the window below while Globus Connect Personal is running - you may minimize this to your task bar.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_install_08.png[]
+
+== Configuration
+
+You may configure Globus Connect Personal by right-clicking on the Globus Connect Personal icon in the taskbar and selecting "Options...". Configuration options are divided into four groups; the most important (and commonly used) are the "Access" and "General" options. The "Access" tab lists folders that will be accessible via Globus for file transfer and sharing. By default, the only folder listed is your home directory.
+
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_options_01.png[]
+
+You may add folders by clicking the "+" icon and selecting the folder you wish to make accessible. Note that, in most cases, you should not need to add folders other than the default home directory, unless you wish to share files in a different folder with other Globus users. To share a folder, add it to the accessible list and check the "Sharable" box. Note: you must be a Globus Plus user to share files and folders. If you are not a link:https://www.globus.org/plus[Globus Plus] user, click on the "Enable sharing" icon and follow the instructions.
+
+The "General" tab allows you to specify whether you want Globus Connect Personal to run when Windows starts and whether the software should automatically check for updates. We recommend that you leave the "Automatically check for updates" box checked, to ensure that you are running the most stable and secure version of Globus Connect Personal at all times.
+
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_options_02.png[]
+
+[NOTE]
+======
+_Drive Mapping_: Globus Connect Personal on Windows will translate a path beginning with /~/ into your home directory, e.g. C:\Users\Demodoc\. To access paths and drives outside of your home directory, use the syntax "/drive_letter/path", for example "/C/xinfo" lists the C:\xinfo directory.
+
+_Installing as non-administrator_: By default, Globus Connect Personal prompts to be installed in C:\Program Files. Regular users can not write to this folder. Instead, browse to a place you have write access to (e.g. your Desktop folder).
+======
+
+== Removing Globus Connect Personal
+
+Please note that if you remove Globus Connect Personal, you will not be able to transfer files to or from your personal computer using Globus, and any files you have shared with other Globus users will not be accessible to those users.
+
+To remove Globus Connect Personal:
+
+. On the Windows Start screen, press and hold or right-click the app tile and click Uninstall. You will be prompted to confirm that you want the uninstall program to run. Click "Yes" to continue.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_uninstall_01.png[]
+. Click "Uninstall" to confirm that you wish to remove Globus Connect Personal from your computer.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_uninstall_02.png[]
+. Click "Yes" to remove all Globus Connect Personal settings from your computer.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_uninstall_03.png[]
+. You will see the following confirmation when Globus Connect Personal has been removed from your computer.
++
+[role="img-responsive center-block"]
+image::images/150203_GCP_Windows_uninstall_04.png[]

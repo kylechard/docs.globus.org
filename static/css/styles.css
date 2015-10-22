@@ -93,14 +93,14 @@ dd {
   padding-top: 20px;
   border-top: solid 1px #eee;
 }
-.hasToc + #content .sect2 {
-  margin-top: 40px;
-}
-.hasToc + #content .sect3 {
+.hasToc + #content.numbered .sect2 {
   margin-top: 30px;
 }
-.hasToc + #content .sect4 {
-    margin-top: 20px;
+.hasToc + #content.numbered .sect3 {
+  margin-top: 20px;
+}
+.hasToc + #content.numbered .sect4 {
+    margin-top: 15px;
 }
 .numbered .sect2,
 .numbered .sect3 {
@@ -117,6 +117,9 @@ dd {
   font-size: 12px;
   color: #999;
   margin-top: 5px;
+}
+ul p {
+  margin-top: 10px;
 }
 
 /* ToC */
@@ -246,6 +249,9 @@ pre {
   background-color: #fdeecf;
   border-color: #E8CEAE;
 }
+.alert>p+p {
+  margin-top: 10px;
+}
 
 /* Blockquotes and Code */
 blockquote, .blockquote, code, .code  {
@@ -260,6 +266,7 @@ code, .uservars {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
+  white-space: nowrap;
 }
 .uservars {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
@@ -320,6 +327,13 @@ footer #legal {
 .home .page-content .col-sm-4 a:hover {
     text-decoration: none;
 }
+
+/* Page Type Specific */
+.api-page {}
+.cli-page {}
+.default-page {}
+.faq-page {}
+.site-docs-page {}
 
 /* Media Queries */
 @media (max-width: 991px) {
@@ -463,6 +477,9 @@ footer #legal {
 }
 .next-link a {
   font-weight: 100;
+}
+.go-border-light {
+  border: solid 1px #aaa;
 }
 /**********************************
  * GO-Icon

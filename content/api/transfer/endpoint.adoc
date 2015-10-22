@@ -27,11 +27,14 @@ asciidoc for each cell of type 'a'.
 
 == Overview
 
-Endpoints are bookmarks for a gridftp or other file transfer service server,
-with a convenient name. Full endpoint names (called the canonical name) are of
-the form USERNAME#NAME, where USERNAME is the user who created the endpoint,
-and NAME is the endpoint name. The API for manipulating endpoint definitions
-is located under +/endpoint/+.
+Endpoints are named entities that represent a gridftp or other file transfer
+service server. They have a globally unique id, and a not necessarily unique
+display name. The API for manipulating endpoint definitions is located under
++/endpoint/+.
+
+NOTE: Endpoints used to be identified by a globally unique username qualified
+name, called the canonical name. These names still exist but are deprecated
+and will be removed in the future.
 
 For operations that can be performed on an endpoint's filesystem, see
 link:../file_operations[File Operations].
@@ -39,6 +42,8 @@ link:../file_operations[File Operations].
 For delegating rights for managing various aspects of the endpoint's
 administration to other users, see link:../endpoint_roles[Endpoint
 Roles].
+
+For getting list of endpoints matching a name or other categories, see link:../endpoint_search[Endpoint Search].
 
 == Document Types
 
@@ -77,8 +82,8 @@ sub-documents.
 ------------------------
 {
   "DATA_TYPE": "endpoint", 
-  "canonical_name": "auser#myserver", 
-  "name": "myserver", 
+  "display_name": "myserver", 
+  "organization": "My Org",
   "username": "auser", 
   "description": "Example gridftp endpoint.", 
   "public": false, 
@@ -119,29 +124,80 @@ sub-documents.
 
 ==== Endpoint Fields
 
-Only +canonical_name+ is required on create.
-
 [cols="1,1,8",options="header"]
 |===================
 | Field Name     | JSON Type | Description
 | DATA_TYPE      | string
                  | Always has value "endpoint" to indicate this document type.
+| id             | string
+                 | 36 character unique identifier string for the endpoint.
+| display_name   | string
+                 | Friendly name for the endpoint, not unique.
+                   Unicode string, max 128 characters, no new lines (\r or \n).
+                   If not specified, will default to +canonical_name+, but
+                   that is deprecated and all new clients hould use id and
+                   +display_name+. Searchable.
+| organization   | string
+                 | Organization that runs the server(s) represented by the
+                   endpoint. Optional to preserve backward compatibility, but
+                   will eventually be required and all clients are encouraged
+                   to require users to specify it. Unicode string, max 1024
+                   characters, no new lines. Searchable.
+| department     | string
+                 | Department within organization that runs the server(s).
+                   Searchable. Optional. Unicode string, max 1024 characters,
+                   no new lines. Searchable.
+| keywords       | string
+                 | Comma separated list of atlernative names the endpoint
+                   is known as. Optional. Unicode string, max 1024 characters.
+                   Searchable.
 | name           | string
-                 | A friendly name for the endpoint. Limited to 128 characters,
-                   and must match the regex "^[0-9a-zA-Z][-0-9a-zA-Z_.]*$".
+                 | [DEPRECATED] Legacy friendly name for the endpoint. Limited
+                   to 128 characters, and must match the regex
+                   "^[0-9a-zA-Z][-0-9a-zA-Z_.]*$". If not specified, will
+                   default to the unique +id+.
 | canonical_name | string
-                 | The username qualified endpoint name, of the form
-                   USERNAME#ENDPOINTNAME. The username portion must match
-                   the current user.
+                 | [DEPRECATED] The username qualified endpoint name, of the
+                   form USERNAME#ENDPOINTNAME. The username portion must match
+                   the current user. Use +id+ instead in API requests, and
+                   use +display_name+ to dispaly to users. Will be searchable
+                   until it is removed.
 | username       | string
                  | The Globus username of the endpoint owner. If specified
                    it must match the current user on create, and can't be
                    updated.
 | description    | string
-                 | A description of the endpoint. Max length 256.
+                 | A description of the endpoint. Unicode string, max length
+                   4096 characters.
+                   Included in fulltext search.
+| contact_email  | string
+                 | Email address of support for the server(s) represented by
+                   the endpoint. Optional. ASCII string, must be a valid
+                   email address.
+                   TODO: are we going to validate this by sending email
+                   and having them follow a validation link etc?
+| contact_info   | string
+                 | Other non-email contact information for the endpoint, e.g.
+                   phone and mailing address. Optional. Unicode string, can
+                   contain new lines, max 4096 characters.
+| info_link      | string
+                 | Link to a web page with more information about the endpoint.
+                   ASCII string with an http or https URL. Basic checking is
+                   done to make sure this is a valid URL, but the administrator
+                   is responsible for running a website at this URL and
+                   verifying that it's accepting public connections.
 | public         | boolean
                  | True if the endpoint definition should be visible to other
                    Globus users.
+| subscription_id | string
+                 | If the endpoint is "managed", this will be a UUID string,
+                   otherwise it will be null. Currently this is set by Globus
+                   service administrators and can't be changed
+                   via the REST API. It will be silently ignored on update.
+                   Note that certain features like setting +network_use+ and
+                   in most cases hosting shared endpoints required a
+                   managed endpoint, so this field is useful for checking that
+                   state.
 | default_directory
                  | string
                  | Default directory to display when an endpoint is first
@@ -198,12 +254,22 @@ Only +canonical_name+ is required on create.
                    "null" when installation/setup is complete, the key can
                    only be used once. Also "null" for non personal endpoints.
 | host_endpoint  | string
-                 | Standard endpoint hosting the shared endpoint; "null" for
-                   non-shared endpoints.
+                 | [DEPRECATED] Standard endpoint hosting the shared
+                   endpoint; "null" for non-shared endpoints. Use
+                   +host_endpoint_id+ and +host_endpoint_display_name+ instead.
+| host_endpoint_id | string
+                 | Id of standard endpoint hosting the shared
+                   endpoint; "null" for non-shared endpoints.
+| host_endpoint_display_name | string
+                 | If the user has permission to view the host endpoint,
+                   this will be set to the +display_name+ of the host, or
+                   to the +canonical_name+ if the +display_name+ is not set.
+                   +null+ if the user does not have permission or if the
+                   endpoint is not a shared endpoint.
 | host_path      | string
                  | Root path being shared on the host endpoint; "null" for
                    non-shared endpoints. Only visible by the owner of the
-                   endpoint, "null" for other users even if the ACL gives
+                   endpoint, +null+ for other users even if the ACL gives
                    them access to the files on the endpoint.
 | s3_url         | string
                  | [ALPHA] For S3 endpoints, the url to the S3 bucket
@@ -223,6 +289,55 @@ Only +canonical_name+ is required on create.
                    endpoint
 | my_effective_roles | list of string
                  | [ALPHA] List of roles the current user has on the endpoint.
+| gcp_connected  | boolean
+                 | If +is_globus_connect+ is +true+, this indicates if the
+                   Globus Connect Personal (GCP) software is running and
+                   connected to Globus. +null+ for other endpoint types.
+| gcp_paused     | boolean
+                 | If +is_globus_connect+ is +true+, this indicates if the
+                   Globus Connect Personal (GCP) has been paused.
+                   +null+ for other endpoint types.
+| network_use    | string
+                a|This field may only be changed on managed endpoints. If a
+                  managed endpoint becomes unmanaged, the "normal" level will
+                  be automatically used. On shared endpoints, this field will
+                  be null. Allowed values for +network_use+ are:
+
+                   "normal"::
+                       The default setting. Uses an average level of
+                       concurrency and parallelism. The levels depend on the
+                       number of physical servers in the endpoint; use
+                       endpoint-details to display the exact values.
+                   "minimal"::
+                       Uses a minimal level of concurrency and parallelism.
+                   "aggressive"::
+                       Uses a high level of concurrency and parallelism.
+                   "custom"::
+                       Uses custom values of concurrency and parallelism set by
+                       the endpoint admin. When setting this level, you must
+                       also set the +max_concurrency+, +preferred_concurrency+,
+                       +max_parallelism+, and +preferred_parallelism+ options.
+                       (Note: the parallelism options must be set to null
+                       for S3 endpoints)
+| location       | string
+                 | "Automatic" or comma separated floats in the form
+                   "LATITUDE,LONGITUDE". +null+ for shared endpoints.
+| min_concurrency | integer
+                 | Can be +network_use+ "custom", otherwise will contain the
+                   preset value for the specified +network_use+. Will be
+                   +null+ for shared endpoints.
+| preferred_concurrency | integer
+                 | Can be +network_use+ "custom", otherwise will contain the
+                   preset value for the specified +network_use+. Will be
+                   +null+ for shared endpoints.
+| min_parallelism | integer
+                 | Can be +network_use+ "custom", otherwise will contain the
+                   preset value for the specified +network_use+. Will be
+                   +null+ for shared endpoints.
+| preferred_parallelism | integer
+                 | Can be +network_use+ "custom", otherwise will contain the
+                   preset value for the specified +network_use+. Will be
+                   +null+ for shared endpoints.
 |===================
 
 
@@ -273,14 +388,18 @@ Only +hostname+ is required on create.
                    scheme, hostname, and port, and is not used when creating
                    servers.
 | is_connected   | boolean
-                 | For globus connect personal endpoints, indicates if the
+                 | [DEPRECATED] Use +gcp_connected+ in the +endpoint+ document
+                   instead.
+                   For globus connect personal endpoints, indicates if the
                    endpoint is available for operations; always true
                    for other endpoints. When false, check the value of
                    is_paused to determine if the user requested a
                    temporary disconnect, or if globus connect is not
                    running or not connected to a network.
 | is_paused      | boolean
-                 | For globus connect endpoints, indicates if the
+                 | [DEPRECATED] Use +gcp_paused+ in the +endpoint+ document
+                   instead.
+                   For globus connect endpoints, indicates if the
                    endpoint has been paused by the user. Note that
                    when this is true, is_connected will always be
                    false, because the endpoint is not available for
@@ -294,13 +413,16 @@ Only +hostname+ is required on create.
 The shared endpoint document is used to create shared endpoints only. Once
 created, a shared endpoint is accessed and updated using the standard endpoint
 resources. Shared endpoints can be distinguished from other endpoints by
-checking that the +host_endpoint+ field is set to a non-null value.
+checking that the +host_endpoint+ field is set to a non-null value. +server+
+documents can't be added or removed from shared endpoints; the server used
+depends entirely on the +host_endpoint+.
 
 .Shared Endpoint Document Example
 -----------------------
 {
   "DATA_TYPE": "shared_endpoint",
-  "name": "myshare",
+  "display_name": "myshare",
+  "organization": "my org",
   "host_endpoint": "go#ep1",
   "host_path": "/~/",
   "description": "Share my home directory on go ep1"
@@ -317,18 +439,33 @@ checking that the +host_endpoint+ field is set to a non-null value.
 | DATA_TYPE      | string
                  | Always has value "shared_endpoint" to indicate this
                    document type.
-| name           | string
-                 | A friendly name for the endpoint. Limited to 128 characters,
-                   and must match the regex "^[0-9a-zA-Z][-0-9a-zA-Z_.]*$".
 | host_endpoint  | string
-                 | Standard endpoint hosting the shared endpoint.
+                 | Standard endpoint hosting the shared endpoint. Required.
 | host_path      | string
-                 | Path to share on the host endpoint. On the shared endpoint
-                   this path will appear to be the root of the endpoint, and
-                   nothing outside this path will be accessible. In Unix
-                   parlance, this is called a chroot or change root.
+                 | Path to share on the host endpoint. Required. On the shared
+                   endpoint this path will appear to be the root of the
+                   endpoint, and nothing outside this path will be accessible.
+                   In Unix parlance, this is called a chroot or change root.
+| display_name   | string
+                 | See +endpoint+ document.
+| name           | string
+                 | (DEPRECATED) See +name+ for the endpoint document.
 | description    | string
-                 | A description of the endpoint. Max length 256.
+                 | See +endpoint+ document.
+| organization   | string
+                 | See +endpoint+ document.
+| department     | string
+                 | See +endpoint+ document.
+| alternatives_names | string
+                 | See +endpoint+ document.
+| description    | string
+                 | See +endpoint+ document.
+| endpoint_info_link | string
+                 | See +endpoint+ document.
+| contact_email  | string
+                 | See +endpoint+ document.
+| contact_info   | string
+                 | See +endpoint+ document.
 |===================
 
 
@@ -340,13 +477,10 @@ delimited by <> in the descriptions.
 [cols="1,1,8",options="header"]
 |===================
 | Name              | Type  | Description
-| endpoint_name   | string
-| Canonical name of an endpoint, of the form user#endpoint. For backward
-  compatibility, a bare endpoint name is also supported and the user portion
-  is assumed to be the user accessing the API. This behavior is deprecated
-  and should not be relied upon - all new code should use a full
-  canonical endpoint name. Also note that the endpoint name must be percent
-  escaped; in particular +#+ is a reserved character.
+| endpoint_xid      | string
+| The +id+ field of the endpoint, or for backward compatibility the
+  +canonical_name+ of the endpoint. The latter is deprecated, and all clients
+  should be updated to use +id+.
 |===================
 
 
@@ -399,7 +533,7 @@ code hierarchy.
 | Code                  | HTTP Status  | Description
 
 | ClientError.NotFound  |404
-| If <endpoint_name> not found
+| If <endpoint_xid> not found
 
 | ClientError.PermissionDenied |403
 | If user does not have privileges to get, modify, or delete the specified
@@ -417,6 +551,8 @@ code hierarchy.
 == Operations
 
 === Get endpoint list
+
+NOTE: The endpoint_list API is deprecated, use endpoint_search instead.
 
 Get a paged list of all endpoints visible to the current user. Most fields are
 returned by default, but some more expensive fields are omitted by default (see
@@ -460,13 +596,6 @@ query parameter, and the value "ALL" can be used to fetch all fields.
                     "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
                 }
             ],
-            "ls_link": {
-                "href": "endpoint/auser%23myserver/ls?format=json",
-                "resource": "directory_listing",
-                "DATA_TYPE": "link",
-                "rel": "child",
-                "title": "child directory_listing"
-            },
             "expires_in": 0,
             "canonical_name": "auser#myserver",
             "sharing_target_endpoint": null,
@@ -507,10 +636,10 @@ is used.
 [cols="1,8",options="header"]
 |===================
 | Name     | Description
-| name     | Sort by the bare endpoint name.
+| name     | [DEPRECATED] Sort by the bare endpoint name.
 | canonical_name
-           | Sort by the username qualified canonical name. This is the
-             default.
+           | [DEPRECATED] Sort by the username qualified canonical name.
+             This is the default.
 | username | Sort by the owner of the endpoint.
 | public   | [DEPRECATED] Sort by whether the endpoint is public or private.
              In ascending order, "false" is sorted before "true".
@@ -521,15 +650,18 @@ is used.
 |===================
 
 
-=== Get endpoint by name
+=== Get endpoint by id
 
-Get a single endpoint by canonical name. All fields are included by default,
+Get a single endpoint by id (or +canonical_name+ for backward compatibility).
+All fields are included by default, including the +server+ subdocuments,
 but the +fields+ query parameter can be used to fetch only specific fields.
+Use 'server' in the fields list to include server subdocuments in a limited
+field list.
 
 [cols="h,5"]
 |============
 | URL
-| /endpoint/<endpoint_name>
+| /endpoint/<endpoint_xid>
 
 | Method
 | GET
@@ -541,13 +673,22 @@ but the +fields+ query parameter can be used to fetch only specific fields.
 === Create endpoint
 
 Create an endpoint. Which fields are required depends on the type of endpoint.
+Note that +name+ and +canonical_name+ are deprecated and supported only for
+backward compatibility; +display_name+ should be used instead or in addition
+to. If +canonical_name+ is not set, it will default to
+"USERNAME#ENDPOINT_UUID". At least one of them must be specified.
+
+The result will include an +id+ field containing the globally unique endpoint
+id, which should be used to further manipulate the endpoint document, and to
+perform transfers and other operations on the endpoint's filesystem.
 
 .Globus Connect Server endpoints
-Only +canonical_name+ is required, but at least one "server" sub document must
-be created for it to function.
+At least one of +display_name+ and +canonical_name+ is required, but at least
+one "server" sub document must be created for it to function.
 
 .Globus Connect Personal endpoints
-Requires +canonical_name+, and +is_globus_connect+ must be set to "true".
+Requires +display_name+ or +canonical_name+, and +is_globus_connect+ must be
+set to "true".
 Once created, the setup key can be obtained from the endpoint document
 in field +globus_connect_setup_key+.
 
@@ -567,13 +708,16 @@ using the CLI.
 | Method
 | POST
 
-| Request Body  | Partial endpoint document (see above).
+| Request Body  | Partial endpoint document.
 
-| Response Body | Result document (see above).
+| Response Body | Result document, including an +id+ field containing the
+                  system generated id of the new endpoint.
 |============
 
 
 === Create shared endpoint
+
+Create a shared endpoint.
 
 [cols="h,5"]
 |============
@@ -583,33 +727,37 @@ using the CLI.
 | Method
 | POST
 
-| Request Body  | +shared_endpoint+ document (see above).
+| Request Body  | +shared_endpoint+ document.
 
-| Response Body | Result document (see above).
+| Response Body | Result document, including an +id+ field containing the
+                  system generated id of the new endpoint.
 |============
 
 
-=== Update endpoint by name
+=== Update endpoint by id
 
 Update an endpoint. This can be done using a partial document by specifying
 only +DATA_TYPE+ and the fields to be updated, or doing a +GET+ on the
 endpoint, changing the appropriate fields, and doing a +PUT+ of the full
-document.
+document. Using a partial document is preferred.
 
-NOTE: Changing the +name+ or +canonical_name+ will cause the
-endpoint to be renamed, which will change it's resource address.
+NOTE: For backward compatibility, endpoint PUT can also be used to update
+the servers on the endpoint, in the form of total replacement of the list
+of subdocuments. Using this is deprecated, and the server APIs should be used
+instead. New code should not pass a "DATA" key at all when doing endpoint
+update.
 
 [cols="h,5"]
 |============
 | URL
-| /endpoint/<endpoint_name>
+| /endpoint/<endpoint_xid>
 
 | Method
 | PUT
 
-| Request Body  | Partial endpoint document (see above).
+| Request Body  | Partial endpoint document.
 
-| Response Body | Result document (see above).
+| Response Body | Result document.
 |============
 
 Which fields can be updated depends on the type of endpoint:
@@ -618,33 +766,46 @@ Which fields can be updated depends on the type of endpoint:
 |============
 | Type | Updatable fields
 | Globus Connect Server
-| +name+/+canonical_name+, +description+, +public+,
+| +display_name+, +description+, +public+,
   +default_directory+, +force_encryption+, +disable_verify+,
   +myproxy_server+, +myproxy_dn+, +oauth_server+,
+  +organization+, +department+, +alternative_names+,
+  +contact_email+, +contact_info+, +endpoint_info_link+,
+  DEPRECATED: +name+/+canonical_name+
 
 | Globus Connect Personal
-| +name+/+canonical_name+, +description+
+| +display_name+, +description+,
+  +organization+, +department+, +alternative_names+,
+  +contact_email+, +contact_info+, +endpoint_info_link+
+  DEPRECATED: +name+/+canonical_name+
 
 | Shared endpoint
-| +name+/+canonical_name+, +description+
+| +display_name+, +description+,
+  +organization+, +department+, +alternative_names+,
+  +contact_email+, +contact_info+, +endpoint_info_link+
+  DEPRECATED: +name+/+canonical_name+
 
 | S3 endpoint
-| +name+/+canonical_name+, +description+
+| +display_name+, +description+,
+  +organization+, +department+, +alternative_names+,
+  +contact_email+, +contact_info+, +endpoint_info_link+
+  DEPRECATED: +name+/+canonical_name+
 |============
 
 
-=== Delete endpoint by name
+=== Delete endpoint by id
 
-Delete an endpoint by canonical name. Only the owner can delete the endpoint.
-Note that all data associated with the endpoint, including roles and the ACL,
-will be deleted as well. If the hostname of the server has changed, the
-+server+ document(s) in the endpoint should be changed rather than deleting and
-recreating the endpoint with different servers.
+Delete an endpoint by id or canonical name (the latter is deprecated). Only the
+owner can delete the endpoint.  Note that all data associated with the
+endpoint, including roles and the ACL, will be deleted as well. If the hostname
+of the server has changed, the +server+ document(s) in the endpoint should be
+changed rather than deleting and recreating the endpoint with different
+servers.
 
 [cols="h,5"]
 |============
 | URL
-| /endpoint/<endpoint_name>
+| /endpoint/<endpoint_xid>
 
 | Method
 | DELETE
@@ -663,7 +824,7 @@ See also: link:../task#_limited_pause_rule_document[pause_rule_limited document]
 [cols="h,5"]
 |============
 | URL
-| /endpoint/<endpoint_name>/my_effective_pause_rule_list
+| /endpoint/<endpoint_xid>/my_effective_pause_rule_list
 
 | Method
 | GET
@@ -672,15 +833,105 @@ See also: link:../task#_limited_pause_rule_document[pause_rule_limited document]
 |============
 
 
-== Change History
+=== Get endpoint server list
 
-=== 4.3
+Get a list of all servers belonging to the specified endpoint. Note that
+this is the same as the server list included under the "DATA" key of the
+endpoint document.
 
-* Add <<_get_my_effective_endpoint_pause_rules,Get my effective endpoint pause rules>>.
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/server_list
 
-[[changes_42]]
-=== 4.2
+| Method
+| GET
 
-* endpoint document: add +my_effective_roles+, update
-description for +acl_editable+
-* new sub role resources: add link to endpoint role documentation
+| Response Body | List of server documents
+|============
+
+
+=== Get endpoint server by id
+
+Get a specific server belonging to the specified endpoint.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/server/<server_id>
+
+| Method
+| GET
+
+| Response Body | Server document (see above).
+|============
+
+
+=== Add endpoint server
+
+Add a server to the specified endpoint. The +hostname+ field is required,
++scheme+ and +port+ default to "gsiftp" and 2811, and +subject+ defaults
+to +null+. The derived fields and boolean status fields are ignored, and
+should not be included in the request body.
+
+Returns a result document containing the +id+ of the newly added server.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/server
+
+| Method
+| POST
+
+| Response Body | Server document without the id.
+
+| Response Body a|
+-------------------------------------------------------------------
+{
+    "DATA_TYPE": "endpoint_server_add_result",
+    "id": 123,
+    "code": "Created",
+    "message": "Server added to endpoint successfully",
+    "resource": "/endpoint/347a942d-3bf6-4d43-98e0-16e29cfb1d82/server",
+    "request_id": "ABCdef789"
+}
+-------------------------------------------------------------------
+
+|============
+
+
+=== Update endpoint server by id
+
+Update a server belonging to the specified endpoint. Include only the
+fields to be updated in the request body - any of +hostname+, +scheme+,
++port+, and +subject+ can be updated.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/server/<server_id>
+
+| Method
+| PUT
+
+| Request Body | Partial server document.
+
+| Response Body | Result document
+|============
+
+
+=== Delete endpoint server by id
+
+Delete a server belonging to the specified endpoint.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/server/<server_id>
+
+| Method
+| DELETE
+
+| Response Body | Result document
+|============
