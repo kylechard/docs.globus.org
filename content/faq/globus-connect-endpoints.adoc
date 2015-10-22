@@ -64,9 +64,9 @@ For more information on the ports used by Globus Connect Personal, [yellow-backg
 == How do I setup a Globus Connect Personal Endpoint Using the Command Line?
 If you prefer to use the command line interface (CLI) to setup a Globus Connect Personal endpoint, download the installer and run the application as described in one of the installation guides listed below.
 
-* link:../../how-to/howto-GCP-OSX/[Globus Connect Personal for Mac OS]
-* link:../../how-to/howto-GCP-WIN/[Globus Connect Personal for Windows]
-* link:../../how-to/howto-GCP-LINUX/[Globus Connect Personal for Linux]
+* link:../../how-to/globus-connect-personal-mac/[Globus Connect Personal for Mac OS]
+* link:../../how-to/globus-connect-personal-windows[Globus Connect Personal for Windows]
+* link:../../how-to/globus-connect-personal-linux/[Globus Connect Personal for Linux]
 
 After downloading and installing Globus Connect Personal on your personal computer follow the steps below to complete the setup:
 
