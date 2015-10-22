@@ -628,6 +628,38 @@ who are allowed to access the collection.
 == The Curation Workflow
 RUTH HASN'T UPDATED THIS SECTION YET
 
+.Navigate to Globus Groups
+[role="img-responsive center-block"]
+image::images/groups-tab.png[Navigate to Globus Groups]
+
+.Search for Data Publication Open Trial Curators
+[role="img-responsive center-block"]
+image::images/groups-open-trial-search.png[Search for Data Publication Open Trial Curators]
+
+.Join Data Publication Open Trial Curators
+[role="img-responsive center-block"]
+image::images/groups-open-trial-join.png[Join Data Publication Open Trial Curators]
+
+.Member of Data Publication Open Trial Curators
+[role="img-responsive center-block"]
+image::images/groups-open-trial-member.png[Member of Data Publication Open Trial Curators]
+
+.Claim Curation Task
+[role="img-responsive center-block"]
+image::images/curate-dashboard-claim.png[Claim Curation Task]
+
+.Preview Curation Task
+[role="img-responsive center-block"]
+image::images/curate-preview.png[Preview Curation Task]
+
+.Perform Curation Task
+[role="img-responsive center-block"]
+image::images/curate-perform.png[Perform Curation Task]
+
+.Dashboard with Curation Task Waiting to be Performed
+[role="img-responsive center-block"]
+image::images/curate-dashboard-waiting.png[Dashboard with Curation Task Waiting to be Performed]
+
 For users who have a curator role on one or more collections, the
 dashboard will inform them if there are any pending curation tasks to be
 performed.
