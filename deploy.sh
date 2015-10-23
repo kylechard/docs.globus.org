@@ -45,7 +45,7 @@ then
         exit 1
     fi
 
-    domain_name="docs.globus.org"
+    domain_name="github-pages.docs.globus.org"
     repo_dir='docs.globus.org'
     repo_url='git@github.com:globusonline/docs.globus.org.git'
 fi
