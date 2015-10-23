@@ -1,4 +1,4 @@
-= Managing Globus Groups for File Sharing
+= Managing Globus Groups
 :numbered:
 
 Globus provides capabilities to create and manage groups, which can then be used to share files and folders with a group of Globus users.

@@ -11,7 +11,7 @@ menus:
         link: '/how-to/'
       -
         title: 'Guides'
-        link: '#'
+        link: ''
         subsections:
             -
                 title: 'Command Line Interface'
@@ -22,12 +22,18 @@ menus:
             -
                 title: 'Management Console Guide'
                 link: '/management-console-guide/'
+            -
+                title: 'Quick Start Guides for Researcher Resources'
+                link: '/quick-start-guides-for-researcher-resources/'
+            -
+                title: 'Release Notes'
+                link: '/release-notes'
       -
         title: 'Toolkit'
         link: 'http://toolkit.globus.org/toolkit/'
       -
         title: 'Support'
-        link: '#'
+        link: ''
         subsections:
             -   title: 'FAQs'
                 link: '/faq/'
