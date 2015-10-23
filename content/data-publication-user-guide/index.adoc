@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.9
+:revnumber: 0.0.10
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -605,7 +605,7 @@ You will see the following screen:
 [role="img-responsive center-block"]
 image::images/submit-complete.png[Dataset Submission Complete]
 
-If the collection you submitted to requires a curation step
+If the collection you submitted to requires curation 
 prior to publication, your dataset submission will be 
 queued for review by a user with the curator role for the
 collection.
@@ -626,87 +626,156 @@ who are allowed to access the collection.
 
 [[the-curation-workflow]]
 == The Curation Workflow
-RUTH HASN'T UPDATED THIS SECTION YET
+
+=== Overview 
+The curation workflow, described in this section, is the 
+second stage of the publication process for those
+collections that are configured to require curation. 
+The curation workflow is used to review, and potentially
+update or reject, a dataset submission prior to publication.
+
+Curation for a given collection is performed by a group of 
+users identified by the collection administrator.
+
+=== Become a Curator for the Curated Trial Collection
+
+Special provisions have been made to allow any Globus
+user to join the group of curators for the 
+"Curated Trial Collection" (the collection used
+for demonstration purposes in this guide).
+If you submitted a dataset to the "Curated Trial
+Collection", and would like to try out the curation 
+steps for your dataset, follow the 
+instructions in this section to become a curator.
+
+First, select the `Groups` button on the navigation bar
+to move to the Globus Groups page.
 
 .Navigate to Globus Groups
 [role="img-responsive center-block"]
 image::images/groups-tab.png[Navigate to Globus Groups]
 
+On the Globus Groups page, shown below, raise 
+the "Search" tab on the left side of the page, and enter
+"data publication open trial" in the search box
+to find the group you need to join. 
+The group you are looking for is 
+_Data Publication Open Trial Curators_.
+
 .Search for Data Publication Open Trial Curators
 [role="img-responsive center-block"]
 image::images/groups-open-trial-search.png[Search for Data Publication Open Trial Curators]
+
+Click on the _Data Publication Open Trial Curators_ name
+when it is displayed in the search 
+panel to see a description of the group:
 
 .Join Data Publication Open Trial Curators
 [role="img-responsive center-block"]
 image::images/groups-open-trial-join.png[Join Data Publication Open Trial Curators]
 
+Click the `Join Group` button to add yourself to the group. 
+You should see confirmation that you are a member of 
+the group. 
+The "My Groups" tab on the left side of the Globus Groups 
+page should list _Data Publication Open Trial Curators_
+(you may need to refresh):
+
 .Member of Data Publication Open Trial Curators
 [role="img-responsive center-block"]
 image::images/groups-open-trial-member.png[Member of Data Publication Open Trial Curators]
+
+At this point, you are finished with the Globus Groups page 
+and can return to the
+link:{trial_publish_url}[trial Globus data publication service].
+
+=== Claim Curation Task
+
+If you have a curator role for one or more collections, the
+dashboard will inform you if there are any pending curation 
+tasks waiting to be claimed.
 
 .Claim Curation Task
 [role="img-responsive center-block"]
 image::images/curate-dashboard-claim.png[Claim Curation Task]
 
+In the figure above, there are two tasks to be claimed--both
+in "Curated Trial Collection << Open Trial".
+As a courtesy for those working in the "Curated Trial Collection",
+please curate the datasets you submit and not those submitted
+by others.
+Normally you would not have the option of curating your own
+datasets.
+
+Click the `Claim` button for the dataset you want to curate.
+
+=== Preview Curation Task
+
+After you claim a curation task, the Preview Task page will 
+open.
+It displays more information about the dataset submission 
+and provide the option of performing the
+curation (`Accept Task`),
+or deciding not to claim the task after all (`Cancel`).
+The location of the dataset is shown, but it
+cannot be accessed until the task has been accepted.
+
 .Preview Curation Task
 [role="img-responsive center-block"]
 image::images/curate-preview.png[Preview Curation Task]
+
+=== Perform Curation Task
+
+If you choose `Accept Task` on the Preview Task page,
+the Perform Task page is displayed:
 
 .Perform Curation Task
 [role="img-responsive center-block"]
 image::images/curate-perform.png[Perform Curation Task]
 
+At this point, the location of the dataset in 
+the "Endpoint and path to dataset" area of the screen 
+is a link that will open the Globus Transfer Files page, 
+giving you access to the data files that are part of the
+submitted dataset.
+Depending on how curation is configured for the collection, 
+the curation operations will be 
+`Approve`, `Reject`, and 
+possibly `Edit Metadata`. 
+
+As a curator, you should inspect the metadata presented on this
+page and use the location link to examine the data files. 
+For collections that allow curators to edit metadata, 
+selecting the "Edit Metadata" link will take you 
+to the same workflow that was used during dataset submission. 
+In some cases, the metadata entry form will contain additional 
+fields that were not presented to the dataset submitter. 
+After completing the workflow, you will be returned to the
+Perform Task page.
+
+RUTH STOPPED HERE
+
+If you `Approve` the dataset submission, a 
+link:#glossary-pid[persistent identifier] will be assigned to it,
+, and final information is presented displaying the
+identifier which will link to the summary page for the item now stored
+in the collection. 
+The user who submitted the dataset will be notified by email that
+the dataset has been published in the collection.
+
+If you reject the submission, you will be prompted to enter
+descriptive text providing feedback to the user who submitted
+the dataset. 
+This text will be included in an email to the user informing them
+that their dataset submission was rejected. 
+The rejected submission will then appear on the user's 
+dashboard where they can re-open it to update and re-submit
+or remove it.
+
 .Dashboard with Curation Task Waiting to be Performed
 [role="img-responsive center-block"]
 image::images/curate-dashboard-waiting.png[Dashboard with Curation Task Waiting to be Performed]
 
-For users who have a curator role on one or more collections, the
-dashboard will inform them if there are any pending curation tasks to be
-performed.
-
-image:images/Dashboard%20Tasks%20in%20Pool.png[Dashboard Display of
-Pending Curation Tasks]
-
-Selecting "Take Task" will display more information about the
-submission to be curated and provide the option of performing the
-curation ("Accept This Task") or choosing not to perform the curation
-at this time ("Cancel"). The location of the data is shown, but it
-cannot be accessed until the task has been accepted.
-
-image:images/Preview%20Curation%20Task.png[Previewing a Curation Task]
-
-Upon selecting "Accept this Task" the curating user will be presented
-with a similar screen with options for performing curation activities.
-At this point, the curator will be given access to the endpoint and
-folder where the data is stored so the link in the "Files in This
-Item" section will open the Globus Transfer interface the same as
-during the link:#assembling-the-data[Assemble] step of the workflow.
-
-image:images/Perform%20Curation.png[Performing a Curation Task]
-
-Depending on the way curation is configured for the collection, the
-curation operations will be "Approve", "Reject" and potentially "Edit
-Metadata." The curator should inspect the metadata presented on this
-page and use the link to examine the data. For collections that are
-configured to allow the curator to edit metadata, selecting the "Edit
-Metadata" link will enter the curator in to the same workflow that was
-used during submission. In some cases, the form presented for entering
-metadata may contain additional fields that were not presented to the
-submitting user. Upon completing the workflow, the curator will be
-returned to the "Perform Task" page at which point final approval or
-rejection can be selected. If the curator approves the submission, a
-link:#glossary-pid[persistent identifier] will be assigned to the
-submission, and final information is presented displaying the
-identifier which will link to the summary page for the item now stored
-in the collection. The submitting user will be notified by email that
-the submission has entered the collection.
-
-If the curator rejects the submission, they will be prompted to enter
-descriptive text providing feedback to the submitting user. This text
-will be included in an email to the submitting user informing them
-that the submission was rejected. The submission will then appear on
-the user's dashboard where they can re-open it to update and re-submit
-or remove it.
 
 [[dataset-landing-page]]
 == Dataset Landing Page
