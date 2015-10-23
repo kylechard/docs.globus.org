@@ -80,7 +80,7 @@ groups to be created are as follows:
 * Readers: The group of users who will be able to view and search for
   entries in the collection.
 * Curators: The group of users responsible for performing the
-  link:https://dev.globus.org/data-publication-users-guide#the-curation-workflow[curation workflow] for the collection.
+  link:{publish_user_guide_url}#the-curation-workflow[curation workflow] for the collection.
 
 For any collection that does not wish to restrict access to any of
 these capabilities, it is not necessary to create the corresponding
