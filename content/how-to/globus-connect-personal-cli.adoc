@@ -2,7 +2,7 @@
 
 You may install Globus Connect Personal for Linux using only the command line. Before getting started ensure that you have a valid SSH key associated with your Globus account. If you do not have an SSH key, link:../../faq/faq-SSHkey[see this guide for instructions on generating one]. Once you have an SSH key, follow the instructions here to associate the SSH key with your Globus account.
 
-NOTE: Instructions are also available for link:../howto-GCP-LINUX[installing a Globus Online Personal endpoint using your Web browser].
+NOTE: Instructions are also available for link:../globus-connect-personal-linux[installing a Globus Online Personal endpoint using your Web browser].
 
 == Installation
 . Download and unpack the Globus Connect Personal for Linux installer:

@@ -2,7 +2,7 @@
 
 Globus Connect Personal enables you to share and transfer files to and from your Linux laptop or desktop computer — even if it’s behind a firewall. Follow the easy steps below to turn your machine into a full-fledged Globus endpoint.
 
-NOTE: Instructions are also available for link:../howto-GCP-CLI[installing and running Globus Connect Personal using the command line].
+NOTE: Instructions are also available for link:../globus-connect-personal-cli[installing and running Globus Connect Personal using the command line].
 
 == Prerequisites
 - A Linux distribution with Tcl/Tk installed (if you do not have tcllib installed you can install and run Globus Connect Personal from the command line)

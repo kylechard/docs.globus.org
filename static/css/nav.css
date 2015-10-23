@@ -110,6 +110,28 @@ header.navbar-inverse .navbar-nav>li>.dropdown-menu {
     .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
         color: #ccc;
     }
+    header.navbar-inverse .navbar-nav>.active>a,
+    header.navbar-inverse .navbar-nav>.active>a:focus,
+    header.navbar-inverse .nav .active>a,
+    header.navbar-inverse .nav .active>a:hover,
+    header.navbar-inverse .nav .open>a,
+    header.navbar-inverse .nav .open>a:hover,
+    header.navbar-inverse .navbar-nav>.active>a:hover,
+    header.navbar-inverse .nav>li>a:hover,
+    header.navbar-inverse .nav li a.go-nav-item:hover,
+    header.navbar-inverse .nav li a.go-nav-item:focus,
+    header.navbar-inverse .navbar-toggle:hover,
+    header.navbar-inverse .navbar-nav>.open>a,
+    header.navbar-inverse .navbar-nav>.open>a:hover,
+    header.navbar-inverse .navbar-nav>.open>a:focus,
+    header.navbar-inverse .navbar-nav .open .dropdown-menu>.active>a,
+    header.navbar-inverse .navbar-nav .open .dropdown-menu>.active>a:hover,
+    header.navbar-inverse .navbar-nav .open .dropdown-menu>.active>a:focus{
+        background-color: #468cc8;
+    }
+    header.navbar-inverse .navbar-nav>li a {
+        border-radius: 4px;
+    }
 }
 @media (min-width: 992px) {
     .page-header .nav {

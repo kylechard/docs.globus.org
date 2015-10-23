@@ -1,7 +1,8 @@
 = How To
 
-- link:signup-transfer[Sign Up and Transfer Files with Globus]
-- link:howto-GCP-OSX[Install, Configure, & Remove Globus Connect Personal for Mac OS X]
-- link:howto-GCP-WIN[Install, Configure, & Remove Globus Connect Personal for Windows]
-- link:howto-GCP-LINUX[Install & Run Globus Connect Personal for Linux]
-- link:howto-GCP-CLI[Install Globus Connect Personal Using the Command Line]
+- link:get-started[Sign Up and Transfer Files with Globus]
+- link:globus-connect-personal-mac[Install, Configure, & Remove Globus Connect Personal for Mac OS X]
+- link:globus-connect-personal-windows[Install, Configure, & Remove Globus Connect Personal for Windows]
+- link:globus-connect-personal-linux[Install & Run Globus Connect Personal for Linux]
+- link:globus-connect-personal-cli[Install Globus Connect Personal Using the Command Line]
+- link:share-files[Share Data Using Globus]
