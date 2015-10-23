@@ -753,24 +753,21 @@ fields that were not presented to the dataset submitter.
 After completing the workflow, you will be returned to the
 Perform Task page.
 
-RUTH STOPPED HERE
+// RUTH STOPPED HERE
 
-If you `Approve` the dataset submission, a 
-link:#glossary-pid[persistent identifier] will be assigned to it,
-, and final information is presented displaying the
-identifier which will link to the summary page for the item now stored
-in the collection. 
-The user who submitted the dataset will be notified by email that
-the dataset has been published in the collection.
+If you `Approve` the dataset submission, a
+link:#glossary-pid[persistent identifier] will be assigned which links
+to the landing page for the dataset. This identifier is displayed on
+the confirmation page shown after approval. Additionally, the user who
+submitted the dataset will be notified by email that the dataset has
+been added to the collection.
 
 If you reject the submission, you will be prompted to enter
-descriptive text providing feedback to the user who submitted
-the dataset. 
-This text will be included in an email to the user informing them
-that their dataset submission was rejected. 
-The rejected submission will then appear on the user's 
-dashboard where they can re-open it to update and re-submit
-or remove it.
+descriptive text providing feedback to the user who submitted the
+dataset.  This text will be included in an email to the user informing
+them that their dataset submission was rejected.  The rejected
+submission will then appear on the user's dashboard where they can
+re-open it to update and re-submit or remove it.
 
 .Dashboard with Curation Task Waiting to be Performed
 [role="img-responsive center-block"]
@@ -778,9 +775,10 @@ image::images/curate-dashboard-waiting.png[Dashboard with Curation Task Waiting 
 
 
 [[dataset-landing-page]]
-== Dataset Landing Page
+// Jim commented out for decent formatting right now
+// == Dataset Landing Page
 
-RUTH WILL ADD THIS SECTION
+// RUTH WILL ADD THIS SECTION
 
 
 :numbered!:

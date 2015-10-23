@@ -23,11 +23,11 @@ menus:
                 title: 'Management Console Guide'
                 link: '/management-console-guide/'
             -
-                title: 'Data Publication Admin Guide'
-                link: '/data-publication-admin-guide/'
-            -
                 title: 'Data Publication User Guide'
                 link: '/data-publication-user-guide/'
+            -
+                title: 'Data Publication Admin Guide'
+                link: '/data-publication-admin-guide/'
       -
         title: 'Toolkit'
         link: 'http://toolkit.globus.org/toolkit/'
