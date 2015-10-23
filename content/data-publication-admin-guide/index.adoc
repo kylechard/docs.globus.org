@@ -19,7 +19,7 @@
 
 [doc-info]*Last Updated: {docdate}*
 
-[[about-this-document]]
+[float]
 === About This Document
 
 This document provides information on configuring Globus Data
@@ -32,7 +32,7 @@ link:{publish_user_guide_url}[User's Guide]
 provides the information they need.
 
 :numbered:
-
+'''
 toc::[]
 
 
