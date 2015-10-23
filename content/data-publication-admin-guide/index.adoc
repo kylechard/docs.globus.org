@@ -13,7 +13,7 @@
 :trial_publish_url: http://trial.publish.globus.org
 :trial_publish: trial.publish.globus.org
 :publish_admin_guide_url: http://dev.globus.org/data-publication-admin-guide
-:publish_user_guide_url: https://dev.globus.org/data-publication-users-guide
+:publish_user_guide_url: http://dev.globus.org/data-publication-users-guide
 :how_to_sign_up_url: http://www.globus.org/researchers/getting-started
 :sign_up_url: http://www.globus.org/SignUp
 
@@ -103,8 +103,8 @@ dashboard or by entering the community name in the search bar. When an
 administrator for the community accesses this page, additional options
 are presented on the right side of the page.
 
-image:images/CommunityAdminTools.png[Community Administrative
-Functions]
+[role="img-responsive center-block"]
+image::images/CommunityAdminTools.png[Community Administrative Functions]
 
 The "Configure..." button allows descriptive information about the
 community to be updated. Community configuration also allows Persistent
@@ -147,7 +147,8 @@ to the collection will be required to approve this license. The next
 field, "Distribution License," will be presented to users at the time
 they choose to access data stored in a dataset in the collection.
 
-image:images/CollectionMetadata.png[Collection Descriptive Information]
+[role="img-responsive center-block"]
+image::images/CollectionMetadata.png[Collection Descriptive Information]
 
 [[configuring-storage]]
 === Configuring Storage
@@ -163,7 +164,8 @@ If this path does not exist, it will be automatically created. The
 that directory creation works properly. If either of those operations
 fails, an error will be presented in this pane.
 
-image:images/StorageConfig.png[Storage Configuration]
+[role="img-responsive center-block"]
+image::images/StorageConfig.png[Storage Configuration]
 
 [[configuring-persistent-identifiers]]
 === Configuring Persistent Identifiers
@@ -180,8 +182,8 @@ be easily re-configured to re-use a previous configuration should
 changes be needed during the use of the collection. PID configurations
 are managed through the "Identifier Settings" pane.
 
-image:images/PIDSelectEZID.png[Selecting or Creating a Persistent
-Identifier Configuration]
+[role="img-responsive center-block"]
+image::images/PIDSelectEZID.png[Selecting or Creating a Persistent Identifier Configuration]
 
 The "Configuration" dropdown list provides options for selecting any
 previously configured PID settings or for creating a new configuration
@@ -220,7 +222,8 @@ delegated credentials which can be entered here allowing the Globus
 Data Publication service to use EZID to create DOIs on behalf of the
 organization owning the collection.
 
-image:images/PIDEZIDConfig.png[Configuring the EZID Service]
+[role="img-responsive center-block"]
+image::images/PIDEZIDConfig.png[Configuring the EZID Service]
 
 After entering a name for the configuration, the username and password
 credentials for the EZID account to be used by Globus Data Publication
@@ -260,7 +263,8 @@ wishes to use Handle but cannot operate a handle server can
 mailto:support@globus.org[contact us] to discuss options for using the
 Globus-operated handle server to host their prefix.
 
-image:images/PIDHandleConfig.png[Configuring the Handle System]
+[role="img-responsive center-block"]
+image::images/PIDHandleConfig.png[Configuring the Handle System]
 
 After providing a name for the newly created configuration, the first
 field to be filled in is the prefix assigned by CNRI during
@@ -364,7 +368,8 @@ NOTE: If any form of curation is selected, a corresponding group must
 be selected as described in the
 link:#assigning-groups-to-roles[following section].
 
-image:images/WorkflowConfig.png[Configuring Forms and Workflows]
+[role="img-responsive center-block"]
+image::images/WorkflowConfig.png[Configuring Forms and Workflows]
 
 [[assigning-groups-to-roles]]
 === Assigning Groups to Roles
@@ -389,7 +394,8 @@ be a curation type and corresponding group selected. It is not
 possible to configure a collection which allows arbitrary users to
 make submissions without curation being performed.
 
-image:images/CollectionPermissionConfig.png[Group Assignment]
+[role="img-responsive center-block"]
+image::images/CollectionPermissionConfig.png[Group Assignment]
 
 When Access to Data is set to all users, then any web user, regardless
 of whether they are logged in to the service will be allowed to view the
