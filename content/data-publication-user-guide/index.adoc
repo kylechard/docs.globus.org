@@ -769,9 +769,9 @@ them that their dataset submission was rejected.  The rejected
 submission will then appear on the user's dashboard where they can
 re-open it to update and re-submit or remove it.
 
-.Dashboard with Curation Task Waiting to be Performed
-[role="img-responsive center-block"]
-image::images/curate-dashboard-waiting.png[Dashboard with Curation Task Waiting to be Performed]
+// .Dashboard with Curation Task Waiting to be Performed
+// [role="img-responsive center-block"]
+// image::images/curate-dashboard-waiting.png[Dashboard with Curation Task Waiting to be Performed]
 
 
 [[dataset-landing-page]]
