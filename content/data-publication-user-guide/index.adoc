@@ -56,7 +56,7 @@ A link:#glossary-pid[_persistent identifier (PID)_]
 is generated for every landing page, facilitating citation. 
 Globus provides search and browse capabilities, allowing
 authorized users to discover and retrieve datasets of interest.
-Globus retains a copy of the metadata to facilite the discovery 
+Globus retains a copy of the metadata to facilitate the discovery 
 process; another copy is kept with the data on the owner's storage.
 
 === Production and Trial Services
@@ -162,7 +162,7 @@ and credentials) before displaying the data publication dashboard.
 [TIP]
 =====
 On occasion, you may notice that your Globus ID is displayed 
-in the navagation bar (indicating that you are logged in), but
+in the navigation bar (indicating that you are logged in), but
 when you interact with the service you are asked to log in again.
 This typically occurs when you have been inactive for awhile and
 your session has expired. 
@@ -275,7 +275,7 @@ first stage of the publication process.
 The submission workflow is used to create
 a new dataset and submit it for publication in a collection.
 
-Collection adminstrators have the ability to customize the 
+Collection administrators have the ability to customize the 
 submission workflow, specifying which steps to include 
 and the order in which the steps are performed.
 Submission workflow steps can include _License_, _Describe_, 
@@ -306,10 +306,10 @@ submission workflow:
 image::images/submit-workflow-progress-bar.png[Submission Workflow Progress Bar]
 
 In the progress bar, completed steps are colored light blue, 
-the current step is highlighed in dark blue,
+the current step is highlighted in dark blue,
 and upcoming steps are shown in grey.
 You can return directly to any completed step to
-review or revise your entries by clickling on the (light blue) 
+review or revise your entries by clicking on the (light blue) 
 step name in the progress bar.
 
 Many of the submission workflow pages contain navigation buttons 
@@ -501,7 +501,7 @@ Use the left pane to navigate to the Globus endpoint and path
 that has the data files you want to include in your dataset.
 Transfers are initiated using the right-pointing arrow.
 
-You can use the transfer inteface to initiate multiple transfers,
+You can use the transfer interface to initiate multiple transfers,
 starting from various endpoints or paths, to complete 
 assembly of your dataset. 
 The files can be of any type and size, allowing you to assemble
@@ -551,7 +551,7 @@ updated status of the transfers for the dataset submission.
 ====
 
 Before continuing past the assemble step of the workflow,
-make sure that all of your transfers compeleted successfully.
+make sure that all of your transfers completed successfully.
 You can re-open the Globus transfer interface (via the
 `Assemble Dataset` button) to transfer additional files
 or to confirm the contents of the dataset submission's
@@ -826,7 +826,7 @@ RUTH WILL ADD THIS SECTION
 [[glossary-dataset]]Dataset::
   A dataset is composed of data file(s) and metadata that are 
   submitted and published as a unit
-  in the Globus data publiction service.
+  in the Globus data publication service.
   The data files may be of arbitrary size and format, allowing 
   virtually any type of data (e.g., text files, formatted documents, 
   images, source code, executables, raw data from sensors, 
