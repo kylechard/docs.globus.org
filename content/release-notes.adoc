@@ -13,37 +13,37 @@
 - Added support for setting additional fields on the endpoint, such as display name, organization etc
 
 === Deprecated Features
-- The endpoint-list command is deprecated and the functionality is now provided using endpoint-search and endpoint-details command.
-- Option -p (to add and remove server) on endpoint-add and endpoint-remove is deprecated.
+- The +endpoint-list+ command is deprecated and the functionality is now provided using +endpoint-search+ and +endpoint-details+ command.
+- Option +-p+ (to add and remove server) on endpoint-add and endpoint-remove is deprecated.
 +
 NOTE: Two new commands server-add and server-remove provide this functionality
 +
-- The scp command is deprecated
+- The +scp+ command is deprecated
 +
 NOTE: Users can use transfer command instead
 +
-- Use of SCP like URLs (endpoint:path) is deprecated with commands ls, mkdir, rm, and rename
+- Use of SCP like URLs (endpoint:path) is deprecated with commands +ls+, +mkdir+, +rm+, and +rename+
 +
-NOTE: Users can continue to use endpoint/path option instead
+NOTE: Users can continue to use +endpoint/path+ option instead
 +
-- The endpoint-rename command is deprecated
+- The +endpoint-rename+ command is deprecated
 +
-NOTE: Users can use endpoint-modify command for that functionality
+NOTE: Users can use +endpoint-modify+ command for that functionality
 +
-- The versions command, and using the v= syntax to specify a version is deprecated. For any backwards incompatible changes, an alternative will be provided allowing users to make the transition, before the change is made in production.
+- The versions command, and using the +v=+ syntax to specify a version is deprecated. For any backwards incompatible changes, an alternative will be provided allowing users to make the transition, before the change is made in production.
 
 === Improvements
 - Source and destination endpoint names at the time of task submission is associated with the task and always visible to the user submitting the task
-- Support for GSI SSH activation (-g option) removed from all commands other than the endpoint-activation command. Users should use the endpoint-activation command explicitly before using other commands.
-- Pattern support removed from following commands: endpoint-activate, endpoint-deactivate, endpoint-remove, endpoint-modify. Users should run the command for each endpoint.
-- Deprecated --port-range option in endpoint-modify was removed.
-- Batch input for transfer and delete command has an input size limit of 1GB.
+- Support for GSI SSH activation (+-g+ option) removed from all commands other than the endpoint-activation command. Users should use the endpoint-activation command explicitly before using other commands.
+- Pattern support removed from following commands: +endpoint-activate+, +endpoint-deactivate+, +endpoint-remove+, +endpoint-modify+. Users should run the command for each endpoint.
+- Deprecated +--port-range+ option in +endpoint-modify+ was removed.
+- Batch input for +transfer+ and +delete+ command has an input size limit of 1GB.
 - The transfer per-file verify-size option is no longer supported.
 - Label field can be modified only on tasks that have not been completed.
 
 == August 2015
 === Bugfixes
-A completed task allowed its label to be updated
+- A completed task allowed its label to be updated
 
 == July 2015
 === Features
@@ -61,7 +61,7 @@ A completed task allowed its label to be updated
 
 === Improvements
 - GOAuth page, include any client passed state parameters in the redirect_uri
-- Manage Shared Endpoint page, added “Manage Roles” button
+- Manage Shared Endpoint page, added "Manage Roles" button
 
 === Bugfixes
 - User and Group search failed on apostrophes and quotation marks
@@ -69,670 +69,674 @@ A completed task allowed its label to be updated
 == April 2015
 === Features
 - Admins with Management Console access can now cancel transfers on Managed Endpoints
-- Globus 3-legged OAuth now allows user to “remember” the choice to trust a third-party
+- Globus 3-legged OAuth now allows user to "remember" the choice to trust a third-party
 - New Access Manager role for setting ACLs on shared endpoints
 
 === Improvements
-Flight Control page now displays information about the new Management Console
-New instructions for joining groups
-Transfer summary statistics are no longer displayed on the Dashboard page
+- Flight Control page now displays information about the new Management Console
+- New instructions for joining groups
+- Transfer summary statistics are no longer displayed on the Dashboard page
 
 === Bugfixes
-Transfer label was not editable on Activity page
+- Transfer label was not editable on Activity page
 
 == March 2015
 === Bugfixes
-Transfer Files page failed to render properly on Internet Explorer 9
+- Transfer Files page failed to render properly on Internet Explorer 9
 
 == February 2015
 === Bugfixes
-Management Console, reported tasks between shared endpoint names were not aggregated into activity graph
-Management Console, tasks between shared endpoints that are aggregated within the counts for host endpoints were not appearing in the tooltip
+- Management Console, reported tasks between shared endpoint names were not aggregated into activity graph
+- Management Console, tasks between shared endpoints that are aggregated within the counts for host endpoints were not appearing in the tooltip
 
 == January 2015
 === Features
-CLI `transfer` command has new `--perf-udt` option
-Authorization now supports Google’s OpenID 2.0
-New Transfer type to rename files and folders without “moving” them
-“SITE TASKID <uuid>” is now sent to GridFTP servers for logging and debugging purposes
+- CLI +transfer+ command has new +--perf-udt+ option
+- Authorization now supports link:https://developers.google.com/accounts/docs/OpenID#shutdown-timetable[Google's OpenID 2.0]
+- New Transfer type to rename files and folders without "moving" them
+- "SITE TASKID <uuid>" is now sent to GridFTP servers for logging and debugging purposes
 
 === Improvements
-Authorization is more reliable in the presence of a misbehaving OAuth client
-Transfer notification emails now come from “Globus Notification <no-reply@globus.org>”
-Updates to website styling and mobile rendering
+- Authorization is more reliable in the presence of a misbehaving OAuth client
+- Transfer notification emails now come from "Globus Notification <no-reply@globus.org>"
+- Updates to website styling and mobile rendering
 
 === Bugfixes
-Accepting a group invite from the dropdown menu did nothing
-After accepting a request to join a group, member role and status display was wrong
-Details for pending memberships were not visible under `Groups > My Admin Queue`
-Error message for disallowed options on Transfer Files page was repeating
-File listing showed fractional bytes on Transfer Files page
-`Manage Identities > add linked identity` displayed "Loading Credentials..." even with no existing identities
-Non-profit status was not sticky on the “Update Profile” page
-Plus users were unable to join a Provider group when there were requirements
-Transfer API `task_list` max_limit of 0 interpreted as “no limit”
-UI element closed prematurely and prevented endpoint renaming on Manage Endpoints page
-Username was getting truncated in display on some pages
-Users awaiting group membership approval could have had an approval message on the Groups page
+- Accepting a group invite from the dropdown menu did nothing
+- After accepting a request to join a group, member role and status display was wrong
+- Details for pending memberships were not visible under "Groups > My Admin Queue"
+- Error message for disallowed options on Transfer Files page was repeating
+- File listing showed fractional bytes on Transfer Files page
+- "Manage Identities > add linked identity" displayed "Loading Credentials..." even with no existing identities
+- Non-profit status was not sticky on the "Update Profile" page
+- Plus users were unable to join a Provider group when there were requirements
+- Transfer API "task_list" max_limit of 0 interpreted as "no limit"
+- UI element closed prematurely and prevented endpoint renaming on Manage Endpoints page
+- Username was getting truncated in display on some pages
+- Users awaiting group membership approval could have had an approval message on the Groups page
 
 == December 2014
 === Features
-Allow forcing UDT to test small file performance on Globus Connect Personal downloads
-New Management Console system for administrators to monitor their managed endpoints
+- Allow forcing UDT to test small file performance on Globus Connect Personal downloads
+- New link:https://www.globus.org/blog/globus-management-console[Management Console] system for administrators to monitor their managed endpoints
 
 === Improvements
-Replace all “Cancel” links with buttons sitewide
-Sign Up and Update User pages now require Organization field
-Transfer Files page shows effective speed and bytes transferred
-Transfer Files page has improved messages in the “delete” confirmation box
-Upgrades to several backend databases and components to improve performance and reliability
+- Replace all "Cancel" links with buttons sitewide
+- Sign Up and Update User pages now require Organization field
+- Transfer Files page shows effective speed and bytes transferred
+- Transfer Files page has improved messages in the "delete" confirmation box
+- Upgrades to several backend databases and components to improve performance and reliability
 
 === Bugfixes
-Groups page, attempting to retrieve Invited Member details from pop-up box did not complete
-Manage Endpoints page, expanding “Servers” list only expanded for one endpoint
-Manage Endpoints page, screen for creating Globus Connect Personal endpoint did not close after creation
-Removed option to set a Shared Endpoint to be Private
-Sign In page, fixed issue with “forgot password” link placement
-Transfer Files options did not revert to defaults after page refresh on Windows 8.1 when using Google Chrome or IE 11
+- Groups page, attempting to retrieve Invited Member details from pop-up box did not complete
+- Manage Endpoints page, expanding "Servers" list only expanded for one endpoint
+- Manage Endpoints page, screen for creating Globus Connect Personal endpoint did not close after creation
+- Removed option to set a Shared Endpoint to be Private
+- Sign In page, fixed issue with "forgot password" link placement
+- Transfer Files options did not revert to defaults after page refresh on Windows 8.1 when using Google Chrome or IE 11
 
 == November 2014
 === Improvements
-Group `Settings > Membership Requirements` has a better field ordering
-Performance improvements for transfers to Amazon S3 endpoints (see our blog post)
-Transfer Files page displays endpoint and path names immediately, before the activation step
-Transfer Files page has improved reliability for timeouts when displaying directories with 1000s of files
-Transfer Files page has simpler messages when endpoint authentication is required
-Transfer Files page is more efficient when displaying directories with 1000s of files
+- Group "Settings > Membership Requirements" has a better field ordering
+- Performance improvements for transfers to Amazon S3 endpoints (see our link:https://www.globus.org/blog/big-improvements-globus-performance-amazon-s3-endpoints[blog post])
+- Transfer Files page displays endpoint and path names immediately, before the activation step
+- Transfer Files page has improved reliability for timeouts when displaying directories with 1000s of files
+- Transfer Files page has simpler messages when endpoint authentication is required
+- Transfer Files page is more efficient when displaying directories with 1000s of files
 
 === Bugfixes
-Activity page, activity times were not updating
-Activity page, new transfer activity was not going to the top of the list
-Activity page, icons were not showing
-Closing Safari caused a log out from Globus
-Creating Globus Connect Personal Endpoint allowed submission even if the endpoint name was invalid or in-use
-Groups page, pending approval list didn't update the membership list upon successful change
-Groups page, removed ability to search by username
-Managed Endpoints page, changing endpoint filtering from a long result list to a short one caused the listing to be truncated
-Transfer Files tooltips were not working with Firefox on OS X 
-Update Profile page, removed “Reset” button
-Validation for the "Current Password" field did not display on www.globus.org/account/ChangePassword
-When a subgroup name was edited, some locations continued to show the old name
+- Activity page, activity times were not updating
+- Activity page, new transfer activity was not going to the top of the list
+- Activity page, icons were not showing
+- Closing Safari caused a log out from Globus
+- Creating Globus Connect Personal Endpoint allowed submission even if the endpoint name was invalid or in-use
+- Groups page, pending approval list didn't update the membership list upon successful change
+- Groups page, removed ability to search by username
+- Managed Endpoints page, changing endpoint filtering from a long result list to a short one caused the listing to be truncated
+- Transfer Files tooltips were not working with Firefox on OS X 
+- Update Profile page, removed "Reset" button
+- Validation for the "Current Password" field did not display on http://www.globus.org/account/ChangePassword
+- When a subgroup name was edited, some locations continued to show the old name
 
 == October 2014
 === Features
-Remove ability to Purchase Globus Plus Plans or get a Free Trial (details here)
+- Remove ability to Purchase Globus Plus Plans or get a Free Trial (details link:https://www.globus.org/blog/globus-policies-they-are-changin[here])
 
 === Improvements
-Increase speed and quality of User/Group searches
-New and updated Globus accounts must have unique email addresses
+- Increase speed and quality of User/Group searches
+- New and updated Globus accounts must have unique email addresses
 
 === Bugfixes
-GOAuth redirection did not always work with username/password
-Updating email address was not displaying error correctly when non-unique
+- GOAuth redirection did not always work with username/password
+- Updating email address was not displaying error correctly when non-unique
 
 == September 2014
 === Features
-CLI, added command option, `--managed-endpoint` to `endpoint-modify`, `endpoint-add`, and `endpoint-list`
-CLI,  new commands, `acl-add`, `acl-remove`, `acl-list`, for managing endpoint access rules
-Transfer API, added field `effective_bytes_per_second` to task document
-Transfer API, added field `faults` to the task document
-New Branded Site: Purdue
+- CLI, added command option, +--managed-endpoint+ to +endpoint-modify+, +endpoint-add+, and +endpoint-list+
+- CLI,  new commands, +acl-add+, +acl-remove+, +acl-list+, for managing endpoint access rules
+- Transfer API, added field "effective_bytes_per_second" to task document
+- Transfer API, added field "faults" to the task document
+- New Branded Site: Purdue
 
 === Improvements
-On Manage Identities page, “Add X.509 Credential”, notes that proxy certs are not supported
-Website look and feel: browser standardized input boxes, input error highlighted in red, more readable fonts, and much much more
+- On Manage Identities page, "Add X.509 Credential", notes that proxy certs are not supported
+- Website look and feel: browser standardized input boxes, input error highlighted in red, more readable fonts, and much much more
 
 === Bugfixes
-After Sign In, users were not always redirected to the correct page
-Cannot share with a user who has a parenthesis in their user name
-Entering an incorrect username on a password reset caused a repeating error
-Error message displayed when attempting to rejoin a group in session keeps repeating
-Fixed the set of error messages for Group invitations that can not be claimed
-`Group > Member Details` email invitation entries showed the current user instead of invitee
-In `Managed Endpoints > Sharing` panel, write permissions were not saved in some situations
-Some transfer task states were getting set to “queued” incorrectly
-Too long or too short usernames caused some web pages to display poorly
+- After Sign In, users were not always redirected to the correct page
+- Cannot share with a user who has a parenthesis in their user name
+- Entering an incorrect username on a password reset caused a repeating error
+- Error message displayed when attempting to rejoin a group in session keeps repeating
+- Fixed the set of error messages for Group invitations that can not be claimed
+- "Group > Member Details" email invitation entries showed the current user instead of invitee
+- In "Managed Endpoints > Sharing" panel, write permissions were not saved in some situations
+- Some transfer task states were getting set to "queued" incorrectly
+- Too long or too short usernames caused some web pages to display poorly
 
 == August 2014
 === Features
-Add www.globus.org/selectUser page for searching Globus users by username or Full Name
-Add www.globus.org/selectGroups page for searching Groups by groupname or UUID
-Add www.globus.org/entitySearch page for searching both Groups and Users simultaneously
-Can notify users by email that they have access to a Shared Endpoint
-Shared Endpoints can be shared with all Globus accounts via "share with everyone" 
+- Add www.globus.org/selectUser page for searching Globus users by username or Full Name
+- Add www.globus.org/selectGroups page for searching Groups by groupname or UUID
+- Add www.globus.org/entitySearch page for searching both Groups and Users simultaneously
+- Can notify users by email that they have access to a Shared Endpoint
+- Shared Endpoints can be shared with all Globus accounts via "share with everyone" 
 
 === Improvements
-Better error message when attempting to link one external identity to multiple Globus accounts
-Redesign of Sharing "Add Permissions" section and Group search filter
-Username validation is more consistent throughout Globus UI 
+- Better error message when attempting to link one external identity to multiple Globus accounts
+- Redesign of Sharing "Add Permissions" section and Group search filter
+- Username validation is more consistent throughout Globus UI 
 
 === Bugfixes
-Cancel" button on the "Overview" tab in Manage Endpoints saves form data instead of cancelling the edit
-`Group > Admin` Queue page styling was broken
-Page was hanging after joining the site’s Group during CMSConnect SignUp
-"Refresh" button for Globus Connect Personal Not Connected Error did not work
-Rendering failed on www.globus.org/AcceptToken
-Rendering failed on www.globus.org/xfer/FlightControl
-Repaired option visibility and focus on Group page in "create Group" pop up
+- Cancel" button on the "Overview" tab in Manage Endpoints saves form data instead of cancelling the edit
+- "Group > Admin" Queue page styling was broken
+- Page was hanging after joining the site's Group during CMSConnect SignUp
+- "Refresh" button for Globus Connect Personal Not Connected Error did not work
+- Rendering failed on www.globus.org/AcceptToken
+- Rendering failed on www.globus.org/xfer/FlightControl
+- Repaired option visibility and focus on Group page in "create Group" pop up
 
 == July 2014
 === Features
-Can notify users by email that they have access to a Shared Endpoint (CLI and API only)
-Logout is now possible by navigating to www.globus.org/logout
-Shared Endpoints can be shared with all Globus accounts (API only)
-Shared Endpoints can be shared with a non-Globus user email address (CLI and API only)
-New Branded Site: CMS Connect
-New Branded Site: Michigan State University
+- Can notify users by email that they have access to a Shared Endpoint (CLI and API only)
+- Logout is now possible by navigating to www.globus.org/logout
+- Shared Endpoints can be shared with all Globus accounts (API only)
+- Shared Endpoints can be shared with a non-Globus user email address (CLI and API only)
+- New Branded Site: CMS Connect
+- New Branded Site: Michigan State University
 
 === Improvements
-Increase reliability and robustness of the Globus Relay service (used by Globus Connect Personal)
-Minor changes to GOAuth authorize support
-Remove member_limit restriction on Groups
-Turn off autocapitalization of usernames for mobile devices
+- Increase reliability and robustness of the Globus Relay service (used by Globus Connect Personal)
+- Minor changes to GOAuth authorize support
+- Remove member_limit restriction on Groups
+- Turn off autocapitalization of usernames for mobile devices
 
 === Bugfixes
-Activate Endpoints page showed an error when loaded without extra parameters
-Anchor buttons started black, and turned blue on hover, instead of always being blue
-Create User failed when "opt in" was selected
-Inviting a previously rejected user to a Group failed
-Hostname of Endpoints not owned by the user were incorrectly hidden on Manage Endpoints page
-Missing notifications to Group admins & managers when users requested to join Groups
-Update Profile form was hanging on submission with invalid data
-Hint components failed on Sign Up page
+- Activate Endpoints page showed an error when loaded without extra parameters
+- Anchor buttons started black, and turned blue on hover, instead of always being blue
+- Create User failed when "opt in" was selected
+- Inviting a previously rejected user to a Group failed
+- Hostname of Endpoints not owned by the user were incorrectly hidden on Manage Endpoints page
+- Missing notifications to Group admins & managers when users requested to join Groups
+- Update Profile form was hanging on submission with invalid data
+- Hint components failed on Sign Up page
 
 == June 2014
 === Features
-New CLI command, `cancel --all`, cancels all active transfers
-New CLI command, `mkdir`
-Recursive file delete on S3 Endpoints
-14 day grace period on cancelled Provider plans
+- New CLI command, "cancel --all", cancels all active transfers
+- New CLI command, "mkdir"
+- Recursive file delete on S3 Endpoints
+- 14 day grace period on cancelled Provider plans
 
 === Improvements
-Add notifications for suspended and expired Plus plans
-Add notice text on Sign Up page for Compute Canada Branded Site
-Add "x509 subject" in the expanded section for MyProxy and OAuth types on Manage Identities page
-Allow HPSS file transfers to continue in the presence of minor errors
-Change the `groups > subgroups > subsubgroups` UI to display as an indented tree
-Include Endpoint name in the URL in Endpoint reactivation email
-Increase efficiency of file transfers by applying exponential backoff to failing tasks
-Increase efficiency of file transfers that have multiple directories
-Increase performance and reliability of file transfer when processing many small files
-New S3 Endpoint error codes better describe root causes
-Validate that the source of an S3 download is a directory
+- Add notifications for suspended and expired Plus plans
+- Add notice text on Sign Up page for Compute Canada Branded Site
+- Add "x509 subject" in the expanded section for MyProxy and OAuth types on Manage Identities page
+- Allow HPSS file transfers to continue in the presence of minor errors
+- Change the "groups > subgroups > subsubgroups" UI to display as an indented tree
+- Include Endpoint name in the URL in Endpoint reactivation email
+- Increase efficiency of file transfers by applying exponential backoff to failing tasks
+- Increase efficiency of file transfers that have multiple directories
+- Increase performance and reliability of file transfer when processing many small files
+- New S3 Endpoint error codes better describe root causes
+- Validate that the source of an S3 download is a directory
 
 === Bugfixes 
-CLI `delete` was inconsistent with other commands -- did not require a trailing slash for recursive actions
-Creating Subgroups redirected browser after creation
-File Transfer Started events were not getting flushed during slow checksum operations
-Groups page did not show Subgroups immediately after creation
-Inviting users to Groups from search tab failed silently
-Inline Endpoint validation rules were not applied during Endpoint creation
-Login form did not get auto focus on Sign In page
-New users could not signup on Exeter Branded Site
-Only admin of a Group was able be able to demote himself
-Retrieving policies immediately after creation of a Group could sometimes fail
+- CLI "delete" was inconsistent with other commands -- did not require a trailing slash for recursive actions
+- Creating Subgroups redirected browser after creation
+- File Transfer Started events were not getting flushed during slow checksum operations
+- Groups page did not show Subgroups immediately after creation
+- Inviting users to Groups from search tab failed silently
+- Inline Endpoint validation rules were not applied during Endpoint creation
+- Login form did not get auto focus on Sign In page
+- New users could not signup on Exeter Branded Site
+- Only admin of a Group was able be able to demote himself
+- Retrieving policies immediately after creation of a Group could sometimes fail
 
 == May 2014
 === Features
-Allow users without Plus plans to create Groups
-ACME is now an approved OAuth provider
-ESGF is now an approved OAuth provider
-FACE-IT is now an approved OAuth provider
+- Allow users without Plus plans to create Groups
+- ACME is now an approved OAuth provider
+- ESGF is now an approved OAuth provider
+- FACE-IT is now an approved OAuth provider
 
 === Improvements
-Increased loading speed of Group names
+- Increased loading speed of Group names
 
 === Bugfixes
-Group managers were not receiving membership emails
-Group join requests were not showing up in admin queue for managers
-On Transfer Files page, typing in Endpoint name and attempting to select one could empty the Endpoint list
-Updating policies could make groups invisible to non-members 
+- Group managers were not receiving membership emails
+- Group join requests were not showing up in admin queue for managers
+- On Transfer Files page, typing in Endpoint name and attempting to select one could empty the Endpoint list
+- Updating policies could make groups invisible to non-members 
 
 == April 2014
 === Improvements
-Better error message for delete operation not supported on S3 Endpoints in Transfer Files page
-Better error messages for many common issues in Transfer Files page
-Disable Sharing option when a user selects a file or multiple folders in Transfer Files page
-Hide Sharing tab if the user does not have ability to share in Manage Endpoints page
-New Globus menu for all branded sites
+- Better error message for delete operation not supported on S3 Endpoints in Transfer Files page
+- Better error messages for many common issues in Transfer Files page
+- Disable Sharing option when a user selects a file or multiple folders in Transfer Files page
+- Hide Sharing tab if the user does not have ability to share in Manage Endpoints page
+- New Globus menu for all branded sites
 
 === Bugfixes
-Changing Sharing permissions did not always get preserved correctly
-Empty rows for new File Transfers on View Activity page when Transfers are started in a different window
-Entering an invalid Endpoint name on Transfer Files page did not cause an error
-On Group Member details page, status was not properly displayed
-The ep=GC parameter to Browse Endpoints did not work and caused errors
-User cancelled File Transfers appeared as "Failed" instead of "Cancelled"
-User was able to submit empty Terms and Conditions on Groups page
-When a user updated privacy settings, success message would pop up each time update button was selected
+- Changing Sharing permissions did not always get preserved correctly
+- Empty rows for new File Transfers on View Activity page when Transfers are started in a different window
+- Entering an invalid Endpoint name on Transfer Files page did not cause an error
+- On Group Member details page, status was not properly displayed
+- The ep=GC parameter to Browse Endpoints did not work and caused errors
+- User cancelled File Transfers appeared as "Failed" instead of "Cancelled"
+- User was able to submit empty Terms and Conditions on Groups page
+- When a user updated privacy settings, success message would pop up each time update button was selected
 
 == March 2014
 === Features
-Add ability to easily share with all authenticated users (CLI and API only)
-New API calls for managing GOAuth tokens
+- Add ability to easily share with all authenticated users (CLI and API only)
+- New API calls for managing GOAuth tokens
 
 === Improvements
-Add audit logging of the user's credential used on S3 commands
-Allow non-ascii characters in the default directory in API calls
-Better GOAuth exception handling
-Change CLI shell backslash escaping to be consistent across all commands
-Change logic on status for tasks with status "warning: ok" in View Activity page
-Change the "MBits/s" label in email notification and details command to be "Effective MBits/s"
-Change wording on status from "halted" to "warning" to be clearer on View Activity page
-Extend a File Transfer's error message content to include the Endpoint’s stderr
-Force S3 compliance by rejecting paths containing “..”, “.”, and “//" for S3 Endpoints
-Improve description of the encryption option on Transfer Files page
-Increase speed of S3 interactive directory listing and recursive transfer operations by filtering paths
-New "acl_available", "acl_editable", and "shareable" fields in the API expose Endpoint capabilities
-Notify user at previous address when their Globus account email is changed
-Prevent on overflow error in auto-activate API call by limiting input length
-Reformat panel on Activate Endpoint page
-Set S3 error message to be "FileNotFound" on file download when ACL is denied
-Set S3 error message to be "NotFound" on non-existent directory transfer attempt
-Users can be given Flight Control access for a specific list of Endpoints
+- Add audit logging of the user's credential used on S3 commands
+- Allow non-ascii characters in the default directory in API calls
+- Better GOAuth exception handling
+- Change CLI shell backslash escaping to be consistent across all commands
+- Change logic on status for tasks with status "warning: ok" in View Activity page
+- Change the "MBits/s" label in email notification and details command to be "Effective MBits/s"
+- Change wording on status from "halted" to "warning" to be clearer on View Activity page
+- Extend a File Transfer's error message content to include the Endpoint's stderr
+- Force S3 compliance by rejecting paths containing "..", ".", and "//" for S3 Endpoints
+- Improve description of the encryption option on Transfer Files page
+- Increase speed of S3 interactive directory listing and recursive transfer operations by filtering paths
+- New "acl_available", "acl_editable", and "shareable" fields in the API expose Endpoint capabilities
+- Notify user at previous address when their Globus account email is changed
+- Prevent on overflow error in auto-activate API call by limiting input length
+- Reformat panel on Activate Endpoint page
+- Set S3 error message to be "FileNotFound" on file download when ACL is denied
+- Set S3 error message to be "NotFound" on non-existent directory transfer attempt
+- Users can be given Flight Control access for a specific list of Endpoints
 
 === Bugfixes
-Changing label on Transfer Files page caused invalid label even when valid
-Checkbox in "Cancel Task" dialog did not work
-Could not refresh an active OAuth credential on Manage Endpoints page
-File Transfer task retry count was too large
-Granting Read access to a member of a Group on a Shared Endpoint did not work
-Group API auto join invites were not processed correctly when user had previously been rejected
-Incorrectly allowed Write access to Shared Endpoints when one Group set Read-only and another set Write
-Invited member could send invites through the Group API calls
-Minor bugs in Members tab on Groups page
-Minor fixes on several Branded Sites
-nice_status was used incorrectly for active tasks in View Activity page
-Root error was masked by long OAuth error messages, so limited the OAuth error message length
-Showed info for `event log > fault events` instead of fault events on View Activity page
-Users went to Pending state when invited by admin or manager to a Group with a policy of automatic accept
-View Invites page did not show all users
-Transfer Files page no longer remembered last selected Endpoints 
+- Changing label on Transfer Files page caused invalid label even when valid
+- Checkbox in "Cancel Task" dialog did not work
+- Could not refresh an active OAuth credential on Manage Endpoints page
+- File Transfer task retry count was too large
+- Granting Read access to a member of a Group on a Shared Endpoint did not work
+- Group API auto join invites were not processed correctly when user had previously been rejected
+- Incorrectly allowed Write access to Shared Endpoints when one Group set Read-only and another set Write
+- Invited member could send invites through the Group API calls
+- Minor bugs in Members tab on Groups page
+- Minor fixes on several Branded Sites
+- nice_status was used incorrectly for active tasks in View Activity page
+- Root error was masked by long OAuth error messages, so limited the OAuth error message length
+- Showed info for "event log > fault events" instead of fault events on View Activity page
+- Users went to Pending state when invited by admin or manager to a Group with a policy of automatic accept
+- View Invites page did not show all users
+- Transfer Files page no longer remembered last selected Endpoints 
 
 == February 2014
 === Features
-New Management Console UI
-Public credential information from a user’s Managed Identities is shown to Group admins/managers
-New Branded Site: ACME
-New Branded Site: Compute Canada
+- New Management Console UI
+- Public credential information from a user's Managed Identities is shown to Group admins/managers
+- New Branded Site: ACME
+- New Branded Site: Compute Canada
 
 === Improvements
-Minor changes to Group Terms and Conditions UI
-Minor changes to Transfer Files page
-Redesign the Manage Identities page
+- Minor changes to Group Terms and Conditions UI
+- Minor changes to Transfer Files page
+- Redesign the Manage Identities page
 
 === Bugfixes
-Activation button on the Endpoint activation page was not working
-Fixed authentication token signing issues which caused KBase authentication to fail
-Users were unable to accept a Group invitation from the invite email
-Fixed numerous minor UI issues, including some problems with the Sharing UI
-bullets
+- Activation button on the Endpoint activation page was not working
+- Fixed authentication token signing issues which caused KBase authentication to fail
+- Users were unable to accept a Group invitation from the invite email
+- Fixed numerous minor UI issues, including some problems with the Sharing UI bullets
 
 == January 2014
-Added new feature to set the "Terms and Conditions" for joining a Group
-Fixed bug preventing invitation email being sent for user with non-ASCII characters in their full name
-Integrated sending emails using mailchimp
-New branded site: ATLAS Connect
-Fixed a number of wording, visual, workflow and performance issues on the "/Group" web page
-Improved the workflow on the "/account/Subscriptions" web page
-Improved /xfer/ViewActivity details section to show the name of the endpoint, as well as,  strikethrough if it has been deleted.
+- Added new feature to set the "Terms and Conditions" for joining a Group
+- Fixed bug preventing invitation email being sent for user with non-ASCII characters in their full name
+- Integrated sending emails using mailchimp
+- New branded site: ATLAS Connect
+- Fixed a number of wording, visual, workflow and performance issues on the "/Group" web page
+- Improved the workflow on the "/account/Subscriptions" web page
+- Improved /xfer/ViewActivity details section to show the name of the endpoint, as well as,  strikethrough if it has been deleted.
 
 == December 2013
-Changed group policy: A user must now have "Plus" to become a manager/admin or create new groups
-Improved input validation and error feedback on the /ManagedEndpoints Overview Tab
-Fixed user email validation processing when signing in with MyProxy
+- Changed group policy: A user must now have "Plus" to become a manager/admin or create new groups
+- Improved input validation and error feedback on the /ManagedEndpoints Overview Tab
+- Fixed user email validation processing when signing in with MyProxy
 
 == November 2013
-Created new branded site: CI Connect
-Created new branded site: Duke Connect
-Numerous improvements to the /xfer/ViewActivity page
-Numerous fixes to group policies and processing
-Web UI is now open for users to purchase "Plus" accounts
-Rebranded website from "Globus Online" to "Globus"
-Changed the globus.org header, footer and menu to reflex the new design
-Fixed bug so auto-approval for joining a subgroup no longer breaks
-Added /account/Subscriptions and /account/GetPlus web pages to all branded sites
+- Created new branded site: CI Connect
+- Created new branded site: Duke Connect
+- Numerous improvements to the /xfer/ViewActivity page
+- Numerous fixes to group policies and processing
+- Web UI is now open for users to purchase "Plus" accounts
+- Rebranded website from "Globus Online" to "Globus"
+- Changed the globus.org header, footer and menu to reflex the new design
+- Fixed bug so auto-approval for joining a subgroup no longer breaks
+- Added /account/Subscriptions and /account/GetPlus web pages to all branded sites
 
 == October 2013
-Deployed new Plus subscription and payment web interface
-Unified User representation in Nexus and policy fixes for user visibility
-Instituted policy that email validation is now required
-Changed Sign In and Up pages to require a valid email account
-Improved the Link Accounts experience
-Multiple improvements to the OSG Connect branded site
-Fixed bug preventing users from joining a group that they had previously left
-Added support for canceling Group subscriptions
-Fixed bug where URL strings were escaped twice during GOAuth
+- Deployed new Plus subscription and payment web interface
+- Unified User representation in Nexus and policy fixes for user visibility
+- Instituted policy that email validation is now required
+- Changed Sign In and Up pages to require a valid email account
+- Improved the Link Accounts experience
+- Multiple improvements to the OSG Connect branded site
+- Fixed bug preventing users from joining a group that they had previously left
+- Added support for canceling Group subscriptions
+- Fixed bug where URL strings were escaped twice during GOAuth
 
 == September 2013
-Improved OAuth workflow to redirect back to sign in page instead of dashboard
-Globus Transfer API: Made enhancements to support upcoming Globus Connect Personal “Pause”
-Globus Nexus API: Improved policy engine performance which improves the performance of many group and group membership requests
-Improved error classifications to better identify “endpoint errors”
-Fixed bug where an active credential for a deleted endpoint could still be used
-Created new branded site: OSG Connect
+- Improved OAuth workflow to redirect back to sign in page instead of dashboard
+- Globus Transfer API: Made enhancements to support upcoming Globus Connect Personal "Pause"
+- Globus Nexus API: Improved policy engine performance which improves the performance of many group and group membership requests
+- Improved error classifications to better identify "endpoint errors"
+- Fixed bug where an active credential for a deleted endpoint could still be used
+- Created new branded site: OSG Connect
 
 == August 2013
-Manage Identities: Added “View Details” button to expose SSH public key, X509 Certificate, or Open ID details
-Manage Endpoints: Improve experience entering server domain during endpoint creation and update
-CLI: Changed the default for all transfers to use “–verify-checksum”
-CLI: Added new option “–no-verify-checksum” to turn it off
-Added new successful_transfers task API for getting source and destination paths when a transfer is complete. Details are here
-Improved reliability by limiting the impact a mis-behaving OAuth server can cause
-Fixed bug that causes a failure when creating a subgroup for a root group
-Made enhancement to reliably and efficiently process transfer requests up to a billion files; previous limit was approximately 10 million files for a single request
-Fixed bug where a recursive directory transfer would fail if any directory name contained one of these characters ! @ $ ( ) + = & : ,
-Fixed bug where a user set deadline could be shortened after a credential expiration or reactivation
+- Manage Identities: Added "View Details" button to expose SSH public key, X509 Certificate, or Open ID details
+- Manage Endpoints: Improve experience entering server domain during endpoint creation and update
+- CLI: Changed the default for all transfers to use "–verify-checksum"
+- CLI: Added new option "–no-verify-checksum" to turn it off
+- Added new successful_transfers task API for getting source and destination paths when a transfer is complete. Details are here
+- Improved reliability by limiting the impact a mis-behaving OAuth server can cause
+- Fixed bug that causes a failure when creating a subgroup for a root group
+- Made enhancement to reliably and efficiently process transfer requests up to a billion files; previous limit was approximately 10 million files for a single request
+- Fixed bug where a recursive directory transfer would fail if any directory name contained one of these characters ! @ $ ( ) + = & : ,
+- Fixed bug where a user set deadline could be shortened after a credential expiration or reactivation
 
 == July 2013
-Improved support for IE Browsers
-Group Members Page: Fixed bug where the members’ names ran off the page when using Safari
-Manage Endpoints: Added ability to change the default directory on an endpoint
-Manage Identities: Fixed bug preventing SSH keys with spaces in the comment to be added on the managed identities page
-Manage Identities: Fixed bug where an invitation cannot be resent when invited by email
-Globus Nexus API: Fixed bug where invite ID were not included to group invite emails
+- Improved support for IE Browsers
+- Group Members Page: Fixed bug where the members' names ran off the page when using Safari
+- Manage Endpoints: Added ability to change the default directory on an endpoint
+- Manage Identities: Fixed bug preventing SSH keys with spaces in the comment to be added on the managed identities page
+- Manage Identities: Fixed bug where an invitation cannot be resent when invited by email
+- Globus Nexus API: Fixed bug where invite ID were not included to group invite emails
 
 == June 2013
-We just released Globus Connect Multiuser version 2. This is a major update over the previous version, featuring:
-Native packaging for more than a dozen Linux variants
-Globus Toolkit integration
-Easy update from repo’s
-OAuth support
-Support for Globus Online sharing
-Improved configuration
-Improved multi-server deployments
-SSH keys no longer required
-InCommon/CILogon support
-Optional host certificate support
-More details are available in the Documentation forum.
-Groups: Updated membership page, to clarify when a user is not a member of the site’s root group
-Globus Transfer CLI: New “rename” command
-Can rename a file or a directory
-Note: must be to the same endpoint and file system!
-$ rename go#ep1:/~/file1 go#ep1:/~/file2
-$ rename go#ep1:/~/dir1 go#ep1:/~/dir2
-CLI: The cancel, wait, events and status commands can no longer query on a subtask; this option is only allowed on the details command
-Globus Transfer API: Changed how output format is specified. Instead of a file extension (.html or .json) use format query (?format=.json). This change was required to support a period (.) in endpoint names.
-Globus Nexus API: Disallow use of email addresses using UTF-8 characters
-Globus Transfer Service allows period “.” in endpoint names, .e.g "go.org#ep1" would be a valid name.
-Improved efficiency, reliability and scalability for large (million) file transfers; dir restarts are now stream processed instead of all at once, avoiding excessive memory use.
-Improved error when transferring files with a new line \n in the filename
-Added support for endpoint options force encryption and force no verification
+- We just released Globus Connect Multiuser version 2. This is a major update over the previous version, featuring:
+- Native packaging for more than a dozen Linux variants
+- Globus Toolkit integration
+- Easy update from repo's
+- OAuth support
+- Support for Globus Online sharing
+- Improved configuration
+- Improved multi-server deployments
+- SSH keys no longer required
+- InCommon/CILogon support
+- Optional host certificate support
+- More details are available in the Documentation forum.
+- Groups: Updated membership page, to clarify when a user is not a member of the site's root group
+- Globus Transfer CLI: New "rename" command
+- Can rename a file or a directory
++
+NOTE: must be to the same endpoint and file system!
++
+----terminal
+$ rename go#ep1:/\~/file1 go#ep1:/~/file2
+$ rename go#ep1:/\~/dir1 go#ep1:/~/dir2
+----terminal
++
+- CLI: The cancel, wait, events and status commands can no longer query on a subtask; this option is only allowed on the details command
+- Globus Transfer API: Changed how output format is specified. Instead of a file extension (.html or .json) use format query (?format=.json). This change was required to support a period (.) in endpoint names.
+- Globus Nexus API: Disallow use of email addresses using UTF-8 characters
+- Globus Transfer Service allows period "." in endpoint names, .e.g "go.org#ep1" would be a valid name.
+- Improved efficiency, reliability and scalability for large (million) file transfers; dir restarts are now stream processed instead of all at once, avoiding excessive memory use.
+- Improved error when transferring files with a new line \n in the filename
+- Added support for endpoint options force encryption and force no verification
 
 == May 2013
-Improved sluggish web page load times by merging LESS and JS code
-Improved CLI activation workflow
-Improved new button styles
-Improved endpoint list, by showing warning instead of an error when no records are found
-Added routing such that a URL can be created which opens the add Globus Connect window, and changes the filter to “administered by me”
-Fixed a bug where nothing shows up in the Sharing Tab
-Fixed a bug where not found warnings are blocking create functions from appearing
-CLI: New endpoint-modify option to disable checksum verification on an endpoint: “endpoint-modify –disable-verify” (Note: Dcache admins should set this option if their site/endpoint does not support MD5 checksums)
-Globus Sharing beta release now available. Sign up for a free trial
-Groups: Enhanced Group workflow, by allowing users to remove themselves from a group
-Added support for site-specific custom OAuth parameters
-Added support for OAuth config files using the YAML format
+- Improved sluggish web page load times by merging LESS and JS code
+- Improved CLI activation workflow
+- Improved new button styles
+- Improved endpoint list, by showing warning instead of an error when no records are found
+- Added routing such that a URL can be created which opens the add Globus Connect window, and changes the filter to "administered by me"
+- Fixed a bug where nothing shows up in the Sharing Tab
+- Fixed a bug where not found warnings are blocking create functions from appearing
+- CLI: New endpoint-modify option to disable checksum verification on an endpoint: "endpoint-modify –disable-verify" (Note: Dcache admins should set this option if their site/endpoint does not support MD5 checksums)
+- Globus Sharing beta release now available. Sign up for a free trial
+- Groups: Enhanced Group workflow, by allowing users to remove themselves from a group
+- Added support for site-specific custom OAuth parameters
+- Added support for OAuth config files using the YAML format
 
 == April 2013
-Fixed a bug where the start transfer sync settings were ignored
-Fixed a bug where the view transfer times were incorrect
-Created a new/redesigned Globus Online home page!
-Fixed a bug where the time of invite is not updated for group invites
-Added cancel invitation to the group member details dialog (for invited users)
-Changed the per-user pending job limit to 100 (previously unlimited)
-Changed the directory expansion ‘sliding window / read ahead’ to 100,000 files per job (previously one million). This means a recursive directory expansion will try to expand a max of 100,000 files before waiting for successful transfers to catch up.
-Changed the per-user cap to 1 million files for directory expansion
-Improved the File Staging (from Tapes) protocol for ncsa#mss and ncsa#nearline
+- Fixed a bug where the start transfer sync settings were ignored
+- Fixed a bug where the view transfer times were incorrect
+- Created a new/redesigned Globus Online home page!
+- Fixed a bug where the time of invite is not updated for group invites
+- Added cancel invitation to the group member details dialog (for invited users)
+- Changed the per-user pending job limit to 100 (previously unlimited)
+- Changed the directory expansion ‘sliding window / read ahead' to 100,000 files per job (previously one million). This means a recursive directory expansion will try to expand a max of 100,000 files before waiting for successful transfers to catch up.
+- Changed the per-user cap to 1 million files for directory expansion
+- Improved the File Staging (from Tapes) protocol for ncsa#mss and ncsa#nearline
 
 == March 2013
-CLI: Added ability to force encryption for an endpoint; see new option “endpoint-modify –force-encryption”
-Added API support for disabling email notifications when submitting a task
-Added API support for querying shared endpoints
-Added support for Group change notifications via webhooks
-Changed policy and UI to require email validation before allowing any Group action
-Changed group member listing to sort by role then alphabetic on name
-Disabled (prevented use of) verify checksum for nersc#hpss since it does not support it
+- CLI: Added ability to force encryption for an endpoint; see new option "endpoint-modify –force-encryption"
+- Added API support for disabling email notifications when submitting a task
+- Added API support for querying shared endpoints
+- Added support for Group change notifications via webhooks
+- Changed policy and UI to require email validation before allowing any Group action
+- Changed group member listing to sort by role then alphabetic on name
+- Disabled (prevented use of) verify checksum for nersc#hpss since it does not support it
 
 == February 2013
-Switched Nexus email server to use Amazon SES
-Updated the set of supported cipher schemes to improve security and performance
-Fixed a bug to now require an exact account name match for Sharing invites
-Fixed a bug where sometimes when accepting an invitation, the invitation response email gets resent to the invitee
-Fixed a bug to only show active members of a group when listing
+- Switched Nexus email server to use Amazon SES
+- Updated the set of supported cipher schemes to improve security and performance
+- Fixed a bug to now require an exact account name match for Sharing invites
+- Fixed a bug where sometimes when accepting an invitation, the invitation response email gets resent to the invitee
+- Fixed a bug to only show active members of a group when listing
 
 == January 2013
-Added a new operation for registering a GCMU MyProxy OAuth service
-Added a setting to allow groups to be visible to any Globus Online user
-Enabled Sharing for all users on tutorial endpoints: go#ep1 and go#ep2
-Synchronizing empty directories will create an empty directory on the destination
-The preserve modification time feature now applies to directories
-Fixed timeouts with transfer + verify checksum
-Fixed idle timeouts with transfer + delete
-Endpoint activation again shows the myproxy-logon error text on error
-Reworked detection and support of dcache endpoints; pipelining of commands during transfer is disabled for dcache
-Improved the efficiency of file transfer pipelining
-To better support very large jobs (10s of millions of files), only the most recent informational events are kept – 10,000 per job. All fault events are still kept. After 30 days from job completion, all events are deleted.
-The ‘File’ and ‘Command’ fields in fault events are now url encoded so non-ascii characters are represented without ambiguity.
-Notification emails now use Amazon SES as a mailer and are DKIM signed for authenticity. The ‘From’ address has not been changed.
-Interactive directory listings of Globus Connect endpoints should be faster (up to a second quicker in some situations)
+- Added a new operation for registering a GCMU MyProxy OAuth service
+- Added a setting to allow groups to be visible to any Globus Online user
+- Enabled Sharing for all users on tutorial endpoints: go#ep1 and go#ep2
+- Synchronizing empty directories will create an empty directory on the destination
+- The preserve modification time feature now applies to directories
+- Fixed timeouts with transfer + verify checksum
+- Fixed idle timeouts with transfer + delete
+- Endpoint activation again shows the myproxy-logon error text on error
+- Reworked detection and support of dcache endpoints; pipelining of commands during transfer is disabled for dcache
+- Improved the efficiency of file transfer pipelining
+- To better support very large jobs (10s of millions of files), only the most recent informational events are kept – 10,000 per job. All fault events are still kept. After 30 days from job completion, all events are deleted.
+- The ‘File' and ‘Command' fields in fault events are now url encoded so non-ascii characters are represented without ambiguity.
+- Notification emails now use Amazon SES as a mailer and are DKIM signed for authenticity. The ‘From' address has not been changed.
+- Interactive directory listings of Globus Connect endpoints should be faster (up to a second quicker in some situations)
 
 == December 2012
-Changed the default to “verify file integrity” for all transfers
-CLI: Fixed a bug in “endpoint-modify” command to allow the “MyProxy Server” to be erased
-Improved API error when myproxy hostname is missing on activation
-Fixed API bug when doing a subtask_list returns a NULL completion time
-Added a service for validating a MyProxy OAuth server
-Improved OAuth error message handling
-Improved method for avoiding use of “down” hosts for endpoints with multiple physicals
-Improved handling of HPSS endpoints by setting parallelism to 1, but allow it to be overridden
-Added “no email notifications” flag in user profile to enable users to stop notifications for all transfer jobs
-Added separate error code GC_NOT_CONNECTED when GC is not connected
-Improved overall service reliability by throttling the ‘directory expansion’ when there are more than 1 million files awaiting transfer for a job
+- Changed the default to "verify file integrity" for all transfers
+- CLI: Fixed a bug in "endpoint-modify" command to allow the "MyProxy Server" to be erased
+- Improved API error when myproxy hostname is missing on activation
+- Fixed API bug when doing a subtask_list returns a NULL completion time
+- Added a service for validating a MyProxy OAuth server
+- Improved OAuth error message handling
+- Improved method for avoiding use of "down" hosts for endpoints with multiple physicals
+- Improved handling of HPSS endpoints by setting parallelism to 1, but allow it to be overridden
+- Added "no email notifications" flag in user profile to enable users to stop notifications for all transfer jobs
+- Added separate error code GC_NOT_CONNECTED when GC is not connected
+- Improved overall service reliability by throttling the ‘directory expansion' when there are more than 1 million files awaiting transfer for a job
 
 == November 2012
-Group management is now available for all users (beta)
-Users can now create and delete a group
-Users can search and invite users to a group
-Applying group capabilities to Globus Online services like Transfer and Sharing is coming
+- Group management is now available for all users (beta)
+- Users can now create and delete a group
+- Users can search and invite users to a group
+- Applying group capabilities to Globus Online services like Transfer and Sharing is coming
 
 == October 2012
-Improved usability of the Start Transfer: Transfer Settings options, defaults and descriptions
-Added support for OAuth to allow portals to seamless integrate with Globus Transfer
+- Improved usability of the Start Transfer: Transfer Settings options, defaults and descriptions
+- Added support for OAuth to allow portals to seamless integrate with Globus Transfer
 
 == September 2012
-Added support for preserving file modification times
-Added support for file deletion in a transfer or sync command
-CLI: Added a new transfer and scp option “–preserve-mtime” to set the destination modification file times based on the source. (Note: Requires updated Globus Connect, or GridFTP server version 5.2.X or later, on destination endpoint.)
-Changed behavior to extend deadline for 3 days for INACTIVE (credential expired) tasks, so user has more time to renew them
-Improved transfer command to support a single line submission (like scp)
-Added a new transfer and scp option “–delete” for deleting files or directories on the destination endpoint if they do not exist on the source
-Added a new command for creating a storage volume (Beta). (Note: requires permission to access the storage enabled endpoint.)
-Added support in Globus Nexus for OAuth 2.0 Authorization service, that uses Globus Online login
+- Added support for preserving file modification times
+- Added support for file deletion in a transfer or sync command
+- CLI: Added a new transfer and scp option "–preserve-mtime" to set the destination modification file times based on the source. (Note: Requires updated Globus Connect, or GridFTP server version 5.2.X or later, on destination endpoint.)
+- Changed behavior to extend deadline for 3 days for INACTIVE (credential expired) tasks, so user has more time to renew them
+- Improved transfer command to support a single line submission (like scp)
+- Added a new transfer and scp option "–delete" for deleting files or directories on the destination endpoint if they do not exist on the source
+- Added a new command for creating a storage volume (Beta). (Note: requires permission to access the storage enabled endpoint.)
+- Added support in Globus Nexus for OAuth 2.0 Authorization service, that uses Globus Online login
 
 == August 2012
-Improved reliability and performance of Globus Online’s home page
-Start Transfer: Added support to verify file integrity after transfer
+- Improved reliability and performance of Globus Online's home page
+- Start Transfer: Added support to verify file integrity after transfer
 
 == July 2012
-Nexus now authorizes Globus Online Web Flight Control access
-Fixed an Internet Explorer issue that resulted in duplicate task ids being generated for separate requests
-Improved web accessibility by enable 30 day login lifetimes
-Improved start transfer by adding the ability to specify a path along with the endpoint, e.g. http://www.globusonline.org/xfer/StartTransfer?origin=go%23ep1/~/home
-Fixed a performance issue so that Globus Transfer can now process huge (multi-million files in a single dir) directory expansion
-Queued tasks are now kept alive (as long as creds arent expired)
+- Nexus now authorizes Globus Online Web Flight Control access
+- Fixed an Internet Explorer issue that resulted in duplicate task ids being generated for separate requests
+- Improved web accessibility by enable 30 day login lifetimes
+- Improved start transfer by adding the ability to specify a path along with the endpoint, e.g. http://www.globusonline.org/xfer/StartTransfer?origin=go%23ep1/~/home
+- Fixed a performance issue so that Globus Transfer can now process huge (multi-million files in a single dir) directory expansion
+- Queued tasks are now kept alive (as long as creds arent expired)
 
 == June 2012
-Introduced Flight Control tool to select users
-Added ability to allow site/endpoint admin to view their user’s activity using the Flight Control UI
-Added security logging to Globus Nexus per XSEDE recommendation
-Added new –verify-checksum option to scp and transfercommands. When used, Globus Transfer will verify that each destination file’s checksum matches the source after the transfer completes
-Increased the max path length for Transfer to 4096
-Improved directory listing reliability by using MLSC when available on endpoints running GridFTP from GT 5.2.1 or later; MLSC is more firewall friendly
+- Introduced Flight Control tool to select users
+- Added ability to allow site/endpoint admin to view their user's activity using the Flight Control UI
+- Added security logging to Globus Nexus per XSEDE recommendation
+- Added new –verify-checksum option to scp and transfercommands. When used, Globus Transfer will verify that each destination file's checksum matches the source after the transfer completes
+- Increased the max path length for Transfer to 4096
+- Improved directory listing reliability by using MLSC when available on endpoints running GridFTP from GT 5.2.1 or later; MLSC is more firewall friendly
 
 == May 2012
-Fixed Start Transfer Web page to auto refresh to show Globus Connect endpoint after it newly created
+- Fixed Start Transfer Web page to auto refresh to show Globus Connect endpoint after it newly created
 
 == April 2012
-Implemented a new web site-wide menu navigation system
-Improved user issue tracking system by integrating Zendesk into Globus Online Web site
-Added Zendesk user forums to the Globus Online web site
-Implemented automatic OAuth or OpenID identity added to a user’s account after signing up with that identity
-Added support in Globus Online for CILogon to be used as an external identity provider (IDP)
-Improved atomic submission mechanism to ensure no task ID conflicts between users
-Added security logging to Globus Transfer per XSEDE recommendation
+- Implemented a new web site-wide menu navigation system
+- Improved user issue tracking system by integrating Zendesk into Globus Online Web site
+- Added Zendesk user forums to the Globus Online web site
+- Implemented automatic OAuth or OpenID identity added to a user's account after signing up with that identity
+- Added support in Globus Online for CILogon to be used as an external identity provider (IDP)
+- Improved atomic submission mechanism to ensure no task ID conflicts between users
+- Added security logging to Globus Transfer per XSEDE recommendation
 
 == March 2012
-Added ability for users to add a new identity to their account after using it to log in
-Changed Globus Transfer dates to be relative to the user’s local time instead of UTC
-Improved directory listings to show symlinks
-Increased scalability by 2-3x for Globus Transfer to handle more concurrent Globus Connect clients
+- Added ability for users to add a new identity to their account after using it to log in
+- Changed Globus Transfer dates to be relative to the user's local time instead of UTC
+- Improved directory listings to show symlinks
+- Increased scalability by 2-3x for Globus Transfer to handle more concurrent Globus Connect clients
 
 == February 2012
-Implemented a new web Sign In workflow to make it easier to use and follow
+- Implemented a new web Sign In workflow to make it easier to use and follow
 
 == January 2012
-Added support for using ALCF MyProxy OAuth with Globus Online
-Enhanced the endpoint-modify command to allow an optional OAuth server to be configured for an endpoint
-Added support for encrypting (–encrypt) transfers for both the scp and transfer commands
-Improved performance of large number of small files sync operations by using pipelining (specifying multiple files in a single round trip)
-Added support for fully qualified endpoints, even when defined by the user, e.g. ‘myep’ or ‘joeuser#myep’ can be used interchangeably in CLI commands.
+- Added support for using ALCF MyProxy OAuth with Globus Online
+- Enhanced the endpoint-modify command to allow an optional OAuth server to be configured for an endpoint
+- Added support for encrypting (–encrypt) transfers for both the scp and transfer commands
+- Improved performance of large number of small files sync operations by using pipelining (specifying multiple files in a single round trip)
+- Added support for fully qualified endpoints, even when defined by the user, e.g. ‘myep' or ‘joeuser#myep' can be used interchangeably in CLI commands.
 
 == November 2011
-Added support for MyProxy OAuth; confirmed working against the XSEDE MyProxy OAuth server
-Added labels for labeling and referring to a transfer: toggling show/hide hidden files, deleting files, and creating folders.
-Added CLI support for MyProxy OAuth endpoint activation
+- Added support for MyProxy OAuth; confirmed working against the XSEDE MyProxy OAuth server
+- Added labels for labeling and referring to a transfer: toggling show/hide hidden files, deleting files, and creating folders.
+- Added CLI support for MyProxy OAuth endpoint activation
 
 == September 2011
-Added ability to remove files with the rm command
-Added ability to make directories with the mkdir command
-Added ability to add labels when using the scp, transfer, rm, and delete commands
-Improved ls command to take globbing, e.g. \*, ?.
-Improved processing to better support Mass Storage Systems (MSS)
-Improved transfer fault retry algorithm
-Removed Globus Online tutorial endpoint “reset” command since rm/delete is a functional superset
+- Added ability to remove files with the rm command
+- Added ability to make directories with the mkdir command
+- Added ability to add labels when using the scp, transfer, rm, and delete commands
+- Improved ls command to take globbing, e.g. \*, ?.
+- Improved processing to better support Mass Storage Systems (MSS)
+- Improved transfer fault retry algorithm
+- Removed Globus Online tutorial endpoint "reset" command since rm/delete is a functional superset
 
 == August 2011
-Added support for validation of SSH keys
-Website now informs Transfer API source of requests via custom header on requests
-Minor update to Globus Online Footer
-CLI: Added ability to background an scp command from interactive mode (during transfer); see man scp “bg” command.
-Added support for glite gridftp endpoints
-Added support for GridFTP HDFS endpoints
-Added support for file sync between anonymous GridFTP endpoints
-Improved performance and scalability for new account creation and update
-Added support for file list transfers between glite and non-glite GridFTP endpoints
-Added support for file list transfers with a glite endpoint; required GridFTP cases insensitive ‘fact’ parsing
-Improved internal logging to streamline support for client developers
-Fixed issue with subtasks where the bytes_transferred was always 0
-Improved Globus Connect performance when transferring lots (1000+) of small files
+- Added support for validation of SSH keys
+- Website now informs Transfer API source of requests via custom header on requests
+- Minor update to Globus Online Footer
+- CLI: Added ability to background an scp command from interactive mode (during transfer); see man scp "bg" command.
+- Added support for glite gridftp endpoints
+- Added support for GridFTP HDFS endpoints
+- Added support for file sync between anonymous GridFTP endpoints
+- Improved performance and scalability for new account creation and update
+- Added support for file list transfers between glite and non-glite GridFTP endpoints
+- Added support for file list transfers with a glite endpoint; required GridFTP cases insensitive ‘fact' parsing
+- Improved internal logging to streamline support for client developers
+- Fixed issue with subtasks where the bytes_transferred was always 0
+- Improved Globus Connect performance when transferring lots (1000+) of small files
 
 == July 2011
-Performance enhancements to user provisioning process
-Major overhaul of the Globus Online software stack to support theming and hosting of multiple websites, paving the way for development of a group management web presence for the Bioinformatics Information Research Network (BIRN), scheduled for launch in fall 2011
-Support for Globus Transfer v10
-Significant Globus Online internal improvements to ensure consistent performance for transfer requests with greater than 1 million files
-Changed ID format for subtasks
-Sync level is now set per transfer request, no longer per file in a request
-Added ability to validate size of files before and after the transfer; see transfer -vs
-API: Added delegate_proxy activation method
+- Performance enhancements to user provisioning process
+- Major overhaul of the Globus Online software stack to support theming and hosting of multiple websites, paving the way for development of a group management web presence for the Bioinformatics Information Research Network (BIRN), scheduled for launch in fall 2011
+- Support for Globus Transfer v10
+- Significant Globus Online internal improvements to ensure consistent performance for transfer requests with greater than 1 million files
+- Changed ID format for subtasks
+- Sync level is now set per transfer request, no longer per file in a request
+- Added ability to validate size of files before and after the transfer; see transfer -vs
+- API: Added delegate_proxy activation method
 
 == June 2011
-Credential cache should now return 404 instead of 502 if no credential available
-Unicode fields are now supported on the signup page
-details command now records fault count in top-level task
-Made “quota exceeded” error easy to find
-Added ability to set a port range for an endpoint definition, e.g. endpoint-modify my-ep –port-range 40000,41000
-Transfer history details older than 1 month will be archived and available on request
-Improved “credential expired” email to include more self help information
-Added support for file list transfers between glite GridFTP endpoints
-Improved Globus Transfer error message when using a GC endpoint and it is not connected to Globus Online
+- Credential cache should now return 404 instead of 502 if no credential available
+- Unicode fields are now supported on the signup page
+- details command now records fault count in top-level task
+- Made "quota exceeded" error easy to find
+- Added ability to set a port range for an endpoint definition, e.g. endpoint-modify my-ep –port-range 40000,41000
+- Transfer history details older than 1 month will be archived and available on request
+- Improved "credential expired" email to include more self help information
+- Added support for file list transfers between glite GridFTP endpoints
+- Improved Globus Transfer error message when using a GC endpoint and it is not connected to Globus Online
 
 == May 2011
-Internal database improvements
-Support for non-standard ports for MyProxy Servers
-ESG MyProxy server added
+- Internal database improvements
+- Support for non-standard ports for MyProxy Servers
+- ESG MyProxy server added
 
 == April 2011
-All pages now reside at a secure HTTPS address.
-Tighter integration with the static web content.
-Users will be now be required to provide a password which can be used to sign in to Globus Online.
-Users are no longer required to have external authentication providers such as MyProxy or OpenId.
-The “Login Accounts” and “CLI Setup” pages have been removed, a new page combines the functionality of these pages and is know as “Manage Identities”.
-Existing users will be prompted to set a globus online password.
-New users are asked to validate their e-mail when signing up for a Globus Online account (a notification containing a confirmation link is sent to the e-mail address provided by the user).
-Initial beta release of Globus Connect for Linux and Windows
+- All pages now reside at a secure HTTPS address.
+- Tighter integration with the static web content.
+- Users will be now be required to provide a password which can be used to sign in to Globus Online.
+- Users are no longer required to have external authentication providers such as MyProxy or OpenId.
+- The "Login Accounts" and "CLI Setup" pages have been removed, a new page combines the functionality of these pages and is know as "Manage Identities".
+- Existing users will be prompted to set a globus online password.
+- New users are asked to validate their e-mail when signing up for a Globus Online account (a notification containing a confirmation link is sent to the e-mail address provided by the user).
+- Initial beta release of Globus Connect for Linux and Windows
 
 == March 2011
-The Start Transfer page has a new link called “Get Globus Connect” which displays a dialog for downloading and configuring Globus Connect.
-The Dashboard includes a “Globus Connect” application icon. Clicking the link/icon will take you to the Start Transfer page with the above dialog displayed.
-Changed the menu button in View Transfers to make its intended function clearer.
-When sorting and/or filtering a column, a graphic appears on the column to indicate that you have performed this operation.
-Empty event logs should no longer cause the Event Log page to lock up.
-Improved resiliency in error cases for file-level sync.
-Improved handling for various error scenarios.
-Support for non-ASCII characters in file names.
-scp command supports sync (-s option).
-Added sync support to transfer submission.
-Added endpoint delete.
-Added POST /endpoint; this is now the recommended way to create endpoints, PUT /endpoint(name) is deprecated.
-Added support for creating Globus Connect endpoints and getting a setup code.
+- The Start Transfer page has a new link called "Get Globus Connect" which displays a dialog for downloading and configuring Globus Connect.
+- The Dashboard includes a "Globus Connect" application icon. Clicking the link/icon will take you to the Start Transfer page with the above dialog displayed.
+- Changed the menu button in View Transfers to make its intended function clearer.
+- When sorting and/or filtering a column, a graphic appears on the column to indicate that you have performed this operation.
+- Empty event logs should no longer cause the Event Log page to lock up.
+- Improved resiliency in error cases for file-level sync.
+- Improved handling for various error scenarios.
+- Support for non-ASCII characters in file names.
+- scp command supports sync (-s option).
+- Added sync support to transfer submission.
+- Added endpoint delete.
+- Added POST /endpoint; this is now the recommended way to create endpoints, PUT /endpoint(name) is deprecated.
+- Added support for creating Globus Connect endpoints and getting a setup code.
 
 == February 2011
-The dashboard now provides links to various pages around the application
-“Initiate Transfers” is now titled “Start Transfer”
-“Monitor Tasks” is now titled “View Transfer Activity”
-White-space in the file browser has been reduced, this should allow more files to display before needing to scroll
-The dialog for entering activation requirements has been changed so that it displays cleanly on various browsers
-The activation workflow now allows the user to start entering activation details on a different endpoint
-Improved performance of transferring small files using a new client program fxp that can do GridFTP pipelining
-Added ability for a user to modify the transfer request to extend the deadline
-transfer command supports performance option overrides, for advanced users
-Improved error reporting: more specific errors returned about which endpoint is not working and why
-Improved speed of the CLI and interactive job turnaround
-Improved submission/cancel performance for large number of file jobs (>500,000)
-Added new endpoint diagnosis command
-Initial support for anonymous GridFTP (single or simple recursive transfers, no sync)
-Improved feedback for transfer command recursive sync
-transfer command supports file-level sync
-Improved handling of special characters in path names
-Compatible with CLI version 1.2
-Endpoints with a default MyProxy server will be auto-activated if the user has already activated another endpoint with a credential from that MyProxy server
-Globus Connect (beta) is a quick-to-install package that lets you use your local computer with Globus Online to upload and download files between it and other Globus Online endpoints, even if the computer is behind a firewall or NAT. Globus Connect can be installed and run as a user without administrative privileges.
+- The dashboard now provides links to various pages around the application
+- "Initiate Transfers" is now titled "Start Transfer"
+- "Monitor Tasks" is now titled "View Transfer Activity"
+- White-space in the file browser has been reduced, this should allow more files to display before needing to scroll
+- The dialog for entering activation requirements has been changed so that it displays cleanly on various browsers
+- The activation workflow now allows the user to start entering activation details on a different endpoint
+- Improved performance of transferring small files using a new client program fxp that can do GridFTP pipelining
+- Added ability for a user to modify the transfer request to extend the deadline
+- transfer command supports performance option overrides, for advanced users
+- Improved error reporting: more specific errors returned about which endpoint is not working and why
+- Improved speed of the CLI and interactive job turnaround
+- Improved submission/cancel performance for large number of file jobs (>500,000)
+- Added new endpoint diagnosis command
+- Initial support for anonymous GridFTP (single or simple recursive transfers, no sync)
+- Improved feedback for transfer command recursive sync
+- transfer command supports file-level sync
+- Improved handling of special characters in path names
+- Compatible with CLI version 1.2
+- Endpoints with a default MyProxy server will be auto-activated if the user has already activated another endpoint with a credential from that MyProxy server
+- Globus Connect (beta) is a quick-to-install package that lets you use your local computer with Globus Online to upload and download files between it and other Globus Online endpoints, even if the computer is behind a firewall or NAT. Globus Connect can be installed and run as a user without administrative privileges.
 
 == November 2010
-User account creation
-User profile management: Manage profile information associated with account, including authentication options to web and command line interfaces; e-mail address; other attributes required by service
-Website authentication initial options: Google/Gmail, MyProxy
-REST API and new Web interface for Globus Transfer (beta)
-File listing and transfer submission
-Endpoint activation via MyProxy
-File transfer monitoring
-File/directory transfer submission
-File/directory listing
-Added directory sync functionality: Only transfer files that do not exist or are different on the destination; Options on how to determine file differences (existence, size, modification time, checksum)
-Improved endpoint management by adding user namespace scoped endpoint: Users can use endpoint definition that are maintained by other users; Allows a community administrator (e.g. for TeraGrid, NERSC, etc) to maintain canonical endpoint definitions for all users
-Default MyProxy server for endpoints: easy ls, scp, and endpoint-activate usage
-Endpoint-activate can request a specific credential lifetime when using a MyProxy server
-Tutorial endpoints available; each user is given access to transfer files between the two Globus Online operated endpoints. This can be useful for initial steps for trying out the Globus Transfer service. Can transfer from/to tutorial from/to outside endpoints.
+- User account creation
+- User profile management: Manage profile information associated with account, including authentication options to web and command line interfaces; e-mail address; other attributes required by service
+- Website authentication initial options: Google/Gmail, MyProxy
+- REST API and new Web interface for Globus Transfer (beta)
+- File listing and transfer submission
+- Endpoint activation via MyProxy
+- File transfer monitoring
+- File/directory transfer submission
+- File/directory listing
+- Added directory sync functionality: Only transfer files that do not exist or are different on the destination; Options on how to determine file differences (existence, size, modification time, checksum)
+- Improved endpoint management by adding user namespace scoped endpoint: Users can use endpoint definition that are maintained by other users; Allows a community administrator (e.g. for TeraGrid, NERSC, etc) to maintain canonical endpoint definitions for all users
+- Default MyProxy server for endpoints: easy ls, scp, and endpoint-activate usage
+- Endpoint-activate can request a specific credential lifetime when using a MyProxy server
+- Tutorial endpoints available; each user is given access to transfer files between the two Globus Online operated endpoints. This can be useful for initial steps for trying out the Globus Transfer service. Can transfer from/to tutorial from/to outside endpoints.
 
 == September 2010
-Overhaul of command names, options, arguments and output formats
-Atomic/reliable submission support for the transfer command
-Command versioning for long term support
-Recursive Directory Transfer support; specify source and destination directory paths instead of individual file pairs
-Interactive directory listing (alpha); quickly list files on an endpoint; easily test that credentials are authorized
-Secure Copy (scp) interface and functionality similar to standard scp command; operates in foreground or background (detached) modes
-Flexible Endpoint Specification; do not have to use logical names
-Logical endpoints created automatically when presented with host names
-Activation done via gsi-ssh (transfer), gsi-ssh or myproxy (scp)
-Credential expiration notifications and warnings
-Pre-flight check for missing/expired credentials
-Display notice if credentials expire before the deadline
-E-mail notification for transfers stalled due to expired credentials
-Improved help for CLI man pages
-Updated quick start guide and videos
-Reporting includes per-file transfer performance information
-Ability to display all active or completed tasks in reporting
-Ability to cancel in-progress files
-Support for home directory/relative paths in file transfer commands
-Can now use the standard ssh port (22) with gsissh
+- Overhaul of command names, options, arguments and output formats
+- Atomic/reliable submission support for the transfer command
+- Command versioning for long term support
+- Recursive Directory Transfer support; specify source and destination directory paths instead of individual file pairs
+- Interactive directory listing (alpha); quickly list files on an endpoint; easily test that credentials are authorized
+- Secure Copy (scp) interface and functionality similar to standard scp command; operates in foreground or background (detached) modes
+- Flexible Endpoint Specification; do not have to use logical names
+- Logical endpoints created automatically when presented with host names
+- Activation done via gsi-ssh (transfer), gsi-ssh or myproxy (scp)
+- Credential expiration notifications and warnings
+- Pre-flight check for missing/expired credentials
+- Display notice if credentials expire before the deadline
+- E-mail notification for transfers stalled due to expired credentials
+- Improved help for CLI man pages
+- Updated quick start guide and videos
+- Reporting includes per-file transfer performance information
+- Ability to display all active or completed tasks in reporting
+- Ability to cancel in-progress files
+- Support for home directory/relative paths in file transfer commands
+- Can now use the standard ssh port (22) with gsissh
