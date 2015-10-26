@@ -12,8 +12,8 @@
 :production_publish: publish.globus.org
 :trial_publish_url: http://trial.publish.globus.org
 :trial_publish: trial.publish.globus.org
-:publish_admin_guide_url: http://dev.globus.org/data-publication-admin-guide
-:publish_user_guide_url: http://dev.globus.org/data-publication-user-guide
+:publish_admin_guide_url: http://docs.globus.org/data-publication-admin-guide
+:publish_user_guide_url: http://docs.globus.org/data-publication-user-guide
 :how_to_sign_up_url: http://www.globus.org/researchers/getting-started
 :sign_up_url: http://www.globus.org/SignUp
 
@@ -57,8 +57,8 @@ are provided.
 
 1. A suitable server for storing the publication data must be
 setup. This server must have Globus Connect Server
-http://dev.globus.org/resource-provider-guide[installed] and must have
-http://dev.globus.org/resource-provider-guide/#sharing_section[Sharing
+http://docs.globus.org/resource-provider-guide[installed] and must have
+http://docs.globus.org/resource-provider-guide/#sharing_section[Sharing
 enabled]. Access to the necessary sharing capability requires a
 https://www.globus.org/providers/provider-plans[Provider Plan].
 
