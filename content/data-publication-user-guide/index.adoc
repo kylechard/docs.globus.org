@@ -160,7 +160,7 @@ Globus username and password (you may use any linked Globus identity
 and credentials) before displaying the data publication dashboard.
 
 [TIP]
-=====
+====
 On occasion, you may notice that your Globus ID is displayed 
 in the navigation bar, indicating that you are logged in, but
 when you interact with the service you are asked to log in again.
@@ -448,13 +448,13 @@ For the "Curated Trial Collection", none of the fields on pages two
 and three are required by the collection.
 
 [TIP]
-=====
+====
 In some cases, the metadata field entry prompts do not exactly match 
 the labels shown on the more generic publication pages. 
 For example, "Issue Date" and "Publication Date" refer to the same
 metadata field, and  "Subject", "Subject Keywords", and "Keywords" are 
 used interchangeably.
-=====
+====
 
 [[assemble-the-dataset]]
 === Assemble the Dataset
@@ -477,7 +477,7 @@ from one or more Globus endpoints
 to the submission's allocated storage location.
 
 [TIP]
-=====
+====
 In some browsers, if the Globus transfer interface 
 is already open in another tab when you click "Assemble Dataset", 
 the browser will not automatically raise and shift focus to 
@@ -538,7 +538,7 @@ Globus will also send you an email indicating the completion
 or other status of your transfer(s).
 
 [TIP]
-=====
+====
 When transfers are long-running, it is often desirable to save
 the current workflow and return later to check progress. 
 As described earlier in the
