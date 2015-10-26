@@ -582,7 +582,7 @@ NOTE: requires permission to access the storage enabled endpoint.
 - Introduced Flight Control tool to select users
 - Added ability to allow site/endpoint admin to view their user's activity using the Flight Control UI
 - Added security logging to Globus Nexus per XSEDE recommendation
-- Added new –verify-checksum option to scp and transfercommands. When used, Globus Transfer will verify that each destination file's checksum matches the source after the transfer completes
+- Added new +–verify-checksum+ option to +scp+ and +transfer+ commands. When used, Globus Transfer will verify that each destination file's checksum matches the source after the transfer completes
 - Increased the max path length for Transfer to 4096
 - Improved directory listing reliability by using MLSC when available on endpoints running GridFTP from GT 5.2.1 or later; MLSC is more firewall friendly
 
@@ -609,10 +609,10 @@ NOTE: requires permission to access the storage enabled endpoint.
 
 == January 2012
 - Added support for using ALCF MyProxy OAuth with Globus Online
-- Enhanced the endpoint-modify command to allow an optional OAuth server to be configured for an endpoint
-- Added support for encrypting (–encrypt) transfers for both the scp and transfer commands
+- Enhanced the +endpoint-modify+ command to allow an optional OAuth server to be configured for an endpoint
+- Added support for encrypting (+–encrypt+) transfers for both the +scp+ and +transfer+ commands
 - Improved performance of large number of small files sync operations by using pipelining (specifying multiple files in a single round trip)
-- Added support for fully qualified endpoints, even when defined by the user, e.g. 'myep' or 'joeuser#myep' can be used interchangeably in CLI commands.
+- Added support for fully qualified endpoints, even when defined by the user, e.g. [uservars]#myep# or [uservars]#joeuser#myep# can be used interchangeably in CLI commands.
 
 == November 2011
 - Added support for MyProxy OAuth; confirmed working against the XSEDE MyProxy OAuth server
@@ -622,8 +622,8 @@ NOTE: requires permission to access the storage enabled endpoint.
 == September 2011
 - Added ability to remove files with the rm command
 - Added ability to make directories with the mkdir command
-- Added ability to add labels when using the scp, transfer, rm, and delete commands
-- Improved ls command to take globbing, e.g. \*, ?.
+- Added ability to add labels when using the +scp+, +transfer+, +rm+, and +delete+ commands
+- Improved +ls+ command to take globbing, e.g. *, ?.
 - Improved processing to better support Mass Storage Systems (MSS)
 - Improved transfer fault retry algorithm
 - Removed Globus Online tutorial endpoint "reset" command since rm/delete is a functional superset
@@ -632,7 +632,7 @@ NOTE: requires permission to access the storage enabled endpoint.
 - Added support for validation of SSH keys
 - Website now informs Transfer API source of requests via custom header on requests
 - Minor update to Globus Online Footer
-- CLI: Added ability to background an scp command from interactive mode (during transfer); see man scp "bg" command.
+- CLI: Added ability to background an +scp+ command from interactive mode (during transfer); see +man scp bg+ command.
 - Added support for glite gridftp endpoints
 - Added support for GridFTP HDFS endpoints
 - Added support for file sync between anonymous GridFTP endpoints
@@ -650,15 +650,15 @@ NOTE: requires permission to access the storage enabled endpoint.
 - Significant Globus Online internal improvements to ensure consistent performance for transfer requests with greater than 1 million files
 - Changed ID format for subtasks
 - Sync level is now set per transfer request, no longer per file in a request
-- Added ability to validate size of files before and after the transfer; see transfer -vs
+- Added ability to validate size of files before and after the transfer; see +transfer -vs+
 - API: Added delegate_proxy activation method
 
 == June 2011
 - Credential cache should now return 404 instead of 502 if no credential available
 - Unicode fields are now supported on the signup page
-- details command now records fault count in top-level task
+- +details+ command now records fault count in top-level task
 - Made "quota exceeded" error easy to find
-- Added ability to set a port range for an endpoint definition, e.g. endpoint-modify my-ep –port-range 40000,41000
+- Added ability to set a port range for an endpoint definition, e.g. +endpoint-modify my-ep –port-range 40000,41000+
 - Transfer history details older than 1 month will be archived and available on request
 - Improved "credential expired" email to include more self help information
 - Added support for file list transfers between glite GridFTP endpoints
@@ -688,7 +688,7 @@ NOTE: requires permission to access the storage enabled endpoint.
 - Improved resiliency in error cases for file-level sync.
 - Improved handling for various error scenarios.
 - Support for non-ASCII characters in file names.
-- scp command supports sync (-s option).
+- +scp+ command supports sync (+-s+ option).
 - Added sync support to transfer submission.
 - Added endpoint delete.
 - Added POST /endpoint; this is now the recommended way to create endpoints, PUT /endpoint(name) is deprecated.
@@ -703,34 +703,34 @@ NOTE: requires permission to access the storage enabled endpoint.
 - The activation workflow now allows the user to start entering activation details on a different endpoint
 - Improved performance of transferring small files using a new client program fxp that can do GridFTP pipelining
 - Added ability for a user to modify the transfer request to extend the deadline
-- transfer command supports performance option overrides, for advanced users
+- +transfer+ command supports performance option overrides, for advanced users
 - Improved error reporting: more specific errors returned about which endpoint is not working and why
 - Improved speed of the CLI and interactive job turnaround
 - Improved submission/cancel performance for large number of file jobs (>500,000)
 - Added new endpoint diagnosis command
 - Initial support for anonymous GridFTP (single or simple recursive transfers, no sync)
 - Improved feedback for transfer command recursive sync
-- transfer command supports file-level sync
+- +transfer+ command supports file-level sync
 - Improved handling of special characters in path names
 - Compatible with CLI version 1.2
 - Endpoints with a default MyProxy server will be auto-activated if the user has already activated another endpoint with a credential from that MyProxy server
 - Globus Connect (beta) is a quick-to-install package that lets you use your local computer with Globus Online to upload and download files between it and other Globus Online endpoints, even if the computer is behind a firewall or NAT. Globus Connect can be installed and run as a user without administrative privileges.
 
 == November 2010
-- User account creation
-- User profile management: Manage profile information associated with account, including authentication options to web and command line interfaces; e-mail address; other attributes required by service
-- Website authentication initial options: Google/Gmail, MyProxy
-- REST API and new Web interface for Globus Transfer (beta)
-- File listing and transfer submission
-- Endpoint activation via MyProxy
-- File transfer monitoring
-- File/directory transfer submission
-- File/directory listing
-- Added directory sync functionality: Only transfer files that do not exist or are different on the destination; Options on how to determine file differences (existence, size, modification time, checksum)
-- Improved endpoint management by adding user namespace scoped endpoint: Users can use endpoint definition that are maintained by other users; Allows a community administrator (e.g. for TeraGrid, NERSC, etc) to maintain canonical endpoint definitions for all users
-- Default MyProxy server for endpoints: easy ls, scp, and endpoint-activate usage
-- Endpoint-activate can request a specific credential lifetime when using a MyProxy server
-- Tutorial endpoints available; each user is given access to transfer files between the two Globus Online operated endpoints. This can be useful for initial steps for trying out the Globus Transfer service. Can transfer from/to tutorial from/to outside endpoints.
+* User account creation
+* User profile management: Manage profile information associated with account, including authentication options to web and command line interfaces; e-mail address; other attributes required by service
+* Website authentication initial options: Google/Gmail, MyProxy
+* REST API and new Web interface for Globus Transfer (beta)
+** File listing and transfer submission
+** Endpoint activation via MyProxy
+** File transfer monitoring
+** File/directory transfer submission
+** File/directory listing
+* Added directory sync functionality: Only transfer files that do not exist or are different on the destination; Options on how to determine file differences (existence, size, modification time, checksum)
+* Improved endpoint management by adding user namespace scoped endpoint: Users can use endpoint definition that are maintained by other users; Allows a community administrator (e.g. for TeraGrid, NERSC, etc) to maintain canonical endpoint definitions for all users
+* Default MyProxy server for endpoints: easy ls, scp, and endpoint-activate usage
+* +endpoint-activate+ can request a specific credential lifetime when using a MyProxy server
+* Tutorial endpoints available; each user is given access to transfer files between the two Globus Online operated endpoints. This can be useful for initial steps for trying out the Globus Transfer service. Can transfer from/to tutorial from/to outside endpoints.
 
 == September 2010
 - Overhaul of command names, options, arguments and output formats
@@ -738,7 +738,7 @@ NOTE: requires permission to access the storage enabled endpoint.
 - Command versioning for long term support
 - Recursive Directory Transfer support; specify source and destination directory paths instead of individual file pairs
 - Interactive directory listing (alpha); quickly list files on an endpoint; easily test that credentials are authorized
-- Secure Copy (scp) interface and functionality similar to standard scp command; operates in foreground or background (detached) modes
+- Secure Copy (+scp+) interface and functionality similar to standard scp command; operates in foreground or background (detached) modes
 - Flexible Endpoint Specification; do not have to use logical names
 - Logical endpoints created automatically when presented with host names
 - Activation done via gsi-ssh (transfer), gsi-ssh or myproxy (scp)
