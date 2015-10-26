@@ -1,5 +1,5 @@
 = Globus Data Publication User Guide
-:revnumber: 0.0.10
+:revnumber: 0.1.0
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -162,7 +162,7 @@ and credentials) before displaying the data publication dashboard.
 [TIP]
 =====
 On occasion, you may notice that your Globus ID is displayed 
-in the navigation bar (indicating that you are logged in), but
+in the navigation bar, indicating that you are logged in, but
 when you interact with the service you are asked to log in again.
 This typically occurs when you have been inactive for awhile and
 your session has expired. 
@@ -216,7 +216,6 @@ permission to access.
 Located in the Data Publication Dashboard area of the screen,
 `Submit a New Dataset` will launch a new 
 link:#the-submission-workflow[submission workflow], and
-`Submit a New Dataset` will launch a new submission workflow, and
 `View My Published Datasets` will open a display showing all of 
 your submitted datasets that have been accepted for publication.
 
@@ -230,7 +229,7 @@ the dashboard will be more fully populated:
 [role="img-responsive center-block"]
 image::images/dashboard-populated.png[Populated Data Publication Dashboard]
 
-You can see that while the top of the screen looks the same, the
+In this figure, the
 dashboard area provides updates on all of the datasets in the
 curation and submission stages of the publication 
 process that are relevant to the logged-in user. 
@@ -342,7 +341,7 @@ To begin a new dataset submission, choose
 `Submit a New Dataset` from the data publication dashboard,
 link:#data-publication-dashboard[discussed earlier].
 You will be asked to select the 
-collection where you want to publish your dataset.
+collection where you want to publish your dataset:
 
 .Select Collection
 [role="img-responsive center-block"]
@@ -351,7 +350,7 @@ image::images/submit-select-collection.png[Select Collection]
 The collections that you have permission to submit (and publish)
 to are shown in the dropdown list.  
 After you select a collection and leave this page, the
-collection _cannot_ be changed.
+collection cannot be changed.
 If you accidentally specify the wrong collection for your
 dataset and continue beyond this page, 
 you must `Save & Exit` this submission
@@ -383,7 +382,7 @@ on this page.
 
 If you choose `I Do Not Accept the License Terms`, the
 dataset submission will be saved and accessible via 
-the _Dataset Submission in Progress_ section of your dashboard.
+the _Dataset Submissions in Progress_ section of your dashboard.
 This gives you the opportunity to clarify the license with 
 the collection owner and then resume the submission if you 
 are ready to accept the terms,
@@ -396,7 +395,7 @@ the next workflow step.
 === Describe the Dataset
 
 This step in the submission workflow is used to 
-enter metadata to describe the dataset you are 
+enter metadata that describes the dataset you are 
 submitting for publication.
 You will be presented with a fillable form where
 you can enter the metadata.
@@ -405,8 +404,9 @@ the prompts that appear on the form.
 
 If the collection's form contains many fields, it may 
 span multiple 'Describe' pages. 
-The progress bar at the top of the page provides a hint as to 
-how many pages the form spans. 
+The submission workflow progress bar indicates
+how many pages the form spans for the selected
+collection (three in the example shown). 
 Like other parts of the workflow, 
 you may save your work at any time and resume it later.
 This may be helpful, for example, if you do not have all of the 
@@ -422,7 +422,7 @@ process for entering metadata is the same across collections.
 [role="img-responsive center-block"]
 image::images/submit-describe-dataset.png[Describe Dataset, Page 1]
 
-In the form, field names marked with an asterisk (*) are required. 
+In the form, fields marked with an asterisk (*) are required. 
 Some fields, such as "Authors" in this example, permit you to enter
 multiple values.
 When multiple values are allowed, the `Add More` button is shown to
@@ -436,24 +436,23 @@ entry to be removed.
 [role="img-responsive center-block"]
 image::images/submit-describe2-dataset.png[Describe Dataset, Page 2]
 
-The second page of the form gives you an idea of additional metadata.
+The second page of the form gives you an idea of additional 
+types of metadata.
 You can see that the Globus data publication service allows for
 considerable customization in terms of metadata schema and entry 
-prompts and fields, allowing collection administrators to tailor
-the system for their needs without a substantial burden to lay out
-forms and verify entries.
+prompts and fields. 
 
 Enter as much (or as little) descriptive metadata as you want on pages
 two and three of the _Describe_ workflow step.
-For the "Curated Trial Collection", none of the fields on those two
-pages are required.
+For the "Curated Trial Collection", none of the fields on pages two
+and three are required by the collection.
 
 [TIP]
 =====
 In some cases, the metadata field entry prompts do not exactly match 
 the labels shown on the more generic publication pages. 
-For example, _Issue Date_ and _Publication Date_ refer to the same
-metadata field, and  _Subject_, _Subject Keywords_, and _Keywords_ are 
+For example, "Issue Date" and "Publication Date" refer to the same
+metadata field, and  "Subject", "Subject Keywords", and "Keywords" are 
 used interchangeably.
 =====
 
@@ -473,7 +472,7 @@ Click on the `Assemble Dataset` button to open
 the Globus Transfer Files page (also referred to
 as the Globus transfer interface) in a new browser
 window or tab.
-You will use this interface to copy your data 
+You will use the transfer interface to copy your data 
 from one or more Globus endpoints 
 to the submission's allocated storage location.
 
@@ -486,8 +485,7 @@ that tab.
 Look for the tab labeled "Transfer Files | Globus" and manually 
 select it if necessary.
 You may not notice this behavior the first time you assemble 
-a dataset, but you may run into it with later operations 
-that use the Globus transfer interface.
+a dataset, but you may run into it later. 
 ====
 
 .Globus Transfer Interface
@@ -514,29 +512,30 @@ The three files are copied in a single transfer task and
 they are the only
 data files we will include in the submitted dataset.
 You can also use one or more of these files for your trial
-submission, or choose others you create that contain fake 
-data--you should not publish real data in the trial collections.
+submission, or choose other files you have access to 
+that contain artificial data--you should not publish real 
+data in the trial collections.
 
 After all transfer tasks have been initiated, you can 
 close the transfer interface to return to the 
-"Submit: Assemble Dataset" workflow page.
+Submit: Assemble Dataset page.
 Alternatively, you can leave the transfer interface open and
 return to the submission workflow by selecting the
 "Assemble Dataset | Globus" tab or window in your browser.
 
 Your assemble dataset window can be refreshed periodically 
 to monitor the progress of all transfer jobs 
-associated with the submission. 
+associated with the submission:
 
 .Assemble Dataset Transfer Status
 [role="img-responsive center-block"]
 image::images/submit-assemble-status.png[Assemble Dataset Transfer Status]
 
-You can check the details of each transfer 
+You can check the details of a transfer 
 task by clicking the link showing the status of 
 the transfer ("SUCCEEDED" in the previous figure). 
 Globus will also send you an email indicating the completion 
-or other status of your transfers.
+or other status of your transfer(s).
 
 [TIP]
 =====
@@ -544,7 +543,9 @@ When transfers are long-running, it is often desirable to save
 the current workflow and return later to check progress. 
 As described earlier in the
 link:#navigation[navigation] section, the state can be saved, 
-and the dataset submission will be displayed on the dashboard. 
+and the dataset will be listed in 
+the _Dataset Submissions in Progress_ 
+section of the dashboard. 
 The progress bar of the submission workflow allows 
 you to access the assemble page directly to view the 
 updated status of the transfers for the dataset submission. 
@@ -566,9 +567,8 @@ it for publication.
 This is your last chance to correct any problems
 with the metadata or data files that make up the dataset.
 After you finalize your submission, metadata cannot 
-be changed, and access to the endpoint and folder where 
-the data files have been assembled is restricted so 
-the included files cannot be altered.
+be changed and access to the allocated endpoint and folder 
+is restricted so assembled files cannot be altered.
 
 .Verify Dataset
 [role="img-responsive center-block"]
@@ -578,7 +578,7 @@ All of the metadata values, as well as the status of
 all transfer operations for the dataset,
 are displayed on the verify screen.
 
-If you need to make changes, you can use the normal
+If you need to make changes, you can use the 
 progress bar to return to any step
 in the workflow, or the `Back` navigation 
 button to return to the previous step.
@@ -613,7 +613,7 @@ The "Curated Trial Collection", used in the example shown,
 does require curation.
 While your dataset is awaiting curation, it will be shown
 in the _Datasets Submitted for Approval_ section of the 
-publication dashboard.
+publication dashboard:
 
 .Dashboard with Dataset Submitted for Approval 
 [role="img-responsive center-block"]
@@ -657,16 +657,16 @@ image::images/groups-tab.png[Navigate to Globus Groups]
 
 On the Globus Groups page, shown below, raise 
 the "Search" tab on the left side of the page, and enter
-"data publication open trial" in the search box
+`data publication open trial' in the search box
 to find the group you need to join. 
 The group you are looking for is 
-_Data Publication Open Trial Curators_.
+"Data Publication Open Trial Curators".
 
 .Search for Data Publication Open Trial Curators
 [role="img-responsive center-block"]
 image::images/groups-open-trial-search.png[Search for Data Publication Open Trial Curators]
 
-Click on the _Data Publication Open Trial Curators_ name
+Click on the "Data Publication Open Trial Curators" name
 when it is displayed in the search 
 panel to see a description of the group:
 
@@ -678,8 +678,8 @@ Click the `Join Group` button to add yourself to the group.
 You should see confirmation that you are a member of 
 the group. 
 The "My Groups" tab on the left side of the Globus Groups 
-page should list _Data Publication Open Trial Curators_
-(you may need to refresh):
+page should list "Data Publication Open Trial Curators"
+(you may need to refresh your browser window):
 
 .Member of Data Publication Open Trial Curators
 [role="img-responsive center-block"]
@@ -701,7 +701,7 @@ image::images/curate-dashboard-claim.png[Claim Curation Task]
 
 In the figure above, there are two tasks to be claimed--both
 in "Curated Trial Collection << Open Trial".
-As a courtesy for those working in the "Curated Trial Collection",
+As a courtesy to those working in the "Curated Trial Collection",
 please curate the datasets you submit and not those submitted
 by others.
 Normally you would not have the option of curating your own
@@ -714,7 +714,7 @@ Click the `Claim` button for the dataset you want to curate.
 After you claim a curation task, the Preview Task page will 
 open.
 It displays more information about the dataset submission 
-and provide the option of performing the
+and provides the option of performing the
 curation (`Accept Task`),
 or deciding not to claim the task after all (`Cancel`).
 The location of the dataset is shown, but it
@@ -726,7 +726,7 @@ image::images/curate-preview.png[Preview Curation Task]
 
 === Perform Curation Task
 
-If you choose `Accept Task` on the Preview Task page,
+If you chose `Accept Task` on the Preview Task page,
 the Perform Task page is displayed:
 
 .Perform Curation Task
@@ -738,48 +738,69 @@ the "Endpoint and path to dataset" area of the screen
 is a link that will open the Globus Transfer Files page, 
 giving you access to the data files that are part of the
 submitted dataset.
+
 Depending on how curation is configured for the collection, 
-the curation operations will be 
+the curation operations 
 `Approve`, `Reject`, and 
-possibly `Edit Metadata`. 
+possibly `Edit Metadata` will be available to you. 
+The `Do Later` button lets you save the current state of the
+curation activity and resume it later via the `Perform` button
+next to the dataset
+in the _Curation Tasks Waiting to be Performed_ section of the
+dashboard.
+The `Unclaim` button lets you return the submitted dataset
+to the pool of curation tasks waiting to be claimed.
 
 As a curator, you should inspect the metadata presented on this
 page and use the location link to examine the data files. 
 For collections that allow curators to edit metadata, 
-selecting the "Edit Metadata" link will take you 
+`Edit Metadata` will take you 
 to the same workflow that was used during dataset submission. 
 In some cases, the metadata entry form will contain additional 
 fields that were not presented to the dataset submitter. 
 After completing the workflow, you will be returned to the
 Perform Task page.
 
-// RUTH STOPPED HERE
-
 If you `Approve` the dataset submission, a
-link:#glossary-pid[persistent identifier] will be assigned which links
+persistent identifier will be assigned which links
 to the landing page for the dataset. This identifier is displayed on
 the confirmation page shown after approval. Additionally, the user who
 submitted the dataset will be notified by email that the dataset has
-been added to the collection.
+been added to the collection; the email will include the
+persistent identifier for the dataset.
 
-If you reject the submission, you will be prompted to enter
+If you `Reject` the dataset submission, you will be prompted to enter
 descriptive text providing feedback to the user who submitted the
-dataset.  This text will be included in an email to the user informing
-them that their dataset submission was rejected.  The rejected
-submission will then appear on the user's dashboard where they can
-re-open it to update and re-submit or remove it.
-
-// .Dashboard with Curation Task Waiting to be Performed
-// [role="img-responsive center-block"]
-// image::images/curate-dashboard-waiting.png[Dashboard with Curation Task Waiting to be Performed]
-
+dataset.  The text you enter will be included in an email 
+to the user informing them that their dataset submission was rejected. 
+The rejected dataset will appear in the 
+_Dataset Submissions in Progress_ section of the user's dashboard.
+From their dashboard, the user can resume work on the dataset to address 
+deficiencies identified in the curation process and resubmit, 
+or remove the dataset submission.
 
 [[dataset-landing-page]]
-// Jim commented out for decent formatting right now
-// == Dataset Landing Page
+== Dataset Landing Page
 
-// RUTH WILL ADD THIS SECTION
+Every published dataset is represented with its own landing page, 
+which provides a description of the dataset and links to the data 
+on the collection owner's storage. 
+Authorized users can access the dataset landing page via the
+persistent identifier that was assigned when the dataset
+was published, or discover it through any of the 
+Globus data publication search and browse features.
 
+The landing page for the example dataset submitted and curated
+in this guide is shown here:
+
+.Dataset Landing Page
+[role="img-responsive center-block"]
+image::images/landing-page.png[Dataset Landing Page]
+
+The landing page shows the distribution license terms for the
+dataset, which are set by the collection.
+A downloadable citation that includes the persistent identifier
+is also provided on the page.
 
 :numbered!:
 
