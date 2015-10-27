@@ -1,0 +1,35 @@
+= How is Globus dealing with the "logjam" vulnerability?
+
+== Update Log
+*May 22, 2015 12:32pm CDT:* First version
+
+*June 9, 2015: 10:00am CDT:* Updated page for complete assessment and actions
+
+We are aware of the announced severity: MEDIUM vulnerab]ility described in link:https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-4000[CVE-2015-4000] (logjam). We have investigated the issue and do not anticipate any further updates.
+
+== Risk Assessment
+Our assessment is that there is a vulnerability for the Globus Toolkit GridFTP and MyProxy components. At present, these components do not prevent the use of export ciphers for secure communication. The exploit would require a multi-step compromise on a network connection that would allow a man-in-the-middle attack. This would be difficult to achieve but, since a compromise is possible, we encourage all GridFTP and MyProxy services to be updated as soon as possible.
+
+For GSI-OpenSSH, we believe the impact is mitigated by the fact that the GSI parts are protected inside the SSH protocol. Details from the OpenSSH developers can be read link:http://lists.mindrot.org/pipermail/openssh-unix-dev/2015-May/033896.html[here].
+
+GRAM is not impacted because it does not use ciphers to secure communication.
+
+== Actions We Have Taken to Close Attack Vector
+An enhancement (link:https://globus.atlassian.net/browse/GT-596[GT-596]) has been implemented and made available for update for GT 6 and GT 5.2.5.
+
+- The enhancement allows for an admin to set a specific cipher set to be used for all Globus Toolkit components.
+- The default ciphers configured for Globus Toolkit components will be the OpenSSL defined “HIGH” ciphers.
+
+Documentation for the new configuration file is included in the link:http://toolkit.globus.org/toolkit/docs/6.0/gsic/admin/#gsic-configuring-global-security-parameters[GSIC admin guide]
+
+== Recommended Actions for Globus Users and Administrators
+* *GridFTP administrators:* Upgrading to the latest link:http://toolkit.globus.org/toolkit/advisories.html?version=6.0[GT 6] or link:http://toolkit.globus.org/toolkit/advisories.html?version=5.2.5[GT 5.2.5] packages should be done as soon as possible.
+* *MyProxy administrators:* Upgrading to the latest link:http://toolkit.globus.org/toolkit/advisories.html?version=6.0[GT 6] or link:http://toolkit.globus.org/toolkit/advisories.html?version=5.2.5[GT 5.2.5] packages should be done as soon as possible.
+* *GSI-OpenSSH administrators:* No action is needed at this time. However, we encourage upgrading to the latest link:http://toolkit.globus.org/toolkit/advisories.html?version=6.0[GT 6] packages as a precaution.
+* *GRAM administrators:* No action is needed at this time. However, we encourage upgrading to the latest link:http://toolkit.globus.org/toolkit/advisories.html?version=6.0[GT 6] packages as a precaution.
+* *Globus Connect Server administrators:* Upgrading to the latest version as soon as possible using your operating system’s package manager, e.g. yum update, apt-get update/upgrade, etc.
+* *Globus Connect Personal users:* Upgrading to the latest version should be done as soon as possible. Click here for updating instructions
++
+** Version 2.2.0 (or later) for Mac and Linux
+** Version 2.20 (or later) for Windows
+

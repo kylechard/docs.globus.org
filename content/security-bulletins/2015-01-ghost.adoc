@@ -1,0 +1,27 @@
+= How is Globus dealing with the "GHOST" vulnerability?
+
+== Update Log
+*Jan 29, 2015 8:20am CDT:* Added to the recommended actions to make clear that there are no Globus software updates for this issue.
+
+*Jan 28, 2015 3:00pm CDT:* First version 
+
+We are aware of the announced vulnerability described in link:http://www.openwall.com/lists/oss-security/2015/01/27/9[CVE-2015-0235] (GHOST). We are investigating the issue and will update this forum post with more detail as necessary.
+
+== Risk Assessment
+Our assessment is that the Globus service and the Globus Toolkit are not vulnerable to currently known exploits resulting from this vulnerability.
+
+In short, programs using the gethostbyname*() functions could be at risk, but the conditions under which known exploits could result in any material damage are highly unlikely.
+
+MyProxy Client and Server in versions 5.7 do take input for gethostbyname() from the command line, thus not accessible from a remote host.  And any exploit would risk only user space, not root. MyProxy 5.8 and later versions - first included in Globus Toolkit version 5.2.2, (released 7/24/12), as well as those versions included in Globus Connect Server and Globus Connect Personal - do not call gethostbyname*().
+
+All versions of GSI-OpenSSH take input for gethostbyname*() from the command line, thus not accessible from a remote host; and any exploit would risk only user space, not root access.
+
+GridFTP (including the version packaged within Globus Connect Server and Globus Connect Personal) does not call gethostbyname*().
+
+GRAM does not call gethostbyname*().
+
+== Actions We Have Taken to Close Attack Vector
+As of 1/27 3:20pm CDT, we have applied patches and restarted impacted globus.org systems.
+
+== Recommended Actions for Globus Users and Administrators
+We recommend that any host with Globus services (e.g. Globus Connect Personal, Globus Connect Server, GridFTP, MyProxy, GSI-OpenSSH, GRAM) apply the advised operating system updates as soon as possible.  Please consult your software vendor for latest updates.  There are no Globus provided software updates to apply for this issue.
