@@ -88,3 +88,88 @@ Use this setup key when installing Globus Connect:
 
 == What is the purpose of the Globus Connect Personal setup key?
 The setup key is a one-time credential used during the Globus Connect Personal installation process to uniquely identify your laptop/personal computer's endpoint to Globus. Once the endpoint is created and the installation is complete the key is discarded.
+
+== Does Globus recognize a USB external drive on my laptop as part of an endpoint?
+Yes but, by default, Globus Connect Personal only allows you to access your home directory on your personal computer. Follow these steps to allow Globus to recognize your USB external drive:
+
+. Ensure you have the latest version of Globus Connect Personal installed.
+. Open the Globus Connect Personal settings window to add your USB drive. On Mac OS X, click "Preferences" in the Globus Connect Personal menu. On Windows, select the Tools -> Options menu option. On Linux, select the File -> Preferences menu option.
+. Click on the "+" button and select your USB drive. Optionally, change the directory path that you would like to access.
+
+Now, when you access your Globus Connect Personal endpoint on the Start Transfer page, you can change the path to the name of your USB drive to browse/transfer files.
+
+== How Do I Configure Accessible Directories on Globus Connect Personal for Linux
+
+When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the +\~/.globusonline/lta/config-paths+ file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. By default, a +~/.globusonline/lta/config-paths+ file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
+
+----
+~/,0,1
+----
+
+This configuration tells Globus Connect Personal to make the user’s home directory accessible, and to make it read/write in terms of the ability to do Globus transfers. If we wanted to configure the user’s home directory to be read only with respect to the ability to do Globus transfers we could change config-paths like so:
+
+----
+~/,0,0
+----
+ 
+If the user wishes to make additional directories accessible, then each new top level path must be given its own line in the +~/.globusonline/lta/config-paths+ file. For example, if the user wanted to enable Globus Connect Personal to access the /data/tables directory then they would add the following line to their config-paths file:
+
+----
+/data/tables,0,1
+----
+ 
+After making a change to the +~/.globusonline/lta/config-paths+ file you must stop and restart Globus Connect Personal like so before the changes will take effect:
+
+----terminal
+$ [input]#./globusconnectpersonal -stop#
+
+$ [input]#./globusconnectpersonal -start &#
+----terminal
+ 
+In all cases, it is important to note that a user cannot access a directory or a file via Globus Connect Personal that they don’t have proper unix file permissions for on the local system. Unix file permissions must be considered along with the permissions specified in the config-paths file to determine actual accessibility for a given file or directory. In any case, the most restrictive of the two categories of permissions will always apply.
+
+
+NOTE: There are some caveats concerning how Globus Connect Personal handles symlinks found in accessible paths. Please read more about that in the following FAQ: link:../transfer-sharing/#how_does_globus_handle_symlinks[How Does Globus Handle Symlinks?]
+
+== How do I update to the latest version of Globus Connect Personal
+The steps you will need to take to upgrade your current Globus Connect Personal install will depend on the operating system you are using. Please refer to the section below that corresponds to the OS of the system that you have Globus Connect Personal installed on.
+
+=== Windows
+. Ensure that Globus Connect Personal for Windows is running
+. Locate the Globus icon (circle with the letter "g": in it) in the system tray (bottom right of screen)
+. Right-click on the Globus icon to see the following menu:
++
+[role="img-responsive center-block"]
+image::images/win_gcp_menu.jpg[]
++
+. Select the "Check for updates..."" option and left-click
+. Follow the prompts to get updated to the latest version of Globus Connect Personal
+. If you should encounter any issues updating in this fashion, then consider simply uninstalling the old version of Globus Connect Personal, downloading the new version (link below), and then installing the new version from the downloaded installer
+
+=== Mac
+. Ensure that Globus Connect Personal for Mac is running
+. Locate the Globus icon (circle with the letter "g" in it) in the menu bar (top right of screen)
+. Click on the Globus icon to see the following menu:
++
+[role="img-responsive center-block"]
+image::images/mac_gpc_menu.png[]
++
+. Select the "Check for updates..."" option and click
+. Follow the prompts to get updated to the latest version of Globus Connect Personal
+. If you should encounter any issues updating in this fashion, then consider simply uninstalling the old version of Globus Connect Personal, downloading the new version (link below), and then installing the new version from the downloaded installer
+
+=== Linux
+. If Globus Connect Personal for Linux is running, kill it:
++
+----terminal
+$ [input]#killall gc-ctrl.py#
+----terminal
++
+. Delete the old Globus Connect Personal install directory
+. Download and extract the new Globus Connect Personal for Linux package (see link below)
+. Start Globus Connect Personal from the new install directory just as you started it before
+
+If you should encounter problems when attempting your upgrade and cannot resolve them, then feel free to contact support@globus.org for help.
+
+=== Globus Connect Personal Download Links:
+https://www.globus.org/globus-connect-personal

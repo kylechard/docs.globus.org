@@ -35,8 +35,15 @@ menus:
         title: 'Support'
         link: ''
         subsections:
-            -   title: 'FAQs'
+            -   
+                title: 'FAQs'
                 link: '/faq/'
+            -   
+                title: 'Troubleshooting'
+                link: '/troubleshooting/'
+            -   
+                title: 'Security Bulletins'
+                link: '/security-bulletins/'
             -
                 title: 'Help Center'
                 link: 'https://support.globus.org'
