@@ -22,22 +22,18 @@ menus:
             -
                 title: 'Management Console Guide'
                 link: '/management-console-guide/'
-<<<<<<< HEAD
             -
                 title: 'Data Publication User Guide'
                 link: '/data-publication-user-guide/'
             -
                 title: 'Data Publication Admin Guide'
                 link: '/data-publication-admin-guide/'
-||||||| merged common ancestors
-=======
             -
                 title: 'Quick Start Guides for Researcher Resources'
                 link: '/quick-start-guides-for-researcher-resources/'
             -
                 title: 'Release Notes'
                 link: '/release-notes'
->>>>>>> JIRA-GWEB-346
       -
         title: 'Toolkit'
         link: 'http://toolkit.globus.org/toolkit/'
