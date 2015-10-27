@@ -1,0 +1,149 @@
+= Security Bulletins
+:toc:
+:toclevels: 1
+:toc-title:
+
+== How is Globus dealing with the OpenSSL "Heartbleed" vulnerability?
+NOTE: The information in this post is current as of April 21, 2014 (at 11:45pm CDT) and may change as we continue working to ensure the security of our systems.
+
+=== Update Log
+April 21, 11:45pm CDT: Posted an update about ongoing mitigation efforts, including the testing of Globus endpoints.
+
+April 12, 2:35pm CDT: The CloudFlare Heartbleed challenge has been solved, demonstrating Heartbleed can steal the private key.
+
+April 11, 5:45pm CDT: Added comment about CloudFlare's questioning whether Heartbleed can be used to actually access a private key.
+
+April 11, 12:37pm CDT: All login cookies and all GOAuth access tokens have been invalidated, to ensure that any previously compromised tokens can no longer be used. 
+
+April 11, 11:14am CDT: We have checked all of the alternate identity providers that can be used to login to Globus, and none of them are vulnerable to Heartbleed.
+
+April 11, 11:00am CDT: As a precaution, we have released new versions of Globus Connect Personal with an updated OpenSSL, even though they should not be vulnerable.
+
+April 9, 4:54pm CDT: Added notes to the information on changing your password, to work around a bug in the web site.
+
+April 9, 3:52pm CDT: Informed all alternate identity providers of the issue and recommended updating OpenSSL version.
+
+April 9, 3:00pm CDT: Clarified that Heartbleed may be able to read more of the server's memory than just the private key.
+
+April 9, 2:55pm CDT: We have found other stock versions of Heartbleed that will compromise GRAM, MyProxy, and Globus Connect Server if configured with MyProxy.
+
+April 9, 2:13pm CDT: We have demonstrated that GridFTP is vulnerable to a customized version of Heartbleed that uses the GridFTP encoding.
+
+April 9, 2:00pm CDT: Clarified you only need to update OpenSSL if you are running a vulnerable version.
+
+April 9, 12:47pm CDT: Updated GSI-OpenSSH information.
+
+April 9, 12:40pm CDT: Updated Globus Toolkit recommendation.
+
+April 9, 12:25pm CDT: Updated risks and recommendations based understanding how Heartbleed could be customized to work against Globus Toolkit services.
+
+April 9, 11:50am CDT: Clarified that Globus Connect Personal for Mac and Windows will auto-update, but Linux must be downloaded manually.
+
+April 9, 11:45am CDT: New SSL certs for the Globus sites have been obtained and installed.
+
+April 9, 10:20am CDT: Clarified that the Globus Toolkit components are not vulnerable to the stock exploit, but may be vulnerable to a customized exploit.
+
+April 8, 8:00pm CDT: First version
+
+
+We have reviewed all Globus services and components to determine the impact of the OpenSSL vulnerability described in CVE-2014-0160 (also known as the Heartbleed bug). We are actively monitoring and updating any services affected. Below is a list of our analysis and actions we have taken, as well as precautions that end users and resource providers can take to ensure the security of their systems.
+
+=== Risk Assessment
+Based on our investigation we see no indication that any Globus services have been compromised, though exploitation by Heartbleed is undetectable, so caution and remediation is warranted. We recommend that everybody using a vulnerable version of OpenSSL should update OpenSSL immediately, and review the information below to determine whether further actions should be taken.
+
+We identified the following Globus services as being vulnerable to stock Heartbleed:
+
+- Globus service web sites (www.globus.org, nexus.api.globus.org, graph.api.globus.org) - Risk: An attacker could obtain a Globus username and password.
+- Globus Connect Server, if configured with OAuth - Risk: An attacker could obtain a password from the OAuth (MyProxy) identity provider.
+
+The following services and software components are vulnerable to some versions of the Heartbleed exploit. The stock Heartbleed we were initially testing against did not properly deal with the TLS client cert request record, but it is a trivial patch to fix this. We have since found other variants of Heartbleed in the wild that handle this correctly. We have identified the following Globus services as being vulnerable to some variants of Heartbleed that are in the wild:
+
+- Globus-Connect Server, if configured with MyProxy - Risk: An attacker could obtain a password from the MyProxy's identity provider.
+- MyProxy (used by Globus Connect Server) - Risk: An attacker could obtain a password from the MyProxy's identity provider.
+- GRAM5 - Risk: No passwords are passed over the GRAM5 protocol, nor are client certificate private keys. However, an attacker could snoop the GRAM5 communication, and replay attacks may be possible.
+
+In order to compromise a Globus service an attacker would need to do:
+
+. Exploit the vulnerable server to get the private key for the SSL server certificate. (CloudFlare's Heartbleed challenge has demonstrated this can be done.) Note that there is some evidence and belief that more than just the private key can be extracted from the server's memory. With globus.org services, only ELB's memory is vulnerable, not the globus.org backend services. 
+. Use the private key to decrypt snooped traffic from a shared, open network (e.g. public WiFi spot) and capture a username and password.
+
+The following services and software components DO NOT appear to be vulnerable to any stock exploits, but we have determined they would be vulnerable to more customized exploits:
+
+- GridFTP (used by Globus Connect Server and Globus Connect Personal) is not vulnerable to a stock exploit or the client cert request patched version. The Heartbleed attack on the GridFTP control channel does not work because GridFTP uses ASCII encoding of the TLS stream. However, we have demonstrated that it is vulnerable to a customized version of Heartbleed that uses the GridFTP encoding. The GridFTP data channel is vulnerable to some versions of Heartbleed that handle the client cert request correctly. However, the GridFTP data channel is only vulnerable when a transfer is in progress and the attacker can guess the ephemeral port being used, and even if a data channel is successfully attacked, we do not think that would expose the service (host certificate) key, but rather just the delegated proxy key, so there is little risk here.
+- GSI-OpenSSH is not vulnerable to a stock exploit, but a customized version of Heartbleed is likely possible.
+
+The following services and software components DO NOT appear to be vulnerable to any stock or customized Heartbleed variants:
+
+- Globus Connect Personal should not be vulnerable since it never accepts inbound connections from the internet. Rather, Globus Connect Personal tunnels its GridFTP control channel over gsissh to relay.globusonline.org, which only accepts connections from the Globus service.  And Globus Connect Personal only does outbound data channel connections.
+- OpenSSH uses OpenSSL for libcrypto, but does not use OpenSSL's TLS heartbeat features. It implements it's own heartbeat.
+
+=== Actions We Have Taken to Close Attack Vector
+- Amazon Web Services has updated the ELB service to fix the OpenSSL bug, which handles SSL termination for all Globus services. The Globus web services, and customer-branded Globus web sites are now safe from subsequent attacks.
+- We have obtained and installed new SSL server certificates for all of our vulnerable web sites (www.globus.org, nexus.api.globus.org, graph.api.globus.org). This ensures that if the Globus services private keys were compromised before ELB was patched, that those keys are no longer useful. 
+- As a precaution, we have released new versions of Globus Connect Personal on all platforms with an updated OpenSSL.
+- All login cookies and all GOAuth access tokens have been invalidated, to ensure that any previously compromised tokens can no longer be used. Currently logged in users will be redirected to the login page, and people using GOAuth tokens for API access will need to get a new one. This is a precautionary action, as we have no reason to believe at this time that any Globus user's account or data has been compromised
+- We have checked all of the alternate identity providers that can be used to login to Globus, and none of them are vulnerable to Heartbleed.
+
+=== Recommended Actions for Globus Users and Administrators
+Administrators of Globus Connect Server should:
+
+- Update OpenSSL on all servers running Globus Connect Server, if your version of OpenSSL is vulnerable, to prevent subsequent attacks.
+- If your Globus Connect Server is configured with OAuth, and your OAuth server has an SSL server cert, obtain and install a new SSL server cert.
+- If your Globus Connect Server systems had a vulnerable version of OpenSSL, then remove Globus Connect Server service certificates and keys, and regenerate new ones using `globus-connect-server-setup`. This should be transparent to users of the endpoint, as it does not delete the endpoint configuration, but just updates the endpoint configuration in Globus with the new certificate information. Run the following commands to remove and regenerate new Globus Connect Server service certificates and keys. We recommend you update your packages to the latest version before doing so:
++
+----terminal
+$ [input]#rm /var/lib/globus-connect-server/grid-security/\*.pem#
+$ [input]#rm /var/lib/globus-connect-server/grid-security/certificates/*#
+$ [input]#globus-connect-server-setup#
+----terminal
+
+If you are running Globus Connect Personal on Mac and Windows, as a precaution, we will be providing an auto-update to Globus Connect Personal, with updated OpenSSL libraries, even though it should not be vulnerable.
+
+If you are running Globus Connect Personal on Linux, as a precaution, you should download and install to the latest Globus Connect Personal, with updated OpenSSL libraries, even though it should not be vulnerable.
+
+Globus.org users who are concerned that their account may have been compromised can do the following:
+
+- link:https://www.globus.org/account/ChangePassword[Change your Globus password]. (Note: There is currently a bug if you click on this link while not logged in. It will take you to the Change Password page, but will not properly force you to login on your way there.  Until this is fixed, to change your password, first login to link:http://www.globus.org/[www.globus.org], and in the upper right corner, in the menu under your login name, select Change Password, and then change your password.)
+- Check (or delete and relink) your link:https://www.globus.org/account/ManageIdentities[linked identities], if any. (Note: If you are already logged into link:http://www.globus.org/[www.globus.org], you can get to this page by selecting Manage Identities in the menu under your login name in the upper right corner.)
+
+Administrators of branded sites should provide us with a new SSL certificate for their branded site. All branded sites use ELB, which has already fixed the OpenSSL vulnerability.
+
+Administrators of alternate identity providers should update OpenSSL. If the alternate identity provider uses OAuth you should also obtain a new SSL server certificate for your OAuth web server.
+
+Globus Toolkit administrators should update OpenSSL on all servers running GridFTP, GRAM5, MyProxy, or GSI-OpenSSH, if your version of OpenSSL is vulnerable.  This will prevent future exploits using a customized version of Heartbleed. If you are concerned about potential past customized exploits, you should also get new host certificates.
+
+== How is Globus impacted by the OpenSSL CCS Injection Vulnerability?
+NOTE: The information in this post is current as of June 5, 2014 (at 6:20pm CDT) and may change as we continue working to ensure the security of our systems.
+
+=== Update Log
+June 5, 6:20pm CDT: Updated: Added "Actions We have Taken" and "Recommended Actions" sections.  Informed all Alternate Providers.
+
+June 5, 1:40pm CDT: Updated: Added general impact assessment and recommendation to update OpenSSL if using a vulnerable version
+
+June 5, 10:00am CDT: First version
+
+We are aware of the OpenSSL advisory posted at https://www.openssl.org/news/secadv_20140605.txt. We are investigating the issue and will update this forum post with more detail. The flaw requires that both the server and client runs an affected version of OpenSSL. Since most browsers don't use OpenSSL (Chrome on Android 4.1.1 being an exception), most communication between end users and our services is not at risk.
+
+=== Risk Assessment
+Our initial assessment is that the nature of this CVE requires several unusual preconditions to be met and therefore the relative impact of this particular OpenSSL issue is low.  However, as a precaution, we recommend that any host with Globus services (e.g. Globus Connect Server, GridFTP, MyProxy, GSI-OpenSSH, GRAM) running OpenSSL version 1.0.1 or earlier to update ASAP.  Additional details about possible impacts to specific Globus services will follow.
+
+=== Actions We Have Taken to Close Attack Vector
+- We are monitoring Amazon Web Services OpenSSL updates to their ELB services which handles SSL termination for many Globus services
+- As a precaution, we have updated OpenSSL on all Globus operated hosts.
+
+=== Recommended Actions for Globus Users and Administrators
+The administrators of the following services should update OpenSSL if their version is vulnerable:
+
+- Globus Connect Server
+- Alternate Identity Providers
+- OAuth Servers
+- GT Services: GridFTP, GRAM5, MyProxy, or GSI-OpenSSH
+
+If you are running Globus Connect Personal on Mac and Windows, as a precaution, we will be providing an auto-update to Globus Connect Personal, with updated OpenSSL libraries, even though it should not be vulnerable.
+
+If you are running Globus Connect Personal on Linux, as a precaution, we will be providing a new version with updated OpenSSL libraries to download and install, even though it should not be vulnerable.
+
+Globus.org users, no action is required, unless you are running Globus Connect Personal (See above)
+
+Administrators of branded sites, no action is required.
+

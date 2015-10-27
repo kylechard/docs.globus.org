@@ -1,4 +1,4 @@
-= How To Install Globus Connect Personal for Linux
+= How To Install, Run, & Remove Globus Connect Personal for Linux
 
 Globus Connect Personal enables you to share and transfer files to and from your Linux laptop or desktop computer — even if it’s behind a firewall. Follow the easy steps below to turn your machine into a full-fledged Globus endpoint.
 
@@ -44,3 +44,19 @@ Once the installation is complete, click the \'Connect' button to establish conn
 image::images/130524_GC_linux_running.png[]
 
 Both lights green indicate that Globus Connect Personal is running properly and is connected to Globus. If you have any problems connecting to Globus, you may start the application from the command line using the +-debug+ option (link:../../cli[see more information on running from the command line here]). You may minimize or hide this status window once Globus Connect Personal has connected successfully.
+
+== Removing Globus Connect Personal
+. Be sure that all running instances of Globus Connect Personal are terminated by running this command:
++
+----terminal
+$ [input]#killall gc-ctrl.py#
+----terminal
++
+. Delete the old Globus Connect Personal install directory.
+. Delete the old Globus Connect Personal config with this command:
++
+----terminal
+$ [input]#rm -r ~/.globusonline/#
+----terminal
++
+. Globus Connect Personal is now removed from your system.

@@ -1,4 +1,4 @@
-= How To Install Globus Connect Personal for Mac OS X
+= How To Install, Configure, & Remove Globus Connect Personal for Mac OS X
 
 Globus Connect Personal allows you to share and transfer files to and from your Apple laptop or desktop computer — even if it's behind a firewall. Follow the steps below to turn your personal computer into a Globus endpoint.
 

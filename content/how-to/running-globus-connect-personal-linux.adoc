@@ -1,0 +1,37 @@
+= How To Run Globus Connect Personal for Linux from the Command Line
+
+If you prefer to run Globus Connect Personal on the Linux command line, specify one of the following six options: +-setup+, +-start+, +-stop+, +-status+, +-debug+, and +-trace+. This will force Globus Connect Personal to remain in command line mode. The status of Globus Connect Personal running in the background can be controlled using the +-status+ or +-trace+ options. The +-trace+ option provides more detailed information.
+
+A typical command line usage scenario might look as follows:
+
+----terminal
+$ [input]#sh globusconnect -start &#
+[output]#[1] 15268#
+----terminal
+
+----terminal
+$ [input]#sh globusconnect -status#
+[output]#Globus Online: connected
+Transfer Status: idle#
+----terminal
+
+----terminal
+$ [input]#sh globusconnect -trace#
+[output]##gsissh connected
+#gridftp 0
+#gsissh connected
+Got connection from (\'127.0.0.1', 47677)
+Sock fd: 9
+debug1: client_input_channel_open: ctype forwarded-tcpip rchan 2 win 87380 max 32768
+debug1: client_request_forwarded_tcpip: listen localhost port 0, originator 10.207.43.146 port 44326
+debug1: connect_next: host 127.0.0.1 ([127.0.0.1]:1024) in progress, fd=5
+debug1: channel 1: new [10.207.43.146]
+debug1: confirm forwarded-tcpip
+debug1: channel 1: connected to 127.0.0.1 port 1024
+#gridftp 1
+#gsissh connected
+#gridftp 1
+#gsissh connected
+#gridftp 1
+[...]#
+----terminal
