@@ -1,0 +1,25 @@
+= How is Globus impacted by the remote code execution through bash vulnerability?
+
+== Update Log
+*Sept 29, 1:46pm CDT:* "closed" this issue.  Updated all sections accordingly.
+
+*Sept 25, 3:15pm CDT:* Updated: Add details about  link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-7169[CVE-2014-7169], updated assessment, actions, and recommendation section accordingly.
+
+*Sept 24, 4:16pm CDT:* First version
+
+We are aware of the announced vulnerability "remote code execution through bash" described in link:http://seclists.org/oss-sec/2014/q3/649[CVE-2014-6271]. We are investigating the issue and will update this forum post with more detail as necessary.
+
+A follow up vulnerability was announced link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-7169[CVE-2014-7169] that indicates that the initial set of patches are incomplete.
+
+Updates for link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-7169[CVE-2014-7169] have been made available.  These have been applied to all Globus hosts.  At this time, the status of this issue is closed.  Meaning, something new would have to be presented for us to take further action.
+
+== Risk Assessment
+Our assessment remains (despite the link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-7169[CVE-2014-7169] announcement) that the none of the Globus hosted services or downloadable Globus Toolkit clients or services are vulnerable to this exploit.
+
+== Actions We Have Taken to Close Attack Vector
+As a precaution, we have applied the initial advised updates on all Globus operated hosts
+We are watching and expecting new updates to be made available to address the entire vulnerability
+As a precaution, we have applied the latest (could be final) set of updates on all Globus operated hosts
+
+== Recommended Actions for Globus Users and Administrators
+We recommend that any host with Globus services (e.g. Globus Connect Personal, Globus Connect Server, GridFTP, MyProxy, GSI-OpenSSH, GRAM) apply the advised updates ASAP.  Consult your software vendor for latest updates.

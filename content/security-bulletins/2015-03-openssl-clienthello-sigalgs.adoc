@@ -1,0 +1,19 @@
+= How is Globus dealing with the vulnerabilities in CVE-2015-0291
+
+== Update Log
+*Mar 19, 2015 1:45pm CDT:* First version 
+
+We are aware of the announced vulnerability described in link:http://openssl.org/news/secadv_20150319.txt[CVE-2015-0291] (ClientHello signalgs DoS). We are investigating the issue and will update this  post with more detail as necessary.
+
+== Risk Assessment
+Our assessment is that the Globus service and the Globus Toolkit are not vulnerable to currently known exploits resulting from this vulnerability.
+
+There are two “Severity: High” issues reported:
+- CVE-2015-0291 - An attacker could cause a denial of service (DoS) on a vulnerable host.
+- CVE-2015-0204 - An attacker could cause a man-in-the-middle (MITM) on a vulnerable host.
+
+== Actions We Have Taken to Close Attack Vector
+No action was required.  The versions of OpenSSL Globus service hosts are running are not vulnerable.
+
+== Recommended Actions for Globus Users and Administrators
+We recommend any host with Globus services (e.g. Globus Connect Personal, Globus Connect Server, GridFTP, MyProxy, GSI-OpenSSH, GRAM) to review their host configuration and apply the advised updates if necessary. Please consult your software vendor for latest updates.

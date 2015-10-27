@@ -1,0 +1,36 @@
+= How is Globus impacted by the OpenSSL CCS Injection Vulnerability?
+
+NOTE: The information in this post is current as of June 5, 2014 (at 6:20pm CDT) and may change as we continue working to ensure the security of our systems.
+
+== Update Log
+*June 5, 6:20pm CDT:* Updated: Added "Actions We have Taken" and "Recommended Actions" sections.  Informed all Alternate Providers.
+
+*June 5, 1:40pm CDT:* Updated: Added general impact assessment and recommendation to update OpenSSL if using a vulnerable version
+
+*June 5, 10:00am CDT:* First version
+
+We are aware of the OpenSSL advisory posted at https://www.openssl.org/news/secadv_20140605.txt. We are investigating the issue and will update this forum post with more detail. The flaw requires that both the server and client runs an affected version of OpenSSL. Since most browsers don't use OpenSSL (Chrome on Android 4.1.1 being an exception), most communication between end users and our services is not at risk.
+
+== Risk Assessment
+Our initial assessment is that the nature of this CVE requires several unusual preconditions to be met and therefore the relative impact of this particular OpenSSL issue is low.  However, as a precaution, we recommend that any host with Globus services (e.g. Globus Connect Server, GridFTP, MyProxy, GSI-OpenSSH, GRAM) running OpenSSL version 1.0.1 or earlier to update ASAP.  Additional details about possible impacts to specific Globus services will follow.
+
+== Actions We Have Taken to Close Attack Vector
+- We are monitoring Amazon Web Services OpenSSL updates to their ELB services which handles SSL termination for many Globus services
+- As a precaution, we have updated OpenSSL on all Globus operated hosts.
+
+== Recommended Actions for Globus Users and Administrators
+The administrators of the following services should update OpenSSL if their version is vulnerable:
+
+- Globus Connect Server
+- Alternate Identity Providers
+- OAuth Servers
+- GT Services: GridFTP, GRAM5, MyProxy, or GSI-OpenSSH
+
+If you are running Globus Connect Personal on Mac and Windows, as a precaution, we will be providing an auto-update to Globus Connect Personal, with updated OpenSSL libraries, even though it should not be vulnerable.
+
+If you are running Globus Connect Personal on Linux, as a precaution, we will be providing a new version with updated OpenSSL libraries to download and install, even though it should not be vulnerable.
+
+Globus.org users, no action is required, unless you are running Globus Connect Personal (See above)
+
+Administrators of branded sites, no action is required.
+

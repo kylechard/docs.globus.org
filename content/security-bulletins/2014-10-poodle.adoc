@@ -1,0 +1,48 @@
+= How is Globus impacted by the SSLv3 "POODLE" vulnerability?
+
+== Update Log
+*Oct 16, 12:10pm CDT:* Updated recommended action for MyProxy and GSISSH.
+
+*Oct 16, 11:00am CDT:* First version
+
+We are aware of the announced vulnerability SSLv3 "POODLE" described in link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-3566[CVE-2014-3566]. We are investigating the issue and will update this post with more detail as necessary.
+
+== Risk Assessment
+All known risks have been mitigated.
+
+We don’t see any exposure except for Web (HTTP) interactions. We cannot identify any attack vectors for the Globus Toolkit clients or services. Any recommended changes below for Globus Toolkit services are strictly a precaution.
+
+This vulnerability primarily affects clients.  Although vulnerabilities such as Heartbleed and Shellshock, affected servers, this particular vulnerability targets a client system.  However, even if the system is vulnerable it would need to be on an open Wi-Fi connection to be compromised by a man-in-the-middle attack.
+
+Soon after this vulnerability was announced, we updated all of our systems be secure. Due to the nature of the vulnerability, it is highly unlikely that any information was compromised.
+
+== Actions We Have Taken to Close Attack Vector
+- As of 10/15 7:40am CDT, updated the Globus.org Website and Branded Sites to disallow SSLv3
+- As of 10/15 9:30am CDT, updated the Globus.org REST APIs to disallow SSLv3
+- As of 10/15 4:35pm CDT, updated the Globus Transfer Service to to be compatible with GridFTP servers that disable SSLv3
+
+== Recommended Actions for Globus Users and Administrators
+For *all* GT services, there is no known attack vector at this time due to the inability of an attacker to control the client’s request. (Unlike http clients that support JavaScript interactions.).  See service specific recommendations below.
+
+- As always, system administrators are encouraged to upgrade to supported Globus Toolkit software versions (GT 5.2/6.0).
+
+* *GridFTP Administrators*
+** We recommend all servers to plan and implement moving away from using SSLv3, but not at the cost of causing instability for your users.
+** Disabling SSLv3 on a GridFTP server will cause compatibility issues when interacting with older (5.0.x and earlier) clients and servers.
+** GT 5.0 based GridFTP Clients default to SSLv3.  It can be manually changed to TLS via an ENV var.
+** Transfers between a TLS-only endpoint and a 5.0.x or older based endpoint will fail, unless that endpoint has also disabled SSLv3.
+* *GRAM Administrators*
+** All current GRAM versions require SSLv3.
+** We strongly recommend no action, e.g do not disable SSLv3 for GRAM.
+* *MyProxy*
+** We recommend all servers to plan and implement moving away from using SSLv3, but not at the cost of causing instability for your users.
+** Disabling SSLv3 on the MyProxy server will cause compatibility issues with OAuth for MyProxy servers (v1.1.3 and earlier) and MyProxy clients from Globus Toolkit 5.0 and earlier.
+* *GSI-OpenSSH*
+** We recommend all servers to plan and implement moving away from using SSLv3, but not at the cost of causing instability for your users.
+** Disabling SSLv3 on the GSI-OpenSSH server will cause compatibility issues with GSI-OpenSSH clients from Globus Toolkit 5.0 and earlier.
+* *Globus Connect Server Administrators*
+** No action is needed at this time.
+** We will provide an new version in the future to move away from using SSLv3
+* *Globus Connect Personal users*
+** No action is needed at this time.
+** We will provide an new version in the future to move away from using SSLv3

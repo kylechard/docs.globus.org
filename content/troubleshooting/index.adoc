@@ -3,10 +3,10 @@
 :toclevels: 1
 :toc-title:
 
-== My transfer status is listed as “Active” but I don’t see any events related to it (when running the “events” and “details” commands). Is my transfer really active?
+== My transfer status is listed as "Active" but I don't see any events related to it (when running the "events" and "details" commands). Is my transfer really active?
 This may be related to multiple transfers running simultaneously. If you issue multiple transfer requests, note that only three requests will be running simultaneously at any one time. The remaining transfers will be queued and start moving data as soon as another active transfer completes.
 
-== I’m trying to activate an endpoint using GSI SSH but it’s failing with error “-g was specified but you do not appear to be using gsi-ssh.” What’s causing this?
+== I'm trying to activate an endpoint using GSI SSH but it's failing with error "-g was specified but you do not appear to be using gsi-ssh." What's causing this?
 This error happens when your Globus account is not configured for use with GSI SSH, and only has SSH keys. Please see the link:../../faq/command-line-interface/#how_do_i_set_up_globus_so_i_can_connect_to_cli_globusonline_org_using_gsi_ssh[FAQ on configuring your account to use GSI SSH].
 
 == When I run "ssh username@cli.globusonline.org" see the following error: Permission denied (publickey,gssapi-keyex,gssapi-with-mic). What am I doing wrong?
@@ -15,9 +15,9 @@ This is usually the result of missing information in your Globus profile. In ord
 == I started a transfer but it seems to be stalled. What do I do now?
 There are several reasons a transfer may stall. You may want to start by seeing what Globus is doing with the request.
 
-- On the web, go to the “View Activity” page
+- On the web, go to the "View Activity" page
 - Click on ID of specific transfer (probably the one at the top of the list)
-- Click “View Event Log”.
+- Click "View Event Log".
 - Look through the progress messages and see if any of them indicate an error, such as an expired credential or quota exceeded.
 
 In the CLI, the +status+ command will give you a high level overview of the progress of the task. If you run +status+ and find the task is not progressing, run the +events+ command. The following will show the most recent 5 events for the specified task:
@@ -40,7 +40,7 @@ Go to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page
 === Option 3
 Login to command line interface (+ssh cli.globusonline.org+) and use the endpoint-activate command to refresh your credentials. For example, "ssh cli.globusonline.org endpoint-activate -U xsede#\*", and it should prompt you for your XSEDE login and password.
 
-== I used the transfer command in the CLI but it failed with a message “Credentials are Needed”. What do I need to do?
+== I used the transfer command in the CLI but it failed with a message "Credentials are Needed". What do I need to do?
 In order to access your files on an endpoint, Globus needs credentials to pass to the endpoint. Please see link:../../faq/transfer-sharing/#how_do_i_refresh_my_credentials_or_activate_an_endpoint[this FAQ] for more information on activating (or re-activating) an endpoint. Note that Globus uses only temporary credentials to act on your behalf, but never keeps your password or long-term credentials to access a site.
 
 If you are using GSI SSH to access Globus, you may just need to run the +transfer+ command with the +-g+ argument. The same credentials which were used to authenticate to Globus will then be used to access your files on the endpoint (of course, the endpoint must be configured to map this credential to you local account). If you have used Globus in the past to access this endpoint successfully, the credentials used at that time have probably expired. Credential management can sometimes be fairly complex. We continue to find ways in Globus to simplify this process as much as possible, while maintaining the level of security these credentials provide.
@@ -228,12 +228,12 @@ This issue arises when your home directory is stored on a server, and "*<path>*"
 
 To resolve this problem, you must use Windows' capability to create a shortcut to a network share, or "Map" it to a drive letter. Microsoft provides official documentation for this for link:http://windows.microsoft.com/en-us/windows/create-shortcut-map-network-drive[Windows 7 and Windows Vista], link:https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/windows_fcab_connect_drive.mspx[Windows XP], and link:http://windows.microsoft.com/en-us/windows-8/create-shortcut-to-map-network-drive[Windows 8]. Follow these instructions to assign a drive letter of your choosing to the network share containing your home directory, and then restart Globus Connect Personal.
 
-== “Couldn’t find an appropriate update in the downloaded package” when upgrading Globus Connect Personal on Mac OS X
+== "Couldn't find an appropriate update in the downloaded package" when upgrading Globus Connect Personal on Mac OS X
 When upgrading from older versions of the Globus Connect Personal client on OS X, you may encounter a message that reads:
 
 ----
 Alert.
-Couldn’t find an appropriate update in the downloaded package.
+Couldn't find an appropriate update in the downloaded package.
 ----
 
 This indicates that the version you are running is affected by a known bug in our update process.
@@ -245,3 +245,74 @@ To confirm that you are running an affected version, go to your Applications fol
 Fortunately, there is a quick and easy resolution to this problem.
 
 Please follow the instructions at our link:../../faq/globus-connect-endpoints/#mac[How do I update to the latest version of Globus Connect Personal].
+
+== Cannot run Globus Connect Personal on Mac OS X after upgrading.
+We've seen this issue on some rare occasions. Please try rebooting your machine and running the installer again. If that doesn't work, open a Terminal session and run the following at the command line:
+
+----terminal
+$ [input]#rm -rf \~/.globusonline#
+$ [input]#rm ~/Library/Preferences/org.globusonline.Globus-Connect.plist#
+----terminal
+
+This will remove your Globus endpoint configuration, so please ensure you have no active transfers (note: it will _not_ affect the data on the endpoint). You will then need to recreate the endpoint by going to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page] and clicking "add Globus Connect Personal".
+
+If you continue to experience problems, please send a note to support@globus.org and we will escalate the issue.
+
+== "Permission Denied" or "Path not allowed" Errors When Using Globus Connect Personal
+When transferring files with from Globus Connect Personal, a common error that appears on the web site is:
+
+----
+Permission Denied
+
+The administrator of the directory you have selected does not permit you to view its contents; and the directory may not be transferrable.
+----
+
+If you select "see debug information" you will probably be presented with an error like the following:
+
+----
+Command Failed: Error (list) Server: username#endpointname (Globus Connect) Command: MLST /directory/ Message: Fatal FTP Response --- 500 Command failed : Path not allowed.
+----
+
+In the Globus command line interface, the corresponding error is very similar:
+
+----
+Error: Command Failed: Error (list)
+
+Server: username#endpointname (Globus Connect)
+
+Command: MLST /directory
+
+Message: Fatal FTP Response
+
+---
+
+500 Command failed : Path not allowed.
+----
+
+=== What does this error mean?
+This error arises from one of two things:
+
+. You attempted to transfer a file or folder, or list the contents of a folder, to which Globus has not been allowed access
+. Your user account does not have the privileges needed to access the file or folder in question
+
+=== Option 1: The Folder Is Not In Your "Accessible Folders", "Accessible Directories and Files", or "Access Path Configuration"
+Depending on your operating system, this setting may be called by any of the above names. The *Accessible Folders* is Globus Connect Personal's list of files and directories to which you have granted Globus access.
+
+This is the more common cause of this error. The *Accessible Folders* must include a folder that contains the file or folder you are attempting to transfer.
+
+=== Option 2: You Do Not Have Sufficient Permissions to Access the File or Folder
+If you have the file or folder entered into your *Accessible Folders* settings, and are still receiving permission denied errors, it is likely that your user account on the endpoint does not have sufficient privileges on the file or folder that you are attempting to access with Globus. 
+
+==== Resolving the Error: Accessible Folders
+To resolve this issue, you may need to modify your *Accessible Folders* on Globus Connect Personal.
+
+- If you are using Windows, go to the System Tray, and right-click on the Globus icon. Select "Options" to bring up the menu, and select the "Access" tab.
+- If you are using Linux, go to the File menu and select "Preferences".
+- If you are using OS X, go to the Taskbar, and left-click on the Globus icon. Select "Preferences", and then select the "Access" tab.
+
+Any folder name in the *Accessible Folders* list may have its contents read—that is, inspected or copied—by Globus. There are additional checkboxes to make the file or folder _Writable_ —may be modified, replaced, or deleted—and _Sharable_ —accessible from Shared Endpoints you might create (note: you must be a link:https://www.globus.org/plus[Globus Plus user] to share from a Globus Connect Personal endpoint). Add your file or folder, or a folder which contains your file or folder, and make it _Writable_ if desired, and you should no longer see "Permission Denied" errors. 
+
+For example, if [uservars]#exampleuser# wants to transfer file [uservars]#/a/b/c# from Globus Connect Personal endpoint [uservars]#exampleuser#myendpoint# to [uservars]#exampleuser#otherendpoint#, all he or she has to do is open the Accessible Folders settings on [uservars]#exampleuser#myendpoint#, and ensure that one or more of the following files or directories are in the Accessible Folders list: [uservars]#/a/b/c#, [uservars]#/a/b/#, [uservars]#/a/#, or [uservars]#/#.
+
+==== Resolving the Error: Insufficient Permissions
+If you do not have sufficient permissions to read or write a file or folder, you will need to change the permissions on those files or directories so that Globus can access them. Once you can view or edit files or directories under your user account on the Globus Connect Personal endpoint, Globus should no longer have problems reading or writing their contents, as long as the *Accessible Folders* settings are correct.

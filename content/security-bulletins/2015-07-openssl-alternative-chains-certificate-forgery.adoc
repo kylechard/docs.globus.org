@@ -1,0 +1,22 @@
+= How is Globus dealing with the "Alternative chains certificate forgery" (CVE-2015-1793) vulnerability?
+
+== Update Log
+*July 10, 2015 11:00am CDT:* Minor editing and clarification.
+
+*July 9, 2015 3:00pm CDT:* First version
+
+We are aware of the announced OpenSSL vulnerability described in link:https://access.redhat.com/security/cve/CVE-2015-1793[CVE-2015-1793] (Alternative chains certificate forgery). We have investigated the issue and do not anticipate any further updates.
+
+== Risk Assessment
+Our assessment is that the severity of this vulnerability, as it pertains to Globus, is extremely low.  Only OpenSSL versions released since June 2015 (specifically, versions 1.0.2c, 1.0.2b, 1.0.1n and 1.0.1o) are affected by this vulnerability.
+
+Neither the Globus website, running services, nor software downloads use the vulnerable versions of OpenSSL.
+
+Globus Toolkit clients and services may be vulnerable when used with an affected version of OpenSSL, though we are unaware of an attack vector.  Note that the currently supported platforms have not updated to the affected versions of OpenSSL, so clients would only be vulnerable if administrators had specifically installed a newer OpenSSL version themselves.  Additionally, the versions of OpenSSL distributed with Globus Connect Personal are not affected.
+
+== Actions We Have Taken to Close Attack Vector
+None.  No actions were required.
+
+== Recommended Actions for Globus Users and Administrators
+We recommend that any host with Globus services (e.g. Globus Connect Personal, Globus Connect Server, GridFTP, MyProxy, GSI-OpenSSH, GRAM) should review their host configuration and apply the advised OpenSSL updates if necessary.
+Note: This is unlikely, as most major Linux distributions have not released an OpenSSL update since before June 2015. 
