@@ -38,7 +38,7 @@ Go to the link:https://www.globus.org/xfer/StartTransfer[Start Transfer page], a
 Go to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page], browse to the endpoint on which you need to renew credentials. Select the endpoint, go to the Activate menu, and follow on-screen instructions to reactivate the endpoint.
 
 === Option 3
-Login to command line interface (+ssh cli.globusonline.org+) and use the endpoint-activate command to refresh your credentials. For example, "ssh cli.globusonline.org endpoint-activate -U xsede#\*", and it should prompt you for your XSEDE login and password.
+Login to command line interface (+ssh cli.globusonline.org+) and use the endpoint-activate command to refresh your credentials. For example, ssh cli.globusonline.org endpoint-activate -U xsede#\*", and it should prompt you for your XSEDE login and password.
 
 == I used the transfer command in the CLI but it failed with a message "Credentials are Needed". What do I need to do?
 In order to access your files on an endpoint, Globus needs credentials to pass to the endpoint. Please see link:../../faq/transfer-sharing/#how_do_i_refresh_my_credentials_or_activate_an_endpoint[this FAQ] for more information on activating (or re-activating) an endpoint. Note that Globus uses only temporary credentials to act on your behalf, but never keeps your password or long-term credentials to access a site.
@@ -56,7 +56,7 @@ A more common cause is "credential expiration". This means that Globus is no lon
 Instructions for renewing your credentials link:../../faq/transfer-sharing/#how_do_i_refresh_my_credentials_or_activate_an_endpoint[are available here].
 
 == ENDPOINT_ERR This server version does not support timestamp preservation
-In the event that you see an error like this - *Message: This server version does not support timestamp preservation -*
+In the event that you see an error like this - [error]#Message: This server version does not support timestamp preservation#
 
 [role="img-responsive center-block"]
 image::images/ts-1.png[]
@@ -222,7 +222,7 @@ We always attempt to provide quick response time, but the more information you p
 == Globus Connect Personal says "Your user profile is on a network share", and "you must map this location to a local drive"
 If you have a home directory on a network share, you may see an error message of the form
 
-*"Your user profile is on a network share, at location "<path>". To use Globus Connect Personal, you must map this location to a local drive. Please contact support@globus.org for more information."*
+[error]#"Your user profile is on a network share, at location "<path>". To use Globus Connect Personal, you must map this location to a local drive. Please contact support@globus.org for more information."#
 
 This issue arises when your home directory is stored on a server, and "*<path>*" takes the form of "*\\example.com\share\Users\ExampleUsername*".
 
@@ -316,3 +316,63 @@ For example, if [uservars]#exampleuser# wants to transfer file [uservars]#/a/b/c
 
 ==== Resolving the Error: Insufficient Permissions
 If you do not have sufficient permissions to read or write a file or folder, you will need to change the permissions on those files or directories so that Globus can access them. Once you can view or edit files or directories under your user account on the Globus Connect Personal endpoint, Globus should no longer have problems reading or writing their contents, as long as the *Accessible Folders* settings are correct.
+
+== Why am I receiving the following type of SSLv3 handshake error?
+This is the error message:
+
+----terminal
+[output]#530-globus_xio: Authentication Error
+
+530-globus_gsi_gssapi: Unable to verify remote side's credentials
+
+530-globus_gsi_gssapi: SSLv3 handshake problems: Couldn't do ssl handshake
+
+530-OpenSSL Error: s3_srvr.c:965: in library: SSL routines, function
+
+SSL3_GET_CLIENT_HELLO: wrong version number
+
+530 End.#
+----terminal
+
+This would indicate that some users are still using an old/incompatible version of the client.
+
+The reason for this issue is that we’ve recently updated our infrastructure to disallow SSLv3 (and prefer TLS) to avoid the POODLE vulnerability discovered last year. This upgrade was coordinated by Globus. All Globus installations are due to be configured to disallow SSLv3 by this time (July 2015). If there are transfer issues such as you are seeing, this means that remote services must be upgraded in order to accommodate this fix. The endpoint administrator will need to be contacted to request that the endpoint be updated.
+
+For more information, please check out the following:
+
+- https://support.globus.org/entries/101814643
+
+- http://lists.globus.org/pipermail/gt-user/2015-March/010791.html
+
+== I receive the error message "You are not an admin of the MyProxy Delegation Service". What does this mean and how do I fix it?
+
+This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` multiple times using different Globus usernames. As a workaround to get rid of this error, run this command as root: 
+
+----terminal
+# [input]#rm /var/lib/myproxy-oauth/myproxy-oauth.db#
+----terminal
+
+Then rerun the setup script.
+
+If you aren't using an OAuth server in your configuration (if you are using, for example, `IdentityMethod = MyProxy` in your configuration), you can disable the OAuth server by commenting out the `Server = %(HOSTNAME)s` line in the [OAuth] section of the configuration file.
+
+== Globus Connect Server file permission errors
+If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has the following permissions set:
+
+/var/lib/globus-connect-server should have the following permissions:
+
+----terminal
+[output]#755 root.root /var/lib/globus-connect-server
+755 root.root /var/lib/globus-connect-server/gridftp.d
+755 root.root /var/lib/globus-connect-server/myproxy.d
+755 root.root /var/lib/globus-connect-server/grid-security
+755 root.root /var/lib/globus-connect-server/grid-security/certificates
+700 root.root /var/lib/globus-connect-server/myproxy-ca
+700 root.root /var/lib/globus-connect-server/myproxy-ca/private
+700 root.root /var/lib/globus-connect-server/myproxy-ca/newcerts
+700 root.root /var/lib/globus-connect-server/myproxy-ca/certs
+700 root.root /var/lib/globus-connect-server/myproxy-ca/store
+700 root.root /var/lib/globus-connect-server/myproxy-ca/crl#
+----terminal
+
+The files in /var/lib/globus-connect-server/grid-security/certificates should all have permissions set to 644.

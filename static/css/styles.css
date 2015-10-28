@@ -334,6 +334,8 @@ footer #legal {
 .default-page {}
 .faq-page {}
 .site-docs-page {}
+.troubleshooting-page {}
+
 
 /* Media Queries */
 @media (max-width: 991px) {
