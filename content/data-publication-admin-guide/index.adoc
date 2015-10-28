@@ -8,9 +8,9 @@
 
 // Define some attributes to reuse in-line
 :publication_webpage_url: http://www.globus.org/data-publication
-:production_publish_url: http://publish.globus.org
+:production_publish_url: https://publish.globus.org
 :production_publish: publish.globus.org
-:trial_publish_url: http://trial.publish.globus.org
+:trial_publish_url: https://trial.publish.globus.org
 :trial_publish: trial.publish.globus.org
 :publish_admin_guide_url: http://dev.globus.org/data-publication-admin-guide
 :publish_user_guide_url: http://dev.globus.org/data-publication-user-guide
@@ -22,8 +22,8 @@
 [float]
 === About This Document
 
-This document provides information on configuring Globus Data
-Publication for an organization's administrators. The operations
+This document provides information for an organization's
+administrators on configuring Globus Data Publication. The operations
 described here must be carried out before any users can submit data to
 the service. Users only interested in submitting data for publication
 need not familiarize themselves with the content of this document. The
@@ -41,7 +41,7 @@ toc::[]
 == Pre-requisites
 
 When access to Globus Data Publication is setup for an organization a
-new community will be created for them and administration rights for
+new community will be created and administration rights for
 that community will be granted to members of a Globus group. From that
 point forward, members of this administrative group will perform all
 management and configuration operations. These administrators are able
@@ -57,8 +57,8 @@ are provided.
 
 1. A suitable server for storing the publication data must be
 setup. This server must have Globus Connect Server
-http://dev.globus.org/resource-provider-guide[installed] and must have
-http://dev.globus.org/resource-provider-guide/#sharing_section[Sharing
+http://docs.globus.org/resource-provider-guide[installed] and must have
+http://docs.globus.org/resource-provider-guide/#sharing_section[Sharing
 enabled]. Access to the necessary sharing capability requires a
 https://www.globus.org/providers/provider-plans[Provider Plan].
 
@@ -141,9 +141,9 @@ is intended to provide more detailed information describing the
 collection. The final two fields present license information at
 different stages of interactions with the datasets in the
 collection. The first field, "Publication License," is
-link:{publish_user_guide_url}#approving-a-license[presented to the
+link:{publish_user_guide_url}#accept-license[presented to the
 user for approval during] the submission workflow. Anyone submitting
-to the collection will be required to approve this license. The next
+to the collection will be required to accept this license. The next
 field, "Distribution License," will be presented to users at the time
 they choose to access data stored in a dataset in the collection.
 
@@ -171,11 +171,11 @@ image::images/StorageConfig.png[Storage Configuration]
 === Configuring Persistent Identifiers
 
 A particularly important task when configuring a community or collection
-is setting up the link:{publish_user_guide_url}#glossary:pid[Persistent Identifier (PID)]
+is setting up the link:{publish_user_guide_url}#glossary-pid[Persistent Identifier (PID)]
 configuration. PID configurations can be created on both communities and
 collections. When a configuration has been set on a community, all
 collections within the community have access to that configuration. This
-provides a convenient manner to perform these settings once and then
+provides a convenient method to perform these settings once and then
 re-use them across many collections within the community. PID
 configurations set on a collection are also saved so the collection can
 be easily re-configured to re-use a previous configuration should
@@ -207,7 +207,7 @@ TIP: When using the Globus Data Publication Trial site, default PID
 configurations for EZID and Handle are pre-populated as options for
 your community and for collections created in the community. For
 testing purposes, it is typically sufficient to use one of these
-configurations rather than creating a new one as described below.
+configurations rather than creating a new one.
 
 
 [[configuring-an-ezid-pid-provider]]
@@ -216,10 +216,10 @@ configurations rather than creating a new one as described below.
 The link:http://ezid.cdlib.org[EZID service] provides a method for
 creating link:http://www.doi.org[Digital Object Identifiers] (DOIs)
 which are intended to be permanent references to a data resource.
-EZID requires creation of an account with the EZID service. It is
-considered a good practice to use the EZID functionality to create
-delegated credentials which can be entered here allowing the Globus
-Data Publication service to use EZID to create DOIs on behalf of the
+EZID requires creation of an account with the EZID service. It is a
+good practice to use the EZID functionality to create delegated
+credentials which can be entered here allowing the Globus Data
+Publication service to use EZID to create DOIs on behalf of the
 organization owning the collection.
 
 [role="img-responsive center-block"]
@@ -238,7 +238,9 @@ for use with the sandbox. The "Resolver Base URL" also forms part of the
 final URL being generated for the PID and represents the root service
 which will be used to resolve the identifier in the future. This is the
 host which will perform the lookup of the identifier and re-direct the
-client to the dataset's landing page on Globus Data Publication. It will
+client to the dataset's
+link:{publish_user_guide_url}#dataset-landing-page[landing page] on
+Globus Data Publication. It will 
 be rare to make changes to this value, but other resolution services are
 possible so the option to change it is provided.
 
@@ -249,7 +251,7 @@ The http://handle.net[Handle System] is a general purpose identifier
 resolution system which is commonly used for providing stable URLs
 which can be redirected to other resources throughout their
 life-cycle. Use in data publication and preservation systems is
-common.  To begin using Handles, it is necessary to register a handle
+common.  To begin using the Handle service, it is necessary to register an
 account with http://handle.net/service_agreement.html[CNRI]. When
 registration is complete, a handle prefix will be
 assigned. Additionally, as part of configuration a key-pair will be
@@ -259,7 +261,7 @@ is described in the
 http://handle.net/tech_manual/Handle_Tech_Manual_7_v1-1-22Dec10.pdf[Handle
 Documentation]. To use the handle system a handle server
 which owns the assigned prefix must be running. An organization that
-wishes to use Handle but cannot operate a handle server can
+wishes to use Handle but which cannot operate a handle server can
 mailto:support@globus.org[contact us] to discuss options for using the
 Globus-operated handle server to host their prefix.
 
@@ -269,15 +271,14 @@ image::images/PIDHandleConfig.png[Configuring the Handle System]
 After providing a name for the newly created configuration, the first
 field to be filled in is the prefix assigned by CNRI during
 registration. The value in the "Namespace" field will be included in
-every handle generated helping to differentiate handles generated by
-Globus Data Publication and if desired the specific collection the
-dataset referred to by the handle resides in. The "Administrative
+every handle generated helping to identify handles generated by a
+particular configuration. The "Administrative
 Private Key" and the "Private Key Passcode" are generated by the
 administrator of the handle prefix. The private key is typically
 stored as a binary file, but it must be converted to a `Base64`
 representation for upload on this form. This can be done using a
 command-line utility such as `base64` to create the required
-representation. The data placed in this field of the form should not
+string. The data placed in this field of the form should not
 contain extra characters and should not have any carriage returns
 embedded or entered at the end of the form. When generated during
 configuration of the handle server, these administrative keys are
@@ -297,7 +298,7 @@ for the identifier.
 The "Workflow Settings" pane is used to define what forms and workflow
 steps will be used by the collection. The "Input Form" dropdown lists
 the available forms which can be configured for use during the
-link:{publish_user_guide_url}#describing-the-publication[submission workflow]. By default, the
+link:{publish_user_guide_url}#the-submission-workflow[submission workflow]. By default, the
 forms listed will conform to the three levels of information defined
 by https://www.datacite.org/[Datacite] for DOI registration. The three
 pre-defined forms and their content are:
@@ -307,19 +308,19 @@ pre-defined forms and their content are:
 * Authors
 * Publication Year: A date associated with the dataset's publication
   containing at least the year, but also month and day if desired.
-* Language: The main language of any text content.
+* Language: The primary language of any text content.
 * Publisher: The organization credited with publishing the dataset.
 
 .`Datacite Mandatory + Recommended`:
 * All of the above 
 * Subject Keywords: Summarizing words primarily intended to enable
   easier discovery and search for the dataset.
-* Description
+* Description: Open text describing the dataset.
 * Resource Type: A classification for the type of data contained in
   the dataset.
 * Contributors: A group of individuals or organizations who
   contributed to the creation of the dataset. The contributors role as
-  well as their identify may be specified.
+  well as their identify are specified.
 * Related Identifier: Identifiers of other datasets or uniquely
   identifiable entities which are related to the dataset. The relation
   type as well as the identifier text may be specified.
@@ -368,15 +369,16 @@ NOTE: If any form of curation is selected, a corresponding group must
 be selected as described in the
 link:#assigning-groups-to-roles[following section].
 
-[role="img-responsive center-block"]
-image::images/WorkflowConfig.png[Configuring Forms and Workflows]
 
 [[assigning-groups-to-roles]]
 === Assigning Groups to Roles
 
+[role="img-responsive center-block"]
+image::images/WorkflowConfig.png[Configuring Forms and Workflows]
+
 All user roles within a collection are mapped to user groups in
 Globus.  Using this method, once groups have been configured, their
-members may be changed by changing members using the
+members may be changed using the
 https://www.globus.org/Groups[Globus Groups Interface]. The groups to
 be configured were enumerated in the
 link:#pre-requisites[Pre-requisites section]. The collection specific
@@ -385,13 +387,13 @@ groups: Submitters, Access to Data and Curation are set using the
 can be set to allow "All Users." When submitters is set to all users,
 any user logged in to the service will be allowed to submit to this
 collection. The collection will appear on the
-link:{publish_user_guide_url}#selecting-a-collection[list of available] collections for any
+link:{publish_user_guide_url}#select-collection[list of available] collections for any
 user who selects "Start a New Submission" on the
-link:{publish_user_guide_url}#using-the-data-publication-dashboard[Dashboard].
+link:{publish_user_guide_url}#data-publication-dashboard[Dashboard].
 
 NOTE: When all users are allowed to submit to a collection there must
 be a curation type and corresponding group selected. It is not
-possible to configure a collection which allows arbitrary users to
+permitted to configure a collection which allows arbitrary users to
 make submissions without curation being performed.
 
 [role="img-responsive center-block"]
