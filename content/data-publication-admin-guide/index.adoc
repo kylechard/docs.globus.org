@@ -57,8 +57,8 @@ are provided.
 
 1. A suitable server for storing the publication data must be
 setup. This server must have Globus Connect Server
-http://docs.globus.org/resource-provider-guide[installed] and must have
-http://docs.globus.org/resource-provider-guide/#sharing_section[Sharing
+link:../../resource-provider-guide[installed] and must have
+link:../../resource-provider-guide/#sharing_section[Sharing
 enabled]. Access to the necessary sharing capability requires a
 https://www.globus.org/providers/provider-plans[Provider Plan].
 
