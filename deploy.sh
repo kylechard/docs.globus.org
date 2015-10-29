@@ -29,6 +29,25 @@ else
 fi
 
 
+# check for RVMRC and VirtualEnv
+
+# if there's a directory in the repo named '.virtualenv', assume that it's a
+# virtualenv with the tools we need to proceed
+if [ -d .virtualenv ];
+then
+    source .virtualenv/bin/activate
+fi
+# likewise, assume that any existing .rvmrc is valid and source it
+if [ -f .rvmrc ];
+then
+    # ensure that RVM is loaded as a shell function (otherwise this gets
+    # *really* murky and ugly)
+    source $HOME/.rvm/scripts/rvm
+    # run the rvmrc file, with rvm loaded as a function this should work fine
+    source .rvmrc
+fi
+
+
 ### Run deployment ###
 echo "Deploying to $env"
 

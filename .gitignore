@@ -1,8 +1,15 @@
+# directories produced during the site build
 output
 tmp
-.DS_Store
+
+# output log from build failures
 crash.log
-asciidoc/backends/bootstrap/bootstrap.zip
-docs.globus.org-staging
-docs.globus.org
+
+# common unwanted file types
+.DS_Store
+*.zip
 Gemfile.lock
+
+# virualenv and rvmrc for deploy script
+/.virtualenv
+/.rvmrc
