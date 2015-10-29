@@ -7,7 +7,6 @@ crash.log
 
 # common unwanted file types
 .DS_Store
-*.zip
 Gemfile.lock
 
 # virualenv and rvmrc for deploy script
