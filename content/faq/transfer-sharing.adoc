@@ -1,5 +1,5 @@
 ---
-menu_weight: 1
+menu_weight: 3
 short_title: Transfer and Sharing
 ---
 :toc-placement: manual
@@ -10,20 +10,6 @@ short_title: Transfer and Sharing
 = FAQs: Transfer and Sharing
 
 toc::[]
-
-== Which browsers does the Globus web user interface support?
-The Globus web user interface is tested and verified to work on the most recent desktop version of Chrome, Edge, Firefox, Internet Explorer, and Safari.
-
-Earlier versions of these browsers, as well as other desktop browsers (e.g. Opera) and mobile/touch-based browsers, may experience loss of functionality and/or distorted visual effects. Limited or no support may be available for such browsers.
-
-== How much does Globus cost?
-Globus is free for researchers at non-profit institutions to use for file transfer, thanks to the generous support of sponsors who fund our research.
-
-As a non-profit institution, our goal from day one has been to make Globus a self-sustaining service, so that we can continue to serve the needs of academic and non-profit research organizations for many years to come. Most of our funding is intended for research and early software development, not to cover operation, support, and ongoing evolutionary improvement of the service. As usage grows, our costs have grown and we decided that charging a usage-based subscription fee for additional features that go beyond file transfer is the best way to ensure that we can continue to provide a high-quality research data management service.
-
-To this end, certain Globus features are available only by subscribing to a link:http://www.globus.org/providers/provider-plans[Globus Provider plan]. Such features include the ability to share files directly from existing storage, access to data publication functionality, and performing various administrative tasks for Globus endpoints at your institution. Globus Provider plans also offer higher levels of support from the Globus team, with priority response times.
-
-If you are a commercial user, you may use Globus by signing up for a link:https://www.globus.org/providers/provider-plans#commercial-pricing[commercial Provider plan]. We are unable to offer the service free of charge to commercial users, but believe that you will find Globus provides valuable capabilities at a reasonable price. Thanks!
 
 == How do I "refresh my credentials" (or "activate an endpoint")?
 Because Globus does not store usernames/passwords for your endpoints, periodic re-authentication is required. This means you need to log on with the appropriate username and password for the given endpoint (this is called endpoint "link:#what_is_activation[activation]"). There are two ways to refresh your credentials in Globus:

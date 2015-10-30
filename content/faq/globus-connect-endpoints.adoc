@@ -1,5 +1,5 @@
 ---
-menu_weight: 2
+menu_weight: 4
 short_title: Globus Connect and Endpoints
 ---
 :toc-placement: manual
