@@ -42,9 +42,6 @@ image::images/AlternateLogin_highlight.png[]
 . On your first use of a third-party login, you will be prompted to *Make a Connection* to link that login with your Globus account - this is a one-time process (if you don't already have a Globus account you will be prompted to create one)
 . Your accounts are now linked, click *Let's Go»* to enter the site.
 
-== How do I remove a MyProxy account from Globus?
-Sign in to Globus and go to the link:https://www.globus.org/account/ManageIdentities[Manage Identities page]. Click the "Delete" button next to the MyProxy identity you wish to remove.
-
 == What authentication methods does Globus support?
 Globus supports multiple authentication methods, including username/password (our default method), MyProxy, MyProxy with OAuth, OpenID (using a Google account) and InCommon. In all instances, you are first required to set up a Globus account (username/password) and then can link:https://www.globus.org/account/ManageIdentities[associate additional identities with your Globus account]. You will subsequently be able to sign in to Globus using any of the identities mapped to your account.
 

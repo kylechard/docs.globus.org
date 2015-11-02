@@ -36,23 +36,8 @@ There are two classes of endpoints: personal endpoints and server endpoints. You
 == What is "activation"?
 Activation is the mechanism Globus uses to authenticate a user on an endpoint. It enables users to specify which identity should be used to authenticate with an endpoint. For example if I wanted to transfer a file from NERSC to ALCF, I could sign in to Globus using my Globus account name and password, and activate the [uservars]#nersc#dtn+# endpoint using my NERSC username and password, and finally activate the [uservars]#alcf#dtn# endpoint using my ALCF username and pin+OTP.
 
-=== Authentication
-Globus uses an X.509 proxy credential to authenticate with the GridFTP servers on the endpoints. Users can delegate a proxy credential to Globus using gsissh, or allow the service fetch a proxy credential from a MyProxy (or MyProxy via OAuth) server.
-
 == How can I transfer files to/from my server?
-In order to transfer files to/from a server using Globus the server must be set up as a Globus endpoint. This requires that you link:http://dev.globus.org/resource-provider-guide/#install_section[install Globus Connect Server] which will allow all users with a local account on the server to access the endpoint. Before installing, check to link:https://www.globus.org/xfer/ManageEndpoints[see if an endpoint is already defined for your server]; many campuses, research communities, and national cyberinfrastructure providers (e.g., XSEDE, NERSC, etc.) have created Globus endpoints on their systems.
-
-Once your endpoint is set up you can access it by going to the link:https://www.globus.org/xfer/StartTransfer[Transfer Files page] and entering its name in the Endpoint field. Endpoint names are of the form <globus-user-name>#<endpoint-name>; for example, if you registered a Globus user called [uservars]#myrcc# and wanted to create an endpoint for your cluster called [uservars]#capricorn# the resulting endpoint name would appear as [uservars]#myrcc#capricorn#. See the screenshot below: in this instance the endpoint being accessed is [uservars]#xsede#longhorn# which represents the Longhorn supercomputer managed by the XSEDE project.
-
-[role="img-responsive center-block"]
-image::images/140211_Transfer.png[]
-
-To access your Globus endpoint you may authenticate using your local username and password on that server or you may configure the endpoint to redirect users to an external identity provider such as your campus identity system. A common scenario for universities in the U.S. is using their campus credentials to authenticate via the institution's InCommon identity provider (link:http://dev.globus.org/resource-provider-guide/#security_section[see this page for details on configuring your Globus endpoint to use InCommon]).
-
-After accessing the endpoint, you may select the files to transfer, select the destination endpoint, and click the highlighted arrow button to start the transfer.
-
-[role="img-responsive center-block"]
-image::images/140211_Transfer_go.png[]
+In order to transfer files to/from a server using Globus the server must be set up as a Globus endpoint. Please see the link:../../resource-provider-guide[Resource Povider Guide for instructions].
 
 == How do I see error logs for my transfers?
 You can access a detailed list of errors (and other status messages) for any Globus Online task using both the Web interface and the command line interface.
@@ -77,14 +62,8 @@ You can use the link:https://www.globus.org/xfer/ViewActivity[Web interface] or 
 == How can I transfer files to and from my laptop or desktop?
 Use link:https://www.globusonline.org/globus_connect/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:#what-is-an-endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Globus Connect Personal is available for Mac OS X, Windows, and Linux. link:https://www.globus.org/globus-connect-personal[Get started here].
 
-== How do I transfer files?
-Once you sign up you can initiate transfers using the Web interface or using the transfer and scp commands on the command-line interface. Please see link:../../how-to/signup-transfer/[this how-to guide] for more details.
-
 == How will I know when my transfer is completed?
 Globus sends a notification message to the e-mail address link:https://www.globus.org/account/UpdateProfile#[stored in your account profile].
-
-== How can I create an endpoint?
-If there is already a GridFTP server running on your machine you can use the endpoint-add command or the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. If there is no existing GridFTP deployment then you have two options, depending on whether the endpoint is a machine for personal use (Globus Connect Personal) or a multi-user server (Globus Connect Server). For personal use, link:https://www.globus.org/globus-connect-personal[please see the instructions on this page]. For a multi-user machine such as a campus cluster or lab server, link:https://www.globus.org/globus-connect-server[please see the instructions on this page].
 
 == Does Globus support one-time passwords (OTP)?
 Yes, one-time passwords work with Globus and do not require any specialized configuration. To access a site that requires an OTP (e.g. ACLF), simply enter your password as you would normally when prompted.
@@ -92,7 +71,7 @@ Yes, one-time passwords work with Globus and do not require any specialized conf
 == How does Globus Online ensure my data is secure?
 Globus Online uses a "control channel" to communicate with the source and destination endpoints for a transfer. All control channel communications are encrypted.
 
-In addition to the control channel, the data is transferred over a "data channel" that exists only between the source and destination endpoints, i.e. Globus Online does not have access to this channel, it is only accessed by the servers on the endpoints. By default the data channel is authenticated, but unencrypted.  It can be encrypted by selecting the "encrypt transfer" option on the Transfer Files page (see screenshot below), or by including the +--encrypt+ option for the +scp+ and +transfer+ commands when using the command line interface.
+In addition to the control channel, the data is transferred over a "data channel" that exists only between the source and destination endpoints, i.e. Globus Online does not have access to this channel, it is only accessed by the servers on the endpoints. By default the data channel is authenticated, but unencrypted.  It can be encrypted by selecting the "encrypt transfer" option on the Transfer Files page (see screenshot below), or by including the +--encrypt+ option for the +transfer+ command when using the command line interface.
 
 [role="img-responsive center-block"]
 image::images/130725_Encryption_option.png[]
@@ -100,9 +79,9 @@ image::images/130725_Encryption_option.png[]
 You should be aware that encryption adds processing overhead, resulting in slower transfers. Encrypted transfers use the SSL cipher configured on the endpoints (the default for OpenSSL is AES256-SHA).
 
 == Which protocols does Globus support?
-Globus transfer tasks can be initiated and managed using our GUI, REST, and CLI interfaces.
+Globus transfer tasks can be initiated and managed using our Web UI, REST, and CLI interfaces.
 
-The GridFTP protocol is used to transfer the data files themselves.  We have also received requests to support UDT, and will consider implementing this protocol if there is sufficient demand from our users.
+The GridFTP and UDT protocols are used to transfer the data files themselves.
 
 == What does "Beta" mean in the Globus context?
 We use "Beta" as an indicator of what an end user may expect from a newly-released Globus feature. We will usually tag something as "Beta" when we have a new feature that we want to expose to users for feedback, but that we know is not fully tested and quality assured. When a Globus feature/page is tagged as "Beta" it means that we expect it to work as intended, but that you may experience some issues in your context. This means that we cannot provide performance guarantees and suggest that you not rely on the feature for production use.
@@ -110,7 +89,7 @@ We use "Beta" as an indicator of what an end user may expect from a newly-releas
 == What are GridFTP concurrency, pipelining, parallelism, and striping? They all sound the same!
 Globus optimizes GridFTP transfers by choosing performance optimizations  based on the number and sizes of files in the workload. Thus, users do not have to be GridFTP and globus-url-copy experts to get high performance transfers. If you are an advanced user or resource owner, read on...
 
-concurrency:: opens multiple login sessions (also known as control channel sessions). Each login session starts a GridFTP process on the server, usually via xinetd. Thus, a concurrency (cc) of 4 would drive 4 gridGridFTPftp processes, so you have 4 processes driving IO (each one working on a different file).  Files are divided among the sessions, so this only works if you have multiple files in a job (most users do). Also note that each session may be to a different server if you had DNS round robining, a load balancer, or multiple physical endpoints defined in Globus. So concurrency is great for driving more filesystem processes, CPU cores, and even machine nodes, in addition to opening more network data streams.
+concurrency:: opens multiple login sessions (also known as control channel sessions). Each login session starts a GridFTP process on the server, usually via xinetd. Thus, a concurrency (cc) of 4 would drive 4 GridFTP processes, so you have 4 processes driving IO (each one working on a different file).  Files are divided among the sessions, so this only works if you have multiple files in a job (most users do). Also note that each session may be to a different server if you had DNS round robining, a load balancer, or multiple physical endpoints defined in Globus. So concurrency is great for driving more filesystem processes, CPU cores, and even machine nodes, in addition to opening more network data streams.
 
 pipelining:: speeds up lots of tiny files by stuffing multiple FTP commands into each login session back-to-back without waiting for the first command's response. This reduces latency and keeps the GridFTP server constantly busy; it is never idle waiting for the next command. Note that a GridFTP server process currently only works on one command at a time (future protocol enhancements are planned to drive threaded, out of order processing of commands).
 
@@ -144,10 +123,7 @@ In addition, the Globus service will retain task details about events and comple
 The above limits are set based on our experience to-date and should accommodate the needs of most transfer users. If you have requirements that are likely to exceed these limits, please contact us to discuss.
 
 == How can I activate an endpoint for the maximum amount of time?
-By default Globus will request activation for 11 days. However, some organizations' MyProxy servers maybe be configured to return a credential with a shorter lifetime – the maximum lifetime allowed is controlled by each organization, not Globus. If you would like credentials with a longer lifetime, please contact the administrator for the MyProxy server used by the endpoint you are activating.
-
-== What are the minimum permissions needed for shared storage accessible by Globus?
-When using sharing, all access to the file system will be done using the identity(uid) of the user sharing the endpoint. The users with shared access will be able to access anything the owning user has access to. This will be limited by any path restrictions or read only ACLs set up with the share or in the Globus Connect Server / Gloubs Connect Personal / GridFTP configuration.
+By default, the MyProxy service that ships with Globus Connect Server is configured to grant credentials with a maximum lifetime of 7 days. However, there are many endpoints that are configured to use values other than this default, and so such endpoints may have a maximum credential lifetime that is more or less than 7 days. CILogon identity providers will typically grant credentials that have a maximum life time of 10 days. It is not possible for an enduser to be issued credentials that will last longer than the maximum credential lifetime for which an identity provider is configured. When activating on an endpoint that is using a MyProxy identity provider, you can specify the lifetime of the credential you are requesting. You can do this on our CLI server by using the 'endpoint-activate' command with the '--myproxy-lifetime' option, or in the web interface by clicking on the 'advanced' link on the page when prompted to authenticate to the endpoint. However, no matter what credential lifetime you request, you will never be issued a credential that is longer than the maximum credential lifetime than the MyProxy server is configured to issue. When activating on endpoints that use a CILogon identity provider there is no way to request a specific credential lifetime. Rather, you will simply be issued a credential with the default lifetime that the identity provider is configured to issue - typically 10 days.
 
 == Can I use Globus to transfer PHI or HIPAA protected data?
 We have received a number of inquiries (particularly from genomics researchers) regarding the use of Globus to transfer data that may contain Protected Health Information (PHI). This is a complex question and the way we address it is evolving. Here is our current view on this:

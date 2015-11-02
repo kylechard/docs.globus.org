@@ -7,7 +7,7 @@ NOTE: Instructions are also available for link:../globus-connect-personal-cli[in
 == Prerequisites
 - A Linux distribution with Tcl/Tk installed (if you do not have tcllib installed you can install and run Globus Connect Personal from the command line)
 - A Globus account (link:https://www.globus.org/signup[sign up at www.globus.org/signup])
-- A valid SSH key associated with your Globus account (link:../../faq/faq-SSHkey[please see instructions here])
+- A valid SSH key associated with your Globus account (link:../../faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[please see instructions here])
 
 == Installation
 link:https://www.globusonline.org/xfer/ManageEndpoints?globus_connect=true[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
