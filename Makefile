@@ -3,7 +3,7 @@ STAGEBUCKET="docs.staging.globuscs.info"
 
 .PHONY: staging production
 
-asciidoc-setup: asciidoc/backends/bootstrap/bootstrap.zip
+asciidoc-setup: asciidoc/backends/bootstrap/bootstrap.conf asciidoc/backends/bootstrap/asciidoc.js
 	./scripts/install_asciidoc_backend.sh
 
 build: content asciidoc-setup
