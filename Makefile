@@ -1,7 +1,7 @@
 PRODBUCKET="docs.globus.org"
 STAGEBUCKET="docs.staging.globuscs.info"
 
-.PHONY: staging production
+.PHONY: staging production build
 
 asciidoc-setup: asciidoc/backends/bootstrap/bootstrap.conf asciidoc/backends/bootstrap/asciidoc.js
 	./scripts/install_asciidoc_backend.sh

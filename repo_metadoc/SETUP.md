@@ -8,7 +8,8 @@ development tools.
 Ruby >= 2.1.2 is required to build the site, and `bundler` is required to
 install ruby packages.
 
-You will also need Python 2.7, and `pip`, the python package manager.
+You will also need Python 2.7, and `pip`, the python package manager, to do site
+deployments.
 
 This guide will cover setup with and without rvm -- this tool is optional, but
 recommended.
@@ -56,6 +57,27 @@ instructions for Debian and Ubuntu are just
 ```sh
 sudo apt-get install asciidoc
 ```
+
+### Install AWS CLI
+
+This is only needed to deploy the site -- it is not incorporated into site
+builds and is therefore not necessary to do testing and development.
+
+Just run
+
+```sh
+sudo pip install awscli
+```
+
+You could use a virtualenv, but the AWS CLI is generally fine to install
+globally.
+
+If you don't have `pip`, you might be able to use `easy_install` instead, as in
+
+```sh
+sudo easy_install awscli
+```
+
 
 ### Install Gems
 
