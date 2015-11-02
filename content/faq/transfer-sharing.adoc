@@ -26,13 +26,6 @@ Usage Notes:
 - Globus Connect Personal endpoints do not need to be explicitly activated. If a Globus Connect Personal endpoint is part of an active transfer request, its credentials will be automatically refreshed as needed.
 - You do *not* need to resubmit a previously inactive transfer after you've reactivated the relevant endpoints; Globus will automatically resume transferring files when both the source and destination endpoints are activated.
 
-== What is an "endpoint"?
-An "endpoint" is one of the two file transfer locations – either the source or the destination – between which files can move. Once a resource (server, cluster, storage system, laptop, or other system) is defined as an endpoint, it will be available to authorized users who can transfer files to or from this endpoint.
-
-Globus endpoints are named using the following format: [uservars]#<globus-username>#<endpoint-name>#. For example, the XSEDE project has a Globus account under the username "xsede" and so it's endpoints are named [uservars]#xsede#stampede# (for the Stampede system at Texas Advanced Computing Center) and xsede#kraken (for the Kraken system at the National Institute for Computational Sciences). Likewise, an individual that has a Globus account under the username "maxim" might have a personal endpoint called [uservars]#maxim#mylaptop#.
-
-There are two classes of endpoints: personal endpoints and server endpoints. You can set up a personal endpoint on your laptop or other personal computer using link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] as described here. To set up a multi-user server as a Globus endpoint you must install link:https://www.globus.org/globus-connect-server[Globus Connect Server] as described here.
-
 == What is "activation"?
 Activation is the mechanism Globus uses to authenticate a user on an endpoint. It enables users to specify which identity should be used to authenticate with an endpoint. For example if I wanted to transfer a file from NERSC to ALCF, I could sign in to Globus using my Globus account name and password, and activate the [uservars]#nersc#dtn+# endpoint using my NERSC username and password, and finally activate the [uservars]#alcf#dtn# endpoint using my ALCF username and pin+OTP.
 
