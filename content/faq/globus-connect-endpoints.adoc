@@ -1,5 +1,5 @@
 ---
-menu_weight: 2
+menu_weight: 4
 short_title: Globus Connect and Endpoints
 ---
 :toc-placement: manual
@@ -18,6 +18,9 @@ There are two versions of Globus Connect, one for use with personal machines suc
 
 == How does Globus Connect Personal work?
 link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] uses GSI SSH to maintain a control connection to Globus and await commands. Globus manages transfers to and from the Globus Connect Personal endpoint. Note that file data is still always transferred directly between Globus Connect Personal and a GridFTP server for maximum speed – it is not proxied through Globus.
+
+== How can I create an endpoint?
+If there is already a GridFTP server running on your machine you can use the endpoint-add command or the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. If there is no existing GridFTP deployment then you have two options, depending on whether the endpoint is a machine for personal use (Globus Connect Personal) or a multi-user server (Globus Connect Server). For personal use, link:https://www.globus.org/globus-connect-personal[please see the instructions on this page]. For a multi-user machine such as a campus cluster or lab server, link:https://www.globus.org/globus-connect-server[please see the instructions on this page].
 
 == Are transfers between Globus Connect Personal endpoints possible?
 Yes. You must be a link:https://www.globus.org/researchers/plus-plans[Globus Plus] user to transfer files between two Globus Connect Personal endpoints. If the two endpoints are owned by different Globus users, both users must be Globus Plus users. You account may be upgraded to Globus Plus if your institution subscribes to a link:https://www.globus.org/provider-plans[Globus Provider plan].

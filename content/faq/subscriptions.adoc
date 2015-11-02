@@ -1,5 +1,5 @@
 ---
-menu_weight: 3
+menu_weight: 5
 short_title: Subscriptions
 ---
 :toc-placement: manual
@@ -10,6 +10,15 @@ short_title: Subscriptions
 = FAQs: Subscriptions
 
 toc::[]
+
+== How much does Globus cost?
+Globus is free for researchers at non-profit institutions to use for file transfer, thanks to the generous support of sponsors who fund our research.
+
+As a non-profit institution, our goal from day one has been to make Globus a self-sustaining service, so that we can continue to serve the needs of academic and non-profit research organizations for many years to come. Most of our funding is intended for research and early software development, not to cover operation, support, and ongoing evolutionary improvement of the service. As usage grows, our costs have grown and we decided that charging a usage-based subscription fee for additional features that go beyond file transfer is the best way to ensure that we can continue to provide a high-quality research data management service.
+
+To this end, certain Globus features are available only by subscribing to a link:http://www.globus.org/providers/provider-plans[Globus Provider plan]. Such features include the ability to share files directly from existing storage, access to data publication functionality, and performing various administrative tasks for Globus endpoints at your institution. Globus Provider plans also offer higher levels of support from the Globus team, with priority response times.
+
+If you are a commercial user, you may use Globus by signing up for a link:https://www.globus.org/providers/provider-plans#commercial-pricing[commercial Provider plan]. We are unable to offer the service free of charge to commercial users, but believe that you will find Globus provides valuable capabilities at a reasonable price. Thanks!
 
 == How does Globus handle performance tuning on transfers?
 Globus tunes transfers based on the number of servers of the source and destination endpoints, the location of the endpoints, and the performance options configured for each managed endpoint in your provider subscription. See the CLI endpoint-modify man page for more details on the —network-use performance option. Note that these options cannot yet be set via the Web UI or REST API.
