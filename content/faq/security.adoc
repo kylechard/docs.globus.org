@@ -98,3 +98,6 @@ EGI users that have questions or need assistance with this tool should submit a 
 
 == Why is endpoint activation with GSI SSH failing?
 This error happens when your Globus account is not configured for use with GSI SSH, and only has SSH keys. Please see the link:../../faq/command-line-interface/#how_do_i_set_up_globus_so_i_can_connect_to_cli_globusonline_org_using_gsi_ssh[FAQ on configuring your account to use GSI SSH].
+
+== Is there an independent assessment of Globus security?
+Multiple organizations have conducted Globus security reviews. Their findings and our responses are link:https://www.globus.org/technology/security/globus-security-reviews[documented here].
