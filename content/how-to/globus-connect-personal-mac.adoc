@@ -35,26 +35,37 @@ Globus Connect Personal will connect to Globus and await transfer commands. You 
 image::images/150203_GCP_MacOSX_install_06.png[]
 
 == Configuration
-
 You may configure Globus Connect Personal by clicking on the Globus Connect Personal icon in the main menu bar and selecting "Preferences...".
 
 [role="img-responsive center-block"]
 image::images/150203_GCP_MacOSX_options_01.png[]
 
-Options under the "General" tab allows you to specify how the Globus icon looks and whether the software should automatically check for updates. We recommend that you leave the "Automatically check for updates" box checked, to ensure that you are running the most stable and secure version of Globus Connect Personal at all times.
+Options under the "General" tab allows you to specify how the Globus icon looks and whether the software should automatically check for updates. "Use black and white menu bar icons" changes the color of the Globus Connect Personal status icon in the menu bar. The two options in the middle determine how Globus Connect Personal should handle availability of a newer version. You should leave the "Automatically check for updates" option selected so that you are notified of important security updates. "Provide feedback with anonymous system profile information" periodically sends information to Globus so that we can continue to improve the user experience. No personally identifiable information is ever transmitted and we encourage you to leave this option selected so we can make Globus Connect Personal better for all.
 
+.General Preferences Tab
 [role="img-responsive center-block"]
 image::images/150203_GCP_MacOSX_options_02.png[]
 
-The "Access" tab lists directories that will be accessible via Globus for file transfer and sharing. By default, the only directory listed is your home directory.
+The "Access" tab lists directories that will be accessible via Globus for file transfer and sharing and allows you to have more control over what information is accessible on your Globus Connect Personal endpoint. By default, your home directory (e.g.: [uservars]#/Users/vas#) will be read/write accessible. The "Deny access to hidden (e.g. security) files in your home directory" option controls whether or not you'll be able to access hidden files (i.e. filenames beginning with "."") in your home directory. By default, Globus Connect Personal will not allow access to files like: +\~/.globusonline+ and +\~/.ssh+.
 
+.Access Tab
 [role="img-responsive center-block"]
 image::images/150203_GCP_MacOSX_options_03.png[]
 
 You may add folders by clicking the "+" icon and selecting the folder you wish to make accessible. Note that, in most cases, you should not need to add folders other than the default home directory, unless you wish to share files in a different folder with other Globus users. To share a folder, add it to the accessible list and check the "Sharable" box. Note: you must be a link:https://www.globus.org/plus[Globus Plus] user to share files and folders. If you are not a Globus Plus user, click on the "Enable sharing" icon and follow the instructions.
 
-== Removing Globus Connect Personal
+NOTE: If you remove everything from the access list, no files will be accessible on your Globus Connect Personal endpoint and you will be prompted to setup accessible paths, as shown below. You can either click "+"" and add directories and files, or click "Reset to Defaults".
 
+The Info tab displays internal configuration information that's helpful in troubleshooting any issues you encounter. You may be asked to provide this information if you contact Globus support about a problem with your Globus Connect Personal endpoint.
+
+[role="img-responsive center-block"]
+image::images/gcprefs_05.png[]
+
+.Info Tab
+[role="img-responsive center-block"]
+image::images/gcprefs_06.png[]
+
+== Removing Globus Connect Personal
 Please note that if you remove Globus Connect Personal, you will not be able to transfer files to or from your personal computer using Globus, and any files you have shared with other Globus users will not be accessible to those users. To remove Globus Connect Personal:
 
 . Click on the Globus Connect Personal icon in the main menu bar and select "Preferences...".

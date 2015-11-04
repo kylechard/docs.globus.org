@@ -1,6 +1,5 @@
 = FAQ Categories
 
-- link:general[General]
 - link:security[Security]
 - link:transfer-sharing[Transfer and Sharing]
 - link:globus-connect-endpoints[Globus Connect and Endpoints]

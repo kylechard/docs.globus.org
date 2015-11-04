@@ -11,10 +11,15 @@ short_title: Transfer and Sharing
 
 toc::[]
 
+== Which browsers does the Globus web user interface support?
+The Globus web user interface is tested and verified to work on the most recent desktop version of Chrome, Edge, Firefox, Internet Explorer, and Safari.
+
+Earlier versions of these browsers, as well as other desktop browsers (e.g. Opera) and mobile/touch-based browsers, may experience loss of functionality and/or distorted visual effects. Limited or no support may be available for such browsers.
+
 == How do I "refresh my credentials" (or "activate an endpoint")?
 Because Globus does not store usernames/passwords for your endpoints, periodic re-authentication is required. This means you need to log on with the appropriate username and password for the given endpoint (this is called endpoint "link:#what_is_activation[activation]"). There are two ways to refresh your credentials in Globus:
 
-1. Sign in to your account via the web GUI and go to the link:https://www.globusonline.org/xfer/ManageEndpoints[Manage Endpoints page]. Click the "activate" links for the source and destination endpoints relevant to your current transfers.
+1. Sign in to your account via the web GUI and go to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page]. Click the "activate" links for the source and destination endpoints relevant to your current transfers.
 +
 -OR-
 +
@@ -29,15 +34,12 @@ Usage Notes:
 == What is "activation"?
 Activation is the mechanism Globus uses to authenticate a user on an endpoint. It enables users to specify which identity should be used to authenticate with an endpoint. For example if I wanted to transfer a file from NERSC to ALCF, I could sign in to Globus using my Globus account name and password, and activate the [uservars]#nersc#dtn+# endpoint using my NERSC username and password, and finally activate the [uservars]#alcf#dtn# endpoint using my ALCF username and pin+OTP.
 
-== How can I transfer files to/from my server?
-In order to transfer files to/from a server using Globus the server must be set up as a Globus endpoint. Please see the link:../../resource-provider-guide[Resource Povider Guide for instructions].
-
 == How do I see error logs for my transfers?
 You can access a detailed list of errors (and other status messages) for any Globus Online task using both the Web interface and the command line interface.
 
 *Using the Web interface:*
 
-. Click on the link:https://www.globusonline.org/xfer/ViewTransfers[View Transfers page].
+. Click on the link:https://www.globus.org/xfer/ViewTransfers[View Transfers page].
 . Click on the label of the transfer you would like to examine. You will see a popup with the transfer details.
 . Click on the "View Event Log" link at the bottom of the popup to see a complete list of status messages. Note: this may be a very long list (potentially thousands of pages for a large transfer).
 
@@ -53,23 +55,10 @@ All of the above commands have options that control the amount and format of the
 You can use the link:https://www.globus.org/xfer/ViewActivity[Web interface] or the link:../../cli/reference/status[+status+] and link:../../cli/reference/details[+details+] commands on the Globus command-line interface to check the status of your transfers. More information and examples are link:../../cli/using-the-cli/[available here].
 
 == How can I transfer files to and from my laptop or desktop?
-Use link:https://www.globusonline.org/globus_connect/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:#what-is-an-endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Globus Connect Personal is available for Mac OS X, Windows, and Linux. link:https://www.globus.org/globus-connect-personal[Get started here].
+Use link:https://www.globus.org/globus-connect-personal/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:../globus-connect-endpoints/#what_is_an_endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Globus Connect Personal is available for Mac OS X, Windows, and Linux. link:https://www.globus.org/globus-connect-personal[Get started here].
 
 == How will I know when my transfer is completed?
 Globus sends a notification message to the e-mail address link:https://www.globus.org/account/UpdateProfile#[stored in your account profile].
-
-== Does Globus support one-time passwords (OTP)?
-Yes, one-time passwords work with Globus and do not require any specialized configuration. To access a site that requires an OTP (e.g. ACLF), simply enter your password as you would normally when prompted.
-
-== How does Globus Online ensure my data is secure?
-Globus Online uses a "control channel" to communicate with the source and destination endpoints for a transfer. All control channel communications are encrypted.
-
-In addition to the control channel, the data is transferred over a "data channel" that exists only between the source and destination endpoints, i.e. Globus Online does not have access to this channel, it is only accessed by the servers on the endpoints. By default the data channel is authenticated, but unencrypted.  It can be encrypted by selecting the "encrypt transfer" option on the Transfer Files page (see screenshot below), or by including the +--encrypt+ option for the +transfer+ command when using the command line interface.
-
-[role="img-responsive center-block"]
-image::images/130725_Encryption_option.png[]
-
-You should be aware that encryption adds processing overhead, resulting in slower transfers. Encrypted transfers use the SSL cipher configured on the endpoints (the default for OpenSSL is AES256-SHA).
 
 == Which protocols does Globus support?
 Globus transfer tasks can be initiated and managed using our Web UI, REST, and CLI interfaces.
@@ -116,7 +105,7 @@ In addition, the Globus service will retain task details about events and comple
 The above limits are set based on our experience to-date and should accommodate the needs of most transfer users. If you have requirements that are likely to exceed these limits, please contact us to discuss.
 
 == How can I activate an endpoint for the maximum amount of time?
-By default, the MyProxy service that ships with Globus Connect Server is configured to grant credentials with a maximum lifetime of 7 days. However, there are many endpoints that are configured to use values other than this default, and so such endpoints may have a maximum credential lifetime that is more or less than 7 days. CILogon identity providers will typically grant credentials that have a maximum life time of 10 days. It is not possible for an enduser to be issued credentials that will last longer than the maximum credential lifetime for which an identity provider is configured. When activating on an endpoint that is using a MyProxy identity provider, you can specify the lifetime of the credential you are requesting. You can do this on our CLI server by using the 'endpoint-activate' command with the '--myproxy-lifetime' option, or in the web interface by clicking on the 'advanced' link on the page when prompted to authenticate to the endpoint. However, no matter what credential lifetime you request, you will never be issued a credential that is longer than the maximum credential lifetime than the MyProxy server is configured to issue. When activating on endpoints that use a CILogon identity provider there is no way to request a specific credential lifetime. Rather, you will simply be issued a credential with the default lifetime that the identity provider is configured to issue - typically 10 days.
+By default, the MyProxy service that ships with Globus Connect Server is configured to grant credentials with a maximum lifetime of 7 days. However, there are many endpoints that are configured to use values other than this default, and so such endpoints may have a maximum credential lifetime that is more or less than 7 days. CILogon identity providers will typically grant credentials that have a maximum life time of 10 days. It is not possible for an enduser to be issued credentials that will last longer than the maximum credential lifetime for which an identity provider is configured. When activating on an endpoint that is using a MyProxy identity provider, you can specify the lifetime of the credential you are requesting. You can do this on our CLI server by using the `endpoint-activate` command with the `--myproxy-lifetime` option, or in the web interface by clicking on the "advanced" link on the page when prompted to authenticate to the endpoint. However, no matter what credential lifetime you request, you will never be issued a credential that is longer than the maximum credential lifetime than the MyProxy server is configured to issue. When activating on endpoints that use a CILogon identity provider there is no way to request a specific credential lifetime. Rather, you will simply be issued a credential with the default lifetime that the identity provider is configured to issue - typically 10 days.
 
 == Can I use Globus to transfer PHI or HIPAA protected data?
 We have received a number of inquiries (particularly from genomics researchers) regarding the use of Globus to transfer data that may contain Protected Health Information (PHI). This is a complex question and the way we address it is evolving. Here is our current view on this:
@@ -128,25 +117,6 @@ CAUTION: We do not currently recommend the use of Globus to transfer Personal He
 2. *What are our future plans with respect to PHI, HIPAA etc.?* It is widely expected that de-identified genomic data will be classified as PHI in the future. For that reason, and to enable the use of Globus for other PHI, we want to undertake the work required for Globus to pass HIPAA audit. As far as we know, OCR/HSS does not provide any "seal of approval." Rather, it defines a HIPAA Audit Protocol that an entity that manages PHI needs to follow. An institution that relies on a third party to manage, transfer, etc. its PHI will want that third party to have passed a HIPAA Audit and to enter into an appropriate Business Associate Agreement (BAA) with it. We are investigating the steps required to allow Globus to be certified as compliant with the HIPAA Audit Protocol. The work involved seems quite straightforward; however, we do not yet have the funding to engage the auditors needed to complete that work.
 
 We appreciate any feedback or input that you may have regarding this issue.
-
-== How do I generate a VOMS-enabled proxy certificate and upload it to a MyProxy server?
-GSISSH-Term is a Java-based client that can be installed and launched with one simple click. link:https://www.lrz.de/[Leibniz Supercomputing Centre] maintains and develops a customized version of this client that generates a proxy certificate and uploads it to any MyProxy server with no additional setup. European EUGridPMA CA certificates are automatically installed and updated on the client machine.
-
-Virtual Organization Membership Service (VOMS) is a system for managing authorization data within multi-institutional collaborations. VOMS provides a database of user roles and capabilities, and a set of tools for managing the database and generating Grid credentials for users. If you are using VOMS, particularly a EGI VO, this tool is for you—all EGI VOs are automatically configured and updated by this client.
-
-To generate a proxy certificate (either a regular or VOMS-enabled) for use with a MyProxy server, click on the link below. Begin by selecting menu option "Tools" -> "MyProxy Tool".
-
-[role="img-responsive center-block"]
-image::images/hfjaigge.png[GSISSH-Term icon]
-
-NOTE: You must have a Java Runtime Environment (JRE 1.6 or later) installed to run this program.
-
-For more information on GSISSH-Term:
-
-- link:https://www.lrz.de/services/compute/grid_en/software_en/gsisshterm_en/[Full Documentation]
-- link:https://wiki.egi.eu/wiki/MyProxy_tool_GUI[EGI WIKI - MyProxy tool GUI]
-
-EGI users that have questions or need assistance with this tool should submit a ticket using link:https://ggus.eu/pages/home.php[GGUS]. All other users may contact the mailto:grid-admin@lrz.de[LRZ support team].
 
 == What is the Effective Transfer Rate reported by Globus?
 The "Effective Transfer Rate" included in e-mail notifications and reported by the +details+ command is the ratio of number of bits transferred to the _*total time taken to complete the transfer request*_. The total time is calculated from the time the transfer request is submitted to Globus to the time the transfer is completed. It includes retry time, downtime on the endpoints, time that the transfer is paused for credential renewal, and time for checksum calculations. Hence, the Effective Transfer Rate indicates the time taken for _reliable file transfer_ and should not be interpreted as raw bandwidth or throughput information.
@@ -302,3 +272,87 @@ Globus can be used as an OAuth identity provider.  To set up Globus as an identi
 For example:
 
 - https://www.globus.org/OAuth?redirect_uri=http://www.destination.com/oauth_response&client_id=myusername&state=AED823423EAE&response_type=code
+
+== Can I disable email notifications?
+Currently, users can, through the Command Line Interface (CLI) only, turn off email notifications by running the following command:
+
+----terminal
+$ profile -n off
+----terminal
+
+NOTE: this will also disable alert emails, such as notification that your credentials have expired, requiring you to keep a slightly closer watch on long-running transfer requests.
+
+== Why is my transfer stalled?
+There are several reasons a transfer may stall. You may want to start by seeing what Globus is doing with the request.
+
+- On the web, go to the "View Activity" page
+- Click on ID of specific transfer (probably the one at the top of the list)
+- Click "View Event Log".
+- Look through the progress messages and see if any of them indicate an error, such as an expired credential or quota exceeded.
+
+In the CLI, the +status+ command will give you a high level overview of the progress of the task. If you run +status+ and find the task is not progressing, run the +events+ command. The following will show the most recent 5 events for the specified task:
+
+----terminal
+$ [input]#events -l 5 <TaskID>#
+----terminal
+
+If the +status+ command shows the task is inactive, you may need to renew your credentials. See  link:../command-line-interface#what_does_the_error_credentails_are_needed_mean[this FAQ item] for information on credential renewal.
+
+== How do I refresh my credentials for an endpoint?
+In order to access your files on an endpoint, Globus needs credentials to pass to the endpoint. Please see link:../../faq/transfer-sharing/#how_do_i_refresh_my_credentials_or_activate_an_endpoint[this FAQ] for more information on activating (or re-activating) an endpoint. Note that Globus uses only temporary credentials to act on your behalf, but never keeps your password or long-term credentials to access a site.
+
+If you are using GSI SSH to access Globus, you may just need to run the +transfer+ command with the +-g+ argument. The same credentials which were used to authenticate to Globus will then be used to access your files on the endpoint (of course, the endpoint must be configured to map this credential to you local account). If you have used Globus in the past to access this endpoint successfully, the credentials used at that time have probably expired. Credential management can sometimes be fairly complex. We continue to find ways in Globus to simplify this process as much as possible, while maintaining the level of security these credentials provide.
+
+== What does the error "Directory contents cannot be found" mean?
+Globus Connect Personal for Windows may have a problem automatically locating your user directory. Try manually entering "/" (just forward slash, no quotes) as the directory, and then you should be able to browse. Your c: drive would be "/cygdrive/c", and your user directory would be either "/cygdrive/c/users/<username>" or "/cygdrive/c/documents" and "settings/<username>".
+
+== Why did my transfer expire?
+Globus will make every attempt to complete a Transfer request but sometimes may be unable to do so, based on factors outside of our control. For example, occasionally, an endpoint may stop responding (due to server failure, network issues, etc.). In this case, you will receive notifications about the error and should follow up with your system administrator.
+
+A more common cause is "credential expiration". This means that Globus is no longer authorized to access the endpoint on your behalf to execute/manage your transfer. When this happens, Globus will send you an e-mail notification and suspend the transfer task until you renew your credentials for the endpoint. If the credentials are not renewed (i.e. the endpoint is not reactivated) within 3 days of the notification being sent, the transfer task will automatically expire.
+
+Instructions for renewing your credentials link:../../faq/transfer-sharing/#how_do_i_refresh_my_credentials_or_activate_an_endpoint[are available here].
+
+== How do I resubmit a failed transfer?
+If your transfer task has failed you should first look at the last few events in the event log to identify any problems needing human intervention (quota exceeded, out-of-disk space, etc.)
+
+After fixing problems you can resubmit your task as follows:
+. Using the Web GUI, go to the Start Transfer page, select the "more options" link at the bottom, and select the "only transfer new or changed files where the checksum is different" *and* "verify file integrity after transfer" checkboxes.
+. Using the CLI, rerun the transfer command with the +--verify-checksum+ *and* +-s 3+ options
+
+== What characters should I avoid in filenames/paths?
+On different filesystems, directory names and filenames may be restricted to certain characters. For instance, following character are reserved on ext2, ext3, ext4, hfs, FAT, NTFS:
+
+++++
+<div class="row">
+	<div class="col-xs-12 col-md-4">
+		<table class="table table-bordered"><th colspan="2">ext2, ext3, ext4 (Linux)</th>
+			<tr><td>NULL</td><td></tr>
+			<tr><td>/</td><td>forward slash</td></tr>
+		</table>
+	</div>
+	<div class="col-xs-12 col-md-4">
+		<table class="table table-bordered"><th colspan="2">hfs (Mac OS X)</th>
+			<tr><td>:</td><td>colon</td></tr>
+			<tr><td>/</td><td>forward slash</td></tr>
+		</table>
+	</div>
+	<div class="col-xs-12 col-md-4">
+		<table class="table table-bordered"><th colspan="2">FAT, NTFS (MS Windows)</th>
+			<tr><td>&lt;</td><td>less than</td></tr>
+			<tr><td>&gt;</td><td>greater than</td></tr>
+			<tr><td>:</td><td>colon</td></tr>
+			<tr><td>"</td><td>double quote</td></tr>
+			<tr><td>/</td><td>forward slash</td></tr>
+			<tr><td>\</td><td>backslash</td></tr>
+			<tr><td>|</td><td>vertical bar or pipe</td></tr>
+			<tr><td>?</td><td>question mark</td></tr>
+			<tr><td>*</td><td>asterisk</td></tr>
+		</table>
+	</div>
+</div>
+++++
+
+If a file or a directory with one of the characters <>:"\|?* is copied from Linux to MS Windows, then MS Windows will return the error message "The filename, directory name, or volume label syntax is incorrect" and refuse to create the file or the directory.
+
+Also the filesystems FAT, NTFS, hfs are not case sensitive. It means that if two files on ext2, ext3, ext4 are different by case and they are transferred to a non-case sensitive filesystem they will be copied into one file.
