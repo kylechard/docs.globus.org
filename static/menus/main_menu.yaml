@@ -14,17 +14,14 @@ menus:
         link: ''
         subsections:
             -
-                title: 'Command Line Interface'
-                link: '/cli/'
-            -
                 title: 'Resource Provider Guide'
                 link: '/resource-provider-guide/'
             -
                 title: 'Management Console Guide'
                 link: '/management-console-guide/'
             -
-                title: 'Quick Start Guides for Researcher Resources'
-                link: '/quick-start-guides-for-researcher-resources/'
+                title: 'Command Line Interface'
+                link: '/cli/'
             -
                 title: 'Release Notes'
                 link: '/release-notes'
@@ -38,9 +35,6 @@ menus:
             -   
                 title: 'FAQs'
                 link: '/faq/'
-            -   
-                title: 'Troubleshooting'
-                link: '/troubleshooting/'
             -   
                 title: 'Security Bulletins'
                 link: '/security-bulletins/'

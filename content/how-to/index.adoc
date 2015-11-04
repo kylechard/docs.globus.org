@@ -7,5 +7,3 @@
 - link:globus-connect-personal-cli[Install Globus Connect Personal Using the Command Line]
 - link:share-files[Share Data Using Globus]
 - link:managing-groups[Manage Globus Groups]
-- link:globus-connect-personal-preferences-mac[Set Preferences on Globus Connect Personal for Mac]
-- link:running-globus-connect-personal-linux[Run Globus Connect Personal for Linux from the Command Line]

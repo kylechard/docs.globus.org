@@ -38,13 +38,13 @@ For more information about the Globus Online CLI, see the link:../../cli/using-t
 
 Generate Keys:
 
-The _ssh-keygen_ command is used to create keys. There are many options for it. We recommend that you run it this way:
+The `ssh-keygen` command is used to create keys. There are many options for it. We recommend that you run it this way:
 
 ----terminal
 $ ssh-keygen -t rsa -b 2048
 ----terminal
 
-This will create and store both your public and private keys in your ~/.ssh directory. It will overwrite any existing keys as well. To generate these keys, simply type _ssh-keygen -t rsa -b 2048_ and follow the prompts. To install the keys to the default location, just press enter when prompted for a file name. +We strongly encourage the use of a passphrase.+
+This will create and store both your public and private keys in your ~/.ssh directory. It will overwrite any existing keys as well. To generate these keys, simply type `ssh-keygen -t rsa -b 2048` and follow the prompts. To install the keys to the default location, just press enter when prompted for a file name. +We strongly encourage the use of a passphrase.+
 
 Some machines may put these files in a different spot. If this is the case, make a note of where it puts them and what it names them. The id_rsa.pub is your public key and the id_rsa (and, if they exist, id_dsa or identity) file is your private key.
 
@@ -73,7 +73,7 @@ Say "Yes" to the global public key question.
 Now, the tricky part. SecureCRT stores your public key in a funky format. You have a few options to get it into the format you need, do any one of the below.
 
 - Use link:https://svnkeys.berkeley.edu/[Berkeley's SSH-key converter] - quick and easy.
-- Copy the public key (identity.pub) to a machine that has OpenSSH installed and run: _ssh-keygen -i -f identity.pub > id_rsa.pub_
+- Copy the public key (identity.pub) to a machine that has OpenSSH installed and run: `ssh-keygen -i -f identity.pub > id_rsa.pub`
 
 Now, make SecureCRT use the key.
 
@@ -120,3 +120,21 @@ $ endpoint-modify --force-encryption [input]#my#endpoint#
 ----terminal
 
 Then all transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that selection marked in the Web.
+
+== Why don't I see any information when running the "details" and "events" commands?
+This may be related to multiple transfers running simultaneously. If you issue multiple transfer requests, note that only three requests will be running simultaneously at any one time. The remaining transfers will be queued and start moving data as soon as another active transfer completes.
+
+== Why do I see "Permission denied" when accessing the CLI?
+This is usually the result of missing information in your Globus profile. In order to use the CLI interface you will need to add your SSH public key to your Globus account. Please see the FAQ entry for information on link:#how_do_i_add_an_ssh_key_to_my_globus_account[how to add your key].
+
+== What does the error "Credentails are needed" mean?
+There are three straightforward ways to refresh your credentials in Globus:
+
+=== Option 1
+Go to the link:https://www.globus.org/xfer/StartTransfer[Start Transfer page], and enter the endpoints you need. This should prompt you for your MyProxy logins to those machines in order to do the file listings. If you had already begun a transfer when you discovered the need to renew credentials, you do not need to start a new transfer. The file listings will be sufficient to refresh your credentials.
+
+=== Option 2
+Go to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page], browse to the endpoint on which you need to renew credentials. Select the endpoint, go to the Activate menu, and follow on-screen instructions to reactivate the endpoint.
+
+=== Option 3
+Login to command line interface (+ssh cli.globusonline.org+) and use the endpoint-activate command to refresh your credentials. For example, ssh cli.globusonline.org endpoint-activate -U xsede#\*", and it should prompt you for your XSEDE login and password.
