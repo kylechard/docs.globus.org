@@ -20,9 +20,6 @@ To this end, certain Globus features are available only by subscribing to a link
 
 If you are a commercial user, you may use Globus by signing up for a link:https://www.globus.org/providers/provider-plans#commercial-pricing[commercial Provider plan]. We are unable to offer the service free of charge to commercial users, but believe that you will find Globus provides valuable capabilities at a reasonable price. Thanks!
 
-== How does Globus handle performance tuning on transfers?
-Globus tunes transfers based on the number of servers of the source and destination endpoints, the location of the endpoints, and the performance options configured for each managed endpoint in your provider subscription. See the CLI endpoint-modify man page for more details on the —network-use performance option. Note that these options cannot yet be set via the Web UI or REST API.
-
 == How do I add a managed endpoint to my Provider subscription?
 NOTE: The commands below must be run on the Globus command line interface (CLI). Please read link:../../cli/using-the-cli/[this page] to configure your account to access the Globus CLI.
 
@@ -60,87 +57,3 @@ $ endpoint-modify --managed-endpoint demodoc#zerocluster
 Please ensure that [uservars]#<username># has subscription management rights, otherwise the command will fail. Note that a subscription manager can only create endpoints under their own account.
 
 You must have a current link:https://www.globus.org/providers/provider-plans[Globus Provider plan] to be granted subscription management rights. If your Globus account does not have subscription management rights, please contact support@globus.org so that we may enable your account. If you do not have a Globus Provider plan please link:https://www.globus.org/providers/signup[contact us to sign up].
-
-== What ports does Globus Connect Server need open?
-Globus Connect Server running on a cluster or other shared storage resource uses the following default ports:
-
-* GridFTP server control channel connections: Port 2811 or 21 inbound (21 for anonymous GridFTP) from 184.73.189.163 and 174.129.226.69
-* GridFTP server data channel connections: Ports 50000 – 51000 inbound and outbound to/from Any
-* MyProxy CA server authentication requests: Port 7512 inbound from 174.129.226.69
-* OAuth server authentication requests: Port 443 inbound and outbound to/from Any
-
-Globus Connect Server needs the following ports open during the setup process:
-
-* Port 2223 outbound to 184.73.255.160
-
-If you experience issues activating an endpoint, it's often the case that one or more of the above ports is not open.
-
-== How do I enable logging for Globus Connect Server 2.x.y?
-Currently, logging is not supported in Globus Connect Server >= 2.x.y. However, it can be enabled directly in GridFTP server, one of the Globus Connect Server components.
-
-To enable logging, create a file in the /etc/gridftp.d directory with two extra parameters:
-
-----terminal
-$ cat > /etc/gridftp.d/extra-settings
-
-log_level ALL 
-log_single /var/log/gridftp.log 
-<Ctrl-d>
-----terminal
-
-and restart the GridFTP server:
-
-----terminal
-$ /etc/init.d/globus-gridftp-server restart
-----terminal
-
-All GridFTP options with their detailed description can be found at: http://toolkit.globus.org/toolkit/docs/5.2/5.2.5/gridftp/admin/#globus-gridftp-server 
-
-== Does Globus Connect Server require an X.509 certificate to be installed?
-If you link:../../resource-provider-guide/#install_section[install Globus Connect Server] and select the MyProxy option, two components are installed: a GridFTP server and a MyProxy server. By default, certificates for both of these components are automatically installed so there is no need to add or configure X.509 certificates separately. You may choose to configure Globus Connect Server to use a certificate other than the default one installed. Please refer to the link:../../resource-provider-guide/#globus_connect_server_configuration[Globus Connect Server configuration section] to see how that can be set up.
-
-If you install Globus Connect Server and select the MyProxy OAuth option, an additional component is installed, namely an OAuth server (either on an existing web server or as part of a new Apache server installation). In this instance, you will need a certificate to be installed on the Apache server and this certificate should be issued by a Certificate Authority (CA) that is automatically trusted by the browser.
-
-== How do I add multiple GridFTP servers to an endpoint?
-Just run the following code multiple times with the same endpoint name but different host names:
-
-----terminal
-$ endpoint-add <endpt_name> -p <host_name>
-----terminal
-
-The first time you run this command it will create the endpoint, and subsequent runs will add the specified servers to that existing endpoint.
-
-== How does load balancing work in endpoints defined with multiple servers?
-Globus can load balance across servers when a task has more than one file (you might need about 10 files or so in a task.) Also, multiple tasks running at once might be load balanced across servers; the first task begins on a random server, with subsequent tasks assigned to other servers in a round robin fashion.
-
-== Can I use Globus to transfer data to/from any anonymous FTP server?
-Globus can be used to transfer data to/from anonymous GridFTP servers (but not anonymous FTP servers). The service supports transfers between two anonymous GridFTP servers or between an anonymous GridFTP server and a standard GridFTP server. Follow the instructions below for your particular case:
-
-Between two anonymous GridFTP servers:
-
-----terminal
-$ endpoint-add anon-endpoint1 -p ftp://host1:port
-$ endpoint-add anon-endpoint2 -p ftp://host2:port
-$ endpoint-activate anon-endpoint* -m myproxy.globusonline.org
-$ scp anon-endpoint1:/path_to_src_file anon-endpoint2:/path_to_dst_file
-----terminal
-
-Between a anonymous GridFTP server and a standard GridFTP server:
-
-----terminal
-$ endpoint-add anon-endpoint -p ftp://host:port
-$ endpoint-add std-endpoint -p gsiftp://host:port
-$ endpoint-activate anon-endpoint -m myproxy.globusonline.org
-$ endpoint-activate std-endpoint -m myproxy-server-associated-with-std-gridftp-server
-$ scp anon-endpoint:/path_to_src_file std-endpoint:/path_to_dst_file
-----terminal
-
-== Can I use a different PAM module for authenticating users to Globus Connect Server endpoint. How do I configure that?
-By default, Globus Connect Server uses the same PAM module as the "login" command. If you would like to use a different PAM module for authenticating users to the endpoint, you can modify /var/lib/globus-connect-multiuser/myproxy-server.conf file and modify "pam_id" parameter. For example, you can set "pam_id" to "sshd" for it to use the same PAM module used by SSH.
-
-You can also create a completely new PAM configuration for Globus Connect Server use and place the file in /etc/pam.d/. 
-
-Note that the /var/lib/globus-connect-multiuser/myproxy-server.conf file is overwritten on a setup command execution, and you will need to manually update the file.
-
-== Is there an independent assessment of Globus security?
-Multiple organizations have conducted Globus security reviews. Their findings and our responses are link:https://www.globus.org/technology/security/globus-security-reviews[documented here].
