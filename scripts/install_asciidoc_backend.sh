@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# go to the repo root
+cd "$(dirname "$0")/.."
+
 cd asciidoc/backends/bootstrap
 zip -r bootstrap.zip . -x ".*" -x "*/.*"
 

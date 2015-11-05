@@ -5,7 +5,7 @@ link:asciiguide[Adoc Guide] (link:raw/asciiguide.adoc[RAW])
 
 link:highlight-test/index.html[Highlight Test]
 
-== Custom Dev Site Styles
+== Custom Doc Site Styles
 [go-icon-pp]#go-icon-pp class#
 
 [uservars]#uservars class#

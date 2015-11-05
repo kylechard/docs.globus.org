@@ -669,14 +669,17 @@ Sharing makes it easier for an endpoint's users to grant and control access to t
 To illustrate let's consider a case in which Adam, who is employed by ABC University and is the admin of the abcu#ep1 endpoint, wants to enable sharing on his endpoint for some of his users - such as Bob, Sue, etc. - so as to allow them to share with their collaborators (e.g. Ann) who do not have local accounts.  In this case, Adam has decided that he wants to allow users to share out of the "globus" directory in their home directory and nowhere else.
 
 === Requirements
-Sharing can only be enabled on a link:http://dev.globus.org/resource-provider-guide/#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:https://www.globus.org/providers/provider-plans[Provider Plan] are able to create managed endpoints.
+Sharing can only be enabled on a link:http://docs.globus.org/resource-provider-guide/#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:https://www.globus.org/providers/provider-plans[Provider Plan] are able to create managed endpoints.
 
 For Adam to be able to enable sharing on his abcu#ep1 endpoint he will first need to be sure that ABC University has a provider plan with Globus.
 
 === Make an endpoint managed
 Instructions for how an organization with a provider plan can promote an existing endpoint to managed status can be found link:https://support.globus.org/entries/103577526[here].
 
-After ensuring that ABC University has a provider plan with Globus, Adam will next need to make his endpoint managed. To do this he will log in to the Globus CLI server using the "abcu" Globus account (instructions for how to do this can be found link:http://dev.globus.org/cli/[here]) and he will then execute the following command:
+After ensuring that ABC University has a provider plan with Globus, Adam will
+next need to make his endpoint managed. To do this he will log in to the Globus
+CLI server using the "abcu" Globus account (instructions for how to do this can
+be found link:http://docs.globus.org/cli/[here]) and he will then execute the following command:
 
 ----terminal
 $ endpoint-modify --managed-endpoint abcu#ep1

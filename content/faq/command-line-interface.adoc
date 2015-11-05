@@ -113,7 +113,7 @@ You can use GSI SSH to activate the endpoint. Once your account is configured, y
 
 == Can I force encryption on an endpoint?
 The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
-See link:http://dev.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
+See link:http://docs.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
 
 ----terminal
 $ endpoint-modify --force-encryption [input]#my#endpoint#
