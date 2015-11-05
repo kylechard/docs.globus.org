@@ -13,7 +13,7 @@
 :trial_publish_url: https://trial.publish.globus.org
 :trial_publish: trial.publish.globus.org
 :publish_admin_guide_url: https://docs.globus.org/data-publication-admin-guide
-:publish_user_guide_url: https://docs.globus.org/data-publication-users-guide
+:publish_user_guide_url: https://docs.globus.org/data-publication-user-guide
 :how_to_sign_up_url: http://www.globus.org/researchers/getting-started
 :sign_up_url: http://www.globus.org/SignUp
 
