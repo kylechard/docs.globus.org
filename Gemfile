@@ -26,7 +26,7 @@ when /linux/
 end
 ## end special logic
 
-group :development, optional: true do
+group :development do
 	gem 'guard-nanoc', '~> 1.0.2'
 	gem 'guard', '~> 2.6.1'
   gem 'adsf', '~> 1.2.0'
