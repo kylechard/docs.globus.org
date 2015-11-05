@@ -23,6 +23,11 @@ header.navbar .navbar-header .navbar-brand img {
     height: 45px;
     margin: -13px 0 0 10px;
 }
+header.navbar .navbar-header .navbar-brand a,
+header.navbar .navbar-header .navbar-brand a:focus,
+header.navbar .navbar-header .navbar-brand a:hover {
+    text-decoration: none;
+}
 header.navbar-inverse .nav {
     font-size: 17px;
     font-weight: 100;

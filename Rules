@@ -109,18 +109,6 @@ compile '/faq/*' do
   end
 end
 
-compile '/troubleshooting/*' do
-  if !item.binary?
-    if ["txt", "adoc"].include?item[:extension].split('.').last
-      filter :asciidoc
-      layout item[:layout] || 'troubleshooting'
-    else
-      filter :erb
-      layout item[:layout] || 'troubleshooting'
-    end
-  end
-end
-
 compile '/site-docs/*' do
   if !item.binary?
     if item.identifier.include?('/raw')
