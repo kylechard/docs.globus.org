@@ -98,7 +98,7 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 <ul class="go-icon-list-circle">
 	<li><h3>Set up and use a personal endpoint.</h3>
 		<ul>
-			<li><a href="/globus-connect-personal">Follow these instructions</a> to download Globus Connect Personal and set up an endpoint on your Mac, Linux, or Windows system.</li>
+			<li><a href="https://globus.org/globus-connect-personal">Follow these instructions</a> to download Globus Connect Personal and set up an endpoint on your Mac, Linux, or Windows system.</li>
 			<li>Navigate to the Transfer Files page and request a transfer between your new personal endpoint and go#ep1 or go#ep2.</li>
 			<li>Navigate to the Activity page (via Manage Data submenu or Quick Links dropdown) and review your transfers.</li>
 		</ul>
@@ -108,11 +108,11 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 		<ul>
 			<li>If your resource provider has set up a Globus endpoint, enter the endpoint name on the Globus Transfer Files page, authenticate using your normal username and password for the site when prompted, and proceed with your data transfer request.</li>
 			<li>If you don't know the endpoint name, you can use the pattern match capability on the Globus Transfer Files page to look for an endpoint. Just enter a likely resource name and look for the resource in the scroll-down list of matching endpoints. For example, "umich", "nersc", "xsede", ...</li>
-			<li>If your site is not set up as a Globus endpoint, direct your system administrator to the <a href="/providers">Resource Provider information</a> or <a href="/contact-us">ask us</a> to contact them on your behalf.</li>
+			<li>If your site is not set up as a Globus endpoint, direct your system administrator to the <a href="https://globus.org/providers">Resource Provider information</a> or <a href="https://globus.org/contact-us">ask us</a> to contact them on your behalf.</li>
 		</ul></li>
 	<li><h3>Learn how Globus lets you easily share data.</h3>
 		<ul>
-			<li><a href="/data-sharing">Follow this link</a> to find out how Globus lets you share files with others.</li>
+			<li><a href="https://globus.org/data-sharing">Follow this link</a> to find out how Globus lets you share files with others.</li>
 		</ul>
 		<p>Globus lets you share your data with others, even if they do not have accounts on the resource where the data is stored. This capability can be a huge benefit in terms of both time and money because the data need not be copied to cloud storage (e.g., to Box or DropBox) in order to be accessible.</p></li>
 	<li><h3>Learn more about Activity reporting and transfer retry.</h3>
@@ -134,8 +134,8 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 		<p>Globus, on your behalf, continues to retry the transfer when a problem is encountered. There could be a permission problem (as is the case in this exercise), or an endpoint resource that goes down mid-transfer (perhaps you closed your laptop while copying data to it), or any number of other issues that prevent the transfer from progressing. Globus will continue to retry the transfer until (1) the problem is fixed (permissions changed, resource becomes available), (2) you cancel the transfer task (click the <strong>X</strong> next to the task in the Activity log), or (3) no progress has been made in three days, at which point Globus will notify you the transfer has failed.</p></li>
 	<li><h3>Get more technical details.</h3>
 		<ul>
-			<li>Read the <a href="/publications">publications</a> for technical details.</li>
-			<li>Find out how to use the <a class="zendeskLink zendeskChecked" href="https://support.globus.org/entries/21245717">Command Line Interface (CLI)</a>.</li>
+			<li>Read the <a href="https://globus.org/publications">publications</a> for technical details.</li>
+			<li>Find out how to use the <a class="zendeskLink zendeskChecked" href="../../cli">Command Line Interface (CLI)</a>.</li>
 		</ul></li>
 </ul>
 +++
