@@ -1,4 +1,4 @@
-= Updating endpoints due to strict mode as default
+= Bringing your Globus services in line with RFC 2818 compliance
 
 == Update Log
 *November 12, 2015 4:00pm CDT:* First version
@@ -38,7 +38,9 @@ Fix:
 NOTE: Many IGTF CAs do not support wildcard certificates. Also many IGTF CAs do not support multiple subjectAltName entries, but we expect many CAs to add support for it soon.
 
 === How to check for compatibility
-In order to check that your new configuration will work with the new algorithm, you can use the commands:
+In order to check that your new configuration will work with the new algorithm, you can use the one of the following methods:
+
+==== Using grid-cert-diagnostics 
 
 To check a GridFTP server:
 
@@ -75,6 +77,12 @@ If the test failed, you’ll see the following relevant line in the output:
 [output]#Performing name comparison... not ok#
 ----terminal
 
+If you don’t have grid-cert-diagnostics installed, it is in the "globus-proxy-utils” package available for download from http://toolkit.globus.org/toolkit/downloads/6.0/.
+(Note: only the "globus-proxy-utils” package in the GT6 repo has the required version of the grid-cert-diagnostics program.)
+
+If you have grid-cert-diagnostics installed, but the -g/-s option is not recognized, then update to the latest version of the "globus-proxy-utils” package from the GT6 repo.
+
+==== Using openssl
 An alternative option to inspect a host certificate used by any service:
 
 First check the CN of the subject DN:
@@ -100,8 +108,3 @@ Also check the Subject Alt Name extension fields (if present) to see if any of t
 If any of these entries match the DNS name that clients use to connect to your service, then your cert will work.
 
 NOTE: If your cert contains any Subject Alt Name extension fields, then at least one of these MUST match the DNS name that clients use to connect to your service. This is true even if the CN of your subject DN matches the DNS name that clients use to connect. The reason for this is that RFC 2818 specifies that the Subject Alt Name extension (if present) MUST be used to establish identity.
-
-If you don’t have grid-cert-diagnostics installed, it is in the "globus-proxy-utils” package available for download from http://toolkit.globus.org/toolkit/downloads/6.0/.
-(Note: only the "globus-proxy-utils” package in the GT6 repo has the required version of the grid-cert-diagnostics program.)
-
-If you have grid-cert-diagnostics installed, but the -g/-s option is not recognized, then update to the latest version of the "globus-proxy-utils” package from the GT6 repo.
