@@ -5,6 +5,7 @@
 
 *Oct 16, 11:00am CDT:* First version
 
+'''
 We are aware of the announced vulnerability SSLv3 "POODLE" described in link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-3566[CVE-2014-3566]. We are investigating the issue and will update this post with more detail as necessary.
 
 == Risk Assessment

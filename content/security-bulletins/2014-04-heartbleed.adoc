@@ -41,7 +41,7 @@ NOTE: The information in this post is current as of April 21, 2014 (at 11:45pm C
 
 *April 8, 8:00pm CDT:* First version
 
-
+'''
 We have reviewed all Globus services and components to determine the impact of the OpenSSL vulnerability described in CVE-2014-0160 (also known as the Heartbleed bug). We are actively monitoring and updating any services affected. Below is a list of our analysis and actions we have taken, as well as precautions that end users and resource providers can take to ensure the security of their systems.
 
 == Risk Assessment
