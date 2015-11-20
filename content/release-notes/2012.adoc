@@ -1,0 +1,90 @@
+= 2012 Release Notes
+:toc:
+:toclevels: 1
+
+== December
+- Changed the default to "verify file integrity" for all transfers
+- CLI: Fixed a bug in +endpoint-modify+ command to allow the "MyProxy Server" to be erased
+- Improved API error when myproxy hostname is missing on activation
+- Fixed API bug when doing a subtask_list returns a NULL completion time
+- Added a service for validating a MyProxy OAuth server
+- Improved OAuth error message handling
+- Improved method for avoiding use of "down" hosts for endpoints with multiple physicals
+- Improved handling of HPSS endpoints by setting parallelism to 1, but allow it to be overridden
+- Added "no email notifications" flag in user profile to enable users to stop notifications for all transfer jobs
+- Added separate error code GC_NOT_CONNECTED when GC is not connected
+- Improved overall service reliability by throttling the "directory expansion" when there are more than 1 million files awaiting transfer for a job
+
+== November
+- Group management is now available for all users (beta)
+- Users can now create and delete a group
+- Users can search and invite users to a group
+- Applying group capabilities to Globus Online services like Transfer and Sharing is coming
+
+== October
+- Improved usability of the Start Transfer: Transfer Settings options, defaults and descriptions
+- Added support for OAuth to allow portals to seamless integrate with Globus Transfer
+
+== September
+- Added support for preserving file modification times
+- Added support for file deletion in a transfer or sync command
+- CLI: Added a new +transfer+ and +scp+ option +–preserve-mtime+ to set the destination modification file times based on the source.
++
+NOTE: Requires updated Globus Connect, or GridFTP server version 5.2.X or later, on destination endpoint.
++
+- Changed behavior to extend deadline for 3 days for INACTIVE (credential expired) tasks, so user has more time to renew them
+- Improved transfer command to support a single line submission (like scp)
+- Added a new +transfer+ and +scp+ option +–delete+ for deleting files or directories on the destination endpoint if they do not exist on the source
+- Added a new command for creating a storage volume (Beta).
++
+NOTE: requires permission to access the storage enabled endpoint.
++
+- Added support in Globus Nexus for OAuth 2.0 Authorization service, that uses Globus Online login
+
+== August
+- Improved reliability and performance of Globus Online's home page
+- Start Transfer: Added support to verify file integrity after transfer
+
+== July
+- Nexus now authorizes Globus Online Web Flight Control access
+- Fixed an Internet Explorer issue that resulted in duplicate task ids being generated for separate requests
+- Improved web accessibility by enable 30 day login lifetimes
+- Improved start transfer by adding the ability to specify a path along with the endpoint, e.g. https://www.globus.org/xfer/StartTransfer?origin=go%23ep1/~/home
+- Fixed a performance issue so that Globus Transfer can now process huge (multi-million files in a single dir) directory expansion
+- Queued tasks are now kept alive (as long as creds arent expired)
+
+== June
+- Introduced Flight Control tool to select users
+- Added ability to allow site/endpoint admin to view their user's activity using the Flight Control UI
+- Added security logging to Globus Nexus per XSEDE recommendation
+- Added new +–verify-checksum+ option to +scp+ and +transfer+ commands. When used, Globus Transfer will verify that each destination file's checksum matches the source after the transfer completes
+- Increased the max path length for Transfer to 4096
+- Improved directory listing reliability by using MLSC when available on endpoints running GridFTP from GT 5.2.1 or later; MLSC is more firewall friendly
+
+== May
+- Fixed Start Transfer Web page to auto refresh to show Globus Connect endpoint after it newly created
+
+== April
+- Implemented a new web site-wide menu navigation system
+- Improved user issue tracking system by integrating Zendesk into Globus Online Web site
+- Added Zendesk user forums to the Globus Online web site
+- Implemented automatic OAuth or OpenID identity added to a user's account after signing up with that identity
+- Added support in Globus Online for CILogon to be used as an external identity provider (IDP)
+- Improved atomic submission mechanism to ensure no task ID conflicts between users
+- Added security logging to Globus Transfer per XSEDE recommendation
+
+== March
+- Added ability for users to add a new identity to their account after using it to log in
+- Changed Globus Transfer dates to be relative to the user's local time instead of UTC
+- Improved directory listings to show symlinks
+- Increased scalability by 2-3x for Globus Transfer to handle more concurrent Globus Connect clients
+
+== February
+- Implemented a new web Sign In workflow to make it easier to use and follow
+
+== January
+- Added support for using ALCF MyProxy OAuth with Globus Online
+- Enhanced the +endpoint-modify+ command to allow an optional OAuth server to be configured for an endpoint
+- Added support for encrypting (+–encrypt+) transfers for both the +scp+ and +transfer+ commands
+- Improved performance of large number of small files sync operations by using pipelining (specifying multiple files in a single round trip)
+- Added support for fully qualified endpoints, even when defined by the user, e.g. [uservars]#myep# or [uservars]#joeuser#myep# can be used interchangeably in CLI commands.

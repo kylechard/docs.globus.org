@@ -1,0 +1,264 @@
+= 2014 Release Notes
+:toc:
+:toclevels: 1
+
+== December
+=== Features
+- Allow forcing UDT to test small file performance on Globus Connect Personal downloads
+- New link:https://www.globus.org/blog/globus-management-console[Management Console] system for administrators to monitor their managed endpoints
+
+=== Improvements
+- Replace all "Cancel" links with buttons sitewide
+- Sign Up and Update User pages now require Organization field
+- Transfer Files page shows effective speed and bytes transferred
+- Transfer Files page has improved messages in the "delete" confirmation box
+- Upgrades to several backend databases and components to improve performance and reliability
+
+=== Bugfixes
+- Groups page, attempting to retrieve Invited Member details from pop-up box did not complete
+- Manage Endpoints page, expanding "Servers" list only expanded for one endpoint
+- Manage Endpoints page, screen for creating Globus Connect Personal endpoint did not close after creation
+- Removed option to set a Shared Endpoint to be Private
+- Sign In page, fixed issue with "forgot password" link placement
+- Transfer Files options did not revert to defaults after page refresh on Windows 8.1 when using Google Chrome or IE 11
+
+== November
+=== Improvements
+- Group "Settings > Membership Requirements" has a better field ordering
+- Performance improvements for transfers to Amazon S3 endpoints (see our link:https://www.globus.org/blog/big-improvements-globus-performance-amazon-s3-endpoints[blog post])
+- Transfer Files page displays endpoint and path names immediately, before the activation step
+- Transfer Files page has improved reliability for timeouts when displaying directories with 1000s of files
+- Transfer Files page has simpler messages when endpoint authentication is required
+- Transfer Files page is more efficient when displaying directories with 1000s of files
+
+=== Bugfixes
+- Activity page, activity times were not updating
+- Activity page, new transfer activity was not going to the top of the list
+- Activity page, icons were not showing
+- Closing Safari caused a log out from Globus
+- Creating Globus Connect Personal Endpoint allowed submission even if the endpoint name was invalid or in-use
+- Groups page, pending approval list didn't update the membership list upon successful change
+- Groups page, removed ability to search by username
+- Managed Endpoints page, changing endpoint filtering from a long result list to a short one caused the listing to be truncated
+- Transfer Files tooltips were not working with Firefox on OS X 
+- Update Profile page, removed "Reset" button
+- Validation for the "Current Password" field did not display on http://www.globus.org/account/ChangePassword
+- When a subgroup name was edited, some locations continued to show the old name
+
+== October
+=== Features
+- Remove ability to Purchase Globus Plus Plans or get a Free Trial (details link:https://www.globus.org/blog/globus-policies-they-are-changin[here])
+
+=== Improvements
+- Increase speed and quality of User/Group searches
+- New and updated Globus accounts must have unique email addresses
+
+=== Bugfixes
+- GOAuth redirection did not always work with username/password
+- Updating email address was not displaying error correctly when non-unique
+
+== September
+=== Features
+- CLI, added command option, +--managed-endpoint+ to +endpoint-modify+, +endpoint-add+, and +endpoint-list+
+- CLI,  new commands, +acl-add+, +acl-remove+, +acl-list+, for managing endpoint access rules
+- Transfer API, added field "effective_bytes_per_second" to task document
+- Transfer API, added field "faults" to the task document
+- New Branded Site: Purdue
+
+=== Improvements
+- On Manage Identities page, "Add X.509 Credential", notes that proxy certs are not supported
+- Website look and feel: browser standardized input boxes, input error highlighted in red, more readable fonts, and much much more
+
+=== Bugfixes
+- After Sign In, users were not always redirected to the correct page
+- Cannot share with a user who has a parenthesis in their user name
+- Entering an incorrect username on a password reset caused a repeating error
+- Error message displayed when attempting to rejoin a group in session keeps repeating
+- Fixed the set of error messages for Group invitations that can not be claimed
+- "Group > Member Details" email invitation entries showed the current user instead of invitee
+- In "Managed Endpoints > Sharing" panel, write permissions were not saved in some situations
+- Some transfer task states were getting set to "queued" incorrectly
+- Too long or too short usernames caused some web pages to display poorly
+
+== August
+=== Features
+- Add https://www.globus.org/selectUser page for searching Globus users by username or Full Name
+- Add https://www.globus.org/selectGroups page for searching Groups by groupname or UUID
+- Add https://www.globus.org/entitySearch page for searching both Groups and Users simultaneously
+- Can notify users by email that they have access to a Shared Endpoint
+- Shared Endpoints can be shared with all Globus accounts via "share with everyone" 
+
+=== Improvements
+- Better error message when attempting to link one external identity to multiple Globus accounts
+- Redesign of Sharing "Add Permissions" section and Group search filter
+- Username validation is more consistent throughout Globus UI 
+
+=== Bugfixes
+- "Cancel" button on the "Overview" tab in Manage Endpoints saves form data instead of cancelling the edit
+- "Group > Admin" Queue page styling was broken
+- Page was hanging after joining the site's Group during CMSConnect SignUp
+- "Refresh" button for Globus Connect Personal Not Connected Error did not work
+- Rendering failed on https://www.globus.org/AcceptToken
+- Rendering failed on https://www.globus.org/xfer/FlightControl
+- Repaired option visibility and focus on Group page in "create Group" pop up
+
+== July
+=== Features
+- Can notify users by email that they have access to a Shared Endpoint (CLI and API only)
+- Logout is now possible by navigating to https://www.globus.org/logout
+- Shared Endpoints can be shared with all Globus accounts (API only)
+- Shared Endpoints can be shared with a non-Globus user email address (CLI and API only)
+- New Branded Site: CMS Connect
+- New Branded Site: Michigan State University
+
+=== Improvements
+- Increase reliability and robustness of the Globus Relay service (used by Globus Connect Personal)
+- Minor changes to GOAuth authorize support
+- Remove member_limit restriction on Groups
+- Turn off autocapitalization of usernames for mobile devices
+
+=== Bugfixes
+- Activate Endpoints page showed an error when loaded without extra parameters
+- Anchor buttons started black, and turned blue on hover, instead of always being blue
+- Create User failed when "opt in" was selected
+- Inviting a previously rejected user to a Group failed
+- Hostname of Endpoints not owned by the user were incorrectly hidden on Manage Endpoints page
+- Missing notifications to Group admins & managers when users requested to join Groups
+- Update Profile form was hanging on submission with invalid data
+- Hint components failed on Sign Up page
+
+== June
+=== Features
+- New CLI command, +cancel --all+, cancels all active transfers
+- New CLI command, +mkdir+
+- Recursive file delete on S3 Endpoints
+- 14 day grace period on cancelled Provider plans
+
+=== Improvements
+- Add notifications for suspended and expired Plus plans
+- Add notice text on Sign Up page for Compute Canada Branded Site
+- Add "x509 subject" in the expanded section for MyProxy and OAuth types on Manage Identities page
+- Allow HPSS file transfers to continue in the presence of minor errors
+- Change the "groups > subgroups > subsubgroups" UI to display as an indented tree
+- Include Endpoint name in the URL in Endpoint reactivation email
+- Increase efficiency of file transfers by applying exponential backoff to failing tasks
+- Increase efficiency of file transfers that have multiple directories
+- Increase performance and reliability of file transfer when processing many small files
+- New S3 Endpoint error codes better describe root causes
+- Validate that the source of an S3 download is a directory
+
+=== Bugfixes 
+- CLI +delete+ was inconsistent with other commands -- did not require a trailing slash for recursive actions
+- Creating Subgroups redirected browser after creation
+- File Transfer Started events were not getting flushed during slow checksum operations
+- Groups page did not show Subgroups immediately after creation
+- Inviting users to Groups from search tab failed silently
+- Inline Endpoint validation rules were not applied during Endpoint creation
+- Login form did not get auto focus on Sign In page
+- New users could not signup on Exeter Branded Site
+- Only admin of a Group was able be able to demote himself
+- Retrieving policies immediately after creation of a Group could sometimes fail
+
+== May
+=== Features
+- Allow users without Plus plans to create Groups
+- ACME is now an approved OAuth provider
+- ESGF is now an approved OAuth provider
+- FACE-IT is now an approved OAuth provider
+
+=== Improvements
+- Increased loading speed of Group names
+
+=== Bugfixes
+- Group managers were not receiving membership emails
+- Group join requests were not showing up in admin queue for managers
+- On Transfer Files page, typing in Endpoint name and attempting to select one could empty the Endpoint list
+- Updating policies could make groups invisible to non-members 
+
+== April
+=== Improvements
+- Better error message for delete operation not supported on S3 Endpoints in Transfer Files page
+- Better error messages for many common issues in Transfer Files page
+- Disable Sharing option when a user selects a file or multiple folders in Transfer Files page
+- Hide Sharing tab if the user does not have ability to share in Manage Endpoints page
+- New Globus menu for all branded sites
+
+=== Bugfixes
+- Changing Sharing permissions did not always get preserved correctly
+- Empty rows for new File Transfers on View Activity page when Transfers are started in a different window
+- Entering an invalid Endpoint name on Transfer Files page did not cause an error
+- On Group Member details page, status was not properly displayed
+- The ep=GC parameter to Browse Endpoints did not work and caused errors
+- User cancelled File Transfers appeared as "Failed" instead of "Cancelled"
+- User was able to submit empty Terms and Conditions on Groups page
+- When a user updated privacy settings, success message would pop up each time update button was selected
+
+== March
+=== Features
+- Add ability to easily share with all authenticated users (CLI and API only)
+- New API calls for managing GOAuth tokens
+
+=== Improvements
+- Add audit logging of the user's credential used on S3 commands
+- Allow non-ascii characters in the default directory in API calls
+- Better GOAuth exception handling
+- Change CLI shell backslash escaping to be consistent across all commands
+- Change logic on status for tasks with status "warning: ok" in View Activity page
+- Change the "MBits/s" label in email notification and details command to be "Effective MBits/s"
+- Change wording on status from "halted" to "warning" to be clearer on View Activity page
+- Extend a File Transfer's error message content to include the Endpoint's stderr
+- Force S3 compliance by rejecting paths containing "..", ".", and "//" for S3 Endpoints
+- Improve description of the encryption option on Transfer Files page
+- Increase speed of S3 interactive directory listing and recursive transfer operations by filtering paths
+- New "acl_available", "acl_editable", and "shareable" fields in the API expose Endpoint capabilities
+- Notify user at previous address when their Globus account email is changed
+- Prevent on overflow error in auto-activate API call by limiting input length
+- Reformat panel on Activate Endpoint page
+- Set S3 error message to be "FileNotFound" on file download when ACL is denied
+- Set S3 error message to be "NotFound" on non-existent directory transfer attempt
+- Users can be given Flight Control access for a specific list of Endpoints
+
+=== Bugfixes
+- Changing label on Transfer Files page caused invalid label even when valid
+- Checkbox in "Cancel Task" dialog did not work
+- Could not refresh an active OAuth credential on Manage Endpoints page
+- File Transfer task retry count was too large
+- Granting Read access to a member of a Group on a Shared Endpoint did not work
+- Group API auto join invites were not processed correctly when user had previously been rejected
+- Incorrectly allowed Write access to Shared Endpoints when one Group set Read-only and another set Write
+- Invited member could send invites through the Group API calls
+- Minor bugs in Members tab on Groups page
+- Minor fixes on several Branded Sites
+- nice_status was used incorrectly for active tasks in View Activity page
+- Root error was masked by long OAuth error messages, so limited the OAuth error message length
+- Showed info for "event log > fault events" instead of fault events on View Activity page
+- Users went to Pending state when invited by admin or manager to a Group with a policy of automatic accept
+- View Invites page did not show all users
+- Transfer Files page no longer remembered last selected Endpoints 
+
+== February
+=== Features
+- New Management Console UI
+- Public credential information from a user's Managed Identities is shown to Group admins/managers
+- New Branded Site: ACME
+- New Branded Site: Compute Canada
+
+=== Improvements
+- Minor changes to Group Terms and Conditions UI
+- Minor changes to Transfer Files page
+- Redesign the Manage Identities page
+
+=== Bugfixes
+- Activation button on the Endpoint activation page was not working
+- Fixed authentication token signing issues which caused KBase authentication to fail
+- Users were unable to accept a Group invitation from the invite email
+- Fixed numerous minor UI issues, including some problems with the Sharing UI bullets
+
+== January
+- Added new feature to set the "Terms and Conditions" for joining a Group
+- Fixed bug preventing invitation email being sent for user with non-ASCII characters in their full name
+- Integrated sending emails using mailchimp
+- New branded site: ATLAS Connect
+- Fixed a number of wording, visual, workflow and performance issues on the "/Group" web page
+- Improved the workflow on the "/account/Subscriptions" web page
+- Improved /xfer/ViewActivity details section to show the name of the endpoint, as well as,  strikethrough if it has been deleted.

@@ -1,0 +1,105 @@
+= 2011 Release Notes
+:toc:
+:toclevels: 1
+
+== November
+- Added support for MyProxy OAuth; confirmed working against the XSEDE MyProxy OAuth server
+- Added labels for labeling and referring to a transfer: toggling show/hide hidden files, deleting files, and creating folders.
+- Added CLI support for MyProxy OAuth endpoint activation
+
+== September
+- Added ability to remove files with the rm command
+- Added ability to make directories with the mkdir command
+- Added ability to add labels when using the +scp+, +transfer+, +rm+, and +delete+ commands
+- Improved +ls+ command to take globbing, e.g. *, ?.
+- Improved processing to better support Mass Storage Systems (MSS)
+- Improved transfer fault retry algorithm
+- Removed Globus Online tutorial endpoint "reset" command since rm/delete is a functional superset
+
+== August
+- Added support for validation of SSH keys
+- Website now informs Transfer API source of requests via custom header on requests
+- Minor update to Globus Online Footer
+- CLI: Added ability to background an +scp+ command from interactive mode (during transfer); see +man scp bg+ command.
+- Added support for glite gridftp endpoints
+- Added support for GridFTP HDFS endpoints
+- Added support for file sync between anonymous GridFTP endpoints
+- Improved performance and scalability for new account creation and update
+- Added support for file list transfers between glite and non-glite GridFTP endpoints
+- Added support for file list transfers with a glite endpoint; required GridFTP cases insensitive 'fact' parsing
+- Improved internal logging to streamline support for client developers
+- Fixed issue with subtasks where the bytes_transferred was always 0
+- Improved Globus Connect performance when transferring lots (1000+) of small files
+
+== July
+- Performance enhancements to user provisioning process
+- Major overhaul of the Globus Online software stack to support theming and hosting of multiple websites, paving the way for development of a group management web presence for the Bioinformatics Information Research Network (BIRN), scheduled for launch in fall
+- Support for Globus Transfer v10
+- Significant Globus Online internal improvements to ensure consistent performance for transfer requests with greater than 1 million files
+- Changed ID format for subtasks
+- Sync level is now set per transfer request, no longer per file in a request
+- Added ability to validate size of files before and after the transfer; see +transfer -vs+
+- API: Added delegate_proxy activation method
+
+== June
+- Credential cache should now return 404 instead of 502 if no credential available
+- Unicode fields are now supported on the signup page
+- +details+ command now records fault count in top-level task
+- Made "quota exceeded" error easy to find
+- Added ability to set a port range for an endpoint definition, e.g. +endpoint-modify my-ep –port-range 40000,41000+
+- Transfer history details older than 1 month will be archived and available on request
+- Improved "credential expired" email to include more self help information
+- Added support for file list transfers between glite GridFTP endpoints
+- Improved Globus Transfer error message when using a GC endpoint and it is not connected to Globus Online
+
+== May
+- Internal database improvements
+- Support for non-standard ports for MyProxy Servers
+- ESG MyProxy server added
+
+== April
+- All pages now reside at a secure HTTPS address.
+- Tighter integration with the static web content.
+- Users will be now be required to provide a password which can be used to sign in to Globus Online.
+- Users are no longer required to have external authentication providers such as MyProxy or OpenId.
+- The "Login Accounts" and "CLI Setup" pages have been removed, a new page combines the functionality of these pages and is know as "Manage Identities".
+- Existing users will be prompted to set a globus online password.
+- New users are asked to validate their e-mail when signing up for a Globus Online account (a notification containing a confirmation link is sent to the e-mail address provided by the user).
+- Initial beta release of Globus Connect for Linux and Windows
+
+== March
+- The Start Transfer page has a new link called "Get Globus Connect" which displays a dialog for downloading and configuring Globus Connect.
+- The Dashboard includes a "Globus Connect" application icon. Clicking the link/icon will take you to the Start Transfer page with the above dialog displayed.
+- Changed the menu button in View Transfers to make its intended function clearer.
+- When sorting and/or filtering a column, a graphic appears on the column to indicate that you have performed this operation.
+- Empty event logs should no longer cause the Event Log page to lock up.
+- Improved resiliency in error cases for file-level sync.
+- Improved handling for various error scenarios.
+- Support for non-ASCII characters in file names.
+- +scp+ command supports sync (+-s+ option).
+- Added sync support to transfer submission.
+- Added endpoint delete.
+- Added POST /endpoint; this is now the recommended way to create endpoints, PUT /endpoint(name) is deprecated.
+- Added support for creating Globus Connect endpoints and getting a setup code.
+
+== February
+- The dashboard now provides links to various pages around the application
+- "Initiate Transfers" is now titled "Start Transfer"
+- "Monitor Tasks" is now titled "View Transfer Activity"
+- White-space in the file browser has been reduced, this should allow more files to display before needing to scroll
+- The dialog for entering activation requirements has been changed so that it displays cleanly on various browsers
+- The activation workflow now allows the user to start entering activation details on a different endpoint
+- Improved performance of transferring small files using a new client program fxp that can do GridFTP pipelining
+- Added ability for a user to modify the transfer request to extend the deadline
+- +transfer+ command supports performance option overrides, for advanced users
+- Improved error reporting: more specific errors returned about which endpoint is not working and why
+- Improved speed of the CLI and interactive job turnaround
+- Improved submission/cancel performance for large number of file jobs (>500,000)
+- Added new endpoint diagnosis command
+- Initial support for anonymous GridFTP (single or simple recursive transfers, no sync)
+- Improved feedback for transfer command recursive sync
+- +transfer+ command supports file-level sync
+- Improved handling of special characters in path names
+- Compatible with CLI version 1.2
+- Endpoints with a default MyProxy server will be auto-activated if the user has already activated another endpoint with a credential from that MyProxy server
+- Globus Connect (beta) is a quick-to-install package that lets you use your local computer with Globus Online to upload and download files between it and other Globus Online endpoints, even if the computer is behind a firewall or NAT. Globus Connect can be installed and run as a user without administrative privileges.

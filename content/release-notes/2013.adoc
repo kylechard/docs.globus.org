@@ -1,0 +1,154 @@
+= 2013 Release Notes
+:toc:
+:toclevels: 1
+
+== December
+- Changed group policy: A user must now have "Plus" to become a manager/admin or create new groups
+- Improved input validation and error feedback on the /ManagedEndpoints Overview Tab
+- Fixed user email validation processing when signing in with MyProxy
+
+== November
+- Created new branded site: CI Connect
+- Created new branded site: Duke Connect
+- Numerous improvements to the /xfer/ViewActivity page
+- Numerous fixes to group policies and processing
+- Web UI is now open for users to purchase "Plus" accounts
+- Rebranded website from "Globus Online" to "Globus"
+- Changed the globus.org header, footer and menu to reflex the new design
+- Fixed bug so auto-approval for joining a subgroup no longer breaks
+- Added /account/Subscriptions and /account/GetPlus web pages to all branded sites
+
+== October
+- Deployed new Plus subscription and payment web interface
+- Unified User representation in Nexus and policy fixes for user visibility
+- Instituted policy that email validation is now required
+- Changed Sign In and Up pages to require a valid email account
+- Improved the Link Accounts experience
+- Multiple improvements to the OSG Connect branded site
+- Fixed bug preventing users from joining a group that they had previously left
+- Added support for canceling Group subscriptions
+- Fixed bug where URL strings were escaped twice during GOAuth
+
+== September
+- Improved OAuth workflow to redirect back to sign in page instead of dashboard
+- Globus Transfer API: Made enhancements to support upcoming Globus Connect Personal "Pause"
+- Globus Nexus API: Improved policy engine performance which improves the performance of many group and group membership requests
+- Improved error classifications to better identify "endpoint errors"
+- Fixed bug where an active credential for a deleted endpoint could still be used
+- Created new branded site: OSG Connect
+
+== August
+- Manage Identities: Added "View Details" button to expose SSH public key, X509 Certificate, or Open ID details
+- Manage Endpoints: Improve experience entering server domain during endpoint creation and update
+- CLI: Changed the default for all transfers to use +–verify-checksum+
+- CLI: Added new option +–no-verify-checksum+ to turn it off
+- Added new successful_transfers task API for getting source and destination paths when a transfer is complete. Details are link: http://lists.globusonline.org/pipermail/transfer-api/2013-August/000355.html[here]
+- Improved reliability by limiting the impact a mis-behaving OAuth server can cause
+- Fixed bug that causes a failure when creating a subgroup for a root group
+- Made enhancement to reliably and efficiently process transfer requests up to a billion files; previous limit was approximately 10 million files for a single request
+- Fixed bug where a recursive directory transfer would fail if any directory name contained one of these characters ! @ $ ( ) + = & : ,
+- Fixed bug where a user set deadline could be shortened after a credential expiration or reactivation
+
+== July
+- Improved support for IE Browsers
+- Group Members Page: Fixed bug where the members' names ran off the page when using Safari
+- Manage Endpoints: Added ability to change the default directory on an endpoint
+- Manage Identities: Fixed bug preventing SSH keys with spaces in the comment to be added on the managed identities page
+- Manage Identities: Fixed bug where an invitation cannot be resent when invited by email
+- Globus Nexus API: Fixed bug where invite ID were not included to group invite emails
+
+== June
+* We just released Globus Connect Multiuser version 2. This is a major update over the previous version, featuring:
+** Native packaging for more than a dozen Linux variants
+** Globus Toolkit integration
+** Easy update from repo's
+** OAuth support
+** Support for Globus Online sharing
+** Improved configuration
+** Improved multi-server deployments
+** SSH keys no longer required
+** InCommon/CILogon support
+** Optional host certificate support
+// +
+// More details are available in the Documentation forum.
+* Groups: Updated membership page, to clarify when a user is not a member of the site's root group
+* Globus Transfer CLI: New "rename" command
+** Can rename a file or a directory
++
+NOTE: must be to the same endpoint and file system!
++
+----terminal
+$ rename go#ep1:/\~/file1 go#ep1:/~/file2
+----terminal
++
+----terminal
+$ rename go#ep1:/\~/dir1 go#ep1:/~/dir2
+----terminal
++
+* CLI: The +cancel+, +wait+, +events+ and +status+ commands can no longer query on a subtask; this option is only allowed on the +details+ command
+* Globus Transfer API: Changed how output format is specified. Instead of a file extension (.html or .json) use format query (?format=.json). This change was required to support a period (.) in endpoint names.
+* Globus Nexus API: Disallow use of email addresses using UTF-8 characters
+* Globus Transfer Service allows period "." in endpoint names, .e.g [uservars]#go.org#ep1# would be a valid name.
+* Improved efficiency, reliability and scalability for large (million) file transfers; dir restarts are now stream processed instead of all at once, avoiding excessive memory use.
+* Improved error when transferring files with a new line \n in the filename
+* Added support for endpoint options force encryption and force no verification
+
+== May
+- Improved sluggish web page load times by merging LESS and JS code
+- Improved CLI activation workflow
+- Improved new button styles
+- Improved endpoint list, by showing warning instead of an error when no records are found
+- Added routing such that a URL can be created which opens the add Globus Connect window, and changes the filter to "administered by me"
+- Fixed a bug where nothing shows up in the Sharing Tab
+- Fixed a bug where not found warnings are blocking create functions from appearing
+- CLI: New +endpoint-modify+ option to disable checksum verification on an endpoint: +endpoint-modify –disable-verify+
++
+NOTE: Dcache admins should set this option if their site/endpoint does not support MD5 checksums
++
+- Globus Sharing beta release now available. link:https://www.globus.org/plus/[Sign up for a free trial]
+- Groups: Enhanced Group workflow, by allowing users to remove themselves from a group
+- Added support for site-specific custom OAuth parameters
+- Added support for OAuth config files using the YAML format
+
+== April
+- Fixed a bug where the start transfer sync settings were ignored
+- Fixed a bug where the view transfer times were incorrect
+- Created a new/redesigned Globus Online home page!
+- Fixed a bug where the time of invite is not updated for group invites
+- Added cancel invitation to the group member details dialog (for invited users)
+- Changed the per-user pending job limit to 100 (previously unlimited)
+- Changed the directory expansion "sliding window / read ahead" to 100,000 files per job (previously one million). This means a recursive directory expansion will try to expand a max of 100,000 files before waiting for successful transfers to catch up.
+- Changed the per-user cap to 1 million files for directory expansion
+- Improved the File Staging (from Tapes) protocol for ncsa#mss and ncsa#nearline
+
+== March
+- CLI: Added ability to force encryption for an endpoint; see new option +endpoint-modify –force-encryption+
+- Added API support for disabling email notifications when submitting a task
+- Added API support for querying shared endpoints
+- Added support for Group change notifications via webhooks
+- Changed policy and UI to require email validation before allowing any Group action
+- Changed group member listing to sort by role then alphabetic on name
+- Disabled (prevented use of) verify checksum for nersc#hpss since it does not support it
+
+== February
+- Switched Nexus email server to use Amazon SES
+- Updated the set of supported cipher schemes to improve security and performance
+- Fixed a bug to now require an exact account name match for Sharing invites
+- Fixed a bug where sometimes when accepting an invitation, the invitation response email gets resent to the invitee
+- Fixed a bug to only show active members of a group when listing
+
+== January
+- Added a new operation for registering a GCMU MyProxy OAuth service
+- Added a setting to allow groups to be visible to any Globus Online user
+- Enabled Sharing for all users on tutorial endpoints: go#ep1 and go#ep2
+- Synchronizing empty directories will create an empty directory on the destination
+- The preserve modification time feature now applies to directories
+- Fixed timeouts with transfer + verify checksum
+- Fixed idle timeouts with transfer + delete
+- Endpoint activation again shows the myproxy-logon error text on error
+- Reworked detection and support of dcache endpoints; pipelining of commands during transfer is disabled for dcache
+- Improved the efficiency of file transfer pipelining
+- To better support very large jobs (10s of millions of files), only the most recent informational events are kept – 10,000 per job. All fault events are still kept. After 30 days from job completion, all events are deleted.
+- The "File" and "Command" fields in fault events are now url encoded so non-ascii characters are represented without ambiguity.
+- Notification emails now use Amazon SES as a mailer and are DKIM signed for authenticity. The "From" address has not been changed.
+- Interactive directory listings of Globus Connect endpoints should be faster (up to a second quicker in some situations)
