@@ -3,6 +3,7 @@
 == Update Log
 *Mar 19, 2015 1:45pm CDT:* First version 
 
+'''
 We are aware of the announced vulnerability described in link:http://openssl.org/news/secadv_20150319.txt[CVE-2015-0291] (ClientHello signalgs DoS). We are investigating the issue and will update this  post with more detail as necessary.
 
 == Risk Assessment

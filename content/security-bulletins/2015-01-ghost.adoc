@@ -5,6 +5,7 @@
 
 *Jan 28, 2015 3:00pm CDT:* First version 
 
+'''
 We are aware of the announced vulnerability described in link:http://www.openwall.com/lists/oss-security/2015/01/27/9[CVE-2015-0235] (GHOST). We are investigating the issue and will update this forum post with more detail as necessary.
 
 == Risk Assessment

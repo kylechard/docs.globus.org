@@ -7,6 +7,7 @@
 
 *Sept 24, 4:16pm CDT:* First version
 
+'''
 We are aware of the announced vulnerability "remote code execution through bash" described in link:http://seclists.org/oss-sec/2014/q3/649[CVE-2014-6271]. We are investigating the issue and will update this forum post with more detail as necessary.
 
 A follow up vulnerability was announced link:http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-7169[CVE-2014-7169] that indicates that the initial set of patches are incomplete.

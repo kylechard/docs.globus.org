@@ -3,6 +3,7 @@
 == Update Log
 *November 12, 2015 4:00pm CDT:* First version
 
+'''
 Globus is planning to change the default client-side algorithm for checking the server’s identity used by GridFTP, MyProxy, GSI-OpenSSH, and GRAM.  The new algorithm performs identity matching as described in section 3.1 of link:https://tools.ietf.org/html/rfc2818[RFC 2818], the standard describing TLS use with HTTP.   This involves a change in the globus-gssapi-gsi library, and will apply to any application that uses the updated library.
 
 The new “strict mode” algorithm will be more strict in its enforcement, checking that the server’s certificate identity matches the hostname that the client uses to contact the service.  Once clients are configured for strict mode, client authentication (of the service) would fail if the service is using a certificate that does not match the hostname that the client used to contact the service.
@@ -11,12 +12,9 @@ This change will bring our identity checking algorithm in line with RFC 2818, an
 
 The Globus team has checked the host certificates used for a number of GridFTP endpoints and found that many are _not_ RFC 2818 compatible.  These incompatible certificates will need to be replaced prior to clients defaulting to the new strict mode algorithm.
 
-The Globus team is reaching out now to Globus service admins to check your host certificates and update them if necessary.  We are asking admins to replace any incompatible certificates by Feb 1, 2016.  Then when it seems prudent after that time, the Globus Toolkit will release the changes to default client authorization algorithm to strict mode.  This should allow for no service disruptions for the Globus Community.
+The Globus team is reaching out now to Globus service admins to check your host certificates and update them if necessary.  We are asking admins to replace any incompatible certificates by March 1, 2016.  Then when it seems prudent after that time, the Globus Toolkit will release the changes to default client authorization algorithm to strict mode.  This should allow for no service disruptions for the Globus Community.
 
 NOTE: Globus Connect Server installations that use the Globus provided certificate are not affected by this and do not have to make any changes to their Globus Connect Server endpoint(s).
-
-We have created a page where additional details about this change will be communicated.  Including common reason for incompatibility and how an admin can check their services for incompatibility.
-(link to new security bulletin)
 
 If you have issues, please contact us at support@globus.org.
 

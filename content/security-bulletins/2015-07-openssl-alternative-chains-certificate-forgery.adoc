@@ -5,6 +5,7 @@
 
 *July 9, 2015 3:00pm CDT:* First version
 
+'''
 We are aware of the announced OpenSSL vulnerability described in link:https://access.redhat.com/security/cve/CVE-2015-1793[CVE-2015-1793] (Alternative chains certificate forgery). We have investigated the issue and do not anticipate any further updates.
 
 == Risk Assessment
