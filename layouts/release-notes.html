@@ -1,0 +1,47 @@
+<%= render 'partials/head' %>
+<body class="rn-page">
+    <!-- sidebar for mobile -->
+    <div id="st-container" class="st-container">
+        <div class="st-pusher">
+            <div class="panel-group st-menu st-effect-3">
+                <h1 class="st-heading">Release Notes Menu</h1>
+                <%= globus_navigation_for("/release-notes/", :mobile => 'true') %>
+            </div>
+            <div class="st-page-content">
+                <%= render 'partials/header' %>
+
+                <% if !@item[:hide_pageheader] %>
+                <div class="page-header">
+                    <div class="container">
+                        <div class="row"><div class="col-sm-12">
+                            <%= render 'partials/page_header' %>
+                        </div></div>
+                    </div>
+                </div>
+                <% end %>
+                <div class="st-content">
+                    <div class="st-content-inner">
+                        <div id="st-trigger-effects">
+                            <button data-effect="st-effect-3">Release Notes Menu</button>
+                        </div>
+                    </div><!-- /st-content-inner -->
+                </div><!-- /st-content -->
+                <div class="page-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-8 col-md-9">
+                                <%= yield %>
+                            </div>
+                            <div class="col-sm-4 col-md-3 sidebar">
+                                <%= render 'partials/menu_releasenotes' %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%= render 'partials/footer' %>
+            </div> <!-- eof st-page-content -->
+        </div> <!-- eof st-pusher -->
+    </div> <!-- eof st-container -->
+
+</body>
+</html>
