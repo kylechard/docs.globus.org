@@ -85,6 +85,18 @@ compile '/api/transfer/*' do
   end
 end
 
+compile '/release-notes/*' do
+  if !item.binary?
+    if item[:extension] == 'adoc'
+      filter :asciidoc
+      layout item[:layout] || 'release-notes'
+    else
+      filter :erb
+      layout item[:layout] || 'release-notes'
+    end
+  end
+end
+
 compile '/cli/*' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last

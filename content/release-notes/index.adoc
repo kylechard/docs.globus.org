@@ -1,0 +1,120 @@
+---
+menu_weight: 1
+short_title: Release Notes
+---
+= 2015 Release Notes
+
+== October
+=== Features
+- New CLI command +server-add+ for adding physical servers to a logical endpoint
+- New CLI command +server-remove+ for removing a physical server from a logical endpoint
+- New CLI command +endpoint-search+ to search endpoints
+- New CLI command +endpoint-details+ to get information about an endpoint.
+- Commands in the Globus CLI used to access any endpoint as input will auto activate and prompt the user for login only when that fails. Auto activation attempts to use credentials in the system for the same MyProxy/OAuth server from previous activation, if they are still valid.
+- Commands in the Globus CLI that take path arguments on the command line now URL decode the paths. Paths containing a "%" must be escaped as "%25"
+- UTF-8 input and output is supported on the CLI.
+- Added support for bookmarks
+- Added support for setting additional fields on the endpoint, such as display name, organization etc
+
+=== Deprecated Features
+- The +endpoint-list+ command is deprecated and the functionality is now provided using +endpoint-search+ and +endpoint-details+ command.
+- Option +-p+ (to add and remove server) on endpoint-add and endpoint-remove is deprecated.
++
+NOTE: Two new commands server-add and server-remove provide this functionality
++
+- The +scp+ command is deprecated
++
+NOTE: Users can use transfer command instead
++
+- Use of SCP like URLs (endpoint:path) is deprecated with commands +ls+, +mkdir+, +rm+, and +rename+
++
+NOTE: Users can continue to use +endpoint/path+ option instead
++
+- The +endpoint-rename+ command is deprecated
++
+NOTE: Users can use +endpoint-modify+ command for that functionality
++
+- The versions command, and using the +v=+ syntax to specify a version is deprecated. For any backwards incompatible changes, an alternative will be provided allowing users to make the transition, before the change is made in production.
+
+=== Improvements
+- Source and destination endpoint names at the time of task submission is associated with the task and always visible to the user submitting the task
+- Support for GSI SSH activation (+-g+ option) removed from all commands other than the endpoint-activation command. Users should use the endpoint-activation command explicitly before using other commands.
+- Pattern support removed from following commands: +endpoint-activate+, +endpoint-deactivate+, +endpoint-remove+, +endpoint-modify+. Users should run the command for each endpoint.
+- Deprecated +--port-range+ option in +endpoint-modify+ was removed.
+- Batch input for +transfer+ and +delete+ command has an input size limit of 1GB.
+- The transfer per-file verify-size option is no longer supported.
+- Label field can be modified only on tasks that have not been completed.
+
+== August
+=== Bugfixes
+- A completed task allowed its label to be updated
+
+== July
+=== Features
+- Add pause/resume support to Management Console and other transfer-related pages
+- New Branded Site: UMich
+
+== June
+=== Features
+- New Branded Site: BDDS
+
+== May
+=== Features
+- New Branded Site: FaceBase
+- New Branded Site: Petrel
+
+=== Improvements
+- GOAuth page, include any client passed state parameters in the redirect_uri
+- Manage Shared Endpoint page, added "Manage Roles" button
+
+=== Bugfixes
+- User and Group search failed on apostrophes and quotation marks
+
+== April
+=== Features
+- Admins with Management Console access can now cancel transfers on Managed Endpoints
+- Globus 3-legged OAuth now allows user to "remember" the choice to trust a third-party
+- New Access Manager role for setting ACLs on shared endpoints
+
+=== Improvements
+- Flight Control page now displays information about the new Management Console
+- New instructions for joining groups
+- Transfer summary statistics are no longer displayed on the Dashboard page
+
+=== Bugfixes
+- Transfer label was not editable on Activity page
+
+== March
+=== Bugfixes
+- Transfer Files page failed to render properly on Internet Explorer 9
+
+== February
+=== Bugfixes
+- Management Console, reported tasks between shared endpoint names were not aggregated into activity graph
+- Management Console, tasks between shared endpoints that are aggregated within the counts for host endpoints were not appearing in the tooltip
+
+== January
+=== Features
+- CLI +transfer+ command has new +--perf-udt+ option
+- Authorization now supports link:https://developers.google.com/accounts/docs/OpenID#shutdown-timetable[Google's OpenID 2.0]
+- New Transfer type to rename files and folders without "moving" them
+- "SITE TASKID <uuid>" is now sent to GridFTP servers for logging and debugging purposes
+
+=== Improvements
+- Authorization is more reliable in the presence of a misbehaving OAuth client
+- Transfer notification emails now come from "Globus Notification <no-reply@globus.org>"
+- Updates to website styling and mobile rendering
+
+=== Bugfixes
+- Accepting a group invite from the dropdown menu did nothing
+- After accepting a request to join a group, member role and status display was wrong
+- Details for pending memberships were not visible under "Groups > My Admin Queue"
+- Error message for disallowed options on Transfer Files page was repeating
+- File listing showed fractional bytes on Transfer Files page
+- "Manage Identities > add linked identity" displayed "Loading Credentials..." even with no existing identities
+- Non-profit status was not sticky on the "Update Profile" page
+- Plus users were unable to join a Provider group when there were requirements
+- Transfer API "task_list" max_limit of 0 interpreted as "no limit"
+- UI element closed prematurely and prevented endpoint renaming on Manage Endpoints page
+- Username was getting truncated in display on some pages
+- Users awaiting group membership approval could have had an approval message on the Groups page

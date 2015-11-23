@@ -1,0 +1,43 @@
+---
+menu_weight: 6
+short_title: 2010
+---
+= 2010 Release Notes
+
+== November
+* User account creation
+* User profile management: Manage profile information associated with account, including authentication options to web and command line interfaces; e-mail address; other attributes required by service
+* Website authentication initial options: Google/Gmail, MyProxy
+* REST API and new Web interface for Globus Transfer (beta)
+** File listing and transfer submission
+** Endpoint activation via MyProxy
+** File transfer monitoring
+** File/directory transfer submission
+** File/directory listing
+* Added directory sync functionality: Only transfer files that do not exist or are different on the destination; Options on how to determine file differences (existence, size, modification time, checksum)
+* Improved endpoint management by adding user namespace scoped endpoint: Users can use endpoint definition that are maintained by other users; Allows a community administrator (e.g. for TeraGrid, NERSC, etc) to maintain canonical endpoint definitions for all users
+* Default MyProxy server for endpoints: easy ls, scp, and endpoint-activate usage
+* +endpoint-activate+ can request a specific credential lifetime when using a MyProxy server
+* Tutorial endpoints available; each user is given access to transfer files between the two Globus Online operated endpoints. This can be useful for initial steps for trying out the Globus Transfer service. Can transfer from/to tutorial from/to outside endpoints.
+
+== September
+- Overhaul of command names, options, arguments and output formats
+- Atomic/reliable submission support for the transfer command
+- Command versioning for long term support
+- Recursive Directory Transfer support; specify source and destination directory paths instead of individual file pairs
+- Interactive directory listing (alpha); quickly list files on an endpoint; easily test that credentials are authorized
+- Secure Copy (+scp+) interface and functionality similar to standard scp command; operates in foreground or background (detached) modes
+- Flexible Endpoint Specification; do not have to use logical names
+- Logical endpoints created automatically when presented with host names
+- Activation done via gsi-ssh (transfer), gsi-ssh or myproxy (scp)
+- Credential expiration notifications and warnings
+- Pre-flight check for missing/expired credentials
+- Display notice if credentials expire before the deadline
+- E-mail notification for transfers stalled due to expired credentials
+- Improved help for CLI man pages
+- Updated quick start guide and videos
+- Reporting includes per-file transfer performance information
+- Ability to display all active or completed tasks in reporting
+- Ability to cancel in-progress files
+- Support for home directory/relative paths in file transfer commands
+- Can now use the standard ssh port (22) with gsissh

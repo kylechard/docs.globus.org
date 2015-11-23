@@ -334,7 +334,12 @@ footer #legal {
 .default-page {}
 .faq-page {}
 .site-docs-page {}
-.troubleshooting-page {}
+.rn-page #content .sect1 + .sect1{
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: solid 1px #eee;
+}
+
 
 
 /* Media Queries */
