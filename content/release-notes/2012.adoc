@@ -1,6 +1,8 @@
+---
+menu_weight: 4
+short_title: 2012
+---
 = 2012 Release Notes
-:toc:
-:toclevels: 1
 
 == December
 - Changed the default to "verify file integrity" for all transfers

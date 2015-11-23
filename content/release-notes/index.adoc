@@ -1,6 +1,8 @@
+---
+menu_weight: 1
+short_title: Release Notes
+---
 = 2015 Release Notes
-:toc:
-:toclevels: 1
 
 == October
 === Features

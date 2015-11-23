@@ -1,6 +1,8 @@
+---
+menu_weight: 5
+short_title: 2011
+---
 = 2011 Release Notes
-:toc:
-:toclevels: 1
 
 == November
 - Added support for MyProxy OAuth; confirmed working against the XSEDE MyProxy OAuth server

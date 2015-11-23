@@ -1,6 +1,8 @@
+---
+menu_weight: 3
+short_title: 2013
+---
 = 2013 Release Notes
-:toc:
-:toclevels: 1
 
 == December
 - Changed group policy: A user must now have "Plus" to become a manager/admin or create new groups
