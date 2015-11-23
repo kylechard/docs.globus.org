@@ -6,6 +6,7 @@
 [options="header"]
 |=========================
 |Date	|Description	|Notes
+|November 12, 2015 	|link:2015-11-strict-mode[Bringing your Globus services in line with RFC 2818 compliance]	|Globus Notification
 |July 9, 2015	|link:2015-07-openssl-alternative-chains-certificate-forgery[Alternative chains certificate forgery]	|link:https://access.redhat.com/security/cve/CVE-2015-1793[CVE-2015-1793]
 |May 22, 2015	|link:2015-06-logjam[Logjam vulernability]	|link:https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-4000[CVE-2015-4000]
 |March 19, 2015	|link:2015-03-openssl-clienthello-sigalgs[ClientHello signalgs DoS]	|link:https://access.redhat.com/security/cve/CVE-2015-0291[CVE-2015-0291]
