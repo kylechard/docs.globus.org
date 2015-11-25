@@ -358,7 +358,7 @@ This option is used to both enable and/or disable specified file paths for all G
 This is a boolean value that determines if sharing is enabled on this particular endpoint. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise. 
 
 ==== [go-icon-pp]#+SharingRestrictPaths+ option#
-This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a shared endpoint through Globus, the SharingRestrictPaths option can only set further access restrictions to the endpoint owner’s local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
+This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a shared endpoint through Globus, the SharingRestrictPaths option can only set further access restrictions to the endpoint owner's local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
 
 === [MyProxy] section
 
@@ -686,12 +686,12 @@ $ endpoint-modify --managed-endpoint abcu#ep1
 ----terminal
 
 === How to enable and disable sharing in Globus Connect Server
-To enable sharing on a managed endpoint, “Sharing = True” must be set in the [GridFTP] section of the /etc/globus-connect-server.conf file. Once this option is set, and the globus-connect-server-setup command is run to effect the configuration change, a managed endpoint will have sharing enabled. Similarly, setting "Sharing = False" will disable sharing on the endpoint. Note: This configuration option will have no effect on an endpoint that is not managed.
+To enable sharing on a managed endpoint, "Sharing = True" must be set in the [GridFTP] section of the /etc/globus-connect-server.conf file. Once this option is set, and the globus-connect-server-setup command is run to effect the configuration change, a managed endpoint will have sharing enabled. Similarly, setting "Sharing = False" will disable sharing on the endpoint. Note: This configuration option will have no effect on an endpoint that is not managed.
 Looking back to our use case with Adam, he will next need to log in (as root) to the server hosting the abcu#ep1 endpoint. He will then edit the /etc/globus-connect-server.conf file so as to set "Sharing = True" in the [GridFTP] section.
 
 === How to control sharing in Globus Connect Server
 ==== Controlling *what* can be shared
-It is possible to control which file system paths on the endpoint are allowed for sharing via the “SharingRestrictPaths” option, which is also in the [GridFTP] section of the /etc/globus-connect-server.conf file. Remember, after making changes to the /etc/globus-connect-server.conf file it is necessary to run the ‘globus-connect-server-setup’ command before those changes will take effect. Additional details about these configuration options can be found xref:gridftp_section[here] and also in the link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[globus-connect-server.conf] file itself.
+It is possible to control which file system paths on the endpoint are allowed for sharing via the "SharingRestrictPaths" option, which is also in the [GridFTP] section of the /etc/globus-connect-server.conf file. Remember, after making changes to the /etc/globus-connect-server.conf file it is necessary to run the ‘globus-connect-server-setup' command before those changes will take effect. Additional details about these configuration options can be found xref:gridftp_section[here] and also in the link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[globus-connect-server.conf] file itself.
 
 ==== Controlling *who* can share
 Recall that our use case with Adam required that sharing be enabled for only certain users. At this point sharing is enabled for all users on the server hosting the abcu#ep1 endpoint. By editing the SharingUsersAllow, SharingGroupsAllow, SharingUsersDeny, and SharingGroupsDeny options in the [GridFTP] section of the /etc/globus-connect-server.conf file, Adam can restrict which local users on the server are allowed to create shares on the abcu#ep1 endpoint. By default, when no value is set for any of these options, GCS will allow sharing for all local user accounts. Any users or groups listed in the SharingGroupsDeny or SharingUsersDeny options will not be allowed to share. If any value is set for SharingUsersAllow or SharingGroupsAllow, then only users and groups explicitly listed in these options will be allowed to share.
@@ -705,7 +705,7 @@ Since Adam only wants to allow certain users to be able to share, he has decided
 Instructions for how to create and manage access to a share on a managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
 
 === Details on effective share permissions
-The share permissions you grant to a Globus user are just one part of the puzzle in determining that user’s actual level of access to a shared endpoint. To accurately determine the effective permissions that a user will have to a share we must also consider local file system permissions. In the case of a shared endpoint, all users accessing the share have the same local file system permissions as the local user that was used to activate on the endpoint to create the share. When considering the effective permissions that a user has to a share, it is important to remember that the most restrictive of the Globus permissions and the local file system permissions will determine access.
+The share permissions you grant to a Globus user are just one part of the puzzle in determining that user's actual level of access to a shared endpoint. To accurately determine the effective permissions that a user will have to a share we must also consider local file system permissions. In the case of a shared endpoint, all users accessing the share have the same local file system permissions as the local user that was used to activate on the endpoint to create the share. When considering the effective permissions that a user has to a share, it is important to remember that the most restrictive of the Globus permissions and the local file system permissions will determine access.
 
 ==== Local user creating a shared endpoint
 
@@ -727,7 +727,7 @@ To sum up, both the share permissions granted to a Globus user, as well as the f
 The management console, available on xref:managed-endpoint-anchor[managed endpoints], 
 provides a graphical web interface that can be used to monitor endpoint activity and to 
 identify and troubleshoot faults that may indicate underlying infrastructure issues. 
-An organization’s link:{provider-plans_url}[Provider Plan] 
+An organization's link:{provider-plans_url}[Provider Plan] 
 support contact(s) decide who has access to the management console. 
 
 You can read about the details and benefits of the management console link:../management-console-guide/[here].
@@ -998,6 +998,46 @@ endpoints.  Instructions are provided at the following link:
 
 https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 
+[appendix]
+=== Setting Endpoint Network Use Options
+An administrator of a managed endpoint can set the network use levels for transfers against their endpoint. Endpoints that have multiple physical servers, and good end to end connectivity (network and storage) can set higher network use to ensure that Globus uses the bandwidth available, while smaller deployments can set this to lower levels. Globus uses the configuration settings from source and destination endpoints to determine the concurrency and parallelism options used for a given transfer, thus leveraging the available transfer capacity, without overwhelming smaller capacity endpoints during transfers with larger capacity endpoints.
+
+Three preset options are provided for the endpoint administrator, which have the following values:
+
+Minimal
+
+MaxConcurrency = 1
+
+PreferredConcurrency = 1
+
+MaxParallelism = 1
+
+PreferredParallelism = 1
+
+Normal (Default)
+
+MaxConcurrency = number of servers * 4
+
+PreferredConcurrency = number of servers * 2
+
+MaxParallelism = 8
+
+PreferredParallelism = 4
+
+Aggressive
+
+MaxConcurrency = number of servers * 8
+
+PreferredConcurrency = number of servers * 4
+
+MaxParallelism = 16
+
+PreferredParallelism = 4
+
+In addition to above, an administrator can choose the "Custom" option that lets them set absolute values for both concurrency and parallelism. All these options have a limit of 64 for MaximumConcurrency and MaximumParallelism. These values can be modified by using the `—network-use` option on `endpoint-modify` command in the Globus CLI.
+
+For a given transfer, the concurrency is calculated as the smallest value across the MaximumConcurrency values of both endpoints, and the maximum of the PreferredConcurrency of both endpoints. Parallelism is also calculated similarly, with an additional consideration for transfers with high latency (trans-oceanic transfers) where the parallelism is set to minimum of the Maximum Parallelism value set for both endpoints.
+
 [glossary]
 == Glossary
 [[access-manager-anchor]]Access Manager::
@@ -1008,7 +1048,7 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
   file transfers and other functions. For example:
 * I transferred files to the endpoint
 * I created a share for you on the endpoint
-* The endpoint’s file system is fast
+* The endpoint's file system is fast
 [[endpoint-definition-anchor]]Endpoint Definition::
   This term refers to the metadata about the endpoint, stored as an object in the 
   Globus.org database, used to simplify using and referring to the 
