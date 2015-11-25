@@ -532,12 +532,17 @@ code hierarchy.
 |===================
 | Code                  | HTTP Status  | Description
 
-| ClientError.NotFound  |404
+| EndpointNotFound  |404
 | If <endpoint_xid> not found
 
-| ClientError.PermissionDenied |403
+| PermissionDenied  |403
 | If user does not have privileges to get, modify, or delete the specified
   endpoint(s).
+
+| EndpointDeleted   |409
+| See <<get_endpoint_by_id,Get endpoint by id>>.
+  The error document contains a +deleted_time+ field indicating when the
+  endpoint was deleted, in addition to the standard error fields.
 
 | ClientError.Conflict  |409
 | If an endpoint with the same name already exists or if a role assignment
@@ -650,13 +655,20 @@ is used.
 |===================
 
 
+[[get_endpoint_by_id]]
 === Get endpoint by id
 
-Get a single endpoint by id (or +canonical_name+ for backward compatibility).
-All fields are included by default, including the +server+ subdocuments,
-but the +fields+ query parameter can be used to fetch only specific fields.
-Use 'server' in the fields list to include server subdocuments in a limited
-field list.
+Get a single endpoint by id. All fields are included by default, including the
++server+ subdocuments, but the +fields+ query parameter can be used to fetch
+only specific fields.  Use "server" in the fields list to include server
+subdocuments in a limited field list. For backward compatibility, an endpoint
+canonical_name can be specified instead of the endpoint id, but this feature is
+deprecated and all clients should migrate to using the id.
+
+NOTE: Returns an "EndpointDeleted" error instead of "EndpointNotFound" for
+deleted endpoints, but only when using id in the URL <endpoint_xid>
+argument. If an endpoint canonical_name is used for the <endpoint_xid>,
+it will return "EndpointNotFound" for deleted endpoints.
 
 [cols="h,5"]
 |============

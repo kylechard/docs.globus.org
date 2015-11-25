@@ -81,7 +81,8 @@ The +filter_fulltext+ query is processed and matched as follows:
 . canonicalize words using English dictionary, remove plurals and stop words
 . AND all terms
 . Look for endpoints with one of the fields described above matching
-  all terms, in any order and location
+  all terms, in any order and location. A term will match if it matches the
+  beginning of a word or the entire word (prefix based matching).
 
 The +limit+ query parameter sets how many results to return (max 100), and the
 +offset+ parameter sets where to start within the total results set for paging
@@ -173,6 +174,10 @@ also be specified, while others do not.
 
 | my-endpoints
 | Search only endpoints owned by the current user.
+| False
+
+| my-gcp-endpoints
+| Search only Globus Connect Personal endpoints owned by the current user.
 | False
 
 | recently-used
