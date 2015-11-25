@@ -19,6 +19,31 @@ Also, using 'a' type cells when not needed makes asciidoc slower; it executes
 asciidoc for each cell of type 'a'.
 ////
 
+== 4.7
+
+* Endpoint Search
+** Change full text search to match on prefix instead of whole word.
+** Increase weights of +display_name+, +canonical_name+, and
+   +keywords+ for full text result ordering.
+** Add search scope 'my-gcp-endpoints'.
+** Fix bug preventing utf8 search terms in +filter_fulltext+.
+
+== 4.6
+
+* Endpoint
+** Add "EndpointDeleted" error to
+   link:../endpoint#get_endpoint_by_id[Get endpoint by id].
+* New API: Endpoints Most Recently Used (MRU)
+** `GET /endpoint_mru_list?limit=N`, max limit of 100.
+** Returns the most recently used
+   endpoints for the current user, up to the specified limit, sorted by
+   how recently they were used. Currently only submitting a transfer or
+   delete tasks to an endpoint counts as 'using' the endpoint.
+** Also supports the standard +fields+ query parameter.
+** Note that `/endpoint_search?scope=recently-used` is still sorted by
+   endpoint name, not by how recently each endpoint was used.
+** This API is *alpha* and is likely to change in the near future.
+
 == 4.5
 
 * New link:../endpoint_search[Endpoint Search] API (this
