@@ -1008,17 +1008,26 @@ Three preset options are provided for the endpoint administrator, which have the
 |=========================
 |Option |Value
 |Minimal |MaxConcurrency = 1
-| |PreferredConcurrency = 1
-| |MaxParallelism = 1
-| |PreferredParallelism = 1
+
+PreferredConcurrency = 1
+
+MaxParallelism = 1
+
+PreferredParallelism = 1
 |Normal (Default) |MaxConcurrency = number of servers * 4
-| |PreferredConcurrency = number of servers * 2
-| |MaxParallelism = 8
-| |PreferredParallelism = 4
+
+PreferredConcurrency = number of servers * 2
+
+MaxParallelism = 8
+
+PreferredParallelism = 4
 |Aggressive |MaxConcurrency = number of servers * 8
-| |PreferredConcurrency = number of servers * 4
-| |MaxParallelism = 16
-| |PreferredParallelism = 4
+
+PreferredConcurrency = number of servers * 4
+
+MaxParallelism = 16
+
+PreferredParallelism = 4
 |=========================
 
 In addition to above, an administrator can choose the "Custom" option that lets them set absolute values for both concurrency and parallelism. All these options have a limit of 64 for MaximumConcurrency and MaximumParallelism. These values can be modified by using the `—network-use` option on `endpoint-modify` command in the Globus CLI.
