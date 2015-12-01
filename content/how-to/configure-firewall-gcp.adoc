@@ -1,0 +1,17 @@
+= How to configure firewall policy for Globus Connect Personal
+:numbered:
+
+If your system is behind a firewall, select TCP and UDP ports must be open outbound for Globus to work. You may need to coordinate with your network or security administrator to open the ports.
+
+The TCP and UDP ports that must be open for Globus Connect Personal, together with brief descriptions of each, are listed here:
+
+* TCP Port 2223 outbound to 184.73.255.160
+** Used to communicate control channel traffic with the Globus Transfer service and also get certificates during initial setup
+* TCP Ports 50000 - 51000 outbound to Any
+** Used for data channel traffic for transfers with Globus Connect Server based endpoints
+* UDP ephemeral port range (32768 - 65535 to inclusively cover Windows, Mac, and Linux ranges) outbound to Any 
+** Used for data channel traffic for transfers with Globus Connect Personal based endpoints (see note below)
+* UDP Port 19302 outbound to stun.l.google.com
+** This is the STUN server used by Globus Connect Personal when setting up a session with another Globus Connect Personal endpoint (see note below)
+
+NOTE: Transfers between two Globus Connect Personal endpoints are only possible if at least one of the endpoints is covered under a provider plan.

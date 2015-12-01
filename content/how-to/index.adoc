@@ -7,3 +7,4 @@
 - link:globus-connect-personal-cli[Install Globus Connect Personal Using the Command Line]
 - link:share-files[Share Data Using Globus]
 - link:managing-groups[Manage Globus Groups]
+- link:configure-firewall-gcp[Configure Firewall Policy for Globus Connect Personal]
