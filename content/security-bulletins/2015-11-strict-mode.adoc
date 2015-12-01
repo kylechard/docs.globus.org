@@ -4,19 +4,19 @@
 *November 12, 2015 4:00pm CDT:* First version
 
 '''
-Globus is planning to change the default client-side algorithm for checking the server’s identity used by GridFTP, MyProxy, GSI-OpenSSH, and GRAM.  The new algorithm performs identity matching as described in section 3.1 of link:https://tools.ietf.org/html/rfc2818[RFC 2818], the standard describing TLS use with HTTP.   This involves a change in the globus-gssapi-gsi library, and will apply to any application that uses the updated library.
+Globus is planning to change the default client-side algorithm for checking the server's identity used by GridFTP, MyProxy, GSI-OpenSSH, and GRAM.  The new algorithm performs identity matching as described in section 3.1 of link:https://tools.ietf.org/html/rfc2818[RFC 2818], the standard describing TLS use with HTTP.   This involves a change in the globus-gssapi-gsi library, and will apply to any application that uses the updated library.
 
-The new “strict mode” algorithm will be more strict in its enforcement, checking that the server’s certificate identity matches the hostname that the client uses to contact the service.  Once clients are configured for strict mode, client authentication (of the service) would fail if the service is using a certificate that does not match the hostname that the client used to contact the service.
+The new “strict mode” algorithm will be more strict in its enforcement, checking that the server's certificate identity matches the hostname that the client uses to contact the service.  Once clients are configured for strict mode, client authentication (of any Globus service) would fail if the service is using a certificate that does not match the hostname that the client used to contact the service.
 
 This change will bring our identity checking algorithm in line with RFC 2818, and will also close the door to reverse DNS lookup related attack vectors. As an example of why relying on reverse DNS for making security related decisions is not recommended, see this link: https://cwe.mitre.org/data/definitions/350.html.
 
 The Globus team has checked the host certificates used for a number of GridFTP endpoints and found that many are _not_ RFC 2818 compatible.  These incompatible certificates will need to be replaced prior to clients defaulting to the new strict mode algorithm.
 
-The Globus team is reaching out now to Globus service admins to check your host certificates and update them if necessary.  We are asking admins to replace any incompatible certificates by March 1, 2016. Then sometime after March 1, we will schedule a Globus Toolkit release that will change the default client authorization algorithm to strict mode.  At that time, the Globus.org transfer service will also update its’ identity checking algorithm. This should allow for no service disruptions for the Globus Community.
+We are reaching out to request that Globus service admins check their host certificates and update them if necessary.  We are asking admins to replace any incompatible certificates by March 1, 2016. After March 1, we will release updated Globus Toolkit components that will change the default client authorization algorithm to strict mode.  At that time, the Globus.org transfer service will also update its' identity checking algorithm. This should ensure no service disruptions for the Globus community.
 
-NOTE: Globus Connect Server installations that use the Globus provided certificate are not affected by this and do not have to make any changes to their Globus Connect Server endpoint(s).
+NOTE: Globus Connect Server installations that use the Globus provided certificate are not affected and do not have to make any changes to their Globus Connect Server endpoint(s).
 
-If you have issues, please contact us at support@globus.org.
+If you have any questions or concerns regarding this planned change, please contact us at support@globus.org.
 
 === Common reasons for incompatibility:
 . A host with multiple dns names, and the certificate identity matches some, but not all of them. For example, DNS name ep.example.org resolves to 10.0.0.1, which is the IP address of our server. Clients are connecting to the server by the ep.example.org DNS name. The cert on this server is for hostname host.example.org. Today, the reverse DNS lookup for 10.0.0.1 resolves to host.example.org this will work. The reason this works today is because the current algorithm resolves the hostname the client uses to connect to an IP address, then does a reverse DNS lookup on that IP to see if there is a match for the name in the cert. However, the new strict mode algorithm will use the original hostname the client uses to connect to the server only.
@@ -77,13 +77,13 @@ For a successful test, you should see the following relevant line in the output:
 [output]#Performing name comparison... ok#
 ----terminal
 
-If the test failed, you’ll see the following relevant line in the output:
+If the test failed, you'll see the following relevant line in the output:
 
 ----terminal
 [output]#Performing name comparison... not ok#
 ----terminal
 
-If you don’t have grid-cert-diagnostics installed, it is in the "globus-proxy-utils” package available for download from http://toolkit.globus.org/toolkit/downloads/6.0/.
+If you don't have grid-cert-diagnostics installed, it is in the "globus-proxy-utils” package available for download from http://toolkit.globus.org/toolkit/downloads/6.0/.
 (Note: only the "globus-proxy-utils” package in the GT6 repo has the required version of the grid-cert-diagnostics program.)
 
 If you have grid-cert-diagnostics installed, but the -g/-s option is not recognized, then update to the latest version of the "globus-proxy-utils” package from the GT6 repo.
