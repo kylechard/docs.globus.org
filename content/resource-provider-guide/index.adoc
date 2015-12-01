@@ -1034,7 +1034,7 @@ MaxParallelism = 16
 PreferredParallelism = 4
 |=========================
 
-NOTE: S3 endpoints do not support parallelism options, only concurrency. 
+*Note:* S3 endpoints do not support parallelism options, only concurrency. 
 
 In addition to above, an administrator can choose the "Custom" option that lets them set absolute values for both concurrency and parallelism. All these options have a limit of 64 for MaximumConcurrency and MaximumParallelism. These values can be modified by using the —network-use option on endpoint-modify command in the Globus CLI. 
 
