@@ -1,7 +1,7 @@
 = Bringing your Globus services in line with RFC 2818 compliance
 
 == Update Log
-*November 12, 2015 4:00pm CDT:* First version
+*December 1, 2015 2:00pm CDT:* First version
 
 '''
 Globus is planning to change the default client-side algorithm for checking the server's identity used by GridFTP, MyProxy, GSI-OpenSSH, and GRAM.  The new algorithm performs identity matching as described in section 3.1 of link:https://tools.ietf.org/html/rfc2818[RFC 2818], the standard describing TLS use with HTTP.   This involves a change in the globus-gssapi-gsi library, and will apply to any application that uses the updated library.
