@@ -1000,7 +1000,11 @@ https://www.globus.org/amazon-web-services/s3-endpoint-configuration
 
 [appendix]
 === Setting Endpoint Network Use Options
-An administrator of a managed endpoint can set the network use levels for transfers against their endpoint. Endpoints that have multiple physical servers, and good end to end connectivity (network and storage) can set higher network use to ensure that Globus uses the bandwidth available, while smaller deployments can set this to lower levels. Globus uses the configuration settings from source and destination endpoints to determine the concurrency and parallelism options used for a given transfer, thus leveraging the available transfer capacity, without overwhelming smaller capacity endpoints during transfers with larger capacity endpoints.
+Globus transfer uses configured network use levels and location of an endpoint to determine performance parameters to set on transfers against the endpoint. Administrators of endpoint may override the default values to best suit their deployment and needs. The configuration settings from source and destination endpoints are used to determine the concurrency and parallelism options used for a given transfer, thus leveraging the available transfer capacity, without overwhelming smaller capacity endpoints during transfers with larger capacity endpoints. 
+
+The location parameter is used to determine the distance and hence expected latency between the two endpoints, and is used in the automatic tuning of the transfers. By default the value of location parameter is automatically determined by Globus, but can be set by the endpoint administrator to explicit coordinates (in decimal degrees). This parameter cannot be set for S3 endpoints or shared endpoints. 
+
+Network use is set to “Normal” level by default. An administrator of a managed endpoint can set the network use levels for transfers against their endpoint. Endpoints that have multiple physical servers, and good end to end connectivity (network and storage) can set higher network use to ensure that Globus uses the bandwidth available, while smaller deployments can set this to lower levels.
 
 Three preset options are provided for the endpoint administrator, which have the following values:
 
@@ -1030,7 +1034,9 @@ MaxParallelism = 16
 PreferredParallelism = 4
 |=========================
 
-In addition to above, an administrator can choose the "Custom" option that lets them set absolute values for both concurrency and parallelism. All these options have a limit of 64 for MaximumConcurrency and MaximumParallelism. These values can be modified by using the `—network-use` option on `endpoint-modify` command in the Globus CLI.
+NOTE: S3 endpoints do not support parallelism options, only concurrency. 
+
+In addition to above, an administrator can choose the "Custom" option that lets them set absolute values for both concurrency and parallelism. All these options have a limit of 64 for MaximumConcurrency and MaximumParallelism. These values can be modified by using the —network-use option on endpoint-modify command in the Globus CLI. 
 
 For a given transfer, the concurrency is calculated as the smallest value across the MaximumConcurrency values of both endpoints, and the maximum of the PreferredConcurrency of both endpoints. Parallelism is also calculated similarly, with an additional consideration for transfers with high latency (trans-oceanic transfers) where the parallelism is set to minimum of the Maximum Parallelism value set for both endpoints.
 
