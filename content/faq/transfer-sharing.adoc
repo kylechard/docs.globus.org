@@ -123,7 +123,7 @@ It is also worth noting that Globus allows each user to have up to three simulta
 
 NOTE: the "mbps" value shown in the event log is different, and is calculated every 10-60 second interval over a single concurrent connection.
 
-== How do I control file permissions with Globus Transfer?
+== How do I control file permissions during transfers?
 Globus does not preserve file permissions when performing a transfer. When you transfer files with Globus, their permissions are determined entirely by the destination endpoint's configuration. There are still ways that you can control the permissions of the files created by Globus, on a destination endpoint, but they do not operate on information about the original file permissions.
 
 === Why We Don't Preserve Permissions
