@@ -4,7 +4,7 @@ short_title: Release Notes
 ---
 = 2015 Release Notes
 
-== Dec
+== December
 === Features
 - Manage Endpoints page now supports the new network use settings
 - New design and implementation for the Manage Endpoints, Transfer Files, and View Activity pages
@@ -14,7 +14,7 @@ short_title: Release Notes
 - Endpoint definition is expanded to facilitate Endpoint Search
 - Significant improvements to link:https://www.globus.org/blog/greatly-improved-endpoint-search[Endpoint Search]
 
-== Nov (Transfer 4.6*, 4.7*, Nexus/UX 11-09)
+== November (Transfer 4.6*, 4.7*, Nexus/UX 11-09)
 === Features
 - New /endpoint_mru_list API gets the current user’s most recently used endpoints
 === Improvements
