@@ -4,6 +4,28 @@ short_title: Release Notes
 ---
 = 2015 Release Notes
 
+== Dec
+=== Features
+- Manage Endpoints page now supports the new network use settings
+- New design and implementation for the Manage Endpoints, Transfer Files, and View Activity pages
+- Support for Bookmarks
+- Transfer Files selects endpoints using Endpoint Search
+=== Improvements
+- Endpoint definition is expanded to facilitate Endpoint Search
+- Significant improvements to link:https://www.globus.org/blog/greatly-improved-endpoint-search[Endpoint Search]
+
+== Nov (Transfer 4.6*, 4.7*, Nexus/UX 11-09)
+=== Features
+- New /endpoint_mru_list API gets the current user’s most recently used endpoints
+=== Improvements
+- Better error messages when a Shared Endpoint path is not allowed by the GridFTP server configuration
+- Endpoint Search now uses prefix match instead of full word matches
+- Endpoint Search ranks display_name, canonical_name, and keywords more highly
+- New EndpointDeleted error type, including a machine parseable timestamp
+- New search scope "my-gcp-endpoints" enables searches of all Globus Connect Personal Endpoints owned by the current user
+- Set the maximum network use level for CC to 64 for all Endpoints (including S3 Endpoints)
+- Update Globus welcome email to mention docs.globus.org
+
 == October
 === Features
 - New CLI command +server-add+ for adding physical servers to a logical endpoint
