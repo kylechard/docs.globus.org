@@ -45,9 +45,6 @@ menus:
                 title: 'Security Bulletins'
                 link: '/security-bulletins/'
             -
-                title: 'Help Center'
-                link: 'https://support.globus.org'
-            -
                 title: 'Contact Us'
                 link: 'https://www.globus.org/contact-us'
             -
