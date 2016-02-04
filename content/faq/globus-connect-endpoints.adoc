@@ -370,20 +370,16 @@ For more information, please check out the following:
 
 == What does "You are not an admin of the MyProxy Delegation Service" mean?
 
-This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` multiple times using different Globus usernames. As a workaround to get rid of this error, run this command as root: 
+This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` command multiple times using different Globus usernames. As a workaround to get rid of this error, run this command as root, and then rerun the setup script: 
 
 ----terminal
 # [input]#rm /var/lib/myproxy-oauth/myproxy-oauth.db#
 ----terminal
 
-Then rerun the setup script.
-
-If you aren't using an OAuth server in your configuration (if you are using, for example, `IdentityMethod = MyProxy` in your configuration), you can disable the OAuth server by commenting out the `Server = %(HOSTNAME)s` line in the [OAuth] section of the configuration file.
+If you are not using an OAuth server in your configuration (if you are using, for example, `IdentityMethod = MyProxy` in your configuration), you can disable the OAuth server by commenting out the `Server = %(HOSTNAME)s` line in the [OAuth] section of the configuration file.
 
 == How do I fix Globus Connect Server file permission errors?
-If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has the following permissions set:
-
-/var/lib/globus-connect-server should have the following permissions:
+If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has the correct permissions set. +/var/lib/globus-connect-server+ should have the following permissions:
 
 ----terminal
 [output]#755 root.root /var/lib/globus-connect-server
@@ -399,21 +395,10 @@ If you experience issues with Globus Connect Server related to file permissions,
 700 root.root /var/lib/globus-connect-server/myproxy-ca/crl#
 ----terminal
 
-The files in /var/lib/globus-connect-server/grid-security/certificates should all have permissions set to 644.
+The files in +/var/lib/globus-connect-server/grid-security/certificates+ should all have permissions set to 644.
 
 == What ports does Globus Connect Server need open?
-Globus Connect Server running on a cluster or other shared storage resource uses the following default ports:
-
-* GridFTP server control channel connections: Port 2811 or 21 inbound (21 for anonymous GridFTP) from 184.73.189.163 and 174.129.226.69
-* GridFTP server data channel connections: Ports 50000 – 51000 inbound and outbound to/from Any
-* MyProxy CA server authentication requests: Port 7512 inbound from 174.129.226.69
-* OAuth server authentication requests: Port 443 inbound and outbound to/from Any
-
-Globus Connect Server needs the following ports open during the setup process:
-
-* Port 2223 outbound to 184.73.255.160
-
-If you experience issues activating an endpoint, it's often the case that one or more of the above ports is not open.
+If you experience issues activating an endpoint, it's often the case that one or more of the required ports is not open. Please see the link:../../resource-provider-guide/#open-tcp-ports_section[Resource Provider Guide] for infomration on required ports and configuring your firewall.
 
 == How do I enable logging for Globus Connect Server 2.x.y?
 Currently, logging is not supported in Globus Connect Server >= 2.x.y. However, it can be enabled directly in GridFTP server, one of the Globus Connect Server components.
@@ -434,7 +419,7 @@ and restart the GridFTP server:
 $ /etc/init.d/globus-gridftp-server restart
 ----terminal
 
-All GridFTP options with their detailed description can be found at: http://toolkit.globus.org/toolkit/docs/5.2/5.2.5/gridftp/admin/#globus-gridftp-server
+All GridFTP options with their detailed description can be found at: http://toolkit.globus.org/toolkit/docs/6.0/gridftp/admin/
 
 == Does Globus Connect Server require an X.509 certificate to be installed?
 If you link:../../resource-provider-guide/#install_section[install Globus Connect Server] and select the MyProxy option, two components are installed: a GridFTP server and a MyProxy server. By default, certificates for both of these components are automatically installed so there is no need to add or configure X.509 certificates separately. You may choose to configure Globus Connect Server to use a certificate other than the default one installed. Please refer to the link:../../resource-provider-guide/#globus_connect_server_configuration[Globus Connect Server configuration section] to see how that can be set up.
