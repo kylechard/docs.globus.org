@@ -30,7 +30,7 @@ If you wish to create an endpoint on a personal machine (laptop, personal deskto
 If you are setting up an endpoint on a multi-user machine (e.g. HPC cluster, lab server, etc.)
 please follow the instructions in the link:../../resource-provider-guide/[Resource Provider Guide].
 
-If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/status[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
+If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/endpoint-add[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
 
 == Are transfers between Globus Connect Personal endpoints possible?
 Yes. You must be a link:https://www.globus.org/researchers/plus-plans[Globus Plus] user to transfer files between two Globus Connect Personal endpoints. If the two endpoints are owned by different Globus users, both users must be Globus Plus users. You account may be upgraded to Globus Plus if your institution subscribes to a link:https://www.globus.org/provider-plans[Globus Provider plan].
@@ -43,9 +43,9 @@ link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on 
 == Where does Globus Connect Personal store its settings?
 Globus Connect stores a few configuration files, such as its private certificate and key, in this location:
 
-- Microsoft Windows : [%LOCALAPPDATA%\Globus Connect] (or [%APPDATA%\Globus Connect] on Windows XP)
-- Mac OS X and Linux: [~/.globusonline/lta]
-- On Mac OS X, Globus Connect stores preferences in ~/Library/Preferences/org.globusonline.Globus-Connect.plist
+- Microsoft Windows : +%LOCALAPPDATA%\Globus Connect+ (or +%APPDATA%\Globus Connect+ on Windows XP)
+- Mac OS X and Linux: +~/.globusonline/lta+
+- On Mac OS X, Globus Connect stores preferences in +~/Library/Preferences/org.globusonline.Globus-Connect.plist+
 
 == How do I get a new setup key for a reinstallation of Globus Connect Personal?
 In order to reinstall a Globus Connect Personal endpoint and obtain a new setup key, please follow this step-by-step procedure:
@@ -54,8 +54,8 @@ In order to reinstall a Globus Connect Personal endpoint and obtain a new setup 
 
 2. Delete the entire Globus Connect Personal settings directory (**THIS IS AN IMPORTANT STEP**):    
 
-- Microsoft Windows: %LOCALAPPDATA%\Globus Connect     Personal (or [%APPDATA%\Globus Connect      Personal] on Windows XP)
--  Mac OS X and Linux: [~/.globusonline/lta]
+- Microsoft Windows: +%LOCALAPPDATA%\Globus Connect     Personal+ (or +%APPDATA%\Globus Connect      Personal+ on Windows XP)
+-  Mac OS X and Linux: +~/.globusonline/lta+
 
 3. Install Globus Connect from scratch: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux]
 
@@ -78,7 +78,7 @@ Yes but, by default, Globus Connect Personal only allows you to access your home
 Now, when you access your Globus Connect Personal endpoint on the Start Transfer page, you can change the path to the name of your USB drive to browse/transfer files.
 
 == How does Globus Connect Personal work?
-The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow" through Globus in any way.
+The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow through" Globus in any way.
 
 == How Do I Configure Accessible Directories on Globus Connect Personal for Linux
 When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the +\~/.globusonline/lta/config-paths+ file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. By default, a +~/.globusonline/lta/config-paths+ file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
@@ -155,21 +155,19 @@ If you should encounter problems when attempting your upgrade and cannot resolve
 === Globus Connect Personal Download Links:
 https://www.globus.org/globus-connect-personal
 
-== ENDPOINT_ERR This server version does not support timestamp preservation
-In the event that you see an error like this - [error]#Message: This server version does not support timestamp preservation#
+== What can I do if my endpoint does not support timestamp preservation?
+In the event that you see an error like this - [error]#Message: This server version does not support timestamp preservation#, follow the steps below.
 
 [role="img-responsive center-block"]
 image::images/ts-1.png[]
 
-below are the steps you will want to take.
-
 . Cancel your job and restart it without the timestamp preservation option.
-. Also, restart with the Transfer Setting option:
+. Also, restart with the Transfer setting option:
 
 [role="img-responsive center-block"]
 image::images/ts-2.png[]
 
-NOTE: If you think this is a necessary capability, please feel free to contact the appropriate endpoint admin and request that they upgrade the GridFTP server to 5.0.5 or 5.2.1 or later versions.
+NOTE: If you require timestamp preservation, please contact the administrator of your endpoint and request that they upgrade the GridFTP server to 5.0.5 or 5.2.1 (or later versions).
 
 == Why can't I connect to relay.globusonline.org?
 === Cannot Reach relay.globusonline.org on Port 2223

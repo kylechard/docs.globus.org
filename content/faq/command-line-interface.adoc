@@ -127,14 +127,3 @@ This may be related to multiple transfers running simultaneously. If you issue m
 == Why do I see "Permission denied" when accessing the CLI?
 This is usually the result of missing information in your Globus profile. In order to use the CLI interface you will need to add your SSH public key to your Globus account. Please see the FAQ entry for information on link:#how_do_i_add_an_ssh_key_to_my_globus_account[how to add your key].
 
-== What does the error "Credentails are needed" mean?
-There are three straightforward ways to refresh your credentials in Globus:
-
-=== Option 1
-Go to the link:https://www.globus.org/xfer/StartTransfer[Start Transfer page], and enter the endpoints you need. This should prompt you for your MyProxy logins to those machines in order to do the file listings. If you had already begun a transfer when you discovered the need to renew credentials, you do not need to start a new transfer. The file listings will be sufficient to refresh your credentials.
-
-=== Option 2
-Go to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page], browse to the endpoint on which you need to renew credentials. Select the endpoint, go to the Activate menu, and follow on-screen instructions to reactivate the endpoint.
-
-=== Option 3
-Login to command line interface (+ssh cli.globusonline.org+) and use the endpoint-activate command to refresh your credentials. For example, ssh cli.globusonline.org endpoint-activate -U xsede#\*", and it should prompt you for your XSEDE login and password.
