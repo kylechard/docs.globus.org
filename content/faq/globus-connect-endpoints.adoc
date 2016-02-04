@@ -250,28 +250,6 @@ Please include, in as much detail as you are able, the following pieces of infor
 - The full error message, as presented to you by Globus Connect Personal
 - The network(s) on which you are experience the error
 
-As an example, an ideal ticket might have the following content:
-
-----
-Hi,
-
-I'm trying to set up Globus Connect Personal on my laptop running Windows XP, Service Pack 3. Whenever I start the program, I am presented with the error message
-
-Could not communicate with server
-
-ssh: connect to host relay.globusonline.org port 2223: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
-
-I have included a screenshot of the error message below.
-
-I have experienced this error both on my home network, and on the University of Chicago Hospital network. I have confirmed with the university's technical staff, ITS, that there are no firewall rules in place that should prevent me from reaching relay.globusonline.org, and have successfully connected to the server from both networks using the command 'telnet relay.globusonline.org 2223' from both networks.
-
-I do not believe that my laptop has any firewall rules or security restrictions in place, but I don't know how to check this.
-
-Thanks,
-
-Jane Doe
-----
-
 We always attempt to provide quick response time, but the more information you provide, the more likely we will be able to resolve your issue promptly, and the less likely you are to be asked to provide more information before your problem can be solved.
 
 == What happens if my user profile is on a network share?
@@ -343,48 +321,33 @@ For example, if [uservars]#exampleuser# wants to transfer file [uservars]#/a/b/c
 If you do not have sufficient permissions to read or write a file or folder, you will need to change the permissions on those files or directories so that Globus can access them. Once you can view or edit files or directories under your user account on the Globus Connect Personal endpoint, Globus should no longer have problems reading or writing their contents, as long as the *Accessible Folders* settings are correct.
 
 == Why do I get an SSLv3 handshake error?
-This is the error message:
-
 ----terminal
 [output]#530-globus_xio: Authentication Error
-
 530-globus_gsi_gssapi: Unable to verify remote side's credentials
-
 530-globus_gsi_gssapi: SSLv3 handshake problems: Couldn't do ssl handshake
-
 530-OpenSSL Error: s3_srvr.c:965: in library: SSL routines, function
-
 SSL3_GET_CLIENT_HELLO: wrong version number
-
 530 End.#
 ----terminal
 
-This would indicate that some users are still using an old/incompatible version of the client.
+If you see the above error it is because we updated our infrastructure to disallow SSLv3 (and prefer TLS) to avoid the link:../../security-bulletins/2014-10-poodle/[POODLE vulnerability] discovered in 2014. This upgrade was coordinated by Globus. All Globus endpoints should be configured to disallow SSLv3. If you continue to encounter issues such as this, please contact your administrator to request that the endpoint be updated.
 
-The reason for this issue is that we’ve recently updated our infrastructure to disallow SSLv3 (and prefer TLS) to avoid the POODLE vulnerability discovered last year. This upgrade was coordinated by Globus. All Globus installations are due to be configured to disallow SSLv3 by this time (July 2015). If there are transfer issues such as you are seeing, this means that remote services must be upgraded in order to accommodate this fix. The endpoint administrator will need to be contacted to request that the endpoint be updated.
-
-For more information, please check out the following:
-
+For more information, please see:
 - link:../../security-bulletins/2014-10-poodle/[How is Globus impacted by the SSLv3 "POODLE" vulnerability?]
-
 - http://lists.globus.org/pipermail/gt-user/2015-March/010791.html
 
 == What does "You are not an admin of the MyProxy Delegation Service" mean?
 
-This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` multiple times using different Globus usernames. As a workaround to get rid of this error, run this command as root: 
+This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` command multiple times using different Globus usernames. As a workaround to get rid of this error, run the following command as root, and then re-run the setup script.
 
 ----terminal
 # [input]#rm /var/lib/myproxy-oauth/myproxy-oauth.db#
 ----terminal
 
-Then rerun the setup script.
-
-If you aren't using an OAuth server in your configuration (if you are using, for example, `IdentityMethod = MyProxy` in your configuration), you can disable the OAuth server by commenting out the `Server = %(HOSTNAME)s` line in the [OAuth] section of the configuration file.
+If you are not using an OAuth server in your configuration (if you are using, for example, `IdentityMethod = MyProxy` in your configuration), you can disable the OAuth server by commenting out the `Server = %(HOSTNAME)s` line in the [OAuth] section of the configuration file.
 
 == How do I fix Globus Connect Server file permission errors?
-If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has the following permissions set:
-
-/var/lib/globus-connect-server should have the following permissions:
+If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has set the correct permissions. +/var/lib/globus-connect-server+ should have the following permissions:
 
 ----terminal
 [output]#755 root.root /var/lib/globus-connect-server
@@ -400,7 +363,7 @@ If you experience issues with Globus Connect Server related to file permissions,
 700 root.root /var/lib/globus-connect-server/myproxy-ca/crl#
 ----terminal
 
-The files in /var/lib/globus-connect-server/grid-security/certificates should all have permissions set to 644.
+The files in +/var/lib/globus-connect-server/grid-security/certificates+ should all have permissions set to 644.
 
 == What ports does Globus Connect Server need open?
 Globus Connect Server running on a cluster or other shared storage resource uses the following default ports:
