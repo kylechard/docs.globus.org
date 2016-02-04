@@ -59,12 +59,10 @@ Please ensure that [uservars]#<username># has subscription management rights, ot
 You must have a current link:https://www.globus.org/providers/provider-plans[Globus Provider plan] to be granted subscription management rights. If your Globus account does not have subscription management rights, please contact support@globus.org so that we may enable your account. If you do not have a Globus Provider plan please link:https://www.globus.org/providers/signup[contact us to sign up].
 
 == What is Globus Plus? Do I need it?
-
-Globus Plus enables you to transfer files between two personal Globus endpoints, i.e. computers on which you have installed Globus Connect Personal, such as your laptop and a desktop personal computer. Globus Plus also allows you to share files from personal Globus endpoints. You _do not_ need Globus Plus if transferring files between a Globus server endpoint (e.g. your campus cluster or supercomputing center), or if you want to share files from a Globus server endpoint.
+Globus Plus enables you to transfer files between two _personal_ Globus endpoints, i.e. computers on which you have installed Globus Connect Personal, such as your laptop and a desktop personal computer. Globus Plus also allows you to share files from _personal_ Globus endpoints. *_You do not need Globus Plus_* if transferring files to/from a Globus server endpoint (e.g. your campus cluster or supercomputing center), or if you want to share files from a Globus server endpoint.
 
 == How do I get Globus Plus?
-
-Your Globus account may be upgraded to Globus Plus by associating with your organization's Globus subscription. Go to: link:https://www.globus.org/account/Plus[www.globus.org/account/Plus], and click "Get Globus Plus". Select your organization from the list and follow the instructions. Depending on your organization's policy, you may be directed to complete a request form or send email to an administrator. Once you have Globus Plus, visiting the above link will show your institution as in the example below.
+Your Globus account may be upgraded to Globus Plus by associating it with your organization's Globus subscription. Go to: link:https://www.globus.org/account/Plus[www.globus.org/account/Plus], and click "Get Globus Plus". Select your organization from the list and follow the instructions. Depending on your organization's policy, you may be directed to complete a request form or send email to an administrator. Once you have Globus Plus, visiting the above link will show your institution as in the example below.
 
 [role="img-responsive center-block"]
 image::images/GlobusPlus.png[]

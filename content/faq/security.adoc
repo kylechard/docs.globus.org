@@ -40,7 +40,7 @@ To remove the association between my Google account and Globus click the "Delete
 == How do I stop Globus from automatically authenticating using my Google account?
 Visit link:http://www.google.com/accounts/IssuedAuthSubTokens?hl=en[this link on Google] (you may be prompted to login using your Google account). You will see a list of websites for which you have authorized access to your Google account. Click the "Revoke Access" link next to Globus.org. Your Google account will no longer be used by Globus. If you try to login to Globus with your Google account, you will be asked to re-confirm that Globus may use your Google account.
 
-== How to use a third-party login (e.g. InCommon, XSEDE) to access Globus
+== How do I use a third-party login (e.g. InCommon, XSEDE) to access Globus?
 Use the following steps to use a third-party login to access Globus:
 
 . Go to the Sign In page and click on "alternate login" link
