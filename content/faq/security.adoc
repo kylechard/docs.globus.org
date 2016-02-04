@@ -11,12 +11,6 @@ short_title: Security
 
 toc::[]
 
-== How do I sign up and transfer files with Globus?
-To sign up and transfer files with Globus, please follow this link:../../how-to/get-started/[How-To Guide].
-
-== What’s the difference between Globus and GridFTP?
-Globus is software-as-a-service (SaaS) for file transfer. It is a hosted service, operated by the Globus development team, that acts as a third-party mediator/facilitator of file transfers between endpoints that are owned and managed by their respective end users. GridFTP is user-installable software that is part of the Globus Toolkit and is used by grid installers and developers building large-scale data movement solutions. Globus uses the GridFTP protocol for transferring files and currently requires that a GridFTP server be installed on both source and destination endpoints, although HTTP support is planned for a future release. Many HPC resources worldwide already have a GridFTP server installed and can hence be used as Globus endpoints. For individual users, Globus Connect Personal provides a point-and-click way to install a pre-configured GridFTP on your local laptop or desktop. If you are an owner or administrator of a campus cluster or other shared HPC resource, link:https://www.globus.org/globus-connect-server[click here to see how you can turn your resource into a Globus endpoint].
-
 == Does Globus need credentials when accessing my system? Does it store these permanently?
 Globus uses only temporary credentials to act on your behalf when making a transfer request, and never keeps your password nor long-term credentials to access a site.
 

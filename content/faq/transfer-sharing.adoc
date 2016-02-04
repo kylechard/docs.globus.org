@@ -11,6 +11,11 @@ short_title: Transfer and Sharing
 
 toc::[]
 
+== What’s the difference between Globus and GridFTP?
+Globus is software-as-a-service (SaaS) for file transfer, sharing, and data publication. It is a cloud-hosted service, operated by the Globus development team, that acts as a third-party mediator/facilitator for managing data on storage systems (or endpoints) that are owned and managed by their respective owners.
+
+GridFTP is user-installable software that is part of the Globus Toolkit and is used by grid installers and developers building large-scale data movement solutions. Globus uses the GridFTP protocol for transferring files (HTTP support is planned for a future release).
+
 == Which browsers does the Globus web user interface support?
 The Globus web user interface is tested and verified to work on the most recent desktop version of Chrome, Edge, Firefox, Internet Explorer, and Safari.
 

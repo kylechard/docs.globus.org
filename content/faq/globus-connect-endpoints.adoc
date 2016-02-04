@@ -16,16 +16,13 @@ Globus Connect is easy-to-install, pre-configured software that turns your lapto
 
 There are two versions of Globus Connect, one for use with personal machines such as your laptop, and another for use with server-class machines such as campus computing clusters and lab servers. Use link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] to enable file transfer to and from your personal machine (laptop or desktop.) A Globus Connect Personal endpoint is intended to be used only by a single user. link:https://www.globus.org/globus-connect-server[Globus Connect Server] enables system administrators to turn shared resources such as campus clusters and lab servers into a Globus endpoint. If it is made publicly visible, a Globus Connect Server endpoint can be used by multiple Globus users.
 
-== How does Globus Connect Personal work?
-The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow" through Globus in any way.
+== What is the difference between Globus Connect Personal and Globus Connect Server?
+Globus Connect Personal is used to create an endpoint on a single-user system, e.g. on a laptop or a personal desktop machine. We sometimes refer to this as a "personal endpoint". Globus Connect Server is used to create an endpoint on a multi-user system, e.g. on a campus HPC cluster or a lab server. We sometimes refer to this as a "server endpoint". See the link:#how_can_i_create_an_endpoint[links below] for instructions on creating personal and server endpoints.
 
 == What is an "endpoint"?
 An "endpoint" is one of the two file transfer locations – either the source or the destination – between which files can move. Once a resource (server, cluster, storage system, laptop, or other system) is defined as an endpoint, it will be available to authorized users who can transfer files to or from this endpoint.
 
 Globus endpoints are named using the following format: [uservars]#<globus-username>#<endpoint-name>#. For example, the XSEDE project has a Globus account under the username "xsede" and so it's endpoints are named [uservars]#xsede#stampede# (for the Stampede system at Texas Advanced Computing Center) and xsede#kraken (for the Kraken system at the National Institute for Computational Sciences). Likewise, an individual that has a Globus account under the username "maxim" might have a personal endpoint called [uservars]#maxim#mylaptop#.
-
-== What is the difference between Globus Connect Personal and Globus Connect Server?
-Globus Connect Personal is used to create an endpoint on a single-user system, e.g. on a laptop or a personal desktop machine. We sometimes refer to this as a "personal endpoint". Globus Connect Server is used to create an endpoint on a multi-user system, e.g. on a campus HPC cluster or a lab server. We sometimes refer to this as a "server endpoint". See the link:#how_can_i_create_an_endpoint[links below] for instructions on creating personal and server endpoints.
 
 == How can I create an endpoint?
 If you wish to create an endpoint on a personal machine (laptop, personal desktop computer, etc.) please see the instuctions for setting up a Globus Connect Personal endpoint here: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
@@ -46,31 +43,27 @@ link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on 
 == Where does Globus Connect Personal store its settings?
 Globus Connect stores a few configuration files, such as its private certificate and key, in this location:
 
-- Windows XP: %APPDATA%\Globus Connect
-- Windows Vista and 7: %LOCALAPPDATA%\Globus Connect
-- OS X and Linux: ~/.globusonline/lta
-- On OS X, Globus Connect stores preferences in ~/Library/Preferences/org.globusonline.Globus-Connect.plist
+- Microsoft Windows : [%LOCALAPPDATA%\Globus Connect] (or [%APPDATA%\Globus Connect] on Windows XP)
+- Mac OS X and Linux: [~/.globusonline/lta]
+- On Mac OS X, Globus Connect stores preferences in ~/Library/Preferences/org.globusonline.Globus-Connect.plist
 
 == How do I get a new setup key for a reinstallation of Globus Connect Personal?
 In order to reinstall a Globus Connect Personal endpoint and obtain a new setup key, please follow this step-by-step procedure:
 
 1. Quit Globus Connect
 
-2. Delete the entire Globus Connect Personal settings directory - (*\* THIS IS AN IMPORTANT STEP **):    
+2. Delete the entire Globus Connect Personal settings directory (**THIS IS AN IMPORTANT STEP**):    
 
--  Windows XP: %APPDATA%\Globus Connect      Personal
-- Windows Vista and 7: %LOCALAPPDATA%\Globus Connect     Personal
--  OS X and Linux: ~/.globusonline/lta (LTA stands for the old internal product name, "Lightweight Transfer Agent")
+- Microsoft Windows: %LOCALAPPDATA%\Globus Connect     Personal (or [%APPDATA%\Globus Connect      Personal] on Windows XP)
+-  Mac OS X and Linux: [~/.globusonline/lta]
 
-3. Install Globus Connect from scratch through the 3-step process - https://www.globus.org/globus-connect-personal
+3. Install Globus Connect from scratch: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux]
 
 - Then, Click "Generate Setup Key".
 - Select the generated key with your mouse and copy it to the clipboard.
 - Return to the "Initial Setup" window of Globus Connect Personal and paste the setup key into the provided field. The "OK" button will be enabled if the key is valid. Click "OK" to complete the installation. (If the "OK" button is not enabled, please ensure you have properly copied the entire key generated in the previous step above.
 
-Please note the ports that Globus Connect Personal needs open -      
-
-Globus Connect Personal uses only outbound TCP connections. However, it does use a relatively wide port range. It uses 2223 and 50000-51000 when talking to Globus, and when doing a transfer it also uses whatever port range that the other GridFTP server uses. For example, if Globus Connect Personal is transferring to or from a university GridFTP server that is configured to use ports 40000-41000 for data channels, Globus Connect will use those ports (outgoing only).
+Please note the ports that Globus Connect Personal needs open: Globus Connect Personal uses only outbound TCP connections; port 2223 is used for communicating with the Globus service, and ports and 50000-51000 are used when doing a transfer.
 
 == What is the purpose of the Globus Connect Personal setup key?
 The setup key is a one-time credential used during the Globus Connect Personal installation process to uniquely identify your laptop/personal computer's endpoint to Globus. Once the endpoint is created and the installation is complete the key is discarded.
@@ -84,8 +77,10 @@ Yes but, by default, Globus Connect Personal only allows you to access your home
 
 Now, when you access your Globus Connect Personal endpoint on the Start Transfer page, you can change the path to the name of your USB drive to browse/transfer files.
 
-== How Do I Configure Accessible Directories on Globus Connect Personal for Linux
+== How does Globus Connect Personal work?
+The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow" through Globus in any way.
 
+== How Do I Configure Accessible Directories on Globus Connect Personal for Linux
 When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the +\~/.globusonline/lta/config-paths+ file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. By default, a +~/.globusonline/lta/config-paths+ file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
 
 ----
