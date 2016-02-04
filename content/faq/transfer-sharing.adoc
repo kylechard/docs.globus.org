@@ -360,7 +360,7 @@ Also the filesystems FAT, NTFS, hfs are not case sensitive. It means that if two
 == How does Globus handle performance tuning on transfers?
 Globus tunes transfers based on the number of servers of the source and destination endpoints, the location of the endpoints, and the performance options configured for each managed endpoint in your provider subscription. See the CLI link:../../cli/reference/endpoint-modify/[+endpoint-modify+] man page for more details on the +--network-use+ performance option. Note that these options cannot yet be set via the Web UI or REST API.
 
-== How does load balancing work in endpoints defined with multiple servers?
+== How does load balancing work in endpoints with multiple servers?
 Globus can load balance across servers when a task has more than one file (you might need about 10 files or so in a task.) Also, multiple tasks running at once might be load balanced across servers; the first task begins on a random server, with subsequent tasks assigned to other servers in a round robin fashion.
 
 == Can I use Globus to transfer data to/from any anonymous FTP server?
