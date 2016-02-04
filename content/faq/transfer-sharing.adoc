@@ -41,13 +41,13 @@ You can access a detailed list of errors (and other status messages) for any Glo
 
 . Click on the link:https://www.globus.org/xfer/ViewTransfers[View Transfers page].
 . Click on the label of the transfer you would like to examine. You will see a popup with the transfer details.
-. Click on the "View Event Log" link at the bottom of the popup to see a complete list of status messages. Note: this may be a very long list (potentially thousands of pages for a large transfer).
+. Click on the "Event Log" tab to see a complete list of status messages. Note: this may be a very long list (potentially thousands of pages for a large transfer).
 
 *Using the command line interface (CLI):*
 
-. The +status+ command provides a summary of the transfer.
-. The +details+ command provides additional information like start and end times, number of files transferred, and average transfer speed. Adding the +-t+ provides information on each file in the task.
-. The +events+ command lists the complete event log for the transfer (this command returns a very long list but you can use various command options to find the event(s) of interest).
+. The link:../../cli/reference/status[+status+] command provides a summary of the transfer.
+. The link:../../cli/reference/details[+details+] command provides additional information like start and end times, number of files transferred, and average transfer speed. Adding the +-t+ provides information on each file in the task.
+. The link:../../cli/reference/details[+events+] command lists the complete event log for the transfer (this command returns a very long list but you can use various command options to find the event(s) of interest).
 
 All of the above commands have options that control the amount and format of the output returned. Please run +man+ for further details.
 
@@ -55,7 +55,7 @@ All of the above commands have options that control the amount and format of the
 You can use the link:https://www.globus.org/xfer/ViewActivity[Web interface] or the link:../../cli/reference/status[+status+] and link:../../cli/reference/details[+details+] commands on the Globus command-line interface to check the status of your transfers. More information and examples are link:../../cli/using-the-cli/[available here].
 
 == How can I transfer files to and from my laptop or desktop?
-Use link:https://www.globus.org/globus-connect-personal/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:../globus-connect-endpoints/#what_is_an_endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Globus Connect Personal is available for Mac OS X, Windows, and Linux. link:https://www.globus.org/globus-connect-personal[Get started here].
+Use link:https://www.globus.org/globus-connect-personal/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:../globus-connect-endpoints/#what_is_an_endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Click the link for your operating system to get started with Globus Connect Personal: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
 
 == How will I know when my transfer is completed?
 Globus sends a notification message to the e-mail address link:https://www.globus.org/account/UpdateProfile#[stored in your account profile].
