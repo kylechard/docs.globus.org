@@ -79,7 +79,7 @@ Virtual Organization Membership Service (VOMS) is a system for managing authoriz
 To generate a proxy certificate (either a regular or VOMS-enabled) for use with a MyProxy server, click on the link below. Begin by selecting menu option "Tools" -> "MyProxy Tool".
 
 [role="img-responsive center-block"]
-image::images/hfjaigge.png[link="http://www.lrz.de/services/compute/grid_res/globus/gsissh-term/applet/jws.jnlp"]
+image:images/hfjaigge.png["VOMS terminal logo", link="http://www.lrz.de/services/compute/grid_res/globus/gsissh-term/applet/jws.jnlp"]
 
 NOTE: You must have a Java Runtime Environment (JRE 1.6 or later) installed to run this program.
 
