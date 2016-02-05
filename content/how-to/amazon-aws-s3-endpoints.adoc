@@ -31,10 +31,8 @@ You must configure your AWS account with a role that can be assumed by Globus, a
     _Note: These actions only grant the Globus service bucket-wide permissions. Using the Globus sharing functionality, you can set more fine-grained permissions for Globus users and groups to control access to specific directories within the bucket._
     - In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>/*" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar/*"). Note: this ARN includes a "/*" at the end.
     - Click Add Statement. You should now see two lines listed in the permissions table (see figure below for an example).
-		+
     [role="img-responsive center-block"]
     image::images/S3_IAM_permissions_list.png[]
-    +
 5. Click "Next Step" to review the policy document. You may optionally edit the Policy Name, but do not change the policy document.
 6. Click "Create Policy" to save the new policy.
 7. Add a role by clicking on "Roles" in the left side bar, and then the "Create New Role" button at the top.
