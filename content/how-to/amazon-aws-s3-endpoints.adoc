@@ -24,11 +24,10 @@ You must configure your AWS account with a role that can be assumed by Globus, a
 * Repeat the above five steps, _this time changing the "Actions" and the ARN as below_:
 * Set "Effect" to "Allow".
 * For "AWS Service", select "Amazon S3".
-* For "Actions", check the following boxes, depending on the types of access you wish to grant to the Globus service:
+* For "Actions", check the following boxes, depending on the types of access you wish to grant to the Globus service (_Note: The actions below only grant the Globus service bucket-wide permissions. Using the Globus sharing functionality, you can set more fine-grained permissions for individual Globus users and groups to control access to specific directories within the bucket._):
 ** Check "GetObject" to allow Globus to download files/directories from the S3 bucket
 ** Check "PutObject" to allow Globus to upload files/directories to the S3 bucket
 ** Check "DeleteObject" to allow Globus to delete files/directories in the S3 bucket
-** TIP: These actions only grant the Globus service bucket-wide permissions. Using the Globus sharing functionality, you can set more fine-grained permissions for Globus users and groups to control access to specific directories within the bucket._
 * In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>/*" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar/*"). Note: this ARN includes a "/*" at the end.
 * Click Add Statement. You should now see two lines listed in the permissions table (see figure below for an example).
 +

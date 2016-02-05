@@ -60,7 +60,7 @@ In order to reinstall a Globus Connect Personal endpoint and obtain a new setup 
 - Microsoft Windows: +%LOCALAPPDATA%\Globus Connect     Personal+ (or +%APPDATA%\Globus Connect      Personal+ on Windows XP)
 -  Mac OS X and Linux: +~/.globusonline/lta+
 
-3. Install Globus Connect from scratch: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux]
+3. Install Globus Connect from scratch: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
 
 - Then, Click "Generate Setup Key".
 - Select the generated key with your mouse and copy it to the clipboard.

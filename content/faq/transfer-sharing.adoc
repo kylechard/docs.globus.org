@@ -100,21 +100,23 @@ Managing your cookies: https://www.globus.org/legal/manage-cookies/
 == Are there any limits on using the file transfer service?
 We enforce some limits on usage in order to provide reasonable performance to all users and protect against abuse. A Globus user is currently subject to the following limits:
 
-- 3 active transfer tasks
-- 100 pending transfer tasks
-- 100,000,000 files in a single transfer task
-- 5,000,000 files in a single directory
-- 10 active command line (CLI) sessions
-- 100 effective ACLs per user on an endpoint
-- 1,000 total ACLs per endpoint
-- 1,000 endpoints owned by a single user
+* 3 active transfer tasks
+* 100 pending transfer tasks
+* 100,000,000 files in a single transfer task
+* 5,000,000 files in a single directory
+* 10 active command line (CLI) sessions
+* 100 effective ACLs per user on an endpoint
+* 1,000 total ACLs per endpoint
+* 1,000 endpoints owned by a single user
 
 In addition, the Globus service will retain task details about events and completed files for up to 31 days.
 
 The above limits are set based on our experience to-date and should accommodate the needs of most transfer users. If you have requirements that are likely to exceed these limits, please contact us to discuss.
 
 == How can I activate an endpoint for the maximum amount of time?
-By default, the MyProxy service that ships with Globus Connect Server is configured to grant credentials with a maximum lifetime of 7 days. However, there are many endpoints that are configured to use values other than this default, and so such endpoints may have a maximum credential lifetime that is more or less than 7 days. CILogon identity providers will typically grant credentials that have a maximum life time of 10 days. It is not possible for an enduser to be issued credentials that will last longer than the maximum credential lifetime for which an identity provider is configured. When activating on an endpoint that is using a MyProxy identity provider, you can specify the lifetime of the credential you are requesting. You can do this on our CLI server by using the `endpoint-activate` command with the `--myproxy-lifetime` option, or in the web interface by clicking on the "advanced" link on the page when prompted to authenticate to the endpoint. However, no matter what credential lifetime you request, you will never be issued a credential that is longer than the maximum credential lifetime than the MyProxy server is configured to issue. When activating on endpoints that use a CILogon identity provider there is no way to request a specific credential lifetime. Rather, you will simply be issued a credential with the default lifetime that the identity provider is configured to issue - typically 10 days.
+By default, the MyProxy service that ships with Globus Connect Server is configured to grant credentials with a maximum lifetime of 7 days. However, there are many endpoints that are configured to use values other than this default, and so such endpoints may have a maximum credential lifetime that is more or less than 7 days. For example, CILogon identity providers will typically grant credentials that have a maximum life time of 10 days.
+
+It is not possible for an end user to be issued credentials that will last longer than the maximum credential lifetime for which an identity provider is configured. When authenticating on an endpoint that uses a MyProxy identity provider, you can specify the lifetime of the credential you are requesting. You can do this on the Globus command line interface by using the link:../../cli/reference/endpoint-activate[+endpoint-activate+] command with the +--myproxy-lifetime+ option, or in the web interface by clicking on the "advanced" link on the web page when prompted to authenticate to the endpoint. However, no matter what credential lifetime you request, you will never be issued a credential that is longer than the maximum credential lifetime than the MyProxy server is configured to issue. When activating on endpoints that use a CILogon identity provider there is no way to request a specific credential lifetime. Rather, you will simply be issued a credential with the default lifetime that the identity provider is configured to issue - typically 10 days.
 
 == Can I use Globus to manage identified data?
 The security and privacy of identified data is regulated by a variety of mechanisms, such as the Health Insurance Portability and Accountability Act (HIPAA), state privacy laws, Institutional Review Board (IRB) requirements, National Institutes of Health (NIH) security best practices, and institutional policies, depending on the nature of the identified data and how the data are used, for example, research versus health care use. The suitability of Globus for managing sensitive data varies on a case by case basis, as determined by the organization charged with protecting the data, after consideration of a number of factors, including an analysis of risk and applicable regulatory laws and policies. We do not currently have the capacity to act as a Business Associate of a Covered Entity, however, we seek partners interested in working with us towards a common goal of a Business Associate Agreement.
@@ -138,13 +140,13 @@ Globus does not preserve file permissions when performing a transfer. When you t
 === Why We Don't Preserve Permissions
 An obvious question that arises is "Why doesn't Globus preserve permissions?" This behavior is an unfortunate result of the fact that it is not entirely clear what preserving permissions means for some transfer tasks.
 
-=== The Ideal Treatment of Permissions
+==== The Ideal Treatment of Permissions
 Ideally, given endpoints [uservars]#user#A# and [uservars]#user#B#, with files in [uservars]#user#A#, then transferring those files back and forth between [uservars]#user#A# and [uservars]#user#B# would not alter the permissions of those files. So, if we submitted a transfer task, copy [uservars]#user#A:/p/q/r# to [uservars]#user#B:/x/y/z#, the file at [uservars]#user#B:/x/y/z# will have exactly the same permissions as the original at [uservars]#user#A:/p/q/r#. Consider a second transfer in the other direction, copy [uservars]#user#B:/x/y/z# to [uservars]#user#A:/p/q/r_prime#. Since this should share the same property as the previous transer, [uservars]#user#A:/p/q/r# and [uservars]#user#A:/p/q/r_prime# should be completely indistinguishable -- there should be no way to tell which one is the original by content or permissions.
 
-=== The Problem With Ownership
+==== The Problem With Ownership
 But what if the user authenticates to [uservars]#user#A# as a user with read permissions to [uservars]#user#A:/p/q/r#, but not ownership? Then when the file is transferred back to [uservars]#user#A:/p/q/r_prime#, the ownership will have changed. On most systems, only the superuser can change the owner of [uservars]#/p/q/r_prime# to match [uservars]#/p/q/r#. This is the basic issue with attempting to preserve ownership for files.
 
-=== The Problem With Permissions Bits
+==== The Problem With Permissions Bits
 Not all permissions settings are supported on all platforms. Consider what happens if [uservars]#user#A:/p/q/r# has UNIX octal permissions 0111 -- anyone can execute the file, but no one can read or write it -- and [uservars]#user#B# is a Windows endpoint. When the file is stored in Windows as [uservars]#user#B:/x/y/z#, it can't be given these same permissions because Windows does not support execute-only files. When [uservars]#user#B:/x/y/z# is transferred to [uservars]#user#A:/p/q/r_prime#, the only way for the transfer task to know to restore the original permissions is to keep track of all permissions of files transferred by Globus in case they are transferred again. Even with that extra information, it is difficult to know exactly what to do: what should Globus do if the file has been altered, or had permissions added or removed?
 
 What if the file is moved with scp from [uservars]#user#B:/x/y/z# to [uservars]#user#C:/w/t/u# and with Globus from [uservars]#user#C:/w/t/u# to [uservars]#user#A:/p/q/r_prime#? Because permissions schemes are not uniform across all platforms, and files may move locally or remotely by means other than the Globus service, we cannot guarantee the transitivity of permissions across a series of transfers.
@@ -152,29 +154,29 @@ What if the file is moved with scp from [uservars]#user#B:/x/y/z# to [uservars]#
 === What Can You Do?
 Having stated that the permissions of your files cannot be consistently preserved by Globus for technical reasons, what recourse do you, as a user or endpoint administrator, have? Our team is always looking to improve Globus, and better permissions handling is on the To Do List. In the meantime, however, you can make some steps to better control your file permissions.
 
-=== Further Restricting Permissions for Globus Connect Server
+==== Further Restricting Permissions for Globus Connect Server
 By default, the GridFTP server uses the system umask setting to determine the permissions of all files that it creates. There is an option, passed either through the command line as "-perms", or through the config file (by default, placed in +/etc/gridftp.conf+ ) as a line "perms <value>", which can be used to further restrict the permissions of new files. The option is specified as a three digit octal integer, as typical UNIX permissions are, and is documented in the Globus Toolkit 5.2 release here.
 
 "perms" does not override the umask, but is applied additively. Note that the "perms" option is written as a positive set of permissions bits, which are desired for new files, while the umask is a negative set of bits, which are forbidden. Since the GridFTP server attempts to create files with the "perms" permissions, the effective permissions of a new file are +<PERMS> AND (NOT <UMASK>)+ for regular files, rather than the default of +0666 AND (NOT <UMASK>)+. "perms" will not alter directory permissions, so those should still be +0777 AND (NOT <UMASK>)+.
 
 Because the "perms" value is ANDed together with the inverted umask, it cannot be used to apply wider permissions than the umask allows, but it can be used to further restrict access. For example, if the system umask is set to +0002+, but you want to forbid world read access and group write access to files, you could set "perms" to +0042+. The resulting permissions, in this case, would be +0042 AND (NOT 0002) = 0042 AND (0775) = 0040+, as the umask forbids the world write permission granted by "perms".
 
-=== Using Filesystem ACLs
+==== Using Filesystem ACLs
 Because Globus delegates operations to the endpoint's filesystem without inspecting ACLs on the source or destination, you can leverage your endpoint's support of ACLs to control permissions tightly. By setting ACLs on the destination such that they are applied to all new files in a directory tree, you can effectively set ACLs on the files created by the GridFTP server. GridFTP and Globus will never attempt to explicitly get or set the filesystem ACLs, effectively leaving their application up to the destination endpoint's filesystem implementation. Since different filesystems and operating systems may implement ACLs differently, we do not provide explicit instructions for any particular local ACL setup.
 
-=== Setting the umask
+==== Setting the umask
 Setting the umask explicitly is the only way to increase the permissions offered on files created by the GridFTP server. The most consistent and successful way to do this is to alter the Globus Connect Server init script to set the umask immediately before launching the GridFTP server. Most typically, the script is found in */etc/init.d/globus-connect-server*
 
 If you do not feel comfortable modifying the init script, this option is likely a bad choice for you. The init script is the only supported way of launching GridFTP for a Globus Connect Server installation, so damaging alterations to the script could prevent you from launching Globus Connect Server altogether. (In other words, choose this option at your own peril.)
 
-=== Controlling Permissions for Globus Connect Personal
+==== Controlling Permissions for Globus Connect Personal
 The above techniques can be applied to Globus Connect Personal, but there are some caveats. Most notably, we do not officially support modified versions of the Globus Connect Personal client, so if you alter any files or configuration within the client application in order to achieve your desired permissions scheme, your endpoint will not necessarily qualify for support from Globus staff. At present, none of the forms of Globus Connect Personal support specifying "perms" to the GridFTP server.
 
 If you are running Globus Connect Personal for Linux, you may have some success altering your personal umask setting before launching the application, as your umask should propagate down the process tree to the GridFTP server process. Likewise, if you are running Globus Connect Personal on Mac OS X, you may be successful setting your umask before launching the Globus Connect Personal app through the command line. These actions are not guaranteed to be successful based on the exact behavior of your platform. Because Windows does not support a umask equivalent, there is no way to replicate this behavior in Globus Connect Personal for Windows.
 
 When supported by your platform, filesystem ACLs are respected, but they are not an option for all users.
 
-=== Use Globus Shared Endpoints
+==== Use Globus Shared Endpoints
 In many situations, restricting read or write access to a file can be handled correctly using Globus controlled Read and Write permissions on a Shared Endpoint. This does not alter the underlying permissions of the files, but restricts permissions when using a Globus account to access the endpoint. Globus will deny users without the Read permission the rights to copy files or list directory contents, and denies users without the Write permission the rights to copy a file to the specified path or directory.
 
 These permissions settings do not alter the underlying endpoint's permissions scheme in any way, so users with local access to the endpoint may be able to bypass these permissions settings by accessing files directly. If you know that your files are only exposed via Globus, then this option may be right for you.
