@@ -209,9 +209,6 @@ This behavior prevents abusive symlinks from breaking out of the path restrictio
 
 If you trust users with access to an endpoint not to create this kind of exploitative symlink, you can override this behavior on Globus Connect Server endpoints with the +rp-follow-symlinks+ option to the GridFTP server. This option is not readily available with Globus Connect Personal installations.
 
-== How do I create a Globus endpoint on Amazon S3?
-Support for Amazon S3 endpoints is currently in *beta release*. We are encouraging users to create S3 endpoints but require that you contact us first so we can better understand your use case. This will help us refine the functionality before making it generally available. To get started, please complete link:https://www.globus.org/amazon-s3-endpoint-support-beta[this form].
-
 == How do I link directly to Globus application pages?
 Many of the pages in the Globus application can be linked with parameters that allow the page to open pre-configured for your needs.  When you link to a Globus application page, the application will ensure that the user is logged in to the Globus website (and prompt the user to authenticate if the user is not already logged in).  If you have a specific use case or application feature that isn’t covered in this document please let us know at support@globus.org.
 

@@ -32,6 +32,9 @@ please follow the instructions in the link:../../resource-provider-guide/[Resour
 
 If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/endpoint-add[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
 
+== How do I create an endpoint on Amazon S3?
+Instructions for setting up an S3 endpoint are link:../../how-to/amazon-aws-s3-endpoints[available here]. Please note that S3 endpoints require a Globus subscription - if you're not a current Globus subscriber, please link:https://www.globus.org/provider-plan-configuration[complete this form to start your free one-month trial], which will allow you to experiment with and test all Globus premium features.
+
 == Are transfers between Globus Connect Personal endpoints possible?
 Yes. You must be a link:https://www.globus.org/researchers/plus-plans[Globus Plus] user to transfer files between two Globus Connect Personal endpoints. If the two endpoints are owned by different Globus users, both users must be Globus Plus users. You account may be upgraded to Globus Plus if your institution subscribes to a link:https://www.globus.org/provider-plans[Globus Provider plan].
 
