@@ -251,28 +251,6 @@ Please include, in as much detail as you are able, the following pieces of infor
 - The full error message, as presented to you by Globus Connect Personal
 - The network(s) on which you are experience the error
 
-As an example, an ideal ticket might have the following content:
-
-----
-Hi,
-
-I'm trying to set up Globus Connect Personal on my laptop running Windows XP, Service Pack 3. Whenever I start the program, I am presented with the error message
-
-Could not communicate with server
-
-ssh: connect to host relay.globusonline.org port 2223: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
-
-I have included a screenshot of the error message below.
-
-I have experienced this error both on my home network, and on the University of Chicago Hospital network. I have confirmed with the university's technical staff, ITS, that there are no firewall rules in place that should prevent me from reaching relay.globusonline.org, and have successfully connected to the server from both networks using the command 'telnet relay.globusonline.org 2223' from both networks.
-
-I do not believe that my laptop has any firewall rules or security restrictions in place, but I don't know how to check this.
-
-Thanks,
-
-Jane Doe
-----
-
 We always attempt to provide quick response time, but the more information you provide, the more likely we will be able to resolve your issue promptly, and the less likely you are to be asked to provide more information before your problem can be solved.
 
 == What happens if my user profile is on a network share?
@@ -342,6 +320,16 @@ For example, if [uservars]#exampleuser# wants to transfer file [uservars]#/a/b/c
 
 ==== Resolving the Error: Insufficient Permissions
 If you do not have sufficient permissions to read or write a file or folder, you will need to change the permissions on those files or directories so that Globus can access them. Once you can view or edit files or directories under your user account on the Globus Connect Personal endpoint, Globus should no longer have problems reading or writing their contents, as long as the *Accessible Folders* settings are correct.
+
+== Can I force encryption on an endpoint?
+The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
+See link:http://docs.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
+
+----terminal
+$ endpoint-modify --force-encryption [input]#my#endpoint#
+----terminal
+
+All transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that option checked in the Web.
 
 == Why do I get an SSLv3 handshake error?
 ----terminal

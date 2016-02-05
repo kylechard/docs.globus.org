@@ -70,14 +70,12 @@ Use link:https://www.globus.org/globus-connect-personal/[Globus Connect Personal
 Globus sends a notification message to the e-mail address link:https://www.globus.org/account/UpdateProfile#[stored in your account profile].
 
 == Which protocols does Globus support?
-Globus transfer tasks can be initiated and managed using our Web UI, REST, and CLI interfaces.
-
-The GridFTP and UDT protocols are used to transfer the data files themselves.
+Globus uses the GridFTP and UDT protocols to transfer data. Support for HTTP/S is in development and will be available later in 2016.
 
 == What does "Beta" mean in the Globus context?
 We use "Beta" as an indicator of what an end user may expect from a newly-released Globus feature. We will usually tag something as "Beta" when we have a new feature that we want to expose to users for feedback, but that we know is not fully tested and quality assured. When a Globus feature/page is tagged as "Beta" it means that we expect it to work as intended, but that you may experience some issues in your context. This means that we cannot provide performance guarantees and suggest that you not rely on the feature for production use.
 
-== What are GridFTP concurrency, pipelining, parallelism, and striping? They all sound the same!
+== What are GridFTP concurrency, pipelining, parallelism, and striping?
 Globus optimizes GridFTP transfers by choosing performance optimizations  based on the number and sizes of files in the workload. Thus, users do not have to be GridFTP and globus-url-copy experts to get high performance transfers. If you are an advanced user or resource owner, read on...
 
 concurrency:: opens multiple login sessions (also known as control channel sessions). Each login session starts a GridFTP process on the server, usually via xinetd. Thus, a concurrency (cc) of 4 would drive 4 GridFTP processes, so you have 4 processes driving IO (each one working on a different file).  Files are divided among the sessions, so this only works if you have multiple files in a job (most users do). Also note that each session may be to a different server if you had DNS round robining, a load balancer, or multiple physical endpoints defined in Globus. So concurrency is great for driving more filesystem processes, CPU cores, and even machine nodes, in addition to opening more network data streams.
@@ -88,7 +86,7 @@ parallelism:: is a network level optimization. Regular FTP sends a file over one
 
 striping:: splits a single file's data blocks across multiple servers. Globus does not support striping, based on the observation that most users are actually transferring more than one file and that an endpoint often serves multiple users concurrently. Striping can actually be counter productive in these cases, since it adds additional overhead and complexity, and the other options listed above deliver excellent performance.
 
-Globus will enable concurrency, pipelining, and parallelism on nearly every transfer task.
+Globus automatically selects appropriate settings for concurrency, pipelining, and parallelism on every transfer task - these may be overriden on per transfer or endpoint level.
 
 == How is www.globusonline.eu different from www.globus.org?
 There is no functional difference between the two web sites. We launched link:http://www.globusonline.eu/[www.globusonline.eu] to address requirements of EU-based researchers. When accessing either web site from an EU locale, you will be prompted to explicitly consent to our use of cookies on the Globus web site. As part of launching www.globusonline.eu we have also provided additional information describing our use of cookies and instructions for managing cookies in your browser. Please see the following links for more information:

@@ -111,16 +111,6 @@ To find your PEM file, run +grid-proxy-info+ at a command prompt. This will prin
 === Activating an Endpoint
 You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli/[CLI tutorial] for more details on using GSI SSH.
 
-== Can I force encryption on an endpoint?
-The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
-See link:http://docs.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
-
-----terminal
-$ endpoint-modify --force-encryption [input]#my#endpoint#
-----terminal
-
-Then all transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that selection marked in the Web.
-
 == Why don't I see any information when running the "details" and "events" commands?
 This may be related to multiple transfers running simultaneously. If you issue multiple transfer requests, note that only three requests will be running simultaneously at any one time. The remaining transfers will be queued and start moving data as soon as another active transfer completes.
 
