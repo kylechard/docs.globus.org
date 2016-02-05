@@ -5,8 +5,8 @@ The following instructions for creating a Globus endpoint on an Amazon S3 bucket
 NOTE: A link:https://www.globus.org/provider-plans[Globus Provider plan subscription] is required to create an S3 endpoint. If your institution is not a subscriber please link:https://www.globus.org/provider-plan-configuration[complete this form to start your free trial].
 
 == Prerequisites
-- In order to transfer files to/from an Amazon S3 endpoint, you must be running the latest version of link:https://www.globus.org/globus-connect-server[Globus Connect Server] or link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on the other endpoint. If transfers are failing, check the event log; if you see "type": "FTPServerError", the other endpoint is most likely running a dated version of Globus Connect Server (or GridFTP server).
-- Your S3 bucket must contain at least one folder or object in order for it to display correctly on the Globus link:https://www.globus.org/app/transfer[Transfer Files page].
+* In order to transfer files to/from an Amazon S3 endpoint, you must be running the latest version of link:https://www.globus.org/globus-connect-server[Globus Connect Server] or link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on the other endpoint. If transfers are failing, check the event log; if you see "type": "FTPServerError", the other endpoint is most likely running a dated version of Globus Connect Server (or GridFTP server).
+* Your S3 bucket must contain at least one folder or object in order for it to display correctly on the Globus link:https://www.globus.org/app/transfer[Transfer Files page].
 
 == Part A: Amazon Web Services Account Configuration
 
@@ -16,21 +16,21 @@ You must configure your AWS account with a role that can be assumed by Globus, a
 2. Add a new IAM policy by clicking on "Policies" in the left side bar, and then the "Create Policy" button at the top.
 3. Click "Select" next to the "Policy Generator" option to create a policy that grants the Globus service access to your S3 bucket.
 4. You will be adding two statements to the policy that, collectively, allow Globus to list the contents of an S3 bucket and to read and write files (objects) in an S3 bucket. On the "Edit Permissions" page:
-  - Set "Effect" to "Allow".
-  - For "AWS Service", select "Amazon S3".
-  - For "Actions", check the "ListBucket" box.
-  - In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar").
-  - Click Add Statement.
-  - Repeat the above five steps, _this time changing the "Actions" and the ARN as below_:
-    - Set "Effect" to "Allow".
-		- For "AWS Service", select "Amazon S3".
-		- For "Actions", check the following boxes, depending on the types of access you wish to grant to the Globus service:
-		-- Check "GetObject" to allow Globus to download files/directories from the S3 bucket
-    -- Check "PutObject" to allow Globus to upload files/directories to the S3 bucket
-    -- Check "DeleteObject" to allow Globus to delete files/directories in the S3 bucket
-    _Note: These actions only grant the Globus service bucket-wide permissions. Using the Globus sharing functionality, you can set more fine-grained permissions for Globus users and groups to control access to specific directories within the bucket._
-    - In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>/*" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar/*"). Note: this ARN includes a "/*" at the end.
-    - Click Add Statement. You should now see two lines listed in the permissions table (see figure below for an example).
+* Set "Effect" to "Allow".
+* For "AWS Service", select "Amazon S3".
+* For "Actions", check the "ListBucket" box.
+* In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar").
+* Click Add Statement.
+* Repeat the above five steps, _this time changing the "Actions" and the ARN as below_:
+* Set "Effect" to "Allow".
+* For "AWS Service", select "Amazon S3".
+* For "Actions", check the following boxes, depending on the types of access you wish to grant to the Globus service:
+** Check "GetObject" to allow Globus to download files/directories from the S3 bucket
+** Check "PutObject" to allow Globus to upload files/directories to the S3 bucket
+** Check "DeleteObject" to allow Globus to delete files/directories in the S3 bucket
+** TIP: These actions only grant the Globus service bucket-wide permissions. Using the Globus sharing functionality, you can set more fine-grained permissions for Globus users and groups to control access to specific directories within the bucket._
+* In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>/*" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar/*"). Note: this ARN includes a "/*" at the end.
+* Click Add Statement. You should now see two lines listed in the permissions table (see figure below for an example).
 +
 [role="img-responsive center-block"]
 image::images/S3_IAM_permissions_list.png[]
@@ -50,11 +50,11 @@ You can currently only create a Globus S3 endpoint using the Globus command line
 
 1. Log into the Globus CLI (e.g., +ssh myglobusname@cli.globusonline.org+)
 2. To create the endpoint, run: +endpoint-add --s3 --managed-endpoint <endpoint-name>+. For example, if you want the endpoint called "mys3endpoint", run +endpoint-add --s3 --managed-endpoint mys3endpoint+. Note: This command will fail if you do not have a Globus Provider plan so please link:https://www.globus.org/provider-plan-configuration[contact us] to set up your free trial before adding S3 endpoints.
-  - Enter the S3 region-specific URL for your S3 bucket. For example, if your S3 bucket name is "bar" in the standard region, enter "https://s3.amazonaws.com/bar". You can find what region your S3 bucket is in by looking in the bucket's Properties in the AWS S3 console, and the hostname to use for each region is link:http://www.bucketexplorer.com/documentation/amazon-s3--amazon-s3-buckets-and-regions.html[listed here].
-  - When prompted to "Select Activation Option", enter option "1": 1 Endpoint owner (you) activates the endpoint for all users.
+* Enter the S3 region-specific URL for your S3 bucket. For example, if your S3 bucket name is "bar" in the standard region, enter "https://s3.amazonaws.com/bar". You can find what region your S3 bucket is in by looking in the bucket's Properties in the AWS S3 console, and the hostname to use for each region is link:http://www.bucketexplorer.com/documentation/amazon-s3--amazon-s3-buckets-and-regions.html[listed here].
+* When prompted to "Select Activation Option", enter option "1": 1 Endpoint owner (you) activates the endpoint for all users.
 3. To configure the security for the endpoint, run +endpoint-activate --s3 <endpoint-name>+
-  - Select Activation Type of "2 Assume Role".
-  - When prompted to Enter the role ARN, enter the Role ARN that you noted in the last step of Part A above.
+* Select Activation Type of "2 Assume Role".
+* When prompted to Enter the role ARN, enter the Role ARN that you noted in the last step of Part A above.
 4. To make the endpoint public, so that it is visible to other users (e.g., those who you give permissions to access the endpoint), run +endpoint-modify --public <endpoint-name>+.
 
 == Sharing files on an S3 Endpoint
@@ -65,21 +65,21 @@ The user(s) you share with will receive a notification that you have shared file
 _Note: You must set the S3 endpoint's visibility to "public" using the command in step 4 above, otherwise users will not be able to access shared files on the endpoint._
 
 == Limitations and Unsupported Operations
-- Transfers between two S3 endpoints are not supported. Either the source or the destination endpoint must be a non-S3 endpoint.
-- The +rename+ operation is not currently supported on S3 endpoints.
-- The following Globus transfer options are not currently supported and will be ignored, if set: +verify-size+, +--perf-p+, and +--perf-pp+.
-- The following Globus transfer options are not currently supported and _will cause the file transfer to fail_, if set: +-s 0+ (sync), +-s 1+ (sync-delete), and +--preserve-mtime+.
-- Amazon S3 only supports utf-8 encoded unicode paths, so systems that send filenames improperly (not UTF-8), like  Globus Connect Personal for Windows, will fail when uploading non-ascii file names.
-- Amazon S3 supports non-unix compatible file names such as '.', '..', and embedded '//'.
-- When uploading to S3, directory markers and, in particular, empty directories, are not explicitly created in the S3 bucket.
-- When downloading from S3, all objects are downloaded, except for objects whose path name ends with a slash (/). The latter are assumed to be directory markers and will be created as directories (not files) on the destination endpoint.
-- The S3 bucket configured as a Globus endpoint must not be a "requester pays for bandwidth" bucket. If it is, all operations will fail, because Globus will not indicate (via HTTP headers) that it is willing to pay for bandwidth charges.
-- Amazon S3 is an eventually-consistent system by design and Globus cannot guarantee stronger levels of consistency.
+* Transfers between two S3 endpoints are not supported. Either the source or the destination endpoint must be a non-S3 endpoint.
+* The +rename+ operation is not currently supported on S3 endpoints.
+* The following Globus transfer options are not currently supported and will be ignored, if set: +verify-size+, +--perf-p+, and +--perf-pp+.
+* The following Globus transfer options are not currently supported and _will cause the file transfer to fail_, if set: +-s 0+ (sync), +-s 1+ (sync-delete), and +--preserve-mtime+.
+* Amazon S3 only supports utf-8 encoded unicode paths, so systems that send filenames improperly (not UTF-8), like  Globus Connect Personal for Windows, will fail when uploading non-ascii file names.
+* Amazon S3 supports non-unix compatible file names such as '.', '..', and embedded '//'.
+* When uploading to S3, directory markers and, in particular, empty directories, are not explicitly created in the S3 bucket.
+* When downloading from S3, all objects are downloaded, except for objects whose path name ends with a slash (/). The latter are assumed to be directory markers and will be created as directories (not files) on the destination endpoint.
+* The S3 bucket configured as a Globus endpoint must not be a "requester pays for bandwidth" bucket. If it is, all operations will fail, because Globus will not indicate (via HTTP headers) that it is willing to pay for bandwidth charges.
+* Amazon S3 is an eventually-consistent system by design and Globus cannot guarantee stronger levels of consistency.
 
 == Notes
-- If you de-activate an S3 endpoint, you will need to re-run the command in step #3 in Part B.
-- You will be able to see the S3 endpoint on the link:https://www.globus.org/app/endpoints/[Manage Endpoints page], but please do not change anything there.
-- Globus will continually retry on error, which will result in additional S3 API and bandwidth costs being incurred.
-- Incomplete uploads to S3 will not be removed and will incur additional S3 storage costs.
-- Large files are uploaded to S3 using the S3 multi-part upload API. Globus does checksum of each part when uploading. On download Globus does not do any explicit checksum, other than what you get by using SSL for S3 buckets that use HTTPS.
-- Server-side-encryption using AES-256 is automatically requested for all uploads to S3.
+* If you de-activate an S3 endpoint, you will need to re-run the command in step #3 in Part B.
+* You will be able to see the S3 endpoint on the link:https://www.globus.org/app/endpoints/[Manage Endpoints page], but please do not change anything there.
+* Globus will continually retry on error, which will result in additional S3 API and bandwidth costs being incurred.
+* Incomplete uploads to S3 will not be removed and will incur additional S3 storage costs.
+* Large files are uploaded to S3 using the S3 multi-part upload API. Globus does checksum of each part when uploading. On download Globus does not do any explicit checksum, other than what you get by using SSL for S3 buckets that use HTTPS.
+* Server-side-encryption using AES-256 is automatically requested for all uploads to S3.
