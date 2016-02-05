@@ -1,10 +1,11 @@
 = How To
 
 - link:get-started[Sign Up and Transfer Files with Globus]
+- link:share-files[Share Data Using Globus]
+- link:managing-groups[Manage Globus Groups]
 - link:globus-connect-personal-mac[Install, Configure, & Remove Globus Connect Personal for Mac OS X]
 - link:globus-connect-personal-windows[Install, Configure, & Remove Globus Connect Personal for Windows]
 - link:globus-connect-personal-linux[Install & Run Globus Connect Personal for Linux]
 - link:globus-connect-personal-cli[Install Globus Connect Personal Using the Command Line]
-- link:share-files[Share Data Using Globus]
-- link:managing-groups[Manage Globus Groups]
 - link:configure-firewall-gcp[Configure Firewall Policy for Globus Connect Personal]
+- link:amazon-aws-s3-endpoints[Create a Globus Amazon S3 Endpoint]
