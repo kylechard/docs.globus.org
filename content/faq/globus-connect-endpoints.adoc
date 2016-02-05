@@ -71,7 +71,6 @@ The setup key is a one-time credential used during the Globus Connect Personal i
 == Does Globus recognize a USB external drive on my laptop as part of an endpoint?
 Yes but, by default, Globus Connect Personal only allows you to access your home directory on your personal computer. Follow these steps to allow Globus to recognize your USB external drive:
 
-. Ensure you have the latest version of Globus Connect Personal installed.
 . Open the Globus Connect Personal settings window to add your USB drive. On Mac OS X, click "Preferences" in the Globus Connect Personal menu. On Windows, select the Tools -> Options menu option. On Linux, select the File -> Preferences menu option.
 . Click on the "+" button and select your USB drive. Optionally, change the directory path that you would like to access.
 
@@ -80,7 +79,7 @@ Now, when you access your Globus Connect Personal endpoint on the Start Transfer
 == How does Globus Connect Personal work?
 The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow through" Globus in any way.
 
-== How Do I Configure Accessible Directories on Globus Connect Personal for Linux
+== How Do I Configure Accessible Directories on Globus Connect Personal for Linux?
 When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the +\~/.globusonline/lta/config-paths+ file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. By default, a +~/.globusonline/lta/config-paths+ file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
 
 ----
@@ -112,7 +111,7 @@ In all cases, it is important to note that a user cannot access a directory or a
 
 NOTE: There are some caveats concerning how Globus Connect Personal handles symlinks found in accessible paths. Please read more about that in the following FAQ: link:../transfer-sharing/#how_does_globus_handle_symlinks[How Does Globus Handle Symlinks?]
 
-== How do I update to the latest version of Globus Connect Personal
+== How do I update to the latest version of Globus Connect Personal?
 The steps you will need to take to upgrade your current Globus Connect Personal install will depend on the operating system you are using. Please refer to the section below that corresponds to the OS of the system that you have Globus Connect Personal installed on.
 
 === Windows
@@ -421,7 +420,7 @@ You can also create a completely new PAM configuration for Globus Connect Server
 
 Note that the +/var/lib/globus-connect-server/myproxy-server.conf+ file is overwritten when you run a setup command execution, and you will need to manually update the file.
 
-==How do I add multiple I/O nodes to a Globus endpoint?
+== How do I add multiple I/O nodes to a Globus endpoint?
 NOTE: Any data you intend to make available to other Globus users should be located on a distributed file system (DFS) that spans the I/O nodes. Failure to locate the data on a properly configured DFS will result in inconsistencies in the ways that data is stored, retrieved, and presented to Globus users. Details concerning the proper configuration of a DFS are beyond the scope of this FAQ, but the following links should prove helpful for those looking for more information:
 - http://ceph.com/docs/master/
 - http://lustre.opensfs.org/documentation/
