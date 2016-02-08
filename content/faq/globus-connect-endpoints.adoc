@@ -16,18 +16,24 @@ Globus Connect is easy-to-install, pre-configured software that turns your lapto
 
 There are two versions of Globus Connect, one for use with personal machines such as your laptop, and another for use with server-class machines such as campus computing clusters and lab servers. Use link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] to enable file transfer to and from your personal machine (laptop or desktop.) A Globus Connect Personal endpoint is intended to be used only by a single user. link:https://www.globus.org/globus-connect-server[Globus Connect Server] enables system administrators to turn shared resources such as campus clusters and lab servers into a Globus endpoint. If it is made publicly visible, a Globus Connect Server endpoint can be used by multiple Globus users.
 
-== How does Globus Connect Personal work?
-link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] uses GSI SSH to maintain a control connection to Globus and await commands. Globus manages transfers to and from the Globus Connect Personal endpoint. Note that file data is still always transferred directly between Globus Connect Personal and a GridFTP server for maximum speed – it is not proxied through Globus.
+== What is the difference between Globus Connect Personal and Globus Connect Server?
+Globus Connect Personal is used to create an endpoint on a single-user system, e.g. on a laptop or a personal desktop machine. We sometimes refer to this as a "personal endpoint". Globus Connect Server is used to create an endpoint on a multi-user system, e.g. on a campus HPC cluster or a lab server. We sometimes refer to this as a "server endpoint". See the link:#how_can_i_create_an_endpoint[links below] for instructions on creating personal and server endpoints.
 
 == What is an "endpoint"?
 An "endpoint" is one of the two file transfer locations – either the source or the destination – between which files can move. Once a resource (server, cluster, storage system, laptop, or other system) is defined as an endpoint, it will be available to authorized users who can transfer files to or from this endpoint.
 
 Globus endpoints are named using the following format: [uservars]#<globus-username>#<endpoint-name>#. For example, the XSEDE project has a Globus account under the username "xsede" and so it's endpoints are named [uservars]#xsede#stampede# (for the Stampede system at Texas Advanced Computing Center) and xsede#kraken (for the Kraken system at the National Institute for Computational Sciences). Likewise, an individual that has a Globus account under the username "maxim" might have a personal endpoint called [uservars]#maxim#mylaptop#.
 
-There are two classes of endpoints: personal endpoints and server endpoints. You can set up a personal endpoint on your laptop or other personal computer using link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] as described here. To set up a multi-user server as a Globus endpoint you must install link:https://www.globus.org/globus-connect-server[Globus Connect Server] as described here.
-
 == How can I create an endpoint?
-If there is already a GridFTP server running on your machine you can use the endpoint-add command or the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. If there is no existing GridFTP deployment then you have two options, depending on whether the endpoint is a machine for personal use (Globus Connect Personal) or a multi-user server (Globus Connect Server). For personal use, link:https://www.globus.org/globus-connect-personal[please see the instructions on this page]. For a multi-user machine such as a campus cluster or lab server, link:https://www.globus.org/globus-connect-server[please see the instructions on this page].
+If you wish to create an endpoint on a personal machine (laptop, personal desktop computer, etc.) please see the instuctions for setting up a Globus Connect Personal endpoint here: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
+
+If you are setting up an endpoint on a multi-user machine (e.g. HPC cluster, lab server, etc.)
+please follow the instructions in the link:../../resource-provider-guide/[Resource Provider Guide].
+
+If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/endpoint-add[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
+
+== How do I create an endpoint on Amazon S3?
+Instructions for setting up an S3 endpoint are link:../../how-to/amazon-aws-s3-endpoints[available here]. Please note that S3 endpoints require a Globus subscription - if you're not a current Globus subscriber, please link:https://www.globus.org/provider-plan-configuration[complete this form to start your free one-month trial], which will allow you to experiment with and test all Globus premium features.
 
 == Are transfers between Globus Connect Personal endpoints possible?
 Yes. You must be a link:https://www.globus.org/researchers/plus-plans[Globus Plus] user to transfer files between two Globus Connect Personal endpoints. If the two endpoints are owned by different Globus users, both users must be Globus Plus users. You account may be upgraded to Globus Plus if your institution subscribes to a link:https://www.globus.org/provider-plans[Globus Provider plan].
@@ -40,31 +46,27 @@ link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on 
 == Where does Globus Connect Personal store its settings?
 Globus Connect stores a few configuration files, such as its private certificate and key, in this location:
 
-- Windows XP: %APPDATA%\Globus Connect
-- Windows Vista and 7: %LOCALAPPDATA%\Globus Connect
-- OS X and Linux: ~/.globusonline/lta
-- On OS X, Globus Connect stores preferences in ~/Library/Preferences/org.globusonline.Globus-Connect.plist
+- Microsoft Windows : +%LOCALAPPDATA%\Globus Connect+ (or +%APPDATA%\Globus Connect+ on Windows XP)
+- Mac OS X and Linux: +~/.globusonline/lta+
+- On Mac OS X, Globus Connect stores preferences in +~/Library/Preferences/org.globusonline.Globus-Connect.plist+
 
 == How do I get a new setup key for a reinstallation of Globus Connect Personal?
 In order to reinstall a Globus Connect Personal endpoint and obtain a new setup key, please follow this step-by-step procedure:
 
 1. Quit Globus Connect
 
-2. Delete the entire Globus Connect Personal settings directory - (*\* THIS IS AN IMPORTANT STEP **):    
+2. Delete the entire Globus Connect Personal settings directory (**THIS IS AN IMPORTANT STEP**):    
 
--  Windows XP: %APPDATA%\Globus Connect      Personal
-- Windows Vista and 7: %LOCALAPPDATA%\Globus Connect     Personal
--  OS X and Linux: ~/.globusonline/lta (LTA stands for the old internal product name, "Lightweight Transfer Agent")
+- Microsoft Windows: +%LOCALAPPDATA%\Globus Connect     Personal+ (or +%APPDATA%\Globus Connect      Personal+ on Windows XP)
+-  Mac OS X and Linux: +~/.globusonline/lta+
 
-3. Install Globus Connect from scratch through the 3-step process - https://www.globus.org/globus-connect-personal
+3. Install Globus Connect from scratch: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
 
 - Then, Click "Generate Setup Key".
 - Select the generated key with your mouse and copy it to the clipboard.
 - Return to the "Initial Setup" window of Globus Connect Personal and paste the setup key into the provided field. The "OK" button will be enabled if the key is valid. Click "OK" to complete the installation. (If the "OK" button is not enabled, please ensure you have properly copied the entire key generated in the previous step above.
 
-Please note the ports that Globus Connect Personal needs open -      
-
-Globus Connect Personal uses only outbound TCP connections. However, it does use a relatively wide port range. It uses 2223 and 50000-51000 when talking to Globus, and when doing a transfer it also uses whatever port range that the other GridFTP server uses. For example, if Globus Connect Personal is transferring to or from a university GridFTP server that is configured to use ports 40000-41000 for data channels, Globus Connect will use those ports (outgoing only).
+Please note the ports that Globus Connect Personal needs open: Globus Connect Personal uses only outbound TCP connections; port 2223 is used for communicating with the Globus service, and ports and 50000-51000 are used when doing a transfer.
 
 == What is the purpose of the Globus Connect Personal setup key?
 The setup key is a one-time credential used during the Globus Connect Personal installation process to uniquely identify your laptop/personal computer's endpoint to Globus. Once the endpoint is created and the installation is complete the key is discarded.
@@ -72,14 +74,15 @@ The setup key is a one-time credential used during the Globus Connect Personal i
 == Does Globus recognize a USB external drive on my laptop as part of an endpoint?
 Yes but, by default, Globus Connect Personal only allows you to access your home directory on your personal computer. Follow these steps to allow Globus to recognize your USB external drive:
 
-. Ensure you have the latest version of Globus Connect Personal installed.
 . Open the Globus Connect Personal settings window to add your USB drive. On Mac OS X, click "Preferences" in the Globus Connect Personal menu. On Windows, select the Tools -> Options menu option. On Linux, select the File -> Preferences menu option.
 . Click on the "+" button and select your USB drive. Optionally, change the directory path that you would like to access.
 
 Now, when you access your Globus Connect Personal endpoint on the Start Transfer page, you can change the path to the name of your USB drive to browse/transfer files.
 
-== How Do I Configure Accessible Directories on Globus Connect Personal for Linux
+== How does Globus Connect Personal work?
+The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow through" Globus in any way.
 
+== How Do I Configure Accessible Directories on Globus Connect Personal for Linux?
 When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the +\~/.globusonline/lta/config-paths+ file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. By default, a +~/.globusonline/lta/config-paths+ file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
 
 ----
@@ -111,7 +114,7 @@ In all cases, it is important to note that a user cannot access a directory or a
 
 NOTE: There are some caveats concerning how Globus Connect Personal handles symlinks found in accessible paths. Please read more about that in the following FAQ: link:../transfer-sharing/#how_does_globus_handle_symlinks[How Does Globus Handle Symlinks?]
 
-== How do I update to the latest version of Globus Connect Personal
+== How do I update to the latest version of Globus Connect Personal?
 The steps you will need to take to upgrade your current Globus Connect Personal install will depend on the operating system you are using. Please refer to the section below that corresponds to the OS of the system that you have Globus Connect Personal installed on.
 
 === Windows
@@ -154,21 +157,19 @@ If you should encounter problems when attempting your upgrade and cannot resolve
 === Globus Connect Personal Download Links:
 https://www.globus.org/globus-connect-personal
 
-== ENDPOINT_ERR This server version does not support timestamp preservation
-In the event that you see an error like this - [error]#Message: This server version does not support timestamp preservation#
+== What can I do if my endpoint does not support timestamp preservation?
+In the event that you see an error like this - [error]#Message: This server version does not support timestamp preservation#, follow the steps below.
 
 [role="img-responsive center-block"]
 image::images/ts-1.png[]
 
-below are the steps you will want to take.
-
 . Cancel your job and restart it without the timestamp preservation option.
-. Also, restart with the Transfer Setting option:
+. Also, restart with the Transfer setting option:
 
 [role="img-responsive center-block"]
 image::images/ts-2.png[]
 
-NOTE: If you think this is a necessary capability, please feel free to contact the appropriate endpoint admin and request that they upgrade the GridFTP server to 5.0.5 or 5.2.1 or later versions.
+NOTE: If you require timestamp preservation, please contact the administrator of your endpoint and request that they upgrade the GridFTP server to 5.0.5 or 5.2.1 (or later versions).
 
 == Why can't I connect to relay.globusonline.org?
 === Cannot Reach relay.globusonline.org on Port 2223
@@ -320,6 +321,16 @@ For example, if [uservars]#exampleuser# wants to transfer file [uservars]#/a/b/c
 ==== Resolving the Error: Insufficient Permissions
 If you do not have sufficient permissions to read or write a file or folder, you will need to change the permissions on those files or directories so that Globus can access them. Once you can view or edit files or directories under your user account on the Globus Connect Personal endpoint, Globus should no longer have problems reading or writing their contents, as long as the *Accessible Folders* settings are correct.
 
+== Can I force encryption on an endpoint?
+The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
+See link:https://docs.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
+
+----terminal
+$ endpoint-modify --force-encryption [input]#my#endpoint#
+----terminal
+
+All transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that option checked in the Web.
+
 == Why do I get an SSLv3 handshake error?
 ----terminal
 [output]#530-globus_xio: Authentication Error
@@ -330,15 +341,14 @@ SSL3_GET_CLIENT_HELLO: wrong version number
 530 End.#
 ----terminal
 
-If you see the above error it is because we updated our infrastructure to disallow SSLv3 (and prefer TLS) to avoid the link:../../security-bulletins/2014-10-poodle/[POODLE vulnerability] discovered in 2014. This upgrade was coordinated by Globus. All Globus endpoints should be configured to disallow SSLv3. If you continue to encounter issues such as this, please contact your administrator to request that the endpoint be updated.
+If you see the above error it indicates that your endpoint is still using an old/incompatible version of the Globus Connect software. We updated our infrastructure to disallow SSLv3 (and prefer TLS) to avoid the POODLE vulnerability. All Globus installations should be configured to disallow SSLv3. If you continue to experience this issue, it means that remote services must be upgraded - please contact your administrator and request that the endpoint be updated.
 
 For more information, please see:
 - link:../../security-bulletins/2014-10-poodle/[How is Globus impacted by the SSLv3 "POODLE" vulnerability?]
 - http://lists.globus.org/pipermail/gt-user/2015-March/010791.html
 
 == What does "You are not an admin of the MyProxy Delegation Service" mean?
-
-This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` command multiple times using different Globus usernames. As a workaround to get rid of this error, run the following command as root, and then re-run the setup script.
+This error message occurs if you run the `globus-connect-server-setup` or `globus-connect-servser-web-setup` command multiple times using different Globus usernames. As a workaround to get rid of this error, run this command as root, and then rerun the setup script: 
 
 ----terminal
 # [input]#rm /var/lib/myproxy-oauth/myproxy-oauth.db#
@@ -347,7 +357,7 @@ This error message occurs if you run the `globus-connect-server-setup` or `globu
 If you are not using an OAuth server in your configuration (if you are using, for example, `IdentityMethod = MyProxy` in your configuration), you can disable the OAuth server by commenting out the `Server = %(HOSTNAME)s` line in the [OAuth] section of the configuration file.
 
 == How do I fix Globus Connect Server file permission errors?
-If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has set the correct permissions. +/var/lib/globus-connect-server+ should have the following permissions:
+If you experience issues with Globus Connect Server related to file permissions, e.g. [error]#500-globus_sysconfig: File has bad permissions: Could not read /var/lib/globus-connect-server/grid-security/certificates#, ensure that your Globus Connect Server installation has the correct permissions set. +/var/lib/globus-connect-server+ should have the following permissions:
 
 ----terminal
 [output]#755 root.root /var/lib/globus-connect-server
@@ -366,18 +376,7 @@ If you experience issues with Globus Connect Server related to file permissions,
 The files in +/var/lib/globus-connect-server/grid-security/certificates+ should all have permissions set to 644.
 
 == What ports does Globus Connect Server need open?
-Globus Connect Server running on a cluster or other shared storage resource uses the following default ports:
-
-* GridFTP server control channel connections: Port 2811 or 21 inbound (21 for anonymous GridFTP) from 184.73.189.163 and 174.129.226.69
-* GridFTP server data channel connections: Ports 50000 – 51000 inbound and outbound to/from Any
-* MyProxy CA server authentication requests: Port 7512 inbound from 174.129.226.69
-* OAuth server authentication requests: Port 443 inbound and outbound to/from Any
-
-Globus Connect Server needs the following ports open during the setup process:
-
-* Port 2223 outbound to 184.73.255.160
-
-If you experience issues activating an endpoint, it's often the case that one or more of the above ports is not open.
+If you experience issues activating an endpoint, it's often the case that one or more of the required ports is not open. Please see the link:../../resource-provider-guide/#open-tcp-ports_section[Resource Provider Guide] for information on required open ports and configuring your firewall.
 
 == How do I enable logging for Globus Connect Server 2.x.y?
 Currently, logging is not supported in Globus Connect Server >= 2.x.y. However, it can be enabled directly in GridFTP server, one of the Globus Connect Server components.
@@ -398,16 +397,35 @@ and restart the GridFTP server:
 $ /etc/init.d/globus-gridftp-server restart
 ----terminal
 
-All GridFTP options with their detailed description can be found at: http://toolkit.globus.org/toolkit/docs/5.2/5.2.5/gridftp/admin/#globus-gridftp-server
+All GridFTP options with their detailed description can be found at: http://toolkit.globus.org/toolkit/docs/6.0/gridftp/admin/
 
 == Does Globus Connect Server require an X.509 certificate to be installed?
 If you link:../../resource-provider-guide/#install_section[install Globus Connect Server] and select the MyProxy option, two components are installed: a GridFTP server and a MyProxy server. By default, certificates for both of these components are automatically installed so there is no need to add or configure X.509 certificates separately. You may choose to configure Globus Connect Server to use a certificate other than the default one installed. Please refer to the link:../../resource-provider-guide/#globus_connect_server_configuration[Globus Connect Server configuration section] to see how that can be set up.
 
 If you install Globus Connect Server and select the MyProxy OAuth option, an additional component is installed, namely an OAuth server (either on an existing web server or as part of a new Apache server installation). In this instance, you will need a certificate to be installed on the Apache server and this certificate should be issued by a Certificate Authority (CA) that is automatically trusted by the browser.
 
-== Can I use a different PAM module for authenticating users to Globus Connect Server endpoint. How do I configure that?
-By default, Globus Connect Server uses the same PAM module as the "login" command. If you would like to use a different PAM module for authenticating users to the endpoint, you can modify /var/lib/globus-connect-multiuser/myproxy-server.conf file and modify "pam_id" parameter. For example, you can set "pam_id" to "sshd" for it to use the same PAM module used by SSH.
+== Can I use a different PAM module for authenticating users to Globus Connect Server endpoint?
+By default, Globus Connect Server uses the same PAM module as the +login+ command on your server. If you would like to use a different PAM module for authenticating Globus users to the endpoint, you can edit the +/var/lib/globus-connect-server/myproxy-server.conf+ file and modify the +pam_id+ parameter. For example, you can set +pam_id+ to "sshd" for it to use the same PAM module used by SSH.
 
-You can also create a completely new PAM configuration for Globus Connect Server use and place the file in /etc/pam.d/. 
+You can also create a completely new PAM configuration for Globus Connect Server use and place the file in +/etc/pam.d/+. 
 
-Note that the /var/lib/globus-connect-multiuser/myproxy-server.conf file is overwritten on a setup command execution, and you will need to manually update the file.
+Note that the +/var/lib/globus-connect-server/myproxy-server.conf+ file is overwritten when you run a setup command execution, and you will need to manually update the file.
+
+== How do I add multiple I/O nodes to a Globus endpoint?
+NOTE: Any data you intend to make available to other Globus users should be located on a distributed file system (DFS) that spans the I/O nodes. Failure to locate the data on a properly configured DFS will result in inconsistencies in the ways that data is stored, retrieved, and presented to Globus users. Details concerning the proper configuration of a DFS are beyond the scope of this FAQ, but the following links should prove helpful for those looking for more information:
+- http://ceph.com/docs/master/
+- http://lustre.opensfs.org/documentation/
+- http://www.ibm.com/systems/platformcomputing/products/gpfs/
+
+Once you have a properly configured distributed file system you may do the following to create a Globus endpoint with multiple I/O nodes:
+
+1. Install Globus Connect Server on the ID node (this is the node that will be running the MyProxy server).
+2. Install Globus Connect Server on all the other servers that will be I/O nodes.
+3. Edit the configuration file (+/etc/globus-connect-server.conf+) on the ID node and make the following changes:
+- In the +[Globus Endpoint Configuration]+ section, set +Name=+ to the desired Globus endpoint name (just the part that comes after the # of the Globus endpoint name). For example, if your endpoint will be called 'uchicago#big-data', then set +Name = big-data+.
+- In the +[MyProxy Configuration]+ section, set +Server =+ %(HOSTNAME)s' with the hostname of the ID node.
+4. Run +globus-connect-server-setup+ on the ID node.
+5. Copy the edited configuration file from the ID node to all the I/O nodes, overwriting the default configuration file created by the Globus Connect Server installer.
+6. Run +globus-connect-server-setup+ on all the I/O nodes.
+
+Your endpoint is now configured with multiple I/O nodes. Note that you will need to repeat steps 3-6 as necessary whenever you make changes to the configuration.

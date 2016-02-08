@@ -111,30 +111,9 @@ To find your PEM file, run +grid-proxy-info+ at a command prompt. This will prin
 === Activating an Endpoint
 You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli/[CLI tutorial] for more details on using GSI SSH.
 
-== Can I force encryption on an endpoint?
-The owner of the endpoint can use the endpoint modify command in the Command Line Interface (CLI) to force encryption.
-See link:http://docs.globus.org/cli/reference/endpoint-modify/[documentation for the modify command]. Example:
-
-----terminal
-$ endpoint-modify --force-encryption [input]#my#endpoint#
-----terminal
-
-Then all transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that selection marked in the Web.
-
 == Why don't I see any information when running the "details" and "events" commands?
 This may be related to multiple transfers running simultaneously. If you issue multiple transfer requests, note that only three requests will be running simultaneously at any one time. The remaining transfers will be queued and start moving data as soon as another active transfer completes.
 
 == Why do I see "Permission denied" when accessing the CLI?
 This is usually the result of missing information in your Globus profile. In order to use the CLI interface you will need to add your SSH public key to your Globus account. Please see the FAQ entry for information on link:#how_do_i_add_an_ssh_key_to_my_globus_account[how to add your key].
 
-== What does the error "Credentails are needed" mean?
-There are three straightforward ways to refresh your credentials in Globus:
-
-=== Option 1
-Go to the link:https://www.globus.org/xfer/StartTransfer[Start Transfer page], and enter the endpoints you need. This should prompt you for your MyProxy logins to those machines in order to do the file listings. If you had already begun a transfer when you discovered the need to renew credentials, you do not need to start a new transfer. The file listings will be sufficient to refresh your credentials.
-
-=== Option 2
-Go to the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints page], browse to the endpoint on which you need to renew credentials. Select the endpoint, go to the Activate menu, and follow on-screen instructions to reactivate the endpoint.
-
-=== Option 3
-Login to command line interface (+ssh cli.globusonline.org+) and use the endpoint-activate command to refresh your credentials. For example, ssh cli.globusonline.org endpoint-activate -U xsede#\*", and it should prompt you for your XSEDE login and password.

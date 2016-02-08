@@ -11,12 +11,6 @@ short_title: Security
 
 toc::[]
 
-== How do I sign up and transfer files with Globus?
-To sign up and transfer files with Globus, please follow this link:../../how-to/get-started/[How-To Guide].
-
-== What’s the difference between Globus and GridFTP?
-Globus is software-as-a-service (SaaS) for file transfer. It is a hosted service, operated by the Globus development team, that acts as a third-party mediator/facilitator of file transfers between endpoints that are owned and managed by their respective end users. GridFTP is user-installable software that is part of the Globus Toolkit and is used by grid installers and developers building large-scale data movement solutions. Globus uses the GridFTP protocol for transferring files and currently requires that a GridFTP server be installed on both source and destination endpoints, although HTTP support is planned for a future release. Many HPC resources worldwide already have a GridFTP server installed and can hence be used as Globus endpoints. For individual users, Globus Connect Personal provides a point-and-click way to install a pre-configured GridFTP on your local laptop or desktop. If you are an owner or administrator of a campus cluster or other shared HPC resource, link:https://www.globus.org/globus-connect-server[click here to see how you can turn your resource into a Globus endpoint].
-
 == Does Globus need credentials when accessing my system? Does it store these permanently?
 Globus uses only temporary credentials to act on your behalf when making a transfer request, and never keeps your password nor long-term credentials to access a site.
 
@@ -38,9 +32,9 @@ Once your Google identity is mapped to your Globus account you will allow you to
 To remove the association between my Google account and Globus click the "Delete" button next to the Google identity you wish to remove.
 
 == How do I stop Globus from automatically authenticating using my Google account?
-Visit link:http://www.google.com/accounts/IssuedAuthSubTokens?hl=en[this link on Google] (you may be prompted to login using your Google account). You will see a list of websites for which you have authorized access to your Google account. Click the "Revoke Access" link next to Globus.org. Your Google account will no longer be used by Globus. If you try to login to Globus with your Google account, you will be asked to re-confirm that Globus may use your Google account.
+Visit link:http://www.google.com/accounts/IssuedAuthSubTokens?hl=en[this link on Google] (you may be prompted to login using your Google account). You will see a list of websites for which you have authorized access to your Google account. Select the Globus entry and click the "Remove" button. Your Google account will no longer be used by Globus. If you try to login to Globus with your Google account, you will be asked to re-confirm that Globus may use your Google account.
 
-== How to use a third-party login (e.g. InCommon, XSEDE) to access Globus
+== How do I use a third-party login (e.g. InCommon, XSEDE) to access Globus?
 Use the following steps to use a third-party login to access Globus:
 
 . Go to the Sign In page and click on "alternate login" link
@@ -71,11 +65,11 @@ When a user chooses to activate an XSEDE endpoint, they are redirected to the XS
 If the user is using the Globus command line interface, the activation of an XSEDE endpoint prints a URL for them to use to complete the activation. Once the user browses to the URL, the flow is similar to the one described when using the Globus website.
 
 == How can I delete my Globus account?
-Please sign in to Globus and submit a support request to delete your account here: https://support.globus.org/tickets/new. In order to complete the deletion process you should ensure that:
+Please send email to support@globus.org and request to delete your account. In order to complete the deletion process you should ensure that:
 
-- you have no active file transfers (if you do, you should cancel them or wait for them to complete)
-- all endpoints that you created have been deleted (e.g. the endpoint on your local machine created by installing Globus Connect Personal)
-- all shared endpoints that you created have been deleted (note that users that were granted access to the shared endpoint will no longer be able to access the files shared on that endpoint)
+1. You have no active file transfers (if you do, you should cancel them or wait for them to complete).
+2 All endpoints that you created have been deleted (e.g. the endpoint on your local machine created by installing Globus Connect Personal).
+3. All shared endpoints that you created have been deleted (note that users that were granted access to the shared endpoint will no longer be able to access the files shared on that endpoint).
 
 == How do I generate a VOMS-enabled proxy certificate and upload it to a MyProxy server?
 GSISSH-Term is a Java-based client that can be installed and launched with one simple click. link:https://www.lrz.de/[Leibniz Supercomputing Centre] maintains and develops a customized version of this client that generates a proxy certificate and uploads it to any MyProxy server with no additional setup. European EUGridPMA CA certificates are automatically installed and updated on the client machine.
@@ -85,7 +79,7 @@ Virtual Organization Membership Service (VOMS) is a system for managing authoriz
 To generate a proxy certificate (either a regular or VOMS-enabled) for use with a MyProxy server, click on the link below. Begin by selecting menu option "Tools" -> "MyProxy Tool".
 
 [role="img-responsive center-block"]
-image::images/hfjaigge.png[GSISSH-Term icon]
+image::images/hfjaigge.png[link="http://www.lrz.de/services/compute/grid_res/globus/gsissh-term/applet/jws.jnlp"]
 
 NOTE: You must have a Java Runtime Environment (JRE 1.6 or later) installed to run this program.
 
