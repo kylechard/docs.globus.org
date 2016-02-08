@@ -21,7 +21,7 @@ NOTE: If you don’t already have an SSH key, instructions for creating one are 
 . link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
 . Click "add linked identity".
 . Click "Add SSH Public Key".
-. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
+. Copy and paste your *public key* into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
 . Click "Submit" to save.
 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
@@ -36,8 +36,6 @@ For more information about the Globus Online CLI, see the link:../../cli/using-t
 
 === Mac OSX/Linux/Unix
 
-Generate Keys:
-
 The `ssh-keygen` command is used to create keys. There are many options for it. We recommend that you run it this way:
 
 ----terminal
@@ -49,8 +47,6 @@ This will create and store both your public and private keys in your ~/.ssh dire
 Some machines may put these files in a different spot. If this is the case, make a note of where it puts them and what it names them. The id_rsa.pub is your public key and the id_rsa (and, if they exist, id_dsa or identity) file is your private key.
 
 === Windows Systems
-
-Generate Keys: 
 
 ==== SecureCRT
 
@@ -95,7 +91,7 @@ While you are grabbing the latest client, also grab link:http://the.earth.li/~sg
 
 After downloading PuTTYgen, double-click on the PuTTYgen icon. At the very bottom of the dialog box, there is a section called "Parameters". Under "Type of key to generate:", click the radio button for "SSH2 RSA". You should set the "Number of bits in a generated key:" at the default value of 2048 or higher.
 
-== How do I set up Globus so I can connect to cli.globusonline.org using GSI SSH?
+== How do I Connect to the Globus CLI using GSI SSH?
 To use GSI SSH you need to configure your Globus profile with the X.509 Certificate that you will use to login.
 
 === Adding an X.509 certificate to a Globus account
