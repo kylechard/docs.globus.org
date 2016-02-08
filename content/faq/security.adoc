@@ -17,7 +17,7 @@ Globus uses only temporary credentials to act on your behalf when making a trans
 == How does Globus ensure my data is secure?
 Globus uses a "data channel" for moving data between two endpoints. This data channel is established directly between the source and destination endpoints and cannot be accessed by Globus, only by the GridFTP servers running on the endpoints.
 
-By default the data channel is authenticated, but unencrypted. It can be encrypted by selecting the "encrypt transfer" option on the Transfer Files page (see screenshot below), or by including the <code>—encrypt</code> option for the transfer command when using the command line interface. You should be aware that encryption adds processing overhead, and will likely reduce transfer speed. Encrypted transfers use the SSL cipher configured on the endpoints (the default for OpenSSL is AES256-SHA).
+By default the data channel is authenticated, but unencrypted. It can be encrypted by selecting the "encrypt transfer" option on the Transfer Files page (see screenshot below), or by including the `—encrypt` option for the transfer command when using the command line interface. You should be aware that encryption adds processing overhead, and will likely reduce transfer speed. Encrypted transfers use the SSL cipher configured on the endpoints (the default for OpenSSL is AES256-SHA).
 
 In addition to the data channel, Globus uses a "control channel" to communicate with the source and destination endpoints for a transfer. All control channel communications are encrypted.
 
