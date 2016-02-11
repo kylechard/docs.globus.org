@@ -63,9 +63,9 @@ For example, when accessing an ALCF endpoint you are prompted to enter a CryptoC
 image::images/ALCF_OTP.png[]
 
 == How does Globus work with XSEDE security infrastructure?
-From the perspective of XSEDE, Globus looks like a science gateway that uses user-specific credentials to access resources on behalf of the user, instead of using community credentials. Globus uses the MyProxy OAuth server provided by XSEDE to get a user’s short term X.509 certificate, without requiring the user’s password to flow through Globus.
+From the perspective of XSEDE, Globus looks like a science gateway that uses user-specific credentials to access resources on behalf of the user, instead of using community credentials. Globus uses the MyProxy OAuth server provided by XSEDE to get a user's short term X.509 certificate, without requiring the user's password to flow through Globus.
 
-When a user chooses to activate an XSEDE endpoint, they are redirected to the XSEDE MyProxy OAuth server, where they are prompted to log in using their XSEDE credential (username/password). Once they have authenticated, they are automatically redirected to the Globus page and the activation is completed. Globus only receives a short-term X.509 certificate from the MyProxy server, and never sees the user’s username and password.
+When a user chooses to activate an XSEDE endpoint, they are redirected to the XSEDE MyProxy OAuth server, where they are prompted to log in using their XSEDE credential (username/password). Once they have authenticated, they are automatically redirected to the Globus page and the activation is completed. Globus only receives a short-term X.509 certificate from the MyProxy server, and never sees the user's username and password.
 
 If the user is using the Globus command line interface, the activation of an XSEDE endpoint prints a URL for them to use to complete the activation. Once the user browses to the URL, the flow is similar to the one described when using the Globus website.
 
@@ -100,3 +100,17 @@ This error happens when your Globus account is not configured for use with GSI S
 
 == Is there an independent assessment of Globus security?
 Multiple organizations have conducted Globus security reviews. Their findings and our responses are link:https://www.globus.org/technology/security/globus-security-reviews[documented here].
+
+== What is Globus ID? 
+
+We've moved Globus username/passwords created prior to February 13, 2016 into an independent service called Globus ID (link:https://globusid.org[globusid.org]), which we continue to operate for those users that choose not to use their organization's login to access Globus. For example, if you had previously created the Globus username "auser", you can now log into Globus as auser@globusid.org with your existing Globus password. 
+
+== What is my Globus account? 
+
+Your Globus account is the set of linked identities that you have used to log into Globus. link:https://beta.globus.org/app/account[Click here] to see the set of identities for your Globus account. 
+
+We've moved Globus username/passwords created prior to February 13, 2016 into an independent service called Globus ID (link:https://globusid.org[globusid.org]). Your Globus account can include a Globus ID as a linked identity, but this is not required. 
+
+== Why should I link accounts? 
+
+Globus allows users to link their many identities (e.g., university login, facility logins, Google, Globus ID) into a single Globus account. This allows the user to have a single account to manage their resources across these multiple identities. For example, a user with a University of Chicago account, might also have XSEDE account. By linking those together into a single Globus account, use of services such as Globus transfer and groups using either identity is consolidated under that single Globus account.
