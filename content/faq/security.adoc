@@ -103,7 +103,9 @@ Multiple organizations have conducted Globus security reviews. Their findings an
 
 == What is Globus ID? 
 
-We've moved Globus username/passwords created prior to February 13, 2016 into an independent service called Globus ID (link:https://globusid.org[globusid.org]), which we continue to operate for those users that choose not to use their organization's login to access Globus. For example, if you had previously created the Globus username "auser", you can now log into Globus as auser@globusid.org with your existing Globus password. 
+Globus ID provides/manages identities (usernames and passwords) for use with the Globus service. It is an independent service operated by the Globus team for those users that choose not to use their organization's login to access Globus (and for users whose institutional identity provider is not yet supported by the Globus service). *A Globus ID _is not_ required to use Globus - you are encouraged to access the service using institutional username and password.*
+
+Globus ID was introduced so that we can continue to support Globus usernames/passwords for those users that registered for a Globus account prior to February 13, 2016. For example, if you had previously created the Globus username "auser", you can log into Globus as auser@globusid.org with your existing Globus password.
 
 == What is my Globus account? 
 
