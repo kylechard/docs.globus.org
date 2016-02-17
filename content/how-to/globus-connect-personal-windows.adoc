@@ -4,7 +4,7 @@ Globus Connect Personal allows you to share and transfer files to and from your 
 
 == Installation
 
-link:https://www.globus.org/xfer/ManageEndpoints?globus_connect=true[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
+link:https://www.globus.org/app/endpoints/create-gcp[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
 
 NOTE: Globus Connect Personal is supported on Windows Vista, Windows 7, and Windows 8.
 

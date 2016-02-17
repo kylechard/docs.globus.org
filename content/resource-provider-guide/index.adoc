@@ -11,8 +11,8 @@
 :researchers_url: http://www.globus.org/researchers/
 :providers_url: http://www.globus.org/providers/
 :provider-plans_url: http://www.globus.org/providers/provider-plans/
-:signup_url: http://www.globus.org/signup/
-:transfer_url: http://www.globus.org/xfer/StartTransfer#/
+:signup_url: http://www.globus.org/app/SignUp/
+:transfer_url: http://www.globus.org/app/transfer/
 :contact-us_url: http://www.globus.org/contact-us/
 
 // Other sites

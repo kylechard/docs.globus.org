@@ -48,7 +48,7 @@ You can access a detailed list of errors (and other status messages) for any Glo
 
 *Using the Web interface:*
 
-. Click on the link:https://www.globus.org/xfer/ViewTransfers[View Transfers page].
+. Click on the link:https://www.globus.org/app/activity[View Transfers page].
 . Click on the label of the transfer you would like to examine. You will see a popup with the transfer details.
 . Click on the "Event Log" tab to see a complete list of status messages. Note: this may be a very long list (potentially thousands of pages for a large transfer).
 
@@ -61,7 +61,7 @@ You can access a detailed list of errors (and other status messages) for any Glo
 All of the above commands have options that control the amount and format of the output returned. Please run +man+ for further details.
 
 == How do I check the status of my transfers?
-You can use the link:https://www.globus.org/xfer/ViewActivity[Web interface] or the link:../../cli/reference/status[+status+] and link:../../cli/reference/details[+details+] commands on the Globus command-line interface to check the status of your transfers. More information and examples are link:../../cli/using-the-cli/[available here].
+You can use the link:https://www.globus.org/app/activity[Web interface] or the link:../../cli/reference/status[+status+] and link:../../cli/reference/details[+details+] commands on the Globus command-line interface to check the status of your transfers. More information and examples are link:../../cli/using-the-cli/[available here].
 
 == How can I transfer files to and from my laptop or desktop?
 Use link:https://www.globus.org/globus-connect-personal/[Globus Connect Personal], which provides a point-and-click interface for configuring and operating a Globus link:../globus-connect-endpoints/#what_is_an_endpoint[endpoint] on your local machine. After installing Globus Connect Personal, your computer looks just like any other Globus endpoint, so all the standard Globus web and command line interface features will work. Globus Connect Personal runs behind NATs and firewalls, as long as it can make an outbound connection. Click the link for your operating system to get started with Globus Connect Personal: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
@@ -214,7 +214,7 @@ Many of the pages in the Globus application can be linked with parameters that a
 
 What follows is a list of pages that are configurable.
 
-=== Transfer Files (/xfer/StartTransfer)
+=== Transfer Files (/app/transfer)
 The Transfer Files page provides the following parameters to preselect the two sides of the Start Transfer page:
 
 - origin - represents is the endpoint and path for the left hand side of the page.
