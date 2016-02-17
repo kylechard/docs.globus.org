@@ -6,6 +6,7 @@
 [options="header"]
 |=========================
 |Date	|Description	|Notes
+|February 17, 2016 	|link:2016-02-cve-2015-7547[glibc getaddrinfo() stack-based buffer overflow]	|link:https://sourceware.org/ml/libc-alpha/2016-02/msg00416.html[CVE-2016-7547]
 |December 1, 2015 	|link:2015-12-strict-mode[Bringing your Globus services in line with RFC 2818 compliance]	|Globus Notification
 |July 9, 2015	|link:2015-07-openssl-alternative-chains-certificate-forgery[Alternative chains certificate forgery]	|link:https://access.redhat.com/security/cve/CVE-2015-1793[CVE-2015-1793]
 |May 22, 2015	|link:2015-06-logjam[Logjam vulernability]	|link:https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-4000[CVE-2015-4000]
