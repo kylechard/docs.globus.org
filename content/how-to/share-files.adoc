@@ -5,7 +5,7 @@ Globus offers the ability to easily share your data with other researchers who h
 
 NOTE: Shared endpoints may only be created on managed endpoints that are part of an active link:https://www.globus.org/providers/provider-plans[Provider plan subscription]). If you wish to share from a personal endpoint (e.g. your laptop) or transfer files between two personal endpoints you must be a link:https://www.globus.org/researchers/plus-plans[Globus Plus user]. Please contact your research computing center or IT manager to upgrade your Globus account to Plus. If your institution does not have a Provider plan subscription, please link:https://www.globus.org/providers/signup[contact us to discuss your requirements].
 
-. link:https://www.globus.org/signin[Log into Globus] and navigate to the link:https://www.globus.org/xfer/StartTransfer[Start Transfer page].
+. link:https://www.globus.org/signin[Log into Globus] and navigate to the link:https://www.globus.org/app/transfer[Start Transfer page].
 . Select the endpoint that has the files/folders you wish to share, and activate the endpoint, i.e. login with your username and password for that endpoint.
 +
 [role="img-responsive center-block"]
@@ -55,7 +55,7 @@ Additionally, remote collaborators on a project are able to access the project s
 [role="img-responsive center-block"]
 image::images/sharing-pic11.png[]
 +
-The creator of a shared endpoint can assign the access manager role from the new Roles tab on the link:http://globus.org/xfer/ManageEndpoints[Manage Endpoints] page or from the link:http://globus.org/xfer/StartTransfer[Transfer Files] page by entering the name of the shared endpoint and selecting the permissions option on the pull-down menu.
+The creator of a shared endpoint can assign the access manager role from the new Roles tab on the link:http://globus.org/app/endpoints[Manage Endpoints] page or from the link:http://globus.org/app/transfer[Transfer Files] page by entering the name of the shared endpoint and selecting the permissions option on the pull-down menu.
 +
 Choosing Manage Roles opens a new Roles tab, shown below, that can be used to assign a role (currently access manager is the only available role) to a Globus user or group.
 +
