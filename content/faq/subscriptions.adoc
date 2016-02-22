@@ -58,6 +58,8 @@ Please ensure that [uservars]#<username># has subscription management rights, ot
 
 You must have a current link:https://www.globus.org/providers/provider-plans[Globus Provider plan] to be granted subscription management rights. If your Globus account does not have subscription management rights, please contact support@globus.org so that we may enable your account. If you do not have a Globus Provider plan please link:https://www.globus.org/providers/signup[contact us to sign up].
 
+NOTE: You can also create a new managed endpoint using the `--managed-endpoint` option in in the link:../../cli/reference/endpoint-add/[endpoint-add] command.
+
 == What is Globus Plus? Do I need it?
 Globus Plus enables you to transfer files between two _personal_ Globus endpoints, i.e. computers on which you have installed Globus Connect Personal, such as your laptop and a desktop personal computer. Globus Plus also allows you to share files from _personal_ Globus endpoints. *_You do not need Globus Plus_* if transferring files to/from a Globus server endpoint (e.g. your campus cluster or supercomputing center), or if you want to share files from a Globus server endpoint.
 
