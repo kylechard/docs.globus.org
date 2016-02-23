@@ -10,12 +10,12 @@ You will need an SSH key in order to access the Globus command line interface (C
 
 Once you have an SSH key, follow the directions below to associate your SSH key with your Globus account:
 
-. link:https://www.globusid.org/login[Sign in to your Globus ID].
-. link:https://www.globusid.org/keys[Click here] to manage your keys.
-. Click link:https://www.globusid.org/keys/add[Add a New Key].
-. Select the 'SSH Public Key' radio button
-. Copy and paste your public key into the 'body' textbox. Optionally, enter an identifying name in the 'Alias' field. Note: On a Mac OS X or Linux/Unix system, your key is usually found in `~/.ssh/id_rsa.pub`.
-. Click the 'Add Key' button to save your key.
+. Go to link:https://globusid.org[globusid.org].
+. Sign in with your Globus ID account and select "link:https://www.globusid.org/keys[manage SSH and X.509 keys]".
+. Click "link:https://www.globusid.org/keys/add[Add a New Key]".
+. Enter a descriptive name in the "Alias" field.
+. Select "SSH Public key" and copy & paste your public key into the "body" field. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
+. Click "Add Key" to save.
 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
 
