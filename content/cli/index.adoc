@@ -6,16 +6,16 @@ full_title: "Getting started with the Command Line Interface (CLI)"
 
 [doc-info]*Last Updated: {docdate}*
 
-You will need an SSH key in order to access the Globus command line interface (CLI). *If you don’t already have an SSH key, instructions for creating one are link:../faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[available here].*
+You will need an SSH key in order to access the Globus command line interface (CLI). *If you don't already have an SSH key, instructions for creating one are available link:https://docs.globus.org/faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here].*
 
 Once you have an SSH key, follow the directions below to associate your SSH key with your Globus account:
 
-. link:https://www.globus.org/SignIn[Sign in to your Globus account].
-. link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
-. Click "add linked identity".
-. Click “Add SSH Public Key”.
-. Copy and paste your public key into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in +~/.ssh/id_rsa.pub+.
-. Click “Submit” to save.
+. link:https://www.globusid.org/login[Sign in to your Globus ID].
+. link:https://www.globusid.org/keys[Click here] to manage your keys.
+. Click link:https://www.globusid.org/keys/add[Add a New Key].
+. Select the 'SSH Public Key' radio button
+. Copy and paste your public key into the 'body' textbox. Optionally, enter an identifying name in the 'Alias' field. Note: On a Mac OS X or Linux/Unix system, your key is usually found in `~/.ssh/id_rsa.pub`.
+. Click the 'Add Key' button to save your key.
 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
 
@@ -25,7 +25,7 @@ $ ssh [input]#<globus_username>#@cli.globusonline.org
 $ _
 ----terminal
 
-NOTE: If you receive a “permission denied” error, please ensure that your key files have permissions set to read-only (e.g. on Linux/Mac, run: +chmod 400 ~/.ssh/id_*+)
+NOTE: If you receive a "permission denied" error, please ensure that your key files have permissions set to read-only (e.g. on Linux/Mac, run: +chmod 400 ~/.ssh/id_*+)
 
 // For more information about using the CLI, see the guide to link:using-the-cli[Using the CLI] and link:cli-beyond-basics[CLI: Beyond the basics].
 
