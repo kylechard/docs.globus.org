@@ -28,7 +28,7 @@ NOTE: If you don’t already have an SSH key, instructions for creating one are 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
 
 ----terminal
-$ ssh [input]#<my_globus_online_user_name>#@cli.globusonline.org
+$ ssh [input]#<my_globus_id_user_name>#@cli.globusonline.org
 ----terminal
 
 For more information about the Globus Online CLI, see the link:../../cli/using-the-cli[Using the CLI guide].
