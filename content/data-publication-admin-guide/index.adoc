@@ -69,7 +69,7 @@ Access Manager] role on the shared endpoint. This shared endpoint will
 be configured as the storage location for the collection as described
 below.
 
-1. https://support.globus.org/entries/23586412-Managing-Globus-Groups-for-File-Sharing[Globus
+1. link:../how-to/managing-groups/[Globus
 groups must be created] to grant users capabilities when using the
 collection. Group invitations should be sent to the appropriate users,
 and for each group, the Globus user named `globuspublish` must be

@@ -30,7 +30,7 @@ If you wish to create an endpoint on a personal machine (laptop, personal deskto
 If you are setting up an endpoint on a multi-user machine (e.g. HPC cluster, lab server, etc.)
 please follow the instructions in the link:../../resource-provider-guide/[Resource Provider Guide].
 
-If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/xfer/ManageEndpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/endpoint-add[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
+If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/app/endpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/endpoint-add[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
 
 == How do I create an endpoint on Amazon S3?
 Instructions for setting up an S3 endpoint are link:../../how-to/amazon-aws-s3-endpoints[available here]. Please note that S3 endpoints require a Globus subscription - if you're not a current Globus subscriber, please link:https://www.globus.org/provider-plan-configuration[complete this form to start your free one-month trial], which will allow you to experiment with and test all Globus premium features.

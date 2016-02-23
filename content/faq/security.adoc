@@ -25,31 +25,15 @@ In addition to the data channel, Globus uses a "control channel" to communicate 
 image::images/EncryptTransferOption.png[]
 
 == How does Globus use my Google account?
-We provide the option of mapping your Google identity to your Globus account, enabling you to sign on to Globus using your Google credentials instead of your Globus username/password. To add your Google identity to your account follow the "Add External Identity" link on the link:https://www.globus.org/account/ManageIdentities[Manage Identities page] and select the "Google" account provider.
-
-Once your Google identity is mapped to your Globus account you will allow you to log in to Globus as described link:#how_to_use_a_third_party_login_e_g_incommon_xsede_to_access_globus[here].
-
-To remove the association between my Google account and Globus click the "Delete" button next to the Google identity you wish to remove.
+You can use your Google identity to log into Globus. Select Google as an option from the organizations listed on the link:https://www.globus.org/login[Globus login page], and sign in with your Google account. If you have previously logged into Globus using another identity (e.g. your campus username), Globus will give you the option to link it with your Google identity under a single Globus account. If you choose to link, you can use any of your linked identities to access Globus. You can choose not to link and keep your Google identity as a separate Globus account. You can manage your linked identities on the link:https://www.globus.org/app/account[Globus Account page].
 
 == How do I stop Globus from automatically authenticating using my Google account?
 Visit link:http://www.google.com/accounts/IssuedAuthSubTokens?hl=en[this link on Google] (you may be prompted to login using your Google account). You will see a list of websites for which you have authorized access to your Google account. Select the Globus entry and click the "Remove" button. Your Google account will no longer be used by Globus. If you try to login to Globus with your Google account, you will be asked to re-confirm that Globus may use your Google account.
 
-== How do I use a third-party login (e.g. InCommon, XSEDE) to access Globus?
-Use the following steps to use a third-party login to access Globus:
-
-. Go to the Sign In page and click on "alternate login" link
-+
-[role="img-responsive center-block"]
-image::images/AlternateLogin_highlight.png[]
-. Click on the third-party login you wish to use. (login providers with a box/arrow icon next to them will redirect to their own log in page, just click the *Proceed* button)
-. Enter your username/pass associated with the third party if prompted
-. On your first use of a third-party login, you will be prompted to *Make a Connection* to link that login with your Globus account - this is a one-time process (if you don't already have a Globus account you will be prompted to create one)
-. Your accounts are now linked, click *Let's Go»* to enter the site.
-
 == Which method should I use to sign in to Globus?
-The method you use is based on personal preference, but may be influenced by the types of endpoints you use. For example, if you plan to use Globus routinely to transfer files to/from NERSC (or ALCF or other resources with a third-party identity server supported by Globus) then you can link:#how_to_use_a_third_party_login_e_g_incommon_xsede_to_access_globus[use that same identity to log into Globus].
+You can use a username and password from any organization that is recognized (and trusted) by the Globus service. Select your preferred organization from the list on the link:https://www.globus.org/login[Globus login page], and you will be redirected to your organization’s login page to provide your credentials. If you don’t see your organization listed or would like to create a separate account, you can use link:https://accounts.google.com[Google] or link:https://globusid.org[Globus ID] to sign into Globus. 
 
-You can also map multiple identities to your Globus account — just sign on with your Globus username/password and add your other identities using the appropriate links on the link:https://www.globus.org/account/ManageIdentities[Manage Identities page].
+If you are an existing Globus user and have previously logged in using a Globus username and password, that option is now the Globus ID. We’ve moved Globus username/passwords created prior to February 13, 2016 into an independent service called Globus ID (globusid.org). Your Globus account can include a Globus ID as a linked identity, but this is not required.
 
 == What authentication methods does Globus support?
 Globus supports multiple authentication methods, including username/password (our default method), MyProxy, MyProxy with OAuth, OpenID (using a Google account) and InCommon. In all instances, you are first required to set up a Globus account (username/password) and then can link:https://www.globus.org/account/ManageIdentities[associate additional identities with your Globus account]. You will subsequently be able to sign in to Globus using any of the identities mapped to your account.
@@ -116,3 +100,10 @@ We've moved Globus username/passwords created prior to February 13, 2016 into an
 == Why should I link accounts? 
 
 Globus allows users to link their many identities (e.g., university login, facility logins, Google, Globus ID) into a single Globus account. This allows the user to have a single account to manage their resources across these multiple identities. For example, a user with a University of Chicago account, might also have XSEDE account. By linking those together into a single Globus account, use of services such as Globus transfer and groups using either identity is consolidated under that single Globus account.
+
+== How do I get my organization added as an option to log into Globus?
+If your organization is part of the InCommon Federation, the administrator of your campus identity system can configure it to work with Globus. Globus supports logins from InCommon members whose identity systems release so-called link:https://spaces.internet2.edu/display/InCFederation/Research+and+Scholarship+Attribute+Bundle[Research & Scholarship] attributes. Please send the following information to your IT administrator: http://www.cilogon.org/faq#TOC-What-if-I-don-t-see-my-organization-listed-on-the-CILogon-Service-. Once your organization’s system is configured to release the required attributes, it will appear in the list of institutions on the Globus login page within two business days and can be selected by your users. 
+
+If your organization is not part of the InCommon Federation, you can request to add your organizational login as an alternate identity provider in Globus. Your system must support the link:http://openid.net/connect/[OpenID Connect] protocol, and be registered with Globus as a trusted identity provider. Please link:https://www.globus.org/alternate-identity-provider-registration[submit this form] so we can register your system. Once the request is vetted and approved, your identity provider will be available as an option for login.
+
+NOTE: In order for your organization’s identity provider to be supported by Globus you must have at least a Standard subscription *and* an Alternate Identity Provider Subscription as link:https://www.globus.org/providers/provider-plans[described here].

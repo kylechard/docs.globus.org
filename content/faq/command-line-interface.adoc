@@ -17,12 +17,13 @@ An SSH key is a security credential that is used to confirm your identity to Glo
 == How do I add an SSH key to my Globus account?
 NOTE: If you don’t already have an SSH key, instructions for creating one are available link:#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here for Mac OSX, Linux, and Windows systems].
 
-. link:https://www.globus.org/SignIn[Sign in to your Globus account].
-. link:https://www.globus.org/account/ManageIdentities[Click here] to update your profile.
-. Click "add linked identity".
-. Click "Add SSH Public Key".
-. Copy and paste your *public key* into the panel. Optionally, enter an identifying Label. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
-. Click "Submit" to save.
+. Go to link:https://globusid.org[globusid.org].
+. Sign in with your Globus ID account and select "link:https://www.globusid.org/keys[manage SSH and X.509 keys]".
+. Click "link:https://www.globusid.org/keys/add[Add a New Key]".
+. Enter a descriptive name in the "Alias" field.
+. Select "SSH Public key" and copy & paste your public key into the "body" field. Note: On a Mac OS X or Linux/Unix system, your key is usually found in ~/.ssh/id_rsa.pub.
+. Click "Add Key" to save.
+
 
 It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
 

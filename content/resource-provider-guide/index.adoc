@@ -12,7 +12,7 @@
 :providers_url: http://www.globus.org/providers/
 :provider-plans_url: http://www.globus.org/providers/provider-plans/
 :signup_url: http://www.globus.org/signup/
-:transfer_url: http://www.globus.org/xfer/StartTransfer#/
+:transfer_url: http://www.globus.org/app/transfer/
 :contact-us_url: http://www.globus.org/contact-us/
 
 // Other sites
@@ -674,7 +674,7 @@ Sharing can only be enabled on a link:http://docs.globus.org/resource-provider-g
 For Adam to be able to enable sharing on his abcu#ep1 endpoint he will first need to be sure that ABC University has a provider plan with Globus.
 
 === Make an endpoint managed
-Instructions for how an organization with a provider plan can promote an existing endpoint to managed status can be found link:https://support.globus.org/entries/103577526[here].
+Instructions for how an organization with a provider plan can promote an existing endpoint to managed status can be found link:https://docs.globus.org/faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpoint[here].
 
 After ensuring that ABC University has a provider plan with Globus, Adam will
 next need to make his endpoint managed. To do this he will log in to the Globus
@@ -702,7 +702,7 @@ Any user who is listed in both the SharingUsersAllow and SharingUsersDeny option
 Since Adam only wants to allow certain users to be able to share, he has decided to create a local unix group on his system and adds the users he wants to allow to share to that unix group. Adam thus creates the globus_sharing_allow unix group and then adds Bob's local user account to that group. Adam then edits his /etc/globus-connect-server.conf file and sets "SharingGroupsAllow = globus_sharing_allow". Adam next runs the globus-connect-server-setup command so that his configuration changes will take effect. With this change made, now all users who are members of the globus_sharing_allow group - such as Bob - will be able to share. Sue, who Adam has not yet added to the globus_sharing_allow group, is still unable to share. To address this, Adam adds Sue's local user account to the globus_sharing_allow group and Sue is then able to share. 
 
 === How to create and manage shares
-Instructions for how to create and manage access to a share on a managed endpoint can be found link:https://support.globus.org/entries/23602336[here].
+Instructions for how to create and manage access to a share on a managed endpoint can be found link:../how-to/share-files/[here].
 
 === Details on effective share permissions
 The share permissions you grant to a Globus user are just one part of the puzzle in determining that user's actual level of access to a shared endpoint. To accurately determine the effective permissions that a user will have to a share we must also consider local file system permissions. In the case of a shared endpoint, all users accessing the share have the same local file system permissions as the local user that was used to activate on the endpoint to create the share. When considering the effective permissions that a user has to a share, it is important to remember that the most restrictive of the Globus permissions and the local file system permissions will determine access.
@@ -1079,7 +1079,7 @@ For a given transfer, the concurrency is calculated as the smallest value across
   A managed endpoint is an xref:endpoint-anchor[endpoint] that is covered under a 
   link:https://www.globus.org/providers/provider-plans[provider plan] and 
   allows advanced features (like xref:sharing_section[sharing]) to be enabled. To convert an existing 
-  endpoint into a managed endpoint see this link:https://support.globus.org/entries/103577526-How-do-I-convert-an-existing-endpoint-into-a-managed-endpoint-[writeup]. 
+  endpoint into a managed endpoint see this link:../faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpointwriteup]. 
 [[myproxy-anchor]]MyProxy::
   MyProxy is open source software for managing X.509 Public Key
   Infrastructure (PKI) security credentials (certificates and private
