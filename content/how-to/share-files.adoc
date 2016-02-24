@@ -9,71 +9,65 @@ NOTE: Shared endpoints may only be created on managed endpoints that are part of
 . Select the endpoint that has the files/folders you wish to share, and activate the endpoint, i.e. login with your username and password for that endpoint.
 +
 [role="img-responsive center-block"]
-image::images/sharing_step1.png[]
+image::images/sharing-1.png[]
 . Highlight the folder that you would like to share, and select the "share" option from the function menu. If the "share" option is not enabled, the endpoint is not configured for sharing. Please contact your endpoint administrator or refer to link:../../resource-provider-guide#how_to_enable_and_disable_sharing_in_globus_connect_server[Resource Provider Guide] for information on how to update the endpoint configuration.
 +
 [role="img-responsive center-block"]
-image::images/pic2v1.png[]
-. Provide a name for the shared endpoint, [uservars]#support#demo# in this example, and click on Create and Manage Access.
+image::images/sharing-2.png[]
+. Provide a name for the shared endpoint, [uservars]#demo# in this example, and click on Create.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic3.png[]
+image::images/sharing-3.png[]
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic4.png[]
+image::images/sharing-4.png[]
 . Set permissions on that shared endpoint. Choose Email the link for Share, Search for User and Groups, or allow All Users, and set read or write permissions. 
 +
 NOTE: allowing write access implies the user can modify and/or delete the files or folders you give them access to.
 +
-. You can now email the shared endpoint name (support#demo) to the users who you shared with.
+. You can now email the shared endpoint name ([uservars]#demo#) to the users who you shared with.
 . You can set individual permissions (granted to Globus user [uservars]#grohder# in this example) at both the top level of a directory share, and also to the subdirectories in the share as well:
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic5.png[]
+image::images/sharing-5.png[]
 . You can set permissions for all members of a group.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic6.png[]
+image::images/sharing-6.png[]
 +
 Example of Sharing a subfolder: 
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic7.png[]
+image::images/sharing-8.png[]
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic8.png[]
+image::images/sharing-9.png[]
+. Users can log into Globus, go the shared endpoint and access it. In this example, user [uservars]#grohder# accesses the files as shown below, using the endpoint [uservars]#demo#.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic9.png[]
-. Users can log into Globus, go the shared endpoint and access it. In this example, user [uservars]#grohder# accesses the files as shown below, using the endpoint `support#demo`.
-+
-[role="img-responsive center-block"]
-image::images/sharing-pic10.png[]
+image::images/sharing-10.png[]
 +
 Additionally, remote collaborators on a project are able to access the project space (a Globus shared endpoint) without needing a local account. The *access manager role* grants the ability to control Read and/or Write access permissions for other Globus users on a Shared Endpoint. By assigning the *access manager role* to one or more of the project members, the site administrator who initially created the shared endpoint does not have to be involved every time access permission changes are needed for the project space.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic11.png[]
+image::images/sharing-11.png[]
 +
 The creator of a shared endpoint can assign the access manager role from the new Roles tab on the link:http://globus.org/app/endpoints[Manage Endpoints] page or from the link:http://globus.org/app/transfer[Transfer Files] page by entering the name of the shared endpoint and selecting the permissions option on the pull-down menu.
 +
 Choosing Manage Roles opens a new Roles tab, shown below, that can be used to assign a role (currently access manager is the only available role) to a Globus user or group.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic12.png[]
-+
-[role="img-responsive center-block"]
-image::images/sharing-pic13.png[]
+image::images/sharing-12.png[]
 +
 After the access manager role is assigned to a user, the user will have read/write access for the shared endpoint and can also control access to the shared endpoint for other users. The Manage Permissions screen, shown below, reflects user barney's permissions for the shared endpoint after he has been assigned the access manager role.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic14.png[]
+image::images/sharing-13.png[]
 +
 This same functionality can be assigned to a group allowing the group to have read/write access for the shared endpoint and can also control access to the shared endpoint for other users. The Manage Permissions screen, shown below, reflects the group Sharing Test’s permissions for the shared endpoint after it has been assigned the access manager role.
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic15.png[]
+image::images/sharing-14.png[]
 +
 [role="img-responsive center-block"]
-image::images/sharing-pic16.png[]
+image::images/sharing-15.png[]
