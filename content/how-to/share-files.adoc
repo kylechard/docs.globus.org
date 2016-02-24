@@ -25,7 +25,7 @@ image::images/sharing-4.png[]
 +
 NOTE: allowing write access implies the user can modify and/or delete the files or folders you give them access to.
 +
-. You can now email the shared endpoint name (support#demo) to the users who you shared with.
+. You can now email the shared endpoint name ([uservars]#demo#) to the users who you shared with.
 . You can set individual permissions (granted to Globus user [uservars]#grohder# in this example) at both the top level of a directory share, and also to the subdirectories in the share as well:
 +
 [role="img-responsive center-block"]
@@ -38,14 +38,11 @@ image::images/sharing-6.png[]
 Example of Sharing a subfolder: 
 +
 [role="img-responsive center-block"]
-image::images/sharing-7.png[]
-+
-[role="img-responsive center-block"]
 image::images/sharing-8.png[]
 +
 [role="img-responsive center-block"]
 image::images/sharing-9.png[]
-. Users can log into Globus, go the shared endpoint and access it. In this example, user [uservars]#grohder# accesses the files as shown below, using the endpoint `support#demo`.
+. Users can log into Globus, go the shared endpoint and access it. In this example, user [uservars]#grohder# accesses the files as shown below, using the endpoint [uservars]#demo#.
 +
 [role="img-responsive center-block"]
 image::images/sharing-10.png[]
@@ -62,18 +59,15 @@ Choosing Manage Roles opens a new Roles tab, shown below, that can be used to as
 [role="img-responsive center-block"]
 image::images/sharing-12.png[]
 +
-[role="img-responsive center-block"]
-image::images/sharing-13.png[]
-+
 After the access manager role is assigned to a user, the user will have read/write access for the shared endpoint and can also control access to the shared endpoint for other users. The Manage Permissions screen, shown below, reflects user barney's permissions for the shared endpoint after he has been assigned the access manager role.
 +
 [role="img-responsive center-block"]
-image::images/sharing-14.png[]
+image::images/sharing-13.png[]
 +
 This same functionality can be assigned to a group allowing the group to have read/write access for the shared endpoint and can also control access to the shared endpoint for other users. The Manage Permissions screen, shown below, reflects the group Sharing Test’s permissions for the shared endpoint after it has been assigned the access manager role.
 +
 [role="img-responsive center-block"]
-image::images/sharing-15.png[]
+image::images/sharing-14.png[]
 +
 [role="img-responsive center-block"]
-image::images/sharing-16.png[]
+image::images/sharing-15.png[]
