@@ -627,13 +627,8 @@ If you are successful with the local telnet connection, then try telnet again us
 [[globus_help_resources]]
 === Globus Help Resources
 
-==== Globus Knowledge Base and Forums
-The link:https://support.globus.org/[Globus Knowledge Base and Forums] contain a wealth of information about 
-the Globus service and software. 
-Many common issues can be resolved quickly by searching or browsing these resources and reading 
-the relevant articles. 
-We recommend consulting the Globus Knowledge Base and Forums first when looking for fast resolution to any issue you are 
-having with the Globus service or software.
+==== Documentation Website
+This website (link:https://docs.globus.org[docs.globus.org]) contains a wealth of information about configuring and using the Globus service. Many common issues can be resolved quickly by browsing our link:../faq[frequently asked questions] and reading the relevant guides and link:../how-to[how-to's]. We recommend consulting these resources first when looking for fast resolution to any issue you are having with the Globus service. 
 
 ==== Globus Support
 Questions or issues that pertain to 
