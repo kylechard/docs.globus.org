@@ -1,6 +1,7 @@
 = How To
 
 - link:get-started[Sign Up and Transfer Files with Globus]
+- link:link-to-existing[Link a New Identity to an Existing Globus Account]
 - link:share-files[Share Data Using Globus]
 - link:managing-groups[Manage Globus Groups]
 - link:globus-connect-personal-mac[Install, Configure, & Remove Globus Connect Personal for Mac OS X]
