@@ -1,5 +1,5 @@
 ---
-menu_weight: 8
+menu_weight: 9
 ---
 
 = Endpoint ACL Management
@@ -29,39 +29,49 @@ This is not included as a rule in the ACL, as it is always present and can't
 be removed.
 
 Access rules are always additive, so permissions cannot be further restricted
-in subdirectories. For example, if a rule gives the user read-write access to
-"/projects/" and another rule gives read-only access to "/projects/study1/",
-then the user is still granted full read-write access to "/projects/study1/".
+in subdirectories. For example, if a rule gives the identity read-write access
+to "/projects/" and another rule gives read-only access to "/projects/study1/",
+then the identity is still granted full read-write access to
+"/projects/study1/".
 
 NOTE: Access is still subject to the local filesystem or S3 bucket
 permissions. Globus ACLs provide an additional layer on top of local
-permissions to simplify collaboration among Globus users.
+permissions to simplify collaboration among identities.
+
+=== Linked Identities
+
+When an operation is performed against an endpoint using Globus access rules,
+it will use access rules for all the linked identities and groups associated
+with the Globus Auth account.
 
 [[rest_access_delegation]]
 == ACL Management Permission and Delegation
 
 The owner always has permission to manage the ACL on an endpoint. The owner can
-also delegate ACL management to other Globus users or groups. This is done by
+also delegate ACL management to other identities or groups. This is done by
 the "access_manager" role on the endpoint. See the
 link:../endpoint_roles[Endpoint Roles] documentation. Note that
-users who have delegated ACL management permission can't further delegate to
-other users; only the owner can configure the "access_manager" role on the
-endpoint.
+identities that have delegated ACL management permission can't further
+delegate to other identities; only the owner can configure the "access_manager"
+role on the endpoint.
 
-Users and groups with an "access_manager" role assignment on an endpoint also
-have implicit "rw" permission on "/". This is visible in the
+Identities and groups with an "access_manager" role assignment on an endpoint
+also have implicit "rw" permission on "/". This is visible in the
 <<rest_access_get_list,access list>>, but the implicit rules can't be fetched,
 updated or deleted using any other part of the acl API. The
 link:../endpoint_roles[Endpoint Roles] API should be used to
 manipulate role assignments. Note that access rules from roles can only have
-+principal_type+ of "user" or "group", and will have +role_id+ set instead of
-+id+, for use with the Endpoint Roles API. Access rule ids are not guaranteed
-to be unique from role ids, so passing a +role_id+ to the acl API could result
-in a "NotFound" error or in an unrelated access rule being returned.
++principal_type+ of "identity" or "group", and will have +role_id+ set instead
+of +id+, for use with the Endpoint Roles API. Access rule ids are not
+guaranteed to be unique from role ids, so passing a +role_id+ to the acl API
+could result in a "NotFound" error or in an unrelated access rule being
+returned.
 
 == Document Type
 
-All ACL management resources use the "access" document type, which represents
+=== Access Document Type
+
+ACL management resources use the "access" document type, which represents
 a single access rule in the ACL.
 
 .Access Document Example
@@ -70,8 +80,8 @@ a single access rule in the ACL.
     "DATA_TYPE": "access",
     "id": 12345,
     "role_id": null,
-    "principal_type": "user",
-    "principal": "bob",
+    "principal_type": "identity",
+    "principal": "368e91db-2294-4b32-b344-6870afb3777d",
     "path": "/",
     "permissions": "r"
 }
@@ -80,36 +90,31 @@ a single access rule in the ACL.
 .Uniqueness
 Attempting to create an access rule with the same (+principal_type+,
 +principal+, +path+) as an existing rule in the endpoint's ACL will result in
-an error in almost all cases. However this is not enforced 100%, so clients
-must be able to display duplicates. Clients should not try to enforce
-uniqueness themselves, as that would also be subject to race conditions and not
-provide any additional functionality. Also note that this uniqueness is not
-enforced between standard access rules and implicit rules associated with
-an "access_manager" role assignment.
+an "Exists" error.
 
-=== Fields
+==== Fields
 
 [cols="1,1,8",options="header"]
 |===================
 | Field Name     | JSON Type | Description
 | DATA_TYPE      | string
                  | Always has value "access" to indicate this document type.
-| id             | int
-                 | Globally unique id for this access rule. Implicit access
+| id             | string
+                 | Unique id for this access rule. Implicit access
                    rules from "access_manager" role assignments will have a
                    null +id+, see +role_id+.
 | principal_type | string
                  | Type of principal that the rule applies to.
-                   One of "user", "group", "email",
-                   or "all_authenticated_users".
+                   One of "identity", "group",
+                   or "all_authenticated_users" or "anonymous".
 | principal      | string
                  a|The subject of the access rule; the interpretation
                    depends on +principal_type+:
 
-                   Type "user":: a Globus username
+                   Type "identity":: a Globus identity uuid
                    Type "group":: a Globus group uuid
-                   Type "email":: an email address
                    Type "all_authenticated_users":: an empty string
+                   Type "anonymous":: an empty string
 
 | path           | string
                  | Absolute path to a directory the access rule applies to.
@@ -132,23 +137,32 @@ an "access_manager" role assignment.
                    +null+ for standard access rules. This can be used to
                    manipulate the corresponding role using the Endpoint Roles
                    API.
+| notify_email   | string
+                 | When creating an identity rule, clients can optionally
+                   specify a valid email address to send notification to.
+                   This address should be known to belong to the identity
+                   being shared to, for example using Globus Auth to get the
+                   address associated with the identity id. Note that this
+                   will not be perisisted as part of the access rule, and
+                   can't be set on update or other rule types.
+| notify_message | string
+                 | If +notify_email+ is set, this can be set to include
+                   a custom message in the notification email. Max 2048
+                   characters.
 |===================
 
 
-=== Access Rule Types
+==== Access Rule Types
 
-==== User Access Rule
+==== Identity Access Rule
 
-User access rules apply to a single Globus user, indicated by Globus username.
-The Nexus API provides resources for searching for users by full name and other
-attributes.
+Identity access rules apply to a single identity, indicated by Globus Auth
+identity id.
 
-When a user access rule is added, a notification email can optionally be sent
-to the email address associated with that user's Globus account. The default
-is to not send any notification. See the <<rest_access_create,Create>> section
-below for details.
+When an identity access rule is added, a notification email can optionally be
+sent to the email address associated with that user's Globus account.
 
-==== Group Access Rule
+===== Group Access Rule
 
 Group access rules apply to all Globus users in a Globus group. Groups can
 be created and discovered with the Nexus API. In the access rules, they
@@ -160,47 +174,27 @@ ensure the id is correct via the Group API in Nexus. Also if the group is
 deleted, the rule will no longer provide any access but will stay in the ACL
 until deleted by the user or client application.
 
-==== All Authenticated Users Access Rule
+===== All Authenticated Users Access Rule
 
 These rules grant access to all Globus users. This can be used to share data
 with everyone, but still allows monitoring of how many people are accessing
 the data.
 
-==== Email Access Rule
+===== Anonymous Access Rule
 
-If you're trying to share with someone and don't know their Globus user name or
-they don't yet have an account, you may create an "email" access rule. When an
-"email" rule is created, Globus sends an email invitation to the email address
-specified in +principal+. 
+These rules grant access to anyone, including both authenticated Globus users
+and anonymous users who do not have a Globus account or haven't authenticated.
+The anonymous access is via public HTTP servers running at the endpoint,
+alongside the GridFTP server.
 
-// NB: This is duplication of rest_claim text
-When the access rule is claimed, it will be updated as follows:
+NOTE: S3 endpoints do not currently support anonymous access, so anonymous
+rules will be identical to "all_authenticated_users" rules.
 
-* +principal_type+ will be set to "user".
-* +principal+ will be set to the username of the Globus user who claimed the
-  access rule. 
+==== Migration: User and Email Access Rules
 
-Each email access rule can be claimed
-by only one Globus user account.
-
-Before the email access rule is claimed, it can be manipulated like any other
-access rule - the permission can be updated and it can be deleted. If deleted
-before claimed, any attempt to claim it will fail with an error.
-
-See the <<rest_claim,Claim>> section below for details on how to claim an email
-access rule.  In most cases this will be handled by the user following a link
-in the invitation email to the http://www.globus.org[Globus] website.
-
-If the recipient of an email access rule did not receive the email, it's
-recommended that the old rule be deleted and a new rule for the same email
-and path be added to resend a new invitation. This will revoke the original
-invitation which is presumed to have been lost. If the user eventually receives
-both, they should attempt to claim the newer one.
-
-NOTE: If an email access rule is claimed by a user who already has a user
-access rule on the same path, the duplicate will be allowed. This is an
-important exception to the uniqueness enforcement.
-
+These access rule types can no longer be created, and all previously
+created rules of these types have been converted to "identity" type
+access rules.
 
 == URL Arguments
 
@@ -214,11 +208,8 @@ delimited by <> in the descriptions.
 | The +id+ of the endpoint, or for backward compatibility the
   +canonical_name+ of the endpoint. The latter is deprecated, and all clients
   should be updated to use +id+.
-| id  | int | Integer id of an access rule.
 
-| token  | string | A token included in the email sent to a user for email
-                    access rules. This token is never exposed directly by
-                    the API.
+| id  | int | Integer id of an access rule.
 |===================
 
 
@@ -230,9 +221,6 @@ delimited by <> in the descriptions.
 | fields | Comma separated list of fields to include in the response. This can
            be used to save bandwidth on large list responses when not all
            fields are needed.
-| format | "json" or "html". Note that the "html" format is subject to change
-           and should not be relied upon for programs. It is used to render
-           the self-hosted, auto-generated API documentation.
 |===================
 
 
@@ -281,9 +269,9 @@ Delegation>>.
     "DATA": [
         {
             "DATA_TYPE": "access",
-            "principal_type": "user",
+            "principal_type": "identity",
             "path": "/",
-            "principal": "bob",
+            "principal": "623568a4-3960-4836-be02-09366d201bcb",
             "id": 12345,
             "role_id": null,
             "permissions": "r"
@@ -327,12 +315,8 @@ Create a new access rule. The response contains the id of the newly created
 rule in the +access_id+ field. Returns http status 201 and a +result+ document
 with code "Created" on success.
 
-The +send_email+ field is optional and not persisted as part of the +access+
-document. For email access rules, +send_email+ defaults to true and passing
-false will result in a +BadRequest+ error. For user access rules, both true and
-false are allowed and the default is false. For all other +principal_type+
-values, the default is false, and passing a true value will result in
-+BadRequest+.
+The +notify_email+ and +notify_message+ fields are optional and not persisted
+as part of the +access+ document.
 
 NOTE: The +id+ field of the access document must be omitted in create requests.
 
@@ -348,11 +332,11 @@ NOTE: The +id+ field of the access document must be omitted in create requests.
 ------------------------
 {
     "DATA_TYPE": "access",
-    "principal_type": "user",
-    "principal": "bob",
+    "principal_type": "identity",
+    "principal": "623568a4-3960-4836-be02-09366d201bcb",
     "path": "/",
     "permissions": "r"
-    "send_email": true,
+    "notify_email": "user@example.com",
 }
 ------------------------
 
@@ -381,8 +365,6 @@ NOTE: The +id+ field of the access document must be omitted in create requests.
 | Exists        | 409 | If an access rule with the same
                         (+principal_type+, +principal+, +path+) already
                         exists in the endpoint's ACL.
-| UserNotFound  | 404 | If the username specified in +principal+ when
-                        +principal_type+ is "user" can't be found.
 |===================
 
 
@@ -437,10 +419,6 @@ the client is using a retry loop, both should be accepted as success in case
 the first successful attempt is disconnected after the request is processed but
 before the response is received by the client.
 
-NOTE: If an +email+ access rule has been claimed since the client fetched
-it and become a +user+ access rule, this will delete the +user+ access rule,
-which has the same id.
-
 [cols="h,5"]
 |============
 | URL
@@ -461,76 +439,3 @@ which has the same id.
 }
 -------------------------------------------------------------------
 |============
-
-
-[[rest_claim]]
-=== Claim email access rule
-
-Claim an email access rule as the authenticated user. The email access rule
-will be converted to a user access rule. Returns the user access rule, with an
-additional +endpoint_id+ field which can be used to redirect the user to
-that endpoint with the access rule path displayed in a file browser. The
-+endpoint_name+, containing the +canonical_name+ of the endpoint, is also
-provided for backward compatibility, but it's use is deprecated.
-
-Once claimed, the user who claimed the access rule can continue to call this
-method and get the same success response. This can be used to generate
-the redirect URL if the user loads the link from the email again
-after claiming the access rule.
-
-NOTE: The access rule id does not change when claiming, but the
-+principal_type+ and +principal+ will change to "user" and
-"<username of claimant>".
-
-NOTE: The owner of the endpoint (creator of the email access rule)
-can't claim it for themselves.
-
-[cols="h,5"]
-|============
-| URL
-| /claim_access/<token>
-
-| Method
-| POST
-
-| Response Body a| 
-------------------------------------
-{
-    "DATA_TYPE": "claim_response",
-    "endpoint_id": "7f7c7c7a-0d80-4693-928a-fc9e8ad3ba86",
-    "endpoint_name": "alice#myshare",
-    "id": 12345,
-    "role_id": null,
-    "principal_type": "user",
-    "principal": "bob",
-    "path": "/",
-    "permissions": "r"
-}
-------------------------------------
-|============
-
-==== Errors
-
-[cols="1,1,8",options="header"]
-|===================
-| Code             | HTTP Status | Description
-
-| Conflict | 409 
-| If <token> has already been claimed by a different user.
-
-| Conflict | 409
-| If the authenticated user is the endpoint owner.
-
-| EndpointNotFound | 404
-| If the endpoint containing the access rule has been deleted.
-
-| AccessRuleNotFound | 404
-| If the owner of the endpoint has deleted the access rule
-  (basically revoking the email invitation).
-
-| BadRequest | 400
-| If <token> is invalid, e.g. if the user's email client
-  corrupts it or if the end got chopped off. This won't
-  catch all possible corruptions - AccessRuleNotFound
-  may be returned in some cases.
-|===================

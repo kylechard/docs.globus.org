@@ -1,0 +1,335 @@
+---
+menu_weight: 2
+---
+
+= Task Submission
+:toc:
+:toclevels: 3
+:numbered:
+
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+// See https://github.com/jbake-org/jbake/issues/80, github requires
+// going through hoops to get the TOC to render.
+ifdef::env-github[]
+toc::[]
+endif::[]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+Transfer and delete are asynchronous operations, and result in a background
+task being created. Both require a +submission_id+ when submitted, and
+return a +task_id+ on successful submission. The +submission_id+ is used
+to safely re-submit in case of a network failure, and the +task_id+ is
+used to monitor the progress of the task (see
+link:../task[Task Monitoring API]). The submission id and task
+id are not the same.
+
+Before a transfer or delete task is submitted, the source (and destination
+for transfers) must be "activated" with user credentials,
+so transfer can perform operations on their behalf. See the
+link:../endpoint_activation[Endpoint Activation API]
+for details.
+
+== Document Types
+
+=== Transfer and Delete Documents
+
+The "transfer" and "delete" documents share several common fields and have
+similar structure. Both contain a submission id, an endpoint or endpoints to
+operate on, a list of options, and a list of paths. The key difference is that
+a transfer submission contains a pair of endpoints and a list of pairs of
+source destination paths, while a delete submission contains a single endpoint
+and a list of paths to delete. There are also several options that only make
+sence for one or the other, like +encrypt_data+ which is only available for
+transfers.
+
+==== Endpoint Format
+
+Endpoints should be specified using the endpoint id, but for backward
+compatibility the endpoint +canonical_name+ is also accepted. Using the
++canonical_name+ is deprecated, and will be removed in a future release. All
+new applications must use endpoint id, and old applications should be updated
+to use the id.
+
+==== Path Format
+
+Paths must use the path component separator forward slash (+/+), commonly used
+on Unix and Mac OSX, not backslash. This is true even if one of the endpoints
+happens to be a GridFTP server running on a windows machine, because the
+GridFTP protocol has standardized on forward slash. Directory paths must end in
+forward slash, and file paths must not end in forward slash.
+
+For transfers, both source and destination must be directories or both must be
+files. The destination must be the exact path to create or overwrite on the
+destination, not the parent directory. This is unlike the unix cp and scp
+commands, which will either copy into the destination directory or create the
+directory, depending on whether or not it already exists.
+
+See also link:../file_operations#path_encoding[Path Encoding].
+
+==== Common Transfer and Delete fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Either "transfer" or "delete" to indicate the submission
+                   type.
+| submission_id  | string
+                 | Id acquired from +/submission_id+.
+| label          | string
+                 | Optional user specified string to help identify the Transfer
+                   or delete task. See the
+                   link:https://docs.globus.org/cli/reference/labels/[CLI label reference]
+                   for details. Note that label can no longer be updated on
+                   completed tasks, it can only be set when submitting the task
+                   and while the task is still running.
+| notify_on_succeeded| boolean
+                 | If true and the user has notification enabled, send a
+                   notification email when the transfer completes with status
+                   SUCCEEDED. Default true.
+| notify_on_failed   | boolean
+                 | If true and the user has notification enabled, send a
+                   notification email when the transfer completes with status
+                   FAILED. Default true.
+| notify_on_inactive | boolean
+                 | If true and the user has notification enabled, send a
+                   notification email when the transfer enters status
+                   INACTIVE, e.g. from activation credentials expiring.
+                   Default true.
+| deadline       | If non-null, cancel the task if it's not complete at the
+                   specified time. The default (null deadline) behavior is to
+                   have a flexible deadline, which allows the task to continue
+                   indefinitely, as long as it is making progress.
+|===================
+
+=== Transfer specific fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name          | JSON Type | Description
+| source_endpoint     | string
+                      | Id of the endpoint to transfer data from.
+| destination_endpoint| string
+                      | Id of the endpoint to transfer data to.
+| DATA                | list
+                      | List of +transfer_item+ documents containing source
+                        and destination paths.
+| encrypt_data        | boolean
+                      | If true, encrypt the data channel. Default false.
+                        If either the source or destination endpoint, or for
+                        shared endpoints the source or destination host
+                        endpoint, has +force_encryption+ set, the data channel
+                        will be encrypted even if this is set to false.
+| sync_level          | integer
+                     a|If non-null, synchronize files, i.e. copy only files
+                        that are new or have been changed. The level must be an
+                        integer in the 0-3 range, and it controls what checks
+                        are performed to determine if a file should be copied.
+                        Higher levels include the checks from lower levels:
+                        
+                         0:: Copy files that do not exist at the destination.
+                         1:: Copy files if the size of the destination does
+                             not match the size of the source.
+                         2:: Copy files if the timestamp of the destination is
+                             older than the timestamp of the source.
+                         3:: Copy files if checksums of the source and
+                             destination do not match. Files on the
+                             destination are never deleted.
+| verify_checksum     | boolean
+                      | After transfer, verify that the source and
+                        destination file checksums match. If they don't,
+                        re-transfer the entire file and keep trying until
+                        it succeeds. Default false.
+| preserve_timestamp  | boolean
+                      | Preserve file modification time. Default false.
+| delete_destination_extra  | boolean
+                      | Delete extraneous files in the destination directory.
+                        Only applies for recursive directory transfers.
+                        Default false.
+|===================
+
+=== Transfer item fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name          | JSON Type | Description
+| DATA_TYPE           | string
+                      | Always has value "transfer_item" to indicate this
+                        document type.
+| source_path         | string
+                      | Source path of file or directory to transfer.
+| destination_path    | string
+                      | Distination path of file or directory to transfer.
+| recursive           | boolean
+                      | Must be true for directory paths, false for files.
+|===================
+
+=== Delete specific fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name          | JSON Type | Description
+| endpoint            | string
+                      | Id of the endpoint to delete data on.
+| DATA                | list
+                      | List of +delete_item+ documents containing paths to
+                        delete.
+| recursive           | boolean
+                      | Delete directory contents recursively. Required if
+                        any of the delete items point to a directory. Default
+                        false. Note that unlike transfer submissions, this
+                        is a top level field and can't be sepcified per item.
+                        Default false.
+| ignore_missing      | boolean
+                      | Don't generate errors for non existent files and
+                        directories. Default false.
+| interpret_globs     | boolean
+                      | Interpret shell globs at the end of paths.
+                        Supports +*+, +?+, +[+, and +]+ with their standard
+                        shell meanings and +\+ for escaping, but only in the
+                        last segment of the path. If false (the default), these
+                        special characters will be escaped and treated as
+                        literals.
+|===================
+
+=== Delete item fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name          | JSON Type | Description
+| DATA_TYPE           | string
+                      | Always has value "delete_item" to indicate this
+                        document type.
+| path                | string
+                      | Path of file or directory to delete. Directory paths
+                        must end in forward slash "/".
+|===================
+
+
+== Operations
+
+=== Get a submission id
+
+Get a submission id, required when submitting transfer and delete tasks. Note
+that this is different than the task id returned by the submit operations.
+
+[cols="h,5"]
+|============
+| URL
+| /submission_id
+
+| Method
+| GET
+
+| Response Body a|
+------------------------------------
+{
+  "value": "55379aa2-d9a2-11e5-976c-22000b9da45e", 
+  "DATA_TYPE": "submission_id"
+}
+------------------------------------
+|============
+
+=== Submit a transfer task
+
+[cols="h,5"]
+|============
+| URL
+| /transfer
+
+| Method
+| POST
+
+| Request Body | A +transfer+ document.
+| Response Body a|
+------------------------------------
+{
+  "DATA_TYPE": "transfer_result", 
+  "task_id": "994f289b-d9a2-11e5-976c-22000b9da45e", 
+  "submission_id": "f5cc79fd-dfc8-475e-b726-b96c734a484d", 
+  "code": "Accepted", 
+  "message": "The task was submitted successfully", 
+  "resource": "/transfer", 
+  "request_id": "ABCdef789", 
+}
+------------------------------------
+|============
+
+==== Result codes
+
+[cols="1,1,8",options="header"]
+|===================
+| Code                  | HTTP Status  | Description
+
+| Accepted   | 202
+| The transfer or delete submission has been accepted and a task has been
+  created and queued for execution
+
+| Duplicate  | 200
+| A transfer or delete submission with the same submission id has already
+  been accepted. In case of a network error, the client may not
+  know whether the submission was successful, and won't know the task id
+  if it was successful. If the client re-submits and gets this code, it means
+  the initial request was successful, and the task id in the response can
+  be used. If this is received on a request that is not a retry, the client
+  is likely not getting a submission id correctly for each submission.
+|===================
+
+==== Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| ClientError.BadRequest or BadRequest  | 400
+                    | There is some problem in the request document, see the
+                      message for details.
+| PermissionDenied  | 403
+                    | The user does not have permission to use one of the
+                      endpoints in the request.
+| ServiceUnavailable| 503 | The service is down for maintenance.
+| NoCredException   | 409
+                    | One or more endpoints in the request are not activated or
+                      have expired activation. Activate the affected
+                      endpoint(s) and retry the operation.
+|===================
+
+=== Submit a delete task
+
+Response and error codes are the same as for transfer submission.
+
+[cols="h,5"]
+|============
+| URL
+| /delete
+
+| Method
+| POST
+
+| Request Body | A +delete+ document.
+| Response Body a|
+------------------------------------
+{
+  "DATA_TYPE": "delete_result", 
+  "task_id": "cfec1219-3f78-4c02-8fe6-83d5ba01f3a2", 
+  "submission_id": "499f18bf-9ea6-48e6-a030-98e0f29512b5", 
+  "code": "Accepted", 
+  "message": "The task was submitted successfully", 
+  "resource": "/delete", 
+  "request_id": "ABCdef789", 
+}
+------------------------------------
+|============
+

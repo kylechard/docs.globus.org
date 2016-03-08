@@ -1,5 +1,5 @@
 ---
-menu_weight: 3
+menu_weight: 4
 ---
 
 = File Operations
@@ -23,7 +23,12 @@ asciidoc for each cell of type 'a'.
 
 This document describes operations that can be performed on a remote
 endpoint's filesystem. For manipulating the endpoint definition itself,
-see link:../endpoint[Endpoint Documentation].
+see link:../endpoint[Endpoint Management].
+
+All operations in this document require that the endpoint is "activated" with
+user credentials, so the transfer service can perform operations on their
+behalf. See link:../endpoint_activation[Endpoint Activation]
+for details.
 
 The operations described in this document are short foreground operations, that
 don't return data until completed or an error is encountered. The API resources
@@ -34,13 +39,7 @@ failures.
 
 Long running operations, including delete and transfer, are documented
 elsewhere, and result in the creation of a task to track progress. See
-link:../task[Task Documentation] for details.
-
-TODO: document activate and autoactivate here (or in separate doc???).
-
-TODO: document delete and transfer and link from here.
-
-NOTE: All operations in this document require the endpoint to be activated.
+link:../task_submit[Task Submission] for details.
 
 [[path_encoding,Path Encoding]]
 == Path Encoding
@@ -124,11 +123,10 @@ have multiple success cases.
 .Result Document Example
 ------------------------
 {
-  "DATA_TYPE": "result",
-  "code": "EndpointUpdated",
-  "message": "The endpoint 'user#ep1' was updated successfully.",
-
-  "resource": "/operation/endpoint/user#ep1",
+  "DATA_TYPE": "mkdir_result",
+  "code": "DirectoryCreated",
+  "message": "The directory was created successfully",
+  "resource": "/operation/endpoint/user#ep1/mkdir",
   "request_id": "ABCdef789"
 }
 ------------------------
@@ -148,8 +146,10 @@ have multiple success cases.
 | message        | string
                  | Message describing how the operation succeeded in more
                    detail.
-| resource       | Path relative to the API version root of the request.
-| request_id     | Id of the request, which can be used by Globus admins to
+| resource       | string
+                 | Path relative to the API version root of the request.
+| request_id     | string
+                 | Id of the request, which can be used by Globus admins to
                    look up the request in the server logs. Useful when
                    submitting support requests or posting to the mailing list.
 |===================
@@ -358,6 +358,22 @@ directory level data.
                  | List of "file" documents.
 |===================
 
+==== Errors
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| ClientError.NotFound  |404  | <endpoint_xid> not found.
+
+| EndpointError     |502  | Catch all for errors returned by endpoint server
+                            that don't have specific types.
+
+| ClientError.ActivationRequired | 400
+                    | The endpoint in the request is not activated or the
+                      activation has expired. Activate the endpoint and retry
+                      the operation.
+|===================
+
 
 === Make Directory
 
@@ -415,22 +431,19 @@ The "code" field of the result document will be one of the following:
 
 ==== Errors
 
-TODO: use same codes as rename.
+The mkdir operation can return any error returned by directory listing,
+as well as the following errors.
 
 [cols="1,1,8",options="header"]
 |===================
 | Code              | HTTP Status  | Description
-| ClientError.NotFound  |404  | If <endpoint_xid> not found.
 
 | ExternalError.MkdirFailed.Exists |502
-  | If <endpoint_xid> is not activated.
+  | The path already exists.
 
 | ExternalError.MkdirFailed.PermissionDenied  |403
-  | If the user does not have permission to read or
+  | The user does not have permission to read or
     write one of the specified file or directories.
-
-| EndpointError     |502  | Catch all for errors returned by endpoint server
-                            that don't have specific types.
 |===================
 
 

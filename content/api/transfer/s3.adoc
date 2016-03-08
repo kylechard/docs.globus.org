@@ -1,5 +1,5 @@
 ---
-menu_weight: 10
+menu_weight: 11
 ---
 
 = S3 Integration
@@ -431,59 +431,8 @@ The owner's AWS credential is used by {product-name} for all access to S3, but
 {product-name} further restricts access based on the access rules that apply to
 each requesting {product-name} user.  
 
-
-Each rule in the access control list has the following:
-
-principal::
-    Who the rule applies to.  The principal must be a {product-name}
-    user name or group UUID.  
-
-directory path::
-    What directory the rule applies to (recursively).  A valid directory path
-as described in section 
-<<file_and_directory_semantics,File and Directory Semantics>>.   
-
-permission::
-    The permissions granted by the rule: either +read-only+ or +read-write+.
-+read-only+ allows directory listings and file download; +read-write+ also
-allows file upload and overwrite.
-
-CAUTION: Access rules are always additive, so permissions cannot be further restricted
-in subdirectories.  For example, if a rule gives the user read-write access to
-+/projects/+ and another rule gives read-only access to +/projects/study1/+,
-then the user is still granted full read-write access to +/projects/study1/+.
-
-==== Directories
-
-An access rule on a directory path provides implicit rights to browse to that
-directory from the root of the bucket, but all files and directories in parent
-directories without an associated access rule will be hidden. 
-
-In detail:
-
-1. If you have an access rule allowing read access to a directory, you may list
-everything in that directory and any of its sub directories.
-
-2. If you don't have read access to a directory but you do have read access to
-a subdirectory, you may still list the top level directory but {product-name}
-will return a partial listing and filter out files and subdirectories for which
-you have no access.  For example, if you only have an access rule allowing
-+/projects/foo/+, a directory listing of +/+ will only show +/projects/+, and
-not +/admin/+ or +/root.txt+.  
-
-3. If you attempt to list a path for which you have no access, for example
-+/admin/+ or +/projects/bar/+, {product-name} will return a  
-+Permission Denied+ error.
-
-When recursively transferring a directory from S3, only files and directories
-visible to the user according to these rules will be copied; the transfer will
-proceed as if only those files and directories exist.
-
-==== Files
-
-If the ACL does not allow a file specified in a transfer request,
-{product-name} will generate a +Permission Denied+ error.
-
+See the link:../acl[Endpoint ACL Management] documentation for
+details.
 
 ==== AWS Permissions
 
@@ -499,21 +448,21 @@ also fail.
 
 == Change History
 
-==== 4.2
+=== 4.2
 
 * use multiple threads / connections for S3 downloads
 
-==== 3.9
+=== 3.9
 
 * use multiple threads / connections for S3 uploads
 * small files don't use MPU
 
-==== 3.6
+=== 3.6
 
 * Add interactive mkdir
 * Add rm/delete
 
-==== 3.5
+=== 3.5
 
 * Allow partial directory listings for parent directories of ACL rules
 

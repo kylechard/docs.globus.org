@@ -1,5 +1,5 @@
 ---
-menu_weight: 6
+menu_weight: 7
 ---
 
 = Endpoint Roles
@@ -23,17 +23,18 @@ asciidoc for each cell of type 'a'.
 
 The owner of an endpoint has full control over every aspect of the endpoint
 definition, including the attributes and the ACL. Roles allow the owner to
-delegate some administration rights to other users or groups.
+delegate some administration rights to other identities or groups.
 
-Roles can be assigned to either a single Globus user or to a Globus group,
-called the "principal". An endpoint can have at most 100 role assignments.
-Only the owner of the endpoint can manipulate roles, all resources in this
-API will return a "PermissionDenied" error for other users.
+Roles can be assigned to either a single Globus Auth identity or to a Globus
+group, called the "principal". An endpoint can have at most 100 role
+assignments.  Only the owner of the endpoint can manipulate roles, all
+resources in this API will return a "PermissionDenied" error for other
+identities.
 
 Non owners can get a list of roles they have on an endpoint, using the
 +my_effective_roles+ field on the +endpoint+ document. This includes roles
-assigned directly to the user, and roles assigned to groups the user is a
-member of.
+assigned directly to an identity in the current Globus Auth token, and roles
+assigned to groups one of the identities is a member of.
 
 === Supported Roles
 
@@ -54,15 +55,15 @@ Role "access_manager":: The principal can view, add, and delete all access
 === Role Document
 
 The "role" document type represents the assignment of a role on the endpoint to
-a Globus user or group.
+a Globus identity or group.
 
 .Role Document Example
 ------------------------
 {
   "DATA_TYPE": "role", 
   "id": "1405823f-0597-4a16-b296-46d4f0ae4b15",
-  "principal_type": "user",
-  "principal": "alice",
+  "principal_type": "identity",
+  "principal": "ce5a2f3a-9aa0-4d8b-a062-63c61878a10d",
   "role": "access_manager",
 }
 ------------------------
@@ -83,12 +84,12 @@ Fields are required for create unless otherwise specified.
                    requests.
 | principal_type | string
                  | Type of principal that the rule applies to.
-                   One of "user" or "group".
+                   One of "identity" or "group".
 | principal      | string
                  a|The subject of the access rule; the interpretation
                    depends on +principal_type+:
 
-                   Type "user":: a Globus username
+                   Type "identity":: a Globus Auth identity id
                    Type "group":: a Globus group uuid
 
 | role           | string
@@ -170,8 +171,8 @@ most 100 roles, this list is not paged and will return at most 100 roles.
         {
             "DATA_TYPE": "role",
             "id": "06fa8417-aa29-4b7a-a315-27868f8189dc",
-            "principal_type": "user",
-            "principal": "alice",
+            "principal_type": "identity",
+            "principal": "ce5a2f3a-9aa0-4d8b-a062-63c61878a10d",
             "role": "access_manager"
         },
         {
@@ -189,7 +190,7 @@ most 100 roles, this list is not paged and will return at most 100 roles.
 
 === Create endpoint role
 
-Assign a role to a user or group for the given endpoint. On success returns
+Assign a role to an identity or group for the given endpoint. On success returns
 a copy of the created role with the system generated id added.
 
 [cols="h,5"]
@@ -204,8 +205,8 @@ a copy of the created role with the system generated id added.
 -------------------------------------------------------------------
 {
     "DATA_TYPE": "role",
-    "principal_type": "user",
-    "principal": "alice",
+    "principal_type": "identity",
+    "principal": "ce5a2f3a-9aa0-4d8b-a062-63c61878a10d",
     "role": "access_manager"
 }
 -------------------------------------------------------------------
@@ -215,8 +216,8 @@ a copy of the created role with the system generated id added.
 {
     "DATA_TYPE": "role",
     "id": "e1d00e93-e93e-4dc0-9550-faeba473d6c0",
-    "principal_type": "user",
-    "principal": "alice",
+    "principal_type": "identity",
+    "principal": "ce5a2f3a-9aa0-4d8b-a062-63c61878a10d",
     "role": "access_manager"
 }
 -------------------------------------------------------------------
@@ -240,8 +241,8 @@ Get a single role assignment by id.
 {
     "DATA_TYPE": "role",
     "id": "e1d00e93-e93e-4dc0-9550-faeba473d6c0",
-    "principal_type": "user",
-    "principal": "alice",
+    "principal_type": "identity",
+    "principal": "ce5a2f3a-9aa0-4d8b-a062-63c61878a10d",
     "role": "access_manager"
 }
 ------------------------------------
@@ -272,10 +273,3 @@ success.
 }
 -------------------------------------------------------------------
 |============
-
-
-== Change History
-
-=== 4.2 (targeted)
-
-* initial role API with support for single "access_manager" role

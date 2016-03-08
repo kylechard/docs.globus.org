@@ -1,5 +1,5 @@
 ---
-menu_weight: 11
+menu_weight: 12
 ---
 
 = Change History
@@ -18,6 +18,22 @@ otherwise it shows up as monospace (?) in asciidoc.py.
 Also, using 'a' type cells when not needed makes asciidoc slower; it executes
 asciidoc for each cell of type 'a'.
 ////
+
+== 5.0
+
+* Endpoint
+** Add +owner_id+ and +owner_string+ fields, deprecate +username+.
+
+* Endpoint Access Rules
+** The +id+ field is now a UUID string, instead of an integer id.
+** Add 'anonymous' link:../acl#_access_rule_types[principal type]
+** Remove 'user' and 'email' principal types, replace with single
+   'identity' type.
+** Remove 'send_email' option, replace with 'notify_email' and
+   'notify_message'
+
+* Endpoint Roles
+** Replace 'user' principal type with 'identity' principal type.
 
 == 4.7
 
@@ -61,6 +77,8 @@ asciidoc for each cell of type 'a'.
    to link:../task#_task_document[task document].
 
 == 4.4
+
+* New link:../endpoint_bookmarks[Endpoint Bookmarks] API.
 
 * Endpoint
 ** Add +id+ and +host_endpoint_id+,
