@@ -15,13 +15,17 @@ library in scripting languages like Python and Ruby.
 
 == Contents
 
-* link:overview[API Overview] - overview of API with authentication instructions and examples
-* link:task[Task Management] - create, monitor, and cancel
+* link:overview[API Overview] -
+  overview of API with authentication instructions and examples
+* link:endpoint_activation[Endpoint Activation] -
+  associate user credentials with an endpoint
+* link:task_submit[Task Submission] - submit transfer and
+  delete tasks
+* link:task[Task Management] - monitor and cancel
   background transfer and delete tasks
 * link:file_operations[File Operations] - foreground filesystem
   operations, including directory listing (ls), creating directories (mkdir),
-  and renaming
-  files (rename)
+  and renaming files (rename)
 * link:endpoint[Endpoint Management] -
   create, update, and delete endpoint definitions and servers
 * link:endpoint_search[Endpoint Search] -
@@ -60,19 +64,3 @@ The client libraries are hosted on github:
 The Python client is also link:http://pypi.python.org/pypi/globusonline-transfer-api-client/[available on PyPI], and can be installed with +easy_install+ or +pip+,
 e.g. +easy_install globusonline-transfer-api-client+. This will install the
 client library, but not the examples and the CA certificate.
-
-== Legacy Reference Documentation
-
-The old API reference documentation is still exposed via dynamically generated
-documentation resources. This can be browsed conveniently using the HTML
-representation. It is accurate, but lacking explanations and can be hard to
-follow. It's recommended to check the new documentation first, and use
-the old documenation if it's not yet available in the new docs.
-
-* link:https://transfer.api.globusonline.org/v0.10/resource_list?format=html&fields=name,method,self_link,url_patterns,description[Resources] -
-a list of all the resources in the API, describing their purpose, what
-document types they take as input and return as output, what query
-parameters they accept, and what errors they can return.
-* link:https://transfer.api.globusonline.org/v0.10/document_type_list?format=html[Document Types] -
-a list of all the document types used in the API, describing their purpose, and
-linking to a list of their fields and example representations.

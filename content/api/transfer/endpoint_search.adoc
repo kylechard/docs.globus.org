@@ -1,5 +1,5 @@
 ---
-menu_weight: 5
+menu_weight: 6
 ---
 
 = Endpoint Search
@@ -150,10 +150,11 @@ The +limit+ query parameter sets how many results to return (max 100), and the
 | filter_owner_username
 | string
 | null
-| Limit search to endpoints owned by the specified globus user, identified
-  by username. See also the +username+ field of the +endpoint+ document.
-  To get a list of the user's own endpoints, use +filter_scope+ "my-endpoints"
-  instead.
+| [DEPRECATED] This will be replaced by a new +filter_owner_id+ parameter in
+  the near future. Limit search to endpoints owned by the specified globus
+  user, identified by username. See also the +username+ field of the
+  +endpoint+ document.  To get a list of the user's own endpoints,
+  use +filter_scope+ "my-endpoints" instead.
 |===================
 
 

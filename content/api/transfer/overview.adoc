@@ -1,5 +1,5 @@
 ---
-menu_weight: 1
+menu_weight: 0
 ---
 
 = API Overview
@@ -28,22 +28,29 @@ standard status codes.
 === Authentication
 
 Authentication to the Transfer API requires using the Goauth Nexus API to
-obtain credentials. Goauth supports an OAuth 2.0 compatibile redirection
+obtain credentials. Goauth supports an OAuth 2.0 compatible redirection
 workflow, and a client credential workflow.
+
+NOTE: With the Globus release on February 13th, we have updated support for
+authenticating to Globus and obtaining access tokens using the Globus Auth API.
+For backwards compatibility, we will continue to support the use of Nexus
+tokens. We will announce deprecation of Nexus shortly, and application
+developers should plan for transitioning to the Globus Auth API.
 
 ==== Globus Goauth: Client Credential
 
-This method requires two steps:
+This method requires a globusid.org identity to be linked to the user's Globus
+account. It involves two steps:
 
 . Get an access token from the Globus Nexus identity service.
 . Pass the access token to the Transfer API in the Authorization header
-   with every request.
+  with every request.
 
 Note that access tokens have a long lifetime and should therefore be handled
 with as much care as passwords and kept private.
 
 To get an access token, send a GET request to the following URL with HTTP basic
-auth over SSL using your Globus username and password:
+auth over SSL using your globusid username and password:
 
     https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials
 
@@ -56,8 +63,8 @@ curl --user exampleuser \
 
 Make sure that your https client program or library verifies the server
 certificate to authenticate the server, ensuring that the password is only sent
-to the real Globus services. In particular in Python 2.6 the standard
-httplib does not verify the server certificate.
+to the real Globus services. In particular in Python 2.6 and earlier versions
+of 2.7 the standard httplib does not verify the server certificate.
 
 The Nexus token service returns a JSON document with the following format:
 
@@ -77,9 +84,9 @@ The Nexus token service returns a JSON document with the following format:
 
 The token that you need for authentication is the value of the +access_token+
 key. It needs to be passed to the API in the +Authorization+ header with
-custom method +Globus-Goauthtoken+:
+custom method +Bearer+:
 
-    Authorization: Globus-Goauthtoken un=USERNAME|tokenid=...
+    Authorization: Bearer un=USERNAME|tokenid=...
 
 You can test this by copying the `access_token` value from the Nexus
 response to a file, for example `/tmp/goauth-token.secret`, and then
@@ -87,7 +94,7 @@ passing it to curl with the -H option:
 
 ----
 TOKEN=$(cat /tmp/goauth-token.secret)
-curl -H "Authorization : Globus-Goauthtoken $TOKEN" \
+curl -H "Authorization : Bearer $TOKEN" \
     'https://transfer.api.globusonline.org/v0.10/task_list'
 ----
 
@@ -143,11 +150,11 @@ mailing list.
 All the URLs in the examples below should be taken relative to the
 Transfer API root:
 
-    https://transfer.api.globus.org/__TRANSFER_VERSION__
+    https://transfer.api.globusonline.org/__TRANSFER_VERSION__
 
 so the full URL to /task_list will be:
 
-    https://transfer.api.globus.org/__TRANSFER_VERSION__/task_list
+    https://transfer.api.globusonline.org/__TRANSFER_VERSION__/task_list
 
 Clients should store the base URL and one place and use it when
 constructing resource URLs, to simplify changing versions.
@@ -198,12 +205,10 @@ For example, the endpoint document type is described in detail here:
 
 When an error occurs an HTTP status code >=400 will be used, and the body of
 the response will contain an X-Transfer-API-Error header with an error code and
-a body with details about the
-link:https://transfer.api.globusonline.org/v0.10/document_type/error?format=html[error],
-in the requested format (or the default json if the error has to do with format
-selection). In extreme cases a plaintext or [error]#html 500# error may be
-returned; this indicates a bug in the API or a deployment issue. Here is an
-example error returned when an endpoint is not found:
+a body with details about the error, in the requested format (or the default
+json if the error has to do with format selection). Requests outside the API
+path namespace (currently "/v0.10"), an html or plaintext error may be returned
+instead.  Here is an example error returned when an endpoint is not found:
 
 ----
 {
@@ -289,7 +294,7 @@ the API itself including those details.
 === Monitoring
 
 * Paged task list with sorting and field selection.
-  (link:https://transfer.api.globusonline.org/v0.10/resource/task_list?format=html[Reference])
+  (link:../task#_get_task_list[Reference])
 +
     GET /task_list?offset=0&limit=10&fields=task_id,request_time&orderby=request_time
 +
@@ -329,7 +334,7 @@ Content-Type: application/json
 ----
 
 * Event list.
-  (link:https://transfer.api.globusonline.org/v0.10/resource/task_event_list?format=html[Reference])
+  (link:../task#_get_event_list[Reference])
 +
 ----
 GET /task/3949cec8-7cc8-11e0-82be-12313932c1e0/event_list
@@ -523,7 +528,7 @@ Content-Type: application/json
     u'max_parallelism': 8,
     u'my_effective_roles': [],
     u'myproxy_dn': None,
-    u'myproxy_server': u'myproxy.teragrid.org',
+    u'myproxy_server': u'myproxy.xsede.org',
     u'name': u'gordon',
     u'network_use': u'normal',
     u'oauth_server': u'oa4mp.xsede.org',
@@ -751,9 +756,8 @@ Getting a directory listing from an endpoint requires activating the endpoint - 
 
 The first step in activation is determining what activation methods are
 supported by the endpoint, and what data is needed to perform the
-activation.  This information is exposed in the
-link:https://transfer.api.globusonline.org/v0.10/document_type/activation_requirements?format=html[activation_requirements]
-resource:
+activation. This information is exposed in the
+link:../endpoint_activation#_get_activation_requirements[activation_requirements] resource:
 
     GET /endpoint/ID/activation_requirements
 
@@ -768,7 +772,7 @@ To activate an endpoint, pick one of the supported activation methods, fill in o
     POST /endpoint/ID/activate
 
 For more details see the API reference for
-link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_activate?format=html[/endpoint/ID/activate].
+link:../endpoint_activation#_activate_endpoint[/endpoint/ID/activate].
 
 ===== Auto-Activation
 
@@ -776,16 +780,17 @@ The Globus tutorial endpoints ("Globus Tutorial Endpoint 1", "Globus Tutorial
 Endpoint 2") and all Globus Connect Personal endpoints do not require external
 credentials, and can be activated without specifying any myproxy credentials.
 This is done by POSTing an empty body to
-link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_autoactivate?format=html[/endpoint/ID/autoactivate].
+link:../endpoint_activation#_autoactivate_endpoint[/endpoint/ID/autoactivate].
 
-Endpoints with a default myproxy server also support auto-activation, by using
-a cached credential. When you activate an endpoint from a given myproxy server,
-you can auto-activate other endpoints that have that myproxy server configured
-as the default. For example, all teragrid endpoints are configured with the
-teragrid myproxy server as the default, so once you activate a single teragrid
-endpoint, the other teragrid endpoints can be auto-activated, without having to
-specify the myproxy credentials again.  This also works if the user has logged
-in to link:http://www.globus.org[www.globus.org] using their myproxy identity.
+Endpoints with a default MyProxy or OAuth MyProxy server also support
+auto-activation, by using a cached credential. When you activate an endpoint
+from a given myproxy server, you can auto-activate other endpoints that have
+that myproxy server configured as the default. For example, all xsede endpoints
+are configured with the xsede OAuth MyProxy server as the default, so once you
+activate a single xsede endpoint, the other xsede endpoints can be
+auto-activated, without having to specify the myproxy credentials again. This
+also works if the user has logged in to
+link:http://www.globus.org[www.globus.org] using their xsede identity.
 
 Autoactivation can also be done conditionally, by passing the +if_expires_in+
 query parameter. It takes an integer value in seconds, and only attempts to
@@ -806,17 +811,22 @@ they can use the activation_requirement list to prompt the user for the
 required data and try again using manual activation, without having to do
 another round trip requesting the activation_requirements. The
 +activation_result+ can be POSTed back to
-link:https://transfer.api.globusonline.org/v0.10/resource/endpoint_activate?format=html[/endpoint/ID/activate]
+link:../endpoint_activation#_activate_endpoint[/endpoint/ID/activate]
 after the required fields are filled in; +activate+ accepts both
 activation_result and activation_requirements resources as input, and ignores
 all the fields except for the +activation_requirement+ sub-documents.
 
 ===== OAuth and Activation
 
-Some MyProxy servers provide an link:http://security.ncsa.illinois.edu/teragrid-oauth/[OAuth interface] for fetching credentials. To make use of this features, clients need to perform the OAuth process themselves to get a credential, and then use +delegate_proxy+ activation to delegate a credential to the transfer service. There is a +oauth_server+ field in +endpoint+, +activation_requirements+, and +activation_result+ documents that indicates the hostname of the oauth server.
-
-Note that to use this feature, you must register a key pair with each OAuth
-provider.
+Some MyProxy servers provide an
+link:http://grid.ncsa.illinois.edu/myproxy/oauth/[OAuth interface] for fetching
+credentials. The simplest method for clients to make use of this feature is to
+direct users to open their web browser and activate via the globus.org website.
+If that is not an option, to use OAuth MyProxy more directly, a client would
+need to perform the OAuth process itself to get a credential, and then use
++delegate_proxy+ activation to delegate a credential to the transfer service.
+There is a +oauth_server+ field in +endpoint+, +activation_requirements+, and
++activation_result+ documents that indicates the hostname of the oauth server.
 
 ===== Activation Options
 
@@ -835,7 +845,9 @@ Directory listing on an endpoint is exposed as a sub-resource of the endpoint:
 
     GET /endpoint/ID/ls?path=/~/directory
 
-If the endpoint connection succeeds and the path is a valid directory with appropriate permission for the user, a link:https://transfer.api.globusonline.org/v0.10/document_type/file_list?format=html[file_list] is returned.
+If the endpoint connection succeeds and the path is a valid directory with appropriate permission for the user, a
+link:../file_operations#_dir_listing_response[file_list]
+is returned.
 
 /\~/ is an alias for the users' home directory on the server. _path_ can be an empty string, in which case the "default" directory is used, currently */~/*.
 
@@ -848,7 +860,7 @@ support partial listing, so the entrie list is always fetched.
 === Creating Directories
 
 To create a directory on an endpoint, submit a mkdir document to
-link:../file_operations#_make_directory[POST /endpoint/ID/mkdir]
+link:../file_operations#_make_directory[POST /operation/endpoint/ID/mkdir]
 
 ----
 {
@@ -861,14 +873,13 @@ If the path field does not contain an absolute path, it's assumed to be
 relative to the user's home directory (~).
 
 A standard error document is returned on failure; on sucess a
-link:https://transfer.api.globusonline.org/v0.10/document_type/mkdir_result?format=html[mkdir_result] is returned, with status 202
-and code +DirectoryCreated+:
+"mkdir_result" is returned, with status 202 and code +DirectoryCreated+:
 
 ----
 {
   "message": "The directory was created successfully",
   "code": "DirectoryCreated",
-  "resource": "/endpoint/go#ep1/mkdir",
+  "resource": "/operation/endpoint/427a0454-77dd-45d4-89d3-282c431c6bfe/mkdir",
   "DATA_TYPE": "mkdir_result",
   "request_id": "abc123"
 }
@@ -879,7 +890,7 @@ Note that recursive transfers implicitly create directories as needed at the des
 === Transfer Submission
 
 A
-link:https://transfer.api.globusonline.org/v0.10/document_type/transfer?format=html[transfer]
+link:../task_submit#_transfer_and_delete_documents[transfer]
 is a request to copy files and directories from a source endpoint to a
 destination endpoint. The request document is essentially a list of transfer
 items containing source / destination path pairs, with flags to indicate if the
@@ -905,7 +916,7 @@ re-activated to allow it to continue, up until the deadline (which defaults to
 24 hours after the request time).
 
 When submitting a transfer, you must first get a
-link:https://transfer.api.globusonline.org/v0.10/resource/submission_id?format=html[submission_id]:
+link:../task_submit#_get_a_submission_id[submission_id]:
 
     GET /submission_id
 
@@ -915,7 +926,8 @@ if the original request was successful it will not double submit, it will
 simply return a result indicating that it's a duplicate id, with the id of the
 task created to fulfill the request.
 
-The transfer itself is submitted via link:https://transfer.api.globusonline.org/v0.10/resource/transfer?format=html[POST /transfer]:
+The transfer itself is submitted via
+link:../task_submit#_submit_a_transfer_task[POST /transfer]:
 
 ----
 {
@@ -942,7 +954,7 @@ The transfer itself is submitted via link:https://transfer.api.globusonline.org/
 }
 ----
 
-and returns a link:https://transfer.api.globusonline.org/v0.10/document_type/transfer_result?format=html[transfer_result]:
+and returns a transfer_result:
 
 ----
 {
@@ -958,7 +970,7 @@ and returns a link:https://transfer.api.globusonline.org/v0.10/document_type/tra
 
 +sync_level+ can be used to request that only modified files are transferred,
 using different mechanisms to determine modification. See the
-link:https://transfer.api.globusonline.org/v0.10/document_type/transfer?format=html[transfer]
+link:../task_submit#_transfer_specific_fields[transfer]
 document type for details on the different sync levels. If +sync_level+ is not
 included or +null+, all files will be transferred.
 
@@ -975,21 +987,21 @@ document.
 
 This returns a link:../task#_task_document[task] document.
 
-A request to link:https://transfer.api.globusonline.org/v0.10/resource/task_cancel?format=html[cancel] the task can be submitted like this:
+A request to link:../task#_cancel_task_by_id[cancel]
+the task can be submitted like this:
 
     POST /task/TASK_ID/cancel
 
-It is possible that the transfer will finish before the cancelation goes
+It is possible that the transfer will finish before the cancellation goes
 through; a result document type is returned with a message describing what
 happened.
 
 === Delete Submission
 
 Remote files and directories can be deleted on an endpoint by submitting a
-link:https://transfer.api.globusonline.org/v0.10/document_type/delete?format=html[delete
-document] to
-link:https://transfer.api.globusonline.org/v0.10/resource/delete?format=html[POST
-/delete]:
+link:../task_submit#_transfer_and_delete_documents[delete document]
+to
+link:../task_submit#_submit_a_delete_task[POST /delete]:
 
 ----
 {
@@ -1056,12 +1068,10 @@ GET /task_list?offset=100&limit=50
 
 === Filtering
 
-Only certain fields support filtering; this is documented in the field list of
-the document type, at */document_type/TYPE/field_list*, and in the query_param
-list for resource paths returning that type of resource, at */resource/ID* or
-*/PATH/\_doc_*. There are also several types of filters, including date range,
-a single value, or a list of values. See the field documentation for
-descriptions and examples.
+Only certain fields support filtering; see the reference documentation for a
+full list.  There are several types of filters, including date range, a single
+value, or a list of values. See the field documentation for descriptions and
+examples.
 
 This example for the task list returns ACTIVE and SUCCESSFUL tasks submitted before December 20 2010:
 

@@ -1,8 +1,8 @@
 ---
-menu_weight: 2
+menu_weight: 3
 ---
 
-= Task Management
+= Task Monitoring
 :toc:
 :toclevels: 3
 :numbered:
@@ -36,6 +36,15 @@ NOTE: Detailed per-file status, errors, and information events are retained
 for 30 days and then deleted. When this happens, the +history_deleted+ flag
 will be set on the task document.
 
+=== Task Visibility
+
+A task will be visible if the current primary identity is the same as the
+primary identity when the task was submitted. The only time this will not be
+the case is when two separate identities with existing task history are linked.
+When that happens, the task history for the linked identity that is no longer
+primary will not be visible. It can still be recovered and viewed by unlinking
+the identity and signing in to that identity separately.
+
 == Document Types
 
 === Task Document
@@ -44,10 +53,6 @@ The "task" document type represents a single transfer or delete submission.
 Other task types may be added in the future.
 
 ==== Task Fields
-
-See the
-https://transfer.api.globusonline.org/v0.10/document_type/task/field_list?fields=name%2Ctype%2Cself_link%2Cdescription&format=html[legacy documentation]
-for a complete field list, this is a work in progress.
 
 [cols="1,1,8",options="header"]
 |===================
@@ -72,7 +77,20 @@ for a complete field list, this is a work in progress.
 | label          | string
                  | User defined label to make finding tasks simpler.
 | username       | string
-                 | Globus username of the user who created the task.
+                 | [DEPRECATED] User +owner_id+ instead. The globus username
+                   of the user who created the task. For non-globusid.org
+                   identities, this will be a meaningless string starting
+                   with 'u_', and for globusid.org identities it will be the
+                   globusid.org username.
+| owner_id       | string
+                 | Identity id of the task owner. If the task was submitted
+                   with multiple linked identities, the owner will be the
+                   primary identity.
+| owner_string   | string
+                 | The username of the primary owner identity, at the time
+                   of creation. This should be used for display purposes
+                   only - use owner_id for interacting with the globus APIs
+                   like groups and auth.
 | request_time   | string
                  | The date and time the task was created, in ISO 8601 format.
 | completion_time| string
@@ -105,15 +123,92 @@ for a complete field list, this is a work in progress.
 | destination_endpoint_display_name | string
                  | Like +source_endpoint_display_name+ but for the destination,
                    or null for "DELETE" tasks.
-| faults | int   | The number of errors this task encountered. Note that
+| sync_level     | integer
+                 | The sync level used for the transfer, or null if not used.
+                   Always null for delete tasks.
+| encrypt_data   | boolean
+                 | For transfer tasks, true if the data channel is encrypted.
+                   This will true if one of the endpoints or host endpoints
+                   involved in the transfer has force_encryption set to true,
+                   or if the transfer request has the encrypt_data option set
+                   to true. Always false for delete tasks.
+| verify_checksum| boolean
+                 | The verify_checksum option used for the transfer. Always
+                   false for delete tasks.
+| delete_destination_extra| boolean
+                 | The delete_destination_extra option used for the transfer.
+                   Always false for delete tasks.
+| preserve_timestamp| boolean
+                 | The preserve_timestamp option used for the transfer.
+                   Always false for delete tasks.
+| command        | string
+                 | If the task was submitted via the CLI, this field will
+                   contain the original command line, including options, that
+                   created the task. If submitted via the globus website or
+                   directly via the Transfer API, this will contain the
+                   string "API", followed by the API version, and optionally
+                   followed by a short string representing the client that
+                   submitted the request. The format of this field is subject
+                   to change and should not be relied upon.
+| history_deleted| boolean
+                 | This flag will be set for tasks older than one month, and
+                   indicates that details of the task are no longer available.
+                   In particular,  subtasks and successful transfers will not
+                   be available for the task if this is true, so clients
+                   should always check this before querying for subtasks
+                   and successful transfers.
+| faults         | int   
+                 | The number of errors this task encountered. Note that
                    certain types of faults are not fatal (for example, network
                    communication errors) and can be successfully retried. A
                    CANCELED or EXPIRED event is not included in this fault
                    count.
+| files          | int
+                 | The total number of files in this task. For recursive
+                   transfer and delete tasks, this number can grow over the
+                   life of the transfer as new files and directories are
+                   discovered in directory expansions.
+| directories    | int
+                 | The total number of directories, given as input, that need
+                   to be scanned recursively for files. This does not include
+                   subdirectories.
+| files_skipped  | int
+                 | The number of files skipped because no changes were
+                   detected. This will always be zero for non-sync transfer
+                   tasks (with null +sync_level+) and for all delete tasks.
+| files_transferred  | int
+                 | The number of files actually transferred over the network.
+                   For a successful transfer,
+                   +files+ = +files_skipped+ + +files_transferred+. Not used
+                   for delete tasks.
+| subtasks_total | int
+                 | Total number of subtasks. This includes file transfer or
+                   delete subtasks and helper subtasks such as directory
+                   expansion, so is not a reliable measure of the number of
+                   files being transferred. It can also grow over time as new
+                   files and directories are discovered in directory
+                   expansions.
+| subtasks_pending | int
+                 | Number of subtasks which are still in progress.
 | subtasks_retrying | int
                  | The number of pending subtasks that have had one or more
                    faults while processing. This is a subset of
                    +subtasks_pending+.
+| subtasks_succeeded | int
+                 | Number of subtasks which have completed successfully.
+| subtasks_expired | int
+                 | Number of subtasks which expired and were not completed.
+| subtasks_canceled | int
+                 | Number of subtasks which were canceled.
+| subtasks_failed | int
+                 | Number of subtasks which failed for reasons other than
+                   expiring or being cancelled.
+| bytes_transferred | int
+                 | The total number of bytes transferred summed across all
+                   subtasks.
+| bytes_checksummed | int
+                 | If sync level 3 is used, the number of bytes checksummed
+                   while determining which files need to be transferred.
 | effective_bytes_per_second | int
                  | A simplistic calculation of bytes/second based on the start
                    time of the task and its completion time, if applicable, or
@@ -130,6 +225,13 @@ for a complete field list, this is a work in progress.
                    may or may not resolve on it's own. Examples:
                    +Creds Expired+, +PERMISSION_DENIED+, +ENDPOINT_ERROR+,
                    +CONNECT_FAILED+, +PAUSED_BY_ADMIN+.
+| nice_status_details | string
+                 | [ALPHA] Raw error output
+| nice_status_short_description | string
+                 | [ALPHA] 3-4 word description of nice_status code
+| nice_status_expires_in | string
+                 | [ALPHA] Seconds until any credential required for the task
+                   expires (-1=never, 0=expired)
 | canceled_by_admin | string
                  a|[ALPHA] If the task completes successfully, is
                    canceled by the task owner using the standard cancel
@@ -434,7 +536,6 @@ of any higher level authority they have been granted.
 === Get event list
 
 Get a paged list of all events, including error and info events.
-
 
 [cols="h,5"]
 |============

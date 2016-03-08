@@ -1,5 +1,5 @@
 ---
-menu_weight: 7
+menu_weight: 8
 ---
 
 = Endpoint Bookmarks
@@ -285,10 +285,3 @@ success.
 }
 -------------------------------------------------------------------
 |============
-
-
-== Change History
-
-=== 4.4
-
-* initial bookmark API
