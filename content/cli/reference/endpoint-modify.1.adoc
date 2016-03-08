@@ -141,6 +141,9 @@ values for concurrency and parallelism.
 This option may only be used on managed endpoints.  If a managed endpoint
 becomes unmanaged, the "normal" level will be automatically used.
 +
+This option may not be set on shared endpoints; a shared endpoint uses the
+settings of its host endpoint.
++
 Allowed values for 'LEVEL' are:
 +
 "normal";;
