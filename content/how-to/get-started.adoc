@@ -1,14 +1,14 @@
-= How To Sign Up and Transfer Files with Globus
+= How To Log In and Transfer Files with Globus
 :numbered:
 
-This step-by-step guide will show you how to sign up to use Globus and transfer files reliably and securely. You will become familiar with basic Globus concepts and interfaces, and begin to experience how Globus can help you spend more time on your research and less time on data management.
+This step-by-step guide will show you how to log into Globus and use it to transfer files reliably and securely. You will become familiar with basic Globus concepts and interfaces, and begin to experience how Globus can help you spend more time on your research and less time on data management.
 
 '''
-== Sign Up Method 1: Sign up to use Globus Web App with a login that you already have
-Signing up will let you access the Globus data management service. You can sign up by choosing an existing organizational login in the dropdown at link:https://www.globus.org/SignUp[globus.org/SignUp] and clicking "Continue"... If you don't see your organization in the list, you can link:#sign_up_method_2_sign_up_to_use_globus_web_app_by_creating_a_globus_id[sign up by creating a Globus ID account] by clicking on the "sign up" link at the bottom.
+== Method 1: Log in to use Globus with an existing identity
+You can log in by choosing an existing organizational login in the dropdown at link:https://www.globus.org/login[globus.org/login] and clicking "Continue"... If you don't see your organization in the list, you can link:#sign_up_method_2_sign_up_to_use_globus_web_app_by_creating_a_globus_id[create a Globus ID] by clicking on the "sign up" link at the bottom, and use it to log in.
 
 [role="img-responsive center-block"]
-image::images/gs-login-1.png[Sign Up with existing login]
+image::images/gs-login-1.png[Log In with existing identity]
 
 You will then be redirected to your organization's login page ([uservars]#Google# in this example) where you will login using your credentials for that organization. Depending on the organization you choose, you may encounter a screen that Globus is requesting access to your account information (in this example, Google has a page that states: "Globus would like to:").
 
@@ -18,22 +18,22 @@ image::images/gs-login-2.png[Google login]
 [role="img-responsive center-block"]
 image::images/gs-login-3.png[Google's consent screen]
 
-Once you've logged in with your organization's credentials, Globus will ask if you'd like to link to an existing account. If this is your first time signing up to use the Globus Web App (you don't already have an existing account), you'll click "No thanks, continue". If you've already signed up with another account, you can choose link:../link-to-existing[link to an existing account].
+Once you've logged in with your organization's credentials, Globus will ask if you'd like to link to an existing account. If this is your first time signing up to use Globus (you don't already have an existing account), you'll click "No thanks, continue". If you've already signed up with another account, you can choose link:../link-to-existing[link to an existing account].
 
 [role="img-responsive center-block"]
 image::images/gs-login-4.png[Link to existing]
 
-Complete your sign up by filling out the form and clicking "Continue".
+You may be prompted to provide additional information such as your organization's name and whether or not Globus will be used for commercial purposes. Please complete the form and click "Continue".
 
 [role="img-responsive center-block"]
 image::images/gs-login-5.png[Complete Sign Up]
 
-Then you will need to allow Globus Web App to use your third party login (or "identity") to view information and perform actions on your behalf within the Globus Web App.
+Then you will need to allow Globus to use your third party login (or "identity") to view information and perform actions on your behalf.
 
 [role="img-responsive center-block"]
 image::images/gs-login-6.png[Allow Globus Web App]
 
-== Sign Up Method 2: Sign up to use Globus Web App by creating a Globus ID
+== Method 2: Log in to use Globus with a Globus ID
 *Complete the form* at link:https://www.globusid.org/create[globusid.org/create] and click "Create ID".
 
 [role="img-responsive center-block"]
@@ -47,12 +47,12 @@ image::images/gs-signup-3.png[Verification Email]
 [role="img-responsive center-block"]
 image::images/gs-signup-4.png[Verify E-mail Address]
 
-Once you've logged in with your organization's credentials, Globus will ask if you'd like to link to an existing account. If this is your first time signing up to use the Globus Web App (you don't already have an existing account), you'll click "No thanks, continue".
+Once you've logged in, Globus will ask if you'd like to link to an existing account. If this is your first time signing up to use Globus (you don't already have an existing account), you'll click "No thanks, continue".
 
 [role="img-responsive center-block"]
 image::images/gs-signup-5.png[Link to existing]
 
-Then you will need to allow Globus Web App to use your Globus ID to view information and perform actions on your behalf within the Globus Web App.
+Then you will need to allow Globus to use your Globus ID to view information and perform actions on your behalf within the service.
 
 [role="img-responsive center-block"]
 image::images/gs-signup-6.png[Allow Globus Web App]
@@ -75,6 +75,7 @@ A Globus endpoint is a data transfer location. Different types of resources (cam
 
 There are two primary classes of endpoints: server endpoints and personal endpoints. Multi-user resources such as campus storage systems and HPC clusters are set up as server endpoints, typically by system administrators. Laptops or other personal computers are set up as _personal_ endpoints, typically by individuals.
 
+[red]#*NEEDS UPDATING*#
 Globus endpoints are named using the format +<globus-username>#<resource-name>+. For example, the XSEDE project has a Globus account under the username "xsede" and server endpoints named +xsede#stampede+ (for the Stampede system at Texas Advanced Computing Center) and +xsede#kraken+ (for the Kraken system at the National Institute for Computational Sciences).  As another example, an individual with a Globus account under the username "johnsmith" might have personal endpoints named +johnsmith#macbook+ and +johnsmith#pc+.
 
 link:https://www.globus.org/globus-connect[Globus Connect] is used to set up server and personal endpoints.
@@ -88,7 +89,8 @@ The Transfer Files screenshot shown here has recommended selections for your fir
 [role="img-responsive center-block"]
 image::images/gs-transfer-3.png[Request Transfer]
 
-The endpoints +go#ep1+ and +go#ep2+ are server endpoints administered by the Globus team for demonstration purposes and are accessible to all Globus users without further authentication. In the left panel, the user can access three files in the +/share/godata/+ path on +go#ep1+, and has selected two of them (highlighted) to be transferred. In the right panel, the path is +/~/+, indicating the user's home on the +go#ep2+ endpoint resource. _Note that you must hit "Enter" or click on the "Go" button after typing an endpoint name or path—simply moving the cursor to the next field is not sufficient._
+[red]#*NEEDS UPDATING*#
+The endpoints +Globus Tutorial Endpoint 1+ and +Globus Tutorial Endpoint 2+ are server endpoints administered by the Globus team for demonstration purposes and are accessible to all Globus users without further authentication. In the left panel, the user can access three files in the +/share/godata/+ path on +Globus Tutorial Endpoint 1+, and has selected two of them (highlighted) to be transferred. In the right panel, the path is +/~/+, indicating the user's home on the +Globus Tutorial Endpoint 2+ endpoint resource. _Note that you must hit "Enter" or click on the "Go" button after typing an endpoint name or path—simply moving the cursor to the next field is not sufficient._
 
 Near the bottom, there are also various transfer settings that Globus supports listed. By default, Globus verifies file integrity after transfer using checksums. Click on the question mark icons for explanations of the other transfer settings. Globus gives you powerful control over the behavior of the transfer with a simple mouse click—change the transfer settings if you'd like. You may also enter a label for the transfer, but this is not required.
 
@@ -120,12 +122,12 @@ image::images/gs-transfer-5.png[Activity Page]
 [role="img-responsive center-block"]
 image::images/gs-transfer-6.png[Activity Details]
 
-You may notice that the transferred files are not listed in the right pane of your Transfer Files page under the +go#ep2+ endpoint and the +/~/+ path, even though the transfer has completed. *Refresh the list* to see the updated contents.
+You may notice that the transferred files are not listed in the right pane of your Transfer Files page under the +Globus Tutorial Endpoint 2+ endpoint and the +/~/+ path, even though the transfer has completed. *Refresh the list* to see the updated contents.
 
 [role="img-responsive center-block"]
 image::images/gs-transfer-7.png[Refresh Page]
 
-WARNING: files are periodically deleted from the user paths on the +go#ep1+ and +go#ep2+ demonstration endpoints, so if you return later these files may be gone.
+WARNING: files are periodically deleted from the user paths on the +Globus Tutorial Endpoint 1+ and +Globus Tutorial Endpoint 2+ demonstration endpoints, so if you return later these files may be gone.
 
 == Move beyond getting started
 At this point you've mastered the basic Globus data transfer capabilities by copying files between two endpoints that are accessible to all Globus users. You know how to specify additional transfer options (such as encryption), understand how Globus manages the transfer on your behalf, and are familiar with Activity notices that let you find out about transfer task progress. You are well on your way to letting Globus simplify your research data management.
@@ -137,7 +139,7 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 	<li><h3>Set up and use a personal endpoint.</h3>
 		<ul>
 			<li><a href="https://globus.org/globus-connect-personal">Follow these instructions</a> to download Globus Connect Personal and set up an endpoint on your Mac, Linux, or Windows system.</li>
-			<li>Navigate to the Transfer Files page and request a transfer between your new personal endpoint and go#ep1 or go#ep2.</li>
+			<li>Navigate to the Transfer Files page and request a transfer between your new personal endpoint and Globus Tutorial Endpoint 1 or Globus Tutorial Endpoint 2.</li>
 			<li>Navigate to the Activity page (via Manage Data submenu or Quick Links dropdown) and review your transfers.</li>
 		</ul>
 		<p>Personal endpoints do not require administrative privileges to set up. Transfers to and from your personal endpoint will not fail if you shutdown your system; transfers will be suspended and then resumed by the Globus service when the system comes back online. Try it!</p></li>
@@ -145,17 +147,17 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 		<p>Many campuses, research labs, and cross-site projects have set up Globus server endpoints on their multi-user resources to enable reliable, secure, and high-performance data transfer and sharing via the Globus service.</p>
 		<ul>
 			<li>If your resource provider has set up a Globus endpoint, enter the endpoint name on the Globus Transfer Files page, authenticate using your normal username and password for the site when prompted, and proceed with your data transfer request.</li>
-			<li>If you don't know the endpoint name, you can use the pattern match capability on the Globus Transfer Files page to look for an endpoint. Just enter a likely resource name and look for the resource in the scroll-down list of matching endpoints. For example, "umich", "nersc", "xsede", ...</li>
-			<li>If your site is not set up as a Globus endpoint, direct your system administrator to the <a href="https://globus.org/providers">Resource Provider information</a> or <a href="https://globus.org/contact-us">ask us</a> to contact them on your behalf.</li>
+			<li>If you don't know the endpoint name, you can use the search capability on the Globus Transfer Files page to look for an endpoint. Just enter a likely resource name and look for the resource in the scroll-down list of matching endpoints. For example, "umich", "nersc", "xsede", ...</li>
+			<li>If your site is not set up as a Globus endpoint, direct your system administrator to the <a href="../../resource-provider-guide/">Resource Provider Guide</a> or <a href="https://globus.org/contact-us">ask us</a> to contact them on your behalf.</li>
 		</ul></li>
 	<li><h3>Learn how Globus lets you easily share data.</h3>
 		<ul>
-			<li><a href="https://globus.org/data-sharing">Follow this link</a> to find out how Globus lets you share files with others.</li>
+			<li><a href="../share-files">Follow this link</a> to find out how Globus lets you share files with others.</li>
 		</ul>
 		<p>Globus lets you share your data with others, even if they do not have accounts on the resource where the data is stored. This capability can be a huge benefit in terms of both time and money because the data need not be copied to cloud storage (e.g., to Box or DropBox) in order to be accessible.</p></li>
 	<li><h3>Learn more about Activity reporting and transfer retry.</h3>
 		<ul>
-			<li>Using the Transfer Files page, transfer one of the files from <code>go#ep2 /~/</code> (entered in right panel) to <code>go#ep1 /share/godata/</code> (entered in left panel).
+			<li>Using the Transfer Files page, transfer one of the files from <code>Globus Tutorial Endpoint 2 /~/</code> (entered in right panel) to <code>Globus Tutorial Endpoint 1 /share/godata/</code> (entered in left panel).
 				<ul>
 					<li>If necessary, refresh the list in the left panel to deselect the two files that were selected previously.</li>
 					<li>Select the file you want to transfer in the right panel.</li>
@@ -170,10 +172,5 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 				</ul></li>
 		</ul>
 		<p>Globus, on your behalf, continues to retry the transfer when a problem is encountered. There could be a permission problem (as is the case in this exercise), or an endpoint resource that goes down mid-transfer (perhaps you closed your laptop while copying data to it), or any number of other issues that prevent the transfer from progressing. Globus will continue to retry the transfer until (1) the problem is fixed (permissions changed, resource becomes available), (2) you cancel the transfer task (click the <strong>X</strong> next to the task in the Activity log), or (3) no progress has been made in three days, at which point Globus will notify you the transfer has failed.</p></li>
-	<li><h3>Get more technical details.</h3>
-		<ul>
-			<li>Read the <a href="https://globus.org/publications">publications</a> for technical details.</li>
-			<li>Find out how to use the <a class="zendeskLink zendeskChecked" href="../../cli">Command Line Interface (CLI)</a>.</li>
-		</ul></li>
 </ul>
 +++
