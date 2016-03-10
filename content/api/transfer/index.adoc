@@ -41,9 +41,6 @@ library in scripting languages like Python and Ruby.
 * link:advanced_endpoint_management[Advanced Endpoint Management] -
   endpoint administrators can monitor and operate on tasks to and from their
   endpoints
-* link:s3[S3 Integration] -
-  information about S3 integration support in Globus, currently accessible
-  via the API but requires the CLI to set up
 * link:change_history[Change History]
 
 == Mailing List

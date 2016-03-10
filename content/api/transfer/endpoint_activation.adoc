@@ -276,10 +276,7 @@ data about the activation state and options of the endpoint.
 |===================
 
 
-== URL Arguments
-
-The operations below make use of the following arguments in the URL,
-delimited by <> in the descriptions.
+== Path Arguments
 
 [cols="1,1,8",options="header"]
 |===================

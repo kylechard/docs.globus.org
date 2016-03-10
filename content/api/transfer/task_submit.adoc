@@ -38,7 +38,7 @@ id are not the same.
 
 Before a transfer or delete task is submitted, the source (and destination
 for transfers) must be "activated" with user credentials,
-so transfer can perform operations on their behalf. See the
+so the transfer service can perform operations on their behalf. See the
 link:../endpoint_activation[Endpoint Activation API]
 for details.
 
@@ -52,7 +52,7 @@ operate on, a list of options, and a list of paths. The key difference is that
 a transfer submission contains a pair of endpoints and a list of pairs of
 source destination paths, while a delete submission contains a single endpoint
 and a list of paths to delete. There are also several options that only make
-sence for one or the other, like +encrypt_data+ which is only available for
+sense for one or the other, like +encrypt_data+ which is only available for
 transfers.
 
 ==== Endpoint Format
