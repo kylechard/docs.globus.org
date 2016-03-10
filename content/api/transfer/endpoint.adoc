@@ -50,10 +50,10 @@ link:../endpoint_search[Endpoint Search].
 
 A private endpoint will be visible if any of the linked identities
 associated with the Globus Auth token used to authenticate to the REST API
-own the task.
+own the endpoint.
 
-The client will have admin rights on an endpoint if any of the linked
-identities associated with the Globus Auth token own the endpoint
+The client will have update and delete permissions on an endpoint if any of
+the linked identities associated with the Globus Auth token own the endpoint
 (see the +owner_id+ field). When creating an endpoint, it will have the
 +owner_id+ and +owner_string+ set based on the primary identity.
 
@@ -62,7 +62,7 @@ identities associated with the Globus Auth token own the endpoint
 === Endpoint Document
 
 The "endpoint" document type represents a single transfer endpoint, and
-containa a list of "server" documents in the "DATA" section, representing the
+contains a list of "server" documents in the "DATA" section, representing the
 GridFTP server or servers used to access the endpoint.
 
 ==== Types of Endpoints
@@ -160,9 +160,8 @@ sub-documents.
                    Searchable. Optional. Unicode string, max 1024 characters,
                    no new lines. Searchable.
 | keywords       | string
-                 | Comma separated list of atlernative names the endpoint
-                   is known as. Optional. Unicode string, max 1024 characters.
-                   Searchable.
+                 | Comma separated list of alternative names for the endpoint.
+                   Optional. Unicode string, max 1024 characters. Searchable.
 | name           | string
                  | [DEPRECATED] Legacy friendly name for the endpoint. Limited
                    to 128 characters, and must match the regex
@@ -172,7 +171,7 @@ sub-documents.
                  | [DEPRECATED] The username qualified endpoint name, of the
                    form USERNAME#ENDPOINTNAME. The username portion must match
                    the current user. Use +id+ instead in API requests, and
-                   use +display_name+ to dispaly to users. Will be searchable
+                   use +display_name+ to display to users. Will be searchable
                    until it is removed.
 | username       | string
                  | [DEPRECATED] Use +owner_id+ or +owner_string+ instead.
@@ -192,9 +191,9 @@ sub-documents.
                    4096 characters.
                    Included in fulltext search.
 | contact_email  | string
-                 | Email address of support for the server(s) represented by
-                   the endpoint. Optional. ASCII string, must be a valid
-                   email address.
+                 | Email address of the support contact for the server(s)
+                   represented by the endpoint. Optional. ASCII string,
+                   must be a valid email address.
 | contact_info   | string
                  | Other non-email contact information for the endpoint, e.g.
                    phone and mailing address. Optional. Unicode string, can
@@ -214,15 +213,15 @@ sub-documents.
                    service administrators and can't be changed
                    via the REST API. It will be silently ignored on update.
                    Note that certain features like setting +network_use+ and
-                   in most cases hosting shared endpoints required a
+                   in most cases hosting shared endpoints require a
                    managed endpoint, so this field is useful for checking that
                    state.
 | default_directory
                  | string
                  | Default directory to display when an endpoint is first
                    accessed on the globus.org web interface. The default
-                   is "/~/" for GridFTP endpoints, and "/" for shared endpoints
-                   and S3 endpoints. The mapping of "/~/" depends on the
+                   is `/~/` for GridFTP endpoints, and `/` for shared endpoints
+                   and S3 endpoints. The mapping of `/~/` depends on the
                    configuration of the GridFTP server but is typically the
                    local user's home directory on Linux systems.
 | force_encryption
@@ -255,7 +254,7 @@ sub-documents.
 | myproxy_dn     | string
                  | A non-standard subject DN to use with the default MyProxy
                    server. This is only necessary if the subject DN in the
-                   server's certificate does not match it's hostname. Can
+                   server's certificate does not match its hostname. Can
                    be "null".
 | oauth_server   | string
                  | hostname of server for getting credentials via oauth. For
@@ -265,13 +264,13 @@ sub-documents.
 | is_globus_connect
                  | boolean
                  | "true" if the endpoint was created for Globus Connect
-                   Personal, "false" otherwise. Not that this will be "false"
+                   Personal, "false" otherwise. Note that this will be "false"
                    for Globus Connect Server endpoints.
 | globus_connect_setup_key
                  | string
                  | Key needed to complete Globus Connect Personal installation.
-                   "null" when installation/setup is complete, the key can
-                   only be used once. Also "null" for non personal endpoints.
+                   "null" when installation/setup is complete. The key can
+                   only be used once. Always "null" for non personal endpoints.
 | host_endpoint  | string
                  | [DEPRECATED] Standard endpoint hosting the shared
                    endpoint; "null" for non-shared endpoints. Use
@@ -283,12 +282,12 @@ sub-documents.
                  | If the user has permission to view the host endpoint,
                    this will be set to the +display_name+ of the host, or
                    to the +canonical_name+ if the +display_name+ is not set.
-                   +null+ if the user does not have permission or if the
+                   "null" if the user does not have permission or if the
                    endpoint is not a shared endpoint.
 | host_path      | string
                  | Root path being shared on the host endpoint; "null" for
                    non-shared endpoints. Only visible by the owner of the
-                   endpoint, +null+ for other users even if the ACL gives
+                   endpoint, "null" for other users even if the ACL gives
                    them access to the files on the endpoint.
 | s3_url         | string
                  | [ALPHA] For S3 endpoints, the url to the S3 bucket
@@ -309,13 +308,13 @@ sub-documents.
 | my_effective_roles | list of string
                  | [ALPHA] List of roles the current user has on the endpoint.
 | gcp_connected  | boolean
-                 | If +is_globus_connect+ is +true+, this indicates if the
+                 | If +is_globus_connect+ is "true", this indicates if the
                    Globus Connect Personal (GCP) software is running and
-                   connected to Globus. +null+ for other endpoint types.
+                   connected to Globus. "null" for other endpoint types.
 | gcp_paused     | boolean
-                 | If +is_globus_connect+ is +true+, this indicates if the
+                 | If +is_globus_connect+ is "true", this indicates if the
                    Globus Connect Personal (GCP) has been paused.
-                   +null+ for other endpoint types.
+                   "null" for other endpoint types.
 | network_use    | string
                 a|This field may only be changed on managed endpoints. If a
                   managed endpoint becomes unmanaged, the "normal" level will
@@ -340,23 +339,23 @@ sub-documents.
                        for S3 endpoints)
 | location       | string
                  | "Automatic" or comma separated floats in the form
-                   "LATITUDE,LONGITUDE". +null+ for shared endpoints.
+                   "LATITUDE,LONGITUDE". "null" for shared endpoints.
 | min_concurrency | integer
                  | Can be +network_use+ "custom", otherwise will contain the
                    preset value for the specified +network_use+. Will be
-                   +null+ for shared endpoints.
+                   "null" for shared endpoints.
 | preferred_concurrency | integer
                  | Can be +network_use+ "custom", otherwise will contain the
                    preset value for the specified +network_use+. Will be
-                   +null+ for shared endpoints.
+                   "null" for shared endpoints.
 | min_parallelism | integer
                  | Can be +network_use+ "custom", otherwise will contain the
                    preset value for the specified +network_use+. Will be
-                   +null+ for shared endpoints.
+                   "null" for shared endpoints.
 | preferred_parallelism | integer
                  | Can be +network_use+ "custom", otherwise will contain the
                    preset value for the specified +network_use+. Will be
-                   +null+ for shared endpoints.
+                   "null" for shared endpoints.
 |===================
 
 
@@ -401,7 +400,7 @@ Only +hostname+ is required on create.
                    "gsiftp" or "ftp". Default: "gsiftp".
 | subject        | string
                  | subject of the x509 certificate of the server. If not
-                   specified, the CN in the subject must match it's hostname.
+                   specified, the CN in the subject must match its hostname.
 | uri            | string
                  | URI of the server. This is a derived field combining the
                    scheme, hostname, and port, and is not used when creating
@@ -412,7 +411,7 @@ Only +hostname+ is required on create.
                    For globus connect personal endpoints, indicates if the
                    endpoint is available for operations; always true
                    for other endpoints. When false, check the value of
-                   is_paused to determine if the user requested a
+                   +is_paused+ to determine if the user requested a
                    temporary disconnect, or if globus connect is not
                    running or not connected to a network.
 | is_paused      | boolean
@@ -423,7 +422,7 @@ Only +hostname+ is required on create.
                    when this is true, is_connected will always be
                    false, because the endpoint is not available for
                    any operations when paused. For non globus connect
-                   endpoints, is_paused will always be false.
+                   endpoints, +is_paused+ will always be false.
 |===================
 
 
@@ -468,7 +467,7 @@ depends entirely on the +host_endpoint+.
 | display_name   | string
                  | See +endpoint+ document.
 | name           | string
-                 | (DEPRECATED) See +name+ for the endpoint document.
+                 | [DEPRECATED] See +name+ for the endpoint document.
 | description    | string
                  | See +endpoint+ document.
 | organization   | string
@@ -488,10 +487,7 @@ depends entirely on the +host_endpoint+.
 |===================
 
 
-== URL Arguments
-
-The operations below make use of the following arguments in the URL,
-delimited by <> in the descriptions.
+== Path Arguments
 
 [cols="1,1,8",options="header"]
 |===================
@@ -513,32 +509,6 @@ delimited by <> in the descriptions.
 | Comma separated list of fields to include in the response. This can
   be used to save bandwidth on large list responses when not all
   fields are needed.
-
-| format | string
-| "json" or "html". Note that the "html" format is subject to change
-  and should not be relied upon for programs. It is used to render
-  the self-hosted, auto-generated API documentation.
-
-| limit  | int
-| For paged resources, change the default page size. The default page size is
-  10 and the maximum is 1000, although a few resources support limit=0 to
-  specify no limit.
-
-| offset | int
-| For paged resources, specify an offset within the full result set. Typically
-  a fixed page size is specified with limit, and offset is incremented by
-  the page size to fetch each page.
-
-| orderby | string
-| For paged resources, a comma separated list of order by options. Each order
-  by option is either a field name, or a field name followed by space and 'ASC'
-  or 'DESC' for ascending and descending; ascending is the default. Note that
-  only certain fields are supported for ordering; see the specific operation
-  documentation for details.
-
-| filter | string
-| For paged resources, return only resources that match all of the specified
-  filter criteria.
 |===================
 
 
@@ -605,8 +575,8 @@ it will return "EndpointNotFound" for deleted endpoints.
 
 Create an endpoint. Which fields are required depends on the type of endpoint.
 Note that +name+ and +canonical_name+ are deprecated and supported only for
-backward compatibility; +display_name+ should be used instead or in addition
-to. If +canonical_name+ is not set, it will default to
+backward compatibility; +display_name+ should be used instead of, or in
+addition to, these fields. If +canonical_name+ is not set, it will default to
 "USERNAME#ENDPOINT_UUID". At least one of them must be specified.
 
 The result will include an +id+ field containing the globally unique endpoint
@@ -802,7 +772,7 @@ Get a specific server belonging to the specified endpoint.
 
 Add a server to the specified endpoint. The +hostname+ field is required,
 +scheme+ and +port+ default to "gsiftp" and 2811, and +subject+ defaults
-to +null+. The derived fields and boolean status fields are ignored, and
+to "null". The derived fields and boolean status fields are ignored, and
 should not be included in the request body.
 
 Returns a result document containing the +id+ of the newly added server.
@@ -875,7 +845,9 @@ link:../endpoint_search[Endpoint Search] instead.
 Get a paged list of all endpoints visible to the current user. Most fields are
 returned by default, but some more expensive fields are omitted by default (see
 the fields list above). Specific fields can be requested using the +fields+
-query parameter, and the value "ALL" can be used to fetch all fields.
+query parameter, and the value "ALL" can be used to fetch all fields. The
++limit+ and +offset+ parameters are used for paging, with a default of
++offset+ 0 and +limit+ 10. The maximum allowed limit is 1000.
 
 [cols="h,5"]
 |============

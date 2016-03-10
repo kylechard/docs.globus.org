@@ -98,10 +98,7 @@ Fields are required for create unless otherwise specified.
 |===================
 
 
-== URL Arguments
-
-The operations below make use of the following arguments in the URL,
-delimited by <> in the descriptions.
+== Path Arguments
 
 [cols="1,1,8",options="header"]
 |===================

@@ -77,7 +77,7 @@ Other task types may be added in the future.
 | label          | string
                  | User defined label to make finding tasks simpler.
 | username       | string
-                 | [DEPRECATED] User +owner_id+ instead. The globus username
+                 | [DEPRECATED] Use +owner_id+ instead. The globus username
                    of the user who created the task. For non-globusid.org
                    identities, this will be a meaningless string starting
                    with 'u_', and for globusid.org identities it will be the
@@ -111,8 +111,8 @@ Other task types may be added in the future.
 | source_endpoint_display_name | string
                  | +display_name+ of the source endpoint at time of submit,
                    or the +canonical_name+ if +display_name+ is not set. For
-                   tasks submitted prior to the 4.4 release, this will be
-                   the same as +source_endpoint+.
+                   tasks submitted prior to August 2015 (version 4.4), this
+                   will be the same as +source_endpoint+.
 | destination_endpoint| string
                  | [DEPRECATED] Use +destination_endpoint_id+ instead.
                    Canonical name of the destination endpoint for +type+
@@ -127,10 +127,11 @@ Other task types may be added in the future.
                  | The sync level used for the transfer, or null if not used.
                    Always null for delete tasks.
 | encrypt_data   | boolean
-                 | For transfer tasks, true if the data channel is encrypted.
-                   This will true if one of the endpoints or host endpoints
-                   involved in the transfer has force_encryption set to true,
-                   or if the transfer request has the encrypt_data option set
+                 | For transfer tasks, this will be true if the data channel
+                   is encrypted. This can happen in two ways: if one of the
+                   endpoints or host endpoints involved in the transfer has
+                   +force_encryption+ set to true,
+                   or if the transfer request has the +encrypt_data+ option set
                    to true. Always false for delete tasks.
 | verify_checksum| boolean
                  | The verify_checksum option used for the transfer. Always
@@ -144,7 +145,7 @@ Other task types may be added in the future.
 | command        | string
                  | If the task was submitted via the CLI, this field will
                    contain the original command line, including options, that
-                   created the task. If submitted via the globus website or
+                   created the task. If submitted via the Globus website or
                    directly via the Transfer API, this will contain the
                    string "API", followed by the API version, and optionally
                    followed by a short string representing the client that
@@ -291,7 +292,7 @@ Events are logged as a task makes progress or runs into errors.
 | is_error       | boolean
                  | true if event is an error event
 | description    | string
-                 | A discription of the event.
+                 | A description of the event.
 | details        | string
                  | Type specific details about the event.
 | time           | string
@@ -302,17 +303,15 @@ Events are logged as a task makes progress or runs into errors.
 
 === Limited pause rule document
 
-The limited pause rule document is a pause rule document with the fields
-viewable only to administrators with endpoint manager privileges removed, with
-+DATA_TYPE+ "pause_rule_limited". In particular, +modified_by+ is not part
-of "pause_rule_limited" documents. See
+The limited pause rule document is a subset of the full pause rule document.
+It does not contain sensitive fields, in particular +modified_by+, which is
+only viewable by endpoint administrators using the Advanced Endpoint Management
+API. The +DATA_TYPE+ is "pause_rule_limited" instead of "pause_rule", to
+indicate the exclusions. See
 link:../advanced_endpoint_management#_pause_rule_document[pause_rule
 document] for details.
 
-== URL Arguments
-
-The operations below make use of the following arguments in the URL,
-delimited by <> in the descriptions.
+== Path Arguments
 
 [cols="1,1,8",options="header"]
 |===================
@@ -332,15 +331,9 @@ delimited by <> in the descriptions.
   be used to save bandwidth on large list responses when not all
   fields are needed.
 
-| format | string
-| "json" or "html". Note that the "html" format is subject to change
-  and should not be relied upon for programs. It is used to render
-  the self-hosted, auto-generated API documentation.
-
 | limit  | int
-| For paged resources, change the default page size. The default page size is
-  10 and the maximum is 1000, although a few resources support limit=0 to
-  specify no limit.
+| For paged resources, change the page size. For +event_list+ and +task_list+,
+  the default is 10 and the max is 1000.
 
 | offset | int
 | For paged resources, specify an offset within the full result set. Typically
@@ -582,13 +575,10 @@ Get a paged list of all events, including error and info events.
 [cols="1,1,8",options="header"]
 |===================
 | Name              | Type  | Description
-| is_errors   | boolean
-| 
-  compatibility, a bare endpoint name is also supported and the user portion
-  is assumed to be the user accessing the API. This behavior is deprecated
-  and should not be relied upon - all new code should use a full
-  canonical endpoint name. Also note that the endpoint name must be percent
-  escaped; in particular +#+ is a reserved character.
+| is_error   | boolean
+| "1" for true, "0" for false. If true, return only events that are classified
+  as errors. If false, return only events that are classified as non-error
+  (informational). By default, returns all events.
 |===================
 
 

@@ -31,16 +31,17 @@ Authentication to the Transfer API requires using the Goauth Nexus API to
 obtain credentials. Goauth supports an OAuth 2.0 compatible redirection
 workflow, and a client credential workflow.
 
-NOTE: With the Globus release on February 13th, we have updated support for
-authenticating to Globus and obtaining access tokens using the Globus Auth API.
-For backwards compatibility, we will continue to support the use of Nexus
-tokens. We will announce deprecation of Nexus shortly, and application
-developers should plan for transitioning to the Globus Auth API.
+NOTE: With the Globus release on February 13th 2016, we have updated support
+for authenticating to Globus and obtaining access tokens using the Globus Auth
+API. For backwards compatibility, we will continue to support the use of
+Nexus tokens. We will announce deprecation of Nexus shortly, and
+application developers should plan for transitioning to the Globus Auth
+API.
 
 ==== Globus Goauth: Client Credential
 
-This method requires a globusid.org identity to be linked to the user's Globus
-account. It involves two steps:
+This method requires a link:https://www.globusid.org[Globus ID] identity to be
+linked to the user's Globus account. It involves two steps:
 
 . Get an access token from the Globus Nexus identity service.
 . Pass the access token to the Transfer API in the Authorization header
@@ -105,11 +106,11 @@ shell history, which is poor security practice.
 
 In this method, a web application redirects the user agent (user's web browser)
 to Globus to authenticate, and provides a callback URL. Globus
-prompt the user for a username and password, and after successful sign in
+prompts the user for a username and password, and after successful sign in
 confirms that the user would like to give the application access to their
 account. It then redirects the user agent back to the web application at the
 callback URL and passes it a "request token", which is different from an access
-token. The web application uses the request token and it's own client
+token. The web application uses the request token and its own client
 credential to get an access token. This workflow allows the user to manage
 application permissions and revoke access on a per application basis in the
 future if needed, and prevents the Globus password from flowing through
@@ -156,7 +157,7 @@ so the full URL to /task_list will be:
 
     https://transfer.api.globusonline.org/__TRANSFER_VERSION__/task_list
 
-Clients should store the base URL and one place and use it when
+Clients should store the base URL in one place and use it when
 constructing resource URLs, to simplify changing versions.
 
 === URL Patterns and Links
@@ -173,23 +174,17 @@ versions of the API.
 
 === Paged Lists
 
-The task_list, event_list, and endpoint_search
-any query paremeters, you will only get the first 10 records. Getting
-*all* records is currently not supported. Different records can be
-selected using the *limit* and *offset* query parameters. See the
-<<paging,Paging>> section for details.
+The task_list, event_list, and endpoint_search resources support pagination via
+query parameters. By default you will only get the first 10 records. Getting
+*all* records is currently not supported. Different records can be selected
+using the *limit* and *offset* query parameters. See the <<paging,Paging>>
+section for details.
 
 === Document Formats
 
-The API supports *json* and *html* document formats. json is supported for both
-requests and responses.  html is only supported as a response format, and is
-mainly useful for browsing the legacy dynamic reference documentation.
-
-To specify the desired format, either add a *format=(json|html)* query
-parameter, or specify the content type in the Accepts header. Use
-*application/json* or *text/html* for the content types. When POST
-or PUTing representations, the Content-Type header should be set to
-*application/json*.
+The API uses *json* for all input and output, including error documents. Some
+resources have legacy support for *html*, but that is deprecated and will be
+removed in the future.
 
 Note that _application/x-www-form-urlencoded_ is _not_ supported. The body
 should contain the actual JSON data, not a form encoded version of
@@ -203,12 +198,12 @@ For example, the endpoint document type is described in detail here:
 
 === Errors
 
-When an error occurs an HTTP status code >=400 will be used, and the body of
-the response will contain an X-Transfer-API-Error header with an error code and
-a body with details about the error, in the requested format (or the default
-json if the error has to do with format selection). Requests outside the API
-path namespace (currently "/v0.10"), an html or plaintext error may be returned
-instead.  Here is an example error returned when an endpoint is not found:
+When an error occurs an HTTP status code >=400 will be returned. The body of
+the response will be a JSON document with details about the error, including a
++code+ field. The error code will also be provided in the
+"X-Transfer-API-Error" header. Note that requests outside the API path version
+prefix may return an HTML or plaintext error body instead. Here is an example
+error returned when an endpoint is not found:
 
 ----
 {
@@ -234,7 +229,7 @@ is described as:
     GET /task_list
 
 This means that a GET request must be made to the task_list resource,
-which actual has URL
+which actually has the URL
 +https://transfer.api.globusonline.org/__TRANSFER_VERSION__/task_list+
 for version __TRANSFER_VERSION__. This is BASE_URL + /task_list. As discussed above,
 the BASE_URL should be set in one place and re-used, not hard coded
@@ -254,8 +249,8 @@ Connection: keep-alive
 X-Transfer-API-X509-User: testuser
 ----
 
-Most of these headers were added by firefox; the developer will not
-normally need to deal with them.
+Most of these headers were added by the browser (Firefox); the developer will
+not normally need to deal with them.
 
 For examples that involve sending data, the body is included inline, just
 like it would be in an HTTP request. For example endpoint creation is
@@ -386,7 +381,7 @@ Content-Type: application/json
 +
 List all endpoints owned by the current user, used recently by the user in
 transfer or delete tasks, or containing the specified search terms. The
-results for the "xsede gordon" search are shown below:
+results for the "XSEDE gordon" search are shown below:
 
 ----
 200 OK
@@ -685,7 +680,8 @@ Content-Type: application/json
 }
 ----
 +
-To complete installation of globus connect, you must enter the setup key, which you get from the create response:
+To complete installation of Globus Connect Personal, you must enter the setup
+key, which you get from the create response:
 +
 ----
 201 Created
@@ -785,12 +781,12 @@ link:../endpoint_activation#_autoactivate_endpoint[/endpoint/ID/autoactivate].
 Endpoints with a default MyProxy or OAuth MyProxy server also support
 auto-activation, by using a cached credential. When you activate an endpoint
 from a given myproxy server, you can auto-activate other endpoints that have
-that myproxy server configured as the default. For example, all xsede endpoints
-are configured with the xsede OAuth MyProxy server as the default, so once you
-activate a single xsede endpoint, the other xsede endpoints can be
+that myproxy server configured as the default. For example, all XSEDE endpoints
+are configured with the XSEDE OAuth MyProxy server as the default, so once you
+activate a single XSEDE endpoint, the other XSEDE endpoints can be
 auto-activated, without having to specify the myproxy credentials again. This
 also works if the user has logged in to
-link:http://www.globus.org[www.globus.org] using their xsede identity.
+link:http://www.globus.org[www.globus.org] using their XSEDE identity.
 
 Autoactivation can also be done conditionally, by passing the +if_expires_in+
 query parameter. It takes an integer value in seconds, and only attempts to
@@ -855,7 +851,7 @@ Note that only directory listing is supported - if path points to a
 file, an error will be returned. Paging, filtering, ordering, and field
 selection are supported. Unlike most paged resources, all records are
 returned by default. This is because the gsiftp protocol does not
-support partial listing, so the entrie list is always fetched.
+support partial listing, so the entire list is always fetched.
 
 === Creating Directories
 
@@ -900,15 +896,15 @@ link:../task#_task_document[task],
 which can be monitored using the +task_id+.
 
 For recursive (directory) transfer items, the contents of the source directory
-is copied to the destination directory, including any subdirectories. Any
+are copied to the destination directory, including any subdirectories. Any
 intermediate/parent directories that don't exist on the destination will be
 created.
 
 For non-recursive (file) transfer items, the source file is copied to the file
 path specified as the destination. The destination path can't be a directory,
-unlike the scp command. This is to avoid inconsistent behavior depending on
-whether or not the destination exists, so when run repeatedly (for example to
-keep two copies in sync) it performs the same operation each time.
+This is to avoid inconsistent behavior depending on whether or not the
+destination exists, so when run repeatedly (for example to keep two copies in
+sync) it performs the same operation each time.
 
 Both endpoints need to be activated before the transfer is submitted. If an
 endpoint expires before the transfer is complete, the endpoints can be
@@ -1047,11 +1043,11 @@ fields using a +filter+ parameter, and sorting on certain fields using
 === Paging
 
 List resources which use paging can be controlled with the +offset+ and +limit+
-query parameters; the default is [uservars]#offset=0# and [uservars]#limit=10#.
-A maximum page size is configured on the server, and is currently set at 100.
-Typical usage involves starting with [uservars]#offset=0#, choosing a page size
-and passing with +limit=PAGE_SIZE+, and incrementing +offset+ by +PAGE_SIZE+ to
-display successive pages.
+query parameters. The default +offset+ is 0, while the default +limit+ and
+maximum +offset+ and +limit+ vary among resources. Most list resources have a
+default +limit+ of 10 and a maximum of 1000. Typical usage involves starting
+with +offset+ 0, choosing a page size (`limit=PAGE_SIZE`), and incrementing
++offset+ by +PAGE_SIZE+ to display successive pages.
 
 For example, with a page size of 50:
 
@@ -1085,7 +1081,7 @@ see link:../endpoint_search[Endpoint Search] for an example.
 
 The +orderby+ parameter sets a sort field and direction. Only fields
 which support filtering are sortable. The value is a comma separated
-list of field names, with an option direction specifier. For example:
+list of field names, with an optional direction specifier. For example:
 
     GET /task_list?orderby=status,request_time desc
 

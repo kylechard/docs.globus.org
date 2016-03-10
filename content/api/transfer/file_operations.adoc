@@ -155,10 +155,7 @@ have multiple success cases.
 |===================
 
 
-== URL Arguments
-
-The operations below make use of the following arguments in the URL,
-delimited by <> in the descriptions.
+== Path Arguments
 
 [cols="1,1,8",options="header"]
 |===================
@@ -216,6 +213,11 @@ passed, the default path depends on the type of endpoint:
   the restricted paths configuration on the server does not allow the user's
   home directory, it will fall back to '/'.
 
+Results can be paged, sorted, and filtered. By default all results are
+returned, sorted by (+type+, +name+). Note that this API is not designed to
+handle very large directories, and may time out for directories with more than
+100,000 entries.
+
 [cols="h,5"]
 |============
 | URL
@@ -252,10 +254,46 @@ passed, the default path depends on the type of endpoint:
 
 ==== Dir Listing Query Parameters
 
-[cols="1,8",options="header"]
+[cols="1,1,8",options="header"]
 |===================
-| Name   | Description
-| path   | Path to a directory on the remote endpoint to list.
+| Name   | Type | Description
+
+| path   | string
+| Path to a directory on the remote endpoint to list.
+
+| show_hidden | boolean
+| "1" for true, "0" for false. If true, show hidden files (files with
+  a name that begins with a dot). Default true.
+
+| limit  | int
+| Change the page size. Defaults to 0 to indicate no limit.
+
+| offset | int
+| If using a +limit+ other than 0, this can be used to page through the
+  results. Note that the entire directory contents is still fetched from
+  the endpoint server on every request. This is because the GridFTP protocol
+  used by most endpoints does not support paging, so paging must be
+  implemented in the REST API server.
+
+| orderby | string
+| [DEPRECATED] A comma separated list of order by options. Each order
+  by option is either a field name, or a field name followed by space and 'ASC'
+  or 'DESC' for ascending and descending; ascending is the default. For
+  the directory listing results, any "file" document field can be used in the
+  +orderby+. Default `orderby=type,name`.
+
+| filter | string
+| [DEPRECATED] Return only file documents that match all of the specified
+  filters. The param value must be a forward slash separated list of
+  filter clauses. For string fields, the clause is of the form
+  `FIELD_NAME:value1,value2,...`, or
+  `FIELD_NAME:~pattern1,pattern1,...`. For example,
+  `filter=name:~.*/type:dir` will return hidden directories.
+  For +size+, a filter clause can be one of `size:>MIN_SIZE`,
+  `size:<MAX_SIZE`, or `size:EXACT_SIZE`. For +last_modified+ the
+  clause is a date range, with dates specified in ISO 9660 format:
+  `last_modified:start,end`. Either start or end can be omitted to specify
+  an open range.
 |===================
 
 ==== Dir Listing Response

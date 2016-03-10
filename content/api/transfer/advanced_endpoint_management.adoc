@@ -470,11 +470,11 @@ Error (state)
 |===================
 
 
-== URL Arguments
+== Path Arguments
 
-The operations below make use of the following arguments in the URL. In this
-documentation parameter names are denoted by +<+ and +>+; these should not be
-included literally in the request.
+The operations below make use of the following arguments in the URL path. In
+this documentation parameter names are denoted by +<+ and +>+; these should not
+be included literally in the request path.
 
 [cols="1,1,8",options="header"]
 |===================
