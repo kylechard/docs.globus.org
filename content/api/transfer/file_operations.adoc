@@ -213,10 +213,13 @@ passed, the default path depends on the type of endpoint:
   the restricted paths configuration on the server does not allow the user's
   home directory, it will fall back to '/'.
 
-Results can be paged, sorted, and filtered. By default all results are
-returned, sorted by (+type+, +name+). Note that this API is not designed to
-handle very large directories, and may time out for directories with more than
-100,000 entries.
+NOTE: If a directory contains over 100,000 entries, a "DirectorySizeLimit"
+error will be returned. There is currently no way around this limit for
+directory listings, but these very large directories can still be transferred
+recursively.
+
+Results can be paged, sorted, and filtered. By default all entries
+up to the 100,000 entry limit are returned, sorted by (+type+, +name+).
 
 [cols="h,5"]
 |============
@@ -266,24 +269,25 @@ handle very large directories, and may time out for directories with more than
   a name that begins with a dot). Default true.
 
 | limit  | int
-| Change the page size. Defaults to 0 to indicate no limit.
-
-| offset | int
-| If using a +limit+ other than 0, this can be used to page through the
-  results. Note that the entire directory contents is still fetched from
-  the endpoint server on every request. This is because the GridFTP protocol
+| Change the page size. Defaults to 100,000, which is also the maximum.
+  Note that the entire directory is is still fetched from the endpoint
+  server on every request. This is because the GridFTP protocol
   used by most endpoints does not support paging, so paging must be
   implemented in the REST API server.
 
+| offset | int
+| If using a +limit+ less than 100,000, this can be used to page through the
+  results.
+
 | orderby | string
-| [DEPRECATED] A comma separated list of order by options. Each order
+| A comma separated list of order by options. Each order
   by option is either a field name, or a field name followed by space and 'ASC'
   or 'DESC' for ascending and descending; ascending is the default. For
   the directory listing results, any "file" document field can be used in the
   +orderby+. Default `orderby=type,name`.
 
 | filter | string
-| [DEPRECATED] Return only file documents that match all of the specified
+| Return only file documents that match all of the specified
   filters. The param value must be a forward slash separated list of
   filter clauses. For string fields, the clause is of the form
   `FIELD_NAME:value1,value2,...`, or
