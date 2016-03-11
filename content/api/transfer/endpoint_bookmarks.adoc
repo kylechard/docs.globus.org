@@ -1,5 +1,5 @@
 ---
-menu_weight: 7
+menu_weight: 8
 ---
 
 = Endpoint Bookmarks
@@ -28,8 +28,11 @@ paths, and other clients are free to provide this as a convenience to users as
 well. The CLI also allows direct usage of bookmarks (see the man pages), but
 the REST API does not support using bookmark names in place of endpoints
 elsewhere in the API. They are purely provided as a convenience to users.
+
 Bookmarks are always private to the user identity that creates them, and can't
-be shared.
+be shared. A bookmark will be visible, editable, and deletable if the identity
+owning the bookmark is in the set of linked identities associated with the
+Globus Auth token used to authenticate with the API.
 
 NOTE: Each user can have at most 100 bookmarks.
 
@@ -59,7 +62,8 @@ endpoint and path.
 
 ==== Bookmark Document Fields
 
-Fields are required for create unless otherwise specified.
+All fields except for +id+ and +DATA_TYPE+ are required when creating a
+bookmark.
 
 [cols="1,1,8",options="header"]
 |===================
@@ -84,10 +88,7 @@ Fields are required for create unless otherwise specified.
 |===================
 
 
-== URL Arguments
-
-The operations below make use of the following arguments in the URL,
-delimited by <> in the descriptions.
+== Path Arguments
 
 [cols="1,1,8",options="header"]
 |===================
@@ -285,10 +286,3 @@ success.
 }
 -------------------------------------------------------------------
 |============
-
-
-== Change History
-
-=== 4.4
-
-* initial bookmark API

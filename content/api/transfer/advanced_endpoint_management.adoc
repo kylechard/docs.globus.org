@@ -1,5 +1,5 @@
 ---
-menu_weight: 9
+menu_weight: 10
 ---
 
 = Advanced Endpoint Management
@@ -49,14 +49,14 @@ a change to the API version.
 === Task Document
 
 The +task+ document includes all fields from the user facing task resources
-(see the link:../task#_document_types[Task Documentation]), with the
-following additions:
+(see the link:../task#_document_types[Task Documentation]), with
+the following additions:
 
 ==== Extra Fields
 
 Also includes descriptions for fields that behave differently from their
 counterpart in the single user document returned by +/task_list+, notably
-+source_endpoint+ and +destination_endpoint+ which have extra visibility
+source_endpoint and destination endpoint fields which have different visibility
 rules.
 
 [cols="1,1,8",options="header"]
@@ -65,48 +65,93 @@ rules.
 
 | source_endpoint
 | string
-| Canonical name of the source endpoint. If the endpoint is private, not
-  owned by the current user, and not hosted by an endpoint the current user
-  has manager privileges on, this will be null.
+| [DEPRECATED] Use +source_endpdoint_id+ instead.
+  Canonical name of the source endpoint. Same visibility
+  rules as +source_endpoint_id+.
+
+| source_endpoint_id
+| string
+| Id of the source endpoint. If the endpoint is private, not owned by the
+  current user, and not hosted by an endpoint the current user has manager
+  privileges on, this will be null.
+
+| source_endpoint_display_name
+| string
+| Display name of the source endpoint, same visibility rules as
+  +source_endpoint_id+.
 
 | destination_endpoint
 | string
-| Canonical name of the destination endpoint for tasks of type +TRANSFER+,
-  null for tasks of type +DELETE+. If the endpoint is private, not
-  owned by the current user, and not hosted by an endpoint the current user
-  has manager privileges on, this will be null, just like for
-  +source_endpoint+.
+| [DEPRECATED] Use +destination_endpoint_id+ instead.
+  Canonical name of the destination endpoint for tasks of type
+  +TRANSFER+, null for tasks of type +DELETE+. Same visibility rules
+  as +destination_endpoint_id+.
+
+| destination_endpoint_id
+| string
+| Id of the destination endpoint. If the endpoint is private, not owned by the
+  current user, and not hosted by an endpoint the current user has manager
+  privileges on, this will be null.
+
+| destination_endpoint_display_name
+| string
+| Display name of the destination endpoint, same visibility rules as
+  +destination_endpoint_id+.
 
 | source_host_endpoint
 | string
-| Canonical name of the endpoint hosting the source_endpoint if the
-  source endpoint is a shared endpoint. If the source is not a shared
+| [DEPRECATED] Use +source_host_endpoint_id+ instead.
+  Canonical name of the endpoint hosting the source_endpoint if
+  the source endpoint is a shared endpoint. Same visibility rules as
+  +source_host_endpoint_id+.
+
+| source_host_endpoint_id
+| string
+| Id of the endpoint hosting the source endpoint if
+  the source endpoint is a shared endpoint. If the source is not a shared
   endpoint, or if the user does not have manager privileges on the host
   endpoint, this will be null.
 
+| source_host_endpoint_display_name
+| string
+| Display name of the endpoint hosting the source endpoint if
+  the source endpoint is a shared endpoint. Same visibility rules as
+  +source_host_endpoint_id+.
+
 | destination_host_endpoint
 | string
-| Canonical name of the endpoint hosting the destination_endpoint if the
-  destination endpoint is a shared endpoint.
-  If the destination is not
+| [DEPRECATED] Use +destination_host_endpoint_id+ instead. Canonical name of
+  the endpoint hosting the destination endpoint
+  if the destination endpoint is a shared endpoint. If the destination is not
   a shared endpoint, if the user does not have manager privileges on the
   host endpoint, or if the task is a +DELETE+ task, this will be +null+.
+
+| destination_host_endpoint_id
+| string
+| Id of the endpoint hosting the destination endpoint if
+  the destination endpoint is a shared endpoint. If the destination is not a
+  shared endpoint, or if the user does not have manager privileges on the host
+  endpoint, this will be null.
+
+| destination_host_endpoint_display_name
+| string
+| Display name of the endpoint hosting the destination endpoint if
+  the destination endpoint is a shared endpoint. Same visibility rules as
+  +destination_host_endpoint_id+.
 
 | source_host_path
 | string
 | If the source endpoint is a shared endpoint, the path the share is located
-  on at the host endpoint.
-  If the source is not a shared
-  endpoint, or if the user does not have manager privileges on the host
-  endpoint, this will be null.
+  on at the host endpoint. If the source is not a shared endpoint, or if the
+  user does not have manager privileges on the host endpoint, this will
+  be null.
 
 | destination_host_path
 | string
 | If the source endpoint is a shared endpoint, the path the share is located
-  on at the host endpoint.
-  If the destination is not
-  a shared endpoint, if the user does not have manager privileges on the
-  host endpoint, or if the task is a +DELETE+ task, this will be +null+.
+  on at the host endpoint. If the destination is not a shared endpoint, if
+  the user does not have manager privileges on the host endpoint, or if the
+  task is a +DELETE+ task, this will be +null+.
 
 | is_ok
 | boolean
@@ -253,8 +298,10 @@ operation to be paused.
   "message": "Quota exceeded, please delete data from /scratch",
   "endpoint": "bob#ep1",
   "user": "eve",
+  "identity_id": "bbe7b12b-d397-41e3-8895-3b56518302ef",
   "start_time": null,
   "modified_by": "alice",
+  "modified_by_identity_id": "4c77dd76-aa99-4490-af19-dc81a312c3a1",
   "modified_time": "2015-05-04 16:32:39+00:00"
   "pause_ls": False,
   "pause_mkdir": True,
@@ -301,8 +348,14 @@ operation to be paused.
 
 | user
 | string
-| Username of a user to pause tasks for on the endpoint, or null
-  to indicate all users on the endpoint.
+| [DEPRECATED] Username of a user to pause tasks for on the endpoint, or null
+  to indicate all users on the endpoint. If the identity is not a globus-id.org
+  identity, this will be the same as +identity_id+. Use +identity_id+ instead.
+
+| identity_id
+| string
+| Identity id of an identity to pause tasks for on the endpoint,
+  or null to indicate all identities on the endpoint.
 
 | modified_time
 | ISO 8601 datetime string
@@ -311,7 +364,17 @@ operation to be paused.
 
 | modified_by
 | string
-| Username of the user who last updated or created the pause rule.
+| [DEPRECATED] Username of the user who last updated or created the pause rule.
+  Note that this field will not be included in the
+  link:../task#_limited_pause_rule_document[pause_rule_limited]
+  documents returned by the get task pause info and get my effective pause rule
+  operations. Use +modified_by_identity_id+ instead. If the modified by
+  identity id is not a globus-id.org identity, this will be the same as
+  the modified_by_identity_id.
+
+| modified_by_identity_id
+| string
+| Identity id of the identity that last updated or created the pause rule.
   Note that this field will not be included in the
   link:../task#_limited_pause_rule_document[pause_rule_limited]
   documents returned by the get task pause info and get my effective pause rule
@@ -407,11 +470,11 @@ Error (state)
 |===================
 
 
-== URL Arguments
+== Path Arguments
 
-The operations below make use of the following arguments in the URL. In this
-documentation parameter names are denoted by +<+ and +>+; these should not be
-included literally in the request.
+The operations below make use of the following arguments in the URL path. In
+this documentation parameter names are denoted by +<+ and +>+; these should not
+be included literally in the request path.
 
 [cols="1,1,8",options="header"]
 |===================
@@ -1226,21 +1289,3 @@ Requires endpoint management rights on the endpoint in the rule.
 
 | Response Body | Result document.
 |============
-
-
-== Changelog
-
-=== 4.3
-
-* Add admin pause/resume API
-* Add pause_rule CRUD API
-* Add +task_list+ filter parameter +filter_is_paused+
-* Add task pause info for admins
-
-=== 4.2
-
-* Add admin cancel API
-
-=== 3.9
-
-* Initial alpha release

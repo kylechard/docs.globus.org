@@ -1,0 +1,392 @@
+---
+menu_weight: 1
+---
+
+= Endpoint Activation
+:toc:
+:toclevels: 3
+:numbered:
+
+// use outfilesuffic in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
+// See https://github.com/jbake-org/jbake/issues/80, github requires
+// going through hoops to get the TOC to render.
+ifdef::env-github[]
+toc::[]
+endif::[]
+
+////
+Note: We use asciidoc in some table cells for
+1. labeled lists
+2. source code (json) blocks.
+You need to be careful to not have spaces between the a| and content, 
+otherwise it shows up as monospace (?) in asciidoc.py.
+Also, using 'a' type cells when not needed makes asciidoc slower; it executes
+asciidoc for each cell of type 'a'.
+////
+
+== Overview
+
+In order for the transfer service to perform operations on endpoint
+filesystems, it must have a credential to authenticate to the endpoint as a
+specific local user. The process of providing such a credential to the service
+is called 'endpoint activation'. Endpoints typically require credentials from a
+specific identity provider (IdP), specified indirectly via the +myproxy_server+
+or +oauth_server+ field of the endpoint definition. The lifetime of the
+activation varies depending on the identity provider, but is typically several
+days.
+
+== Activation Types
+
+There are several ways of providing a credential for an endpoint, and different
+endpoints and identity providers have different policies for which types are
+supported. If +oauth_server+ is set, then OAuth MyProxy is the default method
+of activation. If +oauth_server+ is not set and +myproxy_server+ is set, then
+MyProxy is the default method of activation.
+
+=== Web Activation
+
+The simplest way to support activation in your application is by redirecting
+end users to the Globus website in a browser to perform the activation. The
+website already takes care of handling the different activation types and
+redirecting users to other identity providers for OAuth MyProxy activation
+(described below). The URL for web activation is subject to change, so clients
+using this should be prepared to update the URL given reasonable notice (1
+month). The current URL template is:
+
+    https://www.globus.org/app/endpoints/ID/activate
+
+where ID is the id of the endpoint that needs to be activated.
+
+=== MyProxy
+
++myproxy+ activation accepts a MyProxy server and login information (username
+and password), and the Globus service uses this information to request a time
+limited credential for that user from the MyProxy server. If an endpoint has a
+default myproxy configured, that will be pre-filled in to the requirements.
+Some sites no longer allow myproxy activation, and require OAuth MyProxy
+activation instead.
+
+=== OAuth MyProxy
+
+This method of activation requires a web browser, and redirects the user to
+authenticate directly with the endpoint's identity provider, and redirects
+them back to the globus.org website to pass the credential to globus services.
+Because it requires a web browser, it cannot be used directly by clients
+interacting with the Transfer API. Instead, clients can direct end users to the
+Globus website to perform the activation, as described above.
+
+=== Delegate Proxy
+
++delegate_proxy+ activation is designed for clients that already have a copy of
+the user's credential (or a proxy of their credential). The server provides a
+public key, and the client must create a delegated X.509 proxy credential using
+that public key, signed by the local credential.
+
+All GridFTP endpoints support +delegate_proxy+ activation, but it only works if
+the client is able to acquire an X.509 credential from the appropriate identity
+provider out of band, for example by running myproxy-logon locally. It is the
+client's responsibility to ensure that the credential is from the correct
+identity provider and supported by the GridFTP server at the endpoint. If the
+credential is valid, but not from the correct IdP, the error will not be
+detected until the user attempts to perform an operation on the endpoint (e.g.
+directory listing).
+
+=== Auto Activation
+
+There are two cases in which endpoints can be activated without requiring
+credentials from the user. One case is Globus endpoint types that perform
+authorization based on the user's Globus account. This includes Globus Connect
+Personal Endpoints, Shared Endpoints, and the Globus Tutorial Endpoints. All of
+these endpoints are configured with a +myproxy_server+ of
+"myproxy.globusonline.org". Note that this is not actually a real myproxy
+server, and will not work with normal GridFTP endpoints.
+
+The second case is credential sharing for endpoints configured with an
+identity provider. If the user has activated one endpoint with a specific
+identity provider, then other endpoints using that same identity provider
+can be auto activated, by copying that credential for use on the other
+endpoint.
+
+== Document Types
+
+=== Activation Requirements Document
+
+The activation requirements document is a list of activation types supported by
+the endpoint, required and optional fields for each activation type, and meta
+data about the activation state and options of the endpoint.
+
+.Activation Requirements Document Example
+--------------------------
+{
+  "DATA_TYPE": "activation_requirements", 
+  "expires_in": 0, 
+  "expire_time": null, 
+  "auto_activation_supported": true, 
+  "activated": false, 
+  "oauth_server": null
+  "DATA": [
+    {
+      "type": "delegate_proxy", 
+      "name": "public_key", 
+      "value": "-----BEGIN PUBLIC KEY-----\nMIICI...\n-----END PUBLIC KEY-----\n", 
+      "required": false, 
+      "private": false, 
+      "ui_name": "Server Public Key", 
+      "description": "The public key of the GO API server to use in the proxy certificate for delegation to GO, in PEM format."
+      "DATA_TYPE": "activation_requirement", 
+    }, 
+    {
+      "type": "delegate_proxy", 
+      "name": "proxy_chain", 
+      "value": null, 
+      "required": true, 
+      "private": false, 
+      "ui_name": "Proxy Chain", 
+      "description": "A proxy certificate using the provided public key, in PEM format."
+      "DATA_TYPE": "activation_requirement", 
+    }, 
+    {
+      "type": "myproxy", 
+      "name": "hostname", 
+      "value": "myproxy.example.org", 
+      "required": true, 
+      "private": false, 
+      "ui_name": "MyProxy Server", 
+      "description": "The hostname of the MyProxy server to request a credentail from."
+      "DATA_TYPE": "activation_requirement", 
+    }, 
+    {
+      "type": "myproxy", 
+      "name": "username", 
+      "value": null, 
+      "required": true, 
+      "private": false, 
+      "ui_name": "Username", 
+      "description": "The username to use when connecting to the MyProxy serever."
+      "DATA_TYPE": "activation_requirement", 
+    }, 
+    {
+      "type": "myproxy", 
+      "name": "passphrase", 
+      "value": null, 
+      "required": true, 
+      "private": true, 
+      "ui_name": "Passphrase", 
+      "description": "The passphrase to use when connecting to the MyProxy serever."
+      "DATA_TYPE": "activation_requirement", 
+    }, 
+    {
+      "type": "myproxy", 
+      "name": "server_dn", 
+      "value": null, 
+      "required": false, 
+      "private": false, 
+      "ui_name": "Server DN", 
+      "description": "The distinguished name of the MyProxy server, formated with '/' as the separator. This is only needed if the server uses a non-standard certificate and the hostname does not match."
+      "DATA_TYPE": "activation_requirement", 
+    }, 
+    {
+      "type": "myproxy", 
+      "name": "lifetime_in_hours", 
+      "value": null, 
+      "required": false, 
+      "private": false, 
+      "ui_name": "Credential Lifetime (hours)", 
+      "description": "The lifetime for the credential to request from the server, in hours. Depending on the MyProxy server's configuration, this may not be respected if it's too high. If no lifetime is submitted, the value configured as the default on the  server will be used."
+      "DATA_TYPE": "activation_requirement", 
+    }
+  ], 
+}
+--------------------------
+
+==== Activation Requirements Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "activation_requirements" to indicate
+                   this document type.
+
+| DATA           | list
+                 | List of "activation_requirement" documents.
+
+| oauth_server   | string
+                 | The hostname of a server for getting credentials via oauth,
+                   taken from the endpoint field with the same name.
+
+| activated      | boolean
+                 | true if the endpoint is activated for the current user,
+                   false otherwise. Taken from the endpoint field with the
+                   same name.
+
+| expire_time    | string
+                 | Time the endpoint activation expires, or null if not
+                   activated. Taken from the endpoint field with the
+                   same name.
+
+| expires_in     | int
+                 | Seconds until the endpoint expires, 0 if the endpoint is
+                   expired or not activated, or -1 if the endpoint never
+                   expires (for endpoints that use globus credentials, e.g.
+                   shared endpoints and globus connect personal endpoints).
+                   Taken from the endpoint field with the same name.
+
+| auto_activation_supported | boolean
+                 | true if the endpoint can be auto-activated
+|===================
+
+==== Activation Requirement Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "activation_requirement" to indicate
+                   this document type.
+
+| type           | string
+                 | The type of activation this requirement is for.
+
+| name           | string
+                 | The name for the information required.
+
+| description    | string
+                 | Detailed description of the requirement.
+
+| ui_name        | string
+                 | Suggested name to display in a GUI.
+
+| private        | boolean
+                 | Boolean specifying if the data is sensetive, e.g. for
+                   password fields. Clients are encouraged to mask the user's
+                   typing when prompting for values of private fields.
+
+| required       | boolean
+                 | true if the value is required for this type of activation.
+
+| value          | string
+                 | The value for the requirement. When GETing this will be
+                   either empty or have a default value filled in. When
+                   POSTing any values without defaults should be set, and
+                   the defaults can be overwritten when needed. Note that this
+                   must be a string, even for int-like fields.
+|===================
+
+
+== Path Arguments
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+| endpoint_xid      | string
+| The +id+ field of the endpoint, or for backward compatibility the
+  +canonical_name+ of the endpoint. The latter is deprecated, and all clients
+  should be updated to use +id+.
+|===================
+
+
+== Common Query Parameters
+
+[cols="1,1,8",options="header"]
+|===================
+| Name   | Type | Description
+
+| fields | string
+| Comma separated list of fields to include in the response. This can
+  be used to save bandwidth on large list responses when not all
+  fields are needed.
+
+| filter | string
+| For paged resources, return only resources that match all of the specified
+  filter criteria.
+|===================
+
+
+== Common Errors
+
+The resources in this document use old error codes conventions, with a dotted
+code hierarchy.
+
+[cols="1,1,8",options="header"]
+|===================
+| Code                  | HTTP Status  | Description
+
+| ClientError.NotFound or EndpointNotFound  |404
+| <endpoint_xid> not found
+
+| PermissionDenied  |403
+| User does not have privileges to view and use the specified endpoint.
+
+| ServiceUnavailable    |503
+| The service is down for maintenance.
+|===================
+
+
+== Operations
+
+=== Get activation requirements
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/activation_requirements
+
+| Method
+| GET
+
+| Response Body | An +activation_requirements+ document.
+|============
+
+=== Autoactivate endpoint
+
+Attempt to auto activate an endpoint. The response will always contain
+a +code+ field. If the code is "AutoActivateFailed", the response will also
+include an activation requirements document, which can be filled in and
+submited to activate.
+
+The optional +if_expires_in+ query parameter can be used to attempt auto
+activation only if the endpoint is not already activated or if it's activated
+but will expires within the specified number of seconds. This is the suggested
+method of operation for most clients, before attempting any operation on the
+endpoint. For foreground operation like directory listing and making a
+directory, 60 seconds is an appropriate value. For submitting large transfer
+and delete tasks, clients may want to use a much higher value, e.g. 86400
+for one day. Note that while most identity providers allow activations to
+last for several days, some may use short activations, so this paramater
+should be set accordingly.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/autoactivate [?if_expires_in=SECONDS]
+
+| Method
+| POST
+
+| Response Body | A +result+ document or an +activation_requirements+ document
+                  with an extra +code+ field.
+|============
+
+=== Activate endpoint
+
+To active an endpoint, clients should get the activation requirements for the
+endpoint (either explicitly or from the autoactivate result), pick an
+activation method, and fill in values for the chosen activation method. The
+requirements for the other methods not being used must be removed before
+submitting the request.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/activate
+
+| Method
+| POST
+
+| Request Body  | An +activation_requirements+ document with method values
+                  filled in for one method.
+| Response Body | A +result+ document.
+|============
