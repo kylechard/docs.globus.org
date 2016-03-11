@@ -41,7 +41,7 @@ image::images/sharing-7.png[]
 +
 *Allowing Other Users to Manage Your Shared Endpoint*
 +
-The user who creates a shared endpoint may also allow other users to manage sharing permissions for that endpoint. This is done by granting the *access manager role* to another user. The access manager role grants the ability to control read and/or write access permissions without involving the original creator of the shared endpoint. This is useful in a scenario where the systems administrator creates a shared endpoint and allows a team of researchers to control access for their collaborators on that endpoint.
+The user who creates a shared endpoint may also allow other users to manage sharing permissions for that endpoint. This is done by granting the access manager role to another user. The access manager role grants the ability to control read and/or write access permissions without involving the original creator of the shared endpoint. This is useful in a scenario where the systems administrator creates a shared endpoint and allows a team of researchers to control access for their collaborators on that endpoint.
 +
 .Managing Roles for Shared Endpoints
 [role="img-responsive center-block"]
