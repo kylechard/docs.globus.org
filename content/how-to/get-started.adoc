@@ -34,12 +34,12 @@ Then you will need to allow Globus to use your third party login (or "identity")
 image::images/gs-login-6.png[Allow Globus Web App]
 
 == Method 2: Log in to use Globus with a Globus ID
-*Complete the form* at link:https://www.globusid.org/create[globusid.org/create] and click "Create ID".
+Complete the form at link:https://www.globusid.org/create[globusid.org/create] and click "Create ID".
 
 [role="img-responsive center-block"]
 image::images/gs-signup-2.png[Sign up for Globus ID]
 
-...and *copy the verification code* in the email you receive. Complete the account creation process by pasting it into the field on the Verify E-mail Address page and click "Verify".
+...and copy the verification code in the email you receive. Complete the account creation process by pasting it into the field on the Verify E-mail Address page and click "Verify".
 
 [role="img-responsive center-block"]
 image::images/gs-signup-3.png[Verification Email]
@@ -58,7 +58,7 @@ Then you will need to allow Globus to use your Globus ID to view information and
 image::images/gs-signup-6.png[Allow Globus Web App]
 
 == The Transfer Files page
-After you've signed up, you'll be sent to the Transfer Files page, or you can *select Transfer Files* from the Manage Data submenu.
+After you've signed up, you'll be sent to the Transfer Files page, or you can select Transfer Files from the Manage Data submenu.
 
 [role="img-responsive center-block"]
 image::images/gs-transfer-1.png[Dashboard]
@@ -75,22 +75,18 @@ A Globus endpoint is a data transfer location. Different types of resources (cam
 
 There are two primary classes of endpoints: server endpoints and personal endpoints. Multi-user resources such as campus storage systems and HPC clusters are set up as server endpoints, typically by system administrators. Laptops or other personal computers are set up as _personal_ endpoints, typically by individuals.
 
-[red]#*NEEDS UPDATING*#
-Globus endpoints are named using the format +<globus-username>#<resource-name>+. For example, the XSEDE project has a Globus account under the username "xsede" and server endpoints named +xsede#stampede+ (for the Stampede system at Texas Advanced Computing Center) and +xsede#kraken+ (for the Kraken system at the National Institute for Computational Sciences).  As another example, an individual with a Globus account under the username "johnsmith" might have personal endpoints named +johnsmith#macbook+ and +johnsmith#pc+.
-
 link:https://www.globus.org/globus-connect[Globus Connect] is used to set up server and personal endpoints.
 ====
 
 == Request a data transfer
-Use the Transfer Files page to *select the source and destination endpoints and paths, choose files to transfer, specify the transfer settings,* and *request the transfer* with one of the arrows.
+Use the Transfer Files page to select the source and destination endpoints and paths, choose files to transfer, specify the transfer settings, and request the transfer with one of the arrows.
 
 The Transfer Files screenshot shown here has recommended selections for your first data transfer. Selection descriptions follow the screenshot.
 
 [role="img-responsive center-block"]
 image::images/gs-transfer-3.png[Request Transfer]
 
-[red]#*NEEDS UPDATING*#
-The endpoints +Globus Tutorial Endpoint 1+ and +Globus Tutorial Endpoint 2+ are server endpoints administered by the Globus team for demonstration purposes and are accessible to all Globus users without further authentication. In the left panel, the user can access three files in the +/share/godata/+ path on +Globus Tutorial Endpoint 1+, and has selected two of them (highlighted) to be transferred. In the right panel, the path is +/~/+, indicating the user's home on the +Globus Tutorial Endpoint 2+ endpoint resource. _Note that you must hit "Enter" or click on the "Go" button after typing an endpoint name or path—simply moving the cursor to the next field is not sufficient._
+The endpoints +Globus Tutorial Endpoint 1+ and +Globus Tutorial Endpoint 2+ are server endpoints administered by the Globus team for demonstration purposes and are accessible to all Globus users without further authentication. In the left panel, the user can access three files in the +/share/godata/+ path on +Globus Tutorial Endpoint 1+, and has selected two of them (highlighted) to be transferred. In the right panel, the path is +/~/+, indicating the user's home on the +Globus Tutorial Endpoint 2+ endpoint resource. _Note that you must hit "Enter" or click on the "Go" button after typing an endpoint path—simply moving the cursor to the next field is not sufficient._
 
 Near the bottom, there are also various transfer settings that Globus supports listed. By default, Globus verifies file integrity after transfer using checksums. Click on the question mark icons for explanations of the other transfer settings. Globus gives you powerful control over the behavior of the transfer with a simple mouse click—change the transfer settings if you'd like. You may also enter a label for the transfer, but this is not required.
 
@@ -106,7 +102,7 @@ image::images/gs-transfer-4.png[Requested Transfer]
 ====
 After you request a file transfer, Globus takes over and does the work on your behalf. You can navigate away from the Transfer Files page, close the browser window, and even logout. Globus will optimize the transfer for performance, monitor the transfer for completion and correctness, and recover from network errors and endpoint resource downtime.
 
-The Globus service achieved 99.95% availability in 2013, providing nearly uninterrupted oversight of data transfers taking place on much less reliable networks and endpoint resources. When a problem is encountered part-way through the transfer, Globus resumes from the point of failure and does not retransmit all of the data specified in the original request.
+The Globus service routinely achieves 99.9% availability, providing nearly uninterrupted oversight of data transfers taking place on much less reliable networks and endpoint resources. When a problem is encountered part-way through the transfer, Globus resumes from the point of failure and does not retransmit all of the data specified in the original request.
 
 Globus can handle extremely large data transfers, even those that do not complete within the authentication expiration period of an endpoint (which is controlled by the resource administrator). If the credentials expire before the transfer completes, Globus will notify you to re-authenticate on the endpoint so that Globus can continue the transfer.
 
