@@ -35,6 +35,13 @@ asciidoc for each cell of type 'a'.
 * Endpoint Roles
 ** Replace 'user' principal type with 'identity' principal type.
 
+* Pause Rules
+** Add +identity_id+ and +modified_by_id+ fields; deprecate +username+ and
+   +modified_by+.
+
+* New resources
+** link:../endpoint#_get_shared_endpoint_list[Get shared endpoint list]
+
 == 4.7
 
 * Endpoint Search

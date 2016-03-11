@@ -730,7 +730,7 @@ See also: link:../task#_limited_pause_rule_document[pause_rule_limited document]
 | Method
 | GET
 
-| Response Body | List of pause_rule_limited.
+| Response Body | List of "pause_rule_limited" documents
 |============
 
 
@@ -764,7 +764,7 @@ Get a specific server belonging to the specified endpoint.
 | Method
 | GET
 
-| Response Body | Server document (see above).
+| Response Body | A "server" document
 |============
 
 
@@ -834,6 +834,24 @@ Delete a server belonging to the specified endpoint.
 | DELETE
 
 | Response Body | Result document
+|============
+
+
+=== Get shared endpoint list
+
+Get a list of shared endpoints owned by the current user and hosted by a given
+GridFTP or Globus Connect Personal endpoint. Returns a "BadRequest" error if
+called on an endpoint that can't host shared endpoints.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/my_shared_endpoint_list
+
+| Method
+| GET
+
+| Response Body | An "endpoint_list" document
 |============
 
 
