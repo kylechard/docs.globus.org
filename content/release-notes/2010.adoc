@@ -1,5 +1,5 @@
 ---
-menu_weight: 6
+menu_weight: 50
 short_title: 2010
 ---
 = 2010 Release Notes
