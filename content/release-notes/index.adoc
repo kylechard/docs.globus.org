@@ -2,7 +2,7 @@
 menu_weight: 44
 short_title: Release Notes
 ---
-= 2015 Release Notes
+= 2016 Release Notes
 
 == March (Nexus/UX 03-02)
 === Features
