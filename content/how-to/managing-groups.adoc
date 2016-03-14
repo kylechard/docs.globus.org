@@ -16,7 +16,7 @@ image::images/groups-2.png[]
 [role="img-responsive center-block"]
 image::images/groups-3.png[]
 +
-You can invite users either by providing their email address or by searching for their Globus username. A notification will be sent to the user’s registered email address with a link to use to accept the invitation to the group.
+You can invite users either by providing their email address or by searching for their Globus identity. A notification will be sent to the user’s registered email address with a link to use to accept the invitation to the group.
 +
 - Invite by email address: Enter the email address for the person you wish to invite. This is a good option to use for members who don’t yet have a Globus account.
 +
@@ -26,7 +26,7 @@ image::images/groups-4.png[]
 [role="img-responsive center-block"]
 image::images/groups-5.png[]
 +
-- Invite by Globus username: You can search for a Globus username and check the box next to the user(s) you wish to invite to the group.
+- Invite by Globus identity: You can search for a Globus identity and check the box next to the user(s) you wish to invite to the group.
 +
 [role="img-responsive center-block"]
 image::images/groups-6.png[]
