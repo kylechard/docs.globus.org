@@ -3,29 +3,35 @@
 
 Globus provides capabilities to create and manage groups, which can then be used to share files and folders with a group of Globus users.
 
-. The link:https://www.globus.org/Groups[Groups dashboard] is the home for all group management capability in Globus. You can create a new group by clicking on the "Create New Group" link as shown below.
+. The link:https://www.globus.org/Groups[Groups dashboard] is the home for all group management capability in Globus. You can create a new group by clicking on one of the "Create New Group" links as shown below.
 +
 [role="img-responsive center-block"]
-image::images/141015_Groups_landing_page.png[]
-. Provide a name for the group, and an optional description that tells prospective members a bit more about the group.
+image::images/groups-1.png[]
+. Provide a name for the group, and an optional description that tells prospective members a bit more about the group. Then click "Create Group".
 +
 [role="img-responsive center-block"]
-image::images/141015_Groups_create_dialog.png[]
+image::images/groups-2.png[]
 . You can now add users to the group by inviting other Globus users to join.
 +
 [role="img-responsive center-block"]
-image::images/141015_Groups_invite_people.png[]
+image::images/groups-3.png[]
 +
-You can invite users either by providing their email address or by searching for their Globus username. A notification will be sent to the user’s registered email address with a link to use to accept the invitation to the group.
+You can invite users either by providing their email address or by searching for their Globus identity. A notification will be sent to the user’s registered email address with a link to use to accept the invitation to the group.
 +
 - Invite by email address: Enter the email address for the person you wish to invite. This is a good option to use for members who don’t yet have a Globus account.
 +
 [role="img-responsive center-block"]
-image::images/141015_Groups_invite_email.png[]
-+
-- Invite by Globus username: You can search for a Globus username and check the box next to the user(s) you wish to invite to the group.
+image::images/groups-4.png[]
 +
 [role="img-responsive center-block"]
-image::images/141015_Groups_invite_people.png[]
+image::images/groups-5.png[]
++
+- Invite by Globus identity: You can search for a Globus identity and check the box next to the user(s) you wish to invite to the group.
++
+[role="img-responsive center-block"]
+image::images/groups-6.png[]
++
+[role="img-responsive center-block"]
+image::images/groups-7.png[]
 
 NOTE: Group policy settings can be configured under the Settings tab.
