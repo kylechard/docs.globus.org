@@ -360,6 +360,9 @@ This is a boolean value that determines if sharing is enabled on this particular
 ==== [go-icon-pp]#+SharingRestrictPaths+ option#
 This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a shared endpoint through Globus, the SharingRestrictPaths option can only set further access restrictions to the endpoint owner's local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
 
+==== +RequireEncryption+ option
+This boolean value determines if encryption will be forced for the GridFTP server being configured on this host. Please note that, if set to True, transfers will fail if they are attempted without encryption. 
+
 === [MyProxy] section
 
 ==== +Server+ option
