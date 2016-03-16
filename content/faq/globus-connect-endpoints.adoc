@@ -331,6 +331,14 @@ $ endpoint-modify --force-encryption [input]#my#endpoint#
 
 All transfers to/from that endpoint will use encryption, whether submitted from the CLI or the Web, even though the user will not see that option checked in the Web.
 
+It is also possible to force encryption via the GridFTP configuration. This is done by setting the following in the /etc/gridftp.conf file:
+
+----
+encrypt_data 1
+----
+
+Please note that setting this option will cause transfers to fail if the client doesn't request an authenticated and encrypted data channel.
+
 == Why do I get an SSLv3 handshake error?
 ----terminal
 [output]#530-globus_xio: Authentication Error
