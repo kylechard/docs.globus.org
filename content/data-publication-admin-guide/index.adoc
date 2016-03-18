@@ -295,6 +295,9 @@ for the identifier.
 [[configuring-the-forms-and-workflows]]
 === Configuring the Forms and Workflows
 
+[role="img-responsive center-block"]
+image::images/WorkflowConfig.png[Configuring Forms and Workflows]
+
 The "Workflow Settings" pane is used to define what forms and workflow
 steps will be used by the collection. The "Input Form" dropdown lists
 the available forms which can be configured for use during the
@@ -368,9 +371,6 @@ complete a submission it will directly enter the collection.
 NOTE: If any form of curation is selected, a corresponding group must
 be selected as described in the
 link:#assigning-groups-to-roles[following section].
-
-[role="img-responsive center-block"]
-image::images/WorkflowConfig.png[Configuring Forms and Workflows]
 
 [[assigning-groups-to-roles]]
 === Assigning Groups to Roles
