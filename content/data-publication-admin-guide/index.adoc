@@ -369,12 +369,11 @@ NOTE: If any form of curation is selected, a corresponding group must
 be selected as described in the
 link:#assigning-groups-to-roles[following section].
 
+[role="img-responsive center-block"]
+image::images/WorkflowConfig.png[Configuring Forms and Workflows]
 
 [[assigning-groups-to-roles]]
 === Assigning Groups to Roles
-
-[role="img-responsive center-block"]
-image::images/WorkflowConfig.png[Configuring Forms and Workflows]
 
 All user roles within a collection are mapped to user groups in
 Globus.  Using this method, once groups have been configured, their
