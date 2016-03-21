@@ -11,7 +11,7 @@ short_title: Transfer and Sharing
 
 toc::[]
 
-== What’s the difference between Globus and GridFTP?
+== What's the difference between Globus and GridFTP?
 Globus is software-as-a-service (SaaS) for file transfer, sharing, and data publication. It is a cloud-hosted service, operated by the Globus development team, that acts as a third-party mediator/facilitator for managing data on storage systems (or endpoints) that are owned and managed by their respective owners.
 
 GridFTP is user-installable software that is part of the Globus Toolkit and is used by grid installers and developers building large-scale data movement solutions. Globus uses the GridFTP protocol for transferring files (HTTP support is planned for a future release).
@@ -210,34 +210,45 @@ This behavior prevents abusive symlinks from breaking out of the path restrictio
 If you trust users with access to an endpoint not to create this kind of exploitative symlink, you can override this behavior on Globus Connect Server endpoints with the +rp-follow-symlinks+ option to the GridFTP server. This option is not readily available with Globus Connect Personal installations.
 
 == How do I link directly to Globus application pages?
-Many of the pages in the Globus application can be linked with parameters that allow the page to open pre-configured for your needs.  When you link to a Globus application page, the application will ensure that the user is logged in to the Globus website (and prompt the user to authenticate if the user is not already logged in).  If you have a specific use case or application feature that isn’t covered in this document please let us know at support@globus.org.
+Many of the pages in the Globus application can be linked with parameters that allow the page to open pre-configured for your needs.  When you link to a Globus application page, the application will ensure that the user is logged in to the Globus website (and prompt the user to authenticate if the user is not already logged in).  If you have a specific use case or application feature that isn't covered in this document please let us know at support@globus.org.
 
 What follows is a list of pages that are configurable.
 
 === Transfer Files (/app/transfer)
 The Transfer Files page provides the following parameters to preselect the two sides of the Start Transfer page:
 
-- origin - represents is the endpoint and path for the left hand side of the page.
-- dest - represents is the endpoint and path for the left hand side of the page.
+- origin_id - represents the id of the endpoint for the left hand side of the page.
+- origin_path - represents the path of the endpoint for the left hand side of the page.
+- destination_id - represents the id of the endpoint and path for the left hand side of the page.
+- destination_path - represents the path of the endpoint for the right hand side of the page.
 
-Endpoints which are specified on the URL in this fashion will require activation if they are not already activated by the user.  Parameter values must be url encoded, especially ensuring that the "#" symbol is translated to "%23" for the path to work.    
+Endpoints which are specified on the URL in this fashion will require activation if they are not already activated by the user.  You can determine the parameters and link by setting the desired endpoint(s) on the transfer page and selecting "get link" from the function menu.
+
+[role="img-responsive center-block"]
+image::images/direct_link-1.png[]
 
 ==== Some examples:
 
-* https://www.globus.org/xfer/StartTransfer?origin=go%23ep1
-** Sends the user to the Start Transfer page with the endpoint [uservars]#go#ep1# selected on the left side.
-* https://www.globus.org/xfer/StartTransfer?origin=go%23ep2&dest=go%23ep1
-** Sends the user to the Start Transfer page with the endpoint [uservars]#go#ep2# selected on the left side and [uservars]#go#ep2# on the right.
-* https://www.globus.org/xfer/StartTransfer?origin=go%23ep2/shareable
-** Sends the user to the Start Transfer page with the endpoint [uservars]#go#ep2# and the path [uservars]#/shareable# selected on the left side.
+* https://www.globus.org/app/transfer?origin_id=ddb59aef-6d04-11e5-ba46-22000b92c6ec
+** Sends the user to the Start Transfer page with the endpoint [uservars]#Globus Tutorial Endpoint 1# selected on the left side.
+* https://www.globus.org/app/transfer?origin_id=ddb59aef-6d04-11e5-ba46-22000b92c6ec&destination_id=ddb59af0-6d04-11e5-ba46-22000b92c6ec
+** Sends the user to the Start Transfer page with the endpoint [uservars]#Globus Tutorial Endpoint 1# selected on the left side and [uservars]#Globus Tutorial Endpoint 2# on the right.
+* https://www.globus.org/app/transfer?origin_id=ddb59aef-6d04-11e5-ba46-22000b92c6ec&origin_path=%2Fshare%2F&destination_id=ddb59af0-6d04-11e5-ba46-22000b92c6ec
+** Sends the user to the Start Transfer page with the endpoint [uservars]#Globus Tutorial Endpoint 1# and the path [uservars]#/share/# selected on the left side.
 
 === Groups (/Groups)
-The groups page can be set up to automatically view a specific group by specifying the group id in the URL with the "id" parameter.  For example the "BIRN Community" group has an id of [uservars]#e34a302c-7f3b-11e1-aeb3-1231380dcd5a#, so the URL to automatically link to this group is "link:https://www.globus.org/Groups#id=e34a302c-7f3b-11e1-aeb3-1231380dcd5a[https://www.globus.org/Groups#id=e34a302c-7f3b-11e1-aeb3-1231380dcd5a]".  Groups with visibility policies that prevent visibility to non Globus members will display an error page if the user utilizing the link does not meet the visibility requirements.  
+The groups page can be set up to automatically view a specific group by specifying the group id in the URL. For example the "Demo Group" group has an id of [uservars]#7e183f30-e177-11e5-ba63-22000ab80e73#, so the URL to automatically link to this group is "link:https://www.globus.org/app/groups/7e183f30-e177-11e5-ba63-22000ab80e73[https://www.globus.org/app/groups/7e183f30-e177-11e5-ba63-22000ab80e73]". Groups with visibility policies that prevent visibility to non Globus members will display an error page if the user utilizing the link does not meet the visibility requirements. You can determine the group id and link by selecting the desired group on the link:https://www.globus.org/app/groups[groups page] and selecting "get link" from the function menu.
 
-The groups page also has a function for displaying the "administrative queue" which is a list of all the groups that have actions requiring the user’s attention.  This can be accessed by utilizing the +showQueue=true+ parameter.  It cannot be used in conjunction with the id at this time.  
+[role="img-responsive center-block"]
+image::images/direct_link-2.png[]
 
-=== Activate Endpoints (/activate)
-The Activate Endpoints page provides the +ep+ parameter to specify one or more endpoints the user which will be prompted to activate if they are not already activated.  As with Start Transfer it is incredibly important to encode the endpoint names; for example [uservars]#go#ep1# should be sent as [uservars]#go%23ep1#
+[role="img-responsive center-block"]
+image::images/direct_link-3.png[]
+
+The groups page also has a function for displaying the "administrative queue" (/app/groups/messages) which is a list of all the groups that have actions requiring the user's attention. It cannot be used in conjunction with the id at this time.  
+
+=== Activate Endpoints (/activate) [red]#NEEDS EDITING#
+The Activate Endpoints page provides the +ep+ parameter to specify one or more endpoints the user which will be prompted to activate if they are not already activated. As with Start Transfer it is incredibly important to encode the endpoint names; for example [uservars]#go#ep1# should be sent as [uservars]#go%23ep1#
 
 ==== Some examples:
 
@@ -245,7 +256,7 @@ The Activate Endpoints page provides the +ep+ parameter to specify one or more e
 - https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken,xsede%23trestles
 - https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken,ucrcc%23midway
  
-=== SignUp (/SignUp)
+=== SignUp (/SignUp) [red]#NEEDS EDITING#
 Often a site wants to encourage its users to create an account at Globus.org.  To help the process along, if you have a username and fullname preference, Globus will allow those fields to be prefilled by specifying them with the parameter names +username+ and +fullname+.  For example:
 
 - https://www.globus.org/SignUp?fullname=Alan+Turing&username=aturing
@@ -253,9 +264,9 @@ Often a site wants to encourage its users to create an account at Globus.org.  T
 Additionally, the page allows for the following parameters to be sent to ensure that the following steps are taken before the "Sign Up" process is complete:
 
 - +join_group+ - The value for this parameter is a group id (as seen in the Groups example above).  When this parameter is specified upon successful account creation a next step will appear requesting that the user join the specified group. As an example https://www.globus.org/SignUp?join_group=e34a302c-7f3b-11e1-aeb3-1231380dcd5a.  will prompt the user to join the BIRN Community before completing SignUp.  If the user is already a member of this group, no prompt will be shown.
-- +required_identity+ - The value for this parameter is the external identity provider url for an identity that the requester desires to have linked to the user’s account.  When this is specified, after a successful account creation the user will be prompted to sign in with the associated IDP, upon successful authentication with the identity the user will subsequently able to use this identity for signin purposes.  For example: https://www.globus.org/SignUp?required_identity=bluewaters.ncsa.illinois.edu will request a link to bluewaters, and https://www.globus.org/SignUp?required=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid will request a link to Google’s identity service.
+- +required_identity+ - The value for this parameter is the external identity provider url for an identity that the requester desires to have linked to the user's account.  When this is specified, after a successful account creation the user will be prompted to sign in with the associated IDP, upon successful authentication with the identity the user will subsequently able to use this identity for signin purposes.  For example: https://www.globus.org/SignUp?required_identity=bluewaters.ncsa.illinois.edu will request a link to bluewaters, and https://www.globus.org/SignUp?required=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid will request a link to Google's identity service.
 
-=== SignIn (/SignIn)
+=== SignIn (/SignIn) [red]#NEEDS EDITING#
 The SignIn pages provides the following set of parameters that allow for minor customization of the SignIn experience:
 
 - +provider+ - This parameter when set properly will force the Sign In page to display the specified provider as the preselected identity provider.  Many universities wish to have their users loing to Globus with CI Logon, so the page can be set to preselect it using the URL https://www.globus.org/SignIn?provider=cilogon.org
@@ -263,7 +274,7 @@ The SignIn pages provides the following set of parameters that allow for minor c
 
 Additionally, the SignIn page allows the same +join_group+ and +link_identity+ parameters as the Sign Up page to so as to ensure that a user has joined a group or linked a required identity. See the SignUp section for more details about the parameters +join_group+ and +required_identity+.
 
-=== OAuth (/OAuth)
+=== OAuth (/OAuth) [red]#NEEDS EDITING#
 Globus can be used as an OAuth identity provider.  To set up Globus as an identity provider for your application, contact Globus support at support@globus.org.  Once your site is set up to communicate via OAuth the following parameters can be sent to the OAuth page:
 
 - +response_type+ - This should always be set to "code"
