@@ -4,15 +4,15 @@ short_title: Release Notes
 ---
 = 2016 Release Notes
 
-== March (Nexus/UX 03-02)
+== March
 === Features
 - New Identity Providers for login: Compute Canada, University of New Mexico
+
 === Improvements
 - Additional branding on login and consent pages: GPCR, ISRD
 - Logout from Globus now suggests that you logout from your Identity Providers
-=== Bugfixes
 
-== Feb (Nexus/UX 02-23, 02-25, Transfer 5.0 Koa, API)
+== February
 === Features
 - Major changes to enhance the login mechanism to Globus (details)
 - New Globus ID Identity Provider operated by Globus; previously existing Globus accounts move to Globus ID
@@ -20,10 +20,12 @@ short_title: Release Notes
 - New page for users to consent to Globus or integrated services accessing their data
 - New pages for users to manage Identities and Consents in Globus
 - New CLI command ‘identity-details’ for querying Globus Auth identities
+
 === Improvements
 - Complete overhaul of Globus Web App
 - New fields in Transfer REST API to support Globus Auth (Transfer API detailed change history)
 - Change ACLs and Roles with principal type ‘user’ to have principal type ‘identity’, and update REST API and CLI commands accordingly.
 - Added support for Globus Auth linked identities for endpoints, endpoint roles, ACLs, and bookmarks
+
 === Bugfixes
 - Stability fixes to Globus ID and Groups services
