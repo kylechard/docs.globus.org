@@ -1077,7 +1077,7 @@ For a given transfer, the concurrency is calculated as the smallest value across
   A managed endpoint is an xref:endpoint-anchor[endpoint] that is covered under a 
   link:https://www.globus.org/providers/provider-plans[provider plan] and 
   allows advanced features (like xref:sharing_section[sharing]) to be enabled. To convert an existing 
-  endpoint into a managed endpoint see this link:../faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpointwriteup]. 
+  endpoint into a managed endpoint see this link:../faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpoint[writeup]. 
 [[myproxy-anchor]]MyProxy::
   MyProxy is open source software for managing X.509 Public Key
   Infrastructure (PKI) security credentials (certificates and private
