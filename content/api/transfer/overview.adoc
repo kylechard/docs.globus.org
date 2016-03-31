@@ -27,18 +27,19 @@ standard status codes.
 
 === Authentication
 
-Authentication to the Transfer API requires using the Goauth Nexus API to
-obtain credentials. Goauth supports an OAuth 2.0 compatible redirection
-workflow, and a client credential workflow.
+Authentication to the Transfer API requires using either the new Globus Auth
+API, or the legacy Nexus Goauth API, to obtain an access token. At time of this
+writing Globus Auth only supports OAuth2 authorization code grant (which uses
+a 3-legged redirection flow), and it should be used by web applications instead
+of Nexus.
 
-NOTE: With the Globus release on February 13th 2016, we have updated support
-for authenticating to Globus and obtaining access tokens using the Globus Auth
-API. For backwards compatibility, we will continue to support the use of
-Nexus tokens. We will announce deprecation of Nexus shortly, and
-application developers should plan for transitioning to the Globus Auth
-API.
+Thick client applications that can't use the OAuth2 autorization code
+grant can continue using legacy Nexus Goauth, but developers should plan for
+transitioning to the Globus Auth API when it's feature set is expanded. We will
+announce the new features in Globus Auth and deprecation of Nexus shortly, and
+provide more detailed documentation for Globus Auth.
 
-==== Globus Goauth: Client Credential
+==== Nexus Goauth: Client Credential
 
 This method requires a link:https://www.globusid.org[Globus ID] identity to be
 linked to the user's Globus account. It involves two steps:
@@ -102,7 +103,7 @@ curl -H "Authorization : Bearer $TOKEN" \
 You could also paste the token directly but then it will be stored in your
 shell history, which is poor security practice.
 
-==== Globus Goauth: OAuth
+==== Globus Auth: OAuth2 authorization code grant
 
 In this method, a web application redirects the user agent (user's web browser)
 to Globus to authenticate, and provides a callback URL. Globus
@@ -118,8 +119,7 @@ third party web applications.
 
 Once the application has the access token, it is passed to the Transfer API in
 the same way as for the client credential workflow (in the Authorization
-header). For more information about using OAuth please contact us on the
-mailing list.
+header). We will be providing more detailed documentation and examples shortly.
 
 === Terminology
 
