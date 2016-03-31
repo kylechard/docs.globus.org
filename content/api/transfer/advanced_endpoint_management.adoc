@@ -743,8 +743,9 @@ filter is present.
 
 | filter_endpoint
 | equality
-| Single endpoint canonical name. Return only tasks with a matching source or
-  destination endpoint or matching source or destination host endpoint.
+| Single endpoint id or canonical name. Using canonical name is deprecated.
+  Return only tasks with a matching source or destination endpoint or matching
+  source or destination host endpoint.
 
 | filter_is_paused
 | boolean equality
@@ -781,6 +782,13 @@ filter is present.
   See the link:../task#_task_fields[faults field] documentation for
   details.
 
+| filter_local_user
+| equality
+| A valid username for the target system running the endpoint, as a utf8
+  encoded string. Requires that +filter_endpoint+ is also set. Return only
+  tasks that have successfully fetched the local user from the endpoint, and
+  match the values of +filter_endpoint+ and +filter_local_user+ on the source
+  or on the destination.
 |===================
 
 ////
