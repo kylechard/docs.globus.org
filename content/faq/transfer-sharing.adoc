@@ -236,7 +236,7 @@ image::images/direct_link-1.png[]
 * https://www.globus.org/app/transfer?origin_id=ddb59aef-6d04-11e5-ba46-22000b92c6ec&origin_path=%2Fshare%2F&destination_id=ddb59af0-6d04-11e5-ba46-22000b92c6ec
 ** Sends the user to the Start Transfer page with the endpoint [uservars]#Globus Tutorial Endpoint 1# and the path [uservars]#/share/# selected on the left side.
 
-=== Groups (/Groups)
+=== Groups (/app/groups)
 The groups page can be set up to automatically view a specific group by specifying the group id in the URL. For example the "Demo Group" group has an id of [uservars]#7e183f30-e177-11e5-ba63-22000ab80e73#, so the URL to automatically link to this group is "link:https://www.globus.org/app/groups/7e183f30-e177-11e5-ba63-22000ab80e73[https://www.globus.org/app/groups/7e183f30-e177-11e5-ba63-22000ab80e73]". Groups with visibility policies that prevent visibility to non Globus members will display an error page if the user utilizing the link does not meet the visibility requirements. You can determine the group id and link by selecting the desired group on the link:https://www.globus.org/app/groups[groups page] and selecting "get link" from the function menu.
 
 [role="img-responsive center-block"]
@@ -247,14 +247,8 @@ image::images/direct_link-3.png[]
 
 The groups page also has a function for displaying the "administrative queue" (/app/groups/messages) which is a list of all the groups that have actions requiring the user's attention. It cannot be used in conjunction with the id at this time.  
 
-=== Activate Endpoints (/activate) [red]#NEEDS EDITING#
-The Activate Endpoints page provides the +ep+ parameter to specify one or more endpoints the user which will be prompted to activate if they are not already activated. As with Start Transfer it is incredibly important to encode the endpoint names; for example [uservars]#go#ep1# should be sent as [uservars]#go%23ep1#
-
-==== Some examples:
-
-- https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken
-- https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken,xsede%23trestles
-- https://www.globus.org/xfer/ActivateEndpoints?ep=xsede%23kraken,ucrcc%23midway
+=== Activate Endpoints
+For a specific endpoint, go to +++https://www.globus.org/app/endpoints/+++[uservars]#<uuid>#/activate. To see all endpoints that the user has credentials that are being used for active transfers and about to expire, go to https://www.globus.org/app/endpoints?reactivatable=1&scope=in-use.
  
 === SignUp (/SignUp) [red]#NEEDS EDITING#
 Often a site wants to encourage its users to create an account at Globus.org.  To help the process along, if you have a username and fullname preference, Globus will allow those fields to be prefilled by specifying them with the parameter names +username+ and +fullname+.  For example:
