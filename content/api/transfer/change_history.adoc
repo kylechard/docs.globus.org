@@ -19,6 +19,24 @@ Also, using 'a' type cells when not needed makes asciidoc slower; it executes
 asciidoc for each cell of type 'a'.
 ////
 
+== 5.1
+
+* Endpoint Search
+** Add +filter_owner_id+ to replace the deprecated +filter_owner_username+.
+   The latter is still supported for now, but clients should migrate.
+** Ranking: managed endpoints are ranked higher, miscellaneous improvements.
+
+* Task
+** Add +owner_id+ field, deprecate +username+.
+
+* Advanced Endpoint Management
+** Add +owner_id+ field to "task" document, deprecate +username+.
+** Add +filter_owner_id+ query parameter to +task_list+ resource, and
+   deprecate +filter_username+.
+** Add +source_local_user+, +source_local_user_status+,
+   +destination_local_user+, and +destination_local_user_status+
+   to "task" documents.
+
 == 5.0
 
 * Endpoint

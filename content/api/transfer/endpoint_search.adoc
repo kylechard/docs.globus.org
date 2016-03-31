@@ -91,7 +91,7 @@ The +limit+ query parameter sets how many results to return (max 100), and the
 [cols="h,5"]
 |============
 | URL
-| /endpoint_search?filter_fulltext=QUERY&filter_scope=SCOPENAME&filter_owner_username=USERNAME&limit=N&offset=M
+| /endpoint_search?filter_fulltext=QUERY&filter_scope=SCOPENAME&filter_owner_id=IDENTITY_ID&limit=N&offset=M
 
 | Method
 | GET
@@ -131,7 +131,7 @@ The +limit+ query parameter sets how many results to return (max 100), and the
 
 | limit
 | int
-| 100
+| 25
 | Maximum number of results to return. The maximum allowed limit is 100.
 
 | filter_scope
@@ -147,14 +147,22 @@ The +limit+ query parameter sets how many results to return (max 100), and the
   in detail above. This is required if the +filter_scope+ is "all", otherwise
   it's optional.
 
+| filter_owner_id
+| string
+| null
+| Limit search to endpoints owned by the specified Globus Auth identity.
+  See also the +owner_id+ field of the +endpoint+ document.  To get a list of
+  the user's own endpoints, use +filter_scope+ "my-endpoints" instead.
+  Conflicts with scopes "my-endpoints", "my-gcp-endpoints", and
+  "shared-by-me".
+
 | filter_owner_username
 | string
 | null
-| [DEPRECATED] This will be replaced by a new +filter_owner_id+ parameter in
-  the near future. Limit search to endpoints owned by the specified globus
+| [DEPRECATED] Use +filter_owner_id+ instead.
+  Limit search to endpoints owned by the specified globusid.org
   user, identified by username. See also the +username+ field of the
-  +endpoint+ document.  To get a list of the user's own endpoints,
-  use +filter_scope+ "my-endpoints" instead.
+  +endpoint+ document.
 |===================
 
 
