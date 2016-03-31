@@ -157,6 +157,50 @@ rules.
 | boolean
 | For active tasks, this will be True if +nice_status+ is either +OK+ or
   +Queued+. Always null for completed tasks, which do not have +nice_status+.
+
+| source_local_user
+| string
+| The name of the local user that the activation credential mapped to
+  on the source endpoint at the time the task was started. This will always
+  be "null" for S3 endpoints, and will be "null" initially for all tasks
+  until the information can be acquired. For Globus Connect Personal endpoint,
+  this will be the local user that the application was run as during
+  setup. For shared endpoints, this will be the local user that was used
+  when creating the shared endpoint. This will also be "null" on older jobs,
+  that were started before this feature was added, and if the GridFTP server
+  of the endpoint does not support the `SITE WHOAMI` command.
+
+| source_local_user_status
+| string
+a|A status code indicating if the local user is available for the source
+  endpoint, or the reason it's not available. It can have any of the
+  following values, and new values may be added in the future:
+
+    "OK":: The local user is set.
+    "NO_PERMISSION":: The user does not have management permissions on the
+                      endpoint.
+    "NOT_SCANNED":: For active tasks, this indicates that the async process
+                    that fetches the local user has not completed. For
+                    complete tasks, this indicates that the task completed
+                    before this feature was added or cancelled before the
+                    local user could be fetched.
+    "S3_UNSUPPORTED":: The endpoint is an S3 endpoint, and does not support
+                       the local user feature.
+    "ENDPOINT_ERROR":: An error occured while contacting the endpoint to
+                       determine the local user. The most likely cause is
+                       an older GridFTP server that does not support
+                       the `SITE WHOAMI` command.
+
+| destination_local_user
+| string
+| Like +source_local_user+ but for the destination endpoint. Always
+  "null" for delete tasks, which don't have a destination.
+
+| destination_local_user_status
+| string
+| Like +source_local_user_status+, but for the destination endpoint. In
+  addition to the status codes described above, it can have the value
+  "NO_ENDPOINT" for delete tasks.
 |===================
 
 === Admin cancel document
@@ -680,17 +724,28 @@ filter is present.
   will be returned. This filter can't be combined with any other filter.
   If another filter is passed, a +BadRequest+ will be returned.
 
+| filter_owner_id
+| equality
+| A Globus Auth identity id. Limit results to tasks submitted by the
+  specified identity.
+  Returns +UserNotFound+ if the identity does not exist or has never used the
+  Globus Transfer service. If no tasks were submitted by this user to an
+  endpoint the current user has manager privileges on, an empty result set
+  will be returned.
+
 | filter_username
 | equality
-| A Globus username. Limit results to tasks submitted by the specified Globus
+| [DEPRECATED] Use +filter_owner_id+ instead.
+  A Globus username. Limit results to tasks submitted by the specified Globus
   user. Returns +UserNotFound+ if the user does not exist. If no tasks
   were submitted by this user to an endpoint the current user has manager
   privileges on, an empty result set will be returned.
 
 | filter_endpoint
 | equality
-| Single endpoint canonical name. Return only tasks with a matching source or
-  destination endpoint or matching source or destination host endpoint.
+| Single endpoint id or canonical name. Using canonical name is deprecated.
+  Return only tasks with a matching source or destination endpoint or matching
+  source or destination host endpoint.
 
 | filter_is_paused
 | boolean equality
@@ -727,6 +782,13 @@ filter is present.
   See the link:../task#_task_fields[faults field] documentation for
   details.
 
+| filter_local_user
+| equality
+| A valid username for the target system running the endpoint, as a utf8
+  encoded string. Requires that +filter_endpoint+ is also set. Return only
+  tasks that have successfully fetched the local user from the endpoint, and
+  match the values of +filter_endpoint+ and +filter_local_user+ on the source
+  or on the destination.
 |===================
 
 ////

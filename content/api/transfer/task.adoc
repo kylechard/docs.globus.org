@@ -86,11 +86,6 @@ Other task types may be added in the future.
                  | Identity id of the task owner. If the task was submitted
                    with multiple linked identities, the owner will be the
                    primary identity.
-| owner_string   | string
-                 | The username of the primary owner identity, at the time
-                   of creation. This should be used for display purposes
-                   only - use owner_id for interacting with the globus APIs
-                   like groups and auth.
 | request_time   | string
                  | The date and time the task was created, in ISO 8601 format.
 | completion_time| string
@@ -349,7 +344,9 @@ document] for details.
 
 | filter | string
 | For paged resources, return only resources that match all of the specified
-  filter criteria.
+  filter criteria. The value must be a "/" separated list of of
+  "FIELD_NAME:FIELD_FILTER" strings. See the +event_list+ and +task_list+
+  documentation for details on what fields are supported for each.
 |===================
 
 
@@ -444,6 +441,57 @@ Get a paged list of all tasks submitted by the current user.
 ------------------------------------
 |============
 
+==== Filter and Order By Options
+
+Fields allowed in the +filter+ and +orderby+ query parameters.
+
+.Task List Filter Example
+-------
+GET /task_list?filter=status:ACTIVE,INACTIVE/label:~experiment1*
+-------
+Get tasks that are still running (status ACTIVE or INACTIVE), and have a label
+that begins with the string "experiment1".
+
+[cols="1,1,8",options="header"]
+|===================
+| Name              | Type  | Description
+
+| task_id
+| string list
+| Comma separated list of UUID strings. Return only tasks with the
+  specified task ids. Only returns tasks owned by the current user.
+
+| status
+| string list
+| Comma separated list of status codes (ACTIVE, INACTIVE, FAILED, SUCCEEDED).
+  Return only tasks with one of the specified statuses.
+
+| label
+| pattern list
+| Comma separated list of patterns to match against the label field. Returns
+tasks that match any of the patterns. Each pattern is an operator, followed
+by a string. The operator is one of `!`, `=`, `~`, or `!~`. The `=` operator
+requires an exact match, and `!` matches anything other than the specified
+string. The `~` operator is a case-insentive match and allows the use of
+`*` as a wildcard. The `!~` operator matches anything that does not match
+the pattern. For both `~` operators, a literal `*` can be escaped as
+`\*`, and a literal backslash can be escaped as `\\`. As a shortcut, if no
+operator is specified, `=` (exact match) is assumed.
+
+| request_time
+| datetime range
+| Accepts a time range, specified by a comma separated list of two ISO
+date/time strings. If one of the dates is ommited, it forms an open range, so
+"dt," returns all records with date greator or equal to dt, and ",dt" returns
+all records with dates less than or equal to dt. If there is no comma, it is
+treated in the same way as "dt,". If the time is omitted from a date/time,
+it's assumed to be 00:00.
+
+| completion_time
+| datetime range
+| Like the request time filter, but for the completion time.
+|===================
+
 
 === Get task by id
 
@@ -508,7 +556,7 @@ of any higher level authority they have been granted.
 [cols="h,5"]
 |============
 | URL
-| /task/<task_id>
+| /task/<task_id>/cancel
 
 | Method
 | POST
@@ -528,7 +576,8 @@ of any higher level authority they have been granted.
 
 === Get event list
 
-Get a paged list of all events, including error and info events.
+Get a paged list of all events, including error and info events. The results
+are ordered by +time+ descending (newest first).
 
 [cols="h,5"]
 |============
@@ -571,6 +620,14 @@ Get a paged list of all events, including error and info events.
 
 
 ==== Filter Options
+
+Fields allowed in the +filter+ query parameter.
+
+.Event List Filter Example
+-------
+GET /event_list?filter=is_error:1
+-------
+Get only error events.
 
 [cols="1,1,8",options="header"]
 |===================

@@ -345,18 +345,22 @@ code hierarchy.
 Attempt to auto activate an endpoint. The response will always contain
 a +code+ field. If the code is "AutoActivateFailed", the response will also
 include an activation requirements document, which can be filled in and
-submited to activate.
+submited to activate. On success, it will return a result code of the
+form "AutoActivated.CREDENTIAL_SOURCE", where CREDENTIAL_SOURCE indicates the
+how the credential was acquired.
 
 The optional +if_expires_in+ query parameter can be used to attempt auto
-activation only if the endpoint is not already activated or if it's activated
-but will expires within the specified number of seconds. This is the suggested
-method of operation for most clients, before attempting any operation on the
-endpoint. For foreground operation like directory listing and making a
-directory, 60 seconds is an appropriate value. For submitting large transfer
-and delete tasks, clients may want to use a much higher value, e.g. 86400
-for one day. Note that while most identity providers allow activations to
-last for several days, some may use short activations, so this paramater
-should be set accordingly.
+activation only if the endpoint is not already activated or if it's
+activated but will expire within the specified number of seconds. If
+the endpoint is activated and meets the expires in, code
+"AlreadyActivated" will be returned. Using +if_expires_in+ is the
+suggested method of operation for most clients, before attempting any
+operation on the endpoint. For foreground operation like directory
+listing and making a directory, 60 seconds is an appropriate value. For
+submitting large transfer and delete tasks, clients may want to use a
+much higher value, e.g. 86400 for one day. Note that while most identity
+providers allow activations to last for several days, some may use short
+activations, so this paramater should be set accordingly.
 
 [cols="h,5"]
 |============
@@ -378,6 +382,9 @@ activation method, and fill in values for the chosen activation method. The
 requirements for the other methods not being used must be removed before
 submitting the request.
 
+On success, it will return a result code of the form "Activated.TYPE", where
+TYPE indicates the type of activation used.
+
 [cols="h,5"]
 |============
 | URL
@@ -389,4 +396,27 @@ submitting the request.
 | Request Body  | An +activation_requirements+ document with method values
                   filled in for one method.
 | Response Body | A +result+ document.
+|============
+
+=== Deactivate endpoint
+
+"Deactivating" an endpoint removes the credential, if any, associated with the
+endpoint.
+
+NOTE: A deactivated endpoint can still end up being autoactivated, for
+example via the globus.org web application, if there is another endpoint
+with the same identity provider that is still activated. To completely
+remove all instances of a credential, all endpoints with the identity
+provider that have been used by the user must be deactivated.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint/<endpoint_xid>/deactivate
+
+| Method
+| POST
+
+| Response Body | A +result+ document, with +code+ "NotActivated"
+                  or "Deactivated".
 |============
