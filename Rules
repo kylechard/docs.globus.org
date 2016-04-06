@@ -16,6 +16,7 @@
 # ignore this directory
 ignore '/menus/*/'
 ignore '/site-docs/asciiguide-old*'
+ignore '/release-notes*'
 
 preprocess do
 

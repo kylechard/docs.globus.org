@@ -28,9 +28,6 @@ menus:
             -
                 title: 'Command Line Interface'
                 link: '/cli/'
-            -
-                title: 'Release Notes'
-                link: '/release-notes'
       -
         title: 'Toolkit'
         link: 'http://toolkit.globus.org/toolkit/'
