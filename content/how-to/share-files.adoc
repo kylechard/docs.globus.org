@@ -19,13 +19,13 @@ image::images/sharing-2.png[]
 [role="img-responsive center-block"]
 image::images/sharing-3.png[]
 +
-. Set permissions on the shared endpoint. You can set individual permissions (granted to Globus user [uservars]#grohder# in this example) at both the top level of a directory share, and also to the subdirectories in the share as well. The users you share with will receive an email notification containing a link to the shared endpoint. You may add a customized message to this email. If you do not want to send an email, you may uncheck the "Send Email" checkbox.
+. Set sharing permissions on the shared endpoint. You can set individual permissions (granted to Globus user [uservars]#grohder# in this example) at both the top level of a directory share, and also to the subdirectories in the share as well. The users you share with will receive an email notification containing a link to the shared endpoint. You may add a customized message to this email. If you do not want to send an email, you may uncheck the "Send Email" checkbox.
 +
 NOTE: allowing write access implies the user can modify and/or delete the files or folders you give them access to.
 +
 [role="img-responsive center-block"]
 image::images/sharing-4.png[]
-. In addition to sharing with individual users, you can also set permissions for all members of a Globus group (click link:../managing-groups[here] for instructions on creating Globus groups).
+. In addition to sharing with individual users, you can also set sharing permissions for all members of a Globus group (click link:../managing-groups[here] for instructions on creating Globus groups).
 +
 [role="img-responsive center-block"]
 image::images/sharing-5.png[]
@@ -54,7 +54,7 @@ The Roles tab can be used to assign a role (currently access manager is the only
 [role="img-responsive center-block"]
 image::images/sharing-9.png[]
 +
-After the access manager role is assigned to a user, the user will have read/write access for the shared endpoint and can also control access to the shared endpoint for other users. The screen below reflects user Gigi's permissions for the shared endpoint after he has been assigned the access manager role.
+After the access manager role is assigned to a user, the user will have read/write access for the shared endpoint and can also control access to the shared endpoint for other users. The screen below reflects user Gigi's permissions for the shared endpoint after she has been assigned the access manager role.
 +
 [role="img-responsive center-block"]
 image::images/sharing-10.png[]
