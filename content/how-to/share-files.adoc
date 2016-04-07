@@ -19,7 +19,7 @@ image::images/sharing-2.png[]
 [role="img-responsive center-block"]
 image::images/sharing-3.png[]
 +
-. Set sharing permissions on the shared endpoint. You can set individual permissions (granted to Globus user [uservars]#grohder# in this example) at both the top level of a directory share, and also to the subdirectories in the share as well. The users you share with will receive an email notification containing a link to the shared endpoint. You may add a customized message to this email. If you do not want to send an email, you may uncheck the "Send Email" checkbox.
+. Set permissions on the shared endpoint. You can set individual permissions (granted to Globus user [uservars]#grohder# in this example) at both the top level of a directory share, and also to the subdirectories in the share as well. The users you share with will receive an email notification containing a link to the shared endpoint. You may add a customized message to this email. If you do not want to send an email, you may uncheck the "Send Email" checkbox.
 +
 NOTE: allowing write access implies the user can modify and/or delete the files or folders you give them access to.
 +
@@ -41,7 +41,7 @@ image::images/sharing-7.png[]
 +
 *Allowing Other Users to Manage Your Shared Endpoint*
 +
-The user who creates a shared endpoint may also allow other users to manage sharing permissions for that endpoint. This is done by granting the access manager role to another user. The access manager role grants the ability to control read and/or write access permissions without involving the original creator of the shared endpoint. This is useful in a scenario where the systems administrator creates a shared endpoint and allows a team of researchers to control access for their collaborators on that endpoint.
+The user who creates a shared endpoint may also allow other users to manage permissions for that endpoint. This is done by granting the access manager role to another user. The access manager role grants the ability to control read and/or write access permissions without involving the original creator of the shared endpoint. This is useful in a scenario where the systems administrator creates a shared endpoint and allows a team of researchers to control access for their collaborators on that endpoint.
 +
 .Managing Roles for Shared Endpoints
 [role="img-responsive center-block"]
