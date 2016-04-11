@@ -30,7 +30,7 @@ NOTE: In the last line above, replace [uservars]#x.y.z# with the version number 
 ----terminal
 $ ssh [input]#demodoc#@cli.globusonline.org
 Welcome to globusonline.org, demodoc. Type \'help' for help.
-$ endpoint-add [input]#my-linux-laptop# --gc
+$ endpoint-add [input]#my-linux-laptop# --gc -n
 [output]#Created the Globus Connect endpoint \'demodoc#my-linux-laptop'.
 Use this setup key when installing Globus Connect: 
     2a0a5d39-a534-4fe7-b78a-acdb00542c52#
@@ -62,7 +62,7 @@ $ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]#my-linux-l
 You should now see your endpoint listed (with active credentials) if you run:
 
 ----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org endpoint-list
+$ ssh [input]#demodoc#@cli.globusonline.org endpoint-search --scope my-endpoints
 [output]#go#ep1
 go#ep2
 demodoc#my-linux-laptop 23:59:55#
