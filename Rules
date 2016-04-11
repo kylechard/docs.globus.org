@@ -78,10 +78,22 @@ compile '/api/transfer/*' do
   if !item.binary?
     if item[:extension] == 'adoc'
       filter :asciidoc
-      layout item[:layout] || 'api'
+      layout item[:layout] || 'tapi'
     else
       filter :erb
-      layout item[:layout] || 'api'
+      layout item[:layout] || 'tapi'
+    end
+  end
+end
+
+compile '/api/auth/*' do
+  if !item.binary?
+    if item[:extension] == 'adoc'
+      filter :asciidoc
+      layout item[:layout] || 'aapi'
+    else
+      filter :erb
+      layout item[:layout] || 'aapi'
     end
   end
 end

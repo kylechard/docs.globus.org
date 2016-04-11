@@ -4,8 +4,15 @@ menus:
       collection_class: 'nav navbar-nav navbar-right'
     items:
       -
-        title: 'Transfer API'
-        link: '/api/transfer/'
+        title: 'APIs'
+        link: '/api/'
+        subsections:
+            -
+                title: 'Auth'
+                link: '/api/auth/'
+            -
+                title: 'Transfer'
+                link: '/api/transfer/'
       -
         title: 'How To'
         link: '/how-to/'

@@ -1,0 +1,6 @@
+= Auth API Documentation
+
+== Contents
+
+* link:introduction[API Introduction] -
+  introduction to API
