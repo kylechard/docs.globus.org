@@ -344,7 +344,37 @@ footer #legal {
   border-top: solid 1px #eee;
 }
 
-
+/* API */
+.exampleblock {
+  padding: 15px;
+  border: solid 1px #ccc;
+  margin: 15px auto;
+  max-width: 650px;
+}
+.exampleblock .flexcontainer {
+  display: flex;
+  margin: -5px;
+}
+.exampleblock .flexcontainer + .flexcontainer {
+  margin-top: 5px;
+}
+.exampleblock .flexcontainer div {
+  flex-grow: 1;
+  justify-content: space-around;
+  margin: 5px;
+  padding: 10px;
+  border: solid 1px #ccc;
+  width: 45%;
+}
+.exampleblock .green {
+  background-color: #D9EAD3;
+}
+.exampleblock .blue {
+  background-color: #CFE2F3;
+}
+.exampleblock ul {
+  padding-left: 30px;
+}
 
 /* Media Queries */
 @media (max-width: 1200px) {
