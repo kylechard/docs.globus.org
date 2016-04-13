@@ -6,7 +6,7 @@ NOTE: A link:https://www.globus.org/provider-plans[Globus Provider plan subscrip
 
 == Prerequisites
 * In order to transfer files to/from an Amazon S3 endpoint, you must be running the latest version of link:https://www.globus.org/globus-connect-server[Globus Connect Server] or link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on the other endpoint. If transfers are failing, check the event log; if you see "type": "FTPServerError", the other endpoint is most likely running a dated version of Globus Connect Server (or GridFTP server).
-* Your S3 bucket must contain at least one folder or object in order for it to display correctly on the Globus link:https://www.globus.org/app/transfer[Transfer Files page].
+* Your S3 bucket must contain at least one folder or object in order for it to display correctly on the Globus link:https://www.globus.org/app/transfer[Transfer Files page]. Failure to include at least one folder or object in the S3 bucket will prevent an endpoint backed by the bucket from being accessible in Globus, with "Directory Not Found" errors being generated when access is attempted.
 
 == Part A: Amazon Web Services Account Configuration
 
@@ -28,7 +28,7 @@ You must configure your AWS account with a role that can be assumed by Globus, a
 ** Check "GetObject" to allow Globus to download files/directories from the S3 bucket
 ** Check "PutObject" to allow Globus to upload files/directories to the S3 bucket
 ** Check "DeleteObject" to allow Globus to delete files/directories in the S3 bucket
-* In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>/*" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar/*"). Note: this ARN includes a "/*" at the end.
+* In the "Amazon Resource Name (ARN)" field enter "arn:aws:s3:::<s3-bucket-name>/+++*" (e.g., if your S3 bucket name is "bar", then enter an ARN of "arn:aws:s3:::bar/*"). Note: this ARN includes a "/*+++" at the end.
 * Click Add Statement. You should now see two lines listed in the permissions table (see figure below for an example).
 +
 [role="img-responsive center-block"]
