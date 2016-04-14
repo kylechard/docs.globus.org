@@ -249,36 +249,6 @@ The groups page also has a function for displaying the "administrative queue" (/
 
 === Activate Endpoints
 For a specific endpoint, go to +++https://www.globus.org/app/endpoints/+++[uservars]#<uuid>#/activate. To see all endpoints that the user has credentials that are being used for active transfers and about to expire, go to https://www.globus.org/app/endpoints?reactivatable=1&scope=in-use.
- 
-=== SignUp (/SignUp) [red]#NEEDS EDITING#
-Often a site wants to encourage its users to create an account at Globus.org.  To help the process along, if you have a username and fullname preference, Globus will allow those fields to be prefilled by specifying them with the parameter names +username+ and +fullname+.  For example:
-
-- https://www.globus.org/SignUp?fullname=Alan+Turing&username=aturing
-
-Additionally, the page allows for the following parameters to be sent to ensure that the following steps are taken before the "Sign Up" process is complete:
-
-- +join_group+ - The value for this parameter is a group id (as seen in the Groups example above).  When this parameter is specified upon successful account creation a next step will appear requesting that the user join the specified group. As an example https://www.globus.org/SignUp?join_group=e34a302c-7f3b-11e1-aeb3-1231380dcd5a.  will prompt the user to join the BIRN Community before completing SignUp.  If the user is already a member of this group, no prompt will be shown.
-- +required_identity+ - The value for this parameter is the external identity provider url for an identity that the requester desires to have linked to the user's account.  When this is specified, after a successful account creation the user will be prompted to sign in with the associated IDP, upon successful authentication with the identity the user will subsequently able to use this identity for signin purposes.  For example: https://www.globus.org/SignUp?required_identity=bluewaters.ncsa.illinois.edu will request a link to bluewaters, and https://www.globus.org/SignUp?required=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid will request a link to Google's identity service.
-
-=== SignIn (/SignIn) [red]#NEEDS EDITING#
-The SignIn pages provides the following set of parameters that allow for minor customization of the SignIn experience:
-
-- +provider+ - This parameter when set properly will force the Sign In page to display the specified provider as the preselected identity provider.  Many universities wish to have their users loing to Globus with CI Logon, so the page can be set to preselect it using the URL https://www.globus.org/SignIn?provider=cilogon.org
-- +redirect+ - The redirect parameter allows the link to control where the Globus application will link to after successful sign in.  For example: https://www.globus.org/SignIn?redirect=/xfer/StartTransfer will send the user to the Transfer Files page.  This parameter can also be used to redirect back to an external site.  This can be a little jarring for users, but is useful for sites who utilize Globus as a group management and authentication portal.  It is important to escape the entire URL to ensure that the browser does not misunderstand the redirect request.  For example: https://www.globus.org/SignIn?redirect=https%3A%2F%2Fwww.google.com%2F%3Fq%3DGlobus will redirect the user to https://www.google.com/?q=Globus upon successful signin.
-
-Additionally, the SignIn page allows the same +join_group+ and +link_identity+ parameters as the Sign Up page to so as to ensure that a user has joined a group or linked a required identity. See the SignUp section for more details about the parameters +join_group+ and +required_identity+.
-
-=== OAuth (/OAuth) [red]#NEEDS EDITING#
-Globus can be used as an OAuth identity provider.  To set up Globus as an identity provider for your application, contact Globus support at support@globus.org.  Once your site is set up to communicate via OAuth the following parameters can be sent to the OAuth page:
-
-- +response_type+ - This should always be set to "code"
-- +client_id+ - This is a Globus username which must be whitelisted to be able to access OAuth data on behalf of the user.  (So if you are set up whitelisted with username [uservars]#joeuser# the client_id would be [uservars]#joeuser#.)
-- +state+ - This is a "pass-through" value which can be used on your side to validate the response was sent by your application.
-- +redirect_uri+ - Where Globus should redirect back to. NOTE: this uri must be whitelisted by Globus.
-
-For example:
-
-- https://www.globus.org/OAuth?redirect_uri=http://www.destination.com/oauth_response&client_id=myusername&state=AED823423EAE&response_type=code
 
 == Can I disable email notifications?
 Currently, users can, through the Command Line Interface (CLI) only, turn off email notifications by running the following command:
