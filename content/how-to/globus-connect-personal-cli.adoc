@@ -14,12 +14,12 @@ Resolving s3.amazonaws.com (s3.amazonaws.com)... 72.21.214.199
 Connecting to s3.amazonaws.com (s3.amazonaws.com)|72.21.214.199|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 8291206 (7.9M) [application/x-tar]
-Saving to: \`globusconnect-latest.tgz'
+Saving to: \`globusconnectpersonal-latest.tgz'
 
 100%[==============================================================================>] 8,291,206 1010K/s in 8.0s
 
-2013-06-07 00:14:18 (1018 KB/s) - \`globusconnect-latest.tgz' saved [8291206/8291206]#
-$ tar xzf globusconnect-latest.tgz
+2013-06-07 00:14:18 (1018 KB/s) - \`globusconnectpersonal-latest.tgz' saved [8291206/8291206]#
+$ tar xzf globusconnectpersonal-latest.tgz
 $ cd globusconnectpersonal-[input]#x.y.z#
 ----terminal
 +
@@ -30,21 +30,22 @@ NOTE: In the last line above, replace [uservars]#x.y.z# with the version number 
 ----terminal
 $ ssh [input]#demodoc#@cli.globusonline.org
 Welcome to globusonline.org, demodoc. Type \'help' for help.
-$ endpoint-add [input]#my-linux-laptop# --gc
-[output]#Created the Globus Connect endpoint \'demodoc#my-linux-laptop'.
-Use this setup key when installing Globus Connect: 
-    2a0a5d39-a534-4fe7-b78a-acdb00542c52#
+$ endpoint-add -n [input]#my-linux-laptop# --gc
+[output]#Endpoint ID: b19b3b45-01ae-11e6-a71c-22000bf2d559
+
+Use this setup key when installing Globus Connect Personal: 
+    224532bb-8a4b-4d32-8995-e1fb442be98e#
 $ exit
 ----terminal
 
 . Back in your local machine shell run the following commands to complete the installation (note that you will need to copy and paste the setup key generated in step 2 above):
 +
 ----terminal
-$ ./globusconnectpersonal -setup [input]#2a0a5d39-a534-4fe7-b78a-acdb00542c52#
-[output]#Configuration directory: /home/go_user/.globusonline/lta
+$ ./globusconnectpersonal -setup [input]#7b7ab037-01a8-11e6-a71c-22000bf2d559#
+[output]#Configuration directory: /home/demodoc/.globusonline/lta
 Contacting relay.globusonline.org:2223
 Installing certificate and key
-Creating /home/go_user/.globusonline/lta/gridmap
+Creating /home/demodoc/.globusonline/lta/gridmap
 Done!#
 ----terminal
 
@@ -55,17 +56,29 @@ To transfer and share files using Globus, start Globus Connect Personal (and, op
 
 ----terminal
 $ ./globusconnectpersonal -start &
-[output]#[1] 15268#
-$ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]#my-linux-laptop#
+[output]#[1] 2965#
+$ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]#b19b3b45-01ae-11e6-a71c-22000bf2d559#
 ----terminal
 
 You should now see your endpoint listed (with active credentials) if you run:
 
 ----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org endpoint-list
-[output]#go#ep1
-go#ep2
-demodoc#my-linux-laptop 23:59:55#
+$ ssh [input]#demodoc#@cli.globusonline.org endpoint-search --scope my-endpoints
+[output]#ID                : ea557994-fc2d-11e5-a700-22000bf2d559
+Display Name      : demo
+Legacy Name       : demodoc#ea557994-fc2d-11e5-a700-22000bf2d559
+Owner             : demodoc
+Credential Status : n/a
+Host Endpoint     : ddb59aef-6d04-11e5-ba46-22000b92c6ec
+Host Endpoint Name: Globus Tutorial Endpoint 1
+
+ID                : b19b3b45-01ae-11e6-a71c-22000bf2d559
+Display Name      : my-linux-laptop
+Legacy Name       : demodoc#b19b3b45-01ae-11e6-a71c-22000bf2d559
+Owner             : demodoc
+Credential Status : n/a
+Host Endpoint     : n/a
+Host Endpoint Name: n/a#
 ----terminal
 
 The status of Globus Connect Personal running in the background can be controlled using the +-status+ or +-trace+ options. The +-trace+ option provides more detailed information:
@@ -73,24 +86,12 @@ The status of Globus Connect Personal running in the background can be controlle
 ----terminal
 $ ./globusconnectpersonal -status
 [output]#Globus Online: connected
-Transfer Status: idle
-$ sh globusconnect -trace
-#gsissh connected
-#gridftp 0
-#gsissh connected
-Got connection from (\'127.0.0.1', 47677)
-Sock fd: 9
-debug1: client_input_channel_open: ctype forwarded-tcpip rchan 2 win 87380 max 32768
-debug1: client_request_forwarded_tcpip: listen localhost port 0, originator 10.207.43.146 port 44326
-debug1: connect_next: host 127.0.0.1 ([127.0.0.1]:1024) in progress, fd=5
-debug1: channel 1: new [10.207.43.146]
-debug1: confirm forwarded-tcpip
-debug1: channel 1: connected to 127.0.0.1 port 1024
-#gridftp 1
+Transfer Status: idle#
+$ ./globusconnectpersonal -trace
+[output]#gridftp 1
 #gsissh connected
 #gridftp 1
 #gsissh connected
 #gridftp 1
 [...]#
 ----terminal
-
