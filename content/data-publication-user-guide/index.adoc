@@ -424,7 +424,7 @@ process for entering metadata is the same across collections.
 [role="img-responsive center-block"]
 image::images/publish-8.png[Describe Dataset, Page 1]
 
-In the form, fields marked with an asterisk (*) are required. 
+In the form, fields marked with an asterisk (+++*+++) are required. 
 Some fields, such as "Authors" in this example, permit you to enter
 multiple values.
 When multiple values are allowed, the `Add More` button is shown to
@@ -508,7 +508,7 @@ The files can be of any type and size, allowing you to assemble
 and publish a dataset with wide-ranging content.
 
 In the figure above, we chose to transfer three small files
-from the universally-readable "go#ep1" endpoint and the 
+from the universally-readable "Globus Tutorial Endpoint 1" endpoint and the 
 "/share/godata/" path.
 The three files are copied in a single transfer task and 
 they are the only
