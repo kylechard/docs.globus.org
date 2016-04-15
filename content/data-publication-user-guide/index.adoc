@@ -705,12 +705,10 @@ tasks waiting to be claimed.
 [role="img-responsive center-block"]
 image::images/publish-21.png[Claim Curation Task]
 
-In the figure above, there are two tasks to be claimed--both
-in "Curated Trial Collection << Open Trial".
-As a courtesy to those working in the "Curated Trial Collection",
+In the figure above, there is one task to be claimed in "TestMDF << Materials Data Facility".
+As a courtesy to those working in the "TestMDF << Materials Data Facility",
 please curate the datasets you submit and not those submitted
-by others.
-Normally you would not have the option of curating your own
+by others. Normally you would not have the option of curating your own
 datasets.
 
 Click the `Claim` button for the dataset you want to curate.
