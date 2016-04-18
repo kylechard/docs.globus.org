@@ -2,18 +2,16 @@
 :toc:
 :numbered:
 
-== General
-
 The Globus Auth API has a set of common conventions that it uses
 throughout, as described in the following subsections.
 
-=== Base URL
+== Base URL
 
 All Globus Auth API interactions are
 link:https://tools.ietf.org/html/rfc6749#section-1.6[TLS-secured] with the host auth.globus.org.
 Therefore, URLs to Globus Auth resources begin with https://auth.globus.org/.
 
-=== Versioning
+== Versioning
 
 All public Globus Auth resource URL paths are prefixed by `/v2/`. For
 example:
@@ -38,9 +36,9 @@ time without warning.
 (Globus Auth Version 1 was an API known as "Globus Nexus" or "Globus
 Graph", which was only available for select uses outside Globus.)
 
-=== Authorization
+== Authorization
 
-==== Overview
+=== Overview
 
 All applications follow a basic pattern when accessing Globus-enabled resources
 using OAuth 2.0.
@@ -94,7 +92,7 @@ resource server beyond the lifetime of a single access token, it can obtain a
 refresh token. A refresh token allows your application to obtain new access
 tokens.
 
-==== Obtaining authorization - Supported OAuth2 Grant Types
+=== Obtaining authorization - Supported OAuth2 Grant Types
 
 Globus Auth Supports the following OAuth2 grant types (detailed below):
 
@@ -109,7 +107,7 @@ These grants all share the same HTTP endpoints:
 
 **Token:** https://auth.globus.org/v2/oauth2/token
 
-===== Authorization Code Grant (preferred)
+=== Authorization Code Grant (preferred)
 
 link:https://tools.ietf.org/html/rfc6749#section-4.1[Authorization Code Grant]: For obtaining an access token, via
 browser redirection, for a web server-based client to access a resource server.
@@ -127,7 +125,7 @@ You will need:
 Construct a URL for the OAuth2 authorization endpoint `https://auth.globus.org/v2/oauth2/authorization` with the following parameters:
 
 [options="header"]
-|==========================
+|==================
 |Parameter |Values |Description
 |response_type| `code`| Determines whether Globus Auth returns an authorization code. For the authorization code grant, this value is always `code`
 |client_id| The client ID you obtained when registering your client.| Identifies the client that is making the request.
@@ -141,7 +139,7 @@ Whatever value you send here will be returned to your application unmodified. To
 is strongly recommended to include an anti-forgery token in the state, and confirm it in the response. link:http://www.thread-safe.com/2014/05/the-correct-use-of-state-parameter-in.html[See here] for further suggestions on how to use the state parameter.
 |access_type| online or offline| Indicates whether your application needs to access resources when the user is not present at the browser.
 If access_type is offline, your application will be issued a refresh token along with the access token the first time it exchanges an authorization code for a token.
-|============================
+|===================
 
 An example URL is shown below, with line breaks and spaces for readability.
 
@@ -184,12 +182,12 @@ an Authorization header containing an HTTP Basic Auth header for your client_id 
 following field:
 
 [options="header"]
-|==================
+|============
 |Field | Description
 |code | The authorization code returned from the previous authorization request.
 |redirect_uri | The same value you sent in the previous authorization request.
 |grant_type | As defined in the OAuth 2.0 specification, this field must contain a value of `authorization_code`.
-|===================
+|=============
 
 The actual request might look like the following:
 
@@ -205,7 +203,7 @@ The actual request might look like the following:
 A successful response to this request contains the following fields:
 
 [options="header"]
-|==============
+|==========
 |Field | Description
 |access_token | The token that can be used to access resources.
 |scope | Space-separated list of scopes the access token authorizes.
@@ -224,7 +222,7 @@ you SHOULD request openid scopes during the authorization request.
 |state | The state parameter your client application provided during the authorization request.
 |other_tokens | If the client requested scopes that span multiple resource servers, this field will be present, and
 it will contain an array of access token responses containing separate tokens for each resource server.
-|===============
+|==========
 
 NOTE: The scope named first in the authorization request (excepting openid scopes)
       will determine the access token returned in the top level of the response object.
@@ -268,7 +266,7 @@ A successful response is returned as a JSON object, similar to the following:
         ]
     }
 
-===== Refresh Token Grant
+==== Refresh Token Grant
 
 If your application requires access beyond the lifetime of a single access token, it can request
 offline access, and then use a refresh token to obtain fresh access tokens. Refresh tokens will
@@ -280,11 +278,11 @@ Authorization header containing your client_id and client_secret.
 The request must include the following parameters:
 
 [options="header"]
-|===================
+|=============
 |Field | Description
 |refresh_token | The refresh token returned from the authorization code exchange.
 |grant_type | As defined in the OAuth 2.0 specification, this field must contain a value of refresh_token.
-|===================
+|=============
 
 Such a request will look similar to the following:
 
@@ -306,7 +304,7 @@ includes a new access token. A response from such a request is shown below:
       "token_type":"Bearer",
     }
 
-===== Implicit Grant
+=== Implicit Grant
 
 link:https://tools.ietf.org/html/rfc6749#section-4.2[Implicit Grant]: For obtaining an access token, via browser
 redirection, for a Javascript client running in a browser.
@@ -315,7 +313,7 @@ Similar to the Authorization Code grant, except a token is returned directly to 
 
 This flow is not recommended, because it is less secure than the Authorization Code grant.
 
-===== Resource Owner Password Credentials Grant
+=== Resource Owner Password Credentials Grant
 
 link:https://tools.ietf.org/html/rfc6749#section-4.3[Resource Owner Password Credentials Grant] : For obtaining an access
 token for a non-browser-based client (e.g., command line, mobile, or
@@ -324,7 +322,7 @@ desktop application).
 NOTE: This feature will only work with certain identity providers that are configured
       to support non-browser-based authentication based on username and password.
 
-===== Verifying identity (via OpenID Connect ID Token)
+=== Verifying identity (via OpenID Connect ID Token)
 
 Globus Auth's OAuth2 grants accept the following OpenID Connect scopes:
 
@@ -364,7 +362,7 @@ by the identity provider via Globus Auth.
 In order to verify the signature of the id_token, you can use the our public
 keys at https://auth.globus.org/jwk.json
 
-=== API Endpoints
+== API Endpoints
 
 Unless otherwise noted, all REST calls are authenticated using the
 HTTP Authorization header. Clients will need to include either a
@@ -378,7 +376,7 @@ has expired or been revoked, unless it is specifically noted that the
 call requires no authorization or some other form of authorization. It
 is recommend that resource owner APIs do the same.
 
-==== Including associated resources ("side-loading")
+=== Including associated resources ("side-loading")
 
 A resource request can have an "include" query parameter, followed by a
 list of fields that specify what associated resources should be included
@@ -389,7 +387,7 @@ in the response. For example:
 will respond not just with requested identity resource document, but
 also the associated identity_provider resource document.
 
-==== CORS
+=== CORS
 
 https://auth.globus.org supports link:http://en.wikipedia.org/wiki/Cross-origin_resource_sharing[CrossOrigin Resource Sharing (CORS)]
 to allow any client to directly access the Globus Auth API.
@@ -405,7 +403,7 @@ to allow any client to directly access the Globus Auth API.
 Resource type: identity
 
 [options="header"]
-|===================
+|=============
 |Field | Type | Description
 |id | UUID | Globus Auth issued identity id, guaranteed to uniquely identify a single
 identity, even if the identity username associated with the identity is
@@ -465,9 +463,9 @@ this identity.
 |organization | String | The name of the organization this identity is associated with.
 This may be set by the provider or, if the provider does not set it, by the user
 themselves.
-|==================================
+|=======================
 
-==== GET /v2/api/identities/<id>
+=== GET /v2/api/identities/<id>
 
 Responds with an identity resource type document for the identity with
 the specified <id>.
@@ -476,7 +474,7 @@ The response may not include all fields, depending on the identity's
 visibility policy.  However, the identity id, category, and name fields
 are always visible to all clients.
 
-==== GET /v2/api/identities?identity_ids=<list-of-identity-ids>
+=== GET /v2/api/identities?identity_ids=<list-of-identity-ids>
 
 Returns a list of identity resource type documents for the comma
 separated list of identity ids.
@@ -486,9 +484,7 @@ If the identity_id does not exist, it is not in the list…
 An identity documents may not include all fields, depending on the
 identity's visibility policy.
 
-==== GET
-
-/v2/api/identities?usernames=<list-of-identity-names>
+=== GET /v2/api/identities?usernames=<list-of-identity-names>
 
 Returns a list of identity resource type documents for the comma
 separated list of identity ids.
@@ -542,12 +538,12 @@ Example response:
       ]
     }
 
-=== API for Resource Servers
+== API for Resource Servers
 
 Globus Auth provides a set of API resources for use only by resource
 providers.
 
-==== Token Introspection (POST /v2/oauth2/token/introspect)
+=== Token Introspection (POST /v2/oauth2/token/introspect)
 
 This can only be used by a resource server, authorized using that
 resource server's client identifier and client secret.
@@ -567,12 +563,12 @@ HTTP POST on /v2/oauth2/token/introspect, with parameters sent as
 Request parameters are:
 
 [options="header"]
-|===================
+|=============
 |Parameter | Description
 |token | The request access token on which this request is performing introspection.
 |include | Request optional fields be included in the response. Currently the only supported value is `identities_set`, which will include the list of all
 identities ids (primary and linked) that are associated with this Globus Auth account.
-|=================
+|============
 
 This request's Authorization header must contain resource server's
 client identifier (client_id) and client secret (client_secret) in a
@@ -585,7 +581,7 @@ https://www.google.com/url?q=https://tools.ietf.org/html/rfc7662&sa=D&ust=145936
 Resource type: token/introspect
 
 [options="header"]
-|===================
+|=============
 |Field | Type | Description
 |active | Bool | False if the token has expired or been revoked, true otherwise.
 |scope | Space-separated List of Strings | List of scopes to which this access token authorizes access.
@@ -613,7 +609,7 @@ tokens will have iss set to `https://nexus.api.globusonline.org`.
 with this Globus Auth account, which are visible to this resource
 server. For performance reasons, this field is only included when the client
 requests it with the parameter include=identities_set in the POST body.
-|=======================
+|================
 
 WARNING: Some identity providers reuse identity usernames, so over time
 an identity username may map to different identity ids. Clients must use
@@ -674,7 +670,7 @@ NOTE: Globus Auth uses POST rather than GET in accordance with
     <request access token> included in the request body, the access token is
     not included in the URL.
 
-===== Dependent Token Grant (POST /v2/oauth2/token)
+=== Dependent Token Grant (POST /v2/oauth2/token)
 
 This can only be used by a resource server, authorized using that
 resource server's client identifier and client secret.
@@ -699,14 +695,14 @@ performing an HTTP POST on /v2/oauth2/token, with parameters sent as
 Request parameters are:
 
 options="header"]
-|===================
+|=============
 |Parameter | Value | Description
 |grant_type | `urn:globus:auth:grant_type:dependent_token` | Custom OAuth2 extension grant type
 |token | <request access token> | The
 |access_type | `online` or `offline` (default: `online`) |
 If `offline`, include any refresh tokens to which the resource server is entitled.
 Whether or not refresh tokens are included depends on whether the scope policies allow it.
-|==================
+|============
 
 This request's Authorization header must contain resource server's
 client identifier (client_id) and client secret (client_secret) in a
@@ -762,14 +758,12 @@ example response would be:
         }
     ]
 
-5.6. Web Browser Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Web Browser Resources
 
 Globus Auth provides the following resources intended to be used from
 web browsers.
 
-5.6.1. https://auth.globus.org/v2/web/logout
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== GET https://auth.globus.org/v2/web/logout
 
 When  a web application that that uses Globus Auth via a Authorization
 Code Grant, after doing whatever cleanup it needs to do (e.g., delete
@@ -795,8 +789,7 @@ If redirect_uri and redirect_name parameters are provided, the bottom of
 the logout page will display "Continue to <link-text>", which is linked
 to <http-url>. ^link:#cmnt11[[k]]^
 
-6. References
--------------
+== References
 
 * [OIDC]  N. Sakimura, N., J. Bradley, J., M. Jones, M., B. de Medeiros,
 B., C. Mortimore, C., "OpenID Connect Core 1.0", November 8, 2014,
@@ -821,3 +814,7 @@ DOI 10.17487/RFC6749, October 2015,
 Leithead, T., Navara, E., 0'Connor, E., and S. Pfeiffer, "HTML5", World
 Wide Web Consortium Recommendation REC-html5-20141028, October 2014,
 <https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028&sa=D&ust=1459362629232000&usg=AFQjCNGfPwc9yrZvCJAjpXt--NOvkWsxTw[http://www.w3.org/TR/2014/REC-html5-20141028]>.
+
+_Portions of this document were adapted from
+link:https://developers.google.com/identity/protocols/OAuth2[Google documentation] under
+the terms of the link:http://creativecommons.org/licenses/by/3.0/[Creative Commons.]_
