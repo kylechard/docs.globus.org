@@ -1,0 +1,823 @@
+= API Reference
+:toc:
+:numbered:
+
+== General
+
+The Globus Auth API has a set of common conventions that it uses
+throughout, as described in the following subsections.
+
+=== Base URL
+
+All Globus Auth API interactions are
+link:https://tools.ietf.org/html/rfc6749#section-1.6[TLS-secured] with the host auth.globus.org.
+Therefore, URLs to Globus Auth resources begin with https://auth.globus.org/.
+
+=== Versioning
+
+All public Globus Auth resource URL paths are prefixed by `/v2/`. For
+example:
+
+    GET https://auth.globus.org/v2/api/identities/2982f207-04c0-11e5-ac60-22000b92c6ec
+
+Globus Auth API clients can assume the syntax and semantics of the
+resources defined in this specification will not change in an
+incompatible manner. However, the resources may be extended, as long as
+such extensions are backward compatible. For example:
+
+* The Globus Auth API may be extended with additional resources.
+* Resource URLs may be extended to support additional query parameters.
+* JSON documents used by resource requests and responses may contain
+additional fields. Clients should ignore any fields they do not
+recognize.
+
+Clients SHOULD NOT use Globus Auth resource URL paths that are prefixed by
+`/p/`, as these are private, internal resources that may change at any
+time without warning.
+
+(Globus Auth Version 1 was an API known as "Globus Nexus" or "Globus
+Graph", which was only available for select uses outside Globus.)
+
+=== Authorization
+
+==== Overview
+
+All applications follow a basic pattern when accessing Globus-enabled resources
+using OAuth 2.0.
+
+At a high level, you'll need to follow four steps:
+
+[qanda]
+Register your app to receive credentials.::
+
+Visit the link:https://auth.globus.org/p/projects[Client Registration Page] to obtain OAuth 2.0 credentials such
+as a client ID and client secret that are used to identify your application to
+Globus Auth.
+
+Obtain one or more access tokens from Globus Auth::
+
+Before your application can access private data on a Globus-enabled resource
+server, it must obtain an `access token` that grants access to those resources. A
+single access token is valid for a particular resource server's API, but it
+can grant varying degrees of access to  APIs. A variable parameter called
+`scope` controls the set of resources and operations that an access token
+permits. During the access-token request, your
+application sends one or more values in the scope parameter.  There are
+several ways to make this request, and they vary based on the type of
+application you are building. For example, a JavaScript application might
+request an access token using a browser redirect, while an
+application installed on a device that has no browser uses direct HTTP requests.
+Some requests require an authentication step where the user logs in to Globus
+Auth using one of their `identities`. After logging in, the user is asked whether they
+are willing to grant the permissions that your application is requesting. This
+process is called user consent.  If the user grants the permission, Globus Auth
+sends your application an access token (or an
+authorization code that your application can use to obtain an access token).
+If the user does not grant the permission, the server returns an error.  It is
+generally a best practice to request the minimum scopes your application needs
+to properly function.
+
+Send the access token to an API.::
+
+After an application obtains an access token, it sends the token to a
+resource server API in an HTTP authorization header. Access tokens are
+valid only for a particular resource server and the set of operations and
+resources described in the scope of the token request. For example, if an access
+token is issued for the Globus Transfer API, it does not grant access to the
+XSEDE User Profile API. You can, however,send the same access token to a
+resource server multiple times for similar operations.
+
+Refresh the access token, if necessary.::
+
+Access tokens have limited lifetimes. If your application needs access to a
+resource server beyond the lifetime of a single access token, it can obtain a
+refresh token. A refresh token allows your application to obtain new access
+tokens.
+
+==== Obtaining authorization - Supported OAuth2 Grant Types
+
+Globus Auth Supports the following OAuth2 grant types (detailed below):
+
+* link:https://tools.ietf.org/html/rfc6749#section-4.1[Authorization Code Grant] (Most secure, **preferred**)
+* Dependent Token Grant (Custom extension grant, used by resource servers)
+* link:https://tools.ietf.org/html/rfc6749#section-4.3[Resource Owner Password Credentials Grant] (Required by certain non web-based clients)
+* link:https://tools.ietf.org/html/rfc6749#section-4.2[Implicit Grant] (Limited to specific, trusted apps)
+
+These grants all share the same HTTP endpoints:
+
+**Authorization:** https://auth.globus.org/v2/oauth2/authorization
+
+**Token:** https://auth.globus.org/v2/oauth2/token
+
+===== Authorization Code Grant (preferred)
+
+link:https://tools.ietf.org/html/rfc6749#section-4.1[Authorization Code Grant]: For obtaining an access token, via
+browser redirection, for a web server-based client to access a resource server.
+
+**Preparing to start the OAuth 2.0 flow**
+
+You will need:
+
+- The client_id and client_secret from your client registration.
+
+- The scopes your client is requesting.
+
+**Redirecting the user to the OAuth 2.0 server**
+
+Construct a URL for the OAuth2 authorization endpoint `https://auth.globus.org/v2/oauth2/authorization` with the following parameters:
+
+[options="header"]
+|==========================
+|Parameter |Values |Description
+|response_type| `code`| Determines whether Globus Auth returns an authorization code. For the authorization code grant, this value is always `code`
+|client_id| The client ID you obtained when registering your client.| Identifies the client that is making the request.
+The value passed in this parameter must exactly match the value issued for your client on  registration.
+|redirect_uri| One of the redirect_uri values you registered for your client.| Determines where the response is sent.
+The value of this parameter must exactly match one of the values listed for this client in the registration system. (including the http or https scheme, case, and trailing '/').
+|scope| Space-delimited set of permissions that the application requests.| Identifies the access that your application is requesting.
+The values passed in this parameter inform the consent screen that is shown to the user and the number of access tokens returned.
+|state| Any string| Provides any state that might be useful to your application upon receipt of the response.
+Whatever value you send here will be returned to your application unmodified. To mitigate against cross-site request forgery (CSRF), it
+is strongly recommended to include an anti-forgery token in the state, and confirm it in the response. link:http://www.thread-safe.com/2014/05/the-correct-use-of-state-parameter-in.html[See here] for further suggestions on how to use the state parameter.
+|access_type| online or offline| Indicates whether your application needs to access resources when the user is not present at the browser.
+If access_type is offline, your application will be issued a refresh token along with the access token the first time it exchanges an authorization code for a token.
+|============================
+
+An example URL is shown below, with line breaks and spaces for readability.
+
+ https://auth.globus.org/v2/oauth2/authorization?
+   scope=urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities+openid+email+profile
+   state=security_token%3D138r5719ru3e1%26url%3Dhttps://oa2cb.example.com/myHome&
+   redirect_uri=https%3A%2F%2Foauth2-login-demo.example.com%2Fcallback&,
+   response_type=code&
+   client_id=d430e6c8-b06f-4446-a060-2b6b2bc3e54a
+
+After you create the request URL, redirect the user to it.
+
+**Handling the OAuth 2.0 server response**
+
+The OAuth 2.0 server responds to your application's access request by redirecting the user's browser
+to the `redirect_uri` specified in the request.
+
+If the user approves the access request, then the response contains an authorization code.
+If the user does not approve the request, the response contains an error message.
+All responses are returned to your application on the query string, as shown below:
+
+An error response:
+
+`https://oauth2-login-demo.example.com/callback?error=access_denied`
+
+A successful authorization code response:
+
+`https://oauth2-login-demo.example.com/callback?code=P7q7W91a-oMsCeLvIaQm6bTrgtp7`
+
+IMPORTANT: If your response endpoint renders an HTML page, any resources on that page will be able to see the authorization
+code in the URL. Scripts can read the URL directly, and all resources may be sent the URL in the Referer HTTP header.
+Carefully consider if you want to send authorization credentials to all resources on that page (especially
+third-party scripts such as social plugins and analytics). To avoid this issue, we recommend that the server
+first handle the request, then redirect to another URL that doesn't include the response parameters.
+
+After the web server receives the authorization code, it can exchange the authorization code for one or more access tokens.
+
+To exchange an authorization code for an access token, POST to the `https://auth.globus.org/v2/oauth2/token` endpoint, with
+an Authorization header containing an HTTP Basic Auth header for your client_id and client_secret, and including the
+following field:
+
+[options="header"]
+|==================
+|Field | Description
+|code | The authorization code returned from the previous authorization request.
+|redirect_uri | The same value you sent in the previous authorization request.
+|grant_type | As defined in the OAuth 2.0 specification, this field must contain a value of `authorization_code`.
+|===================
+
+The actual request might look like the following:
+
+    POST /v2/oauth2/token HTTP/1.1
+    Host: auth.globus.org
+    Content-Type: application/x-www-form-urlencoded
+    Authorization: Basic NDFjYTIwM2QtNzcwMy00NDYxLWFiNGItNjVhNjA0YjE2NjE5OjxDTElFTlRfU0VDUkVUPg==
+
+    code=P7q7W91a-oMsCeLvIaQm6bTrgtp7&
+    redirect_uri=https://oauth2-login-demo.example.com/callback&
+    grant_type=authorization_code
+
+A successful response to this request contains the following fields:
+
+[options="header"]
+|==============
+|Field | Description
+|access_token | The token that can be used to access resources.
+|scope | Space-separated list of scopes the access token authorizes.
+|resource_server | The resource server for which the access_token token is intended.
+|expires_in | The remaining lifetime of the access token.
+|token_type | Identifies the type of token returned. At this time, this field
+will always have the value bearer.
+|refresh_token | A token that may be used to obtain a new access token. Refresh
+tokens are valid until the user revokes access. This field is only present if
+the authorization request asked for offline access.
+|id_token | A JWT containing details about the user as defined in the
+link:https://openid.net/specs/openid-connect-core-1_0.html#IDToken[OpenIDConnect specification.]
+Note: Currently, this field is always included by default, but soon it will only be present if the
+'openid' scope was requested during the authorization request. If your application requires an id_token
+you SHOULD request openid scopes during the authorization request.
+|state | The state parameter your client application provided during the authorization request.
+|other_tokens | If the client requested scopes that span multiple resource servers, this field will be present, and
+it will contain an array of access token responses containing separate tokens for each resource server.
+|===============
+
+NOTE: The scope named first in the authorization request (excepting openid scopes)
+      will determine the access token returned in the top level of the response object.
+
+A successful response is returned as a JSON object, similar to the following:
+
+    {
+        "access_token": "tggaKq69-qJiDRHp5oPW_lllll5syWfZ...",
+        "resource_server": "transfer.api.globus.org",
+        "expires_in": 3600,
+        "token_type": "bearer",
+        "scope": "urn:globus:auth:scope:transfer.api.globus.org:monitor_ongoing",
+        "refresh_token": "auqmwrC5qb841p9QsxqwbPgABuiDqUUJ",
+        "id_token": "eyJ0eXAiOiJKV1QiLA0KICJh...",
+        "state": "provided_by_client_to_prevent_replay_attacks",
+        "other_tokens": [
+            {
+                "access_token": "E3SfxOvlvsQ49lTn6cA0RGfRXHcwy85q...",
+                "resource_server": "auth.globus.org",
+                "scope": "urn:globus:auth:scope:auth.globus.org:view_identities",
+                "expires_in": 3600,
+                "refresh_token": "IlLACxpsG53v2zIuGCNPkoJXSF8gHbu8",
+                "token_type": "bearer"
+            },
+            {
+                "access_token": "OCsTf8AMydkPXTsv4stzT2QK5MA_S3a3...",
+                "resource_server": "groups.api.globus.org",
+                "scope": "urn:globus:auth:scope:nexus.api.globus.org:groups",
+                "expires_in": 3600,
+                "refresh_token": "TgwS5_BEFLsZbED42-agjfcriH0-pIee",
+                "token_type": "bearer"
+            },
+            {
+                "access_token": "oreTykUqQZfXXMqa5Zr9GoHaJsyF1AGX...",
+                "resource_server": "atmosphere.jetstream.xsede.org",
+                "scope": "urn:globus:auth:scope:atmosphere.jetstream.xsede.org:manage_data",
+                "expires_in": 3600,
+                "refresh_token": "H-qpG4yMQqkfGLhwjHYy_73TY2PSSAVh",
+                "token_type": "bearer"
+            }
+        ]
+    }
+
+===== Refresh Token Grant
+
+If your application requires access beyond the lifetime of a single access token, it can request
+offline access, and then use a refresh token to obtain fresh access tokens. Refresh tokens will
+remain valid indefinitely if they are being used, but they expire after six months of inactivity.
+They can also be explicitly revoked by a user.
+
+POST request to https://auth.globus.org/v2/oauth2/token, with an HTTP Basic
+Authorization header containing your client_id and client_secret.
+The request must include the following parameters:
+
+[options="header"]
+|===================
+|Field | Description
+|refresh_token | The refresh token returned from the authorization code exchange.
+|grant_type | As defined in the OAuth 2.0 specification, this field must contain a value of refresh_token.
+|===================
+
+Such a request will look similar to the following:
+
+    POST /v2/oauth2/token HTTP/1.1
+    Host: auth.globus.org
+    Content-Type: application/x-www-form-urlencoded
+    Authorization: Basic NDFjYTIwM2QtNzcwMy00NDYxLWFiNGItNjVhNjA0YjE2NjE5OjxDTElFTlRfU0VDUkVUPg==
+
+    refresh_token=6BMfW9j53gdGImsiyUH5kU5RsR4zwI9lUVX-tqf8JXQ&
+    grant_type=refresh_token
+
+As long as the refresh_token has not expired or been revoked the response
+includes a new access token. A response from such a request is shown below:
+
+    {
+      "access_token":"fFBGRNJru1FQd44AzqT3Zg...",
+      "refresh_token": "6BMfW9j53gdGImsiyUH5kU5RsR4zwI9lUVX-tqf8JX",
+      "expires_in":3920,
+      "token_type":"Bearer",
+    }
+
+===== Implicit Grant
+
+link:https://tools.ietf.org/html/rfc6749#section-4.2[Implicit Grant]: For obtaining an access token, via browser
+redirection, for a Javascript client running in a browser.
+
+Similar to the Authorization Code grant, except a token is returned directly to the browser.
+
+This flow is not recommended, because it is less secure than the Authorization Code grant.
+
+===== Resource Owner Password Credentials Grant
+
+link:https://tools.ietf.org/html/rfc6749#section-4.3[Resource Owner Password Credentials Grant] : For obtaining an access
+token for a non-browser-based client (e.g., command line, mobile, or
+desktop application).
+
+NOTE: This feature will only work with certain identity providers that are configured
+      to support non-browser-based authentication based on username and password.
+
+===== Verifying identity (via OpenID Connect ID Token)
+
+Globus Auth's OAuth2 grants accept the following OpenID Connect scopes:
+
+* openid: Requests that an OpenID Connect id_token be returned as part
+of the
+https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-5.1&sa=D&ust=1459362629124000&usg=AFQjCNGUaPR7rbD_uRrLLMjM6Q-r9dlGxQ[OAuth2
+Access Token Response], with the following claims:
+
+** sub: The Globus Auth identity id of the effective identity of the
+logged in Globus account. This effective may be the primary identity, or
+the appropriate linked identity if this client requires an identity from
+a particular provider.
+** iss: The URL
+"https://www.google.com/url?q=https://auth.api.globus.org&sa=D&ust=1459362629125000&usg=AFQjCNEqtyMLYHS0ZeGw9hPoQjTydW7P8Q[https://]https://www.google.com/url?q=https://auth.api.globus.org&sa=D&ust=1459362629126000&usg=AFQjCNHyBtz4q2_ZNRvmMxFc4Y8QwQu8CA[auth.globus.org]"
+** at_hash: Per OpenID Connect specification.
+** aud: Per OpenID Connect specification.
+** exp: Per OpenID Connect specification.
+** iat: Per OpenID Connect specification.
+** nonce: Per OpenID Connect specification.
+
+* email: Adds the following claim in the id_token:
+
+** email: The email address associated with the identity provided in the
+"sub" claim.
+
+* profile: Adds the following claim in the id_token:
+
+** name: The identity's full name (e.g. Jane Doe) in displayable form.
+** preferred_username: The identity username for the effective identity
+id provided by the ‘sub' claim.
+
+These claims are being made by Globus Auth (iss), on behalf of an
+identity provider, about an identity (sub, name, email) that has been
+provisioned by the identity provider with Globus Auth, and authenticated
+by the identity provider via Globus Auth.
+
+In order to verify the signature of the id_token, you can use the our public
+keys at https://auth.globus.org/jwk.json
+
+=== API Endpoints
+
+Unless otherwise noted, all REST calls are authenticated using the
+HTTP Authorization header. Clients will need to include either a
+link:https://tools.ietf.org/html/rfc6750[Bearer Token] (i.e. access token)
+or link:https://tools.ietf.org/html/rfc7617[Basic Auth] credentials in the
+Authorization header of the request.
+
+Globus Auth will return will return HTTP 401 Unauthorized for any call
+that is missing the relevant header information, or if the access token
+has expired or been revoked, unless it is specifically noted that the
+call requires no authorization or some other form of authorization. It
+is recommend that resource owner APIs do the same.
+
+==== Including associated resources ("side-loading")
+
+A resource request can have an "include" query parameter, followed by a
+list of fields that specify what associated resources should be included
+in the response. For example:
+
+    GET /v2/api/identities/2982f207-04c0-11e5-ac60-22000b92c6ec?include=identity_provider
+
+will respond not just with requested identity resource document, but
+also the associated identity_provider resource document.
+
+==== CORS
+
+https://auth.globus.org supports link:http://en.wikipedia.org/wiki/Cross-origin_resource_sharing[CrossOrigin Resource Sharing (CORS)]
+to allow any client to directly access the Globus Auth API.
+
+//URL trailing /
+//^^^^^^^^^^^^^^^^^^^^^
+
+//A trailing / on a URL path is not significant. Globus Auth will
+//interpret URLs with and without a trailing / in the same way.
+
+=== /v2/api/identities resources
+
+Resource type: identity
+
+[options="header"]
+|===================
+|Field | Type | Description
+|id | UUID | Globus Auth issued identity id, guaranteed to uniquely identify a single
+identity, even if the identity username associated with the identity is
+changed or re-used by the identity provider. An id will never be
+re-used. *This field is visible to all clients.*
+|username|String|The username of the identity.
+
+The identity username is guaranteed to be unique amongst all Globus Auth
+identities at any given time. However, since identity providers can
+change or re-use usernames the following caveats apply:
+
+* The identity username associated with a given identity id is NOT
+guaranteed to remain constant over time.
+* A single identity username MAY be associated with different identity
+ids over time
+
+If identity category is ssh-public-key, the identity username is the
+hash of the public key. (TBD: Define hash algorithm and encoding.)
+Otherwise, the identity username is defined by the issuing identity
+provider.
+
+*This field is visible to all clients.*
+
+|status | String enum | One of:
+
+* "unused", indicating that no user has proven ownership of this
+identity by authenticating with it. Resource servers may assign
+permissions to an unused identity. (See GET /v2/api/identities/<name>.)
+* "used", indicating that a user has proven ownership of this identity.
+The identity will typically, but not necessarily, be associated with a
+Globus Account.
+* `private`, indicicating that the user has restricted visibility of their
+identity.
+* `closed", indicating that this identity is no longer valid, typically
+because the provider has revoked it and perhaps reused the identity
+username. When an identity is closed, it will be removed from all Globus
+accounts, and end-users can no longer authenticate with this identity.
+Resource servers MAY remove any permissions associated with a closed
+identity, though since it is removed from all Globus accounts it will
+never be included in a token's identities list, so will never result in
+matching a permission.
+
+|email | Email | String
+
+Identity provider specified email address for this identity.
+
+This email address may be used by Globus Auth, clients and resource
+servers for email notifications related to this identity.
+
+Globus Auth provides no guarantees about the email address, including
+whether the email address has been verified, or if emails sent to this
+address will be successfully delivered.
+
+|name | String | Identity provider specified display name (e.g., user's full name) for
+this identity.
+
+|organization | String | The name of the organization this identity is associated with.
+This may be set by the provider or, if the provider does not set it, by the user
+themselves.
+|==================================
+
+==== GET /v2/api/identities/<id>
+
+Responds with an identity resource type document for the identity with
+the specified <id>.
+
+The response may not include all fields, depending on the identity's
+visibility policy.  However, the identity id, category, and name fields
+are always visible to all clients.
+
+==== GET /v2/api/identities?identity_ids=<list-of-identity-ids>
+
+Returns a list of identity resource type documents for the comma
+separated list of identity ids.
+
+If the identity_id does not exist, it is not in the list…
+
+An identity documents may not include all fields, depending on the
+identity's visibility policy.
+
+==== GET
+
+/v2/api/identities?usernames=<list-of-identity-names>
+
+Returns a list of identity resource type documents for the comma
+separated list of identity ids.
+
+WARNING: An identity username must not be used as the unique identifier
+for an identity, because an identity provider may reuse an identity
+username over time. Clients must always use an identity id as the unique
+identifier when persisting an identity in its own records (e.g., in an access
+control policy).
+
+If a field in an identity resource is not visible to the client (e.g.,
+due to that identity's visibility policy), that field will have a value
+of null.
+
+Example request:
+
+    GET /v2/api/identities?usernames=webapptester1%40globusid.org,webapptester2%40globusid.org HTTP/1.1
+    Host: auth.globus.org
+    Authorization: Bearer A7oU1xJ8-ddvRiMf-ZFDvXb
+
+Example response:
+
+    {
+      "included": {
+        "identity_providers": [
+          {
+            "id": "41143743-f3c8-4d60-bbdb-eeecaba85bd9",
+            "name": "Globus ID"
+          }
+        ]
+      },
+      "identities": [
+        {
+          "username": "webapptester1@globusid.org",
+          "status": "used",
+          "name": "Jane Tester",
+          "id": "e9873f94-032a-11e6-afde-cb613ccc97a9",
+          "identity_provider": "41143743-f3c8-4d60-bbdb-eeecaba85bd9",
+          "organization": "Globus",
+          "email": "webapptester1@example.com"
+        },
+        {
+          "username": "webapptester2@globusid.org",
+          "status": "private",
+          "name": null,
+          "id": "e987941c-032a-11e6-afdf-7b65304db5f1",
+          "identity_provider": "41143743-f3c8-4d60-bbdb-eeecaba85bd9",
+          "organization": null,
+          "email": null
+        }
+      ]
+    }
+
+=== API for Resource Servers
+
+Globus Auth provides a set of API resources for use only by resource
+providers.
+
+==== Token Introspection (POST /v2/oauth2/token/introspect)
+
+This can only be used by a resource server, authorized using that
+resource server's client identifier and client secret.
+
+This resource conforms to the
+link:https://www.google.com/url?q=https://tools.ietf.org/html/rfc7662&sa=D&ust=1459362629167000&usg=AFQjCNE4XOZ2Si4HXEsT5HWm_bwUCVKuhw[RFC
+7662], OAuth 2.0 Token Introspection.
+
+When a resource server receives a request from a client, it must
+validate the access token included in the request (<request access
+token>), and learn more information about the authorization granted by
+this request access token. The resource server does so by performing an
+HTTP POST on /v2/oauth2/token/introspect, with parameters sent as
+"application/x-www-form-urlencoded" data as defined in
+[https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028/&sa=D&ust=1459362629169000&usg=AFQjCNFhrPEvarVy18hPhYRTd_T1i2KxPA[W3C.REC-html5-20141028]].
+
+Request parameters are:
+
+[options="header"]
+|===================
+|Parameter | Description
+|token | The request access token on which this request is performing introspection.
+|include | Request optional fields be included in the response. Currently the only supported value is `identities_set`, which will include the list of all
+identities ids (primary and linked) that are associated with this Globus Auth account.
+|=================
+
+This request's Authorization header must contain resource server's
+client identifier (client_id) and client secret (client_secret) in a
+base64-encoded "Basic Authorization" scheme.
+
+The response to this POST is an
+https://www.google.com/url?q=https://tools.ietf.org/html/rfc7662&sa=D&ust=1459362629171000&usg=AFQjCNHaeyBUgdetJ9zYyXb_T5AxWDOhpQ[RFC
+7662] compliant JSON document with the following fields:
+
+Resource type: token/introspect
+
+[options="header"]
+|===================
+|Field | Type | Description
+|active | Bool | False if the token has expired or been revoked, true otherwise.
+|scope | Space-separated List of Strings | List of scopes to which this access token authorizes access.
+|sub | UUID | An effective identity id belonging to the account associated with this access token. This effective identity is either the primary identity of
+the account, or if the client requires an identity issued by a
+particular identity provider, then it may be the appropriate linked
+identity from the account.
+|username | String | The identity username for the effective identity id provided by the sub field.
+|name | String/null | The display name for the effective identity of this token, typically a
+full name. May be null, if the user has restricted their identity
+visibility.
+|email* | String/null | The email address associated with the effective identity of this token.
+May be null, if the user has restricted their identity visibility.
+|client_id | UUID | The Globus Auth issued client id of the client to which this token was issued.
+|aud | List of strings | Identifier of the audiences for whom this token is intended. This will include both the resource server DNS name
+and the client_id of the client to which this token was issued. In order to avoid a 'confused deputy' attack, clients and resource servers SHOULD validate that they are among the intended
+audience for a token.
+|iss | String | String representing the issuer of this token, which will always be
+`https://auth.globus.org`. Note: During the transition from Globus Nexus to Globus Auth, legacy
+tokens will have iss set to `https://nexus.api.globusonline.org`.
+|exp | Timestamp | Integer timestamp, measured in the number of seconds since January 1 1970 UTC, indicating when this token will expire.
+|iat |Timestamp | Integer timestamp, measured in the number of seconds since January 1 1970 UTC, indicating when this token was originally issued.
+|nbf | Timestamp |Integer timestamp, measured in the number of seconds since January 1 1970 UTC, indicating when this token is not to be used before.
+|identities_set* [OPTIONAL] | List of UUIDs | A list of all identities ids (primary and linked) that are associated
+with this Globus Auth account, which are visible to this resource
+server. For performance reasons, this field is only included when the client
+requests it with the parameter include=identities_set in the POST body.
+|=======================
+
+WARNING: Some identity providers reuse identity usernames, so over time
+an identity username may map to different identity ids. Clients must use
+the identity id as the persistent identifier of an identity.
+
+* = Not part of RFC7662, Globus Auth-specific extension fields.
+
+If the <request access token> does not exist, or was issued by Globus
+Auth for use with a different resource server, then the HTTP response
+will be 401 Unauthorized.
+
+Example request:
+
+        POST /v2/oauth2/token/introspect HTTP/1.1
+
+        Host: auth.globus.org
+
+        Accept: application/json
+
+Content-Type: application/x-www-form-urlencoded
+
+        Authorization: Basic MmZkYTQxNDktODJmZi00OTM3LT
+
+        token=A7oU1xJ8-ddvRiMf-ZFDvXb&include=identities_set
+
+Example response:
+
+    HTTP/1.1 200 OK
+
+    Content-Type: application/json
+
+    {
+        "active": true,
+        "scope": "urn:globus:auth:scope:service.example.com:all",
+        "client_id": "d430e6c8-b06f-4446-a060-2b6b2bc3e54a",
+        "sub": "2982f207-04c0-11e5-ac60-22000b92c6ec",
+        "username": "user1@example.com",
+        "aud": "server.example.com",
+        "iss": "https://auth.globus.org/",
+        "exp": 1419356238,
+        "iat": 1419350238,
+        "nbf": 1419350238,
+        "identities_set": [
+            "2982f207-04c0-11e5-ac60-22000b92c6ec",
+            "3982f207-04c0-11e5-ac60-22000b92c6ed"
+        ],
+        "name": "Joe User",
+        "email": "user1@example.dom"
+    }
+
+NOTE: Globus Auth uses POST rather than GET in accordance with
+    RFC7662 because of security concerns with passing an access token as
+    part of a URL. An access token is a bearer token, so great care must be
+    taken to ensure its confidentiality. However, web servers, proxies, and
+    clients routinely log URLs. If URLs contain access tokens, and the logs
+    are not properly sanitized or kept sufficiently confidential, they
+    become a potential target for an attacker. By using a POST with the
+    <request access token> included in the request body, the access token is
+    not included in the URL.
+
+===== Dependent Token Grant (POST /v2/oauth2/token)
+
+This can only be used by a resource server, authorized using that
+resource server's client identifier and client secret.
+
+When a resource server receives a request from a client, after
+validating the access token included in the request (<request access
+token>) via link:#h.wh7c5vauquo4[token introspection (POST
+/v2/oauth2/token/introspect)], the resource server may need to retrieve
+dependent access tokens that allow this resource server to act as a
+client to other resource servers on behalf of the client. The resource
+server does so by performing a Globus Auth "Dependent Token Grant",
+which is an
+https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-4.5&sa=D&ust=1459362629207000&usg=AFQjCNHTauLReWKZtkzxV_PeVBmHsee8Pg[OAuth2
+Extension
+Gran]https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-4.5&sa=D&ust=1459362629208000&usg=AFQjCNFJB2wM921oz2y52Ak0FSf0hi0q9Q[t].
+
+In conformance with the OAuth2 standard, the resource server does so by
+performing an HTTP POST on /v2/oauth2/token, with parameters sent as
+"application/x-www-form-urlencoded" data as defined in
+[https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028/&sa=D&ust=1459362629209000&usg=AFQjCNGOpgK7QE_QmvSP_4cw07rvH_oa9A[W3C.REC-html5-20141028]].
+
+Request parameters are:
+
+options="header"]
+|===================
+|Parameter | Value | Description
+|grant_type | `urn:globus:auth:grant_type:dependent_token` | Custom OAuth2 extension grant type
+|token | <request access token> | The
+|access_type | `online` or `offline` (default: `online`) |
+If `offline`, include any refresh tokens to which the resource server is entitled.
+Whether or not refresh tokens are included depends on whether the scope policies allow it.
+|==================
+
+This request's Authorization header must contain resource server's
+client identifier (client_id) and client secret (client_secret) in a
+base64-encoded "Basic Authorization" scheme.
+
+Example request:
+
+   POST /v2/oauth2/token HTTP/1.1
+        Host: auth.globus.org
+        Content-Type: application/x-www-form-urlencoded
+        Authorization: Basic <Resource Server's Client Credentials>
+
+   grant_type=urn:globus:auth:grant_type:dependent_token&token=A7oU1xJ8-ddvRiMf-ZFDvXb
+
+The response will be a JSON document containing an array of OAuth2
+standard
+https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-5.1&sa=D&ust=1459362629212000&usg=AFQjCNHRcoOSgfcymFXxnouwGm5G6KN_Kw[access_token
+response documents]. The number of tokens returned and their scopes are
+pre-determined by the scope dependencies registered with Globus Auth by
+the resource server administrators. The resource server does not have
+the ability to request particular scopes when using this grant type.
+
+For example, if the above request was made by the
+transfer.api.globus.org resource server upon receipt of a request to its
+urn:globus:auth:scope:service.example.com:all scope, and that scope is
+configured to require dependent scopes of
+urn:globus:auth:scope:groups.api.globus.org:check_membership and
+urn:globus:auth:scope:auth.globus.org:view_identities scopes, then an
+example response would be:
+
+    HTTP/1.1 200 OK
+
+    Content-Type: application/json
+
+    [
+        {
+            "access_token": "r5qwkEz0lWJdpdknlDBmndC2G7wpTSOk...",
+            "resource_server": "auth.globus.org",
+            "scope":
+    "urn:globus:auth:scope:auth.globus.org:view_identities",
+            "expires_in": 3600,
+            "refresh_token": "kUKDtLe_xDA4Qxd-ZI-rcFqrBlJj7zXx",
+            "token_type": "bearer"
+        },
+        {
+            "access_token": "7ZdPhhvija1MUDw6koBYgAAGnbrU79qF...",
+            "resource_server": "groups.api.globus.org",
+            "scope":
+    "urn:globus:auth:scope:groups.api.globus.org:check_membership",
+            "expires_in": 3600,
+            "refresh_token": "dPVJBKAUs0x8UW4zhgQWv6snDmo2X72E",
+            "token_type": "bearer"
+        }
+    ]
+
+5.6. Web Browser Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Globus Auth provides the following resources intended to be used from
+web browsers.
+
+5.6.1. https://auth.globus.org/v2/web/logout
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When  a web application that that uses Globus Auth via a Authorization
+Code Grant, after doing whatever cleanup it needs to do (e.g., delete
+access tokens), it should redirect the user's web browser to
+https://www.google.com/url?q=https://auth.globus.org/v2/web/logout&sa=D&ust=1459362629216000&usg=AFQjCNGitbsuBdVTFWapFysXB03Sj7ykQA[https://auth.globus.org/v2/web/logout].
+Globus Auth will delete any cookies it dropped in the browser, so that
+subsequent Authorization Code Grants will require re-authentication with
+an identity provider.
+
+To control the behavior of the page, clients can pass the following
+query parameters:
+
+* client_id=<client-id>
+* redirect_uri=<http-url>
+* redirect_name=<link-text>
+
+Passing client_id will make the logout page header "Logged out of
+<client-display-name>". For example, if the client display name that was
+registered with Globus Auth for the specified <client-id> is "Example
+App", the logout page header will be "Logged out of Example App"
+
+If redirect_uri and redirect_name parameters are provided, the bottom of
+the logout page will display "Continue to <link-text>", which is linked
+to <http-url>. ^link:#cmnt11[[k]]^
+
+6. References
+-------------
+
+* [OIDC]  N. Sakimura, N., J. Bradley, J., M. Jones, M., B. de Medeiros,
+B., C. Mortimore, C., "OpenID Connect Core 1.0", November 8, 2014,
+<https://www.google.com/url?q=http://openid.net/specs/openid-connect-core-1_0.html&sa=D&ust=1459362629223000&usg=AFQjCNG5tNSAl-FNYdb6Ed1iFgRq0H0lUg[http://openid.net/specs/openid-connect-core-1_0.html]>.
+* [REFEDS-RS]  "REFEDS Research and Scholarship Entity Category, Version
+1.2", November 2014,
+<https://www.google.com/url?q=https://refeds.org/category/research-and-scholarship/&sa=D&ust=1459362629224000&usg=AFQjCNE0amJhPemYWRTjMurZfeu0rCkq6g[https://refeds.org/category/research-and-scholarship/]>.
+* [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
+RFC 6749, DOI 10.17487/RFC6749, October 2012,
+<https://www.google.com/url?q=http://www.rfc-editor.org/info/rfc6749&sa=D&ust=1459362629226000&usg=AFQjCNG-AA8XlkuwAbjcvWFnsakz6J8SOw[http://www.rfc-editor.org/info/rfc6749]>.
+* [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March 2014,
+<https://www.google.com/url?q=http://www.rfc-editor.org/info/rfc7159&sa=D&ust=1459362629228000&usg=AFQjCNEHK_8xA2XyOP6I-x8V2QZhrHpcPg[http://www.rfc-editor.org/info/rfc7159]>.
+* [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+Protocol (HTTP/1.1): Semantics and Content", RFC 7231, DOI
+10.17487/RFC7231, June 2014,
+<https://www.google.com/url?q=http://www.rfc-editor.org/info/rfc7231&sa=D&ust=1459362629230000&usg=AFQjCNGCxi5gbKGD7OqteHSsuYgGIFXf5A[http://www.rfc-editor.org/info/rfc7231]>.
+* [RFC7662]  Richer, J., Ed., "OAuth 2.0 Token Introspection", RFC 7662,
+DOI 10.17487/RFC6749, October 2015,
+<https://www.google.com/url?q=https://www.rfc-editor.org/info/rfc7662&sa=D&ust=1459362629231000&usg=AFQjCNGQd4Y3sjKMlwubnLiVBaO9HMxnIg[https://www.rfc-editor.org/info/rfc7662]>.
+* [W3C.REC-html5-20141028]  Hickson, I., Berjon, R., Faulkner, S.,
+Leithead, T., Navara, E., 0'Connor, E., and S. Pfeiffer, "HTML5", World
+Wide Web Consortium Recommendation REC-html5-20141028, October 2014,
+<https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028&sa=D&ust=1459362629232000&usg=AFQjCNGfPwc9yrZvCJAjpXt--NOvkWsxTw[http://www.w3.org/TR/2014/REC-html5-20141028]>.

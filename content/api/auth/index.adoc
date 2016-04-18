@@ -2,5 +2,7 @@
 
 == Contents
 
-* link:introduction[API Introduction] -
+* link:introduction[Introduction] -
   introduction to API
+* link:reference[Reference]
+* link:http://globus.github.io/globus-sdk-python/[Python SDK]
