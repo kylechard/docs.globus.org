@@ -2,5 +2,6 @@
 
 == Contents
 
-* link:introduction[API Introduction] -
+* link:introduction[Introduction] -
   introduction to API
+* link:reference[Reference]

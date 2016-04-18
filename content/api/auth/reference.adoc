@@ -1,14 +1,13 @@
 = API Reference
-
+:toc:
+:numbered:
 
 == General
-
 
 The Globus Auth API has a set of common conventions that it uses
 throughout, as described in the following subsections.
 
 === Base URL
-
 
 All Globus Auth API interactions are
 link:https://tools.ietf.org/html/rfc6749#section-1.6[TLS-secured] with the host auth.globus.org.
@@ -110,7 +109,6 @@ These grants all share the same HTTP endpoints:
 
 **Token:** https://auth.globus.org/v2/oauth2/token
 
-
 ===== Authorization Code Grant (preferred)
 
 link:https://tools.ietf.org/html/rfc6749#section-4.1[Authorization Code Grant]: For obtaining an access token, via
@@ -145,9 +143,7 @@ is strongly recommended to include an anti-forgery token in the state, and confi
 If access_type is offline, your application will be issued a refresh token along with the access token the first time it exchanges an authorization code for a token.
 |============================
 
-
 An example URL is shown below, with line breaks and spaces for readability.
-
 
  https://auth.globus.org/v2/oauth2/authorization?
    scope=urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities+openid+email+profile
@@ -155,7 +151,6 @@ An example URL is shown below, with line breaks and spaces for readability.
    redirect_uri=https%3A%2F%2Foauth2-login-demo.example.com%2Fcallback&,
    response_type=code&
    client_id=d430e6c8-b06f-4446-a060-2b6b2bc3e54a
-
 
 After you create the request URL, redirect the user to it.
 
@@ -198,7 +193,6 @@ following field:
 
 The actual request might look like the following:
 
-
     POST /v2/oauth2/token HTTP/1.1
     Host: auth.globus.org
     Content-Type: application/x-www-form-urlencoded
@@ -207,7 +201,6 @@ The actual request might look like the following:
     code=P7q7W91a-oMsCeLvIaQm6bTrgtp7&
     redirect_uri=https://oauth2-login-demo.example.com/callback&
     grant_type=authorization_code
-
 
 A successful response to this request contains the following fields:
 
@@ -235,7 +228,6 @@ it will contain an array of access token responses containing separate tokens fo
 
 NOTE: The scope named first in the authorization request (excepting openid scopes)
       will determine the access token returned in the top level of the response object.
-
 
 A successful response is returned as a JSON object, similar to the following:
 
@@ -304,7 +296,6 @@ Such a request will look similar to the following:
     refresh_token=6BMfW9j53gdGImsiyUH5kU5RsR4zwI9lUVX-tqf8JXQ&
     grant_type=refresh_token
 
-
 As long as the refresh_token has not expired or been revoked the response
 includes a new access token. A response from such a request is shown below:
 
@@ -317,7 +308,6 @@ includes a new access token. A response from such a request is shown below:
 
 ===== Implicit Grant
 
-
 link:https://tools.ietf.org/html/rfc6749#section-4.2[Implicit Grant]: For obtaining an access token, via browser
 redirection, for a Javascript client running in a browser.
 
@@ -327,18 +317,14 @@ This flow is not recommended, because it is less secure than the Authorization C
 
 ===== Resource Owner Password Credentials Grant
 
-
 link:https://tools.ietf.org/html/rfc6749#section-4.3[Resource Owner Password Credentials Grant] : For obtaining an access
 token for a non-browser-based client (e.g., command line, mobile, or
 desktop application).
 
-
 NOTE: This feature will only work with certain identity providers that are configured
       to support non-browser-based authentication based on username and password.
 
-
 ===== Verifying identity (via OpenID Connect ID Token)
-
 
 Globus Auth's OAuth2 grants accept the following OpenID Connect scopes:
 
@@ -380,7 +366,6 @@ keys at https://auth.globus.org/jwk.json
 
 === API Endpoints
 
-
 Unless otherwise noted, all REST calls are authenticated using the
 HTTP Authorization header. Clients will need to include either a
 link:https://tools.ietf.org/html/rfc6750[Bearer Token] (i.e. access token)
@@ -394,7 +379,6 @@ call requires no authorization or some other form of authorization. It
 is recommend that resource owner APIs do the same.
 
 ==== Including associated resources ("side-loading")
-
 
 A resource request can have an "include" query parameter, followed by a
 list of fields that specify what associated resources should be included
@@ -416,12 +400,7 @@ to allow any client to directly access the Globus Auth API.
 //A trailing / on a URL path is not significant. Globus Auth will
 //interpret URLs with and without a trailing / in the same way.
 
-
-
-
-
 === /v2/api/identities resources
-
 
 Resource type: identity
 
@@ -499,7 +478,6 @@ are always visible to all clients.
 
 ==== GET /v2/api/identities?identity_ids=<list-of-identity-ids>
 
-
 Returns a list of identity resource type documents for the comma
 separated list of identity ids.
 
@@ -509,6 +487,7 @@ An identity documents may not include all fields, depending on the
 identity's visibility policy.
 
 ==== GET
+
 /v2/api/identities?usernames=<list-of-identity-names>
 
 Returns a list of identity resource type documents for the comma
@@ -563,7 +542,6 @@ Example response:
       ]
     }
 
-
 === API for Resource Servers
 
 Globus Auth provides a set of API resources for use only by resource
@@ -605,7 +583,6 @@ https://www.google.com/url?q=https://tools.ietf.org/html/rfc7662&sa=D&ust=145936
 7662] compliant JSON document with the following fields:
 
 Resource type: token/introspect
-
 
 [options="header"]
 |===================
@@ -698,7 +675,6 @@ NOTE: Globus Auth uses POST rather than GET in accordance with
     not included in the URL.
 
 ===== Dependent Token Grant (POST /v2/oauth2/token)
-
 
 This can only be used by a resource server, authorized using that
 resource server's client identifier and client secret.
