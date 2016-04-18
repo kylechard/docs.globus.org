@@ -433,15 +433,15 @@ provider.
 
 |status | String enum | One of:
 
-* "unused", indicating that no user has proven ownership of this
+- "unused", indicating that no user has proven ownership of this
 identity by authenticating with it. Resource servers may assign
 permissions to an unused identity. (See GET /v2/api/identities/<name>.)
-* "used", indicating that a user has proven ownership of this identity.
+- "used", indicating that a user has proven ownership of this identity.
 The identity will typically, but not necessarily, be associated with a
 Globus Account.
-* `private`, indicicating that the user has restricted visibility of their
+- `private`, indicicating that the user has restricted visibility of their
 identity.
-* `closed", indicating that this identity is no longer valid, typically
+- `closed", indicating that this identity is no longer valid, typically
 because the provider has revoked it and perhaps reused the identity
 username. When an identity is closed, it will be removed from all Globus
 accounts, and end-users can no longer authenticate with this identity.
@@ -619,7 +619,7 @@ WARNING: Some identity providers reuse identity usernames, so over time
 an identity username may map to different identity ids. Clients must use
 the identity id as the persistent identifier of an identity.
 
-* = Not part of RFC7662, Globus Auth-specific extension fields.
++++* =+++ Not part of RFC7662, Globus Auth-specific extension fields.
 
 If the <request access token> does not exist, or was issued by Globus
 Auth for use with a different resource server, then the HTTP response

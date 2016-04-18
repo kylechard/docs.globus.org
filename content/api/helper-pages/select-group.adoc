@@ -1,0 +1,19 @@
+= Select Group
+
+== Support Query Parameters
+* action
+* cancelurl
+* grouplimit `deprecated`
+* multiple
+
+=== `action`
+Used for the `<form>` element's `action` attribute value.
+
+=== `cancelurl`
+Used as the destination to redirect the client to in the event the "Cancel" button is clicked.
+
+=== [line-through]#`grouplimit` (change to `multiple=yes|no`)#
+[line-through]#If set to a truthy value the user will be limited to selecting a single group. The default allows multiple group selection.#
+
+=== `multiple`
+If set to `yes` (default) the user will be allowed to select multiple groups (checkboxes). If set to `no` or any value other than `yes` the user will be limited to selecting a single group (radio buttons).

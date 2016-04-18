@@ -572,6 +572,10 @@ footer #legal {
 .go-border-light {
   border: solid 1px #aaa;
 }
+.line-through {
+  text-decoration: line-through;
+}
+
 /**********************************
  * GO-Icon
  **********************************/
