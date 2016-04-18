@@ -16,6 +16,9 @@ menus:
             -
                 title: 'Python SDK'
                 link: 'http://globus.github.io/globus-sdk-python'
+            -
+                title: 'Helper Pages'
+                link: '/api/helper-pages/'
       -
         title: 'How To'
         link: '/how-to/'
