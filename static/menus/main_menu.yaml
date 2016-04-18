@@ -42,6 +42,9 @@ menus:
                 title: 'Security Bulletins'
                 link: '/security-bulletins/'
             -
+                title: 'Mailing Lists'
+                link: 'https://www.globus.org/mailing-lists'
+            -
                 title: 'Contact Us'
                 link: 'https://www.globus.org/contact-us'
             -
