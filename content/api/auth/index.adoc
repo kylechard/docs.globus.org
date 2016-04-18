@@ -1,6 +1,283 @@
-= Auth API Documentation
+---
+menu_weight: 0
+---
 
-== Contents
+= Globus Auth Introduction
+:toc:
+:toclevels: 3
+:numbered:
 
-* link:introduction[API Introduction] -
-  introduction to API
+== Introduction
+Globus Auth is a foundational identity and access management (IAM) platform service, used for brokering authentication and authorization interactions between end-users, identity providers, resource servers (services), and clients(including web, mobile, desktop, and command line applications, and other services).
+
+The goal of Globus Auth is to enable an extensible, integrated ecosystem of services and clientsfor the research and education community. A typical research/education end-user has many identities, issued by different identity providers (e.g., universities, national laboratories, software-as-a-service (SaaS) web applications, commercial services). This end-user uses various application clients(e.g., web, mobile, desktop, command line). These clientsleverage a variety of web/cloud services, from many providers, and these services even leverage each other. Globus Auth provides the security glue to allow end-users to easily access this ecosystem of clientsand services. It also makes it possible for an extensible set of identity, client, and service providers to participate in this ecosystem and to leverage each other's capabilities while providing end-users with a consistent user experience.
+
+Globus Auth is compliant with the OAuth2 and OpenID Connect standards, but extends them to support use cases that are beyond the scope of those standards. Compliant OAuth2 and OpenID Connect clientsshould work with Globus Auth with little or no changes.
+
+== Overview (Relative to OAuth2 and OpenID Connect)
+This specification assumes the reader has a solid understanding of the OAuth2 and OpenID Connect specifications, as it leverages them heavily. Throughout this specification, we use the terminology consistent with the OAuth2 and OpenID Connect specifications. In this section, we use OAuth2 and OpenID Connect terms in _italics_, to help clarify the relationship.
+
+Specifications:
+
+- The OAuth 2.0 Authorization Framework: https://tools.ietf.org/html/rfc6749 
+- OpenID Connect Core 1.0: http://openid.net/specs/openid-connect-core-1_0.html 
+- OAuth 2.0 Token Introspection: https://tools.ietf.org/html/rfc7662
+
+A _protected resource_ (or simply _resource_ throughout this specification) is something that can be addressed via a URL, and is accessible to authorized clientsvia HTTPS methods, for example via a REST API.
+
+Globus Auth is an _authorization server_. It issues an _access token_ to a _client_ after successfully authenticating the _resource owner_ and obtaining authorization for the _client_ to access _resources_ provided by a _resource server_. The _resource owner_ is typically an _end-user_, who authenticates to a Globus Auth-managed Globus account using an identity issued by one of an extensible set of (federated) identity providers supported by Globus Auth. The _resource owner_ authorizes (e.g., consents) that the _client_ can request access to the _resource server_ on the _resource owner_'s behalf within a limited _scope_. The _client_ might be an application (e.g., web, mobile, desktop, command line), or it may be another service, as described below.
+
+When a _client_ makes a request to a _resource server_, it presents the _access token_ as part of the request (in the HTTP Authorization header), to demonstrate that it is authorized to make the request.
+
+Globus Auth can act as the _authorization server_ to an extensible set of _resource servers_. All Globus services, such as the Globus data management and groups services, are _resource servers_ that use the Globus Auth _authorization server_. Third parties can also create their own _resource servers_ that rely on the Globus Auth _authorization server_ in exactly the same way as Globus services. This broad applicability is why we call Globus Auth a foundational service: it provides a platform for an extensible, integrated ecosystem of _resource servers_ and their _clients_.
+
+The OAuth2 specification states, "The interaction between the _authorization server_ and _resource server_ is beyond the _scope_ of [the OAuth2] specification." [link:https://tools.ietf.org/html/rfc6749#section-1.1[OAuth2 section 1.1]] Globus Auth fills this gap by defining a REST API that allows a _resource server_, upon receiving a request with an _access token_ from a _client_, to verify that the _access token_ is valid and intended for use with this _resource server_, and to query for additional information related to that _access token_ such as the _client_ identity, the _scope_, the _resource owner_'s identity, and other identities linked to that _resource owner_'s identity, which the _resource server_ can use to make authorization decisions for the request. Globus Auth leverages the link:https://tools.ietf.org/html/rfc7662[OAuth 2.0 Token Introspection (RFC 7662)] specification for this interaction.
+
+Globus Auth also plays the role of an OAuth2 _resource server_, allowing clientsto access Globus Auth-managed _resources_, such as identities, and _access tokens_. For example:
+
+- _Clients_ (e.g., Globus or third-party web applications) acting on behalf of end-user _resource owners_, can be _clients_ to the Globus Auth _resource server_, to access and manage the end-user's Globus account-related information.
+- When a _resource server_ receives a request from a _client_ with an _access token_, that _resource server_ assumes the role of a (different) _client_ to the Globus Auth _resource server_, in order to validate the _access token_. In this situation, the _resource server_ uses its own client id and client secret when making requests to the Globus Auth _resource server_.
+- An identity provider can act as a _client_ to the Globus Auth _resource server_ to provision and manage identities within the identity provider's namespace. In this situation, the identity provider uses its own client id and client secret (established previously through a registration process with Globus Auth) when making requests to the Globus Auth _resource server_.
+
+Globus Auth also allows a _resource server_, upon receipt of a request from a _client_ on behalf of a _resource owner_, to assume the role of a _client_ to any other _resource server_ on behalf of that _resource owner_, subject to authorization. Globus Auth provides an API that allows a _resource server_ to exchange an _access token_ (the "request access token") from its upstream _client_, for new _access tokens_ ("dependent access tokens") that it can use for requests to downstream _resource servers_ within limited _scopes_. 
+
+== Identities
+A Globus Auth identity has a unique, case-insensitive username (e.g., "user@example.org"), issued by an identity provider (e.g., a University, Google), for which a user or client can prove possession via an authentication process (e.g., presenting a password to the identity provider). Globus Auth manages the use of identities (e.g., to login to clientsand services), their properties (e.g., associated contact information), and relationships between identities (e.g., allowing login to an identity by using another linked, "federated" identity).
+
+Globus Auth neither defines its own identity usernames (e.g., usernames) nor verifies authentication (e.g., via passwords) with identities. Rather, it acts as an intermediary between external identity providers and clientsand services that want to leverage identities issued by those providers. Legacy Globus usernames and passwords, issued prior to Globus Auth release, have been moved to a new "GlobusID" identity provider, which is completely independent of Globus Auth, and whose use is optional.
+
+Globus Auth assigns each identity that it encounters an identifier (id): a UUID that is guaranteed to be unique among all Globus Auth identities, and that will never be reused. This identifier is what resource servers and clientsshould use as the canonical identifier for a Globus Auth identity. Associated with this identity id is an identity provider, a username given to the identity by the provider, and other provider-supplied information such as display name and contact email address. 
+
+The identity username is a (somewhat) human friendly string, such as an email address or InCommon eduPersonPrincipleName, which is guaranteed by Globus Auth to be unique at any point in time. However, because some (e.g., InCommon) identity providers reuse identity usernames (typically with a hiatus between uses), a given identity username may map to different identity ids over time. In such cases, Globus Auth uses a unique identifier provided by the identity provider (e.g., InCommon eduPersonTargetedID) to disambiguate, and ensure that at any given time there is a one-to-one mapping between an identity username and an identity id.
+
+++++++
+<div class="exampleblock">
+	<p>Example: The following is an example of the information that might be associated with a Globus Auth identity:</p>
+	<ul><li>username: <b>rocky@wossamotta.edu</b></li>
+		<li>id: <b>de305d54-75b4-431b-adb2-eb6b9e546014</b></li>
+		<li>identity_provider: <b>wossamotta.edu</b></li>
+		<li>display_name: <b>Rocket J. Squirrel</b></li>
+		<li>email: <b>rocky@wossamotta.edu</b></li>
+	</ul>
+</div>
+++++++
+
+If Globus Auth encounters an identity username that has been reused (i.e., same identity username, different provider supplied identifier), it will invalidate the old identity and create a new Globus Auth identity uniquely associated with that identity username. Conversely, if Globus encounters an existing identity where the identity username has changed for a given provider supplied identifier (e.g., the user changes their name), it will update the identity username while retaining the same Globus identity id. Thus, at any point in time, the relationship between identity username and Globus identity is unique, and a Globus identity id can be relied on to always refer to the same identity.
+
+=== Accounts
+An identity can be used with Globus Auth to create a _Globus account_. A Globus account has a _primary identity_. An identity can be the primary identity of at most one Globus account. However, one identity may be _linked_ to any number of other primary identities, and thus Globus accounts. Identity linking allows for authentication via one identity to imply login to a Globus account with a different primary identity (i.e., federated identity login).
+
+_Note: In the initial release of Globus Auth, an identity can be linked to only one primary identity, and thus Globus account. This restriction will be relaxed in a subsequent release._
+
+++++++
+<div class="exampleblock">
+	<p>Example: The identity with id=id1 and username=rocky@wossamotta.edu is the primary identity for one account, and also listed as a linked identity for another, allowing that identity to be used to login to either account.</p>
+	<div class="flexcontainer">
+		<div><p>Primary identity:</p>
+			<ul><li>id2 (admin@wossamotta.edu)</li></ul>
+			<p>Linked identity:</p>
+			<ul><li>id1 (rocky@wossamotta.edu)</li></ul>
+		</div>
+		<div><p>Primary identity:</p>
+			<ul><li>id1 (rocky@wossamotta.edu)</li></ul>
+		</div>
+	</div>
+</div>
+++++++
+
+A Globus account is not an identity itself. An account does not have its own name or identifier. Rather, a Globus account is identified by its primary identity. Similarly, profile information and other metadata is tied to identities, not to accounts. A Globus account is simply a set of identities comprising the primary identity and all identities linked to that primary identity.
+
+Clients and services should grant access to resources on the basis of identities (specifically, identity ids) and their associated attributes (e.g., group memberships, organization affiliations), not accounts. Login to a Globus account, via its primary identity or one of its linked identities, implies login to the account's primary identity and all identities linked to that account's primary identity. In other words, login to a Globus account potentially grants access to all resources accessible via all identities linked to that Globus account's primary identity.
+
+_Note: In the future, Globus Auth will support "level of assurance" policies to further constrain the access(es) that are allowed by the set of linked identities._
+
+Globus accounts are explicitly identified by their primary identity, and implicitly referred to by the OAuth2 access tokens issued by Globus Auth. An authorized client with an access token, or an authorized resource server that receives a client request using an access token, can request information from Globus Auth about the Globus account associated with the access token. 
+
+A Globus account can have up to 20 identities (primary and linked). This limit can be raised in the future if required.
+
+=== Using Identities
+Clients and resource servers should always use the Globus Auth-provided identity id when referring to an identity, for example in access control lists, and when referring to identities in a REST API. clientsand resource servers can use the Globus Auth REST API to map any identity username to its (current) identity id, and request information about an identity id (e.g., identity username, display_name, provider, email) for human-friendly display of identity information. 
+
+For example, if a resource server wants to share resources with a user (via a client), it does so by using access control permissions based on one of the user's identity ids. When a request is made to the resource server using an access token, the resource server authorizes the access by getting the set of identity ids (primary and linked) from the Globus account associated with the access token, and checking those identity ids against its access control permissions, to determine if any of those identity ids allows access. 
+
+_Note: In the future, Globus Auth will support "level of assurance" policies to further constrain the access(es) that are allowed by the set of identities._
+
+++++++
+<div class="exampleblock">
+	<p>Example: Two Globus accounts, each with two identities, and two groups, each with different member identities from both accounts.</p>
+	<div class="flexcontainer">
+		<div><p>Primary identity:</p>
+			<ul><li>id1 (rocky@wossamotta.edu)</li></ul>
+			<p>Linked identity:</p>
+			<ul><li>id4 (rsquirrell@example.com)</li></ul>
+		</div>
+		<div><p>Primary identity:</p>
+			<ul><li>id3 (bullwinkle@wossamotta.edu)</li></ul>
+			<p>Linked identity:</p>
+			<ul><li>id5 (bmoose@example.com)</li></ul>
+		</div>
+	</div>
+	<div class="flexcontainer">
+		<div class="green"><p>Group 1</p>
+			<ul><li>id1 (rocky@wossamotta.edu)</li>
+				<li>id5 (bmoose@example.com)</li></ul>
+		</div>
+		<div class="blue"><p>Group 2</p>
+			<ul><li>id1 (rocky@wossamotta.edu)</li>
+				<li>id3 (bullwinkle@wossamotta.edu)</li></ul>
+		</div>
+	</div>
+</div>
+++++++
+
+=== Effective Identity
+Clients and resource servers should work with Globus accounts in terms of sets of identities, whenever possible. For example, when a resource server is determining the permissions associated with an access token, it should use the entire set of identities (primary and linked identity ids) of the account referred to by that access token. 
+
+However, it is often convenient for a client or resource server to be able to refer to the resource owner of the Globus account via a single identity, rather than the entire set. For example, a client may want to display an identity username for the logged in user, or a resource server may want to use a single identity when logging events associated with a request. 
+
+Certain clientsand resources servers may even require an identity from a particular identity provider. For example, if an existing web application that uses a particular identity provider wants to integrate with Globus Auth, it would like to continue seeing its users in terms of that particular identity provider. 
+
+Globus Auth provides each client and resource server with an "effective identity". A client or resource server, during registration with Globus Auth, can request that users of that client or resource server must have an identity issued by a particular identity provider. When the client or resource server asks for the effective identity associated with the OAuth2 access token, it will be told the user's identity from this identity provider, even if the user has a different primary identity. If the client or resource server does not specify an effective identity provider, Globus Auth will use the primary identity as the effective identity for that client or resource server.
+
+=== Suggested Identity
+_Note: In the current version of Globus Auth, suggested identities as described in this section are not supported. They will be added in a future version._
+
+When a client requests an identity id for an identity username, Globus Auth may (depending on user-specified policies) also return an alternate suggested identity. The suggested identity of a linked identity defaults to the primary identity of the Globus account. However, the identity owner (e.g., end-user) may remove the suggested identity. If the identity is linked to multiple accounts, its suggested identity can be changed to any one of those accounts' primary identities. This suggested identity should be treated by a client as a suggestion from the user that they prefer clientsto use the suggested identity (e.g., for an ACL entry), unless that client has a reason to use a specific identity. However, it is only a suggestion for convenience, so a client may ignore it.
+
+The suggested identity allows for an improved end-user experience when granting an end-user permission to access a resource. It is common that different parties know an end-user by different identities. However, the end-user may prefer that permissions be granted to a particular identity. The end-user can simply link all identities that they use to a single Globus account's primary identity, and then when other users attempt to grant access to any of those identities they will be prompted with the suggestion to use the primary identity instead. 
+
+But, ultimately, it is up to the party granting a permission to decide what identity to use. For example, an end-user's employer may require that permissions be granted using the end-user's employer-issued identity, so that all such permissions will automatically be revoked if the employer revokes the end-user's identity. Nonetheless, if a permission is granted to a (non-primary) identity that is linked to the end-user's Globus account, as long as resource servers are properly granting access based on all of the account's linked identities, then access should be seamless for the end-user.
+
+=== Identity Usernames
+Globus Auth usernames have the syntax `user@provider`. Note that the user portion of an identity username may be an email address. For example:
+
+. identity username="+++user1@example.org+++" is user="user1" and provider="+++example.org+++"
+. identity username="+++user1@example.org@provider.org+++" is user="+++user1@example.org+++" and provider="+++provider.org+++".
+
+== Identity Providers
+Globus Auth supports an extensible set of identity providers, that employ a variety of identity naming and authentication approaches.
+
+=== Registration with Globus Auth
+Each identity provider supported by Globus Auth must register with Globus Auth in advance. 
+
+_Note: Currently this registration is an out-of-band process, but in the future it can be automated via the Globus Auth API._
+
+As described in the next section, each identity provider has one or more namespaces in which it can exclusively issue identity usernames, established at time of registration with Globus Auth. 
+
+Each identity provider must register a web browser based authentication protocol (e.g., OpenID Connect, SAML), and optionally a non-browser based protocol (e.g., LDAP, Kerberos, SAML ECP). If an identity provider registers only a browser based protocol, some Globus Auth OAuth2 grant types will not be possible with this identity provider (e.g., resource owner Password Credentials Grant), limiting the use of this provider's identities to only browser-based applications.
+
+When registering, an identity provider supplies various other information, such as display names and contact information.
+
+=== Identity Provider Namespaces
+Each identity provider has one or more namespaces in which it can exclusively issue identity usernames. A namespace is a domain name. For example, The University of Chicago's identity provider, is the only provider that can issue identity usernames with a provider domain of "@uchicago.edu" (e.g., +++johndoe@uchicago.edu+++).  Note that subdomains are distinct namespaces from their parent domain. For example, @uchicago.edu and @ci.uchicago.edu are distinct namespaces, from potentially different providers.
+
+Some identity providers use email addresses as their user names. For example, an identity provider restricted to issuing identities with names of "*@provider.org" may issue an identity with the name "+++johndoe@uchicago.edu@provider.org+++", but not "+++johndoe@uchicago.edu+++".
+
+=== Identity and Account Provisioning
+If a user authenticates to Globus Auth using an identity that is not recognized by Globus Auth, Globus Auth will automatically provision an appropriate Globus Auth identity on the fly. Globus Auth may prompt the user for missing identity information, such as a display name and email contact for this identity.
+
+When a user authenticates Globus Auth using an identity that is not associated with a Globus account (i.e., it is not a primary identity or linked identity of any account), either a Globus account must be created with this identity as the account's primary identity, or this identity must be linked to an existing account's primary identity. For some identity providers, when an unlinked identity authenticates to Globus Auth, an account will automatically be created with this identity as the primary. For other identity providers, Globus Auth will prompt the user to create an account or link the identity with another account.
+
+_Note: In the future, Globus Auth may provide identity providers with an API for explicit identity provisioning._
+
+=== Supported Identity Providers
+
+==== GlobusID (Globus legacy usernames)
+Prior to February 13, 2016, Globus required a Globus account to have a Globus username and password. This requirement no longer holds with Globus Auth. Rather, the old Globus usernames are now simply identities issued by the GlobusID identity provider, under the identity provider domain namespace of "@globusid.org". This identity provider has no special status with Globus Auth: it is just another identity provider. A Globus Auth account does not require a Globus account to have a linked identity from the GlobusID identity provider. The GlobusID identity provider remains available in order to smooth transition to this new Globus Auth model for previous users, and as an identity provider of convenience for Globus users going forward.
+
+==== OpenID Connect
+Globus Auth can act as a client to any standard OpenID Connect identity provider. The "sub" claim will uniquely map to a Globus Auth identity id. Globus Auth can be configured to get the identity username from the "sub" claim, the "preferred_username" claim, or any other non-standard claim (e.g., "eduPersonPrincipalName"). The Globus Auth identity username will be suffixed with namespace (e.g., DNS name) of the OpenID Connect server as the provider domain. 
+
+For example, if an OpenID Connect server running at "example.org" issues an ID token with a "sub" claim of "joeuser", and the Globus Auth identity username may be "joeuser@example.org". 
+
+==== Google
+While Google uses OpenID Connect (with some extensions), it is handled as a special case by Globus Auth. The Google identity provider can issue identities for any email address, and by default, such identities will have a Globus Auth identity username of the email address (i.e., the value of the Google-issued OpenID Connect ID token "email" claim), with a "@accounts.google.com" provider domain. For example, "+++johndoe@uchicago.edu@accounts.google.com+++". 
+
+Globus Auth only accepts Google issued identities for email addresses that it has verified (i.e., Google-issued ID token has an "email_verified" claim with the value "true"). 
+
+Globus Auth use the value of the Google-issued ID token "sub" claim, as a provider-specific unique identifier for the identity.
+
+However, Google is also the exclusive issuer of identities for certain domains, such as @gmail.com and certain app domains registered by customers with Globus Auth. For these pre-defined domains, Globus Auth does not add "@accounts.google.com" to the identity username. For example, "joeuser@gmail.com". 
+
+==== SAML
+Globus Auth uses the link:http://www.cilogon.org/[CILogon] service as an intermediary with SAML identity providers.
+
+_Note: In the future, Globus Auth may add support to act as a SAML client, so that it can directly integrate with SAML identities providers that that follow the link:https://refeds.org/category/research-and-scholarship/[REFEDS Research and Scholarship] attribute release profile._
+
+==== Email Addresses
+Globus Auth treats email addresses as a special type of identity, where the identity's name is the email address (without an additional provider domain), and authentication of that name is done using the common email verification technique of sending an email to the address containing a secret that the user needs to copy-and-paste into an authentication/verification form. 
+
+Note that due to identity provider namespacing, as described above, Globus Auth will never allow an email address identity with a domain name issued by a registered identity provider. For example, if the University of Chicago identity provider owns the @uchicago.edu namespace, +++joeuser@uchicago.edu+++ must be authenticated using the University of Chicago identity provider, and not simply via email address verification.
+
+If a new identity provider is registered with an exclusive provider domain for which email address identities were previously issued, then Globus Auth will automatically change the provider of such identities to the new identity provider. For example, if a user has authenticated and linked the +++rocky@wossamotta.edu+++ email address identity to their primary identity, and later an identity provider for @wossamotta.edu registers with Globus Auth, then Globus Auth will subsequently require authentication of +++rocky@wossamotta.edu+++ via that identity provider, instead of email-based authentication.
+
+== Clients
+To clients, Globus Auth is a standard OAuth2 authorization server, and OpenID Connect identity provider. After performing a normal OAuth2 interaction, a client can:
+
+. Use the OpenID Connect ID token that was issued by Globus Auth to verify the identity of the user associated with the access token.
+. Use the access token to request additional information related to the access token from Globus Auth via its REST API.
+. Use the access token to request access to resources provided by various other resource servers, subject to authorized scopes.
+
+=== Obtaining Authorization
+The Globus Auth API includes the standard OAuth2 interfaces:
+
+- link:https://tools.ietf.org/html/rfc6749#section-4.1[Section 4.1, Authorization Code Grant]: For obtaining an access token, via browser redirection, for a web server-based client to access a resource server.
+- link:https://tools.ietf.org/html/rfc6749#section-4.2[Section 4.2, Implicit Grant]: For obtaining an access token, via browser redirection, for a Javascript client running in a browser.
+- link:https://tools.ietf.org/html/rfc6749#section-4.3[Section 4.3, resource owner Password Credentials Grant]: For obtaining an access token for a non-browser-based client (e.g., command line, mobile, or desktop application), using a username and password.
++
+_Note: This feature will only work with certain identity providers that are configured to support non-browser-based authentication based on username and password._
+
+=== Verifying Identity
+When an end-user logs into an account, using either the primary identity or a linked identity, authorized clientswill, by default, verify the user's identity by using the account's primary identity. Globus Auth will issue an OpenID Connect ID token based on the primary identity, and the identity specified in the /v2/token/introspect resource's "sub" field will be the primary identity.
+
+However, some clientsrequire an effective identity; an identity that has been issued by a particular identity provider. A user may have an account with a linked identity from that provider, but with a primary identity not issued by that provider. Before issuing a token to such a client, Globus Auth will check the user's account to ensure that it includes a linked identity that was issued by the identity provider required by the client. Then Globus Auth will use this as the effective identity specified in the OpenID Connect ID token.
+
+A client that requires identities from a particular provider must register with Globus Auth, and specify the provider at time of registration.
+
+Even if a client requires a particular identity, it can still use the Globus Auth API to discover the primary identity, and other linked identities, subject to authorization.
+
+== Resource Servers
+Globus Auth can be used an an authorization server for third party resource servers, making it easy for resource servers to support sophisticated OAuth2 and OpenID Connect functionality, and to leverage other resource servers that use Globus Auth.
+
+=== Registration with Globus Auth
+Each resource server that wants to leverage Globus Auth as its authorization server must register with Globus Auth in advance. (Currently registration is an out-of-band process, but in the future it can be automated via the Globus Auth API.) 
+
+During registration, Globus Auth will establish a client identifier and client secret for the resource server, which will be used to allow the resource server to authenticate to Globus Auth in order to validate and get information about an access token. 
+
+A resource server, during registration, can request that users of the resource server must have an identity issued by a particular identity provider, so that when the resource server asks for the effective identity associated with the OAuth2 access token, it will be told the user's identity from this provider, even if the user has a different primary identity. This allows resource servers to adopt Globus Auth in a limited, and incremental fashion, by retaining existing identity support.
+
+A resource server, during registration, defines a set of "scopes" (see link:https://tools.ietf.org/html/rfc6749#section-3.3[OAuth2 access token Scope]) for itself, each of which corresponds to a subset of that resource server's functionality. Each scope for each resource server has a Globus Auth-issued URN that is unique across all scopes on all resource servers, and is never reused. clientsrequest an access token that authorizes use of a specific set of scopes (and thus resource servers). While resource servers may choose to offer just a single scope that grants full access to the resource server, more limited scopes allow for resource servers to protect resources better by offering more limited rights.
+
+A resource server, during registration, can define a set of scopes that it will use as a client to other resource servers. See the link:#dependent_access_tokens[dependent access tokens] section below for more details.
+
+A resource server, during registration, establishes a resource server name, which is a DNS name that is controls that uniquely identifies this resource server. This resource server name is used as part of the scope URNs for this resources.
+
+=== Typical Resource Server Interactions
+A resource server that leverages the Globus Auth authorization server will typically interact with clientsand Globus Auth as follows:
+
+. A client makes an HTTPS request to the resource server with an Authorization: Bearer header containing an access token ("request access token"). 
+. The resource server calls the Globus Auth API (POST /v2/oauth2/token/introspect), authorized by the resource server's client identifier and client secret, to validate the request access token, and obtain additional information related to that request access token (scopes, effective identity, identities set, etc.). If the request access token is not valid, or is not intended for use with this resource server, Globus Auth will return an error.
+. The resource server verifies that the request from its client conforms to the scopes associated with the request access token.
+. The resource server verifies the effective identity of the resource owner (typically an end-user), on whose behalf the client is acting. The resource server may use this identity as its local account identifier for this user.
+. The resource server uses the set of identities associated with the account referred to by the request access token to determine what the request is allowed to do. For example, if the request is to access a resource that is shared with particular identities, the resource server should compare all of the account's identities (primary and linked identity ids) with the resource access control permissions to determine if the request should be granted.
+. The resource server may need to act as a client to other (dependent) resource servers, in order to fulfill the request. (See the link:#dependent_access_tokens[dependent access tokens] section below for more details.)
+.. The resource server uses the Globus Auth Dependent Token Grant API (POST /v2/oauth2/token) to get dependent access tokens for use with downstream resource servers, based on the request access token it received from the client.
+.. The resource server uses a dependent access token to make a request to a dependent resource server. For example, the resource server may call the Globus Groups API to find out what groups the identities of the account are members of, and call the Globus Transfer API to perform a file transfer.
+. The resource server responds to its client with an appropriate response.
+
+=== Dependent access tokens
+The OAuth2 specification defines how to obtain and use access tokens for interactions between a client and a resource server, within a specified scope. However, what if a resource server (RS1) receives a request from a client (C1) using an request access token (AT1), and RS1 wants to act as a client (C2) to another resource server (RS2), in order to help fulfill the request? What access token should be used in the request from C2 to RS2? The OAuth2 specification is silent on such a scenario.
+
+This scenario arises frequently within the Globus ecosystem of services that Globus Auth is designed to support. For example, a user of a web application client wants to submit a request to workflow management service to run a workflow. The workflow resource server, in turn, wants to submit a request to the Globus data sharing service to access data from a shared endpoint for use in the workflow. In order to service the request, the Globus data sharing resource server must, in turn, make a request to the Globus groups service to find out what groups the user is a member of, based on that user's linked identities, in order to determine what shared endpoint permissions the user has. In this scenario we call the Globus groups service a dependent resource server to the Globus data sharing resource server, and the Globus data sharing resource server is a dependent resource server to the workflow service.
+
+The Globus Auth authorization server provides an API for its resource servers, which allows a resource server to request new "dependent access tokens", based on the access token it received from its client. These dependent access tokens can be used to access dependent resource server scopes. Via the Dependent Token Grant API (POST /v2/oauth2/token), Globus Auth supports access token delegation for such service invocation chains. 
+
+== References
+
+- [OIDC]  N. Sakimura, N., J. Bradley, J., M. Jones, M., B. de Medeiros, B., C. Mortimore, C., "_OpenID Connect Core 1.0_", November 8, 2014, <http://openid.net/specs/openid-connect-core-1_0.html>.
+- [REFEDS-RS]  "_REFEDS Research and Scholarship Entity Category, Version 1.2_", November 2014, <https://refeds.org/category/research-and-scholarship/>.
+- [RFC6749]  Hardt, D., Ed., "_The OAuth 2.0 Authorization Framework_", RFC 6749, DOI 10.17487/RFC6749, October 2012, <http://www.rfc-editor.org/info/rfc6749>.
+- [RFC7159]  Bray, T., Ed., "_The JavaScript Object Notation (JSON) Data Interchange Format_", RFC 7159, DOI 10.17487/RFC7159, March 2014, <http://www.rfc-editor.org/info/rfc7159>.
+- [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "_Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content_", RFC 7231, DOI 10.17487/RFC7231, June 2014, <http://www.rfc-editor.org/info/rfc7231>.
+- [RFC7662]  Richer, J., Ed., "_OAuth 2.0 Token Introspection_", RFC 7662, DOI 10.17487/RFC6749, October 2015, <https://www.rfc-editor.org/info/rfc7662>.
+- [W3C.REC-html5-20141028]  Hickson, I., Berjon, R., Faulkner, S., Leithead, T., Navara, E., 0'Connor, E., and S. Pfeiffer, "_HTML5_", World Wide Web Consortium Recommendation REC-html5-20141028, October 2014, <http://www.w3.org/TR/2014/REC-html5-20141028>.

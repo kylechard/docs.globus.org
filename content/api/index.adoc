@@ -8,3 +8,4 @@ full_title: "Globus APIs"
 
 - link:auth[Auth API]
 - link:transfer[Transfer API]
+- link:http://globus.github.io/globus-sdk-python/[Python SDK]

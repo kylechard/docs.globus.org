@@ -13,6 +13,9 @@ menus:
             -
                 title: 'Transfer'
                 link: '/api/transfer/'
+            -
+                title: 'Python SDK'
+                link: 'http://globus.github.io/globus-sdk-python/'
       -
         title: 'How To'
         link: '/how-to/'
