@@ -768,8 +768,8 @@ web browsers.
 When  a web application that that uses Globus Auth via a Authorization
 Code Grant, after doing whatever cleanup it needs to do (e.g., delete
 access tokens), it should redirect the user's web browser to
-https://www.google.com/url?q=https://auth.globus.org/v2/web/logout&sa=D&ust=1459362629216000&usg=AFQjCNGitbsuBdVTFWapFysXB03Sj7ykQA[https://auth.globus.org/v2/web/logout].
-Globus Auth will delete any cookies it dropped in the browser, so that
+`https://auth.globus.org/v2/web/logout`.
+Globus Auth will delete any authentication cookies it set for the the user, so that
 subsequent Authorization Code Grants will require re-authentication with
 an identity provider.
 
@@ -787,7 +787,7 @@ App", the logout page header will be "Logged out of Example App"
 
 If redirect_uri and redirect_name parameters are provided, the bottom of
 the logout page will display "Continue to <link-text>", which is linked
-to <http-url>. ^link:#cmnt11[[k]]^
+to <http-url>.
 
 == References
 
