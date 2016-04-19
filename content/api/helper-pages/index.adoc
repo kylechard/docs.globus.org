@@ -1,5 +1,5 @@
 = Helper Pages
 
 - link:select-group[Select Group]
-- link:browser-endpoint[Browser Endpoint]
+- link:browse-endpoint[Browse Endpoint]
 - link:browser-resources[Web Browser Resources]
