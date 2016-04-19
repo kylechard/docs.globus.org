@@ -1,0 +1,39 @@
+= Browse Endpoint
+[Internal Documentation](https://docs.google.com/document/d/1kyfpInGPiz9_JVD0dpA_S40qPeN5XrScYL8xNwM5hDs/edit#)
+
+== Supported Query Parameters
+* method
+* action
+* cancelurl
+* folderlimit
+* filelimit
+* label
+* ep
+
+=== `method`
+The `method` parameter will be used for the `<form>` element's `method` attribute.
+
+Valid values: `POST`, `GET`.
+Default: `POST`.
+
+=== `action`
+Used for the `<form>` element's `action` attribute value.
+
+=== `cancelurl`
+Used as the destination to redirect the client to in the event the "Cancel" button is clicked.
+
+=== `folderlimit`
+Limits the number of folders that a user may select in the endpoint browser. If `folderlimit` is `0` then selecting folders is not allowed.
+
+=== `filelimit`
+Limits the number of files that a user may select in the endpoint browser. If `filelimit` is `0` then selecting files is not allowed.
+
+=== `label`
+Used to pre-fill the "Label This Transfer" field.
+
+////
+=== `ep` (hide from public api docs)
+Indicates that the user MUST use a Globus Connect Personal endpoint. If the user does not have a GCP endpoint they will be redirected to create one.
+
+Valid values: `GC`
+////

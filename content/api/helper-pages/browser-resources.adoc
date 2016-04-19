@@ -1,0 +1,30 @@
+= Web Browser Resources
+
+Globus Auth provides the following resources intended to be used from
+web browsers.
+
+== GET https://auth.globus.org/v2/web/logout
+
+When  a web application that that uses Globus Auth via a Authorization
+Code Grant, after doing whatever cleanup it needs to do (e.g., delete
+access tokens), it should redirect the user's web browser to
+`https://auth.globus.org/v2/web/logout`.
+Globus Auth will delete any authentication cookies it set for the the user, so that
+subsequent Authorization Code Grants will require re-authentication with
+an identity provider.
+
+To control the behavior of the page, clients can pass the following
+query parameters:
+
+* client_id=<client-id>
+* redirect_uri=<http-url>
+* redirect_name=<link-text>
+
+Passing client_id will make the logout page header "Logged out of
+<client-display-name>". For example, if the client display name that was
+registered with Globus Auth for the specified <client-id> is "Example
+App", the logout page header will be "Logged out of Example App"
+
+If redirect_uri and redirect_name parameters are provided, the bottom of
+the logout page will display "Continue to <link-text>", which is linked
+to <http-url>.
