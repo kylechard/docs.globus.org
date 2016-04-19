@@ -44,7 +44,7 @@ asciidoc for each cell of type 'a'.
 
 * Endpoint Access Rules
 ** The +id+ field is now a UUID string, instead of an integer id.
-** Add 'anonymous' link:../acl#_access_rule_types[principal type]
+** Add 'anonymous' link:../acl#access_rule_types[principal type]
 ** Remove 'user' and 'email' principal types, replace with single
    'identity' type.
 ** Remove 'send_email' option, replace with 'notify_email' and
@@ -58,7 +58,7 @@ asciidoc for each cell of type 'a'.
    +modified_by+.
 
 * New resources
-** link:../endpoint#_get_shared_endpoint_list[Get shared endpoint list]
+** link:../endpoint#get_shared_endpoint_list[Get shared endpoint list]
 
 == 4.7
 
@@ -92,14 +92,14 @@ asciidoc for each cell of type 'a'.
 
 * Endpoint
 ** Add +gcp_connected+ and +gcp_paused+ to
-   link:../endpoint#_endpoint_document[endpoint document].
+   link:../endpoint#endpoint_document[endpoint document].
 ** Fix backward incompatible change in 4.4 causing an error when +myproxy_dn+
    is set to an empty string. It is now mapped to null in endpoint update,
    but clients are still encouraged to send null and not empty string.
 
 * Task
 ** Add +files_transferred+
-   to link:../task#_task_document[task document].
+   to link:../task#task_document[task document].
 
 == 4.4
 
@@ -112,7 +112,7 @@ asciidoc for each cell of type 'a'.
    +departement+, and +keywords+, +network_use+, +location+,
    +subscription_id+, +min_concurrency+, +preferred_concurrency+,
    +min_parallelism+, +preferred_parallelism+
-   to link:../endpoint#_endpoint_document[endpoint document].
+   to link:../endpoint#endpoint_document[endpoint document].
 ** All resources with an endpoint param in URI can now take an id. Using
    a canonical name is still supported but is deprecated.
 ** Add +id+ field to endpoint and shared endpoint create result documents.
@@ -125,7 +125,7 @@ asciidoc for each cell of type 'a'.
 * Task
 ** Add +source_endpoint_id+, +destination_endpoint_id+,
    +source_endpoint_display_name+, +destination_endpoint_display_name+
-   to link:../task#_task_document[task document].
+   to link:../task#task_document[task document].
 
 == 4.3
 
@@ -134,28 +134,28 @@ asciidoc for each cell of type 'a'.
 *** Added field +is_paused+ to the
     link:../task#task_document[task document]
 *** Added
-    link:../task#_get_task_pause_info[Get task pause info]
+    link:../task#get_task_pause_info[Get task pause info]
 ** Advanced Endpoint Management
 *** Added
-    link:../advanced_endpoint_management#_pause_rule_document[pause rule document]
+    link:../advanced_endpoint_management#pause_rule_document[pause rule document]
     and
-    link:../advanced_endpoint_management#_get_pause_rules[CRUD APIs]
+    link:../advanced_endpoint_management#get_pause_rules[CRUD APIs]
 *** Added
-    link:../advanced_endpoint_management#_pause_tasks_as_admin[admin pause]
+    link:../advanced_endpoint_management#pause_tasks_as_admin[admin pause]
     API, which supports pausing specific tasks by task id, and
-    link:../advanced_endpoint_management#_resume_tasks_as_admin[admin resume]
+    link:../advanced_endpoint_management#resume_tasks_as_admin[admin resume]
     for removing the per-task pause and overriding pause rules for the task.
 ** File Operations
-*** Added link:../file_operations#_common_errors[OperationPaused]
+*** Added link:../file_operations#common_errors[OperationPaused]
     error code.
 ** Endpoint
 *** Added
-    link:../endpoint#_get_my_effective_endpoint_pause_rules[Get my effective endpoint pause rules]
+    link:../endpoint#get_my_effective_endpoint_pause_rules[Get my effective endpoint pause rules]
 
 * Admin task successful transfers (new feature)
 ** Advanced Endpoint Management
 *** Added
-    link:../advanced_endpoint_management#_get_task_successful_transfers_as_admin[Get task successful transfers as admin]
+    link:../advanced_endpoint_management#get_task_successful_transfers_as_admin[Get task successful transfers as admin]
 
 == 4.2
 
@@ -174,7 +174,7 @@ link:../acl#changes_42[ACL Management change history]
 * Admin task cancel (new feature)
 ** Task
 *** Added fields +canceled_by_admin+ and +canceled_by_admin_message+ to the
-link:../task#_task_document[task document]
+link:../task#task_document[task document]
 ** Events
 *** Change details of the "CANCELED" event. This replaces the current details
 of "num_subtasks=N":

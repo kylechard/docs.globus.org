@@ -44,7 +44,7 @@ and the priority of the matching fields.
 
 == Document Types
 
-See link:../endpoint#_endpoint_document[Endpoint Document Type].
+See link:../endpoint#endpoint_document[Endpoint Document Type].
 
 == Common Query Parameters
 

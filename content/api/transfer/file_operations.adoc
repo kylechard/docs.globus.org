@@ -300,6 +300,7 @@ up to the 100,000 entry limit are returned, sorted by (+type+, +name+).
   an open range.
 |===================
 
+[[dir_listing_response]]
 ==== Dir Listing Response
 
 The "file" document represents a single file or directory. The response is
@@ -341,6 +342,7 @@ directory level data.
 }
 ----------------------
 
+[[file_fields]]
 ==== File Fields
 
 [cols="1,1,8",options="header"]
@@ -417,6 +419,7 @@ directory level data.
 |===================
 
 
+[[make_directory]]
 === Make Directory
 
 Create a directory at the specified path on an endpoint filesystem. The
@@ -489,6 +492,7 @@ as well as the following errors.
 |===================
 
 
+[[rename]]
 === Rename
 
 Rename or move a file or directory on an endpoint filesystem. The endpoint must

@@ -69,6 +69,7 @@ returned.
 
 == Document Type
 
+[[access_document]]
 === Access Document Type
 
 ACL management resources use the "access" document type, which represents
@@ -152,6 +153,7 @@ an "Exists" error.
 |===================
 
 
+[[access_rule_types]]
 ==== Access Rule Types
 
 ==== Identity Access Rule
@@ -301,7 +303,8 @@ Get a single access rule for a specified endpoint by id.
 | Method
 | GET
 
-| Response Body | Access document (see above).
+| Response Body
+| <<access_document,Access document>>
 |============
 
 
