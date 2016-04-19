@@ -45,13 +45,16 @@ When that happens, the task history for the linked identity that is no longer
 primary will not be visible. It can still be recovered and viewed by unlinking
 the identity and signing in to that identity separately.
 
+[[document_types]]
 == Document Types
 
+[[task_document]]
 === Task Document
 
 The "task" document type represents a single transfer or delete submission.
 Other task types may be added in the future.
 
+[[task_fields]]
 ==== Task Fields
 
 [cols="1,1,8",options="header"]
@@ -254,12 +257,13 @@ Other task types may be added in the future.
                       has been paused by the administrator of the source or
                       destination endpoint, "false" if the task has not been
                       paused or is complete (status "SUCCEEDED" or "FAILED").
-                      Use <<_get_task_pause_info,Get task pause info>> to get
+                      Use <<get_task_pause_info,Get task pause info>> to get
                       information about why the task is paused.
 |===================
 
 
-=== Event
+[[event_document]]
+=== Event Document
 
 Events are logged as a task makes progress or runs into errors.
 
@@ -296,6 +300,7 @@ Events are logged as a task makes progress or runs into errors.
 |===================
 
 
+[[limited_pause_rule_document]]
 === Limited pause rule document
 
 The limited pause rule document is a subset of the full pause rule document.
@@ -303,7 +308,7 @@ It does not contain sensitive fields, in particular +modified_by+, which is
 only viewable by endpoint administrators using the Advanced Endpoint Management
 API. The +DATA_TYPE+ is "pause_rule_limited" instead of "pause_rule", to
 indicate the exclusions. See
-link:../advanced_endpoint_management#_pause_rule_document[pause_rule
+link:../advanced_endpoint_management#pause_rule_document[pause_rule
 document] for details.
 
 == Path Arguments
@@ -363,14 +368,21 @@ document] for details.
 
 == Operations
 
+[[get_task_list]]
 === Get task list
 
-Get a paged list of all tasks submitted by the current user.
+Get a paged list of tasks submitted by the current user. Returns only
+returns TRANSFER tasks by default; clients should pass query parameter
++filter=type:TRANSFER,DELETE+ to get all tasks.
+
+NOTE: In the next release, this will be changed so all tasks of any type
+will be returned by default. The explicit filter including both types will
+continue to work.
 
 [cols="h,5"]
 |============
 | URL
-| /task_list
+| /task_list?filter=type:TRANSFER,DELETE
 
 | Method
 | GET
@@ -461,6 +473,13 @@ that begins with the string "experiment1".
 | Comma separated list of UUID strings. Return only tasks with the
   specified task ids. Only returns tasks owned by the current user.
 
+| type
+| string list
+| Comma separated list of type names (TRANSFER, DELETE). Return only tasks
+  of the specified type(s). The default is currently TRANSFER, but this
+  will be changing in the next release so both TRANSFER and DELETE tasks
+  are included by default.
+
 | status
 | string list
 | Comma separated list of status codes (ACTIVE, INACTIVE, FAILED, SUCCEEDED).
@@ -493,6 +512,7 @@ it's assumed to be 00:00.
 |===================
 
 
+[[get_task_by_id]]
 === Get task by id
 
 Get a single task by task id. All fields are included by default,
@@ -506,10 +526,11 @@ but the +fields+ query parameter can be used to fetch only specific fields.
 | Method
 | GET
 
-| Response Body | Task document (see above).
+| Response Body | <<task_document,Task document>>
 |============
 
 
+[[update_task_by_id]]
 === Update task by id
 
 Update a single task by task id. Only the +label+ and +deadline+ fields can be
@@ -526,10 +547,11 @@ and the fields to be modified.
 | Method
 | PUT
 
-| Response Body | Task document (see above).
+| Response Body | Result resource
 |============
 
 
+[[cancel_task_by_id]]
 === Cancel task by id
 
 Submit a cancel request for an active task, by id. Cancel requests are
@@ -574,6 +596,7 @@ of any higher level authority they have been granted.
 |============
 
 
+[[get_event_list]]
 === Get event list
 
 Get a paged list of all events, including error and info events. The results
@@ -652,6 +675,7 @@ Get only error events.
 |===================
 
 
+[[get_task_pause_info]]
 === Get task pause info
 
 Get details about why a task is paused (or possibly about to be paused). This
@@ -670,13 +694,13 @@ If the task is complete, this will return an empty result set, meaning that
 .Authorization
 Requires the user to be the owner of the task. To access pause info
 as an administrator with endpoint manager privileges, use the
-link:../advanced_endpoint_management#_get_task_pause_info_as_admin[endpoint manager pause info operation].
+link:../advanced_endpoint_management#get_task_pause_info_as_admin[endpoint manager pause info operation].
 
 .Pause Rule
 A pause rule is set by the administrator of an endpoint and causes all matching
 tasks to or from that endpoint to be paused. The rules returned by this
 operation have some sensitive fields removed, see the
-<<_limited_pause_rule_document,pause_rule_limited document>>.
+<<limited_pause_rule_document,pause_rule_limited document>>.
 
 [cols="h,5"]
 |============
@@ -695,5 +719,4 @@ operation have some sensitive fields removed, see the
     "destination_pause_message": "Disk problems, pausing all tasks until we resolve",
 }
 -------------------------------------------------------------------
-
 |============

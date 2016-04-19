@@ -37,6 +37,7 @@ or +oauth_server+ field of the endpoint definition. The lifetime of the
 activation varies depending on the identity provider, but is typically several
 days.
 
+[[activation_types]]
 == Activation Types
 
 There are several ways of providing a credential for an endpoint, and different
@@ -109,8 +110,10 @@ identity provider, then other endpoints using that same identity provider
 can be auto activated, by copying that credential for use on the other
 endpoint.
 
+[[document_types]]
 == Document Types
 
+[[activation_requirements_document]]
 === Activation Requirements Document
 
 The activation requirements document is a list of activation types supported by
@@ -201,6 +204,7 @@ data about the activation state and options of the endpoint.
 }
 --------------------------
 
+[[activation_requirements_fields]]
 ==== Activation Requirements Fields
 
 [cols="1,1,8",options="header"]
@@ -327,6 +331,7 @@ code hierarchy.
 
 == Operations
 
+[[get_activation_requirements]]
 === Get activation requirements
 
 [cols="h,5"]
@@ -340,6 +345,7 @@ code hierarchy.
 | Response Body | An +activation_requirements+ document.
 |============
 
+[[autoactivate_endpoint]]
 === Autoactivate endpoint
 
 Attempt to auto activate an endpoint. The response will always contain
@@ -374,6 +380,7 @@ activations, so this paramater should be set accordingly.
                   with an extra +code+ field.
 |============
 
+[[activate_endpoint]]
 === Activate endpoint
 
 To active an endpoint, clients should get the activation requirements for the
@@ -398,6 +405,7 @@ TYPE indicates the type of activation used.
 | Response Body | A +result+ document.
 |============
 
+[[deactivate_endpoint]]
 === Deactivate endpoint
 
 "Deactivating" an endpoint removes the credential, if any, associated with the

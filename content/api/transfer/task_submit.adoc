@@ -42,8 +42,10 @@ so the transfer service can perform operations on their behalf. See the
 link:../endpoint_activation[Endpoint Activation API]
 for details.
 
+[[document_types]]
 == Document Types
 
+[[transfer_and_delete_documents]]
 === Transfer and Delete Documents
 
 The "transfer" and "delete" documents share several common fields and have
@@ -79,6 +81,7 @@ directory, depending on whether or not it already exists.
 
 See also link:../file_operations#path_encoding[Path Encoding].
 
+[[common_transfer_and_delete_fields]]
 ==== Common Transfer and Delete fields
 
 [cols="1,1,8",options="header"]
@@ -115,6 +118,7 @@ See also link:../file_operations#path_encoding[Path Encoding].
                    indefinitely, as long as it is making progress.
 |===================
 
+[[transfer_specific_fields]]
 === Transfer specific fields
 
 [cols="1,1,8",options="header"]
@@ -161,6 +165,7 @@ See also link:../file_operations#path_encoding[Path Encoding].
                         Default false.
 |===================
 
+[[transfer_item_fields]]
 === Transfer item fields
 
 [cols="1,1,8",options="header"]
@@ -177,6 +182,7 @@ See also link:../file_operations#path_encoding[Path Encoding].
                       | Must be true for directory paths, false for files.
 |===================
 
+[[delete_specific_fields]]
 === Delete specific fields
 
 [cols="1,1,8",options="header"]
@@ -205,6 +211,7 @@ See also link:../file_operations#path_encoding[Path Encoding].
                         literals.
 |===================
 
+[[delete_item_fields]]
 === Delete item fields
 
 [cols="1,1,8",options="header"]
@@ -221,6 +228,7 @@ See also link:../file_operations#path_encoding[Path Encoding].
 
 == Operations
 
+[[get_submission_id]]
 === Get a submission id
 
 Get a submission id, required when submitting transfer and delete tasks. Note
@@ -243,6 +251,7 @@ that this is different than the task id returned by the submit operations.
 ------------------------------------
 |============
 
+[[submit_transfer_task]]
 === Submit a transfer task
 
 [cols="h,5"]
@@ -253,7 +262,7 @@ that this is different than the task id returned by the submit operations.
 | Method
 | POST
 
-| Request Body | A +transfer+ document.
+| Request Body | <<transfer_and_delete_documents,Transfer document>>
 | Response Body a|
 ------------------------------------
 {
@@ -306,6 +315,7 @@ that this is different than the task id returned by the submit operations.
                       endpoint(s) and retry the operation.
 |===================
 
+[[submit_delete_task]]
 === Submit a delete task
 
 Response and error codes are the same as for transfer submission.
@@ -318,7 +328,7 @@ Response and error codes are the same as for transfer submission.
 | Method
 | POST
 
-| Request Body | A +delete+ document.
+| Request Body | <<transfer_and_delete_documents,Delete document>>
 | Response Body a|
 ------------------------------------
 {

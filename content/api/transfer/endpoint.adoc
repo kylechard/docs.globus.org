@@ -57,8 +57,10 @@ the linked identities associated with the Globus Auth token own the endpoint
 (see the +owner_id+ field). When creating an endpoint, it will have the
 +owner_id+ and +owner_string+ set based on the primary identity.
 
+[[document_types]]
 == Document Types
 
+[[endpoint_document]]
 === Endpoint Document
 
 The "endpoint" document type represents a single transfer endpoint, and
@@ -134,6 +136,7 @@ sub-documents.
 }
 ------------------------
 
+[[endpoint_fields]]
 ==== Endpoint Fields
 
 [cols="1,1,8",options="header"]
@@ -359,6 +362,7 @@ sub-documents.
 |===================
 
 
+[[server_document]]
 === Server Document
 
 The server document represents a network service that provides access to
@@ -426,6 +430,7 @@ Only +hostname+ is required on create.
 |===================
 
 
+[[shared_endpoint_document]]
 === Shared Endpoint Document
 
 The shared endpoint document is used to create shared endpoints only. Once
@@ -487,6 +492,7 @@ depends entirely on the +host_endpoint+.
 |===================
 
 
+[[path_arguments]]
 == Path Arguments
 
 [cols="1,1,8",options="header"]
@@ -499,6 +505,7 @@ depends entirely on the +host_endpoint+.
 |===================
 
 
+[[common_query_parameters]]
 == Common Query Parameters
 
 [cols="1,1,8",options="header"]
@@ -512,6 +519,7 @@ depends entirely on the +host_endpoint+.
 |===================
 
 
+[[common_errors]]
 == Common Errors
 
 The resources in this document use old error codes conventions, with a dotted
@@ -567,10 +575,12 @@ it will return "EndpointNotFound" for deleted endpoints.
 | Method
 | GET
 
-| Response Body | Endpoint document (see above).
+| Response Body
+| <<endpoint_document,Endpoint document>>
 |============
 
 
+[[create_endpoint]]
 === Create endpoint
 
 Create an endpoint. Which fields are required depends on the type of endpoint.
@@ -609,13 +619,15 @@ using the CLI.
 | Method
 | POST
 
-| Request Body  | Partial endpoint document.
+| Request Body
+| <<endpoint_document,Endpoint document>>
 
 | Response Body | Result document, including an +id+ field containing the
                   system generated id of the new endpoint.
 |============
 
 
+[[create_shared_endpoint]]
 === Create shared endpoint
 
 Create a shared endpoint.
@@ -628,13 +640,15 @@ Create a shared endpoint.
 | Method
 | POST
 
-| Request Body  | +shared_endpoint+ document.
+| Request Body
+| <<shared_endpoint_document,Shared endpoint document>>
 
 | Response Body | Result document, including an +id+ field containing the
                   system generated id of the new endpoint.
 |============
 
 
+[[update_endpoint_by_id]]
 === Update endpoint by id
 
 Update an endpoint. This can be done using a partial document by specifying
@@ -656,9 +670,10 @@ update.
 | Method
 | PUT
 
-| Request Body  | Partial endpoint document.
+| Request Body
+| Partial <<endpoint_document,endpoint document>>
 
-| Response Body | Result document.
+| Response Body | Result document
 |============
 
 Which fields can be updated depends on the type of endpoint:
@@ -694,6 +709,7 @@ Which fields can be updated depends on the type of endpoint:
 |============
 
 
+[[delete_endpoint_by_id]]
 === Delete endpoint by id
 
 Delete an endpoint by id or canonical name (the latter is deprecated). Only the
@@ -711,16 +727,17 @@ servers.
 | Method
 | DELETE
 
-| Response Body | Result document (see above).
+| Response Body | Result document
 |============
 
 
+[[get_endpoint_pause_rules]]
 === Get my effective endpoint pause rules
 
 Get all pause rules on an endpoint that affect the current user, with
 sensitive administrator only fields removed.
 
-See also: link:../task#_limited_pause_rule_document[pause_rule_limited document].
+See also: link:../task#limited_pause_rule_document[pause_rule_limited document].
 
 [cols="h,5"]
 |============
@@ -734,6 +751,7 @@ See also: link:../task#_limited_pause_rule_document[pause_rule_limited document]
 |============
 
 
+[[get_endpoint_server_list]]
 === Get endpoint server list
 
 Get a list of all servers belonging to the specified endpoint. Note that
@@ -752,6 +770,7 @@ endpoint document.
 |============
 
 
+[[get_endpoint_server_by_id]]
 === Get endpoint server by id
 
 Get a specific server belonging to the specified endpoint.
@@ -768,6 +787,7 @@ Get a specific server belonging to the specified endpoint.
 |============
 
 
+[[add_endpoint_server]]
 === Add endpoint server
 
 Add a server to the specified endpoint. The +hostname+ field is required,
@@ -801,6 +821,7 @@ Returns a result document containing the +id+ of the newly added server.
 |============
 
 
+[[update_endpoint_server_by_id]]
 === Update endpoint server by id
 
 Update a server belonging to the specified endpoint. Include only the
@@ -821,6 +842,7 @@ fields to be updated in the request body - any of +hostname+, +scheme+,
 |============
 
 
+[[delete_endpoint_server_by_id]]
 === Delete endpoint server by id
 
 Delete a server belonging to the specified endpoint.
@@ -837,6 +859,7 @@ Delete a server belonging to the specified endpoint.
 |============
 
 
+[[get_shared_endpoint_list]]
 === Get shared endpoint list
 
 Get a list of shared endpoints owned by the current user and hosted by a given
@@ -855,6 +878,7 @@ called on an endpoint that can't host shared endpoints.
 |============
 
 
+[[get_endpoint_list]]
 === [DEPRECATED] Get endpoint list
 
 NOTE: The endpoint_list API is deprecated, use

@@ -194,7 +194,7 @@ The json representation uses a "DATA_TYPE" key to specify the type of
 resource and a "DATA" key containing a list of sub-documents, if any.
 For example, the endpoint document type is described in detail here:
 
-* link:../endpoint#_endpoint_document[Endpoint Document]
+* link:../endpoint#endpoint_document[Endpoint Document]
 
 === Errors
 
@@ -289,7 +289,7 @@ the API itself including those details.
 === Monitoring
 
 * Paged task list with sorting and field selection.
-  (link:../task#_get_task_list[Reference])
+  (link:../task#get_task_list[Reference])
 +
     GET /task_list?offset=0&limit=10&fields=task_id,request_time&orderby=request_time
 +
@@ -329,7 +329,7 @@ Content-Type: application/json
 ----
 
 * Event list.
-  (link:../task#_get_event_list[Reference])
+  (link:../task#get_event_list[Reference])
 +
 ----
 GET /task/3949cec8-7cc8-11e0-82be-12313932c1e0/event_list
@@ -542,7 +542,7 @@ Content-Type: application/json
 ----
 
 * Single endpoint.
-  (link:../endpoint#_get_endpoint_by_id[Reference])
+  (link:../endpoint#get_endpoint_by_id[Reference])
 +
     GET /endpoint/ddb59aef-6d04-11e5-ba46-22000b92c6ec
 +
@@ -623,7 +623,7 @@ Content-Type: application/json
 ----
 
 * Endpoint create.
-  (link:../endpoint#_create_endpoint[Reference])
+  (link:../endpoint#create_endpoint[Reference])
 +
 ----
 POST /endpoint
@@ -665,7 +665,7 @@ Content-Type: application/json
 ----
 
 * Globus Connect Personal endpoint create.
-  (link:../endpoint#_create_endpoint[Reference])
+  (link:../endpoint#create_endpoint[Reference])
 +
 ----
 POST /endpoint
@@ -702,7 +702,7 @@ Location: https://transfer.api.globusonline.org/__TRANSFER_VERSION__/endpoint/US
 The +globus_connect_setup_key+ will also be available in the endpoint representation until it is used to complete setup. It is deleted after first use.
 
 * Endpoint update.
-  (link:../endpoint#_update_endpoint_by_id[Reference])
+  (link:../endpoint#update_endpoint_by_id[Reference])
 +
 ----
 PUT /endpoint/ID
@@ -753,7 +753,7 @@ Getting a directory listing from an endpoint requires activating the endpoint - 
 The first step in activation is determining what activation methods are
 supported by the endpoint, and what data is needed to perform the
 activation. This information is exposed in the
-link:../endpoint_activation#_get_activation_requirements[activation_requirements] resource:
+link:../endpoint_activation#get_activation_requirements[activation_requirements] resource:
 
     GET /endpoint/ID/activation_requirements
 
@@ -768,7 +768,7 @@ To activate an endpoint, pick one of the supported activation methods, fill in o
     POST /endpoint/ID/activate
 
 For more details see the API reference for
-link:../endpoint_activation#_activate_endpoint[/endpoint/ID/activate].
+link:../endpoint_activation#activate_endpoint[/endpoint/ID/activate].
 
 ===== Auto-Activation
 
@@ -776,7 +776,7 @@ The Globus tutorial endpoints ("Globus Tutorial Endpoint 1", "Globus Tutorial
 Endpoint 2") and all Globus Connect Personal endpoints do not require external
 credentials, and can be activated without specifying any myproxy credentials.
 This is done by POSTing an empty body to
-link:../endpoint_activation#_autoactivate_endpoint[/endpoint/ID/autoactivate].
+link:../endpoint_activation#autoactivate_endpoint[/endpoint/ID/autoactivate].
 
 Endpoints with a default MyProxy or OAuth MyProxy server also support
 auto-activation, by using a cached credential. When you activate an endpoint
@@ -807,7 +807,7 @@ they can use the activation_requirement list to prompt the user for the
 required data and try again using manual activation, without having to do
 another round trip requesting the activation_requirements. The
 +activation_result+ can be POSTed back to
-link:../endpoint_activation#_activate_endpoint[/endpoint/ID/activate]
+link:../endpoint_activation#activate_endpoint[/endpoint/ID/activate]
 after the required fields are filled in; +activate+ accepts both
 activation_result and activation_requirements resources as input, and ignores
 all the fields except for the +activation_requirement+ sub-documents.
@@ -842,7 +842,7 @@ Directory listing on an endpoint is exposed as a sub-resource of the endpoint:
     GET /endpoint/ID/ls?path=/~/directory
 
 If the endpoint connection succeeds and the path is a valid directory with appropriate permission for the user, a
-link:../file_operations#_dir_listing_response[file_list]
+link:../file_operations#dir_listing_response[file_list]
 is returned.
 
 /\~/ is an alias for the users' home directory on the server. _path_ can be an empty string, in which case the "default" directory is used, currently */~/*.
@@ -856,7 +856,7 @@ support partial listing, so the entire list is always fetched.
 === Creating Directories
 
 To create a directory on an endpoint, submit a mkdir document to
-link:../file_operations#_make_directory[POST /operation/endpoint/ID/mkdir]
+link:../file_operations#make_directory[POST /operation/endpoint/ID/mkdir]
 
 ----
 {
@@ -886,13 +886,13 @@ Note that recursive transfers implicitly create directories as needed at the des
 === Transfer Submission
 
 A
-link:../task_submit#_transfer_and_delete_documents[transfer]
+link:../task_submit#transfer_and_delete_documents[transfer]
 is a request to copy files and directories from a source endpoint to a
 destination endpoint. The request document is essentially a list of transfer
 items containing source / destination path pairs, with flags to indicate if the
 path is a directory to be copied recursively or a single file to be transfered.
 To fullfill the request, the service creates a
-link:../task#_task_document[task],
+link:../task#task_document[task],
 which can be monitored using the +task_id+.
 
 For recursive (directory) transfer items, the contents of the source directory
@@ -912,7 +912,7 @@ re-activated to allow it to continue, up until the deadline (which defaults to
 24 hours after the request time).
 
 When submitting a transfer, you must first get a
-link:../task_submit#_get_a_submission_id[submission_id]:
+link:../task_submit#get_submission_id[submission_id]:
 
     GET /submission_id
 
@@ -923,7 +923,7 @@ simply return a result indicating that it's a duplicate id, with the id of the
 task created to fulfill the request.
 
 The transfer itself is submitted via
-link:../task_submit#_submit_a_transfer_task[POST /transfer]:
+link:../task_submit#submit_transfer_task[POST /transfer]:
 
 ----
 {
@@ -966,24 +966,20 @@ and returns a transfer_result:
 
 +sync_level+ can be used to request that only modified files are transferred,
 using different mechanisms to determine modification. See the
-link:../task_submit#_transfer_specific_fields[transfer]
+link:../task_submit#transfer_specific_fields[transfer]
 document type for details on the different sync levels. If +sync_level+ is not
 included or +null+, all files will be transferred.
 
 === Task Monitoring
 
 To track the progress of a newly submitted task, use the +task_id+ field of the
-returned
-link:https://transfer.api.globusonline.org/v0.10/document_type/transfer_result?format=html[transfer_result]
-or
-link:https://transfer.api.globusonline.org/v0.10/document_type/delete_result?format=html[delete_result]
-document.
+returned result document.
 
     GET /task/TASK_ID
 
-This returns a link:../task#_task_document[task] document.
+This returns a link:../task#task_document[task] document.
 
-A request to link:../task#_cancel_task_by_id[cancel]
+A request to link:../task#cancel_task_by_id[cancel]
 the task can be submitted like this:
 
     POST /task/TASK_ID/cancel
@@ -995,9 +991,9 @@ happened.
 === Delete Submission
 
 Remote files and directories can be deleted on an endpoint by submitting a
-link:../task_submit#_transfer_and_delete_documents[delete document]
+link:../task_submit#transfer_and_delete_documents[delete document]
 to
-link:../task_submit#_submit_a_delete_task[POST /delete]:
+link:../task_submit#submit_delete_task[POST /delete]:
 
 ----
 {
