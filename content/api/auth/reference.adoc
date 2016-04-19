@@ -393,7 +393,7 @@ also the associated identity_provider resource document.
 
 === CORS
 
-https://auth.globus.org supports link:http://en.wikipedia.org/wiki/Cross-origin_resource_sharing[CrossOrigin Resource Sharing (CORS)]
+https://auth.globus.org supports link:http://en.wikipedia.org/wiki/Cross-origin_resource_sharing[CrossOrigin Resource Sharing (CORS)]
 to allow any client to directly access the Globus Auth API.
 
 //URL trailing /
@@ -406,10 +406,11 @@ to allow any client to directly access the Globus Auth API.
 
 Resource type: identity
 
-[options="header"]
+[cols="default,default,asciidoc",options="header"]
 |=============
 |Field | Type | Description
-|id | UUID | Globus Auth issued identity id, guaranteed to uniquely identify a single
+|id | UUID
+|Globus Auth issued identity id, guaranteed to uniquely identify a single
 identity, even if the identity username associated with the identity is
 changed or re-used by the identity provider. An id will never be
 re-used. *This field is visible to all clients.*
@@ -431,7 +432,8 @@ provider.
 
 *This field is visible to all clients.*
 
-|status | String enum | One of:
+|status | String enum
+|One of:
 
 - "unused", indicating that no user has proven ownership of this
 identity by authenticating with it. Resource servers may assign
@@ -439,9 +441,9 @@ permissions to an unused identity. (See GET /v2/api/identities/<name>.)
 - "used", indicating that a user has proven ownership of this identity.
 The identity will typically, but not necessarily, be associated with a
 Globus Account.
-- `private`, indicicating that the user has restricted visibility of their
+- "private", indicicating that the user has restricted visibility of their
 identity.
-- `closed", indicating that this identity is no longer valid, typically
+- "closed", indicating that this identity is no longer valid, typically
 because the provider has revoked it and perhaps reused the identity
 username. When an identity is closed, it will be removed from all Globus
 accounts, and end-users can no longer authenticate with this identity.
@@ -450,9 +452,9 @@ identity, though since it is removed from all Globus accounts it will
 never be included in a token's identities list, so will never result in
 matching a permission.
 
-|email | Email | String
-
-Identity provider specified email address for this identity.
+|email
+|String
+|Identity provider specified email address for this identity.
 
 This email address may be used by Globus Auth, clients and resource
 servers for email notifications related to this identity.
@@ -461,10 +463,12 @@ Globus Auth provides no guarantees about the email address, including
 whether the email address has been verified, or if emails sent to this
 address will be successfully delivered.
 
-|name | String | Identity provider specified display name (e.g., user's full name) for
+|name |String
+|Identity provider specified display name (e.g., user's full name) for
 this identity.
 
-|organization | String | The name of the organization this identity is associated with.
+|organization | String
+|The name of the organization this identity is associated with.
 This may be set by the provider or, if the provider does not set it, by the user
 themselves.
 |=======================
