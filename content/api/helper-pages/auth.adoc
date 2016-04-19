@@ -1,4 +1,4 @@
-= Web Browser Resources
+= Globus Auth Helper Pages
 
 Globus Auth provides the following resources intended to be used from
 web browsers.

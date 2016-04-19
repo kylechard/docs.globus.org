@@ -2,4 +2,4 @@
 
 - link:select-group[Select Group]
 - link:browse-endpoint[Browse Endpoint]
-- link:browser-resources[Web Browser Resources]
+- link:auth[Globus Auth Helper Pages]
