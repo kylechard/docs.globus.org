@@ -52,8 +52,7 @@ At a high level, you'll need to follow four steps:
 [qanda]
 Register your app to receive credentials.::
 
-Visit the link:https://auth.globus.org/p/projects[Client Registration Page] to obtain OAuth 2.0 credentials such
-as a client ID and client secret that are used to identify your application to
+Visit the Client Registration Page to obtain OAuth 2.0 credentials such as a client ID and client secret that are used to identify your application to
 Globus Auth.
 
 Obtain one or more access tokens from Globus Auth::
