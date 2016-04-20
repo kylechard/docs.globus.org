@@ -3,7 +3,7 @@
 
 == Overview
 The Browse Endpoint helper page can be used to redirect your users to the Globus web app where they
-will be able to select a target endpoint and optional directories or folders. The selected target will
+will be able to select a target endpoint and optionally files and/or folders. The selected target will
 be returned to you by way of an HTML form `POST` (default) action.
 
 Browse Endpoint is located at `https://www.globus.org/app/browse-endpoint`
