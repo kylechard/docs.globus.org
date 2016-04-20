@@ -5,9 +5,8 @@ Globus Connect Personal enables you to share and transfer files to and from your
 NOTE: Instructions are also available for link:../globus-connect-personal-cli[installing and running Globus Connect Personal using the command line].
 
 == Prerequisites
-- A Linux distribution with Tcl/Tk installed (if you do not have tcllib installed you can install and run Globus Connect Personal from the command line)
+- A Linux distribution with Tcl/Tk installed (if you do not have tcllib installed you can link:../globus-connect-personal-cli[install and run Globus Connect Personal from the command line])
 - A Globus account (link:https://www.globus.org/signup[sign up at www.globus.org/signup])
-- A valid SSH key associated with your Globus account (link:../../faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[please see instructions here])
 
 == Installation
 link:https://www.globus.org/app/endpoints/create-gcp[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
@@ -27,7 +26,7 @@ image::images/gcp-linux-2.png[]
 ----terminal
 $ tar xzf globusconnectpersonal-latest.tgz
 $ cd globusconnectpersonal-n.m
-$ sh globusconnect &
+$ ./globusconnect &
 ----terminal
 . Since this is the first time you are running Globus Connect Personal, you will see the Initial Setup window below where you are required to enter a setup key.
 +
@@ -43,7 +42,7 @@ Once the installation is complete, click the \'Connect' button to establish conn
 [role="img-responsive center-block"]
 image::images/gcp-linux-4.png[]
 
-The green light indicates that Globus Connect Personal is running properly and is connected to Globus. If you have any problems connecting to Globus, you may start the application from the command line using the +-debug+ option (link:../../cli[see more information on running from the command line here]). You may minimize or hide this status window once Globus Connect Personal has connected successfully.
+The green light indicates that Globus Connect Personal is running properly and is connected to Globus. If you have any problems connecting to Globus, you may start the application from the command line using the +-debug+ option (link:../globus-connect-personal-cli[see more information on running from the command line here]). You may minimize or hide this status window once Globus Connect Personal has connected successfully.
 
 == Removing Globus Connect Personal
 . Be sure that all running instances of Globus Connect Personal are terminated by running this command:
