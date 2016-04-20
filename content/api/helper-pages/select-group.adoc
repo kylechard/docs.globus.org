@@ -1,6 +1,13 @@
 = Select Group
 
-== Support Query Parameters
+== Overview
+The Select Group helper page can be used to redirect your users to the Globus web app
+and allow them to select one or more groups. The selected group(s) will be returned to
+you by way of an HTML form `POST` action.
+
+Select Group is located at `https://www.globus.org/app/select-group`
+
+== Supported Query Parameters
 * action
 * cancelurl
 * multiple
