@@ -6,7 +6,7 @@ Globus Connect Personal allows you to share and transfer files to and from your 
 
 link:https://www.globus.org/app/endpoints/create-gcp[Click here to create a Globus Connect Personal endpoint] and follow the instructions below.
 
-NOTE: Globus Connect Personal is supported on Windows Vista, Windows 7, and Windows 8.
+NOTE: Globus Connect Personal is supported on Windows Vista, Windows 7, Windows 8, and Windows 10.
 
 . Enter a name for your endpoint. This name can be anything you choose, as long as you haven't previously created another endpoint with the same name.
 . Click "Generate Setup Key".
@@ -60,7 +60,7 @@ image::images/gcp-win-10.png[]
 
 [NOTE]
 ======
-_Drive Mapping_: Globus Connect Personal on Windows will translate a path beginning with /~/ into your home directory, e.g. C:\Users\Demodoc\. To access paths and drives outside of your home directory, use the syntax "/drive_letter/path", for example "/C/xinfo" lists the C:\xinfo directory.
+_Drive Mapping_: Globus Connect Personal on Windows will translate a path beginning with /~/ into your home directory, e.g. C:\Users\Demodoc\. To access paths and drives outside of your home directory, use the syntax "/drive_letter/path", for example "/C/xinfo" lists the C:\xinfo directory. Also, as discussed above, it would be necessary for the C:\xinfo directory to be permitted in the Accessible Folders configuration as well. If the C:\xinfo directory is not permitted in the Accessible Folders configuration, then that folder will not be accessible via your endpoint.
 
 _Installing as non-administrator_: By default, Globus Connect Personal prompts to be installed in C:\Program Files. Regular users can not write to this folder. Instead, browse to a place you have write access to (e.g. your Desktop folder).
 ======
@@ -71,7 +71,7 @@ Please note that if you remove Globus Connect Personal, you will not be able to 
 
 To remove Globus Connect Personal:
 
-. On the Windows Start screen, press and hold or right-click the app tile and click Uninstall. This will pull up the control panel where you can select Globus Connect Personal from the list and click "Uninstall/Change".
+. Open the Windows Control Panel, open the "Programs and Features" applet, then select Globus Connect Personal from the list and click "Uninstall/Change".
 +
 [role="img-responsive center-block"]
 image::images/gcp-win-11.png[]
