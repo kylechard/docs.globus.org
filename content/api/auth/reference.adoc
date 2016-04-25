@@ -327,6 +327,8 @@ NOTE: This feature will only work with certain identity providers that are confi
 
 === Verifying identity (via OpenID Connect ID Token)
 
+WARNING: Currently, all OpenID Connect claims are returned in the `id_token` by default, regardless of requested scopes. In the near future, only requested claims will be returned. Your application should request the OpenID Connect scopes it requires.
+
 Globus Auth's OAuth2 grants accept the following OpenID Connect scopes:
 
 * openid: Requests that an OpenID Connect id_token be returned as part
