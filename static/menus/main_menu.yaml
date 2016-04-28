@@ -42,9 +42,6 @@ menus:
                 title: 'Command Line Interface'
                 link: '/cli/'
       -
-        title: 'Toolkit'
-        link: 'http://toolkit.globus.org/toolkit/'
-      -
         title: 'Support'
         link: ''
         subsections:
