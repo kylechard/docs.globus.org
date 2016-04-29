@@ -333,7 +333,7 @@ Globus Auth's OAuth2 grants accept the following OpenID Connect scopes:
 
 * openid: Requests that an OpenID Connect id_token be returned as part
 of the
-https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-5.1&sa=D&ust=1459362629124000&usg=AFQjCNGUaPR7rbD_uRrLLMjM6Q-r9dlGxQ[OAuth2
+https://tools.ietf.org/html/rfc6749%23section-5.1&sa=D&ust=1459362629124000&usg=AFQjCNGUaPR7rbD_uRrLLMjM6Q-r9dlGxQ[OAuth2
 Access Token Response], with the following claims:
 
 ** sub: The Globus Auth identity id of the effective identity of the
@@ -341,7 +341,7 @@ logged in Globus account. This effective may be the primary identity, or
 the appropriate linked identity if this client requires an identity from
 a particular provider.
 ** iss: The URL
-"https://www.google.com/url?q=https://auth.api.globus.org&sa=D&ust=1459362629125000&usg=AFQjCNEqtyMLYHS0ZeGw9hPoQjTydW7P8Q[https://]https://www.google.com/url?q=https://auth.api.globus.org&sa=D&ust=1459362629126000&usg=AFQjCNHyBtz4q2_ZNRvmMxFc4Y8QwQu8CA[auth.globus.org]"
+"https://auth.api.globus.org&sa=D&ust=1459362629125000&usg=AFQjCNEqtyMLYHS0ZeGw9hPoQjTydW7P8Q[https://]https://auth.api.globus.org&sa=D&ust=1459362629126000&usg=AFQjCNHyBtz4q2_ZNRvmMxFc4Y8QwQu8CA[auth.globus.org]"
 ** at_hash: Per OpenID Connect specification.
 ** aud: Per OpenID Connect specification.
 ** exp: Per OpenID Connect specification.
@@ -558,7 +558,7 @@ This can only be used by a resource server, authorized using that
 resource server's client identifier and client secret.
 
 This resource conforms to the
-link:https://www.google.com/url?q=https://tools.ietf.org/html/rfc7662&sa=D&ust=1459362629167000&usg=AFQjCNE4XOZ2Si4HXEsT5HWm_bwUCVKuhw[RFC
+link:https://tools.ietf.org/html/rfc7662&sa=D&ust=1459362629167000&usg=AFQjCNE4XOZ2Si4HXEsT5HWm_bwUCVKuhw[RFC
 7662], OAuth 2.0 Token Introspection.
 
 When a resource server receives a request from a client, it must
@@ -567,7 +567,7 @@ token>), and learn more information about the authorization granted by
 this request access token. The resource server does so by performing an
 HTTP POST on /v2/oauth2/token/introspect, with parameters sent as
 "application/x-www-form-urlencoded" data as defined in
-[https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028/&sa=D&ust=1459362629169000&usg=AFQjCNFhrPEvarVy18hPhYRTd_T1i2KxPA[W3C.REC-html5-20141028]].
+[http://www.w3.org/TR/2014/REC-html5-20141028/&sa=D&ust=1459362629169000&usg=AFQjCNFhrPEvarVy18hPhYRTd_T1i2KxPA[W3C.REC-html5-20141028]].
 
 Request parameters are:
 
@@ -584,7 +584,7 @@ client identifier (client_id) and client secret (client_secret) in a
 base64-encoded "Basic Authorization" scheme.
 
 The response to this POST is an
-https://www.google.com/url?q=https://tools.ietf.org/html/rfc7662&sa=D&ust=1459362629171000&usg=AFQjCNHaeyBUgdetJ9zYyXb_T5AxWDOhpQ[RFC
+https://tools.ietf.org/html/rfc7662&sa=D&ust=1459362629171000&usg=AFQjCNHaeyBUgdetJ9zYyXb_T5AxWDOhpQ[RFC
 7662] compliant JSON document with the following fields:
 
 Resource type: token/introspect
@@ -686,20 +686,20 @@ resource server's client identifier and client secret.
 
 When a resource server receives a request from a client, after
 validating the access token included in the request (<request access
-token>) via link:#h.wh7c5vauquo4[token introspection (POST
+token>) via link:#token_introspection_post_v2_oauth2_token_introspect[token introspection (POST
 /v2/oauth2/token/introspect)], the resource server may need to retrieve
 dependent access tokens that allow this resource server to act as a
 client to other resource servers on behalf of the client. The resource
 server does so by performing a Globus Auth "Dependent Token Grant",
 which is an
-https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-4.5&sa=D&ust=1459362629207000&usg=AFQjCNHTauLReWKZtkzxV_PeVBmHsee8Pg[OAuth2
+https://tools.ietf.org/html/rfc6749%23section-4.5&sa=D&ust=1459362629207000&usg=AFQjCNHTauLReWKZtkzxV_PeVBmHsee8Pg[OAuth2
 Extension
-Gran]https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-4.5&sa=D&ust=1459362629208000&usg=AFQjCNFJB2wM921oz2y52Ak0FSf0hi0q9Q[t].
+Gran]https://tools.ietf.org/html/rfc6749%23section-4.5&sa=D&ust=1459362629208000&usg=AFQjCNFJB2wM921oz2y52Ak0FSf0hi0q9Q[t].
 
 In conformance with the OAuth2 standard, the resource server does so by
 performing an HTTP POST on /v2/oauth2/token, with parameters sent as
 "application/x-www-form-urlencoded" data as defined in
-[https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028/&sa=D&ust=1459362629209000&usg=AFQjCNGOpgK7QE_QmvSP_4cw07rvH_oa9A[W3C.REC-html5-20141028]].
+[http://www.w3.org/TR/2014/REC-html5-20141028/&sa=D&ust=1459362629209000&usg=AFQjCNGOpgK7QE_QmvSP_4cw07rvH_oa9A[W3C.REC-html5-20141028]].
 
 Request parameters are:
 
@@ -728,7 +728,7 @@ Example request:
 
 The response will be a JSON document containing an array of OAuth2
 standard
-https://www.google.com/url?q=https://tools.ietf.org/html/rfc6749%23section-5.1&sa=D&ust=1459362629212000&usg=AFQjCNHRcoOSgfcymFXxnouwGm5G6KN_Kw[access_token
+https://tools.ietf.org/html/rfc6749%23section-5.1&sa=D&ust=1459362629212000&usg=AFQjCNHRcoOSgfcymFXxnouwGm5G6KN_Kw[access_token
 response documents]. The number of tokens returned and their scopes are
 pre-determined by the scope dependencies registered with Globus Auth by
 the resource server administrators. The resource server does not have
@@ -771,27 +771,27 @@ example response would be:
 
 * [OIDC]  N. Sakimura, N., J. Bradley, J., M. Jones, M., B. de Medeiros,
 B., C. Mortimore, C., "OpenID Connect Core 1.0", November 8, 2014,
-<https://www.google.com/url?q=http://openid.net/specs/openid-connect-core-1_0.html&sa=D&ust=1459362629223000&usg=AFQjCNG5tNSAl-FNYdb6Ed1iFgRq0H0lUg[http://openid.net/specs/openid-connect-core-1_0.html]>.
+<http://openid.net/specs/openid-connect-core-1_0.html&sa=D&ust=1459362629223000&usg=AFQjCNG5tNSAl-FNYdb6Ed1iFgRq0H0lUg[http://openid.net/specs/openid-connect-core-1_0.html]>.
 * [REFEDS-RS]  "REFEDS Research and Scholarship Entity Category, Version
 1.2", November 2014,
-<https://www.google.com/url?q=https://refeds.org/category/research-and-scholarship/&sa=D&ust=1459362629224000&usg=AFQjCNE0amJhPemYWRTjMurZfeu0rCkq6g[https://refeds.org/category/research-and-scholarship/]>.
+<https://refeds.org/category/research-and-scholarship/&sa=D&ust=1459362629224000&usg=AFQjCNE0amJhPemYWRTjMurZfeu0rCkq6g[https://refeds.org/category/research-and-scholarship/]>.
 * [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
 RFC 6749, DOI 10.17487/RFC6749, October 2012,
-<https://www.google.com/url?q=http://www.rfc-editor.org/info/rfc6749&sa=D&ust=1459362629226000&usg=AFQjCNG-AA8XlkuwAbjcvWFnsakz6J8SOw[http://www.rfc-editor.org/info/rfc6749]>.
+<http://www.rfc-editor.org/info/rfc6749&sa=D&ust=1459362629226000&usg=AFQjCNG-AA8XlkuwAbjcvWFnsakz6J8SOw[http://www.rfc-editor.org/info/rfc6749]>.
 * [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
 Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March 2014,
-<https://www.google.com/url?q=http://www.rfc-editor.org/info/rfc7159&sa=D&ust=1459362629228000&usg=AFQjCNEHK_8xA2XyOP6I-x8V2QZhrHpcPg[http://www.rfc-editor.org/info/rfc7159]>.
+<http://www.rfc-editor.org/info/rfc7159&sa=D&ust=1459362629228000&usg=AFQjCNEHK_8xA2XyOP6I-x8V2QZhrHpcPg[http://www.rfc-editor.org/info/rfc7159]>.
 * [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
 Protocol (HTTP/1.1): Semantics and Content", RFC 7231, DOI
 10.17487/RFC7231, June 2014,
-<https://www.google.com/url?q=http://www.rfc-editor.org/info/rfc7231&sa=D&ust=1459362629230000&usg=AFQjCNGCxi5gbKGD7OqteHSsuYgGIFXf5A[http://www.rfc-editor.org/info/rfc7231]>.
+<http://www.rfc-editor.org/info/rfc7231&sa=D&ust=1459362629230000&usg=AFQjCNGCxi5gbKGD7OqteHSsuYgGIFXf5A[http://www.rfc-editor.org/info/rfc7231]>.
 * [RFC7662]  Richer, J., Ed., "OAuth 2.0 Token Introspection", RFC 7662,
 DOI 10.17487/RFC6749, October 2015,
-<https://www.google.com/url?q=https://www.rfc-editor.org/info/rfc7662&sa=D&ust=1459362629231000&usg=AFQjCNGQd4Y3sjKMlwubnLiVBaO9HMxnIg[https://www.rfc-editor.org/info/rfc7662]>.
+<https://www.rfc-editor.org/info/rfc7662&sa=D&ust=1459362629231000&usg=AFQjCNGQd4Y3sjKMlwubnLiVBaO9HMxnIg[https://www.rfc-editor.org/info/rfc7662]>.
 * [W3C.REC-html5-20141028]  Hickson, I., Berjon, R., Faulkner, S.,
 Leithead, T., Navara, E., 0'Connor, E., and S. Pfeiffer, "HTML5", World
 Wide Web Consortium Recommendation REC-html5-20141028, October 2014,
-<https://www.google.com/url?q=http://www.w3.org/TR/2014/REC-html5-20141028&sa=D&ust=1459362629232000&usg=AFQjCNGfPwc9yrZvCJAjpXt--NOvkWsxTw[http://www.w3.org/TR/2014/REC-html5-20141028]>.
+<http://www.w3.org/TR/2014/REC-html5-20141028&sa=D&ust=1459362629232000&usg=AFQjCNGfPwc9yrZvCJAjpXt--NOvkWsxTw[http://www.w3.org/TR/2014/REC-html5-20141028]>.
 
 _Portions of this document were adapted from
 link:https://developers.google.com/identity/protocols/OAuth2[Google documentation] under
