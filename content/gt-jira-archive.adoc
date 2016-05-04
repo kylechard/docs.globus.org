@@ -1,0 +1,155 @@
+= Globus Toolkit Jira Archive
+
+== Globus Toolkit/GT-19
+
+=== Summary
+RPM packaging for UDT driver
+
+=== Details
+*Type:* New Feature
+
+*Status:* Resolved 2013-11-07
+
+=== Description
+----jira
+We have some colleagues who would benefit from using UDT (they have a high-bandwidth link, but a relatively high rate of packet loss).  Currently, OSG doesn't ship UDT because RPM support is missing in Globus.
+
+I started an email thread about it a few months back, but I don't think it ever resulted in a ticket.  One sticking point was an RPM of UDT itself.  I have a spec file, attached, that packages UDT.
+
+Once that was done, I got lost in the depths of Globus packaging and wasn't able to get a UDT plugin for GridFTP built.
+----jira
+
+=== Comments
+**Mike Link, 2012-03-29**
+----jiracom
+Thanks Brian.  We talked about this recently and expect to work on it shortly after the 5.2.1 release.
+----jiracom
+
+**nickbertrand, 2013-04-24**
+----jiracom
+Just curious if any progress has been made on getting the UDT XIO driver packaged. Manually building libglobus_xio_udt_driver.so works, but it would be nice to be able to use an RPM instead.
+----jiracom
+
+**bbockelm, 2013-04-24**
+----jiracom
+I haven't heard much myself.  Mike?
+
+OSG is still interested in this.
+----jiracom
+
+**bbockelm, 2013-10-22**
+----jiracom
+In case there was a question, OSG is still interested in this!
+
+Thanks,
+
+Brian
+----jiracom
+
+**Joe Bester, 2013-11-07**
+----jiracom
+This is included in GT 5.2.5
+----jiracom
+
+== Globus Toolkit/GT-19
+
+=== Summary
+RPM packaging for UDT driver
+
+=== Details
+*Type:* New Feature
+
+*Status:* Resolved 2013-11-07
+
+=== Description
+----jira
+We have some colleagues who would benefit from using UDT (they have a high-bandwidth link, but a relatively high rate of packet loss).  Currently, OSG doesn't ship UDT because RPM support is missing in Globus.
+
+I started an email thread about it a few months back, but I don't think it ever resulted in a ticket.  One sticking point was an RPM of UDT itself.  I have a spec file, attached, that packages UDT.
+
+Once that was done, I got lost in the depths of Globus packaging and wasn't able to get a UDT plugin for GridFTP built.
+----jira
+
+=== Comments
+**Mike Link, 2012-03-29**
+----jiracom
+Thanks Brian.  We talked about this recently and expect to work on it shortly after the 5.2.1 release.
+----jiracom
+
+**nickbertrand, 2013-04-24**
+----jiracom
+Just curious if any progress has been made on getting the UDT XIO driver packaged. Manually building libglobus_xio_udt_driver.so works, but it would be nice to be able to use an RPM instead.
+----jiracom
+
+**bbockelm, 2013-04-24**
+----jiracom
+I haven't heard much myself.  Mike?
+
+OSG is still interested in this.
+----jiracom
+
+**bbockelm, 2013-10-22**
+----jiracom
+In case there was a question, OSG is still interested in this!
+
+Thanks,
+
+Brian
+----jiracom
+
+**Joe Bester, 2013-11-07**
+----jiracom
+This is included in GT 5.2.5
+----jiracom
+
+== Globus Toolkit/GT-19
+
+=== Summary
+RPM packaging for UDT driver
+
+=== Details
+*Type:* New Feature
+
+*Status:* Resolved 2013-11-07
+
+=== Description
+----jira
+We have some colleagues who would benefit from using UDT (they have a high-bandwidth link, but a relatively high rate of packet loss).  Currently, OSG doesn't ship UDT because RPM support is missing in Globus.
+
+I started an email thread about it a few months back, but I don't think it ever resulted in a ticket.  One sticking point was an RPM of UDT itself.  I have a spec file, attached, that packages UDT.
+
+Once that was done, I got lost in the depths of Globus packaging and wasn't able to get a UDT plugin for GridFTP built.
+----jira
+
+=== Comments
+**Mike Link, 2012-03-29**
+----jiracom
+Thanks Brian.  We talked about this recently and expect to work on it shortly after the 5.2.1 release.
+----jiracom
+
+**nickbertrand, 2013-04-24**
+----jiracom
+Just curious if any progress has been made on getting the UDT XIO driver packaged. Manually building libglobus_xio_udt_driver.so works, but it would be nice to be able to use an RPM instead.
+----jiracom
+
+**bbockelm, 2013-04-24**
+----jiracom
+I haven't heard much myself.  Mike?
+
+OSG is still interested in this.
+----jiracom
+
+**bbockelm, 2013-10-22**
+----jiracom
+In case there was a question, OSG is still interested in this!
+
+Thanks,
+
+Brian
+----jiracom
+
+**Joe Bester, 2013-11-07**
+----jiracom
+This is included in GT 5.2.5
+----jiracom
+
