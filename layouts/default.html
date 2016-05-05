@@ -1,6 +1,7 @@
 <%= render 'partials/head' %>
+<% i = @item.identifier.dup %>
 
-<body class="default-page">
+<body class="default-page <%= i.gsub!('/','') %>">
   <%= render 'partials/header' %>
 
   <% if !@item[:hide_pageheader] %>
