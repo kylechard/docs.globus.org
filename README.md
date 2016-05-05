@@ -41,3 +41,30 @@ result to Staging or Production, just run
 ```sh
 make build
 ```
+
+### Updating Transfer API docs
+
+First copy the latest adoc files from the designated koa branch (this
+will vary), for example using rsync:
+
+```sh
+KOA_MANUAL=/koa/doc/manual/
+
+cd "$KOA_MANUAL"
+git fetch
+git checkout -t origin/ballen/doc123
+cd -
+
+rsync -va "$KOA_MANUAL" content/api/transfer/ \
+    --exclude 'private_*' --exclude Makefile
+```
+
+Then run the translation script:
+
+```sh
+scripts/translate_transfer_api_adoc.sh content/api/transfer
+```
+
+Check the git diff, and make sure the menu weights have not changed
+(unless intended) and that nothing else unexpected has changed. Then
+procede with build/deploy.
