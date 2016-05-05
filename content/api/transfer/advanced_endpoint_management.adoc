@@ -341,12 +341,10 @@ operation to be paused.
   "DATA_TYPE": "pause_rule", 
   "id": 985,
   "message": "Quota exceeded, please delete data from /scratch",
-  "endpoint": "bob#ep1",
-  "user": "eve",
+  "endpoint_id": "339abc22-aab3-4b45-bb56-8d40535bfd80",
   "identity_id": "bbe7b12b-d397-41e3-8895-3b56518302ef",
   "start_time": null,
-  "modified_by": "alice",
-  "modified_by_identity_id": "4c77dd76-aa99-4490-af19-dc81a312c3a1",
+  "modified_by_id": "4c77dd76-aa99-4490-af19-dc81a312c3a1",
   "modified_time": "2015-05-04 16:32:39+00:00"
   "pause_ls": False,
   "pause_mkdir": True,
@@ -387,9 +385,16 @@ operation to be paused.
   special string "now", exact case, is specified, uses the current time on
   the server at the time the request is received.
 
+| endpoint_id
+| string
+| Id of the endpoint to pause new tasks on. Required (for backward
+  compatibility, +endpoint+ can be specified instead, but all code should
+  be updated to use +endpoint_id+).
+
 | endpoint
 | string
-| Canonical name of the endpoint to pause new tasks on. Required.
+| [DEPRECATED] Use +endpoint_id+ instead. Canonical name of the endpoint to
+  pause new tasks on.
 
 | user
 | string
@@ -413,11 +418,11 @@ operation to be paused.
   Note that this field will not be included in the
   link:../task#limited_pause_rule_document[pause_rule_limited]
   documents returned by the get task pause info and get my effective pause rule
-  operations. Use +modified_by_identity_id+ instead. If the modified by
+  operations. Use +modified_by_id+ instead. If the modified by
   identity id is not a globus-id.org identity, this will be the same as
-  the modified_by_identity_id.
+  the +modified_by_id+.
 
-| modified_by_identity_id
+| modified_by_id
 | string
 | Identity id of the identity that last updated or created the pause rule.
   Note that this field will not be included in the
@@ -923,22 +928,23 @@ rights on an endpoint this will return a "PermissionDenied" error.
 === Get task successful transfers as admin
 
 For a "TRANSFER" type task, get a list of files transferred successfully, after
-a task is complete (with +status+ "FAILED" or "SUCCEEDED"). Returns a
-"BadRequest" error if called on a task that is still running or a task that
-is not of type "TRANSFER".
+a task is complete (with +status+ "FAILED" or "SUCCEEDED"), as an endpoint
+admin. See
+link:../task#get_task_successful_transfers[Get task successful transfers]
+(as normal user) for details.
+If the current user has management privileges on only one of the endpoints, the
+paths corresponding to the other endpoint will be "null".
 
 .Authorization
 
 Requires endpoint management privileges on the source or destination endpoint
 of the task. Note that if the user owns the task but does not have management
-privielges on an endpoint this will return a "PermissionDenied" error. If the
-current user has management privileges on only one of the endpoints, the
-paths corresponding to the other endpoint will be "null".
+privileges on an endpoint this will still return a "PermissionDenied" error.
 
 [cols="h,5"]
 |============
 | URL
-| /endpoint_manager/task/<task_id>/successful_transfers
+| /endpoint_manager/task/<task_id>/successful_transfers [?marker=MARKER]
 
 | Method
 | GET
@@ -995,9 +1001,10 @@ manager privileges on. This will include even private endpoints.
 
 .Fields
 * canonical_name
-* user_rule_count (include user and email rules)
+* user_rule_count ("identity" rules)
 * group_rule_count
-* all_rule_count (0 or 1)
+* all_rule_count ("all_authenticated_user" rules)
+* anonymous_rule_count
 
 [cols="h,5"]
 |============
@@ -1018,6 +1025,7 @@ manager privileges on. This will include even private endpoints.
             "user_rule_count": 4,
             "group_rule_count": 1,
             "all_rule_count": 0
+            "anonymous_rule_count": 0
         }
     ]
 }
@@ -1223,20 +1231,21 @@ request will fail with a "PermissionDenied" error.
 
 Get a list of pause rules that the current user can manage. If the result set
 contains over 1000 rules, a +LimitExceeded+ error will be returned and the
-client must pass +filter_endpoint+ to get the rules one endpoint at a time.
+client must pass the +filter_endpoint+ query parameter (with the endpoint id)
+to get the rules one endpoint at a time.
 
 .Authorization
 Returns only rules for which the user has endpoint management rights on. Note
-that rules are always accessible to any user via the
-endpoint link:../endpoint#get_endpoint_pause_rules[Get endpoint pause rules]
-API, but the +created_by+ fields is hidden from non administrators. The purpose
-of this API is to list with the purpose of adding, removing and updating the
-rules, so it only shows rules for which the user has appropriate rights on.
+that rules are always accessible to any user via the endpoint
+link:../endpoint#get_endpoint_pause_rules[Get endpoint pause rules]
+API, but the +modified_by_id+ fields is hidden from non administrators.
+This (admin) API is designed for adding, removing and updating the rules, so
+it only shows rules for which the user has appropriate rights on.
 
 [cols="h,5"]
 |============
 | URL
-| /endpoint_manager/pause_rule_list
+| /endpoint_manager/pause_rule_list [?filter_endpoint=ENDPOINT_ID]
 
 | Method
 | GET
@@ -1313,7 +1322,7 @@ fields (with the +pause_+ prefix) can be updated. It is recommended that
 clients include only the fields to be updated in the request. If non-updatable
 fields are included, they will be ignored.
 
-The +modified_time+ and +modified_by+ fields will be updated based on the
+The +modified_time+ and +modified_by_id+ fields will be updated based on the
 time of the request and the user updating the rule. The response will contain
 these updated fields. Any manual task resume requests made in the past that
 overrode this pause rule will no longer be in effect, and such tasks will
