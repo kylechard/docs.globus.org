@@ -649,6 +649,7 @@ footer #legal {
   font-size: 16px;
   -webkit-margin-after: 1em;
   white-space: pre-line;
+  word-break: normal;
  }
  .jiracom pre {
   margin-left: 15px;
