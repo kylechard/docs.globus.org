@@ -73,7 +73,8 @@ code { white-space: normal; }
 
 /* Content */
 .page-content {}
-dd {
+dd,
+.indent30 {
     margin-left: 30px;
 }
 
@@ -262,6 +263,10 @@ blockquote, .blockquote, code, .code  {
     background-color: #F4F6F9;
     color: #5273b1;
     line-height: 1.45em;
+}
+.quoteblock blockquote footer {
+  padding: 0;
+  margin: 0;
 }
 code, .uservars {
   background-color: #F6F6ff;
@@ -629,3 +634,30 @@ footer #legal {
   border-radius: 0;
   font-size: .8em;
 }
+
+/**********************************
+ * GT JIRA Archive
+ **********************************/
+.jira pre,
+.jiracom pre {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  -webkit-margin-after: 1em;
+  white-space: pre-line;
+  word-break: normal;
+ }
+ .jiracom pre {
+  margin-left: 15px;
+  padding: 10px;
+  background-color: #f1f6ff;
+ }
+ .gt-jira-archive #content .sect1 + .sect1 {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: solid 1px #eee;
+ }
