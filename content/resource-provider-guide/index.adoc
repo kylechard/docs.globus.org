@@ -198,12 +198,18 @@ $ sudo rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-G
 $ sudo yum install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
-Next, if you are running
-CentOS 5, Red Hat Enterprise Linux 5, or Scientific Linux 5,
-add the additional required repository:
+Next, if you are running CentOS 5, Red Hat Enterprise Linux 5, or Scientific Linux 5, add the additional required repository and install yum-priorities:
+
 ----terminal
 $ sudo curl -LOs http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 $ sudo yum install epel-release-5-4.noarch.rpm
+$ sudo yum install yum-priorities
+----terminal
+
+Now, if you are running CentOS 6+, Red Hat Enterprise Linux 6+, or Scientific Linux 6+, install yum-plugin-priorities:
+
+----terminal
+$ sudo yum install yum-plugin-priorities
 ----terminal
 
 Finally, install Globus Connect Server:
