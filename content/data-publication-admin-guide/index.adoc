@@ -153,16 +153,8 @@ image::images/CollectionMetadata.png[Collection Descriptive Information]
 [[configuring-storage]]
 === Configuring Storage
 
-In the "Dataset Storage Settings" pane, the endpoint and root path
-where dataset data will be placed is entered. As mentioned above, the
-endpoint must have Administrator or Manager rights for the Globus user
-`globuspublish`. The "Dataset Root Path" provides a path on that
-endpoint which is the base from which dataset folders will be created.
-If this path does not exist, it will be automatically created. The
-"Test Setting" button will perform a test both that the
-`globuspublish` user has the necessary permissions on the endpoint and
-that directory creation works properly. If either of those operations
-fails, an error will be presented in this pane.
+In the "Dataset Storage Settings" pane, the endpoint and root path where dataset data will be placed is entered. The endpoint must be specified by providing the unique identifier (UUID) for the endpoint. The UUID can be viewed by https://www.globus.org/app/endpoints[searching for the endpoint], and expanding the desired endpoint's entry on this page. As mentioned above, the endpoint must have Administrator or Manager rights for the Globus user `globuspublish`. The "Collection Root Path" provides a path on that endpoint which is the base from which dataset folders will be created.
+If this path does not exist, it will be automatically created. The "Test Setting" button will perform a test both that the `globuspublish` user has the necessary permissions on the endpoint and that directory creation works properly. If either of those operations fails, an error will be presented in this pane.
 
 [role="img-responsive center-block"]
 image::images/StorageConfig.png[Storage Configuration]
