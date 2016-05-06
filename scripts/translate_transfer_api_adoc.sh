@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 path/to/content/api/transfer"
@@ -15,6 +14,9 @@ else
     # OS X / BSD sed
     SED_OPTS="-i '' -e"
 fi
+
+# NB: set after sed check
+set -e
 
 DOC_DIR="$1"
 
