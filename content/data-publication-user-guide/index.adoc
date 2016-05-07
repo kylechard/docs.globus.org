@@ -163,15 +163,13 @@ and credentials) before displaying the data publication dashboard.
 
 [TIP]
 ====
-On occasion, you may notice that your Globus ID is displayed 
-in the navigation bar, indicating that you are logged in, but
-when you interact with the service you are asked to log in again.
-This typically occurs when you have been inactive for awhile and
-your session has expired. 
-Since your browser window is not automatically refreshed,
-it continues to display your Globus ID from your previously
-active session.
-This behavior can be confusing when you first encounter it.
+On occasion, you may notice that the `Account` menu is displayed in
+the navigation bar, indicating that you are logged in, but when you
+interact with the service you are asked to log in again.  This
+typically occurs when you have been inactive for awhile and your
+session has expired.  Since your browser window is not automatically
+refreshed, the menu continues to display. This behavior can be
+confusing when you first encounter it.
 ====
 
 [[data-publication-dashboard]]
@@ -192,8 +190,6 @@ image::images/publish-2.png[Empty Data Publication Dashboard]
 
 The navigation bar at the top of the dashboard has `Publish` highlighted
 to show that you are using the Globus data publication service.
-Your Globus ID is displayed on the far right of the bar,
-indicating that you are logged in.
 The navigation bar menus and options provide quick access to many other
 Globus features outside of the publication service.
 
@@ -207,7 +203,7 @@ The `Communities & Collections` option will take you to
 an alternate interface for exploring the publication service's
 participants and their holdings.
 
-The `Search` box works exactly as it did on the home 
+The `Search` box works exactly as on the home 
 page--keywords  
 entered in the box are used to match descriptive text of 
 published datasets.
