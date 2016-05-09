@@ -128,7 +128,7 @@ The link:{trial_publish_url}[Globus data publication home page]
 
 .Publication Home Page
 [role="img-responsive center-block"]
-image::images/publication-home-page.png[Publication Home Page]
+image::images/publish-1.png[Publication Home Page]
 
 The publication home page is displayed when you first access 
 the publication site.
@@ -163,15 +163,13 @@ and credentials) before displaying the data publication dashboard.
 
 [TIP]
 ====
-On occasion, you may notice that your Globus ID is displayed 
-in the navigation bar, indicating that you are logged in, but
-when you interact with the service you are asked to log in again.
-This typically occurs when you have been inactive for awhile and
-your session has expired. 
-Since your browser window is not automatically refreshed,
-it continues to display your Globus ID from your previously
-active session.
-This behavior can be confusing when you first encounter it.
+On occasion, you may notice that the `Account` menu is displayed in
+the navigation bar, indicating that you are logged in, but when you
+interact with the service you are asked to log in again.  This
+typically occurs when you have been inactive for awhile and your
+session has expired.  Since your browser window is not automatically
+refreshed, the menu continues to display. This behavior can be
+confusing when you first encounter it.
 ====
 
 [[data-publication-dashboard]]
@@ -188,12 +186,10 @@ your dashboard will be empty:
 
 .Empty Data Publication Dashboard 
 [role="img-responsive center-block"]
-image::images/dashboard-empty.png[Empty Data Publication Dashboard]
+image::images/publish-2.png[Empty Data Publication Dashboard]
 
 The navigation bar at the top of the dashboard has `Publish` highlighted
 to show that you are using the Globus data publication service.
-Your Globus ID is displayed on the far right of the bar,
-indicating that you are logged in.
 The navigation bar menus and options provide quick access to many other
 Globus features outside of the publication service.
 
@@ -207,7 +203,7 @@ The `Communities & Collections` option will take you to
 an alternate interface for exploring the publication service's
 participants and their holdings.
 
-The `Search` box works exactly as it did on the home 
+The `Search` box works exactly as on the home 
 page--keywords  
 entered in the box are used to match descriptive text of 
 published datasets.
@@ -229,7 +225,7 @@ fully populated:
 
 .Populated Data Publication Dashboard 
 [role="img-responsive center-block"]
-image::images/dashboard-populated.png[Populated Data Publication Dashboard]
+image::images/publish-3.png[Populated Data Publication Dashboard]
 
 In this figure, the
 dashboard area provides updates on all of the datasets in the
@@ -257,8 +253,8 @@ displayed using the notation "Collection Name << Community Name".
 ====
 
 Before leaving this section, notice that the
-dataset "Thursday Curated Dataset" in the 
-collection "Curated Trial Collection << Open Trial"
+dataset "Monday Curated Dataset" in the 
+collection "Globus Demo Collection « Globus Demo Community"
 appears in two sections of the Populated Data Publication Dashboard
 figure.
 Typically, a user would not be offered the option of curating their
@@ -304,7 +300,7 @@ submission workflow:
 
 .Submission Workflow Progress Bar
 [role="img-responsive center-block"]
-image::images/submit-workflow-progress-bar.png[Submission Workflow Progress Bar]
+image::images/publish-4.png[Submission Workflow Progress Bar]
 
 In the progress bar, completed steps are colored light blue, 
 the current step is highlighted in dark blue,
@@ -318,7 +314,7 @@ at the bottom of the page:
 
 .Submission Navigation Buttons
 [role="img-responsive center-block"]
-image::images/submit-nav-buttons.png[Submission Navigation Buttons]
+image::images/publish-5.png[Submission Navigation Buttons]
 
 `Back` takes you to the previous step in workflow,
 `Continue` takes you to the next step, and
@@ -347,7 +343,7 @@ collection where you want to publish your dataset:
 
 .Select Collection
 [role="img-responsive center-block"]
-image::images/submit-select-collection.png[Select Collection]
+image::images/publish-6.png[Select Collection]
 
 The collections that you have permission to submit (and publish)
 to are shown in the dropdown list.  
@@ -376,7 +372,7 @@ process.
 
 .Accept License Terms
 [role="img-responsive center-block"]
-image::images/submit-license.png[Accept License Terms]
+image::images/publish-7.png[Accept License Terms]
 
 Since you cannot continue with the workflow until you accept 
 the license terms, the usual navigation buttons are not present
@@ -422,9 +418,9 @@ process for entering metadata is the same across collections.
 
 .Describe Dataset, Page 1
 [role="img-responsive center-block"]
-image::images/submit-describe-dataset.png[Describe Dataset, Page 1]
+image::images/publish-8.png[Describe Dataset, Page 1]
 
-In the form, fields marked with an asterisk (*) are required. 
+In the form, fields marked with an asterisk (+++*+++) are required. 
 Some fields, such as "Authors" in this example, permit you to enter
 multiple values.
 When multiple values are allowed, the `Add More` button is shown to
@@ -436,7 +432,7 @@ entry to be removed.
 
 .Describe Dataset, Page 2
 [role="img-responsive center-block"]
-image::images/submit-describe2-dataset.png[Describe Dataset, Page 2]
+image::images/publish-9.png[Describe Dataset, Page 2]
 
 The second page of the form provides an example of additional 
 types of metadata.
@@ -468,7 +464,7 @@ allocated for the submission.
 
 .Assemble Dataset
 [role="img-responsive center-block"]
-image::images/submit-assemble.png[Assemble Dataset]
+image::images/publish-10.png[Assemble Dataset]
 
 Click on the `Assemble Dataset` button to open 
 the Globus Transfer Files page (also referred to
@@ -492,7 +488,7 @@ a dataset, but you may run into it later.
 
 .Globus Transfer Interface
 [role="img-responsive center-block"]
-image::images/submit-transfer-files.png[Globus Transfer Interface]
+image::images/publish-11.png[Globus Transfer Interface]
 
 The right pane of the Globus transfer interface is 
 pre-populated with the submission's storage location (endpoint and path). 
@@ -508,7 +504,7 @@ The files can be of any type and size, allowing you to assemble
 and publish a dataset with wide-ranging content.
 
 In the figure above, we chose to transfer three small files
-from the universally-readable "go#ep1" endpoint and the 
+from the universally-readable "Globus Tutorial Endpoint 1" endpoint and the 
 "/share/godata/" path.
 The three files are copied in a single transfer task and 
 they are the only
@@ -531,7 +527,7 @@ associated with the submission:
 
 .Assemble Dataset Transfer Status
 [role="img-responsive center-block"]
-image::images/submit-assemble-status.png[Assemble Dataset Transfer Status]
+image::images/publish-12.png[Assemble Dataset Transfer Status]
 
 You can check the details of a transfer 
 task by clicking the link showing the status of 
@@ -574,7 +570,7 @@ is restricted so assembled files cannot be altered.
 
 .Verify Dataset
 [role="img-responsive center-block"]
-image::images/submit-verify.png[Verify Dataset]
+image::images/publish-13.png[Verify Dataset]
 
 All of the metadata values, as well as the status of 
 all transfer operations for the dataset,
@@ -605,7 +601,7 @@ You will see the following screen:
 
 .Dataset Submission Complete
 [role="img-responsive center-block"]
-image::images/submit-complete.png[Dataset Submission Complete]
+image::images/publish-14.png[Dataset Submission Complete]
 
 If the collection you submitted to requires curation 
 prior to publication, your dataset submission will be 
@@ -619,7 +615,7 @@ publication dashboard:
 
 .Dashboard with Dataset Submitted for Approval 
 [role="img-responsive center-block"]
-image::images/dashboard-submitted.png[Dashboard with Dataset Submitted for Approval]
+image::images/publish-15.png[Dashboard with Dataset Submitted for Approval]
 
 If the collection does not require curation,
 your submitted dataset will be published immediately 
@@ -655,7 +651,7 @@ to move to the Globus Groups page.
 
 .Navigate to Globus Groups
 [role="img-responsive center-block"]
-image::images/groups-tab.png[Navigate to Globus Groups]
+image::images/publish-16.png[Navigate to Globus Groups]
 
 On the Globus Groups page, shown below, raise 
 the "Search" tab on the left side of the page, and enter
@@ -666,7 +662,7 @@ The group you are looking for is
 
 .Search for Data Publication Open Trial Curators
 [role="img-responsive center-block"]
-image::images/groups-open-trial-search.png[Search for Data Publication Open Trial Curators]
+image::images/publish-17.png[Search for Data Publication Open Trial Curators]
 
 Click on the "Data Publication Open Trial Curators" name
 when it is displayed in the search 
@@ -674,18 +670,22 @@ panel to see a description of the group:
 
 .Join Data Publication Open Trial Curators
 [role="img-responsive center-block"]
-image::images/groups-open-trial-join.png[Join Data Publication Open Trial Curators]
+image::images/publish-18.png[Join Data Publication Open Trial Curators]
 
-Click the `Join Group` button to add yourself to the group. 
-You should see confirmation that you are a member of 
-the group. 
-The "My Groups" tab on the left side of the Globus Groups 
+Click the `Join Group` button to request membership to the group. You will be prompted to select an identity and provide identity information. Then click `Submit Application to Join`.
+
+.Select Identity
+[role="img-responsive center-block"]
+image::images/publish-19.png[Join Data Publication Open Trial Curators]
+
+You should see confirmation that your application to the group has been submitted. 
+Once approved, the "My Groups" tab on the left side of the Globus Groups 
 page should list "Data Publication Open Trial Curators"
 (you may need to refresh your browser window):
 
 .Member of Data Publication Open Trial Curators
 [role="img-responsive center-block"]
-image::images/groups-open-trial-member.png[Member of Data Publication Open Trial Curators]
+image::images/publish-20.png[Member of Data Publication Open Trial Curators]
 
 At this point, you are finished with the Globus Groups page 
 and can return to the
@@ -699,14 +699,12 @@ tasks waiting to be claimed.
 
 .Claim Curation Task
 [role="img-responsive center-block"]
-image::images/curate-dashboard-claim.png[Claim Curation Task]
+image::images/publish-21.png[Claim Curation Task]
 
-In the figure above, there are two tasks to be claimed--both
-in "Curated Trial Collection << Open Trial".
-As a courtesy to those working in the "Curated Trial Collection",
+In the figure above, there is one task to be claimed in "TestMDF << Materials Data Facility".
+As a courtesy to those working in the "TestMDF << Materials Data Facility",
 please curate the datasets you submit and not those submitted
-by others.
-Normally you would not have the option of curating your own
+by others. Normally you would not have the option of curating your own
 datasets.
 
 Click the `Claim` button for the dataset you want to curate.
@@ -724,7 +722,7 @@ cannot be accessed until the task has been accepted.
 
 .Preview Curation Task
 [role="img-responsive center-block"]
-image::images/curate-preview.png[Preview Curation Task]
+image::images/publish-22.png[Preview Curation Task]
 
 === Perform Curation Task
 
@@ -733,7 +731,7 @@ the Perform Task page is displayed:
 
 .Perform Curation Task
 [role="img-responsive center-block"]
-image::images/curate-perform.png[Perform Curation Task]
+image::images/publish-23.png[Perform Curation Task]
 
 At this point, the location of the dataset in 
 the "Endpoint and path to dataset" area of the screen 
@@ -797,7 +795,7 @@ in this guide is shown here:
 
 .Dataset Landing Page
 [role="img-responsive center-block"]
-image::images/landing-page.png[Dataset Landing Page]
+image::images/publish-25.png[Dataset Landing Page]
 
 The landing page shows the distribution license terms for the
 dataset, which are set by the collection.
