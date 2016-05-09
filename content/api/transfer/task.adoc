@@ -416,13 +416,6 @@ continue to work.
             "label": null,
             "subtasks_total": 10,
             "nice_status_expires_in": 123,
-            "subtask_link": {
-                "href": "task/12345678-9abc-def0-1234-56789abcde03/subtask_list?format=json",
-                "resource": "subtask list",
-                "DATA_TYPE": "link",
-                "rel": "child",
-                "title": "child subtask list"
-            },
             "status": "ACTIVE",
             "bytes_checksummed": 10,
             "subtasks_failed": 10,
@@ -432,13 +425,6 @@ continue to work.
             "nice_status_short_description": null,
             "preserve_timestamp": false,
             "task_id": "12345678-9abc-def0-1234-56789abcde03",
-            "event_link": {
-                "href": "task/12345678-9abc-def0-1234-56789abcde03/event_list?format=json",
-                "resource": "event list",
-                "DATA_TYPE": "link",
-                "rel": "child",
-                "title": "child event list"
-            },
             "encrypt_data": false,
             "source_endpoint": "bob#laptop",
             "subtasks_succeeded": 10,
@@ -673,6 +659,65 @@ Get only error events.
   error will be returned.
 
 |===================
+
+
+[[get_task_successful_transfers]]
+=== Get task successful transfers
+
+For "TRANSFER" tasks that are completed (have +status+ "SUCCEEDED" or
+"FAILED"), get a list of files that were successfully transferred. The list
+includes the source and destination paths of each file. Note that this does not
+include files that were checked but skipped as part of a sync transfer, only
+files that were actually transferred, and does not include any directories.
+
+A result set may be too large to fit into a single response. In this case, the
+response will have the +next_marker+ field set to a non-empty, opaque integer
+token. Pass this token as the +marker+ query parameter in another request to
+get the next chunk of data. A client must not attempt to generate or assume
+knowledge of a marker's format. Note that this differs from the offset based
+paging supported by some other resources.
+
+Returns 404 "ClientError.NotFound" if history has been deleted (history is
+kept for only one month ). Returns 400 "ClientError.BadRequest" if the
+task is not yet complete or is not of type "TRANSFER".
+
+NOTE: The paths are relative to the shared endpoint root, as submitted in
+the transfer request, not relative to the host endpoint root.
+
+[cols="h,5"]
+|============
+| URL
+| /task/<task_id>/successful_transfers [?marker=MARKER]
+
+| Method
+| GET
+
+| Response Body a| 
+-------------------------------------------------------------------
+{
+  "DATA_TYPE": "successful_transfers",
+  "marker": 0
+  "next_marker": null,
+  "DATA": [
+    {
+      "DATA_TYPE": "successful_transfer",
+      "source_path": "/share/godata/file1.txt"
+      "destination_path": "/~/test_godata_copy/file1.txt",
+    },
+    {
+      "DATA_TYPE": "successful_transfer",
+      "source_path": "/share/godata/file2.txt"
+      "destination_path": "/~/test_godata_copy/file2.txt",
+    },
+    {
+      "DATA_TYPE": "successful_transfer",
+      "source_path": "/share/godata/file3.txt"
+      "destination_path": "/~/test_godata_copy/file3.txt",
+    }
+  ],
+}
+-------------------------------------------------------------------
+|============
 
 
 [[get_task_pause_info]]

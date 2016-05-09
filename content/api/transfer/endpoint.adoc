@@ -163,7 +163,7 @@ sub-documents.
                    Searchable. Optional. Unicode string, max 1024 characters,
                    no new lines. Searchable.
 | keywords       | string
-                 | Comma separated list of alternative names for the endpoint.
+                 | Comma separated list of search keywords for the endpoint.
                    Optional. Unicode string, max 1024 characters. Searchable.
 | name           | string
                  | [DEPRECATED] Legacy friendly name for the endpoint. Limited
@@ -479,8 +479,6 @@ depends entirely on the +host_endpoint+.
                  | See +endpoint+ document.
 | department     | string
                  | See +endpoint+ document.
-| alternatives_names | string
-                 | See +endpoint+ document.
 | description    | string
                  | See +endpoint+ document.
 | endpoint_info_link | string
@@ -685,25 +683,25 @@ Which fields can be updated depends on the type of endpoint:
 | +display_name+, +description+, +public+,
   +default_directory+, +force_encryption+, +disable_verify+,
   +myproxy_server+, +myproxy_dn+, +oauth_server+,
-  +organization+, +department+, +alternative_names+,
+  +organization+, +department+, +keywords+,
   +contact_email+, +contact_info+, +endpoint_info_link+,
   DEPRECATED: +name+/+canonical_name+
 
 | Globus Connect Personal
 | +display_name+, +description+,
-  +organization+, +department+, +alternative_names+,
+  +organization+, +department+, +keywords+,
   +contact_email+, +contact_info+, +endpoint_info_link+
   DEPRECATED: +name+/+canonical_name+
 
 | Shared endpoint
 | +display_name+, +description+,
-  +organization+, +department+, +alternative_names+,
+  +organization+, +department+, +keywords+,
   +contact_email+, +contact_info+, +endpoint_info_link+
   DEPRECATED: +name+/+canonical_name+
 
 | S3 endpoint
 | +display_name+, +description+,
-  +organization+, +department+, +alternative_names+,
+  +organization+, +department+, +keywords+,
   +contact_email+, +contact_info+, +endpoint_info_link+
   DEPRECATED: +name+/+canonical_name+
 |============
