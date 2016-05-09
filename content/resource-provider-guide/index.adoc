@@ -639,6 +639,9 @@ If you are successful with the local telnet connection, then try telnet again us
 ==== Documentation Website
 This website (link:https://docs.globus.org[docs.globus.org]) contains a wealth of information about configuring and using the Globus service. Many common issues can be resolved quickly by browsing our link:../faq[frequently asked questions] and reading the relevant guides and link:../how-to[how-to's]. We recommend consulting these resources first when looking for fast resolution to any issue you are having with the Globus service. 
 
+==== Mailing Lists
+If you use Globus, then participating in one or more of the public email lists is an excellent way to keep in touch with your peers in the Globus Community. For questions about managing your Globus deployment, e.g. installing software for a Globus endpoint, configuring your firewall, and integrating your institution’s identity system, link:http://groups.google.com/a/globus.org/forum/#!forum/admin-discuss/subscribe[subscribe to the admin list]. For other inquiries and discussions, try the link:http://groups.google.com/a/globus.org/forum/#!forum/user-discuss/subscribe[user list] or link:http://groups.google.com/a/globus.org/forum/#!forum/developer-discuss/subscribe[developer list]. For more information on mailing lists, click https://www.globus.org/mailing-lists[here].
+
 ==== Globus Support
 Questions or issues that pertain to 
 Globus Connect Server installation
