@@ -45,11 +45,14 @@ library in scripting languages like Python and Ruby.
 
 == Mailing List
 
-The
-link:http://lists.globusonline.org/mailman/listinfo/transfer-api[mailing list]
-is the best place to get help using the Transfer API. Announcements about new
-features and deprecations are also sent to the list, so all users of the API
-are encouraged to subscribe.
+The link:https://www.globus.org/mailing-lists[developer-discuss@globus.org]
+mailing list is the best place to get help using the Transfer API.
+Announcements about new features and deprecations are also sent to the list, so
+all users of the API are encouraged to subscribe.
+
+NOTE: The developer-discuss@globus.org list replaces the old transfer-api list.
+The archives for the old list may still be useful, and is available and
+searchable link:http://lists.globusonline.org/pipermail/transfer-api/[here].
 
 == Example Clients
 

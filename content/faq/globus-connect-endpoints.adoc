@@ -437,8 +437,3 @@ Once you have a properly configured distributed file system you may do the follo
 6. Run +globus-connect-server-setup+ on all the I/O nodes.
 
 Your endpoint is now configured with multiple I/O nodes. Note that you will need to repeat steps 3-6 as necessary whenever you make changes to the configuration.
-
-
-
-
-
