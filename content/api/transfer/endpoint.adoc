@@ -440,12 +440,17 @@ distinguished from other endpoints by checking that the +host_endpoint_id+
 field is set to a non-null value. +server+ documents can't be added or removed
 from shared endpoints; the server used depends entirely on the host endpoint.
 
+NOTE: When creating a shared endpoint, you must use the +host_endpoint+ field,
+rather than the +host_endpoint_id+ field, but it should still contain the
+endpoint id, not a canonical name. This is a legacy wart, and in the next
+release +host_endpoint_id+ will work as well.
+
 .Shared Endpoint Document Example
 -----------------------
 {
   "DATA_TYPE": "shared_endpoint",
   "display_name": "myshare",
-  "host_endpoint_id": "2ebc7b58-de6f-46a3-ac36-2f2613aa32ba",
+  "host_endpoint": "2ebc7b58-de6f-46a3-ac36-2f2613aa32ba",
   "host_path": "/~/",
   "description": "Share my home directory on Globus Tutorial Endpoint 1",
   "organization": "my org"
