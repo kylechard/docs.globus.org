@@ -90,7 +90,9 @@ menu_weight: 12\
 
 # last updated date
 DATE=$(date +"%B %d, %Y")
-UPDATED=':revdate: $DATE\
+UPDATED=":revdate: ${DATE}"
+UPDATED2='\
+\
 [doc-info]*Last Updated: {revdate}*\
 '
 
@@ -122,7 +124,10 @@ sed -i.bak -e "s/^\= /${TS}" $DOC_DIR/task_submit.adoc
 sed -i.bak -e "s/^\= /${TASK}" $DOC_DIR/task.adoc
 
 #add last updated date
-sed -i.bak -e "/'\= Transfer API Documentation'/a\\
-'$UPDATED'" $DOC_DIR/index.adoc
+sed -i.bak -e "/\= Transfer API Documentation/a\\
+:revdate: $DATE\\
+\\
+[doc-info]*Last Updated: {revdate}*
+" $DOC_DIR/index.adoc
 
 rm $DOC_DIR/*.adoc.bak
