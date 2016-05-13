@@ -1,9 +1,9 @@
 = Globus Data Publication User Guide
-:revnumber: 1.0.0
 :toc:
 :toc-placement: manual
 :toclevels: 3
 :numbered:
+:revdate: May 12, 2016
 
 // Define some attributes to reuse in-line
 :publication_webpage_url: http://www.globus.org/data-publication
@@ -15,7 +15,7 @@
 :how_to_sign_up_url: http://www.globus.org/researchers/getting-started
 :sign_up_url: http://www.globus.org/SignUp
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]*Last Updated: {revdate}*
 
 toc::[]
 

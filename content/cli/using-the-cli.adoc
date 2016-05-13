@@ -3,8 +3,9 @@
 :toc-placement: manual
 :toclevels: 1
 :toc-title:
+:revdate: May 12, 2016
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]*Last Updated: {revdate}*
 
 This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:../cli-beyond-basics[CLI: Beyond the Basics].
 

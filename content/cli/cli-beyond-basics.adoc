@@ -7,8 +7,9 @@ menu_weight: 2
 :toc-placement: manual
 :toc-title:
 :toclevels: 1
+:revdate: May 12, 2016
 
-[doc-info]#Last Updated: {docdate}#
+[doc-info]#Last Updated: {revdate}#
 
 This is a companion guide to link:../[Getting started with the Command Line Interface (CLI)]. New CLI users should be familiar with that introduction before proceeding.
 

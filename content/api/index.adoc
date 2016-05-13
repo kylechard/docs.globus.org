@@ -4,8 +4,6 @@ full_title: "Globus APIs"
 
 = Globus APIs
 
-[doc-info]*Last Updated: {docdate}*
-
 - link:auth[Auth API]
 - link:transfer[Transfer API]
 - link:http://globus.github.io/globus-sdk-python[Python SDK]

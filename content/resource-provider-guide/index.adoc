@@ -1,5 +1,5 @@
 = Globus Resource Provider Guide
-:revnumber: 0.0.2h
+:revdate: May 12, 2016
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -20,7 +20,7 @@
 :ec2_url: http://aws.amazon.com/ec2/
 :s3_url: http://aws.amazon.com/s3/
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]*Last Updated: {revdate}*
 
 toc::[]
 

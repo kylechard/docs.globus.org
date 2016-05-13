@@ -1,7 +1,7 @@
-:revnumber: 0.0.10
 :toc:
 :toc-placement: manual
 :toclevels: 3
+:revdate: May 12, 2016
 
 = Setting Up and Administering Globus Data Publication
 
@@ -17,7 +17,7 @@
 :how_to_sign_up_url: http://www.globus.org/researchers/getting-started
 :sign_up_url: http://www.globus.org/SignUp
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]*Last Updated: {revdate}*
 
 [float]
 === About This Document
