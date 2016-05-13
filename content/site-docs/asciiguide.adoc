@@ -1,12 +1,12 @@
 = Asciidoc Guide
 :Author:    Teresa Sutton
 :Email:     tsutton.ci@gmail.com
-:Date:      September 2014
+:revdate:      September 2014
 :Revision:  v1.2
 :toc:
 :toc-placement: manual
 
-[doc-info]*Last Updated: {Date}*
+[doc-info]*Last Updated: {revdate}*
 
 == About this Guide
 *We are currently supporting asciidoc version {asciidoc-version}*

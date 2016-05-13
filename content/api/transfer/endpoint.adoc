@@ -32,9 +32,9 @@ service server. They have a globally unique id, and a not necessarily unique
 display name. The API for manipulating endpoint definitions is located under
 +/endpoint/+.
 
-NOTE: Endpoints were formerly identified by a globally unique, username
-qualified name, called the "canonical name". These names still exist but are
-deprecated and will be removed in the future.
+NOTE: Endpoints used to be identified by a globally unique username qualified
+name, called the canonical name. These names still exist but are deprecated
+and will be removed in the future.
 
 For operations that can be performed on an endpoint's filesystem, see
 link:../file_operations[File Operations].
@@ -72,20 +72,20 @@ GridFTP server or servers used to access the endpoint.
 .Globus Connect Server endpoints
 This category includes manually configured GridFTP servers, and servers
 configured using the Globus Connect Server package. These endpoints will
-have +is_globus_connect+ set to "false", +host_endpoint_id+ equal to "null",
+have +is_globus_connect+ set to "false", +host_endpoint+ equal to "null",
 and +s3_url+ equal to "null". To function, they must have at least one
 +server+ sub-document.
 
 .Globus Connect Personal endpoints
 Globus Connect Personal endpoints have +is_globus_connect+ set to "true",
 and the server sub-documents are virtual and can't be set by the user. The
-+gcp_connected+ field can be used to
++is_connected+ field of the virtual server sub-document can be used to
 determine if the Globus Connect Personal client is currently running and
 connected to Globus.
 
 .Shared endpoints
-Shared endpoints will have +host_endpoint_id+ set to a non-null value.
-They have no server sub-documents, and must always be +public+.
+Shared endpoints will have +host_endpoint+ set to a non-null value. They have
+no server sub-documents, and must always be +public+.
 
 .S3 endpoints
 S3 endpoints will have +s3_url+ set to a non-null value. They have no server
@@ -96,7 +96,6 @@ sub-documents.
 ------------------------
 {
   "DATA_TYPE": "endpoint", 
-  "id": "096a65b1-3e90-44e6-9cb4-550b2d5401c0",
   "display_name": "myserver", 
   "organization": "My Org",
   "username": "auser", 
@@ -104,11 +103,9 @@ sub-documents.
   "public": false, 
   "is_globus_connect": false, 
   "globus_connect_setup_key": null, 
-  "gcp_connected": null,
-  "gcp_paused": null,
   "s3_url": null, 
   "s3_owner_activated": false, 
-  "host_endpoint_id": null, 
+  "host_endpoint": null, 
   "host_path": null
   "disable_verify": false, 
   "force_encryption": false, 
@@ -125,11 +122,13 @@ sub-documents.
   "in_use": false, 
   "DATA": [
     {
+      "is_paused": false, 
       "DATA_TYPE": "server", 
       "hostname": "gridftp.example.org", 
       "uri": "gsiftp://gridftp.example.org:2811", 
       "port": 2811, 
       "scheme": "gsiftp", 
+      "is_connected": true, 
       "id": 985, 
       "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
     }
@@ -231,8 +230,7 @@ sub-documents.
 | force_encryption
                  | boolean
                  | Forces encryption of all network data for transfers to and
-                   from the endpoint. If this is set on the endpoint or its
-                   host, all transfer to or from the endpoint will
+                   from the endpoint. If this is set, all transfer jobs will
                    have the encryption option automatically turned on
                    regardless of the user's initial submission options. If
                    this is not set, users can decide whether or not to enable
@@ -241,9 +239,8 @@ sub-documents.
                  | boolean
                  | This option indicates that the endpoint does not support
                    computing MD5 checksums, needed for the verify_checksum
-                   option of transfer. When this is set on the endpoint or
-                   its host, new transfer submissions will default to not
-                   use the +verify_checksum+ option.
+                   option of transfer. When this is set, new job submissions
+                   will default to not use the verify_checksum option.
 | expire_time    | string
                  | Date and time the endpoint activation expires, or null if
                    not activated. Formatted as ISO 9660 but with space instead
@@ -381,6 +378,9 @@ represented by +scheme+ "gsiftp". This is also the default +scheme+.
   "hostname": "gridftp.example.org", 
   "port": 2811, 
   "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
+  "uri": "gsiftp://gridftp.example.org:2811", 
+  "is_paused": false, 
+  "is_connected": true, 
 }
 -----------------------
 
@@ -433,34 +433,62 @@ Only +hostname+ is required on create.
 [[shared_endpoint_document]]
 === Shared Endpoint Document
 
-The shared endpoint document is a subtype of the "endpoint" document used to
-create shared endpoints only. Once created, a shared endpoint is accessed and
-updated using the standard endpoint resources. Shared endpoints can be
-distinguished from other endpoints by checking that the +host_endpoint_id+
-field is set to a non-null value. +server+ documents can't be added or removed
-from shared endpoints; the server used depends entirely on the host endpoint.
+The shared endpoint document is used to create shared endpoints only. Once
+created, a shared endpoint is accessed and updated using the standard endpoint
+resources. Shared endpoints can be distinguished from other endpoints by
+checking that the +host_endpoint+ field is set to a non-null value. +server+
+documents can't be added or removed from shared endpoints; the server used
+depends entirely on the +host_endpoint+.
 
 .Shared Endpoint Document Example
 -----------------------
 {
   "DATA_TYPE": "shared_endpoint",
   "display_name": "myshare",
-  "host_endpoint_id": "2ebc7b58-de6f-46a3-ac36-2f2613aa32ba",
+  "organization": "my org",
+  "host_endpoint": "go#ep1",
   "host_path": "/~/",
-  "description": "Share my home directory on Globus Tutorial Endpoint 1",
-  "organization": "my org"
+  "description": "Share my home directory on go ep1"
 }
 -----------------------
 
-The "shared_endpoint" document can include other informational fields like
-+contact_email+ and +keywords+, and option fields like +force_encryption+
-(see the <<endpoint_updatable_fields,updatable field list>> and
-<<endpoint_fields,full endpoint field list>> for details). Note that
-shared endpoints are always public, and the +location+ and +network_use+
-related feilds are inhereted from the host and not settable. The identity
-provider related fields, +myproxy_server+ and +oauth_server+, can't
-be set on shared endpoints, because they are authenticated using Globus
-credentials.
+==== Shared Endpoint Fields
+
++description+ is optional, other fields are required.
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "shared_endpoint" to indicate this
+                   document type.
+| host_endpoint  | string
+                 | Standard endpoint hosting the shared endpoint. Required.
+| host_path      | string
+                 | Path to share on the host endpoint. Required. On the shared
+                   endpoint this path will appear to be the root of the
+                   endpoint, and nothing outside this path will be accessible.
+                   In Unix parlance, this is called a chroot or change root.
+| display_name   | string
+                 | See +endpoint+ document.
+| name           | string
+                 | [DEPRECATED] See +name+ for the endpoint document.
+| description    | string
+                 | See +endpoint+ document.
+| organization   | string
+                 | See +endpoint+ document.
+| department     | string
+                 | See +endpoint+ document.
+| description    | string
+                 | See +endpoint+ document.
+| endpoint_info_link | string
+                 | See +endpoint+ document.
+| contact_email  | string
+                 | See +endpoint+ document.
+| contact_info   | string
+                 | See +endpoint+ document.
+|===================
+
 
 [[path_arguments]]
 == Path Arguments
@@ -648,41 +676,33 @@ update.
 
 Which fields can be updated depends on the type of endpoint:
 
-[[endpoint_updatable_fields]]
 [cols="h,5"]
 |============
-| Type h| Updatable fields
-
+| Type | Updatable fields
 | Globus Connect Server
 | +display_name+, +description+, +public+,
   +default_directory+, +force_encryption+, +disable_verify+,
   +myproxy_server+, +myproxy_dn+, +oauth_server+,
   +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+,
-  +location+, +network_use+,
-  +min_concurrency+, +preferred_concurrency+,
-  +min_parallelism+, +preferred_parallelism+,
+  +contact_email+, +contact_info+, +endpoint_info_link+,
   DEPRECATED: +name+/+canonical_name+
 
 | Globus Connect Personal
 | +display_name+, +description+,
-  +default_directory+, +force_encryption+, +disable_verify+,
   +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+
+  +contact_email+, +contact_info+, +endpoint_info_link+
   DEPRECATED: +name+/+canonical_name+
 
 | Shared endpoint
 | +display_name+, +description+,
-  +default_directory+, +force_encryption+, +disable_verify+,
   +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+
+  +contact_email+, +contact_info+, +endpoint_info_link+
   DEPRECATED: +name+/+canonical_name+
 
 | S3 endpoint
 | +display_name+, +description+,
-  +default_directory+, +force_encryption+, +disable_verify+,
   +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+
+  +contact_email+, +contact_info+, +endpoint_info_link+
   DEPRECATED: +name+/+canonical_name+
 |============
 
@@ -877,7 +897,7 @@ query parameter, and the value "ALL" can be used to fetch all fields. The
 | Method
 | GET
 
-| Response Body a|
+| Response Body a| 
 ------------------------------------
 {
 
@@ -889,7 +909,46 @@ query parameter, and the value "ALL" can be used to fetch all fields. The
     "DATA": [
         {
             "DATA_TYPE": "endpoint",
-            ...
+            "activated": false,
+            "disable_verify": false,
+            "myproxy_server": null,
+            "sharing_target_root_path": null,
+            "DATA": [
+                {
+                    "is_paused": false,
+                    "DATA_TYPE": "server",
+                    "hostname": "gridftp.example.org",
+                    "uri": "gsiftp://gridftp.example.org:2811",
+                    "port": 2811,
+                    "scheme": "gsiftp",
+                    "is_connected": true,
+                    "id": 985,
+                    "subject": "/O=Grid/OU=Example/CN=host/girdftp.example.org"
+                }
+            ],
+            "expires_in": 0,
+            "canonical_name": "auser#myserver",
+            "sharing_target_endpoint": null,
+            "acl_available": false,
+            "s3_url": null,
+            "public": false,
+            "default_directory": null,
+            "username": "auser",
+            "globus_connect_setup_key": null,
+            "description": "Example gridftp endpoint.",
+            "in_use": false,
+            "is_go_storage": false,
+            "force_encryption": false,
+            "myproxy_dn": null,
+            "expire_time": "2000-01-02 03:45:06+00:00",
+            "acl_editable": false,
+            "oauth_server": null,
+            "host_endpoint": null,
+            "name": "myserver",
+            "is_globus_connect": false,
+            "s3_owner_activated": false,
+            "shareable": true,
+            "host_path": null
         }
     ]
 

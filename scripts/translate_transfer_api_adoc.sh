@@ -90,6 +90,9 @@ menu_weight: 12\
 
 # last updated date
 DATE=$(date +"%B %d, %Y")
+UPDATED=':revdate: $DATE\
+[doc-info]*Last Updated: {revdate}*\
+'
 
 echo "Performing seds inline on files..."
 sed -i.bak -e 's/----\n/----terminal/g' $DOC_DIR/*.adoc
@@ -119,6 +122,7 @@ sed -i.bak -e "s/^\= /${TS}" $DOC_DIR/task_submit.adoc
 sed -i.bak -e "s/^\= /${TASK}" $DOC_DIR/task.adoc
 
 #add last updated date
-sed -i.bak -e "s/^\= /${DATE}" $DOC_DIR/index.adoc
-sed -i.bak -e "/\= Transfer API Documentation/a [doc-info]*Last Updated: {revdate}*" $DOC_DIR/index.adoc
+sed -i.bak -e "/'\= Transfer API Documentation'/a\\
+'$UPDATED'" $DOC_DIR/index.adoc
+
 rm $DOC_DIR/*.adoc.bak
