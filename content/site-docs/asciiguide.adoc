@@ -6,7 +6,7 @@
 :toc:
 :toc-placement: manual
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]*Last Updated: {Date}*
 
 == About this Guide
 *We are currently supporting asciidoc version {asciidoc-version}*
