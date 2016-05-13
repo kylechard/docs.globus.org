@@ -2,12 +2,13 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 path/to/content/api/transfer"
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 path/to/koa/doc/manual path/to/content/api/transfer"
     exit 1
 fi
 
-DOC_DIR="$1"
+KOA_DIR="$1"
+DOC_DIR="$2"
 
 TOC='toc\:\
 \:toclevels\: 3\
@@ -96,17 +97,17 @@ UPDATED2='\
 [doc-info]*Last Updated: {revdate}*\
 '
 
+# copying new files over
+cp -r $KOA_DIR/* $DOC_DIR/
+rm $DOC_DIR/Makefile
+rm $DOC_DIR/private_*
+
 echo "Performing seds inline on files..."
 sed -i.bak -e 's/----\n/----terminal/g' $DOC_DIR/*.adoc
 sed -i.bak -e 's/\*\([a-z]*\)\(([0-9])\)\*/link:..\/\1[\*\1\2\*]/g' $DOC_DIR/*.adoc
-#sed -i.bak -e 's/link:(.*?)\{outfilesuffix\}/link:(.*?)/g' $DOC_DIR/*.adoc
-#sed -i.bak -e 's/link:\([a-z]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.adoc
-#sed -i.bak -e 's/link:\([a-z]*_[a-z]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.adoc
 sed -i.bak -e 's/link:\([a-z]*[0-9]*_*[a-z]*[0-9]*_*[a-z]*[0-9]*_*[a-z]*[0-9]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.adoc
 sed -i.bak -e 's/link:..\//link:/g' $DOC_DIR/index.adoc
-#sed -i.bak -e 's/{outfilesuffix}//g' $DOC_DIR/*.adoc
 sed -i.bak -e "s/toc2\:/${TOC}/g" $DOC_DIR/*.adoc
-#sed -i.bak -e '1i\some string\n' $DOC_DIR/acl.adoc
 sed -i.bak -e 's/\:numbered\://g' $DOC_DIR/change_history.adoc
 
 #add menu_weights
