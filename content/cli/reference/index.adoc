@@ -5,7 +5,7 @@ menu_weight: 3
 ---
 
 = Command Line Interface (CLI) Reference
-:revdate: May 5, 2016
+:revdate: May 13, 2016
 
 [doc-info]*Last Updated: {revdate}*
 

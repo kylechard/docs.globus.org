@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
+if [ $# -ne 2 ]; then
     echo "Usage: $0 path/to/koa/man/adoc path/to/content/cli/reference"
     exit 1
 fi
@@ -16,10 +16,6 @@ echo "Proceeding with script..."
 # last updated date
 DATE=$(date +"%B %d, %Y")
 UPDATED=":revdate: ${DATE}"
-UPDATED2='\
-\
-[doc-info]*Last Updated: {revdate}*\
-'
 
 # copying new files over
 cp $DOC_DIR/index.adoc .
@@ -36,7 +32,10 @@ sed -i.bak -e 's/\*\([a-z]*\)\(([0-9])\)\*/link:..\/\1[\*\1\2\*]/g' $DOC_DIR/*.a
 echo "Seds complete..."
 
 # update last updated date
-sed -i.bak -e "s/\:revdate: [^\s]+ [0-9]{1,2}, [0-9]{4}/$UPDATED/g" $DOC_DIR/index.adoc
+# sed -i.bak -e "s/\:revdate: [^\s]+ [0-9]{1,2}, [0-9]{4}/${UPDATED}/g" $DOC_DIR/index.adoc
+sed -i.bak -e "s/\:revdate:.*/${UPDATED}/g" $DOC_DIR/index.adoc
 
 # reminder to update index page if necessary
 echo "Don't forget to update the reference index page if needed!"
+
+rm $DOC_DIR/*.adoc.bak
