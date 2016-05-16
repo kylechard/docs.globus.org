@@ -332,7 +332,7 @@ first accessing an endpoint.
 === [Security] section
 
 ==== +IdentityMethod+ option
-This option has three legal values: MyProxy, OAuth, and CILogon. For a graphical overview of the authentication flows each of these methods use, see link:https://support.globus.org/entries/27825216-Globus-Connect-Server-Authentication-Authorization-Flows[here].
+This option has three legal values: MyProxy, OAuth, and CILogon. For a graphical overview of the authentication flows each of these methods use, see link:../authorization-authentication-guide/[here].
 If you wish to use MyProxy as your endpoint's identity method, then
 you need to be sure to specify the +Server+ option in the [MyProxy]
 section. If you wish to use OAuth as your endpoint's identity method, 
