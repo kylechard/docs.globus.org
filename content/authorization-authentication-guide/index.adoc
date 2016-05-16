@@ -1,10 +1,10 @@
 = Globus Authorization/Authentication Guide
-:revnumber: 1.0.0
+:revdate: May 16, 2016
 :toc:
 :toc-placement: manual
 :toclevels: 1
 
-[doc-info]*Last Updated: {docdate}*
+[doc-info]*Last Updated: {revdate}*
 
 This document provides a detailed description of the interactions between various components that manage authentication/authorization when a user transfers or shares files using Globus.
 
