@@ -439,10 +439,10 @@ Once you have a properly configured distributed file system you may do the follo
 Your endpoint is now configured with multiple I/O nodes. Note that you will need to repeat steps 3-6 as necessary whenever you make changes to the configuration.
 
 == I get the following error: "The Globus Connect Personal endpoint is not currently connected to Globus"
-This message means that the Globus Connect Personal (GCP) software is not currently running on the workstation where it was installed. In order for any transfers to or from a GCP endpoint, the endpoint needs to be running. This is different from activated.
+This message means that the Globus Connect Personal (GCP) software is not currently running on the workstation where it was installed. In order to perform transfers to or from a GCP endpoint, the GCP software needs to be running. This is different from activated.
  
 === Windows
-The user can see if GCP is running by looking for the Globus icon in the system tray - which is located on the bottom right of the screen. The Globus icon is a circle with the letter "g" in it. If the user does not see it, then GCP is not running and the user will get this error if he or she attempts to access their personal endpoint. If the GCP endpoint is not running, then the user can start it by running GCP from the Start menu.
+The user can see if GCP is running by looking for the Globus icon in the system tray, which is located on the bottom right of the screen. The Globus icon is a circle with the letter "g" in it. If the user does not see it, then GCP is not running and the user will get this error if he or she attempts to access their personal endpoint. If the GCP endpoint is not running, then the user can start it by running GCP from the Start menu.
 
 === Linux
 Check out the following:
@@ -451,7 +451,7 @@ Check out the following:
 - To start Linux GCP in command line only mode, run `./globusconnectpersonal -start &`
 
 === Mac
-The user can see if GCP is running by looking for the Globus icon in the menu bar (which usually runs across the top of the screen). The Globus icon is a circle with the letter "g" in it. The user should see it in solid black, and not grayed out. If the user does not see that, then GCP is not running and he or she will get this error if they attempt to access their personal endpoint. If the GCP endpoint is not running, then the user can start it by running GCP from his or her Applications folder.
+The user can see if GCP is running by looking for the Globus icon in the menu bar, which usually runs across the top of the screen. The Globus icon is a circle with the letter "g" in it. The user should see it in solid black, and not grayed out. If the user does not see that, then GCP is not running and he or she will get this error if they attempt to access their personal endpoint. If the GCP endpoint is not running, then the user can start it by running GCP from his or her Applications folder.
 
 
 
