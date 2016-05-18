@@ -39,6 +39,9 @@ menus:
                 title: 'Data Publication Admin Guide'
                 link: '/data-publication-admin-guide/'
             -
+                title: 'Authorization/Authentication Guide'
+                link: '/authorization-authentication-guide/'
+            -
                 title: 'Command Line Interface'
                 link: '/cli/'
       -
