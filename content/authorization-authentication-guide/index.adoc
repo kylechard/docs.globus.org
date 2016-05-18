@@ -121,7 +121,8 @@ image::images/auth-2.png[]
 ... Alternate identity provider (InCommon login via CILogon, Google OpenID)
 . User chooses an endpoint to initiate a transfer, the source endpoint. To choose a file/folder to transfer the user requests a directory listing.
 . User is redirected to the MyProxy OAuth server associated with the endpoint, using OAuth 1.0a protocol.
-. User provides the needed credentials at the MyProxy OAuth interface hosted by the site. OAuth server presents the credentials to the MyProxy server.
+. User provides the needed credentials at the MyProxy OAuth interface hosted by the site.
+.. OAuth server presents the credentials to the MyProxy server.
 .. MyProxy server may validate the credentials against the local authentication system via PAM module or other means.
 . If successful, a X.509 certificate with lifetime configured by the administrator of the endpoint is returned to Globus using the MyProxy OAuth delegation handshake protocol:
 .. Globus generates a new key pair and sends the public key to MyProxy server
