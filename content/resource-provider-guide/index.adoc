@@ -924,7 +924,10 @@ $ sudo apt-get update
 $ sudo apt-get upgrade globus-connect-server
 ----terminal
 
-After updating your packages, be sure to run the `globus-connect-server-setup` command (as root) to restart the services and ensure that the update takes full effect.
+After updating your packages, be sure to restart the services and ensure that the update takes full effect by running:
+----terminal
+$ sudo globus-connect-server-setup
+----terminal
 
 [appendix]
 [[upgrade_section]]
