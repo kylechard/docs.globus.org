@@ -27,99 +27,68 @@ standard status codes.
 
 === Authentication
 
-Authentication to the Transfer API requires using either the new Globus Auth
-API, or the legacy Nexus Goauth API, to obtain an access token. At time of this
-writing Globus Auth only supports OAuth2 authorization code grant (which uses
-a 3-legged redirection flow), and it should be used by web applications instead
-of Nexus.
+Authentication to the Transfer API requires using the new Globus Auth API to
+obtain an access token. At time of this writing Globus Auth supports the
+OAuth2 authorization code grant (which uses a 3-legged redirection flow),
+which should be used by web applications. Other authorization flows, for
+thick client and CLI applications, are under development and will be announced
+soon.
 
-Thick client applications that can't use the OAuth2 autorization code
-grant can continue using legacy Nexus Goauth, but developers should plan for
-transitioning to the Globus Auth API when it's feature set is expanded. We will
-announce the new features in Globus Auth and deprecation of Nexus shortly, and
-provide more detailed documentation for Globus Auth.
+For development, or for using the new
+link:https://github.com/globus/globus-cli[globus-cli], the simplest way to get
+a token is to use the link:https://tokens.globus.org[Globus Tokens] webapp.
 
-==== Nexus Goauth: Client Credential
+==== Globus Tokens (temporary method for developers)
 
-This method requires a link:https://www.globusid.org[Globus ID] identity to be
-linked to the user's Globus account. It involves two steps:
+Globus Tokens provides you with tokens for all Globus APIs which are valid for
+two days, and are tied to a consent for "Globus Tokens". This can be used as
+a temporary solution for thick client applications, but developers should plan
+for transitioning to the Globus Auth API when it's feature set is expanded to
+better support thick client auth flows.
 
-. Get an access token from the Globus Nexus identity service.
-. Pass the access token to the Transfer API in the Authorization header
-  with every request.
+First sign in to the link:https://tokens.globus.org[Globus Tokens] webapp,
+and grant consent. Note that the webapp provides tokens for the Auth
+service as well - make sure to get the token for Transfer.
 
-Note that access tokens have a long lifetime and should therefore be handled
-with as much care as passwords and kept private.
-
-To get an access token, send a GET request to the following URL with HTTP basic
-auth over SSL using your globusid username and password:
-
-    https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials
-
-Using the curl command line program with a prompt for your password:
-
-----------------------
-curl --user exampleuser \
- 'https://nexus.api.globusonline.org/goauth/token?grant_type=client_credentials'
-----------------------
-
-Make sure that your https client program or library verifies the server
-certificate to authenticate the server, ensuring that the password is only sent
-to the real Globus services. In particular in Python 2.6 and earlier versions
-of 2.7 the standard httplib does not verify the server certificate.
-
-The Nexus token service returns a JSON document with the following format:
+The Transfer token needs to be passed to the Transfer API in the
++Authorization+ header with custom method +Bearer+:
 
 ----
-    {"access_token": "un=USERNAME|tokenid=...",
-     "access_token_hash": "...",
-     "client_id": "USERNAME",
-     "expires_in": 31536000,
-     "expiry": 1397334772,
-     "issued_on": 1365798772,
-     "lifetime": 31536000,
-     "scopes": ["https://transfer.api.globusonline.org"],
-     "token_id": "...",
-     "token_type": "Bearer",
-     "user_name": "USERNAME"}
+Authorization: Bearer TOKEN
 ----
 
-The token that you need for authentication is the value of the +access_token+
-key. It needs to be passed to the API in the +Authorization+ header with
-custom method +Bearer+:
-
-    Authorization: Bearer un=USERNAME|tokenid=...
-
-You can test this by copying the `access_token` value from the Nexus
-response to a file, for example `/tmp/goauth-token.secret`, and then
-passing it to curl with the -H option:
+You can test this by saving the token to a private temporary file, e.g.
+`$HOME/tmp-globus-auth-token.txt`, and then passing it to curl with the -H
+option:
 
 ----
-TOKEN=$(cat /tmp/goauth-token.secret)
+TOKEN=$(cat $HOME/tmp-globus-auth-token.txt)
 curl -H "Authorization : Bearer $TOKEN" \
     'https://transfer.api.globusonline.org/v0.10/task_list'
 ----
 
 You could also paste the token directly but then it will be stored in your
-shell history, which is poor security practice.
+shell history, which is often not desirable.
 
 ==== Globus Auth: OAuth2 authorization code grant
 
 In this method, a web application redirects the user agent (user's web browser)
 to Globus to authenticate, and provides a callback URL. Globus
-prompts the user for a username and password, and after successful sign in
+prompts the user to sign in, and after successful sign in
 confirms that the user would like to give the application access to their
 account. It then redirects the user agent back to the web application at the
 callback URL and passes it a "request token", which is different from an access
 token. The web application uses the request token and its own client
 credential to get an access token. This workflow allows the user to manage
 application permissions and revoke access on a per application basis in the
-future if needed, and prevents the Globus password from flowing through
+future if needed, and prevents the user's password from flowing through
 third party web applications.
 
+For details, see the
+link:https://docs.globus.org/api/auth/[Globus Auth] documentation.
+
 Once the application has the access token, it is passed to the Transfer API in
-the same way as for the client credential workflow (in the Authorization
-header). We will be providing more detailed documentation and examples shortly.
+the same way as for Globus Tokens method (in the Authorization header).
 
 === Terminology
 
