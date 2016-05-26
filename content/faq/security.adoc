@@ -54,11 +54,21 @@ When a user chooses to activate an XSEDE endpoint, they are redirected to the XS
 If the user is using the Globus command line interface, the activation of an XSEDE endpoint prints a URL for them to use to complete the activation. Once the user browses to the URL, the flow is similar to the one described when using the Globus website.
 
 == How can I delete my Globus account?
-Please send email to support@globus.org and request to delete your account. In order to complete the deletion process you should ensure that:
+Please complete the steps below and then send email to support@globus.org requesting that your account be deleted:
 
-1. You have no active file transfers (if you do, you should cancel them or wait for them to complete).
-2 All endpoints that you created have been deleted (e.g. the endpoint on your local machine created by installing Globus Connect Personal).
-3. All shared endpoints that you created have been deleted (note that users that were granted access to the shared endpoint will no longer be able to access the files shared on that endpoint).
+. Remove yourself from all Globus link:https://www.globus.org/app/groups[groups].
+. Delete your Globus link:https://www.globus.org/app/endpoints?scope=my-endpoints[endpoints], including all shared endpoints that you created (note that users to whom you granted access to a shared endpoint will no longer be able to access the files on that endpoint).
+. Delete your Globus endpoint link:https://www.globus.org/app/bookmarks[bookmarks].
+. Unlink any other accounts:
+.. Go to your link:https://www.globus.org/app/account[Account page] 
+.. Click on Manage Your Identities
+.. Click X for each identity
+. Remove your consents:
+.. Go to your link:https://www.globus.org/app/account[Account page]
+.. Click on Manage Your Consents
+.. Click X for each consent
+
+IMPORTANT: A Globus account is a set of linked identities, and associated consents for how those identities are allowed to be used by various applications and services. In a federated identity environment such as Globus, deleting your Globus account does not necessarily delete everything associated with every other application and service that used that account. Just as when you use your Google account to log into a 3rd party web site, if you delete your Google account it will not delete all data from that 3rd party web site. If you delete your Globus account, depending on what you did with that account, there may still be records of your activities stored in other services, associated with your Globus account. And you may be able to get back some of those records (e.g. task history, depending on how long it has been) if you re-create a Globus account with the same identity/identities.
 
 == How do I generate a VOMS-enabled proxy certificate and upload it to a MyProxy server?
 GSISSH-Term is a Java-based client that can be installed and launched with one simple click. link:https://www.lrz.de/[Leibniz Supercomputing Centre] maintains and develops a customized version of this client that generates a proxy certificate and uploads it to any MyProxy server with no additional setup. European EUGridPMA CA certificates are automatically installed and updated on the client machine.
