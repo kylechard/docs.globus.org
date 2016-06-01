@@ -30,20 +30,20 @@ image::images/mcg-1.png[Endpoint Overview]
 
 The above shows the console's endpoint overview. The interactive graphic gives endpoint managers an easy way to see the status of transfers to and from their managed endpoints; green represents transfers that are making progress and orange highlights transfers that are being retried. Per-endpoint summaries with links to drill down into endpoint details are also provided.
 
-A count of active file transfer tasks for each endpoint is shown, and expanding an endpoint's listing presents an overview of the endpoint configuration and a list of shared endpoints hosted by the endpoint. The next image shows shared endpoints hosted on the petrel#petrel endpoint, with a summary of permissions for each shared endpoint that gives the administrator a quick view of what is being shared from the endpoint.
+A count of active file transfer tasks for each endpoint is shown, and expanding an endpoint's listing presents an overview of the endpoint configuration and a list of shared endpoints hosted by the endpoint. The next image shows shared endpoints hosted on the go#ep1 endpoint, with a summary of permissions for each shared endpoint that gives the administrator a quick view of what is being shared from the endpoint.
 
 .Shared Endpoints
 [role="img-responsive center-block"]
 image::images/mcg-2.png[Shared Endpoints]
 
 === Search and filters
-The Management Console supports search and filters to allow the administrator to find tasks of interest. To look at all active transfer tasks, click on the ‘active tasks’ link. To look at a list of tasks filtered by Globus username, endpoint, or transfer task ID, the user can use the search box and press ENTER. Alternatively administrators can click on an endpoint name, username or task id to filter on that.
+The Management Console supports search and filters to allow the administrator to find tasks of interest. To look at all active transfer tasks, click on the "active tasks" link. To look at a list of tasks filtered by Globus username, endpoint, or transfer task ID, the user can use the search box and press ENTER. Alternatively administrators can click on an endpoint name, username or task id to filter on that.
 
 .Active Tasks
 [role="img-responsive center-block"]
 image::images/mcg-3.png[Active Tasks]
 
-For example, if an admin wanted to find all tasks involving their endpoints for Gobus user ‘danielpowers’ they would enter ‘danielpowers’ as the search pattern in the search filter box and press enter - like so:
+For example, if an admin wanted to find all tasks involving their endpoints for Gobus user "demodoc" they would enter "demodoc" as the search pattern in the search filter box and press enter - like so:
 
 .Filter by User
 [role="img-responsive center-block"]
@@ -81,7 +81,7 @@ To pause multiple tasks, the administrator can select the tasks they would like 
 [role="img-responsive center-block"]
 image::images/mcg-8.png[Pause Multiple Tasks]
 
-Once all of the desired tasks have been selected, choose “pause selected tasks” from the “- select action -” drop down menu.
+Once all of the desired tasks have been selected, choose "pause selected tasks" from the "- select action -" drop down menu.
 
 .Pause Selected Tasks
 [role="img-responsive center-block"]
@@ -94,7 +94,7 @@ To resume a single task, click the resume button for that task.
 [role="img-responsive center-block"]
 image::images/mcg-10.png[Pause Task]
 
-Once resumed, the user is sent an email that the task has been resumed by an administrator of the endpoint. Administrators can use the “paused tasks” filter to identify the set of tasks that can be resumed. 
+Once resumed, the user is sent an email that the task has been resumed by an administrator of the endpoint. Administrators can use the "paused tasks" filter to identify the set of tasks that can be resumed. 
 
 Note that if the task has also been paused by the administrator of the other endpoint, it will not be resumed until both source and destination administrators have resumed the task.
 
@@ -104,7 +104,7 @@ To resume multiple tasks, the admin should click the checkbox for the task for e
 [role="img-responsive center-block"]
 image::images/mcg-11.png[Pause Multiple Tasks]
 
-Once all of the desired tasks have been selected, pick “resume selected tasks” from the “- select action -” drop down menu.
+Once all of the desired tasks have been selected, pick "resume selected tasks" from the "- select action -" drop down menu.
 
 .Resume Selected Tasks
 [role="img-responsive center-block"]
@@ -196,7 +196,7 @@ To cancel multiple tasks, the admin should click the checkbox for the task for e
 [role="img-responsive center-block"]
 image::images/mcg-24.png[Cancel Multiple Tasks]
 
-Once all of the desired tasks have been selected, pick “cancel selected tasks” from the “- select action -” drop down menu.
+Once all of the desired tasks have been selected, pick "cancel selected tasks" from the "- select action -" drop down menu.
 
 .Cancel Selected Tasks
 [role="img-responsive center-block"]
