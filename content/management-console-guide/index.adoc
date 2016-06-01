@@ -26,28 +26,28 @@ When an administrator first logs in to the Management Console they will see the 
 
 .Endpoint Overview
 [role="img-responsive center-block"]
-image::images/endpoint-overview.png[Endpoint Overview]
+image::images/mcg-1.png[Endpoint Overview]
 
 The above shows the console's endpoint overview. The interactive graphic gives endpoint managers an easy way to see the status of transfers to and from their managed endpoints; green represents transfers that are making progress and orange highlights transfers that are being retried. Per-endpoint summaries with links to drill down into endpoint details are also provided.
 
-A count of active file transfer tasks for each endpoint is shown, and expanding an endpoint's listing presents an overview of the endpoint configuration and a list of shared endpoints hosted by the endpoint. The next image shows shared endpoints hosted on the petrel#petrel endpoint, with a summary of permissions for each shared endpoint that gives the administrator a quick view of what is being shared from the endpoint.
+A count of active file transfer tasks for each endpoint is shown, and expanding an endpoint's listing presents an overview of the endpoint configuration and a list of shared endpoints hosted by the endpoint. The next image shows shared endpoints hosted on the go#ep1 endpoint, with a summary of permissions for each shared endpoint that gives the administrator a quick view of what is being shared from the endpoint.
 
 .Shared Endpoints
 [role="img-responsive center-block"]
-image::images/shared-endpoints.png[Shared Endpoints]
+image::images/mcg-2.png[Shared Endpoints]
 
 === Search and filters
-The Management Console supports search and filters to allow the administrator to find tasks of interest. To look at all active transfer tasks, click on the ‘active tasks’ link. To look at a list of tasks filtered by Globus username, endpoint, or transfer task ID, the user can use the search box and press ENTER. Alternatively administrators can click on an endpoint name, username or task id to filter on that.
+The Management Console supports search and filters to allow the administrator to find tasks of interest. To look at all active transfer tasks, click on the "active tasks" link. To look at a list of tasks filtered by Globus username, endpoint, or transfer task ID, the user can use the search box and press ENTER. Alternatively administrators can click on an endpoint name, username or task id to filter on that.
 
 .Active Tasks
 [role="img-responsive center-block"]
-image::images/active-tasks.png[Active Tasks]
+image::images/mcg-3.png[Active Tasks]
 
-For example, if an admin wanted to find all tasks involving their endpoints for Gobus user ‘danielpowers’ they would enter ‘danielpowers’ as the search pattern in the search filter box and press enter - like so:
+For example, if an admin wanted to find all tasks involving their endpoints for Gobus user "demodoc" they would enter "demodoc" as the search pattern in the search filter box and press enter - like so:
 
 .Filter by User
 [role="img-responsive center-block"]
-image::images/filter-user.png[Filter by User]
+image::images/mcg-4.png[Filter by User]
 
 Once the admin has selected the tasks that they wish to examine they can then see detailed logs of the transfer, as well as choose to pause/resume or cancel the task.
 
@@ -55,7 +55,7 @@ The interface also has some pre-defined filters for common search parameters, su
 
 .Pre-defined Filters
 [role="img-responsive center-block"]
-image::images/filter-predefined.png[Pre-defined Filters]
+image::images/mcg-5.png[Pre-defined Filters]
 
 == Managing Tasks
 The Management Console supports administrators cancelling or pausing user’s tasks.
@@ -65,13 +65,13 @@ To pause a single task, click the pause button for that task.
 
 .Pause Tasks
 [role="img-responsive center-block"]
-image::images/pause-tasks.png[Pause Tasks]
+image::images/mcg-6.png[Pause Tasks]
 
 The administrator will be prompted to provide a reason that will be included in the email notification sent to the user who initiated the task.
 
 .Pause Reason
 [role="img-responsive center-block"]
-image::images/pause-reason.png[Pause Reason]
+image::images/mcg-7.png[Pause Reason]
 
 Once paused, the task can be resumed only by an administrator of the endpoint. It might take upto a couple of minutes for the task to pause and transfers to the server to stop, and for the status of the transfer to be reflected as paused on the web application.
 
@@ -79,22 +79,22 @@ To pause multiple tasks, the administrator can select the tasks they would like 
 
 .Pause Multiple Tasks
 [role="img-responsive center-block"]
-image::images/multiple.png[Pause Multiple Tasks]
+image::images/mcg-8.png[Pause Multiple Tasks]
 
-Once all of the desired tasks have been selected, choose “pause selected tasks” from the “- select action -” drop down menu.
+Once all of the desired tasks have been selected, choose "pause selected tasks" from the "- select action -" drop down menu.
 
 .Pause Selected Tasks
 [role="img-responsive center-block"]
-image::images/pause-selected.png[Pause Selected Tasks]
+image::images/mcg-9.png[Pause Selected Tasks]
 
 === Resume Tasks
 To resume a single task, click the resume button for that task.
 
 .Resume Task
 [role="img-responsive center-block"]
-image::images/resume-task.png[Pause Task]
+image::images/mcg-10.png[Pause Task]
 
-Once resumed, the user is sent an email that the task has been resumed by an administrator of the endpoint. Administrators can use the “paused tasks” filter to identify the set of tasks that can be resumed. 
+Once resumed, the user is sent an email that the task has been resumed by an administrator of the endpoint. Administrators can use the "paused tasks" filter to identify the set of tasks that can be resumed. 
 
 Note that if the task has also been paused by the administrator of the other endpoint, it will not be resumed until both source and destination administrators have resumed the task.
 
@@ -102,13 +102,13 @@ To resume multiple tasks, the admin should click the checkbox for the task for e
 
 .Resume Multiple Tasks
 [role="img-responsive center-block"]
-image::images/multiple.png[Pause Multiple Tasks]
+image::images/mcg-11.png[Pause Multiple Tasks]
 
-Once all of the desired tasks have been selected, pick “resume selected tasks” from the “- select action -” drop down menu.
+Once all of the desired tasks have been selected, pick "resume selected tasks" from the "- select action -" drop down menu.
 
 .Resume Selected Tasks
 [role="img-responsive center-block"]
-image::images/resume-selected.png[Resume Selected Tasks]
+image::images/mcg-12.png[Resume Selected Tasks]
 
 As before,  the users are sent an email that their task(s) have been resumed by an administrator of the endpoint. 
 
@@ -119,19 +119,19 @@ To create a new pause rule or view current pause rules, click on the ‘pause ru
 
 .Pause Rules
 [role="img-responsive center-block"]
-image::images/pause-rules.png[Pause Rules]
+image::images/mcg-13.png[Pause Rules]
 
 This will take you to the Pause Rules page, where you can see all currently existing pause rules. To create a new rule, click on the ‘add a pause rule’ link.
 
 .Add Pause Rule
 [role="img-responsive center-block"]
-image::images/add-pause-rule.png[Add Pause Rule]
+image::images/mcg-14.png[Add Pause Rule]
 
 This will then open the dialog to create a new pause rule. Select the appropriate options for the rule you wish to create, and then press the Create Rule button.
 
 .Create Rule
 [role="img-responsive center-block"]
-image::images/create-rule.png[Create Rule]
+image::images/mcg-15.png[Create Rule]
 
 The pause rule will affect all tasks that meet the conditions set on the rule. 
 
@@ -139,37 +139,37 @@ By default all of the user’s currently active and queued tasks are paused, and
 
 .Specify Which Tasks to Pause
 [role="img-responsive center-block"]
-image::images/pause-which-tasks.png[Specify Which Tasks to Pause]
+image::images/mcg-16.png[Specify Which Tasks to Pause]
 
 Similarly, by default, all types of tasks are paused: read, write, interactive tasks and submitted tasks. But the administrator can choose the types of task to pause. For example, in the screenshot below, write activity on the endpoint go#ep1 is paused, while all read activity is allowed.
 
 .Specify Which Types of Tasks to Pause
 [role="img-responsive center-block"]
-image::images/pause-types-tasks.png[Specify Which Types of Tasks to Pause]
+image::images/mcg-17.png[Specify Which Types of Tasks to Pause]
 
 A pause rule can also be created by choosing the pause option near the filters on the active tasks view, as shown below:
 
 .Pause: Active Tasks View
 [role="img-responsive center-block"]
-image::images/pause-active-tasks.png[Pause: Active Tasks View]
+image::images/mcg-18.png[Pause: Active Tasks View]
 
 This will allow the creation of a pause rule with the filters on the active tasks tab pre-filled. For example, pause on a screen that has all tasks from ucrcc#midway, will show a pause rule creation window as follows:
 
 .Pause Matching Tasks
 [role="img-responsive center-block"]
-image::images/pause-matching-tasks.png[Pause Matching Tasks]
+image::images/mcg-19.png[Pause Matching Tasks]
 
 To edit an existing rule, click on the triangle next to the rule in the Pause Rules page.
 
 .Edit Existing Pause Rule
 [role="img-responsive center-block"]
-image::images/edit-pause.png[Edit Existing Pause Rule]
+image::images/mcg-20.png[Edit Existing Pause Rule]
 
 To delete a pause rule, click on the X next to the rule, or click on the Delete Rule button.
 
 .Delete Pause Rule
 [role="img-responsive center-block"]
-image::images/delete-pause.png[Delete Pause Rule]
+image::images/mcg-21.png[Delete Pause Rule]
 
 When a pause rule is deleted all tasks that meet the conditions set on the rule will be resumed. If a task has been explicitly paused by directly pausing the task, such a task will not be resumed unless the task is explicitly resumed. If a task is paused by the administrator of the other endpoint, such tasks also will not be resumed until all both source and administrators have resumed the task.
 
@@ -180,13 +180,13 @@ To cancel a single task, simply click the cancel button for that task.
 
 .Cancel Task
 [role="img-responsive center-block"]
-image::images/cancel-task.png[Cancel Task]
+image::images/mcg-22.png[Cancel Task]
 
 The admin will be prompted to give a reason that the task is being canceled. This reason will be sent to users in an email message explaining why their job has been canceled.
 
 .Cancel Reason
 [role="img-responsive center-block"]
-image::images/cancel-reason.png[Cancel Reason]
+image::images/mcg-23.png[Cancel Reason]
 
 Once canceled, the user is sent an email that the task has been canceled by an administrator of the endpoint. 
 
@@ -194,13 +194,13 @@ To cancel multiple tasks, the admin should click the checkbox for the task for e
 
 .Cancel Multiple Tasks
 [role="img-responsive center-block"]
-image::images/multiple.png[Cancel Multiple Tasks]
+image::images/mcg-24.png[Cancel Multiple Tasks]
 
-Once all of the desired tasks have been selected, pick “cancel selected tasks” from the “- select action -” drop down menu.
+Once all of the desired tasks have been selected, pick "cancel selected tasks" from the "- select action -" drop down menu.
 
 .Cancel Selected Tasks
 [role="img-responsive center-block"]
-image::images/cancel-selected.png[Cancel Selected Tasks]
+image::images/mcg-25.png[Cancel Selected Tasks]
 
 As before, the admin will be prompted to supply a reason that the tasks are being canceled, and this reason will be sent out in a message to those users whose jobs are affected by the cancel operation.
 
