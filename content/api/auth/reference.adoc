@@ -106,7 +106,7 @@ Globus Auth Supports the following OAuth2 grant types (detailed below):
 
 These grants all share the same HTTP endpoints:
 
-**Authorization:** +++https://auth.globus.org/v2/oauth2/authorization+++
+**Authorization:** +++https://auth.globus.org/v2/oauth2/authorize+++
 
 **Token:** +++https://auth.globus.org/v2/oauth2/token+++
 
@@ -125,7 +125,7 @@ You will need:
 
 **Redirecting the user to the OAuth 2.0 server**
 
-Construct a URL for the OAuth2 authorization endpoint `https://auth.globus.org/v2/oauth2/authorization` with the following parameters:
+Construct a URL for the OAuth2 authorization endpoint `https://auth.globus.org/v2/oauth2/authorize` with the following parameters:
 
 [options="header"]
 |==================
@@ -146,7 +146,7 @@ If access_type is offline, your application will be issued a refresh token along
 
 An example URL is shown below, with line breaks and spaces for readability.
 
- https://auth.globus.org/v2/oauth2/authorization?
+ https://auth.globus.org/v2/oauth2/authorize?
    scope=urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities+openid+email+profile
    state=security_token%3D138r5719ru3e1%26url%3Dhttps://oa2cb.example.com/myHome&
    redirect_uri=https%3A%2F%2Foauth2-login-demo.example.com%2Fcallback&,
