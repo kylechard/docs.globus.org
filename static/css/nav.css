@@ -107,6 +107,12 @@ header.navbar-inverse .navbar-nav>li>.dropdown-menu {
         border-radius: 4px;
     }
 }
+@media (min-width: 768px) {
+    header.navbar>.container .navbar-brand,
+    header.navbar>.container-fluid .navbar-brand {
+        margin-left: 0;
+    }
+}
 @media (min-width: 992px) {
     .page-header .nav {
         position: absolute;
