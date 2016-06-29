@@ -909,19 +909,19 @@ follow these instructions to update your install:
 
 .Red Hat Enterprise Linux, CentOS, Scientific Linux, Fedora
 ----terminal
-$ sudo yum update globus-connect-server
+$ sudo yum update \\*globus\* \\*myproxy\* \\*gsi-openssh\*
 ----terminal
 
 .SuSE Linux Enterprise Server
 ----terminal
 $ sudo zypper refresh
-$ sudo zypper update globus-connect-server
+$ sudo zypper up \\*globus\* \\*myproxy\* \\*gsi-openssh\*
 ----terminal
 
 .Debian, Ubuntu
 ----terminal
 $ sudo apt-get update
-$ sudo apt-get upgrade globus-connect-server
+$ sudo apt-get install --only-upgrade ".\*globus.\*" ".\*myproxy.\*" ".\*gsi-openssh.*"
 ----terminal
 
 After updating your packages, be sure to restart the services and ensure that the update takes full effect by running:
