@@ -4,6 +4,7 @@ short_title: "GMC Guide"
 ---
 
 = Using Globus Management Console
+:imagesdir: .
 :toc:
 :toc-placement: manual
 :toclevels: 3

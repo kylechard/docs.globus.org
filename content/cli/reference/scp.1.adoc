@@ -41,7 +41,7 @@ SCP's directory semantics are different than the *transfer* command: the
 *scp* command (like UNIX cp and scp) will check whether the target is an
 existing directory or not.  
 
-include::include/cli_path_url_escaped.adoc[]
+include::content/cli/reference/include/cli_path_url_escaped.adoc[]
 
 == OPTIONS
 
@@ -59,15 +59,15 @@ Enable verbose output.  Show endpoint and credential details.
 === Globus Online Extensions
 
 
-include::include/opt_deadline.adoc[]
+include::content/cli/reference/include/opt_deadline.adoc[]
 
-include::include/opt_label.adoc[]
+include::content/cli/reference/include/opt_label.adoc[]
 
-include::include/opt_encrypt.adoc[]
+include::content/cli/reference/include/opt_encrypt.adoc[]
 
-include::include/opt_preserve_mtime.adoc[]
+include::content/cli/reference/include/opt_preserve_mtime.adoc[]
 
-include::include/opt_verify_checksum.adoc[]
+include::content/cli/reference/include/opt_verify_checksum.adoc[]
 
 
 *--delete*::
@@ -80,7 +80,7 @@ files in /tmp outside of /tmp/dir are left alone.
 *-D*::
 Create a detached (background) task and exit.
 
-include::include/opt_synclevel.adoc[]
+include::content/cli/reference/include/opt_synclevel.adoc[]
 
 
 == EXAMPLES

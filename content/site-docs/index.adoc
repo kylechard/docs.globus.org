@@ -1,4 +1,5 @@
 = Site Docs
+:imagesdir: .
 
 == Other Site Docs
 link:asciiguide[Adoc Guide] (link:raw/asciiguide.adoc[RAW])

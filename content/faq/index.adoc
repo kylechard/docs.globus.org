@@ -1,4 +1,5 @@
 = FAQ Categories
+:imagesdir: .
 
 - link:security[Security]
 - link:transfer-sharing[Transfer and Sharing]

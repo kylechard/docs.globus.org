@@ -63,10 +63,10 @@ def globus_render_menu(items, options={})
 
     # Set item active class
     if item[:link]
-      options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]) ) ? 'active' : ''
+      options[:item_class] = ( @item.identifier == item[:link] || @item.identifier.to_s.start_with?(item[:link]) ) ? 'active' : ''
 
       # Set link active if hide_item_tag is true (toolkit)
-      if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.start_with?(item[:link]))
+      if options[:hide_item_tag] && ( @item.identifier == item[:link] || @item.identifier.to_s.start_with?(item[:link]))
         options[:link_attr][:class] = options[:link_attr][:class] + ' active'
       end
     end
@@ -120,6 +120,11 @@ end
 # Sidebar Menus
 #------------------------
 
+
+def _get_item_children(item)
+  return @items.find { |i| i.identifier.to_s.start_with?(item.identifier.without_ext.to_s + '/') }
+end
+
 # File 'lib/nanoc/toolbox/helpers/navigation.rb', line 26
 
 def globus_navigation_for(identifier, options={})
@@ -128,7 +133,7 @@ def globus_navigation_for(identifier, options={})
   root = @items.find { |i| i.identifier == identifier }
 
   # Do not render if there is no child
-  return nil unless root.children
+  return nil unless _get_item_children(root)
 
   # Find all sections, and render them
   sections = globus_find_item_tree(root)
@@ -149,10 +154,10 @@ end
 # and return the "permalinks" in a Array of Hash that could be used by the
 # rendering method
 def globus_find_item_tree(root)
-    return nil unless root.children
+    return nil unless _get_item_children(root)
 
     # For each child call the find_item_tree on it and then render the generate the hash
-    sections = root.children.map do |child|
+    sections = _get_item_children(root).map do |child|
       subsections = globus_find_item_tree(child)
       { :title        => (child[:short_title] || child[:title] || child.identifier),
         :link         => (child.identifier || relative_path_to(child)),
@@ -213,7 +218,7 @@ def globus_render_sidebar_menu(items, options={})
 
       options[:collection_class] = 'panel-collapse collapse'
 
-      if @item.identifier == item[:link] || @item.identifier.start_with?(item[:link])
+      if @item.identifier == item[:link] || @item.identifier.to_s.start_with?(item[:link])
         options[:collection_class] += ' in'
         options[:caret_class] += ' open'
       end

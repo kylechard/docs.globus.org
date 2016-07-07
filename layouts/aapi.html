@@ -1,4 +1,4 @@
-<%= render '/partials/head/' %>
+<%= render '/partials/head.*' %>
 <body class="api-page">
     <!-- sidebar for mobile -->
     <div id="st-container" class="st-container">
@@ -6,17 +6,17 @@
             <div class="panel-group st-menu st-effect-3">
                 <h1 class="st-heading">Auth API Menu</h1>
                 <!--
-                <%= globus_navigation_for("/api/auth/", :mobile => 'true') %>
+                <%= globus_navigation_for("/api/auth/index.adoc", :mobile => 'true') %>
                 -->
             </div>
             <div class="st-page-content">
-                <%= render '/partials/header/' %>
+                <%= render '/partials/header.*' %>
 
                 <% if !@item[:hide_pageheader] %>
                 <div class="page-header">
                     <div class="container">
                         <div class="row"><div class="col-sm-12">
-                            <%= render '/partials/page_header/' %>
+                            <%= render '/partials/page_header.*' %>
                         </div></div>
                     </div>
                 </div>
@@ -35,12 +35,12 @@
                                 <%= yield %>
                             </div>
                             <div class="col-sm-4 col-md-3 sidebar">
-                                <%= render '/partials/menu_authapi/' %>
+                                <%= render '/partials/menu_authapi.*' %>
                             </div>
                         </div>
                     </div>
                 </div>
-                <%= render '/partials/footer/' %>
+                <%= render '/partials/footer.*' %>
             </div> <!-- eof st-page-content -->
         </div> <!-- eof st-pusher -->
     </div> <!-- eof st-container -->
