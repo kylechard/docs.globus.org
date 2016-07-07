@@ -1,7 +1,7 @@
 # All files in the 'lib' directory will be loaded
 # before nanoc starts compiling.
 
-require "nanoc/toolbox"
+# require "nanoc/toolbox"
 
 module SideNavHelper extend self
     def sort_menuitems(items, sort_by)

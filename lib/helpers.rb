@@ -7,4 +7,4 @@ include Nanoc::Helpers::Breadcrumbs
 include Nanoc::Helpers::XMLSitemap
 
 # Custom Helpers
-include Nanoc::Toolbox::Helpers::Navigation
+# include Nanoc::Toolbox::Helpers::Navigation

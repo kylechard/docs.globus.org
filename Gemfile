@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'nanoc', '~> 3.7.3'
+gem 'nanoc', '~> 4.0'
 gem 'kramdown', '~> 1.4.1'
 gem 'asciidoc', '~> 0.0.2'
 gem 'pygments.rb', '~> 0.6.3'
-gem 'nanoc-toolbox', '~> 0.2.0'
+# gem 'nanoc-toolbox', '~> 0.2.0'
 gem 'builder', '~> 3.2.2'
 # gem 'nanoc-core'
 # gem 'nanoc-breadcrumbs', :git => 'https://github.com/nanoc/nanoc-breadcrumbs', :branch => 'master'

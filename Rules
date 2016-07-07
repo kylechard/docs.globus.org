@@ -12,11 +12,13 @@
 #   “content/about.html”). To select all children, grandchildren, … of an
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
+#
+# * Some of this may have changed with Nanoc 4 upgrade
 
 # ignore this directory
-ignore '/menus/*/'
-ignore '/site-docs/asciiguide-old*'
-ignore '/release-notes*'
+ignore '/menus/'
+ignore '/site-docs/asciiguide-old/'
+ignore '/release-notes/'
 
 preprocess do
 
@@ -65,94 +67,94 @@ preprocess do
   end
 end
 
-compile '/static/*' do
+compile '/static/**/*/' do
 end
 
-compile '/OLD/*' do
+compile '/OLD/**/*/' do
 end
 
-compile '/google*' do
+compile '/google*/' do
 end
 
-compile '/api/transfer/*' do
+compile '/api/transfer/**/*/' do
   if !item.binary?
     if item[:extension] == 'adoc'
       filter :asciidoc
-      layout item[:layout] || 'tapi'
+      layout item[:layout] || '/tapi/'
     else
       filter :erb
-      layout item[:layout] || 'tapi'
+      layout item[:layout] || '/tapi/'
     end
   end
 end
 
-compile '/api/auth/*' do
+compile '/api/auth/**/*/' do
   if !item.binary?
     if item[:extension] == 'adoc'
       filter :asciidoc
-      layout item[:layout] || 'aapi'
+      layout item[:layout] || '/aapi/'
     else
       filter :erb
-      layout item[:layout] || 'aapi'
+      layout item[:layout] || '/aapi/'
     end
   end
 end
 
-compile '/release-notes/*' do
+compile '/release-notes/**/*/' do
   if !item.binary?
     if item[:extension] == 'adoc'
       filter :asciidoc
-      layout item[:layout] || 'release-notes'
+      layout item[:layout] || '/release-notes/'
     else
       filter :erb
-      layout item[:layout] || 'release-notes'
+      layout item[:layout] || '/release-notes/'
     end
   end
 end
 
-compile '/cli/*' do
+compile '/cli/**/*/' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout item[:layout] || 'cli'
+      layout item[:layout] || '/cli/'
     else
       filter :erb
-      layout item[:layout] || 'cli'
+      layout item[:layout] || '/cli/'
     end
   end
 end
 
-compile '/faq/*' do
+compile '/faq/**/*/' do
   if !item.binary?
     if ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout item[:layout] || 'faq'
+      layout item[:layout] || '/faq/'
     else
       filter :erb
-      layout item[:layout] || 'faq'
+      layout item[:layout] || '/faq/'
     end
   end
 end
 
-compile '/site-docs/*' do
+compile '/site-docs/**/*/' do
   if !item.binary?
     if item.identifier.include?('/raw')
       # do not filter
     elsif ["txt", "adoc"].include?item[:extension].split('.').last
       filter :asciidoc
-      layout item[:layout] || 'site-docs'
+      layout item[:layout] || '/site-docs/'
     else
       filter :erb
-      layout item[:layout] || 'site-docs'
+      layout item[:layout] || '/site-docs/'
     end
   end
 end
 
-compile '/sitemap' do
+compile '/sitemap/' do
   filter :erb
 end
 
-compile '*' do
+compile '/**/*/' do
   # if item[:extension] == 'adoc'
   #   filter :asciidoc
   #   layout 'default'
@@ -170,22 +172,22 @@ compile '*' do
     # layout 'page'
   elsif item[:extension] == 'adoc'
       filter :asciidoc
-      layout item[:layout] || 'default'
+      layout item[:layout] || '/default/'
   else
     filter :erb
-    layout item[:layout] || 'default'
+    layout item[:layout] || '/default/'
   end
 end
 
-route '/sitemap' do
+route '/sitemap/' do
   item.identifier.chop + '.xml'
 end
 
-route '/static/*' do
-  item.identifier[7..-2]
-end
+#route '/static/**/*/' do
+#  item.identifier[7..-2]
+#end
 
-route '*' do
+route '/**/*/' do
   if item[:extension] == 'css'
     # Write item with identifier /foo/ to /foo.css
     item.identifier.chop + '.css'
@@ -212,4 +214,4 @@ route '*' do
   end
 end
 
-layout '*', :erb
+layout '/**/*/', :erb

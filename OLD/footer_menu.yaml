@@ -1,8 +1,0 @@
-menus: 
-  -
-    options:
-      collection_class: 'nav pull-right'
-    items:
-      -
-        title: 'Legal'
-        link: '//globus.org/legal'
