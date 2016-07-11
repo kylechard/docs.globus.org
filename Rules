@@ -11,8 +11,7 @@ ignore '/release-notes/**/*'
 passthrough '/google*'
 passthrough '/**/raw/**/*'
 
-## default layout is to ERB template
-# if a file doesn't specify a layout rule, it means it's basic ERB
+## all layouts are processed as ERB templates
 layout '/**/*', :erb
 
 ## compile rules
