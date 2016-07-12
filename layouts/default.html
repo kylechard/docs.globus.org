@@ -3,16 +3,7 @@
 
 <body class="default-page <%= i.to_s.gsub('/','') %>">
   <%= render '/partials/header.*' %>
-
-  <% if !@item[:hide_pageheader] %>
-    <div class="page-header">
-      <div class="container">
-        <div class="row"><div class="col-sm-12">
-          <%= render '/partials/page_header.*' %>
-	</div></div>
-      </div>
-    </div>
-  <% end %>
+  <%= render '/partials/page_header.*' %>
 
   <div class="page-content">
     <div class="container">

@@ -2,14 +2,7 @@
 
 <body class="home">
   <%= render '/partials/header.*' %>
-
-  <% if !@item[:hide_pageheader] %>
-    <div class="page-header">
-      <div class="container">
-        <%= render '/partials/page_header.*' %>
-      </div>
-    </div>
-  <% end %>
+  <%= render '/partials/page_header.*', :in_row => false %>
 
   <div class="page-masthead">
     <div class="home-hero container text-left">

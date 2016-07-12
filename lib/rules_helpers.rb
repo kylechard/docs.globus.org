@@ -6,18 +6,12 @@ module GlobusRuleHelpers
   def self.determine_layout(item)
     (item[:layout] ||
      case item.identifier.to_s
-     when /\/api\/transfer\//
-       '/tapi.*'
-     when /\/api\/auth\//
-       '/aapi.*'
-     when /\/cli\//
-       '/cli.*'
-     when /\/faq\//
-       '/faq.*'
-     when /\/release-notes\//
-       '/release-notes.*'
-     when /\/site-docs\//
-       '/site-docs.*'
+     # matches "/api/*/**" -- note that we can't use "/api/**" because that
+     # matches on the index doc, which we don't want to include
+     #
+     # matches "/site-docs/**", "/faq/**", "/cli/**", and "/release-notes/**"
+     when /\/((api\/.*)|site-docs|faq|cli|release-notes)\//
+       '/sidebar_page.*'
      else
        '/default.*'
      end)
