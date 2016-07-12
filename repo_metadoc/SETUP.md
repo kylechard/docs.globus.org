@@ -5,7 +5,7 @@ development tools.
 
 ## Requirements
 
-Ruby >= 2.1.2 is required to build the site, and `bundler` is required to
+Ruby >= 2.2.2 is required to build the site, and `bundler` is required to
 install ruby packages.
 
 You will also need Python 2.7, and `pip`, the python package manager, to do site
@@ -26,13 +26,13 @@ activate it.
 Typically, the setup steps might be something like
 
 ```sh
-rvm gemset create ruby@globus-docs
+rvm gemset create globus-docs
 ```
 
 to create, and then
 
 ```sh
-rvm use ruby@globus-docs
+rvm use globus-docs
 ```
 
 to activate.

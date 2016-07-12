@@ -1,4 +1,13 @@
-<%= render '/partials/cookie_notice.*' %>
+<!-- cookie notice -->
+<div id="cookie_notice" class="alert alert-caution alert-dismissible clearfix" role="alert">
+  <div class="container"><div class="row">
+    <div class="col-xs-12 col-sm-11">
+      <p>This website uses cookies so that we can improve our website and enhance your user experience. To find out more about cookies and their use by us, please see the "Cookies" section in our <a href="https://www.globus.org/legal/privacy" target="_blank">Privacy Policy</a>. By clicking the Accept button, I accept cookies from this website.</p>
+    </div>
+    <div class="col-xs-12 col-sm-1"><button type="button" class="btn btn-primary btn-sm pull-right " id="cookie-btn" >Accept</button></div>
+  </div></div>
+</div>
+
 <header id="masthead" class="navbar navbar-inverse navbar-static-top">
   <div class="container"><div class="row">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -39,3 +48,27 @@
     </nav></div><!-- /navigation-->
   </div></div><!-- /.container -->
 </header>
+
+<% if not @item[:home_page] %>
+<div class="page-header">
+    <div class="container">
+        <div class="row"><div class="col-sm-12">
+            <%#= globus_breadcrumb_for(@item.identifier) %>
+            <h1><%= GlobusLayoutHelpers.get_title(@item) %></h1>
+        </div></div>
+    </div>
+</div>
+
+<% else %>
+
+<div class="page-masthead">
+  <div class="home-hero container text-left">
+    <h1>Harness the power<br/>
+        of the Globus<br/>
+        research data<br/>
+        management<br/>
+        cloud.</h1>
+  </div>
+</div>
+
+<% end %>
