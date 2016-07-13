@@ -5,7 +5,7 @@
         <div class="row"><div class="col-sm-12">
 <% end %>
 <% if !@item[:hide_breadcrumb] %>
-            <%#= globus_breadcrumb_for(@item.identifier) %>
+            <%= globus_breadcrumb_for(@item.identifier) %>
 <% end %>
             <h1><%= GlobusLayoutHelpers.get_title(@item) %></h1>
 <% if (in_row rescue true) %>

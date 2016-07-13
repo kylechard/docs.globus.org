@@ -1,4 +1,5 @@
 module GlobusNavigation
+	include Nanoc::Helpers::Breadcrumbs
 	include HtmlTag
 
 	# -----------------------
@@ -9,8 +10,7 @@ module GlobusNavigation
 	  options[:collection_class] ||= 'breadcrumb'
 
 	  # Retreive the breadcrumbs trail and format them
-	  sections = find_breadcrumbs_trail(identifier)
-
+	  sections = find_breadcrumbs_trail(identifier.without_ext + '/')
 	  sections[0][:title] = 'home' # rename the first to home
 	  sections.pop # remove last
 
@@ -30,7 +30,7 @@ module GlobusNavigation
       root.split('/').each { |s| trail << trail.last + "#{s}/" unless s.empty? }
       trail.map do |child_identifier|
         child = @items[child_identifier]
-        { :title        => (child[:short_title] || child[:title] || child.identifier),
+        { :title        => (child[:short_title] || child[:title] || child.identifier.without_ext + '/'),
           :link         => relative_path_to(child),
           :subsections  => nil } if child
       end.compact

@@ -5,7 +5,7 @@ include Nanoc::Helpers::Blogging
 include Nanoc::Helpers::LinkTo
 include Nanoc::Helpers::XMLSitemap
 include Nanoc::Helpers::ChildParent
+include Nanoc::Helpers::Breadcrumbs
 
-# Custom Helpers
-include HtmlTag
+# Custom
 include GlobusNavigation
