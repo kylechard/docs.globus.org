@@ -8,4 +8,5 @@ include Nanoc::Helpers::ChildParent
 include Nanoc::Helpers::Breadcrumbs
 
 # Custom
-include GlobusNavigation
+include Nanoc::Helpers::GlobusNavigation
+include Nanoc::Helpers::GlobusLayoutHelpers

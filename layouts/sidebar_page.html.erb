@@ -1,13 +1,12 @@
 <%= render '/partials/head.*' %>
-<% globus_vars = GlobusLayoutHelpers.get_layout_vars(@item) %>
+<% globus_vars = globus_get_layout_vars(@item) %>
 <body class="<%= globus_vars[:page_class] %>">
-<h1><%= relative_path_to(globus_vars[:index_doc]) %></h1>
     <!-- sidebar for mobile -->
     <div id="st-container" class="st-container">
         <div class="st-pusher">
             <div class="panel-group st-menu st-effect-3">
                 <h1 class="st-heading"><%= globus_vars[:menu_name] %></h1>
-                <%#= globus_navigation_for(globus_vars[:index_doc], :mobile => 'true') %>
+                <%= globus_navigation_for(globus_vars[:index_loc]) %>
             </div>
             <div class="st-page-content">
                 <%= render '/partials/header.*' %>
@@ -28,7 +27,7 @@
                             <div class="col-sm-4 col-md-3 sidebar">
                                 <aside class="sidebar-block">
                                     <div class="panel-group">
-                                        <%#= globus_navigation_for(globus_vars[:index_doc]) %>
+                                        <%= globus_navigation_for(globus_vars[:index_loc]) %>
                                     </div>
                                 </aside>
                             </div>

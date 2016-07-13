@@ -38,7 +38,7 @@ end
 
 compile '/**/*.adoc' do
   filter :globus_transfer_version
-  filter :asciidoc
+  filter :globus_asciidoc
   layout GlobusRuleHelpers.determine_layout(@item)
 end
 

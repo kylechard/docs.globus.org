@@ -43,7 +43,7 @@
           <gcse:search></gcse:search>
         </div>
 
-      <%#= globus_build_menu('main_menu') %>
+      <%= globus_build_menu('main_menu') %>
 
     </nav></div><!-- /navigation-->
   </div></div><!-- /.container -->
@@ -53,8 +53,8 @@
 <div class="page-header">
     <div class="container">
         <div class="row"><div class="col-sm-12">
-            <%#= globus_breadcrumb_for(@item.identifier) %>
-            <h1><%= GlobusLayoutHelpers.get_title(@item) %></h1>
+            <%= globus_breadcrumb_for(@item) %>
+            <h1><%= globus_get_title(@item) %></h1>
         </div></div>
     </div>
 </div>
