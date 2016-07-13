@@ -64,8 +64,4 @@ data_sources:
 
 # Site variables
 site_name: 'globus docs'
-docs:
-  transfer_api: 'v0.10'
-  toolkit: '6.0'
-
-base_url: http://docs.globus.org
+base_url: https://docs.globus.org

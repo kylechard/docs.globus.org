@@ -1,0 +1,24 @@
+<%= render '/partials/head.*' %>
+
+<body class="<%= if @item[:home_page] then "home"
+                 else "default-page #{@item.identifier.to_s.gsub('/','')}"
+                 end %>">
+  <%= render '/partials/header.*' %>
+
+  <div class="page-content">
+      <div class="container">
+
+<% if not @item[:home_page] %>
+      <div class="row"><div class="col-sm-12">
+      <%= yield %>
+      </div></div>
+<% else %>
+      <%= yield %>
+<% end %>
+
+    </div>
+  </div>
+
+  <%= render '/partials/footer.*' %>
+</body>
+</html>
