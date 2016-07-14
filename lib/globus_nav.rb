@@ -37,7 +37,7 @@ module Nanoc::Helpers
       theroot[:title] = safe_item_title(root)
       theroot[:link] = relative_path_to(root)
       theroot[:is_current_item] = root == @item
-      theroot[:menu_weight]  = root[:menu_weight] || 0
+      theroot[:menu_weight] = root[:menu_weight] || 0
       theroot[:subsections] = nil
 
       sections.unshift(theroot)
@@ -55,7 +55,7 @@ module Nanoc::Helpers
 
       # For each child call the find_item_tree on it and then render the generate the hash
       sections = children.map do |child|
-        child_namespace = File.dirname(child.path)
+        child_namespace = File.dirname(child.identifier.to_s)
         subsections = if child_namespace != namespace.chomp('/') then globus_find_item_tree(child_namespace) else nil end
         { :title        => safe_item_title(child),
           :link         => relative_path_to(child),
@@ -126,6 +126,8 @@ module Nanoc::Helpers
         item.identifier.components.each do |comp|
           raw_trail << File.join(raw_trail.last, comp)
         end
+        # remove the current element -- it's not a useful breadcrumb
+        raw_trail.pop
 
         # get items that are either those names followed by "/index.*" (the
         # normal case), or just the name with a trailing ".*"
@@ -219,9 +221,11 @@ module Nanoc::Helpers
               output = content_tag(options[:header_tag], output, :class => 'list-group')
             end
 
-            # Add caret to dropdowns
-            item_desc[:title] += ' '
-            item_desc[:title] += content_tag('span', '', :class => sub_opts[:caret_class])
+            # Add caret to dropdowns which are not in the sidebar
+            # (in the sidebar, the caret is added differently)
+            if not sidebar
+              item_desc[:title] += ' ' + content_tag('span', '', :class => sub_opts[:caret_class])
+            end
 
             # Toggle item and link dropdowns
             item_class = 'dropdown'
