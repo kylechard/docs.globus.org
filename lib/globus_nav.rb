@@ -36,6 +36,7 @@ module Nanoc::Helpers
       theroot={}
       theroot[:title] = safe_item_title(root)
       theroot[:link] = relative_path_to(root)
+      theroot[:is_current_item] = root == @item
       theroot[:menu_weight]  = root[:menu_weight] || 0
       theroot[:subsections] = nil
 
@@ -58,6 +59,7 @@ module Nanoc::Helpers
         subsections = if child_namespace != namespace.chomp('/') then globus_find_item_tree(child_namespace) else nil end
         { :title        => safe_item_title(child),
           :link         => relative_path_to(child),
+          :is_current_item => child == @item,
           :menu_weight  => (child[:menu_weight] || 0),
           :subsections  => subsections }
       end
@@ -135,7 +137,8 @@ module Nanoc::Helpers
         item_trail.map! do |x|
           {
             :title => safe_item_title(x),
-            :link =>  relative_path_to(x.path),
+            :link =>  relative_path_to(x),
+            :is_current_item => x == @item,
             :subsections => nil
           }
         end
@@ -147,7 +150,7 @@ module Nanoc::Helpers
       end
 
       def safe_item_title(x)
-        globus_get_title(x) || x.identifier.components.last
+        x[:short_title] || globus_get_title(x) || x.identifier.components.last
       end
 
       def globus_render_sidebar_menu(item_descriptors, options={})
@@ -181,11 +184,19 @@ module Nanoc::Helpers
 
         # render each item in the menu
         rendered_menu = item_descriptors.map do |item_desc|
-          is_current_item = @item.identifier.to_s.start_with?(item_desc[:link]) rescue false
+          highlight_item = (
+            if sidebar
+              # in the sidebar, we only want to highlight the exact item we're
+              # currently looking at
+              item_desc[:is_current_item]
+            else
+              # in the menu bar, we want prefix matches
+              @item.path.start_with?(item_desc[:link]) rescue false
+            end)
 
           # Reset item and link options
           # Set item active class
-          item_class = is_current_item ? 'active' : ''
+          item_class = highlight_item ? 'active' : ''
           link_attr = { :class => item_class }
 
           # do we have subsections to render or not?
@@ -197,7 +208,7 @@ module Nanoc::Helpers
             sub_opts[:collection_class] = if sidebar then 'panel-collapse collapse' else 'dropdown-menu' end
 
             # if looking at the current item
-            if sidebar and is_current_item
+            if sidebar and highlight_item
               sub_opts[:collection_class] += ' in'
               sub_opts[:caret_class] += ' open'
             end
