@@ -37,6 +37,7 @@ module Nanoc::Helpers
       theroot[:title] = safe_item_title(root)
       theroot[:link] = relative_path_to(root)
       theroot[:is_current_item] = root == @item
+      theroot[:is_ancestor] = true
       theroot[:menu_weight] = root[:menu_weight] || 0
       theroot[:subsections] = nil
 
@@ -60,6 +61,7 @@ module Nanoc::Helpers
         { :title        => safe_item_title(child),
           :link         => relative_path_to(child),
           :is_current_item => child == @item,
+          :is_ancestor => @item.path.start_with?(child.path),
           :menu_weight  => (child[:menu_weight] || 0),
           :subsections  => subsections }
       end
@@ -139,8 +141,9 @@ module Nanoc::Helpers
         item_trail.map! do |x|
           {
             :title => safe_item_title(x),
-            :link =>  relative_path_to(x),
+            :link => relative_path_to(x),
             :is_current_item => x == @item,
+            :is_ancestor => @item.path.start_with?(x.path),
             :subsections => nil
           }
         end
@@ -210,7 +213,7 @@ module Nanoc::Helpers
             sub_opts[:collection_class] = if sidebar then 'panel-collapse collapse' else 'dropdown-menu' end
 
             # if looking at the current item
-            if sidebar and highlight_item
+            if sidebar and item_desc[:is_ancestor]
               sub_opts[:collection_class] += ' in'
               sub_opts[:caret_class] += ' open'
             end
@@ -221,17 +224,18 @@ module Nanoc::Helpers
               output = content_tag(options[:header_tag], output, :class => 'list-group')
             end
 
-            # Add caret to dropdowns which are not in the sidebar
-            # (in the sidebar, the caret is added differently)
+            # dress items for non-sidebar mode
             if not sidebar
+              # Add caret to dropdown title
+              # (in the sidebar, the caret is added differently)
               item_desc[:title] += ' ' + content_tag('span', '', :class => sub_opts[:caret_class])
+
+              # Toggle item and link dropdowns
+              item_class = 'dropdown'
+
+              link_attr[:class] += ' dropdown-toggle'
+              link_attr['data-toggle'] = 'dropdown'
             end
-
-            # Toggle item and link dropdowns
-            item_class = 'dropdown'
-
-            link_attr[:class] += ' dropdown-toggle'
-            link_attr['data-toggle'] = 'dropdown'
           else
             output = ""
             if sidebar
