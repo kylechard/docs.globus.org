@@ -107,7 +107,9 @@ sed -i.bak -e 's/----\n/----terminal/g' $DOC_DIR/*.adoc
 sed -i.bak -e 's/\*\([a-z]*\)\(([0-9])\)\*/link:..\/\1[\*\1\2\*]/g' $DOC_DIR/*.adoc
 sed -i.bak -e 's/link:\([a-z]*[0-9]*_*[a-z]*[0-9]*_*[a-z]*[0-9]*_*[a-z]*[0-9]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.adoc
 sed -i.bak -e 's/link:..\//link:/g' $DOC_DIR/index.adoc
-sed -i.bak -e "s/toc2\:/${TOC}/g" $DOC_DIR/*.adoc
+sed -i.bak -e "s/toc\: macro/${TOC}/g" $DOC_DIR/*.adoc
+sed -i.bak -e "s/toc\: macro/${TOC}/g" $DOC_DIR/*.adoc
+sed -i.bak -e "/toc\:\:\[\]/d" $DOC_DIR/*.adoc
 sed -i.bak -e 's/\:numbered\://g' $DOC_DIR/change_history.adoc
 
 #add menu_weights
