@@ -7,15 +7,9 @@ menu_weight: 9
 :toclevels: 3
 :numbered:
 
-////
-Note: We use asciidoc in some table cells for
-1. labeled lists
-2. source code (json) blocks.
-You need to be careful to not have spaces between the a| and content, 
-otherwise it shows up as monospace (?) in asciidoc.py.
-Also, using 'a' type cells when not needed makes asciidoc slower; it executes
-asciidoc for each cell of type 'a'.
-////
+// use outfilesuffix in relative links to make them work on github
+ifdef::env-github[:outfilesuffix: .adoc]
+
 
 == Overview
 

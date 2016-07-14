@@ -7,24 +7,9 @@ menu_weight: 3
 :toclevels: 3
 :numbered:
 
-// use outfilesuffic in relative links to make them work on github
+// use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
 
-// See https://github.com/jbake-org/jbake/issues/80, github requires
-// going through hoops to get the TOC to render.
-ifdef::env-github[]
-toc::[]
-endif::[]
-
-////
-Note: We use asciidoc in some table cells for
-1. labeled lists
-2. source code (json) blocks.
-You need to be careful to not have spaces between the a| and content, 
-otherwise it shows up as monospace (?) in asciidoc.py.
-Also, using 'a' type cells when not needed makes asciidoc slower; it executes
-asciidoc for each cell of type 'a'.
-////
 
 == Overview
 
@@ -724,10 +709,11 @@ the transfer request, not relative to the host endpoint root.
 === Get task pause info
 
 Get details about why a task is paused (or possibly about to be paused). This
-incudes pause rules on both source and destination endpoints that affect the
-owner of the task, and per-task pause flags set by source endpoint and
-destination endpoint administrators. Any pause rules that have been overridden
-by an administrator are not listed.
+incudes pause rules on source and destination endpoints (both host and
+shared endpoint) that affect the owner of the task, and per-task pause flags
+set by source endpoint and destination endpoint or source and destination
+shared endpoint administrators. Any pause rules that have been overridden by
+an administrator are not listed.
 
 If the task is not paused, this may still return pause rules that have been
 created but not yet applied to the task. This is because pause rules are
@@ -762,6 +748,8 @@ operation have some sensitive fields removed, see the
     "pause_rules": [... list of pause_rule_limited documents...],
     "source_pause_message": null,
     "destination_pause_message": "Disk problems, pausing all tasks until we resolve",
+    "source_pause_message_share": null,
+    "destination_pause_message_share": null
 }
 -------------------------------------------------------------------
 |============
