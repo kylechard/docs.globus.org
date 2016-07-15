@@ -7,13 +7,9 @@ menu_weight: 0
 :toclevels: 3
 :numbered:
 
+// use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
 
-// See https://github.com/jbake-org/jbake/issues/80, github requires
-// going through hoops to get the TOC to render.
-ifdef::env-github[]
-toc::[]
-endif::[]
 
 == Overview
 
