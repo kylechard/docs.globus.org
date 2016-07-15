@@ -104,7 +104,7 @@ Created transfer task with 1 file(s)#
 The following example demonstrates the use of the transfer command to transfer a single file from the +go#ep1+ source endpoint to the +go#ep2+ destination endpoint.
 
 ----terminal
-$ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#go#ep1/share/godata/file1.txt go#ep2/~/file1.txt#
+$ ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#go#ep1/share/godata/file1.txt go#ep2/~/file1.txt#
 [output]#Task ID: e9f0be51-49df-11e6-8222-22000b97daec#
 ----terminal
 
