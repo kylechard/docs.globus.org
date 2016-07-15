@@ -184,7 +184,13 @@ module Nanoc::Helpers
 
         if sidebar
           # Sort items by menu_weight
-          item_descriptors.sort!{|a,b| a[:menu_weight]<=>b[:menu_weight]}
+          item_descriptors.sort! do |a,b|
+            if a[:menu_weight] != b[:menu_weight]
+              a[:menu_weight] <=> b[:menu_weight]
+            else
+              a[:title].downcase <=> b[:title].downcase
+            end
+          end
         end
 
         # render each item in the menu

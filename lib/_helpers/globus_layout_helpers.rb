@@ -54,7 +54,7 @@ module Nanoc::Helpers
     def globus_get_title(item)
       # look for a line that looks like
       #   = TITLE
-      (/^= (?<title>.*)$/.match(item.raw_content))[:title] rescue nil
+      item[:title] || (/^= (?<title>.*)$/.match(item.raw_content))[:title] rescue nil
     end
   end
 end
