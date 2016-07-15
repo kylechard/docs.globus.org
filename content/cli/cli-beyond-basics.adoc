@@ -66,19 +66,12 @@ demodoc#never 09:36:54
 nersc#dtn 08:25:47#
 ----terminal
 
-In addition to explicit creation, endpoints can be implicitly created by way of +transfer+ and +scp+. If the +transfer+ or +scp+ command refers to a hostname instead of a logical name, a private endpoint will be automatically created to represent it. Further information about implicit endpoint creation can be found in the +transfer+ and +scp+ +man+ pages.
+In addition to explicit creation, endpoints can be implicitly created by way of +transfer+. If the +transfer+ command refers to a hostname instead of a logical name, a private endpoint will be automatically created to represent it. Further information about implicit endpoint creation can be found in the +transfer+ +man+ page.
 
 == Data Management
-Globus provides two commands for moving files: +transfer+ and +scp+. The +transfer+ command is the more feature-rich of the two; +scp+ supports a well-known interface and is easy to use. Globus also supports features such as file synchronization and idempotent submission.
+Globus provides the +transfer+ command for moving files. Globus also supports features such as file synchronization and idempotent submission.
 
-The following example shows a detached recursive +scp+. By default scp will be canceled if your ssh session is disconnected or you press +Ctrl-C+. However, Globus provides the +-D+ option so you can create a detached scp task that runs in the background even if your ssh session is disconnected:
-
-----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org scp -D -r [input]#ucrcc#midway:/demodoc/sdata/10Kfiles100M/ nersc#dtn:/project/mpccc1/dest/sdata/alcf20100122/#
-[output]#Task ID: 4a3c471e-edef-11df-aa30-1231350018b1#
-----terminal
-
-In contrast to +scp+, the +transfer+ command reads an EOF or Ctrl-D terminated list of source and destination pairs from stdin and attempts to transfer all of the files in the list until successful or the user specified deadline has been reached. The following example directs Globus to recursively copy the contents of a directory from UChicago RCC to NERSC. It is the equivalent to the previous +scp+ command, with the exception that any outstanding transfer requests not completed after the 6 hour deadline (+-d 6h+) will be ignored:
+The following example shows a detached recursive +transfer+. By default +transfer+ will be canceled if your ssh session is disconnected or you press +Ctrl-C+. The +transfer+ command reads an EOF or Ctrl-D terminated list of source and destination pairs from stdin and attempts to transfer all of the files in the list until successful or the user specified deadline has been reached. The following example directs Globus to recursively copy the contents of a directory from UChicago RCC to NERSC. Any outstanding transfer requests not completed after the 6 hour deadline (+-d 6h+) will be ignored:
 
 ----terminal
 $ echo "[input]#ucrcc#midway/demodoc/sdata/10Kfiles100M/ nersc#dtn/project/mpccc1/dest/sdata/alcf20100122/# -r" | ssh [input]#demodoc#@cli.globusonline.org transfer -d 6h
@@ -108,29 +101,20 @@ $ echo "[input]#ucrcc#midway/demodoc/sdata/10Kfiles100M/ nersc#dtn/project/mpccc
 Created transfer task with 1 file(s)#
 ----terminal
 
-The following example demonstrates both inline endpoint creation and activation (note the automatically-generated private endpoint definition):
+The following example demonstrates the use of the transfer command to transfer a single file from the +go#ep1+ source endpoint to the +go#ep2+ destination endpoint.
 
 ----terminal
-$ gsissh [input]#demodoc#@cli.globusonline.org scp -g [input]#alcf#dtn:\~/samplefile.txt gridftp.lonestar.tacc.xsede.org:~/samplefile.txt#
-[output]#Activating \'gridftp.lonestar.tacc.xsede.org:2811'
-Activating \'alcf#dtn:2811'
-Task ID: 3f4c2cc6-ee20-11df-aa30-1231350018b1
-[XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] 1/1 867.00 mbps#
-$ ssh [input]#demodoc#@cli.globusonline.org endpoint-list *lone* -v
-[output]#Name : _gsiftp_gridftp.lonestar.tacc.xsede.org_2811
-Host(s) : gsiftp://gridftp.lonestar.tacc.teragrid.org:2811
-Subject(s) :
-MyProxy Server : n/a
-Credential Status : ACTIVE
-Credential Expires: 2010-11-12 16:47:16Z
-Credential Subject: /DC=org/DC=doegrids/OU=People/CN=Logan Detmers 319918/CN=1686987609/CN=1586129810
-Name : xsede#lonestar
-Host(s) : gsiftp://tg-gridftp.lonestar.tacc.xsede.org:2811
-Subject(s) :
-MyProxy Server : myproxy.teragrid.org
-Credential Status : EXPIRED
-Credential Expires: 2010-11-12 05:56:46Z
-Credential Subject: /C=US/O=National Center for Supercomputing Applications/CN=Logan Detmers#
+$ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#go#ep1/share/godata/file1.txt go#ep2/~/file1.txt#
+[output]#Task ID: e9f0be51-49df-11e6-8222-22000b97daec#
+----terminal
+
+----terminal
+$ [input]#status -l 1 -a#
+[output]#Task ID     : e9f0be51-49df-11e6-8222-22000b97daec
+Request Time: 2016-07-14 16:27:54Z
+Command     : transfer -- go#ep1/share/godata/file1.txt go#ep2/~/file1.txt
+Label       : n/a
+Status      : SUCCEEDED#
 ----terminal
 
 Once-and-only-once submission:
@@ -149,7 +133,7 @@ $ cat [input]#./10Kmidway-nersc100MB.dat# | ssh [input]#demodoc#@cli.globusonlin
 ----terminal
 
 == Monitoring
-Globus provides users with realtime and historical information about their tasks. Push mechanisms include email notifications of interesting events such as task completion, credential expiration, and account creation. Pull mechanisms return metadata at the task level (the task id returned by the +scp+ and +transfer+ commands) and the subtask level (each individual file transfer is considered a subtask and has a unique id.)
+Globus provides users with realtime and historical information about their tasks. Push mechanisms include email notifications of interesting events such as task completion, credential expiration, and account creation. Pull mechanisms return metadata at the task level (the task id returned by the +transfer+ command) and the subtask level (each individual file transfer is considered a subtask and has a unique id.)
 
 The default +status+ command lists all pending tasks:
 
@@ -214,7 +198,7 @@ Bytes Transferred: 925997465600
 MBits/sec : 2224.619#
 ----terminal
 
-The +details -t+ command lists subtasks (i.e. individual files) for an +scp+ or +transfer+ task. In the following example the command produces a 10,001 line file (a header, plus one line for each file):
+The +details -t+ command lists subtasks (i.e. individual files) for a +transfer+ task. In the following example the command produces a 10,001 line file (a header, plus one line for each file):
 
 ----terminal
 $ ssh [input]#demodoc#@cli.globusonline.org details -t -f all -O csvh [input]#28d854ae-ee18-11df-aa30-1231350018b1# > [input]#details.csv#
