@@ -671,7 +671,7 @@ grep -v "\^$\|^;" /etc/globus-connect-server.conf
 [[sharing_section]]
 == Sharing
 === Description
-Sharing makes it easier for an endpoint's users to grant and control access to their data stored on the endpoint. A more detailed description of the benefits and features of sharing can be found link:https://www.globus.org/data-sharing[here].
+Sharing makes it easier for an endpoint's users to grant and control access to their data stored on the endpoint. A more detailed description of the benefits and features of sharing can be found link:https://www.globus.org/data-sharing[here]. A discussion of the security flow for share access/creation can be found link:../authorization-authentication-guide/#share_files_folders[here].
 
 To illustrate let's consider a case in which Adam, who is employed by ABC University and is the admin of the abcu#ep1 endpoint, wants to enable sharing on his endpoint for some of his users - such as Bob, Sue, etc. - so as to allow them to share with their collaborators (e.g. Ann) who do not have local accounts.  In this case, Adam has decided that he wants to allow users to share out of the "globus" directory in their home directory and nowhere else.
 
@@ -978,22 +978,21 @@ xref:install_section[here] to put down a clean install of Globus Connect Server 
 and upgrade your endpoint.
 
 [appendix]
-[[myproxy_identity_provider_section]]
-=== Configuring an endpoint to use the MyProxy identity provider
+[[endpoint_identity_provider_options]]
+=== Endpoint Identity Provider Options
+Globus Connect Server can be configured to use one of three different Identity Provider options. The configuration details for each option are explained below. For a graphical overview of the authentication flows each of these methods use, see link:../authorization-authentication-guide/[here]. 
+
+==== MyProxy identity provider
 To configure an endpoint to use the MyProxy identity provider, set "IdentityMethod = MyProxy" in the [Security] section of the config file and set the +Server+ option in the [MyProxy] section to the hostname of the MyProxy server to be used for the endpoint. The default settings in the +/etc/globus-connect-server.conf+ file will configure an endpoint to use MyProxy as the identity provider. If the servers on your endpoint are using NAT, then be sure to reference the xref:nat_section[NAT] section for additional configuration details.
 
-[appendix]
-[[oauth_identity_provider_section]]
-=== Configuring an endpoint to use the OAuth identity provider
+==== OAuth identity provider
 To configure an endpoint to use the OAuth identity provider, set "IdentityMethod = OAuth" in the [Security] section of the config file and set the +Server+ option in the [OAuth] section to the hostname of the OAuth server to be used for the endpoint. If the servers on your endpoint are using NAT, then be sure to reference the xref:nat_section[NAT] section for additional configuration details. If you wish to use OAuth then you may wish to consider these additional options as well:
 
 - You may wish to use a CA issued ssl/tls server certificate for your web server. The exact details for setting this up will vary depending on the format that your CA provides your certificate to you in, your apache web server configuration, as well as the OS and version you are using. In all cases you'll need to edit your apache configuration to set the "SSLCertificateFile" directive to point at the cert file you were issued by your CA. You may also need to set the "SSLCertificateKeyFile" and "SSLCertificateChainFile" directives as well, depending on the format of your certificate and the instructions you received from your CA concerning how to install the cert.
 
 - You may wish to use a custom logo or custom CSS to give your OAuth page a look and feel more consistent with your organization. You can configure a custom CSS by setting the +Stylesheet+ option in the [OAuth] section of the +/etc/globus-connect-server.conf+ file to the file containing the style sheet you wish to use. You can set a custom logo by setting the +Logo+ option in the [OAuth] section of the +/etc/globus-connect-server.conf+ file to the image file of the logo you wish to use.
 
-[appendix]
-[[cilogon_identity_provider_section]]
-=== Configuring an endpoint to use the CILogon identity provider
+==== CILogon identity provider
 To configure an endpoint to use the CILogon identity provider, set "IdentityMethod = CILogon" in the [Security] section of the config file and set the +CILogonIdentityProvider+ option in the [Security] section to the name of the CILogon provider to be used with the endpoint. See https://cilogon.org/ for a list of valid providers. 
 
 An endpoint configured in this way will attempt to map the CILogon credential to a local account on the server hosting the endpoint by matching it with a local account with the same account name as provided in the InCommon eduPersonPrincipalName (ePPN) given with the CILogon credential. Organizations participating in CILogon must make certain that their Shibboleth server releases the ePPN attribute to CILogon for this to work. To check if an identity provider is supplying the ePPN check link:https://cilogon.org/secure/testidp/[here]. 
