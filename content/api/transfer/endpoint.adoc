@@ -420,7 +420,7 @@ Only +hostname+ is required on create.
                    must be set to a valid value, or both must be set to "null".
                    Can only be set on GridFTP endpoints.
 | incoming_data_port_end | int
-                   End (inclusive) of port range allowed for incoming data
+                 | End (inclusive) of port range allowed for incoming data
                    connections. Must be greater or equal to
                    +incoming_data_port_range_start+.
 | outgoing_data_port_start | int

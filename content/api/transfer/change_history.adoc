@@ -14,13 +14,13 @@ ifdef::env-github[:outfilesuffix: .adoc]
 == 5.2
 
 * Advanced Endpoint Management
-** Add +owner_linked_ids+ and +owner_string+ to +task+ document.
+** Add +owner_string+ to +task+ document.
 ** Change semantics of +filter_owner_id+ (and the deprecated
    +filter_username+) so that it searches both +owner_id+ and
-   +owner_linked_ids+. Both now require +filter_endpoint+ to be passed
+   linked ids. Both now require +filter_endpoint+ to be passed
    if querying against completed tasks.
 ** Change semantics of pause rules with +identity_id+, so they apply
-   to tasks with a matching +owner_id+ or a matching +owner_linked_ids+.
+   to tasks with a matching +owner_id+ or a matching linked id.
 ** Support having +Endpoint Manager+ privileges on a shared endpoint,
    independent of the host. Authorization on many resources has been adjusted
    to handle this change.

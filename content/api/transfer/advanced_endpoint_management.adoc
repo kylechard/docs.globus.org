@@ -240,15 +240,6 @@ a|A status code indicating if the local user is available for the source
   addition to the status codes described above, it can have the value
   "NO_ENDPOINT" for delete tasks.
 
-| owner_linked_ids
-| string list
-| List of identity ids linked to the primary identity (available in the
-  +owner_id+ field) at the time the task was submitted. Does not include
-  the +owner_id+. This is used by task list filtering using +filter_owner_id+
-  and for pause rules with an +identity_id+ set. Note that for old tasks
-  prior to the 5.2 release, this will be empty, and matching is done based
-  only on +owner_id+.
-
 | owner_string
 | string
 | The Globus Auth identity username corresponding to the primary task
@@ -481,7 +472,8 @@ uniqueness, so there can be only one endpoint wide rule
 | string
 | Identity id of an identity to pause tasks for on the endpoint,
   or null to indicate all identities on the endpoint. This will affect
-  tasks with a matching +owner_id+ or with a match in +owner_linked_ids+.
+  tasks with a matching +owner_id+ or with a match in the set of linked
+  identities at the time the task was submitted.
 
 | modified_time
 | ISO 8601 datetime string
@@ -823,9 +815,7 @@ filter is present.
 | filter_owner_id
 | equality
 | A Globus Auth identity id. Limit results to tasks submitted by the
-  specified identity, or linked to the specified identity at submit time.
-  In other words, a task will be returned if the value of +filter_owner_id+ is
-  equal to the task +owner_id+ or is in the +owner_linked_ids+ list.
+  specified identity, or linked to the specified identity, at submit time.
   Returns +UserNotFound+ if the identity does not exist or has never used the
   Globus Transfer service. If no tasks were submitted by this user to an
   endpoint the current user has manager privileges on, an empty result set
