@@ -135,7 +135,7 @@ Clients and resource servers should work with Globus accounts in terms of sets o
 
 However, it is often convenient for a client or resource server to be able to refer to the resource owner of the Globus account via a single identity, rather than the entire set. For example, a client may want to display an identity username for the logged in user, or a resource server may want to use a single identity when logging events associated with a request. 
 
-Certain clientsand resources servers may even require an identity from a particular identity provider. For example, if an existing web application that uses a particular identity provider wants to integrate with Globus Auth, it would like to continue seeing its users in terms of that particular identity provider. 
+Certain clients and resources servers may even require an identity from a particular identity provider. For example, if an existing web application that uses a particular identity provider wants to integrate with Globus Auth, it would like to continue seeing its users in terms of that particular identity provider. 
 
 Globus Auth provides each client and resource server with an "effective identity". A client or resource server, during registration with Globus Auth, can request that users of that client or resource server must have an identity issued by a particular identity provider. When the client or resource server asks for the effective identity associated with the OAuth2 access token, it will be told the user's identity from this identity provider, even if the user has a different primary identity. If the client or resource server does not specify an effective identity provider, Globus Auth will use the primary identity as the effective identity for that client or resource server.
 
