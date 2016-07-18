@@ -6,24 +6,10 @@ menu_weight: 5
 :toc:
 :toclevels: 3
 :numbered:
-// use outfilesuffic in relative links to make them work on github
+
+// use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
 
-// See https://github.com/jbake-org/jbake/issues/80, github requires
-// going through hoops to get the TOC to render.
-ifdef::env-github[]
-toc::[]
-endif::[]
-
-////
-Note: We use asciidoc in some table cells for
-1. labeled lists
-2. source code (json) blocks.
-You need to be careful to not have spaces between the a| and content, 
-otherwise it shows up as monospace (?) in asciidoc.py.
-Also, using 'a' type cells when not needed makes asciidoc slower; it executes
-asciidoc for each cell of type 'a'.
-////
 
 == Overview
 
@@ -362,6 +348,20 @@ sub-documents.
                  | Can be +network_use+ "custom", otherwise will contain the
                    preset value for the specified +network_use+. Will be
                    "null" for shared endpoints.
+| local_user_info_available | boolean
+                 | Indicates whether the endpoint exposes information about
+                   the local user on the endpoint to the Globus service.
+                   This is set internally, and can't be updated. For new
+                   endpoints it will start out as null. When a task is
+                   run against the endpoint, local user information is
+                   requested from the GridFTP server, and if found, this
+                   flag will be set to true on the endpoint. If it fails,
+                   this will be set to false. Note that there are cases
+                   where the server may return a value, but because of the
+                   local filesystem and DSI, the value is not particularly
+                   useful for searching, but this will still be set to true.
+                   On shared endpoints, the value is inherited from the host
+                   endpoint. For S3 endpoints, this will always be false.
 |===================
 
 
@@ -405,10 +405,34 @@ Only +hostname+ is required on create.
 | subject        | string
                  | subject of the x509 certificate of the server. If not
                    specified, the CN in the subject must match its hostname.
+| incoming_data_port_start | int
+                 | Start (inclusive) of port range allowed for incoming
+                   GridFTP data connections. The purpose of this field is to
+                   indicate to firewall administrators at other sites how to
+                   allow traffic between this endpoint and their own endpoints.
+                   If "null", indicates that the endpoint administrator
+                   has not specified the configuration (the allowed range is
+                   unknown).
+                   A range of 1024-65535 indicates a completely open
+                   configuration. Must be a subset of 1024-65535
+                   (privileged ports below 1024 are not allowed by GridFTP).
+                   Must be set along with +incoming_data_port_end+, i.e. both
+                   must be set to a valid value, or both must be set to "null".
+                   Can only be set on GridFTP endpoints.
+| incoming_data_port_end | int
+                 | End (inclusive) of port range allowed for incoming data
+                   connections. Must be greater or equal to
+                   +incoming_data_port_range_start+.
+| outgoing_data_port_start | int
+                 | Like +incoming_data_port_start+ but for outgoing data
+                   connections.
+| outgoing_data_port_end | int
+                 | Like +incoming_data_port_end+ but for outgoing data
+                   connections.
 | uri            | string
-                 | URI of the server. This is a derived field combining the
-                   scheme, hostname, and port, and is not used when creating
-                   servers.
+                 | [DEPRECATED] URI of the server. This is a derived field
+                   combining the scheme, hostname, and port, and is not used
+                   when creating servers.
 | is_connected   | boolean
                  | [DEPRECATED] Use +gcp_connected+ in the +endpoint+ document
                    instead.
@@ -440,17 +464,12 @@ distinguished from other endpoints by checking that the +host_endpoint_id+
 field is set to a non-null value. +server+ documents can't be added or removed
 from shared endpoints; the server used depends entirely on the host endpoint.
 
-NOTE: When creating a shared endpoint, you must use the +host_endpoint+ field,
-rather than the +host_endpoint_id+ field, but it should still contain the
-endpoint id, not a canonical name. This is a legacy wart, and in the next
-release +host_endpoint_id+ will work as well.
-
 .Shared Endpoint Document Example
 -----------------------
 {
   "DATA_TYPE": "shared_endpoint",
   "display_name": "myshare",
-  "host_endpoint": "2ebc7b58-de6f-46a3-ac36-2f2613aa32ba",
+  "host_endpoint_id": "2ebc7b58-de6f-46a3-ac36-2f2613aa32ba",
   "host_path": "/~/",
   "description": "Share my home directory on Globus Tutorial Endpoint 1",
   "organization": "my org"
