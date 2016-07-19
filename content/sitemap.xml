@@ -1,1 +1,1 @@
-<%= xml_sitemap :items => @items.reject{ |i| i[:is_hidden] || i.binary? || i.identifier.start_with?("/site-docs") || i.identifier.start_with?("/google") } %>
+<%= xml_sitemap :items => @items.reject{ |i| i[:is_hidden] || i.binary? || i.identifier.to_s.start_with?("/site-docs") || i.identifier.to_s.start_with?("/google") } %>

@@ -1,4 +1,9 @@
+---
+menu_weight: 0
+---
+
 = Auth API Documentation
+:imagesdir: .
 
 == Contents
 

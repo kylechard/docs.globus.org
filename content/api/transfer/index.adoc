@@ -1,5 +1,6 @@
 = Transfer API Documentation
 :revdate: July 18, 2016
+:imagesdir: .
 
 [doc-info]*Last Updated: {revdate}*
 

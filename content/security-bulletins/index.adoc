@@ -1,4 +1,5 @@
 = Security Bulletins
+:imagesdir: .
 :toc:
 :toclevels: 1
 :toc-title:

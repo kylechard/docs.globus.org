@@ -1,6 +1,7 @@
 :toc:
 :toc-placement: manual
 :toclevels: 3
+:imagesdir: .
 :revdate: May 12, 2016
 
 = Setting Up and Administering Globus Data Publication

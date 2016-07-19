@@ -1,5 +1,6 @@
 ---
 full_title: "Globus APIs"
+:imagesdir: .
 ---
 
 = Globus APIs

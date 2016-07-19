@@ -1,5 +1,5 @@
 ---
-menu_weight: 0
+menu_weight: 1
 ---
 
 = Globus Auth Introduction
