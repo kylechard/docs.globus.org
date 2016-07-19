@@ -100,7 +100,7 @@ Display public endpoints shared by other users.
 *-v*::
 Display all fields.  Also turns on long output format.
 
-include::include/opt_output.adoc[]
+include::content/cli/reference/include/opt_output.adoc[]
 
 
 == EXAMPLES

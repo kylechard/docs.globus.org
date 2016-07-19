@@ -1,4 +1,5 @@
 = Globus Resource Provider Guide
+:imagesdir: .
 :revdate: May 12, 2016
 :toc:
 :toc-placement: manual

@@ -2,6 +2,9 @@
 output
 tmp
 
+# diff file
+output.diff
+
 # output log from build failures
 crash.log
 

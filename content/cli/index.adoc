@@ -3,6 +3,7 @@ full_title: "Getting started with the Command Line Interface (CLI)"
 ---
 
 = Getting started with the Command Line Interface (CLI)
+:imagesdir: .
 :revdate: May 12, 2016
 
 [doc-info]*Last Updated: {revdate}*

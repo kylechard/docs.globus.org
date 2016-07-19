@@ -13,7 +13,7 @@ endpoint-deactivate - Remove authentication credentials
 *endpoint-deactivate* removes the credential previously assigned to a logical
 endpoint by *endpoint-activate*.  
 
-include::include/cli_bookmarks_no_paths.adoc[]
+include::content/cli/reference/include/cli_bookmarks_no_paths.adoc[]
 
 == EXAMPLES
 
