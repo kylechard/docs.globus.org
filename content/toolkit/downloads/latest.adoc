@@ -1,0 +1,61 @@
+---
+full_title: "Latest Toolkit Downloads"
+short_title: "Latest"
+---
+
+= Latest Toolkit Downloads
+
+[red]#(CONTENT NEEDS REVIEW)#
+
+GT6.0 is an open source software toolkit used for building grids with services written in C. The services run on Unix platforms, including Linux.
+
+For installation instructions, please see the [red]#Globus Toolkit 6.0 Admin Guide (TO FIX)# or [red]#Globus Toolkit 6.0 Quickstart (TO FIX)#.
+
+For information about the contents, please refer to the [red]#Release Notes# or the [red]#full documentation (TO FIX)#.
+
+== Supported Systems
+We provide binary packages of the Globus Toolkit for many operating systems. The source for the Globus Toolkit is also available for systems which we do not directly support. Versions that are struck out are ones which have reached end of life by the OS vendor and are no longer supported.
+
+The latest versions of these installers include all package updates described in the [red]#advisories page (TO FIX)#
+
+[cols="4*^.^,>.^",options="header"]
+|========
+|Operating System 	|Distribution	|Version	 |Architecture 	^|Package
+.8+|Linux	.2+|CentOS
+Red Hat Enterprise Linux
+Scientific Linux	|5, 6	|i386
+x86_64	.4+|link:files/globus-toolkit-repo-latest.noarch[RPM Repository Package] [link:files/globus-toolkit-repo-latest.noarch.rpm[sha1]] [link:files/globus-toolkit-repo-latest.noarch.rpm[sha512]]
+|7	|x86_64
+|Fedora	|[line-through]#19, 20, 21#, 22, 23	|i386
+x86_64
+|SUSE Linux Enterprise Server	|11SP3	|x86_64
+|Debian GNU/Linux	|6, 7, 8	|i386
+x86_64	.2+|link:[Deb Repository Package] [link:[sha1]] [link:[sha512]]
+|Ubuntu Linux	|[line-through]#10.04LTS#, 12.04LTS, 14.04LTS, [line-through]#14.10, 15.04#, 15.10, 16.04LTS	|i386
+amd64
+2.2+|Other	|i386	|link:[Binary Tarball] [link:[sha1]] [link:[sha512]]
+|x86_64	|link:[Binary Tarball] [link:[sha1]] [link:[sha512]]
+2+^|Mac OS X	|10.6, 10.7, 10.8, 10.9, 10.10, 10.11	|Universal (i386, x86_64)	|link:[Installable Package] [link:[sha1]] [link:[sha512]]
+link:[Binary Tarball] [link:[sha1]] [link:[sha512]]
+.4+|Windows	.2+|cygwin	.4+|Vista, 7, 8	|i686	|link:[Binary Zipfile] [link:[sha1]] [link:[sha512]]
+|x86_64	|link:[Binary Zipfile] [link:[sha1]] [link:[sha512]]
+.2+|native runtime	|i686	|link:[Binary Zipfile] [link:[sha1]] [link:[sha512]]
+|x86_64	|link:[Binary Zipfile] [link:[sha1]] [link:[sha512]]
+4+^|Other POSIX-like systems	|link:[Source Tarball] [link:[sha1]] [link:[sha512]]
+|========
+
+== Linux Repository Packages
+Once you install one of the repository packages, you can use *yum*, *zypper* or *apt-get* to install the toolkit, as described in the [red]#installation instructions (TO FIX)#. These repositories contain the 6.0 release plus the updates available on the [red]#updates page (TO FIX)#.
+
+As an alternative to installing the repository package, you can download the repository definitions and GPG keys used to sign the packages and repositories from the [red]#stable RPM repository files (TO FIX)# or [red]#stable Debian repository files (TO FIX)# directories.
+
+== Linux Binary Tarball
+For linux systems other than those mentioned above, you can use one the linux binary tarballs from the table, depending on your runtime architecture. These tarballs contain the Globus Toolkit, compiled against EL5 libraries and include some specific libraries that they were linked against to avoid problems with missing dynamic libraries.
+
+== Mac OS X Installer and Binary Tarball
+The Mac OS X binary package contains binaries of the Globus Toolkit for Mac OS X (10.6 and newer). When installed, the packages are installed in /Library/Globus or $HOME/Libary/Globus and the system or user paths are updated to include the Globus binaries and libraries.
+
+If you wish to use parts of the Globus Toolkit without using the installer, you can choose the Mac OS X Binary Tarball, which contains the same binaries and libraries. They can be untarred where you wish and you'll have to set your PATH yourself.
+
+== Windows Binary Zipfiles
+The Windows Binary Zipfiles contain the Globus Toolkit compiled for windows. The zipfiles can be opened where you wish, and then you must set the PATH environment variable to point to the binaries and libraries in the location you unzip them in.
