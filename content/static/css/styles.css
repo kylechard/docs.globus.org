@@ -38,6 +38,17 @@ h5 { font-size: 16px; }
 .toc dt { font-weight: 300; }
 code { white-space: normal; }
 
+.left { float: left; }
+.right {float: right; }
+
+img.left { margin-right: 15px; }
+img.right {margin-left: 15px; }
+
+.nowrap,
+.nowrap * {
+  white-space: nowrap;
+}
+
 /* Masthead */
 .page-masthead {
     padding: 20px 15px;
@@ -212,13 +223,42 @@ pre {
     background-color: #fbfbfb;
     word-wrap: normal;
 }
-.table-borderless>tbody>tr>td {
+.table-borderless table,
+.table-borderless table th,
+.table-borderless table td,
+.table-borderless table * ,
+.table-borderless>table>thead>tr>th,
+.table-borderless>table>tbody>tr>th,
+.table-borderless>table>tfoot>tr>th,
+.table-borderless>table>thead>tr>td,
+.table-borderless>table>tbody>tr>td,
+.table-borderless>table>tfoot>tr>td {
     border: 0;
 }
 .table-responsive {
   min-height: .01%;
   overflow-x: auto;
 }
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+p.tableblock { margin: 0; }
 
 /* admonition blocks */
 .alert .caption,

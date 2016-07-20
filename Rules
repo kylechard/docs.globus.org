@@ -10,6 +10,7 @@ ignore '/release-notes/**/*'
 # they are "compiled" as a no-op and routed to their exact source locations
 passthrough '/google*'
 passthrough '/**/raw/**/*'
+passthrough '/toolkit/downloads/*'
 
 ## all layouts are processed as ERB templates
 layout '/**/*', :erb
