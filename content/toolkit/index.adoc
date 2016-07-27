@@ -1,4 +1,5 @@
 = Globus Toolkit
+:imagesdir: .
 
 [red]#(CONTENT NEEDS REVIEW)#
 

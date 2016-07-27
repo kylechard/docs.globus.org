@@ -1,0 +1,82 @@
+---
+full_title: "Toolkit Download Archive"
+short_title: "Archives"
+menu_weight: 3
+---
+
+= Downloads
+:imagesdir: .
+
+[red]#(CONTENT NEEDS REVIEW)#
+
+In production settings, users should continue to use one of the two officially supported stable releases (GT 6.0 is highly recommended.)
+
+link:#stable[Stable Releases]
+
+link:#dev[Development Releases]
+
+link:#third-party[Third Party Releases]
+
+[[stable]]
+== Stable Releases
+The Globus Alliance offers support for the last two stable releases. Support is provided on a best effort basis. Since no new features can be added once a stable release is cut, code changes on stable releases are limited to bug fixes.
+
+Note: Stable distributions have an even minor version number (for example, 5.0.3).
+
+Below are links to the stable versions of the Globus Toolkit:
+
+- Globus Toolkit 6.0 Downloads (recommended GT6 release)
+- Globus Toolkit 5.2.5 Downloads (not supported)
+- Globus Toolkit 5.2.4 Downloads (not supported)
+- Globus Toolkit 5.2.3 Downloads (not supported)
+- Globus Toolkit 5.2.2 Downloads (not supported)
+- Globus Toolkit 5.2.1 Downloads (not supported)
+- Globus Toolkit 5.2.0 Downloads (not supported)
+- Globus Toolkit 5.0.5 Downloads (not supported)
+- Globus Toolkit 5.0.4 Downloads (not supported)
+- Globus Toolkit 5.0.3 Downloads (not supported)
+- Globus Toolkit 5.0.2 Downloads (not supported)
+- Globus Toolkit 5.0.1 Downloads (not supported)
+- Globus Toolkit 5.0.0 Downloads (not supported)
+- Globus Toolkit 4.2.1 Downloads (not supported)
+- Globus Toolkit 4.2.0 Downloads (not supported)
+- Globus Toolkit 4.0.8 Downloads (not supported)
+- Globus Toolkit 4.0.7 Downloads (not supported)
+- Globus Toolkit 4.0.6 Downloads (not supported)
+- Globus Toolkit 4.0.5 Downloads (not supported)
+- Globus Toolkit 4.0.4 Downloads (not supported)
+- Globus Toolkit 4.0.3 Downloads (not supported)
+- Globus Toolkit 4.0.2 Downloads (not supported)
+- Globus Toolkit 4.0.1 Downloads (not supported)
+- Globus Toolkit 4.0.0 Downloads (not supported)
+- Globus Toolkit 3.2.1 Downloads (not supported)
+- Globus Toolkit 3.0.2 Downloads (not supported)
+- Globus Toolkit 2.4.3 Downloads (not supported)
+- Globus Toolkit 2.2 Downloads (not supported)
+- Globus Toolkit 2.0 Downloads (not supported)
+
+[[dev]]
+== Development Releases
+Releases in the development series are used to publish new features in a timely manner. Unlike stable releases, feature additions and changes to public interfaces can happen between incremental versions of development releases.
+
+GT development releases are intended for use by early adopters: users who are willing to tolerate rough edges in order to use and provide feedback on new features. A major advantage of being an early adopter is that you can help shape feature development to a greater degree than is possible after a final release. However, development distributions may behave in unpredictable ways and should not be used in production settings.
+
+NOTE: Development distributions have an odd minor version number (for example 5.1.2).
+
+Below is the link to:
+
+Latest Development Download
+ 
+[[third-party]]
+== Third Party Releases
+We encourage external entities and developers to create Third Party Releases using Globus Toolkit components. We do not control development of third party releases. External developers may modify any aspect of the software and these changes may be effected at any time without prior notice from the developer. While third party releases are usually (but not always) based on a recent stable Globus release, we cannot make any recommendations on the appropriateness of using third party releases in production environments.
+
+Third party releases may be supported by their respective developers. We do not provide support for third party releases but our developers may contribute to support discussions where possible. From time to time we will review third party releases and assess our ability to support these directly.
+
+The following third party releases are currently available:
+European Globus Community Forum Includes GT clients packaged for Mac OS X
+MacPorts packaging is here Maintained by Dennis van Dok (Nikhef, Amsterdam)
+Initiative for Globus in Europe (IGE) Releases both RPM and Debian package repos available using GT 5.2
+OSG Software Distribution RPM based release using GT 5.2
+GT5 Windows Installer Maintained by Mattias Ellert at Uppsala Universitet
+GT5 Native Packages: Fedora, RHEL, Debian, Ubuntu Maintained by Mattias Ellert at Uppsala Universitet
