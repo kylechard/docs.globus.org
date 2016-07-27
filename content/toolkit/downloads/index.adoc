@@ -4,5 +4,6 @@ menu_weight: 0
 ---
 
 = Downloads
+:imagesdir: .
 
 [red]#(CONTENT NEEDS REVIEW)#
