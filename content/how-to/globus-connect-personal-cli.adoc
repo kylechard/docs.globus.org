@@ -41,7 +41,7 @@ $ exit
 . Back in your local machine shell run the following commands to complete the installation (note that you will need to copy and paste the setup key generated in step 2 above):
 +
 ----terminal
-$ ./globusconnectpersonal -setup [input]#7b7ab037-01a8-11e6-a71c-22000bf2d559#
+$ ./globusconnectpersonal -setup [input]#224532bb-8a4b-4d32-8995-e1fb442be98e#
 [output]#Configuration directory: /home/demodoc/.globusonline/lta
 Contacting relay.globusonline.org:2223
 Installing certificate and key
