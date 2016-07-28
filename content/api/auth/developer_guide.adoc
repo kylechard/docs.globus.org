@@ -1,0 +1,55 @@
+---
+menu_weight: 1
+---
+
+= Globus Auth Developer Guide
+:toc:
+:toclevels: 3
+:numbered:
+
+== Developing an Application Using Globus Auth
+
+- Web App
+- CLI/Native
+- PKCE
+
+== Integrating Globus Auth Features
+
+E.g, identity linking
+
+== Developing a Resource Server
+
+== Adding an Identity Provider
+Supported protocols: …
+
+Identity providers must supply a provider_specific_id (explain what that’s all about)
+
+== Publically Available Scopes
+auth:view_identities
+transfer:all
+offline_acces
+Openid+email+profile
+
+== Features for Managing Flows
+ authentication_hint, login_hint, etc
+
+== Identity Sets
+
+=== The Globus Auth Identity Set Model at a Glance
+
+=== Does My App Need to Set-Aware?
+ 
+== Managing Projects
+Admins are co-equal
+
+== Handling Tokens
+
+=== Caching
+
+== Libraries and Resources
+ 
+=== Using the Globus SDK
+ 
+=== OAuth2 Libraries
+
+=== Sample Applications Using Globus Auth
