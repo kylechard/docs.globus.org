@@ -23,37 +23,40 @@ The Globus Alliance offers support for the last two stable releases. Support is 
 
 Note: Stable distributions have an even minor version number (for example, 5.0.3).
 
-Below are links to the stable versions of the Globus Toolkit:
+==== Latest stable version of the Globus Toolkit:
 
 - Globus Toolkit 6.0 Downloads (recommended GT6 release)
-- Globus Toolkit 5.2.5 Downloads (not supported)
-- Globus Toolkit 5.2.4 Downloads (not supported)
-- Globus Toolkit 5.2.3 Downloads (not supported)
-- Globus Toolkit 5.2.2 Downloads (not supported)
-- Globus Toolkit 5.2.1 Downloads (not supported)
-- Globus Toolkit 5.2.0 Downloads (not supported)
-- Globus Toolkit 5.0.5 Downloads (not supported)
-- Globus Toolkit 5.0.4 Downloads (not supported)
-- Globus Toolkit 5.0.3 Downloads (not supported)
-- Globus Toolkit 5.0.2 Downloads (not supported)
-- Globus Toolkit 5.0.1 Downloads (not supported)
-- Globus Toolkit 5.0.0 Downloads (not supported)
-- Globus Toolkit 4.2.1 Downloads (not supported)
-- Globus Toolkit 4.2.0 Downloads (not supported)
-- Globus Toolkit 4.0.8 Downloads (not supported)
-- Globus Toolkit 4.0.7 Downloads (not supported)
-- Globus Toolkit 4.0.6 Downloads (not supported)
-- Globus Toolkit 4.0.5 Downloads (not supported)
-- Globus Toolkit 4.0.4 Downloads (not supported)
-- Globus Toolkit 4.0.3 Downloads (not supported)
-- Globus Toolkit 4.0.2 Downloads (not supported)
-- Globus Toolkit 4.0.1 Downloads (not supported)
-- Globus Toolkit 4.0.0 Downloads (not supported)
-- Globus Toolkit 3.2.1 Downloads (not supported)
-- Globus Toolkit 3.0.2 Downloads (not supported)
-- Globus Toolkit 2.4.3 Downloads (not supported)
-- Globus Toolkit 2.2 Downloads (not supported)
-- Globus Toolkit 2.0 Downloads (not supported)
+
+==== *Unsupported* stable versions of the Globus Toolkit:
+
+- Globus Toolkit 5.2.5 Downloads
+- Globus Toolkit 5.2.4 Downloads
+- Globus Toolkit 5.2.3 Downloads
+- Globus Toolkit 5.2.2 Downloads
+- Globus Toolkit 5.2.1 Downloads
+- Globus Toolkit 5.2.0 Downloads
+- Globus Toolkit 5.0.5 Downloads
+- Globus Toolkit 5.0.4 Downloads
+- Globus Toolkit 5.0.3 Downloads
+- Globus Toolkit 5.0.2 Downloads
+- Globus Toolkit 5.0.1 Downloads
+- Globus Toolkit 5.0.0 Downloads
+- Globus Toolkit 4.2.1 Downloads
+- Globus Toolkit 4.2.0 Downloads
+- Globus Toolkit 4.0.8 Downloads
+- Globus Toolkit 4.0.7 Downloads
+- Globus Toolkit 4.0.6 Downloads
+- Globus Toolkit 4.0.5 Downloads
+- Globus Toolkit 4.0.4 Downloads
+- Globus Toolkit 4.0.3 Downloads
+- Globus Toolkit 4.0.2 Downloads
+- Globus Toolkit 4.0.1 Downloads
+- Globus Toolkit 4.0.0 Downloads
+- Globus Toolkit 3.2.1 Downloads
+- Globus Toolkit 3.0.2 Downloads
+- Globus Toolkit 2.4.3 Downloads
+- Globus Toolkit 2.2 Downloads
+- Globus Toolkit 2.0 Downloads
 
 [[dev]]
 == Development Releases
@@ -65,7 +68,7 @@ NOTE: Development distributions have an odd minor version number (for example 5.
 
 Below is the link to:
 
-Latest Development Download
+link:[Latest Development Download]
  
 [[third-party]]
 == Third Party Releases
@@ -74,9 +77,9 @@ We encourage external entities and developers to create Third Party Releases usi
 Third party releases may be supported by their respective developers. We do not provide support for third party releases but our developers may contribute to support discussions where possible. From time to time we will review third party releases and assess our ability to support these directly.
 
 The following third party releases are currently available:
-European Globus Community Forum Includes GT clients packaged for Mac OS X
-MacPorts packaging is here Maintained by Dennis van Dok (Nikhef, Amsterdam)
-Initiative for Globus in Europe (IGE) Releases both RPM and Debian package repos available using GT 5.2
-OSG Software Distribution RPM based release using GT 5.2
-GT5 Windows Installer Maintained by Mattias Ellert at Uppsala Universitet
-GT5 Native Packages: Fedora, RHEL, Debian, Ubuntu Maintained by Mattias Ellert at Uppsala Universitet
+- link:http://www.egcf.eu/software/[European Globus Community Forum] Includes GT clients packaged for Mac OS X
+-- link:https://github.com/dvandok/globus-macports[MacPorts packaging is here] Maintained by Dennis van Dok (Nikhef, Amsterdam)
+- link:http://www.ige-project.eu/downloads/software/releases[Initiative for Globus in Europe (IGE) Releases] both RPM and Debian package repos available using GT 5.2
+- link:https://twiki.grid.iu.edu/bin/view/Documentation/Release3[OSG Software Distribution] RPM based release using GT 5.2
+- link:http://www.grid.tsl.uu.se/repos/[GT5 Windows Installer] Maintained by Mattias Ellert at Uppsala Universitet
+- link:http://www.grid.tsl.uu.se/repos/[GT5 Native Packages: Fedora, RHEL, Debian, Ubuntu] Maintained by Mattias Ellert at Uppsala Universitet

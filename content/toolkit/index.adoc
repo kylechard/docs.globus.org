@@ -39,7 +39,7 @@ For more information, see this PowerPoint link:files/GThistory2.ppt[timeline].
 Beginning with GT 3.9.5, the Globus Toolkit has the capability to send usage statistics back to the Globus team. Check out more information link:usage[here].
 
 == Software Archive [red]#(TO FIX)#
-Click link:[here] for a downloadable list of archived versions of the Globus Toolkit.
+Click link:downloads/archive[here] for a downloadable list of archived versions of the Globus Toolkit.
 
 == Issue Tracking
 If you do not see an update and think you have found a bug in the Toolkit, do a quick search in the link:https://github.com/globus/globus-toolkit-documentation/issues[GitHub issues] for your bug. If it is not already there, then create a new issue.
