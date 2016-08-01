@@ -38,7 +38,7 @@ For more information, see this PowerPoint link:files/GThistory2.ppt[timeline].
 == Usage Statistics
 Beginning with GT 3.9.5, the Globus Toolkit has the capability to send usage statistics back to the Globus team. Check out more information link:usage[here].
 
-== Software Archive [red]#(TO FIX)#
+== Software Archive
 Click link:downloads/archive[here] for a downloadable list of archived versions of the Globus Toolkit.
 
 == Issue Tracking
@@ -49,11 +49,11 @@ Before submitting a bug, you might find link:http://www.chiark.greenend.org.uk/~
 == Mailing Lists
 For general discussion or specific questions you cannot find the answers to in the documentation, try asking your question on one of the mailing lists below:
 
-[role="table-borderless"]
+[cols=",s,", role="table-borderless"]
 |========
-|Developer discussion:	|[nowrap]#*link:https://lists.globus.org/mailman/listinfo/gt-dev[gt-dev@globus.org]*#	|The purpose of the gt-dev list is for discussions pertaining to any _development_ of the toolkit components or using the toolkit components.
-|User discussion:	|[nowrap]#*link:https://lists.globus.org/mailman/listinfo/gt-user[gt-user@globus.org]*#	|The purpose of the gt-user list is for discussion pertaining to installation, configuration, administration, usage, and your own development of Grid services based on GT, and just about anything else related to the Globus Tookit in general.
-|Announcements:	|[nowrap]#*link:https://lists.globus.org/mailman/listinfo/gt-announce[gt-announce@globus.org]*#	|The purpose of the gt-announce list is to receive communications about the toolkit (in particular announcements of releases and other major milestones). This list is not intended for discussion.
+|Developer discussion:	|[nowrap]#link:https://lists.globus.org/mailman/listinfo/gt-dev[gt-dev@globus.org]#	|The purpose of the gt-dev list is for discussions pertaining to any _development_ of the toolkit components or using the toolkit components.
+|User discussion:	|[nowrap]#link:https://lists.globus.org/mailman/listinfo/gt-user[gt-user@globus.org]#	|The purpose of the gt-user list is for discussion pertaining to installation, configuration, administration, usage, and your own development of Grid services based on GT, and just about anything else related to the Globus Tookit in general.
+|Announcements:	|[nowrap]#link:https://lists.globus.org/mailman/listinfo/gt-announce[gt-announce@globus.org]#	|The purpose of the gt-announce list is to receive communications about the toolkit (in particular announcements of releases and other major milestones). This list is not intended for discussion.
 |========
 
 Please report any potential security issues by sending mail to support@globus.org. Please include information about the component, version number, platform and a description of the vulnerability. All reports will be kept private. We will review all issues and notify users via the link:https://lists.globus.org/mailman/listinfo/gt-user[gt-user mailing list].

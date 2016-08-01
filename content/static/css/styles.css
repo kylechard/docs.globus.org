@@ -235,9 +235,13 @@ pre {
 .table-borderless>table>tfoot>tr>td {
     border: 0;
 }
-.table-responsive {
-  min-height: .01%;
-  overflow-x: auto;
+.table-borderless>table>thead>tr>th,
+.table-borderless>table>tbody>tr>th,
+.table-borderless>table>tfoot>tr>th,
+.table-borderless>table>thead>tr>td,
+.table-borderless>table>tbody>tr>td,
+.table-borderless>table>tfoot>tr>td {
+  padding: 15px 15px 15px 0;
 }
 th.tableblock.halign-left, td.tableblock.halign-left {
   text-align: left;

@@ -1,0 +1,8 @@
+---
+full_title: "GSI-OpenSSH System Administrator's Guide"
+short_title: "GSI-OpenSSH"
+---
+
+= GSI-OpenSSH System Administrator's Guide
+
+[red]#(CONTENT NEEDS REVIEW)#

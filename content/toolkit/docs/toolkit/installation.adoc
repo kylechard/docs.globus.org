@@ -1,0 +1,8 @@
+---
+full_title: "Globus Toolkit 6.0 Installation Guide"
+short_title: "Installation"
+---
+
+= Globus Toolkit 6.0 Installation Guide
+
+[red]#(CONTENT NEEDS REVIEW)#
