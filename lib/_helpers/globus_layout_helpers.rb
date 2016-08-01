@@ -46,6 +46,12 @@ module Nanoc::Helpers
           :index_loc => '/release-notes/',
           :page_class => 'rn-page'
         }
+      when /\/toolkit\//
+        {
+          :menu_name => 'Toolkit Menu',
+          :index_loc => '/toolkit/',
+          :page_class => 'toolkit-page'
+        }
       else
         raise "Uh-oh! Failed to determine layout vars for #{item.identifier.to_s}"
       end

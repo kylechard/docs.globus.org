@@ -1,0 +1,8 @@
+---
+full_title: "Globus Toolkit 6.0 Admin Guide"
+short_title: "Admin Guide"
+---
+
+= Globus Toolkit 6.0 Admin Guide
+
+[red]#(CONTENT NEEDS REVIEW)#

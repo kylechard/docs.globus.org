@@ -1,0 +1,47 @@
+---
+full_title: "Globus Toolkit 6.0"
+short_title: "Toolkit"
+menu_weight: -1
+---
+
+= Globus Toolkit 6.0
+
+[red]#(CONTENT NEEDS REVIEW) Should this be moved to be docs index page?#
+
+The following documents are good places to start with Globus Toolkit 6.0:
+
+For everyone:
+
+- link:release-notes[GT6.0 Release Notes]
+- GT Commands
+
+For system administrators and those installing GT:
+
+- link:installation[Installation Guide]
+- link:quickstart[Quickstart]
+
+For End Users:
+
+- Java API Download
+
+For Developers:
+
+- GT Developer’s Guide
+
+GT 6.0 release manuals are divided into the following areas:
+
+- *GridFTP for Data Management*
++
+GridFTP provides high-performance and reliable data transport.
+
+- *GRAM5 for Jobs Management*
++
+The Grid Resource Allocation and Management (GRAM5) interface as a basic mechanism for initiation, monitoring, management, scheduling, and/or coordination of remote computations.
+
+- *GSI C, MyProxy and GSI-OpenSSH for Grid Security*
++
+These components establish the identity of users or services (authentication), protect communications, and determine who is allowed to perform what actions (authorization), as well as manage user credentials.
+
+- *Other Components*
++
+GT 6 also includes a set of C Common libraries needed for building grid infrastructure, XIO, a sophisticated and extensible I/O library suitable for the dynamic needs of grid applications and SimpleCA, a simple certificate authority available for testing purposes.

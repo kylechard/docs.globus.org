@@ -90,9 +90,8 @@ aside.sidebar-block .panel-heading {
     background-color: transparent;
     position: relative;
     padding: 0;
-}
-aside.sidebar-block .panel-heading:last-child {
-    border-bottom: 0;
+    border-bottom: solid 1px #ddd;
+    margin-bottom: -1px;
 }
 aside.sidebar-block .panel-heading a {
     display: block;
@@ -161,19 +160,13 @@ aside.sidebar-block .list-group .panel-collapse a {
     background-color: #f9f9f9;
     color: #06c;
     font-size: 12px;
-}
-aside.sidebar-block .list-group .panel-collapse a:last-child {
-    border-bottom: 0;
+    margin-bottom: -1px;
 }
 aside.sidebar-block .list-group .panel-collapse a:hover {
     background-color: #eee;
 }
 aside.sidebar-block .list-group .panel-collapse a.active {
     border-color: #ddd;
-    /*
-    padding-left: 26px;
-    color: #333;
-    border-left: solid 4px #7ab3e4;*/
     color: #fff;
     background-color: #428bca;    
 }
@@ -348,6 +341,7 @@ body,
     -webkit-transition: background 0.3s;
     transition: background 0.3s;
     background-color: transparent;
+    margin-bottom: -1px;
 }
 .st-menu .panel > a:first-child,
 .st-menu .panel > a:first-child:hover,

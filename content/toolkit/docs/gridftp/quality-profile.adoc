@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 GridFTP Key Concepts"
+short_title: "Key Concepts"
+---
+
+= GT 6.0 GridFTP Key Concepts
+
+[red]#(CONTENT NEEDS REVIEW)#

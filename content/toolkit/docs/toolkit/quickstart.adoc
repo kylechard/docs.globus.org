@@ -1,0 +1,8 @@
+---
+full_title: "Globus Toolkit 6.0 Quickstart"
+short_title: "Quickstart"
+---
+
+= Globus Toolkit 6.0 Quickstart
+
+[red]#(CONTENT NEEDS REVIEW)#

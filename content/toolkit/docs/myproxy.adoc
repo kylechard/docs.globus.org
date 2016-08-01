@@ -1,0 +1,8 @@
+---
+full_title: "MyProxy System Administrator's Guide"
+short_title: "MyProxy"
+---
+
+= MyProxy System Administrator's Guide
+
+[red]#(CONTENT NEEDS REVIEW)#
