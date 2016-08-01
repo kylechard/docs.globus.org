@@ -9,9 +9,9 @@ short_title: "Latest"
 
 GT6.0 is an open source software toolkit used for building grids with services written in C. The services run on Unix platforms, including Linux.
 
-For installation instructions, please see the [red]#Globus Toolkit 6.0 Admin Guide (TO FIX)# or [red]#Globus Toolkit 6.0 Quickstart (TO FIX)#.
+For installation instructions, please see the link:../../docs/toolkit/admin[Globus Toolkit 6.0 Admin Guide] or link:../../docs/toolkit/quickstart[Globus Toolkit 6.0 Quickstart].
 
-For information about the contents, please refer to the [red]#Release Notes# or the [red]#full documentation (TO FIX)#.
+For information about the contents, please refer to the link:../../docs/toolkit/release-notes[Release Notes] or the link:../../docs/toolkit[full documentation].
 
 == Supported Systems
 We provide binary packages of the Globus Toolkit for many operating systems. The source for the Globus Toolkit is also available for systems which we do not directly support. Versions that are struck out are ones which have reached end of life by the OS vendor and are no longer supported.
@@ -45,7 +45,7 @@ link:[Binary Tarball] [link:[sha1]] [link:[sha512]]
 |========
 
 == Linux Repository Packages
-Once you install one of the repository packages, you can use *yum*, *zypper* or *apt-get* to install the toolkit, as described in the [red]#installation instructions (TO FIX)#. These repositories contain the 6.0 release plus the updates available on the [red]#updates page (TO FIX)#.
+Once you install one of the repository packages, you can use *yum*, *zypper* or *apt-get* to install the toolkit, as described in the link:../../docs/toolkit/installation[installation instructions]. These repositories contain the 6.0 release plus the updates available on the [red]#updates page (TO FIX)#.
 
 As an alternative to installing the repository package, you can download the repository definitions and GPG keys used to sign the packages and repositories from the [red]#stable RPM repository files (TO FIX)# or [red]#stable Debian repository files (TO FIX)# directories.
 

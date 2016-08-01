@@ -1,23 +1,24 @@
 ---
-full_title: "Latest Toolkit Docs"
-short_title: "Latest"
+full_title: "Globus Toolkit 6.0"
+short_title: "Toolkit"
+menu_weight: -1
 ---
 
-= Latest Toolkit Docs
+= Globus Toolkit 6.0
 
-[red]#(CONTENT NEEDS REVIEW)#
+[red]#(CONTENT NEEDS REVIEW) Should this be moved to be docs index page?#
 
 The following documents are good places to start with Globus Toolkit 6.0:
 
 For everyone:
 
-- GT6.0 Release Notes
+- link:release-notes[GT6.0 Release Notes]
 - GT Commands
 
 For system administrators and those installing GT:
 
-- Installation Guide
-- Quickstart
+- link:installation[Installation Guide]
+- link:quickstart[Quickstart]
 
 For End Users:
 

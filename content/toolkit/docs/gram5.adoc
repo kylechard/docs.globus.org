@@ -1,0 +1,8 @@
+---
+full_title: "GRAM5 System Administrator's Guide"
+short_title: "GRAM5"
+---
+
+= GRAM5 System Administrator's Guide
+
+[red]#(CONTENT NEEDS REVIEW)#
