@@ -1,0 +1,76 @@
+---
+full_title: "Globus Toolkit 6.0 Release Notes"
+short_title: "Release Notes"
+---
+
+= Globus Toolkit 6.0 Release Notes
+
+[red]#(CONTENT NEEDS REVIEW)#
+
+== Introduction
+The GT development team is pleased to make a new stable release of the Globus Toolkit available for download.
+
+By following the Quickstart guide, you can easily install and setup a full GT environment in minutes.
+
+Highlights of this release include:
+
+* Overall
+** Migrate from CVS to link:https://github.com/globus/globus-toolkit[https://github.com/globus/globus-toolkit]
+** Simplified package by eliminating GPT and library flavors
+** Integrate tests into native package build process
+** Porting to windows — mingw (partial) and cygwin
+** Add support for el7 (CentOS 7, RHEL 7)
+** Add binary package for Mac OS X
+** Make binaries and scripts more easily relocatable (don’t need to set GLOBUS_LOCATION for most cases)
+* GridFTP
+** UDT Support for Wide-Area, Lossy Networks
+** UDT NAT Traversal, supported by Globus Connect Personal for
+** S3/HTTP support, allowing GridFTP transfers to and from Amazon S3
+** DCSC for cross-domain transfers without mutual trust
+* C Common Libraries
+** None.
+
+To view details for each component, see link:#rn-component[Release Notes by Component].
+
+== Obtaining and Installing Software
+To download this release, go to the link:../../../downloads[Downloads Page].
+
+For information on installing this release, go to the link:../installation[6.0 Installation Guide].
+
+[[jGlobus]]
+=== Java Client API Download
+
+Java client APIs to the GT 6.0 services are available from the link:https://github.com/jglobus/JGlobus[jGlobus] project.
+
+== Platform Notes
+Check out platform-specific installation issues link:../installation#platform[here].
+
+== Documentation
+Use the documentation which starts link:../[here].
+
+Feel free to offer any suggestions or feedback by creating an issue on link:https://github.com/globus/globus-toolkit/issues[GitHub].
+
+== Support
+An overview on GT support can be found link:../../#support[here].
+
+== Licensing
+The Globus Toolkit is distributed and licensed for use under the terms of the link:http://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].
+
+To view the licenses of the 3rd party software used by the developers of the Globus Toolkit, link:https://www.globus.org/legal/software-license[click here].
+
+== Usage Statistics
+For full information about usage statistics collected by GT 6.0 and how to opt-out, see Usage Statistics Collection by the Globus Alliance.
+
+[[rn-component]]
+== Release Notes by Component
+
+* link:../../gridftp/release-notes[GridFTP]
+* link:../../gram5/release-notes[GRAM5]
+* Security
+** GSI C
+** SimpleCA
+** link:../../myproxy/release-notes[MyProxy]
+** link:../../gsi-openssh/release-notes[GSI-OpenSSH]
+* Common Runtime Components
+** XIO
+** C Common Libraries

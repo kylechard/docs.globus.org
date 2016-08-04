@@ -1,15 +1,22 @@
 ---
-full_title: "GT 6.0 GridFTP Key Concepts"
-short_title: "Key Concepts"
+full_title: "GT 6.0 GridFTP"
+short_title: "GridFTP"
 ---
 
-= GT 6.0 GridFTP Key Concepts
+= GT 6.0 GridFTP
+:imagesdir: .
 
-[red]#(CONTENT NEEDS REVIEW) Also, should GridFTP be highlighted as active in sidebar?#
+[red]#(CONTENT NEEDS REVIEW)#
+
+GridFTP is a high-performance, secure, reliable data transfer protocol optimized for high-bandwidth wide-area networks. The GridFTP protocol is based on FTP, the highly-popular Internet file transfer protocol. We have selected a set of protocol features and extensions defined already in IETF RFCs and added a few additional features to meet requirements from current data grid projects.
+
+[red]#(key concepts)#
+
+== GT 6.0 GridFTP Key Concepts
 
 One of the foundational issues in HPC computing is the ability to move large (multi Gigabyte, and even Terabyte), file-based data sets between sites. Simple file transfer mechanisms such as FTP and SCP are not sufficient either from a reliability or performance perspective. GridFTP extends the standard FTP protocol to provide a high-performance, secure, reliable protocol for bulk data transfer.
 
-== GridFTP Protocol
+=== GridFTP Protocol
 GridFTP is a protocol defined by Global Grid Forum Recommendation GFD.020, RFC 959, RFC 2228, RFC 2389, and a draft before the IETF FTP working group. Key features include:
 
 - Performance - GridFTP protocol supports using parallel TCP streams and multi-node transfers to achieve high performance.
@@ -17,7 +24,7 @@ GridFTP is a protocol defined by Global Grid Forum Recommendation GFD.020, RFC 9
 - Third-party transfers - The FTP protocol on which GridFTP is based separates control and data channels, enabling third-party transfers, that is, the transfer of data between two end hosts, mediated by a third host.
 - Security - Provides strong security on both control and data channels. Control channel is encrypted by default. Data channel is authenticated by default with optional integrity protection and encryption.
 
-== Globus Implementation of GridFTP
+=== Globus Implementation of GridFTP
 The GridFTP protocol provides for the secure, robust, fast and efficient transfer of (especially bulk) data. The Globus Toolkit provides the most commonly used implementation of that protocol, though others do exist (primarily tied to proprietary internal systems).
 
 The Globus Toolkit provides:
@@ -30,7 +37,7 @@ While the Globus Toolkit does not provide a client with Graphical User Interface
 
 Globus GridFTP framework implements all the key features of GridFTP protocol mentioned above. It supports both Grid Security Infrastructure (GSI) and SSH for securing the data transfer. Unlike sftp, SSH based GridFTP supports multiple security options on the data channel - authentication only, authentication and integrity protection, fully encrypted. Globus implemention of GridFTP is modular and extensibl. XIO based Globus GridFTP framework makes it easy to plugin alternate transport protocols. The Data Storage Interface (DSI) allows for easier integration with various storage systems. We currently have DSIs for POSIX filesystems (default) and HPSS. Globus GridFTP has been deployed at thousands of sites with more than 10 million data transfers per day.
 
-== GridFTP Clients
+=== GridFTP Clients
 link:https://globus.org[Globus] is the recommended interface to move data to and from GridFTP servers. Globus provides a web GUI, command line interface and a REST API for GridFTP data movement. It provides automatic fault recovery and automatic tuning of optimization parameters to achieve high performance.
 
 The Globus Toolkit provides a GridFTP client called globus-url-copy, a command line interface, suitable for scripting. For example, the following command:
@@ -47,3 +54,12 @@ For more information about GridFTP, see:
 
 - the link:../[documentation].
 - the link:https://www.globus.org/sites/default/files/gridftp_final.pdf[Globus Striped GridFTP Framework and Server]
+
+The following guides are available for this component:
+
+[cols="s,",role="table-borderless"]
+|========
+|link:admin[Admin Guide]	|For system administrators and those installing, building and deploying GT. You should already have read the link:../toolkit/installation[Installation Guide] and link:../toolkit/quickstart[Quickstart]
+|link:user[User’s Guide]	|Describes how end-users typically interact with this component.
+|link:developer[Developer’s Guide]	|Reference and usage scenarios for developers.
+|========
