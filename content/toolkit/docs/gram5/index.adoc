@@ -1,0 +1,43 @@
+---
+full_title: "GRAM5 System Administrator's Guide"
+short_title: "GRAM5"
+---
+
+= GRAM5 System Administrator's Guide
+:imagesdir: .
+
+[red]#(CONTENT NEEDS REVIEW)#
+
+The Grid Resource Allocation and Management (GRAM5) component is used to locate, submit, monitor, and cancel jobs on Grid computing resources. GRAM5 is not a Local Resource Manager, but rather a set of services and clients for communicating with a range of different batch/cluster job schedulers using a common protocol. GRAM5 is meant to address a range of jobs where reliable operation, stateful monitoring, credential management, and file staging are important.
+
+The following guides are available for this component:
+
+[cols="s,",role="table-borderless"]
+|========
+|link:key[Data Management Key Concepts]	|For important general concepts about job management in Globus. Includes link:key#gram5-approach[GRAM5 Approach].
+|link:admin[Admin Guide]	|For system administrators and those installing, building and deploying GT. You should already have read the link:../toolkit/installation[Installation Guide] and link:../toolkit/quickstart[Quickstart]
+|link:user[User’s Guide]	|Describes how end-users typically interact with this component.
+|link:developer[Developer’s Guide]	|Reference and usage scenarios for developers.
+|========
+
+Other information available for this component are:
+
+[cols="s,",role="table-borderless"]
+|========
+|link:release-notes[Release Notes]	|What’s new with the 6.0 release for this component.
+|link:public-interface[Public Interface Guide]	|Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the link:developer[Developer’s Guide].
+|link:quality-profile[Quality Profile]	|Information about test coverage reports, etc.
+|link:migrating[Migrating Guide]	|Information for migrating to this version if you were using a previous version of GT.
+|========
+
+// |link:gram5pAll.pdf[All GRAM5 Guides (pdf only)]	|Includes all GRAM5 guides except Public Interfaces (which is a subset of the Developer’s Guide)
+
+== Older versions (not supported) [red]#Are we keeping all these and their subsequent pages?#:
+
+- link:http://toolkit.globus.org/toolkit/docs/5.2/[5.2 Stable Release Documentation]
+- link:5.0[5.0 Stable Release Documentation]
+- link:4.2[4.2 Stable Release Documentation]
+- link:4.0[4.0 Stable Release Documentation]
+- link:3.2[3.2 Stable Release Documentation]
+- link:3.0[3.0 Stable Release Documentation]
+- link:2.4[2.4 Stable Release Documentation]

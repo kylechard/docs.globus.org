@@ -4,5 +4,6 @@ short_title: "MyProxy"
 ---
 
 = MyProxy System Administrator's Guide
+:imagesdir: .
 
 [red]#(CONTENT NEEDS REVIEW)#
