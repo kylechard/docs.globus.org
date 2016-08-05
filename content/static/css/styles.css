@@ -88,6 +88,20 @@ dd,
 .indent30 {
     margin-left: 30px;
 }
+.flexcontainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flexcontainer div {
+  margin-bottom: 15px;
+}
+.flexcontainer-2 div:nth-of-type(odd) {
+  flex-basis: 20%;
+}
+.flexcontainer-2 div:nth-of-type(even) {
+  flex-basis: 80%;
+  flex-grow: 3;
+} 
 
 /* Asciidoc */
 .doc-info {
