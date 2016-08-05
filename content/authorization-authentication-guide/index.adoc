@@ -1,4 +1,5 @@
 = Globus Authorization/Authentication Guide
+:imagesdir: .
 :revdate: May 16, 2016
 :toc:
 :toc-placement: manual

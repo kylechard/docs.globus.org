@@ -1,3 +1,7 @@
+---
+menu_weight: 2
+---
+
 = API Reference
 :toc:
 :numbered:
@@ -490,7 +494,7 @@ separated list of identity ids.
 
 If the identity_id does not exist, it is not in the list…
 
-An identity documents may not include all fields, depending on the
+An identity document may not include all fields, depending on the
 identity's visibility policy.
 
 === GET /v2/api/identities?usernames=<list-of-identity-names>

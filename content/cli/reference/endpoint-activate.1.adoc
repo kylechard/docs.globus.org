@@ -33,7 +33,7 @@ Use the *endpoint-modify* command to set a default MyProxy or OAuth Identity
 Provider.
 
 
-include::include/cli_bookmarks_no_paths.adoc[]
+include::content/cli/reference/include/cli_bookmarks_no_paths.adoc[]
 
 
 == OPTIONS

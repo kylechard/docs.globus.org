@@ -7,24 +7,9 @@ menu_weight: 2
 :toclevels: 3
 :numbered:
 
-// use outfilesuffic in relative links to make them work on github
+// use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
 
-// See https://github.com/jbake-org/jbake/issues/80, github requires
-// going through hoops to get the TOC to render.
-ifdef::env-github[]
-toc::[]
-endif::[]
-
-////
-Note: We use asciidoc in some table cells for
-1. labeled lists
-2. source code (json) blocks.
-You need to be careful to not have spaces between the a| and content, 
-otherwise it shows up as monospace (?) in asciidoc.py.
-Also, using 'a' type cells when not needed makes asciidoc slower; it executes
-asciidoc for each cell of type 'a'.
-////
 
 == Overview
 

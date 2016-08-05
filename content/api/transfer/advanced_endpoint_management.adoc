@@ -10,11 +10,6 @@ menu_weight: 10
 // use outfilesuffic in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
 
-// See https://github.com/jbake-org/jbake/issues/80, github requires
-// going through hoops to get the TOC to render.
-ifdef::env-github[]
-toc::[]
-endif::[]
 
 == Overview
 
@@ -27,6 +22,14 @@ endpoint, and the endpoint must be marked as +Managed+ and associated with a
 provider subscription. In particular, for +TRANSFER+ tasks the user must have
 manager privileges on either the source or destination endpoint to view the
 task or to cancel or pause the task.
+
+NOTE: In this document, we refer to a user with +Endpoint Manger+
+privileges on a shared endpoint as a "share admin" or "admin of the shared
+endpoint", and a user with +Endpoint Manager+ privileges on the endpoint
+that hosts the shared endpoint as a "host admin" or "admin of the
+host endpoint". The context will typically be a specific set of
+endpoints, like the source and destination endpoints of a task, or the
+endpoint in a pause rule.
 
 Managed endpoints and manager privileges are currently set by Globus
 administrators. Endpoint administrators with a provider subscription should
@@ -43,6 +46,36 @@ returned by all resources under +/endpoint_manager+.
 
 NOTE: This API is *alpha* and is likely to change between releases without
 a change to the API version.
+
+=== Shared Endpoints and Manager Privileges
+
+A user can have manager privileges set on a shared endpoint or a host endpoint.
+Host endpoint privileges implicitly grant manger privileges on all hosted
+shared endpoints.
+
+NOTE: If a user has been granted manager privileges on both a host endpoint and
+a hosted shared endpoint, e.g. because of group membership, the highest
+privileges are always used (in this case the host endpoint privileges).
+
+In short, a share admin can not override a configuration change made by
+a host admin. Host admins and share admins are authorized according to these
+rules:
+
+* A host admin can create a pause rule on the host endpoint, which also
+affects all its shared endpoints, or create a pause rule on a specific shared
+endpoint. In the latter case, the rule is visible to share admins, but they
+can not edit or delete it.
+* A share admin can create a rule on the shared endpoint.  A rule
+that was created by a share admin can be edited or deleted by any share admin
+or any host admin.
+* Both host admins and share admins can pause a task (per-task
+pause) and these flags are tracked separately internally.  A host admin can
+resume a per-task pause set by a share admin.  However, a share admin can not
+resume a per-task pause set by a host admin.
+* A task to or from a shared endpoint can be canceled by a host admin or a
+share admin.
+
+For more details, see the individual operation documentation below.
 
 == Document Types
 
@@ -109,8 +142,8 @@ rules.
 | string
 | Id of the endpoint hosting the source endpoint if
   the source endpoint is a shared endpoint. If the source is not a shared
-  endpoint, or if the user does not have manager privileges on the host
-  endpoint, this will be null.
+  endpoint, or if the host endpoint is private and the user does not have
+  manager privileges on the host endpoint, this will be null.
 
 | source_host_endpoint_display_name
 | string
@@ -122,16 +155,17 @@ rules.
 | string
 | [DEPRECATED] Use +destination_host_endpoint_id+ instead. Canonical name of
   the endpoint hosting the destination endpoint
-  if the destination endpoint is a shared endpoint. If the destination is not
-  a shared endpoint, if the user does not have manager privileges on the
-  host endpoint, or if the task is a +DELETE+ task, this will be +null+.
+  if the destination endpoint is a shared endpoint. Same visibility rules
+  as +destination_host_endpoint_id+.
 
 | destination_host_endpoint_id
 | string
 | Id of the endpoint hosting the destination endpoint if
-  the destination endpoint is a shared endpoint. If the destination is not a
-  shared endpoint, or if the user does not have manager privileges on the host
-  endpoint, this will be null.
+  the destination endpoint is a shared endpoint.
+   If the destination is not
+  a shared endpoint, if the host endpoint is private and the user does not
+  have manager privileges on the host endpoint, or if the task is a
+  +DELETE+ task, this will be +null+.
 
 | destination_host_endpoint_display_name
 | string
@@ -168,7 +202,10 @@ rules.
   setup. For shared endpoints, this will be the local user that was used
   when creating the shared endpoint. This will also be "null" on older jobs,
   that were started before this feature was added, and if the GridFTP server
-  of the endpoint does not support the `SITE WHOAMI` command.
+  of the endpoint does not support the `SITE WHOAMI` command. For shared
+  endpoints, this field will be "null" unless the user has manager privileges
+  on the host endpoint. For all other endpoint types, this will be "null"
+  unless the user has manager privileges on the endpoint itself.
 
 | source_local_user_status
 | string
@@ -177,8 +214,9 @@ a|A status code indicating if the local user is available for the source
   following values, and new values may be added in the future:
 
     "OK":: The local user is set.
-    "NO_PERMISSION":: The user does not have management permissions on the
-                      endpoint.
+    "NO_PERMISSION":: The user does not have manager privileges on the
+                      endpoint (or for shared endpoints, the user does not
+                      have manager privileges on the host endpoint).
     "NOT_SCANNED":: For active tasks, this indicates that the async process
                     that fetches the local user has not completed. For
                     complete tasks, this indicates that the task completed
@@ -201,6 +239,13 @@ a|A status code indicating if the local user is available for the source
 | Like +source_local_user_status+, but for the destination endpoint. In
   addition to the status codes described above, it can have the value
   "NO_ENDPOINT" for delete tasks.
+
+| owner_string
+| string
+| The Globus Auth identity username corresponding to the primary task
+  owner (with id +owner_id+). This is provided as a convenience to clients,
+  as something that can be displayed to end users (without having to call
+  the Globus Auth API to get the identity details using +owner_id+).
 |===================
 
 === Admin cancel document
@@ -335,6 +380,16 @@ one or more tasks by id.
 The pause rule document represents a rule that causes tasks and certain
 operation to be paused.
 
+.Uniqueness
+Pause rule uniqueness is enforced on (+endpoint_id+, +identity_id+,
++created_by_host_manager+). For shared endpoints, this means that for each
+pair of (+endpoint_id+, +identity_id+), there can be one pause rule created by
+a host admin and one created by a share admin. In all other cases, there can
+only be one such rule. Rules on the entire endpoint, i.e. with a null
++identity_id+, are treated as a special value of +identity_id+ regarding
+uniqueness, so there can be only one endpoint wide rule
+(or two on shared endpoints).
+
 .Pause rule document example
 -----------------------
 {
@@ -342,16 +397,18 @@ operation to be paused.
   "id": 985,
   "message": "Quota exceeded, please delete data from /scratch",
   "endpoint_id": "339abc22-aab3-4b45-bb56-8d40535bfd80",
+  "endpoint_display_name": "Globus Tutorial Endpoint 1",
   "identity_id": "bbe7b12b-d397-41e3-8895-3b56518302ef",
   "start_time": null,
   "modified_by_id": "4c77dd76-aa99-4490-af19-dc81a312c3a1",
   "modified_time": "2015-05-04 16:32:39+00:00"
-  "pause_ls": False,
-  "pause_mkdir": True,
-  "pause_rename": True,
-  "pause_task_delete": True,
-  "pause_task_transfer_write": True,
-  "pause_task_transfer_read": False,
+  "created_by_host_manager": true,
+  "pause_ls": false,
+  "pause_mkdir": true,
+  "pause_rename": true,
+  "pause_task_delete": true,
+  "pause_task_transfer_write": true,
+  "pause_task_transfer_read": false,
 }
 -----------------------
 
@@ -391,6 +448,13 @@ operation to be paused.
   compatibility, +endpoint+ can be specified instead, but all code should
   be updated to use +endpoint_id+).
 
+| endpoint_display_name
+| string
+| Display name of the endpoint. This is an output only field, for convenience
+  when displaying pause rules. Note that it may be null if the display name
+  has not been set for the endpoint. In that case, consider using the
+  endpoint's canonical name in the +endpoint+ field for display.
+
 | endpoint
 | string
 | [DEPRECATED] Use +endpoint_id+ instead. Canonical name of the endpoint to
@@ -398,14 +462,18 @@ operation to be paused.
 
 | user
 | string
-| [DEPRECATED] Username of a user to pause tasks for on the endpoint, or null
-  to indicate all users on the endpoint. If the identity is not a globus-id.org
-  identity, this will be the same as +identity_id+. Use +identity_id+ instead.
+| [DEPRECATED] Use +identity_id+ isntead.
+  Username of a user to pause tasks for on the endpoint. If
+  +identity_id+ is set to an identity that has never been used in the Transfer
+  service, then this will be null. This will also be null for rules that apply
+  to all users on an endpoint, in which case +identity_id+ will also be null.
 
 | identity_id
 | string
 | Identity id of an identity to pause tasks for on the endpoint,
-  or null to indicate all identities on the endpoint.
+  or null to indicate all identities on the endpoint. This will affect
+  tasks with a matching +owner_id+ or with a match in the set of linked
+  identities at the time the task was submitted.
 
 | modified_time
 | ISO 8601 datetime string
@@ -425,7 +493,21 @@ operation to be paused.
 | modified_by_id
 | string
 | Identity id of the identity that last updated or created the pause rule.
+  If the user is a share admin and not a host admin, and
+  the rule has +created_by_host_manager+ set to true, or has been updated
+  by a host admin, this field and +modified_by+ will be set to null.
   Note that this field will not be included in the
+  link:../task#limited_pause_rule_document[pause_rule_limited]
+  documents returned by the get task pause info and get my effective pause rule
+  operations.
+
+| created_by_host_manager
+| boolean
+| Rules created by a share admin will have this field set to false; in all
+  other cases it will be true. When true, share admins will
+  be able to view the rule, but will not be able to edit it. See the
+  operation documentation for details about authorization requirements.
+  This field will not be included in the
   link:../task#limited_pause_rule_document[pause_rule_limited]
   documents returned by the get task pause info and get my effective pause rule
   operations.
@@ -705,7 +787,7 @@ does not involve an endpoint the user has manager privileges on will result in
 a +PermissionDenied+ error.
 
 For any query that doesn't specify a +filter_status+ that is a subset of
-("ACTIVE", "INACTIVE"), at least one of +filter_task_id+, +filter_username+, or
+("ACTIVE", "INACTIVE"), at least one of +filter_task_id+ or
 +filter_endpoint+ is required. This requirement is present because completed
 tasks are stored separately in a very large table and it is very expensive to
 query without making use of an index, which can be done only if an appropriate
@@ -733,19 +815,21 @@ filter is present.
 | filter_owner_id
 | equality
 | A Globus Auth identity id. Limit results to tasks submitted by the
-  specified identity.
+  specified identity, or linked to the specified identity, at submit time.
   Returns +UserNotFound+ if the identity does not exist or has never used the
   Globus Transfer service. If no tasks were submitted by this user to an
   endpoint the current user has manager privileges on, an empty result set
-  will be returned.
+  will be returned. Unless filtering for running tasks (i.e. +filter_status+
+  is a subset of ("ACTIVE", "INACTIVE"), +filter_endpoint+ is required when
+  using +filter_owner_id+.
 
 | filter_username
 | equality
 | [DEPRECATED] Use +filter_owner_id+ instead.
-  A Globus username. Limit results to tasks submitted by the specified Globus
-  user. Returns +UserNotFound+ if the user does not exist. If no tasks
-  were submitted by this user to an endpoint the current user has manager
-  privileges on, an empty result set will be returned.
+  A Globus username. The username is mapped to the globus identity id,
+  and passed to +filter_owner_id+. Just like +filter_owner_id+,
+  +filter_endpoint+ is required unless filtering for running tasks.
+  Returns +UserNotFound+ if the user does not exist.
 
 | filter_endpoint
 | equality
@@ -813,6 +897,12 @@ Get details of a single task by id. The result will include the
 link:../task#task_fields[standard task fields]
 and the <<_extra_fields,extra task fields>> described above.
 
+.Authorization
+Requires endpoint management privileges on a source or destination endpoint
+(host or share) of the task. Note that if the user owns the task but does not
+have management privileges on an endpoint this will still return a
+"PermissionDenied" error.
+
 [cols="h,5"]
 |============
 | URL
@@ -832,6 +922,12 @@ Get list of events for a single task. Paging is done using the old
 
 See the link:../task#event[event document] documentation for
 details.
+
+.Authorization
+Requires endpoint management privileges on a source or destination endpoint
+(host or share) of the task. Note that if the user owns the task but does not
+have management privileges on an endpoint this will still return a
+"PermissionDenied" error.
 
 [cols="h,5"]
 |============
@@ -901,9 +997,10 @@ since the result can include pause rules for endpoints the current
 user does not have manager privileges on.
 
 .Authorization
-Requires endpoint management rights on the source or destination endpoint of
-the task. Note that if the user owns the task but does not have management
-rights on an endpoint this will return a "PermissionDenied" error.
+Requires endpoint management privileges on a source or destination endpoint
+(host or share) of the task. Note that if the user owns the task but does not
+have management privileges on an endpoint this will still return a
+"PermissionDenied" error.
 
 [cols="h,5"]
 |============
@@ -920,6 +1017,8 @@ rights on an endpoint this will return a "PermissionDenied" error.
     "pause_rules": [... list of pause_rule_limited documents...],
     "source_pause_message": null,
     "destination_pause_message": "Disk problems, pausing all tasks until we resolve",
+    "source_pause_message_share": null,
+    "destination_pause_message_share": null
 }
 -------------------------------------------------------------------
 |============
@@ -936,10 +1035,10 @@ If the current user has management privileges on only one of the endpoints, the
 paths corresponding to the other endpoint will be "null".
 
 .Authorization
-
-Requires endpoint management privileges on the source or destination endpoint
-of the task. Note that if the user owns the task but does not have management
-privileges on an endpoint this will still return a "PermissionDenied" error.
+Requires endpoint management privileges on a source or destination endpoint
+(host or share) of the task. Note that if the user owns the task but does not
+have management privileges on an endpoint this will still return a
+"PermissionDenied" error.
 
 [cols="h,5"]
 |============
@@ -970,14 +1069,12 @@ privileges on an endpoint this will still return a "PermissionDenied" error.
 === Get endpoint
 
 Get details of an endpoint. If the user does not have manager privileges on the
-endpoint or it's host endpoint, this behaves identically to +GET
-/endpoint/<endpoint_xid>+.
+endpoint or its host endpoint, this behaves identically to +GET
+/endpoint/<endpoint_xid>+, except that +in_use+ will be set to "null"
+(it's not meaningful in the multi-user context of an endpoint manager).
 
-If the user does have manager privileges on the endpoint or it's host
-endpoint:
-
-* Private shared endpoints will be visible.
-* The +host_path+ field of a shared endpoint will be visible.
+If the user does have manager privileges on the endpoint or its host
+endpoint, the +host_path+ field of a shared endpoint will be visible.
 
 See the link:../endpoint#endpoint_fields[endpoint document]
 documentation for details.
@@ -997,10 +1094,13 @@ documentation for details.
 === Get hosted shared endpoints
 
 Get a list of shared endpoints hosted on a specified endpoint that the user has
-manager privileges on. This will include even private endpoints.
+manager privileges on.
 
 .Fields
-* canonical_name
+* display_name
+* owner_id
+* owner_string
+* canonical_name [DEPRECATED]
 * user_rule_count ("identity" rules)
 * group_rule_count
 * all_rule_count ("all_authenticated_user" rules)
@@ -1021,7 +1121,9 @@ manager privileges on. This will include even private endpoints.
     "DATA": [
         {
             "DATA_TYPE": "hosted_endpoint_info",
-            "canonical_name": "bob#project1share",
+            "owner_id": "8ea74f97-e9e4-433d-a513-ac9920350258",
+            "owner_string": "bob@globusid.org",
+            "display_name": "Project1 Share",
             "user_rule_count": 4,
             "group_rule_count": 1,
             "all_rule_count": 0
@@ -1034,26 +1136,55 @@ manager privileges on. This will include even private endpoints.
 
 ==== Ordering
 
-Results are ordered by +canonical_name+.
+Results are ordered by +display_name+.
 
 ==== Filtering
 
 No filtering options are supported at this time.
 
 
+=== Get endpoint access list as admin
+
+Get a list of ACLs on the specified endpoint. Returns the same
++access_list+ document as the standard
+link:../acl#rest_access_get_list[access list resource],
+but has different authorization requirements.
+
+.Authorization
+Requires manager privileges on the endpoint or its host endpoint.
+
+[cols="h,5"]
+|============
+| URL
+| /endpoint_manager/endpoint/<endpoint_xid>/access_list
+
+| Method
+| GET
+
+| Response Body | "access_list" document
+|============
+
+
 === Get monitored endpoints
 
-Get a list of the canonical names of all endpoints the current users has
-manager privileges on. Like all endpoint manager resources, a 403 response
-with a PermissionDenied error code body will be returned if the user has
-no permissions.
+Get a list of the endpoints the current users has explicit manager privileges
+on. Like all endpoint manager resources, a 403 response with a PermissionDenied
+error code body will be returned if the user has no permissions.
 
-NOTE: +/users/flight_control+ is different in that it returns the actual
-flight control rules, which could be of the form +owner#*+ to indicate
-all managed endpoints owned by a user. We are reviewing the policy on
-supporting wildcard rules, so this may change in the future. This resource
-returns the full list of endpoint names, so it shouldn't need to change
-as the policy changes. We will likely deprecate +/users/flight_control+.
+NOTE: If the user has manager privileges on a host endpoint, they have implicit
+manager privileges on all shared endpoint hosted by that endpoint, but this
+list will _not_ include _all_ of the hosted shared endpoints. Shared endpoints
+will only be in this list if the user has been explicitly granted manager
+privileges on the shared endpoint itself. If the user has explicit manager
+privileges on both a shared endpoint and its host endpoint, both will be in the
+list. In that case, the host endpoint permissions still take priority for the
+purpose of all authorization checks.
+
+The response contains full endpoint documents, but the +in_use+ field
+is always set to "null". In the context of a single user endpoint view,
++in_use+ indicates whether that user has a task involving that endpoint,
+but in the multi-user endpoint manager view, this interpretation is not
+useful.
 
 [cols="h,5"]
 |============
@@ -1070,16 +1201,11 @@ as the policy changes. We will likely deprecate +/users/flight_control+.
     "DATA": [
         {
             "DATA_TYPE": "monitored_endpoint",
-            "canonical_name": "someorg#server1",
+            "id": "196b3545-0878-4443-a1e6-57eb833beb06",
+            "display_name": "Great Endpoint",
+            ...
         },
-        {
-            "DATA_TYPE": "monitored_endpoint",
-            "canonical_name": "someorg#server2",
-        },
-        {
-            "DATA_TYPE": "monitored_endpoint",
-            "canonical_name": "thisotherorg#newserver",
-        }
+        ...
     ]
 }
 -------------------------------------------------------------------
@@ -1087,7 +1213,7 @@ as the policy changes. We will likely deprecate +/users/flight_control+.
 
 ==== Ordering
 
-Results are ordered by +canonical_name+.
+Results are ordered by +display_name+.
 
 
 [[admin_cancel]]
@@ -1109,8 +1235,8 @@ cancel request. The +done+ field indicates when all tasks in the request
 have status "FAILED" or "SUCCEEDED" and are no longer running.
 
 .Authorization
-Requires manager privileges on either the source or destination endpoint of
-each task in the request.
+Requires manager privileges on the source or destination endpoint or the
+source or destination host endpoint of each task in the request.
 
 [cols="h,5"]
 |============
@@ -1158,6 +1284,12 @@ already complete or paused at the time of the submission it will not raise an
 error, which allows clients to re-submit the request if there was a network
 error.
 
+Per-task pause is tracked separately for host endpoint admins and shared
+endpoint admins. A task is paused if either has been set, and will only
+resume when both are cleared. A host endpoint admin can clear both when
+resuming, while a shared endpoint admin can only clear a pause set by
+other shared endpoint admins.
+
 Task owners will be notified via email that their task(s) were paused by an
 administrator. One email will be sent for each task, and they will be sent even
 if the user has notifications disabled in their profile.
@@ -1166,8 +1298,9 @@ NOTE: Admin pause requests are asynchronous, and it's possible that some tasks
 will succeed before the pause request is processed.
 
 .Authorization
-Requires manager privileges on either the source or destination endpoint of
-each task in the request. If this check fails for any of the tasks, the entire
+Requires manager privileges on the source or destination endpoint or the
+source or destination host endpoint of each task in the request.
+If this check fails for any of the tasks, the entire
 request will fail with a "PermissionDenied" error.
 
 [cols="h,5"]
@@ -1186,15 +1319,23 @@ request will fail with a "PermissionDenied" error.
 
 === Resume tasks as admin
 
-Resuming a task involves removing the per-task pause on the task, and
-overriding existing pause rules that affect the task. Both the per-task pause
-and pause rules are associated with a single endpoint, and for transfer
-tasks this will be the source or destination endpoint. For a task to actually
-run, there must be no pause blocks on either endpoint. This call removes and
+Resuming a task involves removing all per-task pauses on the task (by host
+admins and by share admins), and overriding existing pause rules (host and
+share, source and destination) that affect the task. This operation removes and
 overrides pause on whichever endpoints the current user has manager privileges
-on. The pause rule override will take effect at the time the request is
-received, and override existing pause rules but not any new pause rules created
-after the resume request.
+on.  For example, if a per-task pause set by a host endpoint admin is in
+effect, and so is a pause rule set by a shared endpoint admin, a host endpoint
+admin can clear the per-task pause and set an override on the pause rule so the
+task will resume. A shared endpoint admin cannot clear the per-task pause set
+by the host admin, but they can still override the pause rule.  In that case,
+the resume operation is still considered successful, but the task won't
+actually start running again until a host endpoint admin resumes the task to
+clear the host per-task pause.
+
+This applies to source and destination endpoints as well, i.e. if a user
+has manager privielges on the source but not the destination, a resume
+operation will clear per-task pause and override pause rules on the
+source but not the destination.
 
 To resume all tasks affected by a +pause_rule+, use
 <<_delete_pause_rule_by_id,Delete pause rule by id>>.
@@ -1209,9 +1350,9 @@ remaining pauses. When the task actually begins running again, a resume
 email will be sent to the user. Just like pause, this is an async process.
 
 .Authorization
-Requires manager privileges on either the source or destination endpoint of
-each task in the request. If this check fails for any of the tasks, the entire
-request will fail with a "PermissionDenied" error.
+Requires manager privileges on the source or destination endpoint or source or
+destination host endpoint of each task in the request. If this check fails for
+any of the tasks, the entire request will fail with a "PermissionDenied" error.
 
 [cols="h,5"]
 |============
@@ -1229,18 +1370,19 @@ request will fail with a "PermissionDenied" error.
 
 === Get pause rules
 
-Get a list of pause rules that the current user can manage. If the result set
-contains over 1000 rules, a +LimitExceeded+ error will be returned and the
-client must pass the +filter_endpoint+ query parameter (with the endpoint id)
-to get the rules one endpoint at a time.
+Get a list of pause rules on endpoints that the current user has manager
+privileges on. This will include pause rules on shared endpoints the user has
+implicit manager privileges on by virtue of having privileges on the host
+endpoints. If the result set contains over 1000 rules, a +LimitExceeded+ error
+will be returned and the client must pass the +filter_endpoint+ query parameter
+(with the endpoint id) to get the rules one endpoint at a time.
 
 .Authorization
-Returns only rules for which the user has endpoint management rights on. Note
-that rules are always accessible to any user via the endpoint
+Returns only rules on endpoints for which the user is an endpoint admin.
+
+NOTE: Pause rules are also accessible to normal users via the
 link:../endpoint#get_endpoint_pause_rules[Get endpoint pause rules]
-API, but the +modified_by_id+ fields is hidden from non administrators.
-This (admin) API is designed for adding, removing and updating the rules, so
-it only shows rules for which the user has appropriate rights on.
+API.
 
 [cols="h,5"]
 |============
@@ -1280,7 +1422,9 @@ on the specified endpoint and matching the user clause will receive an
 pause message if multiple pause messages are in effect).
 
 .Authorization
-Requires endpoint management rights on the endpoint in the rule.
+Requires endpoint management rights on the endpoint in the rule, or the
+host endpoint of the endpoint in the rule (if the endpoint is a shared
+endpoint).
 
 [cols="h,5"]
 |============
@@ -1301,7 +1445,8 @@ Requires endpoint management rights on the endpoint in the rule.
 Get a pause rule by id.
 
 .Authorization
-Requires endpoint management rights on the endpoint in the rule.
+Requires endpoint management rights on the endpoint in the rule, or on the
+host endpoint of the endpoint in the rule.
 
 [cols="h,5"]
 |============
@@ -1329,7 +1474,10 @@ overrode this pause rule will no longer be in effect, and such tasks will
 become paused.
 
 .Authorization
-Requires endpoint management rights on the endpoint in the rule.
+If the endpoint in the rule is a shared endpoint, and
++created_by_host_manager+ is true, then only a host admin can update
+the rule. Otherwise either a host admin or a shared endpoint admin of
+the endpoint in the rule can update the rule.
 
 [cols="h,5"]
 |============
@@ -1350,7 +1498,10 @@ Delete an existing pause rule by id. Any tasks that were paused by this rule
 and are not affected by any other rule or per-task pause will resume.
 
 .Authorization
-Requires endpoint management rights on the endpoint in the rule.
+If the endpoint in the rule is a shared endpoint, and
++created_by_host_manager+ is true, then only a host admin can delete
+the rule. Otherwise either a host admin or a shared endpoint admin of
+the endpoint in the rule can update the rule.
 
 [cols="h,5"]
 |============

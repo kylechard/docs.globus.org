@@ -6,18 +6,37 @@ menu_weight: 12
 :toc:
 :toclevels: 3
 
-// use outfilesuffic in relative links to make them work on github
+
+// use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
 
-////
-Note: We use asciidoc in some table cells for
-1. labeled lists
-2. source code (json) blocks.
-You need to be careful to not have spaces between the a| and content, 
-otherwise it shows up as monospace (?) in asciidoc.py.
-Also, using 'a' type cells when not needed makes asciidoc slower; it executes
-asciidoc for each cell of type 'a'.
-////
+
+== 5.2
+
+* Advanced Endpoint Management
+** Add +owner_string+ to +task+ document.
+** Change semantics of +filter_owner_id+ (and the deprecated
+   +filter_username+) so that it searches both +owner_id+ and
+   linked ids. Both now require +filter_endpoint+ to be passed
+   if querying against completed tasks.
+** Change semantics of pause rules with +identity_id+, so they apply
+   to tasks with a matching +owner_id+ or a matching linked id.
+** Support having +Endpoint Manager+ privileges on a shared endpoint,
+   independent of the host. Authorization on many resources has been adjusted
+   to handle this change.
+** Add +created_by_host_manager+ and +endpoint_display_name+
+   to +pause_rule+ document type. Pause rules can now be set on shared
+   endpoints.
+** Change +monitored_endpoints+ resource to return full endpoint documents.
+** Add resource for getting endpoint access rules as an +Endpoint Manager+.
+** Add +files_transferred+ to +task+ document type.
+** Add +display_name+, +owner_id+, and +owner_string+ to +host_endpoint_info+
+   document type.
+
+* Endpoint Management
+** Add +local_user_info_available+ to +endpoint+ document.
+
+* Limit HTTP requests to 100MB.
 
 == 5.1
 
