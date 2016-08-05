@@ -1,6 +1,6 @@
 ---
 full_title: "Latest Toolkit Downloads"
-short_title: "Latest"
+short_title: "Downloads"
 ---
 
 = Latest Toolkit Downloads
@@ -45,7 +45,7 @@ link:[Binary Tarball] [link:[sha1]] [link:[sha512]]
 |========
 
 == Linux Repository Packages
-Once you install one of the repository packages, you can use *yum*, *zypper* or *apt-get* to install the toolkit, as described in the link:../../docs/toolkit/installation[installation instructions]. These repositories contain the 6.0 release plus the updates available on the [red]#updates page (TO FIX)#.
+Once you install one of the repository packages, you can use *yum*, *zypper* or *apt-get* to install the toolkit, as described in the link:../../docs/installation[installation instructions]. These repositories contain the 6.0 release plus the updates available on the [red]#updates page (TO FIX)#.
 
 As an alternative to installing the repository package, you can download the repository definitions and GPG keys used to sign the packages and repositories from the [red]#stable RPM repository files (TO FIX)# or [red]#stable Debian repository files (TO FIX)# directories.
 

@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 GRAM5 Admin Guide"
+short_title: "Admin Guide"
+---
+
+= GT 6.0 GRAM5 Admin Guide
+
+[red]#(CONTENT NEEDS REVIEW)#
