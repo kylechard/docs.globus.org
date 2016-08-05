@@ -10,34 +10,84 @@ short_title: "GRAM5"
 
 The Grid Resource Allocation and Management (GRAM5) component is used to locate, submit, monitor, and cancel jobs on Grid computing resources. GRAM5 is not a Local Resource Manager, but rather a set of services and clients for communicating with a range of different batch/cluster job schedulers using a common protocol. GRAM5 is meant to address a range of jobs where reliable operation, stateful monitoring, credential management, and file staging are important.
 
+[red]#(key concepts)#
+
+The Globus Toolkit provides GRAM5: a service to submit, monitor, and cancel jobs on Grid computing resources. In GRAM, a job consists of a computation and, optionally, file transfer and management operations related to the computation. Some users, particularly interactive ones, benefit from accessing output data files as the job is running. Monitoring consists of querying and/or subscribing for status information, such as job state changes. Grid computing resources are typically managed by a local resource manager which implements allocation and prioritization policies while optimizing the execution of all submitted jobs for efficiency and performance according to site policy. GRAM is not a resource scheduler, but rather a protocol engine for communicating with a range of different local resource schedulers using a standard message format.
+
+== Conceptual details
+
+A number of concepts underly the purpose and motivation for GRAM. These concepts are divided into broad categories below.
+
+=== Targeted job types
+GRAM is meant to address a range of jobs where arbitrary programs, reliable operation, stateful monitoring, credential management, and file staging are important. GRAM is not meant to serve as a "remote procedure call" (RPC) interface for applications not requiring many of these features. Furthermore, its interface model and implementation may be too costly for such uses. The GRAM5 service protocols and implementation will always involve multiple round-trips to support these advanced features that are not required for simple RPC applications.
+
+=== Component architecture
+Rather than consisting of a monolithic solution, GRAM is based on a component architecture at both the protocol and software implementation levels. This component approach serves as an ideal which shapes the implementation as well as the abstract design and features.
+
+==== Service model
+For GRAM5, the `globus-gatekeeper` daemon and GSI library are used for secure communications and service dispatch.
+
+The `globus-job-manager` daemon implements the job management and file transfer functionality.
+
+==== Local Resource Manager Adapters
+GRAM provides a scripted plug-in architecture to enable extension with adapters to control a variety of local resource systems.
+
+=== Security
+==== Secure operation
+GRAM5 uses SSL-based protocols to establish identity or provide other security tokens needed to authorize GRAM5 service requests. Once authorized, each instance of the job service runs as a local POSIX user. GRAM5 restricts job monitoring and management operations to those who are authorized by the local site policy.
+
+==== Local system protection domains
+To protect users from each other, the GRAM5 job manager and the jobs it starts are executed in separate local security contexts. Additionally, GRAM mechanisms used to interact with the local resource are designed to minimize the privileges required and to minimize the risks of service malfunction or compromise.
+
+==== Credential delegation and management
+A client delegates some of its rights to the GRAM service in order to allow it to perform file transfers on behalf of the client and send state notifications to registered clients. Additionally, GRAM5 provides per-job credentials so that job instances may perform further authentication with other services.
+
+==== Audit
+GRAM uses a range of audit and logging techniques to record a history of job submissions and critical system operations. These records may be used to assist with accounting functions as well as to further mitigate risks from abuse or malfunction.
+
+== GT 6.0 GRAM5 Approach
+
+===  Introduction
+The GRAM5 software implements a solution to the job-management problem described above. This solution is specific to operating systems following the POSIX programming and security model.
+
+=== Component architecture approach
+GRAM5’s job management services interact with local resource managers (LRMs) and other service components of GT 6.0 in order to support job execution with coordinated file staging.
+
+=== GRAM5 Architecture
+
+The GRAM5 service architecture consists of several components which work together to authenticate users, manage jobs, interface with the LRM, and stage files. These components are:
+
+==== Gatekeeper
+The globus-gatekeeper service provides a network interface to the GRAM5 system. It authenticates client identities and starts Job Manager processes using the local user account to which the client identity is mapped. Typically, one instance of the globus-gatekeeper process runs to accept network connections, and forks a new short-lived process to process each new connection.
+
+==== Job Manager
+The globus-job-manager daemon processes job requests and coordinates file transfers. There is one long-lived instance of this per user per LRM and one short-lived instance per job.
+
+==== Scheduler Event Generator
+The globus-scheduler-event-generator process parses LRM-specific data relating to job startup, execution, and termination into an LRM-independent data format. There is optionally one instance of this program per LRM.
+
+==== LRM Adapter
+The LRM adapter provides an interface between the GRAM5 system components and the LRM. It provides concrete implementations of the submit, cancel, and poll functionality for a particular system’s LRM and to generate job status change events.
+
+=== External Components used by GRAM5
+
+==== Local resource manager
+
+GRAM5 uses a local resource manager (LRM) to schedule and run jobs on a compute element. GRAM5 supports several common LRM systems (Condor, Torque, Oracle GridEngine) and can also be configured to manage jobs without an LRM.
+
 The following guides are available for this component:
 
-[cols="s,",role="table-borderless"]
-|========
-|link:key[Data Management Key Concepts]	|For important general concepts about job management in Globus. Includes link:key#gram5-approach[GRAM5 Approach].
-|link:admin[Admin Guide]	|For system administrators and those installing, building and deploying GT. You should already have read the link:../toolkit/installation[Installation Guide] and link:../toolkit/quickstart[Quickstart]
-|link:user[User’s Guide]	|Describes how end-users typically interact with this component.
-|link:developer[Developer’s Guide]	|Reference and usage scenarios for developers.
-|========
+++++
+<div class="flexcontainer flexcontainer-2">
+	<div><b><a href="admin">Admin Guide</a></b></div>
+	<div>For system administrators and those installing, building and deploying GT. You should already have read the <a href="installation">Installation Guide</a> and <a href="../toolkit/quickstart">Quickstart</a></div>
+	<div><b><a href="user">User's Guide</a></b></div>
+	<div>Describes how end-users typically interact with this component.</div>
+	<div><b><a href="developer">Developer's Guide</a></b></div>
+	<div>Reference and usage scenarios for developers.</div>
+</div>
+++++
 
-Other information available for this component are:
-
-[cols="s,",role="table-borderless"]
-|========
-|link:release-notes[Release Notes]	|What’s new with the 6.0 release for this component.
-|link:public-interface[Public Interface Guide]	|Information for all public interfaces (including APIs, commands, etc). Please note this is a subset of information in the link:developer[Developer’s Guide].
-|link:quality-profile[Quality Profile]	|Information about test coverage reports, etc.
-|link:migrating[Migrating Guide]	|Information for migrating to this version if you were using a previous version of GT.
-|========
-
-// |link:gram5pAll.pdf[All GRAM5 Guides (pdf only)]	|Includes all GRAM5 guides except Public Interfaces (which is a subset of the Developer’s Guide)
-
-== Older versions (not supported) [red]#Are we keeping all these and their subsequent pages?#:
-
-- link:http://toolkit.globus.org/toolkit/docs/5.2/[5.2 Stable Release Documentation]
-- link:5.0[5.0 Stable Release Documentation]
-- link:4.2[4.2 Stable Release Documentation]
-- link:4.0[4.0 Stable Release Documentation]
-- link:3.2[3.2 Stable Release Documentation]
-- link:3.0[3.0 Stable Release Documentation]
-- link:2.4[2.4 Stable Release Documentation]
+// |link:admin[Admin Guide]	|For system administrators and those installing, building and deploying GT. You should already have read the link:../installation[Installation Guide] and link:../toolkit/quickstart[Quickstart]
+// |link:user[User’s Guide]	|Describes how end-users typically interact with this component.
+// |link:developer[Developer’s Guide]	|Reference and usage scenarios for developers.
