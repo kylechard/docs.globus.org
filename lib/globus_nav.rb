@@ -61,7 +61,7 @@ module Nanoc::Helpers
         { :title        => safe_item_title(child),
           :link         => relative_path_to(child),
           :is_current_item => child == @item,
-          :is_ancestor => @item.path.start_with?(child.path),
+          :is_ancestor => @item.path.start_with?(child_namespace),
           :menu_weight  => (child[:menu_weight] || 0),
           :subsections  => subsections }
       end

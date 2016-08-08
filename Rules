@@ -42,6 +42,14 @@ compile '/**/*.adoc' do
   layout GlobusRuleHelpers.determine_layout(@item)
 end
 
+# special routing for CLI pages
+# there end in `.X.adoc` where X is an integer indicating a manpage number
+route '/cli/reference/*.adoc' do
+  # take everything prior to the last dot -- done with a regex match for
+  # "." followed by non-"." chars followed by end of string
+  @item.identifier.without_ext.sub(/\.[^.]*$/, '') + '/index.html'
+end
+
 # if it didn't match a rule yet for compilation
 compile '/**/*' do
   if @item.binary?
