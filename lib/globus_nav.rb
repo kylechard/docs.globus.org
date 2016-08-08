@@ -61,7 +61,7 @@ module Nanoc::Helpers
         { :title        => safe_item_title(child),
           :link         => relative_path_to(child),
           :is_current_item => child == @item,
-          :is_ancestor => @item.path.start_with?(child.path),
+          :is_ancestor => @item.path.start_with?(child_namespace),
           :menu_weight  => (child[:menu_weight] || 0),
           :subsections  => subsections }
       end
@@ -205,6 +205,15 @@ module Nanoc::Helpers
               @item.path.start_with?(item_desc[:link]) rescue false
             end)
 
+          # capture in local vars because options hash can be shared amongst
+          # siblings, with weird (and sometimes fatal!) consequences
+          caret_class = options[:caret_class]
+
+          # if looking at the current item
+          if sidebar and item_desc[:is_ancestor]
+            caret_class += ' open'
+          end
+
           # Reset item and link options
           # Set item active class
           item_class = highlight_item ? 'active' : ''
@@ -216,13 +225,11 @@ module Nanoc::Helpers
           if subsections
             # clone the options to make the set of options for a recursive call
             sub_opts = options.clone
-            sub_opts[:collection_class] = if sidebar then 'panel-collapse collapse' else 'dropdown-menu' end
-
-            # if looking at the current item
-            if sidebar and item_desc[:is_ancestor]
-              sub_opts[:collection_class] += ' in'
-              sub_opts[:caret_class] += ' open'
-            end
+            sub_opts[:collection_class] = if sidebar then
+                                            # if looking at the current item, add 'in' class
+                                            'panel-collapse collapse' + (if item_desc[:is_ancestor] then ' in' else '' end)
+                                          else 'dropdown-menu' end
+            sub_opts[:caret_class] = caret_class
 
             # call render_menu() recursively on subsections
             output = globus_render_menu(item_desc[:subsections], sub_opts, sidebar)
@@ -254,7 +261,7 @@ module Nanoc::Helpers
 
           if sidebar
             if subsections
-              caret = content_tag('a', content_tag('span','', :class => 'caret'), :class => options[:caret_class])
+              caret = content_tag('a', content_tag('span', '', :class => 'caret'), :class => caret_class)
               content_tag(options[:header_tag], link + caret, :class => options[:header_class]) + output
             else
               link
