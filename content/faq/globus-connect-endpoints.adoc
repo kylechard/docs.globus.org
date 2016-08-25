@@ -447,7 +447,7 @@ The user can see if GCP is running by looking for the Globus icon in the system 
 === Linux
 Check out the following:
 
-- (link:https://docs.globus.org/how-to/globus-connect-personal-cli/[Running Globus Connect section]) "Both lights green indicate that Globus Connect Personal is running properly and is connected to Globus. The user may minimize or hide this status window once Globus Connect Personal has connected successfully."
+- (link:../../how-to/globus-connect-personal-linux#globus-connect-personal-cli[Running Globus Connect section]) "Both lights green indicate that Globus Connect Personal is running properly and is connected to Globus. The user may minimize or hide this status window once Globus Connect Personal has connected successfully."
 - To start Linux GCP in command line only mode, run `./globusconnectpersonal -start &`
 
 === Mac
