@@ -1,4 +1,4 @@
-= How To Install, Configure, & Remove Globus Connect Personal for Windows
+= How To Install and Configure Globus Connect Personal for Windows
 
 Globus Connect Personal allows you to share and transfer files to and from your Windows laptop or desktop computer — even if it's behind a firewall. Follow the easy steps below to turn your personal computer into a full-fledged Globus endpoint.
 
