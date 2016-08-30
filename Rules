@@ -65,6 +65,11 @@ compile '/**/*' do
   layout GlobusRuleHelpers.determine_layout(@item)
 end
 
+# if 404
+route "/404.adoc" do
+  "/404.html"
+end
+
 # if it didn't match any rules for routing
 route '/**/*' do
   # if an arbitrary item is binary, write it verbatim
