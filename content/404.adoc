@@ -1,0 +1,7 @@
+---
+permalink: /404.html
+---
+
+= Page not found
+
+It doesn't look like that page exists. Try checking the url for errors, or use one of the links from the top menu.
