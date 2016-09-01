@@ -107,6 +107,7 @@ Globus Auth Supports the following OAuth2 grant types (detailed below):
 * Dependent Token Grant (Custom extension grant, used by resource servers)
 * link:https://tools.ietf.org/html/rfc6749#section-4.3[Resource Owner Password Credentials Grant] (Required by certain non web-based clients)
 * link:https://tools.ietf.org/html/rfc6749#section-4.2[Implicit Grant] (Limited to specific, trusted apps)
+* link:https://tools.ietf.org/html/rfc6749#section-4.4[Client Credentials Grant]
 
 These grants all share the same HTTP endpoints:
 
@@ -328,6 +329,76 @@ desktop application).
 
 NOTE: This feature will only work with certain identity providers that are configured
       to support non-browser-based authentication based on username and password.
+
+=== Client Credentials Grant
+
+In some situations, you may want your Globus App to be able to take actions "as
+itself", rather than on behalf of a user. For example, a data portal
+application might have resources that are owned by the portal, rather than
+belonging to a human user.
+
+To accomodate this use case, Globus Auth supports what we call
+"client-identities". Unlike a human identity that might have a username in the
+form, `jane.doe@uchicago.edu`, client-identities have a username of the form
+`<client_id>@clients.auth.globus.org`, where <client_id> is the UUID your
+Globus App was issued at registration time. This identity can be used in
+ACLs or for interactions with other services.
+
+In order to take actions as the client-identity, you will need to use the
+https://tools.ietf.org/html/rfc6749#section-4.4[OAuth2 `client_credentials` grant]
+to retrieve an access_token (or multiple access tokens) valid for that identity.
+
+NOTE: Only confidential clients that have been issued a client_secret
+      may use the `client-credentials` grant.
+
+POST to the `https://auth.globus.org/v2/oauth2/token` endpoint, with
+an Authorization header containing an HTTP Basic Auth header for your client_id and client_secret, and including the
+following fields:
+
+[options="header"]
+|============
+|Field | Description
+|scope | Space-separated list of scopes your client is requesting.
+|grant_type | As defined in the OAuth 2.0 specification, this field must contain a value of `client_credentials`.
+|=============
+
+The actual request might look like the following:
+
+    POST /v2/oauth2/token HTTP/1.1
+    Host: auth.globus.org
+    Content-Type: application/x-www-form-urlencoded
+    Authorization: Basic NDFjYTIwM2QtNzcwMy00NDYxLWFiNGItNjVhNjA0YjE2NjE5OjxDTElFTlRfU0VDUkVUPg==
+
+    scope=scope=openid+email+profile+urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall&
+    grant_type=client_credentials
+
+A successful response to this request contains the following fields:
+
+[options="header"]
+|=================
+|Field | Description
+|access_token | The token that can be used to access resources.
+|scope | Space-separated list of scopes the access token authorizes.
+|resource_server | The resource server for which the access_token token is intended.
+|expires_in | The remaining lifetime of the access token.
+|token_type | Identifies the type of token returned. At this time, this field
+will always have the value bearer.
+|refresh_token | A token that may be used to obtain a new access token. Refresh
+tokens are valid until the user revokes access. This field is only present if
+the authorization request asked for offline access.
+|id_token | A JWT containing details about the user as defined in the
+link:https://openid.net/specs/openid-connect-core-1_0.html#IDToken[OpenIDConnect specification.]
+Note: Currently, this field is always included by default, but soon it will only be present if the
+'openid' scope was requested during the authorization request. If your application requires an id_token
+you SHOULD request openid scopes during the authorization request.
+|state | The state parameter your client application provided during the authorization request.
+|other_tokens | If the client requested scopes that span multiple resource servers, this field will be present, and
+it will contain an array of access token responses containing separate tokens for each resource server.
+|==========
+
+NOTE: The scope named first in the authorization request (excepting openid scopes)
+      will determine the access token returned in the top level of the response object.
+
 
 === Verifying identity (via OpenID Connect ID Token)
 
