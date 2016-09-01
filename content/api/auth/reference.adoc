@@ -152,11 +152,11 @@ If access_type is offline, your application will be issued a refresh token along
 An example URL is shown below, with line breaks and spaces for readability.
 
  https://auth.globus.org/v2/oauth2/authorize?
-   scope=urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities+openid+email+profile
-   state=security_token%3D138r5719ru3e1%26url%3Dhttps://oa2cb.example.com/myHome&
-   redirect_uri=https%3A%2F%2Foauth2-login-demo.example.com%2Fcallback&,
-   response_type=code&
-   client_id=d430e6c8-b06f-4446-a060-2b6b2bc3e54a
+  scope=urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities+openid+email+profile&
+  state=security_token%3D138r5719ru3e1%26url%3Dhttps://oa2cb.example.com/myHome&
+  redirect_uri=https%3A%2F%2Foauth2-login-demo.example.com%2Fcallback&
+  response_type=code&
+  client_id=d430e6c8-b06f-4446-a060-2b6b2bc3e54a
 
 After you create the request URL, redirect the user to it.
 
