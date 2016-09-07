@@ -2,6 +2,6 @@
 
 The type of task.  Possible values are:
 *TRANSFER*;;
-A file transfer task initiated by *transfer*, *scp*, or the REST API
+A file transfer task initiated by *transfer* or the REST API
 *DELETE*;;
 A delete task initiated by *delete*, *rm*, or the REST API

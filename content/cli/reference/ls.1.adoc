@@ -22,11 +22,11 @@ order.  Directories are always displayed with a trailing "/".
 The 'PATH' may have a shell-compatible wild card pattern in its final
 component.  Type 'man glob' for details.
 
-include::content/cli/reference/include/cli_autoactivate.adoc[]
+include::include/cli_autoactivate.adoc[]
 
-include::content/cli/reference/include/cli_bookmarks_and_paths.adoc[]
+include::include/cli_bookmarks_and_paths.adoc[]
 
-include::content/cli/reference/include/cli_path_url_escaped.adoc[]
+include::include/cli_path_url_escaped.adoc[]
 
 == OPTIONS
 

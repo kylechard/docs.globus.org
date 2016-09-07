@@ -17,9 +17,9 @@ The current output format is JSON.  Paths are URL-encoded.
 
 'ENDPOINT' can use these formats:
 
-include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
+include::include/cli_endpoint_unique_id.adoc[]
 
-include::content/cli/reference/include/more_acl.adoc[]
+include::include/more_acl.adoc[]
 
 
 == EXAMPLES

@@ -49,7 +49,7 @@ Only show subtasks that have succeeded.  Only available with -t.
 *-l* 'LIMIT'::
 Limit the number of results.  Default: Unlimited
 
-include::content/cli/reference/include/opt_output.adoc[]
+include::include/opt_output.adoc[]
 
 == OUTPUT FIELDS
 
@@ -109,12 +109,12 @@ set, otherwise it is the legacy name.
 For tasks created prior to version 4.4, this is the current legacy name of the
 endpoint, even if the endpoint is private or deleted.  
 
-include::content/cli/reference/include/task_statuses.adoc[]
+include::include/task_statuses.adoc[]
 
 *taskid*::
 The unique id of the task
 
-include::content/cli/reference/include/task_types.adoc[]
+include::include/task_types.adoc[]
 
 
 *tasks_canceled*::

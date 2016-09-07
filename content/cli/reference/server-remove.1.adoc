@@ -15,7 +15,7 @@ to view servers and their IDs.
 
 'ENDPOINT' can use these formats:
 
-include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
+include::include/cli_endpoint_unique_id.adoc[]
 
 == OPTIONS
 

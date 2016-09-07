@@ -57,7 +57,7 @@ because of sorting efficiency.  Default: Unlimited
 
 Show only error events 
 
-include::content/cli/reference/include/opt_output.adoc[]
+include::include/opt_output.adoc[]
 
 
 == EXAMPLES
