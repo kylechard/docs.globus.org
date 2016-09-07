@@ -17,7 +17,7 @@ For other endpoint information, see the *server-list*, *acl-list*, and
 
 'ENDPOINT' can use these formats:
 
-include::include/cli_endpoint_unique_id.adoc[]
+include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
 
 
 == OPTIONS
@@ -25,7 +25,7 @@ include::include/cli_endpoint_unique_id.adoc[]
 *-a*::
 Show all endpoints owned by the current user.
 
-include::include/opt_output.adoc[]
+include::content/cli/reference/include/opt_output.adoc[]
 
 
 == OUTPUT FIELDS

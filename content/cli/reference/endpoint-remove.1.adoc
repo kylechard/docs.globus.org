@@ -17,7 +17,7 @@ endpoints that are hosted by it.
 
 'ENDPOINT' can use these formats:
 
-include::include/cli_endpoint_unique_id.adoc[]
+include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
 
 
 
