@@ -6,7 +6,7 @@ menu_weight: 3
 
 = Command Line Interface (CLI) Reference
 :imagesdir: .
-:revdate: May 13, 2016
+:revdate: September 07, 2016
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -102,9 +102,6 @@ server-list displays all servers for an endpoint.
 
 link:server-remove[server-remove]::
 server-remove removes a server from an endpoint.
-
-link:scp[scp]::
-Globus Online's scp command provides a simple way to copy a file or directory between servers. source and dest must be logical endpoint names.
 
 link:status[status]::
 status displays basic information about tasks. By default, all pending (ACTIVE or INACTIVE) tasks are shown. If the -a option is given, status displays all tasks, including completed tasks. Tasks are sorted by request time in descending order.

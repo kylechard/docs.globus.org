@@ -29,11 +29,15 @@ mv ./index.adoc $DOC_DIR
 echo "Performing seds inline on files..."
 #        sed -i '' 's/----/----terminal/' adoc/*.adoc
 sed -i.bak -e 's/\*\([a-z]*\)\(([0-9])\)\*/link:..\/\1[\*\1\2\*]/g' $DOC_DIR/*.adoc
-echo "Seds complete..."
 
 # update last updated date
 # sed -i.bak -e "s/\:revdate: [^\s]+ [0-9]{1,2}, [0-9]{4}/${UPDATED}/g" $DOC_DIR/index.adoc
 sed -i.bak -e "s/\:revdate:.*/${UPDATED}/g" $DOC_DIR/index.adoc
+
+# update includes
+sed -i.bak -e "s/include\:\:include/include\:\:content\/cli\/reference\/include/g" $DOC_DIR/*.adoc
+
+echo "Seds complete..."
 
 # reminder to update index page if necessary
 echo "Don't forget to update the reference index page if needed!"
