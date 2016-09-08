@@ -57,6 +57,8 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 
 The following is an example response from the request above: (TODO: Formatting)
 
+[source,json]
+----
 {
 	"access_token": <access-token-for-globus-transfer>,
 	"id_token": <id-token>,
@@ -77,6 +79,7 @@ The following is an example response from the request above: (TODO: Formatting)
 			"refresh_token": <refresh-token-for-globus-auth>}
 	],
 }
+----
 
 Globus Auth, unlike most OAuth 2 implementations, supports providing access to multiple different resource servers, and can therefore return multiple access/refresh tokens in the same response. In order to conform to standards the token response for the first requested scope looks like that of any other standards compliant OAuth 2 server, and any additional tokens are included in the `other_tokens` array.
 
