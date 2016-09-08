@@ -11,13 +11,13 @@ menu_weight: 1
 
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
-1. Registering an application client at https://developers.globus.org.
+1. Registering an application client at https://developers.globus.org. TODO: Make sure this exists before giving this doc to people
 2. Obtaining authorization. Applications request access to _scopes_ using a standard OAuth 2 flow.
 3. Using tokens to authenticate to services.
 
 === Registering an Application
 
-For the most part the process of registering an application is explained on the registration page itself (TODO: Make this actually be true). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
+For the most part the process of registering an application is explained on the registration page itself (TODO: Make this actually be true, per GitHub issue). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
 
 - _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described here (TODO: Link). This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
 - _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use PKCE (see below). This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
@@ -35,6 +35,7 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 	- If the application client is a native app the request must also contain a `code_challenge` and `code_challenge_method` as described in the PKCE section below.
 	- All parameters must be URL encoded.
 	- Example of an app requesting access to Globus Transfer and the Globus Auth Identities API with refresh tokens: `https://auth.globus.org/v2/oauth2/authorize?client_id=69ba5e62-7285-45db-952d-e0bb73b5eac7&scope=urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall%20urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities%20offline_access&response_type=code&redirect_uri=https%3A%2F%2Fwww.example.org%2Fmy_app%2Flogin&state=g6l14b2xlgx4dtce8d2ja714i`
+	- TODO: Example of using a library to create the auth URL.
 
 2. The user is prompted to authenticate, and to consent to giving the client application access to the requested scopes if they have not previously consented (if they have already consented this screen is bypassed).
 
@@ -48,6 +49,7 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 	- `redirect_uri`. Must be identical to the value sent in the authorization request.
 	- `client_id`. Once again, the UUID of the client application.
 	- If the application client is confidential it must authenticate this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the PKCE section below. TODO: Link to relevant sections.
+	- TODO: Examples with curl and one or two common libraries
 
 5. Access token response (https://tools.ietf.org/html/rfc6749#section-4.1.4). The token response is described in the following section.
 
@@ -89,11 +91,25 @@ Access tokens are then used to authenticate against services by including them i
 
 When an access token is nearing its expiry time the application needs to retrieve a new one, either by performing another authorization flow as described above (except this time the user won't be prompted for consent again), or by performing a refresh token grant. TODO: Describe refresh token grant.
 
-Refresh tokens are long lived credentials and should never be sent over the wire except when doing a refresh token grant against Globus Auth.
+Refresh tokens are long lived credentials and should never be sent over the wire except when doing a refresh token grant against Globus Auth. Please store them securely.
 
 TODO: Link to section explaining id tokens.
 
 === Client Authentication
+
+Clients authenticate to Globus Auth with a HTTP basic auth header, using client credentials created in the registration interface:
+
+`Authorization: Basic <credential>`,
+
+where `<credential>` is the base64 encoded client ID and client credential, separated by a single colon. For instance, in Python the header could be constructed as:
+
+[source,python]
+---
+client_id = "69ba5e62-7285-45db-952d-e0bb73b5eac7"
+client_credential = "QWxhZGRpbjpPcGVuU2VzYW1l"
+client_auth_header = "Authorization: Basic {0}".format(
+	base64.b64encode("{0}:{1}".format(client_id, client_credential)))
+---
 
 === PKCE
 
@@ -131,6 +147,42 @@ Admins are co-equal
 == Handling Tokens
 
 === Caching
+
+Copypasta from email thread:
+
+1. Receive access token from client.
+2. Introspect it (or use cached information, if this is a repeat request within the past n seconds, depending on policy).
+3. Do you have valid dependent access tokens for the cache id from the (possibly cached) introspection response? If so, GOTO 4. If not:
+3.1 Based on cache id from introspection response, check if you already have dependent refresh tokens. If not, get them using dependent token grant and store them. Then do a refresh token grant and store the resulting access tokens, setting the expiry based on the lifetime of the token.
+4. Use dependent access tokens.
+
+Presumably the asynchronous job checking would be handled similarly:
+
+1. Associate each job with a cache id.
+2. When checking the job, do step 3-4 above.
+
+To expand on Mattias’ guidance...
+
+Only the dependent refresh tokens returned from the dependent token grant in step 3.1 need to be stored in the transfer database, indexed by dependent_tokens_cache_id.  The dependent access tokens need not be stored in the transfer db.  Rather, dependent access tokens can live in memcache, on each transfer backend, indexed by the dependent_tokens_cache_id.  Each task in the transfer db should have an associated dependent_tokens_cache_id.  The dependent refresh tokens for a given dependent_tokens_cache_id should never need to change in the transfer db, and should be good for the lifetime of the task.  
+
+When your background process needs dependent access tokens (e.g, to update linked identities and group memberships), using the dependent_tokens_cache_id for that task, it can first check memcache to see if it already has a valid access token.  If not, it should get the appropriate dependent refresh token from the transfer db, get a new access token from auth using the refresh token, and store that access token back into memcache with the dependent_tokens_cache_id as key.  Each transfer backend server can have its own memcache — no need to share access tokens across servers.  Of course, if you prefer to shove the dependent access tokens in the transfer db, that’s ok also, but that seems more complicated.
+
+Suggested short docstring:
+"Resource Servers should store refresh tokens obtained from dependent token grants using dependent_token_cache_id as a key. When introspecting an access token received from a client, it should check if it already has a refresh token stored, and if so use that token instead of performing a new dependent token grant.
+
+Seeing a new dependent_token_cache_id for the same identity and client does NOT indicate that the previous grant has been revoked."
+
+Suggested long-ish doc string:
+
+“Resource Servers should not do a dependent token grant for every request access token it receive from a client, for performance reasons. Rather, dependent access and refresh tokens can be safely reused with multiple request access tokens, as long as those request access tokens all have the same dependent_tokens_cache_id.
+
+Resource Servers should store dependent refresh tokens (obtained from dependent token grants) for longer-term use, using dependent_tokens_cache_id as a key.  When introspecting a request access token received from a client, it should check if it already has a dependent refresh tokens stored for the dependent_tokens_cache_id, and if so use that token instead of performing a new dependent token grant. When a Resource Server is done with a dependent refresh token, it should call XXXXX to allow Globus Auth to invalidate the dependent refresh token and clean up.
+
+Resource Servers should also cache dependent access tokens (also obtained from dependent token grants), using dependent_tokens_cache_id as a key. If a dependent access token expires, the Resource Server should use the appropriate dependent refresh token to obtain a new dependent access token, and cache it using the dependent_tokens_cache_id as a key.
+
+Seeing a new dependent_token_cache_id for the same identity and client does NOT indicate that the previous grant has been revoked.”
+
+
 
 == Libraries and Resources
  
