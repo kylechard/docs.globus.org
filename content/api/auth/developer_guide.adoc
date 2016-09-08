@@ -104,12 +104,12 @@ Clients authenticate to Globus Auth with a HTTP basic auth header, using client 
 where `<credential>` is the base64 encoded client ID and client credential, separated by a single colon. For instance, in Python the header could be constructed as:
 
 [source,python]
----
+----
 client_id = "69ba5e62-7285-45db-952d-e0bb73b5eac7"
 client_credential = "QWxhZGRpbjpPcGVuU2VzYW1l"
 client_auth_header = "Authorization: Basic {0}".format(
 	base64.b64encode("{0}:{1}".format(client_id, client_credential)))
----
+----
 
 === PKCE
 
