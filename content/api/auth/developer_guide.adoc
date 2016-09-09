@@ -11,7 +11,7 @@ menu_weight: 1
 
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
-1. Registering an application client at https://developers.globus.org. TODO: Make sure this exists before giving this doc to people
+1. Registering an application client at https://developers.globus.org.
 2. Obtaining authorization. Applications request access to _scopes_ using a standard OAuth 2 flow.
 3. Using tokens to authenticate to services.
 
@@ -19,17 +19,17 @@ A Globus Auth App is used to authenticate users and/or to obtain access to other
 
 For the most part the process of registering an application is explained on the registration page itself (TODO: Make this actually be true, per GitHub issue). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
 
-- _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described here (TODO: Link). This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
-- _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use PKCE (see below). This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
+- _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described <<client-auth,here>>. This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
+- _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use <<pkce,PKCE>>. This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
 
 === Obtaining Authorization
 
-Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf OAuth 2 library (TODO: Link to libraries section, if that's a thing in adoc?). Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
+Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf <<libraries,OAuth 2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
 
 1. Authorization request (https://tools.ietf.org/html/rfc6749#section-4.1.1). The application client constructs a link to an authorization page and directs the user to it. The URL is `https://auth.globus.org/v2/oauth2/authorize` with the following URL encoded query params:
 	- `client_id`. The UUID of the client application.
 	- `redirect_uri`. The URI the user will be redirected back to for the authorization response. Must be pre-registered for this client.
-	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope. TODO: Also support an `access_type=offline` param for requesting refresh token. We should decide which is the canonical way.
+	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope. TODO: We also support an `access_type=offline` param for requesting refresh token. We should decide which is the canonical way.
 	- `state`. An opaque value that is returned to the client in the authorization response. The client should use this value to prevent cross-site request forgery as described in https://tools.ietf.org/html/rfc6749#section-10.12.
 	- `response_type`. Value must be `code`.
 	- If the application client is a native app the request must also contain a `code_challenge` and `code_challenge_method` as described in the PKCE section below.
@@ -48,7 +48,7 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 	- `code`. The code received in the authorization response.
 	- `redirect_uri`. Must be identical to the value sent in the authorization request.
 	- `client_id`. Once again, the UUID of the client application.
-	- If the application client is confidential it must <<client-auth,authenticate>> this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the PKCE section below. TODO: Link to relevant sections.
+	- If the application client is confidential it must <<client-auth,authenticate>> this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the <<pkce,PKCE section below>>.
 	- TODO: Examples with curl and one or two common libraries
 
 5. Access token response (https://tools.ietf.org/html/rfc6749#section-4.1.4). The token response is described in the following section.
@@ -96,11 +96,11 @@ When an access token is nearing its expiry time the application needs to retriev
 
 Refresh tokens are long lived credentials and should never be sent over the wire except when doing a refresh token grant against Globus Auth. Please store them securely.
 
-TODO: Link to section explaining id tokens.
-
 ==== Token Invalidation
 
-TODO: Endpoint should be described in API refernce and this guide should only reference it.
+For the security of their users application clients should invalidate tokens when they are done with them, for example as part of a logout operation. This is particularly important for long-lived refresh tokens.
+
+TODO: Endpoint should be described in API reference and this guide should only link to it it.
 
 
 [[client-auth]]
@@ -120,6 +120,7 @@ client_auth_header = "Authorization: Basic {0}".format(
 	base64.b64encode("{0}:{1}".format(client_id, client_credential)))
 ----
 
+[[pkce]]
 === PKCE
 
 == Integrating Globus Auth Features
@@ -157,6 +158,8 @@ Admins are co-equal
 
 === Caching
 
+TODO: Make this complete yet accessible
+
 Copypasta from email thread:
 
 1. Receive access token from client.
@@ -192,7 +195,7 @@ Resource Servers should also cache dependent access tokens (also obtained from d
 Seeing a new dependent_token_cache_id for the same identity and client does NOT indicate that the previous grant has been revoked.”
 
 
-
+[[libraries]]
 == Libraries and Resources
  
 === Using the Globus SDK
