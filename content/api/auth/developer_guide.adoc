@@ -7,6 +7,7 @@ menu_weight: 1
 :toclevels: 3
 :numbered:
 
+[[developing-apps]]
 == Developing an Application Using Globus Auth
 
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
@@ -16,6 +17,8 @@ A Globus Auth App is used to authenticate users and/or to obtain access to other
 3. <<using-tokens,Using tokens>> to authenticate to services.
 
 Those are the basics. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
+
+Applications can make use of several different <<developing-services,services>>, allowing them to use features and orchestrate flows that wouldn't be possible by using any single service.
 
 [[register-app]]
 === Registering an Application
@@ -145,14 +148,37 @@ Globus Auth supports skinning, so that when a user comes in from your app the lo
 
 E.g, identity linking, authentication_hint, login_hint, linking to consent/identities pages etc
 
+[[developing-services]]
 == Developing a Service
 
-TODO
+A Globus Auth _service_ is a system that provides access to resources owned by users, and wants to provides access to those resources to <<developing-apps,_applications_>>, typically via a HTTP API.
 
+Developing a service involves:
+
+1. <<registering-services,Registering a service>> and <<managing-scopes,scopes>>.
+2. <<allowing-access,Verifying what access is allowed by tokens>> received from applications clients and implementing access control logic for scopes
+
+Services can also expand their functionality by in turn <<downstream-services,making use of other services>>.
+
+[[registering-services]]
+=== Registering Services
+
+TODO: Punting on this until the registration interface is fleshed out
+
+[[managing-scopes]]
+==== Registering and Managing Scopes
+
+TODO: Punting
+
+[[allowing-access]]
+=== Allowing Access Based on Globus Auth Tokens
+
+[[downstream-services]]
+=== Using Dependent Services
 
 == Adding an Identity Provider
 
-Please mailto:support@globus.org[contact us] (TODO: support@globus?) if you wish to add your identity provider to Globus Auth to allow your users to use it for authenticating against apps and services.
+Please mailto:support@globus.org[contact us] (TODO: support@globus?) if you wish to add your identity provider to Globus Auth to allow your users to use their normal login for authenticating against apps and services.
 
 We currently support the following protocols: …
 
