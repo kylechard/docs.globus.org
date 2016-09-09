@@ -97,9 +97,9 @@ Globus Auth, unlike most OAuth 2 implementations, supports providing access to m
 
 After receiving the response the application client should do the following:
 
-* Verify that it received the expected scopes.
-* Verify that the `state` parameter matches what was sent in the authorization request.
-* Store the token(s) for future use, along with their expiry time. Application clients should always inspect the `expires_in` value (in seconds) of all received tokens; it may differ from one request to the next.
+- Verify that it received the expected scopes.
+- Verify that the `state` parameter matches what was sent in the authorization request.
+- Store the token(s) for future use, along with their expiry time. Application clients should always inspect the `expires_in` value (in seconds) of all received tokens; it may differ from one request to the next.
 
 Access tokens are then used to authenticate against services by including them in the `Authorization` header of HTTP requests, e.g:
 
@@ -139,6 +139,11 @@ client_auth_header = "Authorization: Basic {0}".format(
 
 [[pkce]]
 === PKCE
+
+[[client-identities]]
+=== Client Identities
+
+TODO: Describe client credentials grant
 
 [[skinning]]
 === Skinning
@@ -265,11 +270,9 @@ Seeing a new dependent_token_cache_id for the same identity and client does NOT 
 [[libraries]]
 == Libraries and Resources
 
-TODO
- 
-=== Using the Globus SDK
+=== Using the Globus Python SDK
 
-TODO: Link to SDK docs.
+Globus provides a Python SDK for interacting with its APIs, including Globus Auth and Transfer. Documentation can be found http://globus.github.io/globus-sdk-python/[here].
  
 [[oauth2-libraries]]
 === OAuth2 Libraries
@@ -285,3 +288,7 @@ TODO: Have all of these actually been tested against Auth?
 
 [[samples]]
 === Sample Applications and Services Using Globus Auth
+
+The https://github.com/globus/globus-sample-data-portal[Globus Sample Data Portal] contains an example of both an application and a service. Beyond basic app/service functionality, it demonstrates the use of <<downstream-services,dependent services>> (in this case Globus Transfer), <<client-identities,client identities>> and other features.
+
+TODO: Do we have other examples we want to link to? What about stuff the summer inters did?
