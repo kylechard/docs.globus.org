@@ -160,7 +160,7 @@ The authorization URL is then created as <<authorization-request,described above
 
 TODO: Updated example auth url
 
-Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above.
+Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above. (ASCIIDOC TODO: Anchor before the list element resets numbering, but link doesn't work if anchor is inside list element...)
 
 These additions allows Globus Auth to verify that the request originated from a particular instance of the application client, so that an attacker is unable to steal a token even if they manage to compromise the authorization code.
 
