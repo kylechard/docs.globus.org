@@ -15,12 +15,12 @@ This guide describes how to develop <<developing-apps,apps>> and <<developing-se
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
 1. <<register-app,Registering an application>> client at https://developers.globus.org.
-2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to services via <<globus-scopes,_scopes_>> using a standard OAuth 2 flow.
+2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to services via <<globus-scopes,_scopes_>> using a standard OAuth2 flow.
 3. <<using-tokens,Using tokens>> to authenticate to services.
 
 Those are the basics. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
 
-Applications can make use of several different <<developing-services,services>>, allowing them to use features and orchestrate flows that wouldn't be possible by using any single service.
+Applications can make use of several different <<developing-services,services>>, allowing them to implement features and orchestrate flows that wouldn't be possible by using any single service.
 
 [[register-app]]
 === Registering an Application
@@ -32,11 +32,14 @@ All apps that you register will be part of a <<managing-projects,project>>. For 
 
 The key difference between the two is whether the client can _keep it's private credentials secret_. Any client that is distributed as a binary cannot keep secret credentials; even if attempts are made at obfuscation, extracting the credential will not be difficult for an attacker.
 
+TODO: Describe differences for users, named grants etc. Also: Auth code page for native apps.
+
 [[obtaining-authorization]]
 === Obtaining Authorization
 
-Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf <<oauth2-libraries,OAuth 2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
+Globus Auth is fully spec compliant OAuth2 implementation. It is recommended that developers use an off-the-shelf <<oauth2-libraries,OAuth2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth2 specification are referenced for more details.
 
+[[authorization-request]]
 1. Authorization request (https://tools.ietf.org/html/rfc6749#section-4.1.1). The application client constructs a link to an authorization page and directs the user to it. The URL is `https://auth.globus.org/v2/oauth2/authorize` with the following URL encoded query params:
 	- `client_id`. The UUID of the client application.
 	- `redirect_uri`. The URI the user will be redirected back to for the authorization response. Must be pre-registered for this client.
@@ -54,6 +57,7 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 	- `code`. The authorization code the client application will use to exchange for access/refresh tokens.
 	- `state`. The value the client provided in the authorization request.
 
+[[access-token-request]]
 4. Access token request (https://tools.ietf.org/html/rfc6749#section-4.1.3). To exchange the `code` for an access token, a `POST` is made to `https://auth.globus.org/v2/oauth2/token` with the following URL encoded query params:
 	- `grant_type`. Value must be `authorization_code`.
 	- `code`. The code received in the authorization response.
@@ -93,7 +97,7 @@ A successful token response from Globus Auth contains one or more access tokens,
 }
 ----
 
-Globus Auth, unlike most OAuth 2 implementations, supports providing access to multiple different resource servers, and can therefore return multiple access/refresh tokens in the same response. In order to conform to standards (and to allow off-the-shelf libraries to work) the token response for the first requested scope looks like that of any other standards compliant OAuth 2 server, and any additional tokens are included in the `other_tokens` array.
+Globus Auth, unlike most OAuth2 implementations, supports providing access to multiple different resource servers, and can therefore return multiple access/refresh tokens in the same response. In order to conform to standards (and to allow off-the-shelf libraries to work) the token response for the first requested scope looks like that of any other standards compliant OAuth2 server, and any additional tokens are included in the `other_tokens` array.
 
 After receiving the response the application client should do the following:
 
@@ -140,10 +144,31 @@ client_auth_header = "Authorization: Basic {0}".format(
 [[pkce]]
 === PKCE
 
+PKCE (https://tools.ietf.org/html/rfc7636[RFC 7636]) is a security protocol that allows unauthenticated ("native") application clients to use the three-legged OAuth2 authorization code grant. Confidential clients may use it as well; doing so may guard against certain attacks that would be possible if client credentials are compromised.
+
+Before starting the <<obtaining-authorization,authorization flow>> the application client must generate a https://tools.ietf.org/html/rfc7636#section-4.1[`code_verifier`] which meets the following requirements:
+
+* Generated using a reliably random (i.e, unguessable) method.
+* 43-128 characters long consisting of letters, numbers and the characters `-._~`.
+* _Must be freshly generated for each request._
+
+Second, a https://tools.ietf.org/html/rfc7636#section-4.2[`code_challenge`] is created by taking URL safe base64 encoding of a SHA256 digest of the `code_verifier`.
+
+The authorization URL is then created as <<authorization-request,described above>>, but with the two following additional parameters:
+
+* `code_challenge`, as just described.
+* `code_challenge_method`, whose value MUST be `SHA256`.
+
+TODO: Updated example auth url
+
+Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above.
+
+These additions allows Globus Auth to verify that the request originated from a particular instance of the application client, so that an attacker is unable to steal a token even if they manage to compromise the authorization code.
+
 [[client-identities]]
 === Client Identities
 
-TODO: Describe client credentials grant
+TODO: High level description of why you'd want to use client identities, and like to API doc
 
 [[skinning]]
 === Skinning
