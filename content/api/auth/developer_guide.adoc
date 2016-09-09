@@ -175,6 +175,12 @@ TODO: Punting
 [[allowing-access]]
 === Allowing Access Based on Globus Auth Tokens
 
+TODO:
+* Introspecting tokens
+* What to do after introspecting; validate scopes, expiry, identities etc.
+* Usernames vs. identity ids
+* Introspect every request or short term caching?
+
 [[downstream-services]]
 === Using Dependent Services
 
