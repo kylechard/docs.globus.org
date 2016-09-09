@@ -20,7 +20,7 @@ Those are the basics. Apps that want to provide their users with a more complete
 [[register-app]]
 === Registering an Application
 
-For the most part the process of registering an application is explained on the registration page itself (TODO: Make this actually be true, per GitHub issue). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
+All apps that you register will be part of a <<managing-projects,project>>. For the most part the process of registering projects and applications is explained on the registration page itself (TODO: Make this actually be true, per GitHub issue). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
 
 - _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described <<client-auth,here>>. This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
 - _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use <<pkce,PKCE>>. This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
@@ -147,12 +147,18 @@ E.g, identity linking, authentication_hint, login_hint, linking to consent/ident
 
 == Developing a Service
 
+TODO
 
 
 == Adding an Identity Provider
-Supported protocols: …
 
-Identity providers must supply a provider_specific_id (explain what that’s all about)
+Please mailto:support@globus.org[contact us] (TODO: support@globus?) if you wish to add your identity provider to Globus Auth to allow your users to use it for authenticating against apps and services.
+
+We currently support the following protocols: …
+
+With the following important notes as caveats: Identity providers must supply a provider_specific_id (explain what that’s all about), ...
+
+TODO: Flesh this out
 
 [[globus-scopes]]
 == Globus Service Scopes
@@ -170,14 +176,18 @@ openid+email+profile
 
 === The Globus Auth Identity Set Model at a Glance
 
-=== Does My App Need to Set-Aware?
+=== Does My App or Service Need to Set-Aware?
  
+[[managing-projects]]
 == Managing Projects
-Admins are co-equal
+
+All apps and services that you register will be part of a _project_. You can add and remove admins to allow others to manage the project. All admins are co-equal, meaning that anyone you add will be able to add/remove/edit all of your apps and services.
+
+When registering you are asked to provide a contact email. It will only be used to give you important notifications related to your project. If you expect your project to last many years, please make sure to keep the contact email current.
 
 == Handling Tokens
 
-=== Caching
+=== Caching Recommendations for Services
 
 TODO: Make this complete yet accessible
 
@@ -222,8 +232,19 @@ Seeing a new dependent_token_cache_id for the same identity and client does NOT 
 TODO
  
 === Using the Globus SDK
+
+TODO: Link to SDK docs.
  
 [[oauth2-libraries]]
 === OAuth2 Libraries
+
+TODO: Have all of these actually been tested against Auth?
+
+* Java: https://developers.google.com/api-client-library/java/google-api-java-client/oauth2 
+* Python: https://developers.google.com/api-client-library/python/guide/aaa_oauth 
+* PHP: https://developers.google.com/api-client-library/php/guide/aaa_overview 
+* JavaScript: https://developers.google.com/api-client-library/javascript/features/authentication 
+* Ruby: https://developers.google.com/api-client-library/ruby/guide/aaa_oauth 
+* Apache Oltu: https://oltu.apache.org/
 
 === Sample Applications Using Globus Auth
