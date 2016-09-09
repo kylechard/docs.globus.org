@@ -7,13 +7,15 @@ menu_weight: 1
 :toclevels: 3
 :numbered:
 
+This guide describes how to develop <<developing-apps,apps>> and <<developing-services,services>> using Globus Auth, how to register your <<registering-idp,login provider>>, how to leverage <<identity-sets,linked identites>> to allow your users to use whichever login provider they want, and which <<libraries, libraries and resources>> to use to make your life as a developer easier.
+
 [[developing-apps]]
 == Developing an Application Using Globus Auth
 
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
 1. <<register-app,Registering an application>> client at https://developers.globus.org.
-2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to <<globus-scopes,_scopes_>> using a standard OAuth 2 flow.
+2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to services via <<globus-scopes,_scopes_>> using a standard OAuth 2 flow.
 3. <<using-tokens,Using tokens>> to authenticate to services.
 
 Those are the basics. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
@@ -151,7 +153,7 @@ E.g, identity linking, authentication_hint, login_hint, linking to consent/ident
 [[developing-services]]
 == Developing a Service
 
-A Globus Auth _service_ is a system that provides access to resources owned by users, and wants to provides access to those resources to <<developing-apps,_applications_>>, typically via a HTTP API.
+A Globus Auth _service_ is a system that provides access to resources owned by users, and wants to provides access to those resources to <<developing-apps,applications>> used by end-users, typically via a HTTP API.
 
 Developing a service involves:
 
@@ -176,6 +178,7 @@ TODO: Punting
 [[downstream-services]]
 === Using Dependent Services
 
+[[registering-idp]]
 == Adding an Identity Provider
 
 Please mailto:support@globus.org[contact us] (TODO: support@globus?) if you wish to add your identity provider to Globus Auth to allow your users to use their normal login for authenticating against apps and services.
@@ -198,6 +201,7 @@ transfer:all
 offline_access
 openid+email+profile
 
+[[identity-sets]]
 == Identity Sets
 
 === The Globus Auth Identity Set Model at a Glance
