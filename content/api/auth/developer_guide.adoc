@@ -12,10 +12,10 @@ menu_weight: 1
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
 1. <<register-app,Registering an application>> client at https://developers.globus.org.
-2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to _scopes_ using a standard OAuth 2 flow.
+2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to [[globus-scopes,_scopes_]] using a standard OAuth 2 flow.
 3. <<using-tokens,Using tokens>> to authenticate to services.
 
-Those are the basic. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
+Those are the basics. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
 
 [[register-app]]
 === Registering an Application
@@ -25,10 +25,12 @@ For the most part the process of registering an application is explained on the 
 - _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described <<client-auth,here>>. This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
 - _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use <<pkce,PKCE>>. This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
 
+The key difference between the two is whether the client can _keep it's private credentials secret_. Any client that is distributed as a binary cannot keep secret credentials; even if attempts are made at obfuscation, extracting the credential will not be difficult for an attacker.
+
 [[obtaining-authorization]]
 === Obtaining Authorization
 
-Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf <<libraries,OAuth 2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
+Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf <<oauth2-libraries,OAuth 2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
 
 1. Authorization request (https://tools.ietf.org/html/rfc6749#section-4.1.1). The application client constructs a link to an authorization page and directs the user to it. The URL is `https://auth.globus.org/v2/oauth2/authorize` with the following URL encoded query params:
 	- `client_id`. The UUID of the client application.
@@ -86,20 +88,25 @@ A successful token response from Globus Auth contains one or more access tokens,
 }
 ----
 
-Globus Auth, unlike most OAuth 2 implementations, supports providing access to multiple different resource servers, and can therefore return multiple access/refresh tokens in the same response. In order to conform to standards the token response for the first requested scope looks like that of any other standards compliant OAuth 2 server, and any additional tokens are included in the `other_tokens` array.
+Globus Auth, unlike most OAuth 2 implementations, supports providing access to multiple different resource servers, and can therefore return multiple access/refresh tokens in the same response. In order to conform to standards (and to allow off-the-shelf libraries to work) the token response for the first requested scope looks like that of any other standards compliant OAuth 2 server, and any additional tokens are included in the `other_tokens` array.
 
 After receiving the response the application client should do the following:
-- Verify that it received the expected scopes.
-- Verify that the `state` parameter matches what was sent in the authorization request.
-- Store the token(s) for future use, along with their expiry time. Application clients should always inspect the `expires_in` value (in seconds) of all received tokens; it may differ from one request to the next.
+
+* Verify that it received the expected scopes.
+* Verify that the `state` parameter matches what was sent in the authorization request.
+* Store the token(s) for future use, along with their expiry time. Application clients should always inspect the `expires_in` value (in seconds) of all received tokens; it may differ from one request to the next.
 
 Access tokens are then used to authenticate against services by including them in the `Authorization` header of HTTP requests, e.g:
 
 `Authorization: Bearer <access-token-for-globus-transfer>`
 
-When an access token is nearing its expiry time the application needs to retrieve a new one, either by performing another authorization flow as described above (except this time the user won't be prompted for consent again), or by performing a refresh token grant. TODO: Describe refresh token grant.
+When an access token is nearing its expiry time the application needs to retrieve a new one, either by performing another authorization flow as described above (except this time the user won't be prompted for consent again), or by performing a refresh token grant.
 
 Refresh tokens are long lived credentials and should never be sent over the wire except when doing a refresh token grant against Globus Auth. Please store them securely.
+
+==== Refreshing access tokens
+
+TODO: Describe refresh token grant
 
 ==== Token Invalidation
 
@@ -147,10 +154,16 @@ Supported protocols: …
 
 Identity providers must supply a provider_specific_id (explain what that’s all about)
 
-== Publically Available Scopes
+[[globus-scopes]]
+== Globus Service Scopes
+
+Each service defines their own scopes. The following are scopes provided by Globus services, that are available to any application.
+
+TODO: Description
+
 auth:view_identities
 transfer:all
-offline_acces
+offline_access
 openid+email+profile
 
 == Identity Sets
@@ -205,9 +218,12 @@ Seeing a new dependent_token_cache_id for the same identity and client does NOT 
 
 [[libraries]]
 == Libraries and Resources
+
+TODO
  
 === Using the Globus SDK
  
+[[oauth2-libraries]]
 === OAuth2 Libraries
 
 === Sample Applications Using Globus Auth
