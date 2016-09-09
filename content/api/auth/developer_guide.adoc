@@ -11,10 +11,13 @@ menu_weight: 1
 
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
-1. Registering an application client at https://developers.globus.org.
-2. Obtaining authorization. Applications request access to _scopes_ using a standard OAuth 2 flow.
-3. Using tokens to authenticate to services.
+1. <<register-app,Registering an application>> client at https://developers.globus.org.
+2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to _scopes_ using a standard OAuth 2 flow.
+3. <<using-tokens,Using tokens>> to authenticate to services.
 
+Those are the basic. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
+
+[[register-app]]
 === Registering an Application
 
 For the most part the process of registering an application is explained on the registration page itself (TODO: Make this actually be true, per GitHub issue). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
@@ -22,6 +25,7 @@ For the most part the process of registering an application is explained on the 
 - _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described <<client-auth,here>>. This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
 - _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use <<pkce,PKCE>>. This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
 
+[[obtaining-authorization]]
 === Obtaining Authorization
 
 Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf <<libraries,OAuth 2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
@@ -53,6 +57,7 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 
 5. Access token response (https://tools.ietf.org/html/rfc6749#section-4.1.4). The token response is described in the following section.
 
+[[using-tokens]]
 === Using Tokens
 
 A successful token response from Globus Auth contains one or more access tokens, and zero or more refresh tokens. The following is an example response from the request above:
@@ -123,9 +128,15 @@ client_auth_header = "Authorization: Basic {0}".format(
 [[pkce]]
 === PKCE
 
-== Integrating Globus Auth Features
+[[skinning]]
+=== Skinning
 
-E.g, identity linking
+Globus Auth supports skinning, so that when a user comes in from your app the look of Globus Auth matches that of your application. Setting this up is a manual process, please mailto:support@globus.org[contact us] for more details! TODO: Is support@globus.org the right email for this?
+
+[[other-features]]
+=== Integrating Other Globus Auth Features
+
+E.g, identity linking, authentication_hint, login_hint, linking to consent/identities pages etc
 
 == Developing a Service
 
@@ -141,9 +152,6 @@ auth:view_identities
 transfer:all
 offline_acces
 openid+email+profile
-
-== Features for Managing Flows
- authentication_hint, login_hint, etc
 
 == Identity Sets
 
