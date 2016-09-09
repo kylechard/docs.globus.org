@@ -24,12 +24,12 @@ For the most part the process of registering an application is explained on the 
 
 === Obtaining Authorization
 
-Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf OAuth 2 library (TODO: Link to libraries section, if that's a thing in adoc?). Below is a description of the basic authorization flow using the authorization code grant (https://tools.ietf.org/html/rfc6749#section-4.1).
+Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended that developers use an off-the-shelf OAuth 2 library (TODO: Link to libraries section, if that's a thing in adoc?). Below is a description of the basic authorization flow. Sections of the OAuth 2 specification are referenced for more details.
 
 1. Authorization request (https://tools.ietf.org/html/rfc6749#section-4.1.1). The application client constructs a link to an authorization page and directs the user to it. The URL is `https://auth.globus.org/v2/oauth2/authorize` with the following URL encoded query params:
 	- `client_id`. The UUID of the client application.
 	- `redirect_uri`. The URI the user will be redirected back to for the authorization response. Must be pre-registered for this client.
-	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope.
+	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope. TODO: Also support an `access_type=offline` param for requesting refresh token. We should decide which is the canonical way.
 	- `state`. An opaque value that is returned to the client in the authorization response. The client should use this value to prevent cross-site request forgery as described in https://tools.ietf.org/html/rfc6749#section-10.12.
 	- `response_type`. Value must be `code`.
 	- If the application client is a native app the request must also contain a `code_challenge` and `code_challenge_method` as described in the PKCE section below.
@@ -48,14 +48,14 @@ Globus Auth is fully spec compliant OAuth 2 implementation. It is recommended th
 	- `code`. The code received in the authorization response.
 	- `redirect_uri`. Must be identical to the value sent in the authorization request.
 	- `client_id`. Once again, the UUID of the client application.
-	- If the application client is confidential it must authenticate this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the PKCE section below. TODO: Link to relevant sections.
+	- If the application client is confidential it must <<client-auth,authenticate>> this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the PKCE section below. TODO: Link to relevant sections.
 	- TODO: Examples with curl and one or two common libraries
 
 5. Access token response (https://tools.ietf.org/html/rfc6749#section-4.1.4). The token response is described in the following section.
 
 === Using Tokens
 
-The following is an example response from the request above: (TODO: Formatting)
+A successful token response from Globus Auth contains one or more access tokens, and zero or more refresh tokens. The following is an example response from the request above:
 
 [source,json]
 ----
@@ -98,6 +98,12 @@ Refresh tokens are long lived credentials and should never be sent over the wire
 
 TODO: Link to section explaining id tokens.
 
+==== Token Invalidation
+
+TODO: Endpoint should be described in API refernce and this guide should only reference it.
+
+
+[[client-auth]]
 === Client Authentication
 
 Clients authenticate to Globus Auth with a HTTP basic auth header, using client credentials created in the registration interface:
