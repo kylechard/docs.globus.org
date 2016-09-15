@@ -101,7 +101,10 @@ dd,
 .flexcontainer-2 div:nth-of-type(even) {
   flex-basis: 80%;
   flex-grow: 3;
-} 
+}
+dl dt code {
+  font-weight: normal;
+}
 
 /* Asciidoc */
 .doc-info {
@@ -326,7 +329,7 @@ blockquote, .blockquote, code, .code  {
   padding: 0;
   margin: 0;
 }
-code, .uservars {
+code, .uservars, .output {
   background-color: #F6F6ff;
   border: 1px solid #DEDEDE;
   padding: 0 4px;
@@ -335,12 +338,21 @@ code, .uservars {
   border-radius: 3px;
   white-space: nowrap;
 }
+.alert code {
+  white-space: pre-wrap;
+}
 .uservars {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
     font-size: 85%;
     background-color: #fdfde6;
     border: solid 1px #f3f79e;
     color: #5273b1;
+}
+.output {
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-size: 85%;
+  background-color: #efefef;
+  color: #666;
 }
 .terminal pre {
   background-color: #424242;
@@ -353,7 +365,11 @@ code, .uservars {
   color: #ccc;
 }
 .terminal span.output {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
   color: #63E463;
+  font-size: 1em;
 }
 .terminal span.input {
     color: #F9FE64;
