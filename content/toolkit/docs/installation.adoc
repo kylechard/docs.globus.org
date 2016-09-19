@@ -19,10 +19,6 @@ This guide is the starting point for everyone who wants to install Globus Toolki
 '''
 toc::[]
 
-`this is a command`
-
-+this is mono text+
-
 == Before you begin
 Before you start installing the Globus Toolkit 6.0, there are a few things you should consider. The toolkit contains several components, and you may only be interested in some of them.
 
@@ -47,7 +43,7 @@ Run this command as the root super-user, on the `elephant` or `donkey` hosts res
 `myproxy%`::
 Run this command as the `myproxy` user, on the `elephant` host. This user is created automatically when the `myproxy-server` package is installed.
 `quser%` , `quser@donkey%`::
-Run this command as the normal user account you are intending to interact with your Globus sevices, on the `elephant` or `donkey` hosts. In this document, we use the `quser` accout for this, but if you have another user, you can use it for that purpose.
+Run this command as the normal user account you are intending to interact with your Globus sevices, on the `elephant` or `donkey` hosts. In this document, we use the `quser` account for this, but if you have another user, you can use it for that purpose.
 
 Commands themselves will be typeset as `run-this-command -with-arguments`, and responses to the commands like this [output]#Some Response Text#. If there is some portion of a command which should be replaced by value, such as a version number, it will be typeset like this: _REPLACEME_.
 
@@ -150,223 +146,189 @@ The *Unstable* repository contains packages which have compiled successfully, bu
 
 ==== Installing the Toolkit on Mac OS X
 
-Download the Mac OS X Globus Toolkit Installation Package from the Globus Toolkit web site. Click on "globus_toolkit-6.0.pkg", and follow the installation instructions. If you select the "Install for me only" option, your , and follow the installation instructions. If you select the "Install for me only" option, your $HOME/.profile is modified to add the Globus Toolkit components to your path. If you are using a different shell, you may need to incorporate those changes into your shell initialization file. If you install for all users, the global path will be updated. is modified to add the Globus Toolkit components to your path. If you are using a different shell, you may need to incorporate those changes into your shell initialization file. If you install for all users, the global path will be updated.
+Download the Mac OS X Globus Toolkit Installation Package from the Globus Toolkit web site. Click on "globus_toolkit-6.0.pkg", and follow the installation instructions. If you select the "Install for me only" option, your , and follow the installation instructions. If you select the "Install for me only" option, your [uservars]#$HOME/.profile# is modified to add the Globus Toolkit components to your path. If you are using a different shell, you may need to incorporate those changes into your shell initialization file. If you install for all users, the global path will be updated. is modified to add the Globus Toolkit components to your path. If you are using a different shell, you may need to incorporate those changes into your shell initialization file. If you install for all users, the global path will be updated.
 
-To uninstall the toolkit, run the globus-uninstall script which will remove the toolkit and revert the PATH changes.
+To uninstall the toolkit, run the `globus-uninstall` script which will remove the toolkit and revert the PATH changes.
 
 ==== Installing the Toolkit on Windows
 
 There are four options when installing the Globus Toolkit on Windows: either using cygwin (32- and 64- bit builds) or MingW (32- and 64- bit builds).
 
-The Cygwin installation requires the cygwin runtime (either 32-bit or 64-bit) to be installed: see cygwin.com for details. To use the Globus Toolkit on cygwin, download the globus_toolkit-6.0-x86_64-pc-cygwin.zip or To use the Globus Toolkit on cygwin, download and unzip the globus_toolkit-6.0-i386-pc-cygwin.zip file and in the cygwin root directory. This will create files in /opt/globus
+The Cygwin installation requires the cygwin runtime (either 32-bit or 64-bit) to be installed: see link:http://www.cygwin.com/[cygwin.com] for details. To use the Globus Toolkit on cygwin, download the globus_toolkit-6.0-x86_64-pc-cygwin.zip or To use the Globus Toolkit on cygwin, download and unzip the globus_toolkit-6.0-i386-pc-cygwin.zip file and in the cygwin root directory. This will create files in /opt/globus
 
 The mingw installtion does not require a special runtime, but some parts of the toolkit do not work with it: (LIST PENDING). To install the MingW packages, download the globus_toolkit-6.0-x86_64-w64-mingw32.zip or To use the Globus Toolkit on cygwin, download and unzip the globus_toolkit-6.0-i386-w64-mingw32.zip file. Add the unzipped directory's Globus\bin and Globus\sbin paths to your PATH environment to be able to use the Globus Toolkit.
 
 === Installation from Source Installer
-[Note]	Note
-Installing using the Source Installer is only recommended on platforms for which native packages are not available. If you are installing onto a RedHat or Debian based Linux system, please see the section above.
+NOTE: Installing using the Source Installer is only recommended on platforms for which native packages are not available. If you are installing onto a RedHat or Debian based Linux system, please see the section above.
 
-[Note]	Note
-Make you sure you check out Platform Notes for specific installation information related to your platform.
+NOTE: Make you sure you check out link:#platform_notes[Platform Notes] for specific installation information related to your platform.
 
 ==== Software Prerequisites
 
 ===== Required software
 
-To build the Globus Toolkit from the source installer, first download the source from download page, and be sure you have all of the following prerequisites installed.
+To build the Globus Toolkit from the source installer, first download the source from link:../../downloads[download page], and be sure you have all of the following prerequisites installed.
 
 This table shows specific package names (where available) for systems supported by GT 6.0:
 
-Prerequisite	Reason	RedHat-based Systems	Debian-based Systems	Solaris 11	Mac OS X
-C Compiler
+[cols="6*<",options="header"]
+|========
+|Prerequisite	|Reason	|RedHat-based Systems	|Debian-based Systems	|Solaris 11	|Mac OS X
+|C Compiler	|Most of the toolkit is written in C, using C99 and POSIX.1 features and libraries.	|gcc	|gcc	|pkg:/developer/gcc-45 or link:http://www.oracle.com/technetwork/server-storage/solarisstudio/downloads/index.html[Solaris Studio] 12.3	|link:https://developer.apple.com/xcode/[XCode]
+|GNU or BSD sed	|Standard sed does not support long enough lines to process autoconf-generated scripts and Makefiles	|sed	|sed	|pkg:/text/gnu-sed	|(included in OS)
+|GNU Make	|Standard make does not support long enough lines to process autoconf-generated makefiles	|make	|make	|pkg:/developer/build/gnu-make	|(included in XCode)
+|OpenSSL 0.9.8 or higher	|GSI security uses OpenSSL's implementation of the SSL protocol and X.509 certificates.	|openssl-devel	|libssl-dev	|pkg:/library/security/openssl	|(included in base OS)
+|Perl 5.10 or higher	|Parts of GRAM5 are written in Perl, as are many test scripts	|perl	|perl	|pkg:/runtime/perl-512	|(included in base OS)
+|pkg-config	|Parts of GRAM5 are written in Perl	|pkgconfig	|pkg-config	|pkg:/developer/gnome/gettext	|Download and install from link:http://pkgconfig.freedesktop.org/releases/[freedesktop.org source packages]
+|========
 
-Most of the toolkit is written in C, using C99 and POSIX.1 features and libraries.
-
-gcc
-
-gcc
-
-pkg:/developer/gcc-45 or Solaris Studio 12.3
-
-XCode
-
-GNU or BSD sed
-
-Standard sed does not support long enough lines to process autoconf-generated scripts and Makefiles
-
-sed
-
-sed
-
-pkg:/text/gnu-sed
-
-(included in OS)
-
-GNU Make
-
-Standard make does not support long enough lines to process autoconf-generated makefiles
-
-make
-
-make
-
-pkg:/developer/build/gnu-make
-
-(included in XCode)
-
-OpenSSL 0.9.8 or higher
-
-GSI security uses OpenSSL's implementation of the SSL protocol and X.509 certificates.
-
-openssl-devel
-
-libssl-dev
-
-pkg:/library/security/openssl
-
-(included in base OS)
-
-Perl 5.10 or higher
-
-Parts of GRAM5 are written in Perl, as are many test scripts
-
-perl
-
-perl
-
-pkg:/runtime/perl-512
-
-(included in base OS)
-
-pkg-config
-
-Parts of GRAM5 are written in Perl
-
-pkgconfig
-
-pkg-config
-
-pkg:/developer/gnome/gettext
-
-Download and install from freedesktop.org source packages
-
-[Note]	Note
-In order to use the GNU versions of sed, tar, and make on Solaris, put /usr/gnu/bin at the head of your path. Also, to use all of the perl executables, add at the head of your path. Also, to use all of the perl executables, add /usr/perl5/bin to your path. to your path.
+NOTE: In order to use the GNU versions of sed, tar, and make on Solaris, put `/usr/gnu/bin` at the head of your path. Also, to use all of the perl executables, add at the head of your path. Also, to use all of the perl executables, add `/usr/perl5/bin` to your path.
 
 ==== Installing from Source Installer
 
-Create a user named globus. This non-privileged user will be used to perform administrative tasks, deploying services, etc. Pick an installation directory, and make sure this account has read and write permissions in the installation directory.
+1. Create a user named `globus`. This non-privileged user will be used to perform administrative tasks, deploying services, etc. Pick an installation directory, and make sure this account has read and write permissions in the installation directory.
++
+[TIP]
+====
+You might need to create the target directory as `root`, then chown it to the `globus` user:
 
-TIP: You might need to create the target directory as root, then chown it to the globus user:
-
+----terminal
 root# mkdir
 root# chown globus:globus
-IMPORTANT: If for some reason you do not create a user named globus, be sure to run the installation as a non-root user. In that case, make sure to pick an install directory that your user account has write access to.
+----terminal
+====
++
+IMPORTANT: If for some reason you do *not* create a user named `globus`, be sure to run the installation as a *non-root* user. In that case, make sure to pick an install directory that your user account has write access to.
 
-Download the required software noted in Software Prerequisites.
-The Globus Toolkit Source Installer sets the installation directory by default to /usr/local/globus-6, but you may replace , but you may replace /usr/local/globus-6 with whatever directory you wish to install to, by setting the prefix when you configure. with whatever directory you wish to install to, by setting the prefix when you configure.
+2. Download the required software noted in link:#required_software[Software Prerequisites].
 
+3. The Globus Toolkit Source Installer sets the installation directory by default to `/usr/local/globus-6`, but you may replace `/usr/local/globus-6` with whatever directory you wish to install to, by setting the prefix when you configure. with whatever directory you wish to install to.
++
 As the globus user, run:
-
++
+----terminal
 globus% ./configure --prefix=
+----terminal
++
 You can use command line arguments to ./configure for a more custom install.
++
+For a full list of options, see `./configure --help`.
 
-For a full list of options, see ./configure --help.
-
-The source installer will build all of the Globus Toolkit packages in the default make rule. The following Makefile targets can be used to build subsets of the Globus Toolkit:
-
-ccommonlibs
+4. The source installer will build all of the Globus Toolkit packages in the default make rule. The following Makefile targets can be used to build subsets of the Globus Toolkit:
++
+--
+`ccommonlibs`::
 C Common Libraries
-gridftp
+`gridftp`::
 GridFTP Client and Server
-gsi
+`gsi`::
 Security Libraries and Tools
-gsi
+`gsi`::
 Security Libraries and Tools
-udt
+`udt`::
 Globus XIO UDT Driver
-myproxy
+`myproxy`::
 MyProxy Client and Server
-gsi-openssh
+`gsi-openssh`::
 GSI OpenSSH Client and Server
-gram5
+`gram5`::
 GRAM5 Client and Libraries
-gram5-server
+`gram5-server`::
 GRAM5 Service
-gram5-lsf
+`gram5-lsf`::
 GRAM5 LSF Adapter
-gram5-sge
+`gram5-sge`::
 GRAM5 SGE Adapter
-gram5-slurm
+`gram5-slurm`::
 GRAM5 SLURM Adapter
-gram5-condor
+`gram5-condor`::
 GRAM5 Condor Adapter
-gram5-pbs
+`gram5-pbs`::
 GRAM5 PBS Adapter
-gram5-auditing
+`gram5-auditing`::
 GRAM5 Auditing Support
 
 Run:
 
+----terminal
 globus% make
+----terminal
+
 Note that this command can take a while to complete. If you wish to have a log file of the build, use tee:
 
+----terminal
 globus% make 2>&1 | tee build.log
+----terminal
+
 The syntax above assumes a Bourne shell. If you are using another shell, redirect stderr to stdout and then pipe it to tee.
+--
 
-To test the toolkit, or particular packages within the toolkit, run:
-
+5. To test the toolkit, or particular packages within the toolkit, run:
++
+----terminal
 globus% make check
+----terminal
++
 or
-
-globus% make COMPONENT-check
-where COMPONENT is the name of the package to test. As an example, you could run
-
-globus% make globus_gssapi_gsi-check
++
+----terminal
+globus% make [input]#COMPONENT#-check
+----terminal
++
+where [uservars]#COMPONENT# is the name of the package to test. As an example, you could run
++
+----terminal
+globus% make [input]#globus_gssapi_gsi#-check
+----terminal
++
 to run the GSSAPI test programs.
 
-Finally, run:
-
+6. Finally, run:
++
+----terminal
 globus% make install
+----terminal
++
 This completes your installation. Now you may move on to the configuration sections of the following chapters.
-
-We recommend that you install any security advisories available for your installation, which are available from the Advisories page. You may also be interested in subscribing to some mailing lists for general discussion and security-related announcements.
++
+We recommend that you install any security advisories available for your installation, which are available from the link:[[red]#Advisories page (fix link)#]. You may also be interested in subscribing to some link:https://www.globus.org/mailing-lists[mailing lists] for general discussion and security-related announcements.
 
 ==== Updating an Installation
 
-The updates available in the native packages described above are also published as source packages on the updates page. To install update packages, follow their download link, untar them, and then configure them with the same prefix as your original installation.
+The updates available in the native packages described above are also published as source packages on the link:[[red]#updates page (fix link)#]. To install update packages, follow their download link, untar them, and then configure them with the same prefix as your original installation.
 
 == Basic Security Configuration
 
 === Obtain host credentials
-You must have X.509 certificates to use the GT 6.0 software securely (referred to in this documentation as host certificates). For an overview of certificates for GSI (security) see GSI Configuration Information and GSI Environment Variables.
+You must have X.509 certificates to use the GT 6.0 software securely (referred to in this documentation as *host certificates*). For an overview of certificates for GSI (security) see link:../gsi-openssh#configuration[[red]#GSI Configuration Information (fix link)#] and link:../gsi-openssh#env-variables[[red]#GSI Environment Variables (fix link)#].
 
-If you will need to be interoperable with other sites, you will need to obtain certs from a trusted Certificate Authority, such as those that are included in IGTF. If you are simply testing the software on your own resources, SimpleCA offers an easy way to create your own certificates (see section below).
+If you will need to be interoperable with other sites, you will need to obtain certs from a trusted Certificate Authority, such as those that are included in link:http://www.igtf.net/[IGTF]. If you are simply testing the software on your own resources, SimpleCA offers an easy way to create your own certificates (see section below).
 
 Host credentials must:
 
-consist of the following two files: hostcert.pem and and hostkey.pem
-be in the appropriate directory for secure services: /etc/grid-security/
-match the hostname for a the machine. If the machine is going to be accessed remotely, the name on the certificate must match the network-visible hostname.
+- consist of the following two files: `hostcert.pem` and and `hostkey.pem`
+- be in the appropriate directory for secure services: `/etc/grid-security/`
+- match the hostname for a the machine. If the machine is going to be accessed remotely, the name on the certificate must match the network-visible hostname.
+
 You have the following options:
 
 ==== Request a certificate from an existing CA
 
-Your best option is to use an already existing CA. You may have access to one from the company you work for or an organization you are affiliated with. Some universities provide certificates for their members and affiliates. Contact your support organization for details about how to acquire a certificate. You may find your CA listed in the TERENA Repository.
+Your best option is to use an already existing CA. You may have access to one from the company you work for or an organization you are affiliated with. Some universities provide certificates for their members and affiliates. Contact your support organization for details about how to acquire a certificate. You may find your CA listed in the link:http://www.tacar.org/[TERENA Repository].
 
-If you already have a CA, you will need to follow their configuration directions. If they include a CA setup package, follow the CAs instruction on how to install the setup package. If they do not, you will need to create an /etc/grid-security/certificates directory and include the CA cert and signing policy in that directory. See directory and include the CA cert and signing policy in that directory. See Configuring a Trusted CA for more details.
+If you already have a CA, you will need to follow their configuration directions. If they include a CA setup package, follow the CAs instruction on how to install the setup package. If they do not, you will need to create an `/etc/grid-security/certificates` directory and include the CA cert and signing policy in that directory. See directory and include the CA cert and signing policy in that directory. See link:../gsi-openssh#configuration[[red]#Configuring a Trusted CA#] for more details.
 
 This type of certificate is best for service deployment and Grid inter-operation.
 
 ==== SimpleCA
 
-SimpleCA provides a wrapper around the OpenSSL CA functionality and is sufficient for simple Grid services. Alternatively, you can use OpenSSL's CA.sh command on its own. Instructions on how to use the SimpleCA can be found in Installing SimpleCA.
+SimpleCA provides a wrapper around the OpenSSL CA functionality and is sufficient for simple Grid services. Alternatively, you can use OpenSSL's CA.sh command on its own. Instructions on how to use the SimpleCA can be found in link:../gsi-openssh#simpleca[[red]#Installing SimpleCA#].
 
 SimpleCA is suitable for testing or when a certificate authority is not available.
 
-If you install the globus-simpleca native package, it will automatically create a CA and host certificate if you don't have one configured yet. Otherwise, you'll need to use grid-ca-create to create the CA and grid-default-ca to make that the default for requesting credentials.
+If you install the `globus-simpleca` native package, it will automatically create a CA and host certificate if you don't have one configured yet. Otherwise, you'll need to use `grid-ca-create` to create the CA and `grid-default-ca` to make that the default for requesting credentials.
 
-To create user credentials, you can run the command grid-cert-request as a user that you want to create a credential for. You can then run the grid-ca-sign command as the simpleca user to sign the certificate.
+To create user credentials, you can run the command `grid-cert-request` as a user that you want to create a credential for. You can then run the `grid-ca-sign` command as the `simpleca` user to sign the certificate.
 
 === Add authorization
 Installing Globus services on your resources doesn't automatically authorize users to use these services. Each user must have their own user certificate, and each user certificate must be mapped to a local account.
@@ -375,24 +337,34 @@ To add authorizations for users, you'll need to update the grid-mapfile database
 
 You'll need two pieces of information:
 
-the subject name of a user's certificate
-the local account name that the certificate holder can access.
-To start with, if you have created a user certificate, you can run the grid-cert-info command to get the certificate's subject name, and id -un to get the account name:
+- the subject name of a user's certificate
+- the local account name that the certificate holder can access.
 
+To start with, if you have created a user certificate, you can run the `grid-cert-info` command to get the certificate's subject name, and `id -un` to get the account name:
+
+----terminal
 globus% grid-cert-info -subject
 /O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/CN=Globus User
 globus% id -un
 globus
+----terminal
+
 You may add the line by running the following command as root:
 
+----terminal
 root# grid-mapfile-add-entry \
     -dn "/O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/CN=Globus User" \
     -ln gtuser
-Modifying /etc/grid-security/grid-mapfile ...
+[output]#Modifying /etc/grid-security/grid-mapfile ...
+
 /etc/grid-security/grid-mapfile does not exist... Attempting to create /etc/grid-security/grid-mapfile
+
 New entry:
+
 "/O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/CN=Globus User" globus
-(1) entry added
+(1) entry added#
+----terminal
+
 IMPORTANT: The quotes around the subject name are important, because it contains spaces.
 
 === Verify Basic Security
