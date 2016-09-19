@@ -45,7 +45,7 @@ Run this command as the `myproxy` user, on the `elephant` host. This user is cre
 `quser%` , `quser@donkey%`::
 Run this command as the normal user account you are intending to interact with your Globus sevices, on the `elephant` or `donkey` hosts. In this document, we use the `quser` account for this, but if you have another user, you can use it for that purpose.
 
-Commands themselves will be typeset as `run-this-command -with-arguments`, and responses to the commands like this [output]#Some Response Text#. If there is some portion of a command which should be replaced by value, such as a version number, it will be typeset like this: _REPLACEME_.
+Commands themselves will be typeset as `run-this-command -with-arguments`, and responses to the commands like this [output]#Some Response Text#. If there is some portion of a command which should be replaced by value, such as a version number, it will be typeset like this: [uservars]#REPLACEME#.
 
 Finally, in some cases you will be prompted for a passphrase. When that occurs, the entry of the passphrase will be indicated by +++******+++, even though nothing will be printed to the screen.
 
@@ -356,23 +356,21 @@ root# grid-mapfile-add-entry \
     -dn "/O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/CN=Globus User" \
     -ln gtuser
 [output]#Modifying /etc/grid-security/grid-mapfile ...
-
 /etc/grid-security/grid-mapfile does not exist... Attempting to create /etc/grid-security/grid-mapfile
-
 New entry:
-
 "/O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/CN=Globus User" globus
 (1) entry added#
 ----terminal
 
-IMPORTANT: The quotes around the subject name are important, because it contains spaces.
+IMPORTANT: The quotes around the subject name are *important*, because it contains spaces.
 
 === Verify Basic Security
 Now that you have installed a trusted CA, acquired a hostcert and acquired a usercert, you may verify that your security setup is complete. As your user account, run the following command:
 
+----terminal
 gtuser$ grid-proxy-init -verify -debug
 
-User Cert File: /home/gtuser/.globus/usercert.pem
+[output]#User Cert File: /home/gtuser/.globus/usercert.pem
 User Key File: /home/gtuser/.globus/userkey.pem
 
 Trusted CA Cert Dir: /etc/grid-security/certificates
@@ -380,19 +378,24 @@ Trusted CA Cert Dir: /etc/grid-security/certificates
 Output File: /tmp/x509up_u506
 Your identity: /DC=org/DC=doegrids/OU=People/CN=GT User 332900
 Enter GRID pass phrase for this identity:
-Creating proxy ...++++++++++++
-..................++++++++++++
+Creating proxy ...\+\+\+\+\+\+\+\+\+\+\++
+..................\+\+\+\+\+\+\+\+\+\+++
  Done
 Proxy Verify OK
-Your proxy is valid until: Fri Jan 28 23:13:22 2005
-There are a few things you can notice from this command. Your usercert and key are located in $HOME/.globus/. The proxy certificate is created in . The proxy certificate is created in /tmp/. The "up" stands for "user proxy", and the . The "up" stands for "user proxy", and the _u506 will be your UNIX userid. It also prints out your distinguished name (DN), and the proxy is valid for 12 hours.
+Your proxy is valid until: Fri Jan 28 23:13:22 2005#
+----terminal
+
+There are a few things you can notice from this command. Your usercert and key are located in `$HOME/.globus/`. The proxy certificate is created in . The proxy certificate is created in `/tmp/`. The "up" stands for "user proxy", and the __u506_ will be your UNIX userid. It also prints out your distinguished name (DN), and the proxy is valid for 12 hours.
 
 If this command succeeds, your single node is correctly configured.
 
 If you get an error, or if you want to see more diagnostic information about your certificates, run the following:
 
+----terminal
 gtuser$ grid-cert-diagnostics
-For more troubleshooting information, see the GSI troubleshooting guide
+----terminal
+
+For more troubleshooting information, see the link:../gsi-openssh#troubleshooting[[red]#GSI troubleshooting guide#].
 
 === Firewall configuration
 There are four possible firewall scenarios that might present themselves: restrictions on incoming and outgoing ports for both client and server scenarios.
@@ -409,23 +412,24 @@ Clients need to be able to make outgoing connections freely from ephemeral ports
 
 ===== Allowed Incoming Ports
 
-As described in Job State Callbacks and Polling, the Globus Toolkit GRAM service uses callbacks to communicate state changes to clients and, optionally, to stage files to/from the client. If connections are not allowed back to the Globus Toolkit clients, the following restrictions will be in effect:
+As described in link:../gram5#jobstatecallbacks[[red]#Job State Callbacks and Polling#], the Globus Toolkit GRAM service uses callbacks to communicate state changes to clients and, optionally, to stage files to/from the client. If connections are not allowed back to the Globus Toolkit clients, the following restrictions will be in effect:
 
-You cannot do a job submission request and redirect the output back to the client. This means the globus-job-run command won't work. globus-job-submit will work, but you cannot use globus-job-get-output. globusrun with the -o option also will not work.
-Staging to or from the client will also not work, which precludes the -s and -w options.
-The client cannot be notified of state changes in the job, e.g. completion.
-To allow these callbacks, client sites should allow incoming connection in the ephemeral port range. Client sites wishing to restrict incoming connections in the ephemeral port range should select a port range for their site. The size of this range should be approximately 10 ports per expected simultaneous user on a given host, though this may vary depending on the actual usage characteristics. Hosts on which clients run should have the GLOBUS_TCP_PORT_RANGE environment variable set for the users to reflect the site's chosen range.
+- You cannot do a job submission request and redirect the output back to the client. This means the `globus-job-run` command won't work. `globus-job-submit` will work, but you cannot use `globus-job-get-output`. `globusrun` with the `-o` option also will not work.
+- Staging to or from the client will also not work, which precludes the `-s` and `-w` options.
+- The client cannot be notified of state changes in the job, e.g. completion.
+
+To allow these callbacks, client sites should allow incoming connection in the ephemeral port range. Client sites wishing to restrict incoming connections in the ephemeral port range should select a port range for their site. The size of this range should be approximately 10 ports per expected simultaneous user on a given host, though this may vary depending on the actual usage characteristics. Hosts on which clients run should have the [uservars]#GLOBUS_TCP_PORT_RANGE# environment variable set for the users to reflect the site's chosen range.
 
 ===== Network Address Translation (NAT)
 
-Clients behind NATs will be restricted as described in Allowed Incoming Ports unless the firewall and site hosts are configured to allow incoming connections.
+Clients behind NATs will be restricted as described in link:#allowed_incoming_ports[Allowed Incoming Ports] unless the firewall and site hosts are configured to allow incoming connections.
 
 This configuration involves:
 
-Select a separate portion of the ephemeral port range for each host at the site on which clients will be running (e.g. 45000-45099 for host A, 45100-45199 for host B, etc.).
-Configure the NAT to direct incoming connections in the port range for each host back to the appropriate host (e.g., configure 45000-45099 on the NAT to forward to 45000-45099 on host A).
-Configure the Globus Toolkit clients on each site host to use the selected port range for the host using the techniques described in If client is behind a firewall.
-Configure Globus Toolkit clients to advertise the firewall as the hostname to use for callbacks from the server host. This is done using the GLOBUS_HOSTNAME environment variable. The client must also have the GLOBUS_HOSTNAME environment variable set to the hostname of the external side of the NAT firewall. This will cause the client software to advertise the firewall's hostname as the hostname to be used for callbacks causing connections from the server intended for it to go to the firewall (which redirects them to the client).
+- Select a separate portion of the ephemeral port range for each host at the site on which clients will be running (e.g. 45000-45099 for host A, 45100-45199 for host B, etc.).
+- Configure the NAT to direct incoming connections in the port range for each host back to the appropriate host (e.g., configure 45000-45099 on the NAT to forward to 45000-45099 on host A).
+- Configure the Globus Toolkit clients on each site host to use the selected port range for the host using the techniques described in If client is behind a firewall.
+- Configure Globus Toolkit clients to advertise the firewall as the hostname to use for callbacks from the server host. This is done using the [uservars]#GLOBUS_HOSTNAME# environment variable. The client must also have the [uservars]#GLOBUS_HOSTNAME# environment variable set to the hostname of the external side of the NAT firewall. This will cause the client software to advertise the firewall's hostname as the hostname to be used for callbacks causing connections from the server intended for it to go to the firewall (which redirects them to the client).
 
 ==== Server Site Firewall Requirements
 
@@ -437,8 +441,9 @@ A server site should allow incoming connections to the well-known Grid Service P
 
 A server not allowing incoming connections in the ephemeral port range will have the following restrictions:
 
-If port 2119/tcp is open, GRAM will allow jobs to be submitted, but further management of the jobs will not be possible.
-While it will be possible to make GridFTP control connections if port 2811/tcp is open, it will not possible to actually get or put files.
+- If port 2119/tcp is open, GRAM will allow jobs to be submitted, but further management of the jobs will not be possible.
+- While it will be possible to make GridFTP control connections if port 2811/tcp is open, it will not possible to actually get or put files.
+
 Server sites wishing to restrict incoming connections in the ephemeral port range should select a range of port numbers. The size of this range should be approximately 20 ports per expected simultaneous user on a given host, though this may vary depending on the actual usage characteristics. While it will take some operational experience to determine just how big this range needs to be, it is suggested that any major server site open a port range of at least a few hundred ports. Grid Services should configured as described in Section to reflect the site's chosen range.
 
 ===== Allowed Outgoing Ports
@@ -453,68 +458,49 @@ We do note there have been some successes in running GT services behind NAT fire
 
 ==== Summary of Globus Toolkit Traffic
 
-Table 3.1. Summary of Globus Toolkit Traffic
-
-Application	Network Ports	Comments
-GRAM Gatekeeper(to start jobs)
-
-To 2119/tcp on server from controllable ephemeral port on client
-
-Connections back to client (controllable ephemeral port to controllable ephemeral port) required if executable or data staged from client or output from job sent back to client. Port 2119/tcp defined by IANA
-
-GRAM Job-Manager
-
-From controllable ephemeral port on client to controllable ephemeral port on server.
-
-Port on server selected when original connection made by the client to the Gatekeeper and returned to the client in a URL. May result in connection back to client from ephemeral port on server to controllable ephemeral port on client.
-
-GridFTP
-
-From controllable ephemeral port on client to port 2811/tcp on server for control channel.
-
-Port 2811/tcp defined by IANA.
-
-GSI-Enabled SSH
-
-From ephemeral port on client to port 22/tcp on server.
-
-Same as standard SSH. Port 22/tcp defined by IANA.
-
-MyProxy
-
-From ephemeral port on client to port 7512/tcp on server.
-
-Default. Can be modified by site.
-
+.Summary of Globus Toolkit Traffic
+[cols="3*<",options="header"]
+|========
+|Application	|Network Ports	|Comments
+|GRAM Gatekeeper(to start jobs)	|To 2119/tcp on server from controllable ephemeral port on client	|Connections back to client (controllable ephemeral port to controllable ephemeral port) required if executable or data staged from client or output from job sent back to client. Port 2119/tcp defined by IANA
+|GRAM Job-Manager	|From controllable ephemeral port on client to controllable ephemeral port on server.	|Port on server selected when original connection made by the client to the Gatekeeper and returned to the client in a URL. May result in connection back to client from ephemeral port on server to controllable ephemeral port on client.
+|GridFTP	|From controllable ephemeral port on client to port 2811/tcp on server for control channel.	|Port 2811/tcp defined by IANA.
+|GSI-Enabled SSH	|From ephemeral port on client to port 22/tcp on server.	|Same as standard SSH. Port 22/tcp defined by IANA.
+|MyProxy	|From ephemeral port on client to port 7512/tcp on server.	|Default. Can be modified by site.
+|========
 
 ==== Controlling The Ephemeral Port Range
 
-Controllable ephemeral ports in the Globus Toolkit can be restricted to a given range. setting the environment variable GLOBUS_TCP_PORT_RANGE can restrict ephemeral ports. The value of this variable should be formatted as min,max (a comma separated pair). This will cause the GT libraries (specifically GlobusIO) to select port numbers for controllable ports in that specified range.
+Controllable ephemeral ports in the Globus Toolkit can be restricted to a given range. setting the environment variable [uservars]#GLOBUS_TCP_PORT_RANGE# can restrict ephemeral ports. The value of this variable should be formatted as min,max (a comma separated pair). This will cause the GT libraries (specifically GlobusIO) to select port numbers for controllable ports in that specified range.
 
+----terminal
 % GLOBUS_TCP_PORT_RANGE=40000,40010
 % export GLOBUS_TCP_PORT_RANGE
 % globus-gass-server
 https://globicus.lbl.gov:40000
 ^C
 %
+----terminal
+
 This environment variable is respected by both clients and servers that are started from within the environment in which it is set. There are better ways, however, to configure a globus-job-manager or a GridFTP server to restrict its port range.
 
-globus-job-manager has an option, -globus-tcp-port-range PORT_RANGE that acts in the same manner as the environment variable. It can be specified on the command line or in the configuration file. See the job manager documentation for all of its options.
-See the GridFTP documentation for information about using GridFTP with firewalls.
+- `globus-job-manager` has an option, `-globus-tcp-port-range PORT_RANGE` that acts in the same manner as the environment variable. It can be specified on the command line or in the configuration file. See the link:[[red]#job manager documentation (fix link)#] for all of its options.
+- See the link:../gridftp[GridFTP documentation] for information about using GridFTP with firewalls.
 
 == Basic Setup for GT 6.0
-The Quickstart Guide walks you through setting up basic services on multiple machines.
+The link:../quickstart-guide[Quickstart Guide] walks you through setting up basic services on multiple machines.
 
 ==  Platform Notes
 
 The GNU autotools and libtool is no longer distributed with OS X 10.8+. If you are building from git repository, you'll need to install the latest versions of those tools. If you are building from the source installer, these do not need to be installed.
 
-GNU Autoconf
-GNU Automake
-GNU Libtool
-Configure libtool with the configuration option --program-prefix=g to cause the libtool script to be named glibtool to avoid conflicts with the OS X libtool program which provides different functionality than GNU libtool. Install libtool (and the other tools) into the a common directory. If you do so, you'll need to set the LIBTOOLIZE environment variable to the path to the glibtoolize program. You'll need to include the autotools in your path to regenerate the configurable scripts and Makefile.in files for the toolkit.
+- link:http://ftpmirror.gnu.org/autoconf/[GNU Autoconf]
+- link:http://ftpmirror.gnu.org/automake/[GNU Automake]
+- link:http://ftpmirror.gnu.org/libtool/[GNU Libtool]
 
-The Globus Toolki build requires the pkg-config package to be installed. It is available from freedesktop.org. Additionally, you'll need to set the environment variable PKG_CONFIG_PATH to /usr/lib/pkgconfig prior to running the configure script. prior to running the configure script.
+Configure libtool with the configuration option `--program-prefix=g` to cause the libtool script to be named `glibtool` to avoid conflicts with the OS X libtool program which provides different functionality than GNU libtool. Install libtool (and the other tools) into the a common directory. If you do so, you'll need to set the [uservars]#LIBTOOLIZE# environment variable to the path to the `glibtoolize` program. You'll need to include the autotools in your path to regenerate the configurable scripts and Makefile.in files for the toolkit.
+
+The Globus Toolki build requires the `pkg-config` package to be installed. It is available from freedesktop.org. Additionally, you'll need to set the environment variable [uservars]#PKG_CONFIG_PATH# to `/usr/lib/pkgconfig` prior to running the configure script. prior to running the configure script.
 
 == Appendix
-The Install Guide appendix can be found here.
+The Install Guide appendix can be found [red]#here (fix link - are we including this?)#.
