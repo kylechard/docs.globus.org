@@ -338,6 +338,9 @@ code, .uservars, .output {
   border-radius: 3px;
   white-space: nowrap;
 }
+pre .output {
+  white-space: pre;
+}
 .alert code {
   white-space: pre-wrap;
 }
