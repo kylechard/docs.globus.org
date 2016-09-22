@@ -3,4 +3,4 @@
 
 - link:select-group[Select Group]
 - link:browse-endpoint[Browse Endpoint]
-- link:auth[Globus Auth Helper Pages]
+- link:auth[Globus Auth]
