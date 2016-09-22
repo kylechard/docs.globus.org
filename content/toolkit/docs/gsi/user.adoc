@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 GridFTP User Guide"
+short_title: "User Guide"
+---
+
+= GT 6.0 GridFTP User Guide
+
+[red]#(CONTENT NEEDS REVIEW)#
