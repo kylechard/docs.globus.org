@@ -10,3 +10,5 @@ menu_weight: 0
 * link:introduction[Introduction] -
   introduction to API
 * link:reference[Reference]
+
+For more information, you can also try the link:../helper-pages/auth[Globus Auth Helper Page].
