@@ -1,9 +1,9 @@
 ---
-full_title: "GRAM5 System Administrator's Guide"
+full_title: "GRAM5"
 short_title: "GRAM5"
 ---
 
-= GRAM5 System Administrator's Guide
+= GRAM5
 :imagesdir: .
 
 [red]#(CONTENT NEEDS REVIEW)#
