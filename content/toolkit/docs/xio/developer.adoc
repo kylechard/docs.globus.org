@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 XIO Developer Guide"
+short_title: "Developer Guide"
+---
+
+= GT 6.0 XIO Developer Guide
+
+[red]#(CONTENT NEEDS REVIEW)#

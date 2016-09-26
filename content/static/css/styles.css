@@ -354,8 +354,8 @@ pre .output {
 .output {
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
   font-size: 85%;
-  background-color: #efefef;
-  color: #666;
+  background-color: #fbfbfb;
+  color: #333;
 }
 .terminal pre {
   background-color: #424242;

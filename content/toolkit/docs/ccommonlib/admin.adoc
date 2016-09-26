@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 C Common Libraries Admin Guide"
+short_title: "Admin Guide"
+---
+
+= GT 6.0 C Common Libraries Admin Guide
+
+[red]#(CONTENT NEEDS REVIEW)#

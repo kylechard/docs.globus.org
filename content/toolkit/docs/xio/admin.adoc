@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 XIO Admin Guide"
+short_title: "Admin Guide"
+---
+
+= GT 6.0 XIO Admin Guide
+
+[red]#(CONTENT NEEDS REVIEW)#

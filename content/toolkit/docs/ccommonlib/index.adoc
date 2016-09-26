@@ -1,0 +1,9 @@
+---
+full_title: "C Common Libraries"
+short_title: "C Common Libraries"
+---
+
+= C Common Libraries
+:imagesdir: .
+
+[red]#(CONTENT NEEDS REVIEW)#

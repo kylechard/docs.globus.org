@@ -1,0 +1,8 @@
+---
+full_title: "GT 6.0 SimpleCA Admin Guide"
+short_title: "Admin Guide"
+---
+
+= GT 6.0 SimpleCA Admin Guide
+
+[red]#(CONTENT NEEDS REVIEW)#

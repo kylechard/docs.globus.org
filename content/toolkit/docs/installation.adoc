@@ -488,7 +488,7 @@ This environment variable is respected by both clients and servers that are star
 - See the link:../gridftp[GridFTP documentation] for information about using GridFTP with firewalls.
 
 == Basic Setup for GT 6.0
-The link:../quickstart-guide[Quickstart Guide] walks you through setting up basic services on multiple machines.
+The link:../toolkit/quickstart[Quickstart Guide] walks you through setting up basic services on multiple machines.
 
 ==  Platform Notes
 
