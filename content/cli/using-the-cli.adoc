@@ -25,7 +25,7 @@ $ ssh [input]#<username>#@cli.globusonline.org [input]#<command> <options> <para
 where: [uservars]#<username># is your Globus user name, [uservars]#<command># is the Globus command to execute, [uservars]#<options># are the options available for [uservars]#<command>#, and [uservars]#<params># are the parameters passed to [uservars]#<command>#. If desired, gsissh can be used in place of ssh.
 
 == File Transfer
-The Globus transfer service provides two commands for moving files: +transfer+ and +scp+. The +scp+ command offers a subset of +transfer+ ’s functionality but is packaged in a way that should be familiar to users of the standalone scp command.
+The Globus transfer service provides the +transfer+ command for moving files.
 
 All Globus accounts are provisioned with two endpoints for exploratory use, so as soon as you have an account you should be able to transfer [uservars]#/share/godata/file1.txt# from endpoint [uservars]#go#ep1# to your home directory on [uservars]#go#ep2#, as shown below by user [uservars]#demodoc#:
 
@@ -128,7 +128,7 @@ Credential Time Left: 11:59:54
 Activating \'ci#pads'#
 ----terminal
 
-Endpoints can also be activated inline by specifying the -g option with the +transfer+ and +scp+ commands.
+Endpoints can also be activated inline by specifying the -g option with the +transfer+ command.
 
 //Now that you've familiarized yourself with the CLI you can learn about some of the more powerful features available by reading the +man+ pages and the link:../cli-beyond-basics[Beyond the Basics guide]. As always, please feel free to link:https://www.globus.org/contact-us[contact us] if you have any questions.
 
