@@ -38,7 +38,7 @@ Request Time: 2016-10-03 16:08:23Z
 Command     : transfer -- go#ep1/share/godata/file1.txt go#ep2/\~/myfile.txt
 Label       : n/a
 Status      : SUCCEEDED#
-$ ssh [input]#demodoc#@cli.globusonline.org ls [input]#go#ep2/\~/#
+$ ssh [input]#demodoc#@cli.globusonline.org ls [input]#go#ep2/~/#
 [output]#myfile.txt#
 ----terminal
 
@@ -115,7 +115,7 @@ $ ssh -t [input]#demodoc#@cli.globusonline.org endpoint-activate [input]##xsede#
 [output]#\*\** Please use this URL to activate the endpoint(s) \*\**
 https://www.globusonline.org/activate?ep=xsede%23stampede
 \*\** Waiting... Press CTRL-C to cancel \*\**
-\*\** Credential Received! \*\**
+\*\** Credential Received! \***
 Connection to cli.globusonline.org closed.#
 ----terminal
 
