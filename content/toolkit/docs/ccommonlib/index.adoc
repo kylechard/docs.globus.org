@@ -7,3 +7,12 @@ short_title: "C Common Libraries"
 :imagesdir: .
 
 [red]#(CONTENT NEEDS REVIEW)#
+
+The C Common Libraries provide an abstraction layer for data types, libc system calls, and data structures used throughout the Globus Toolkit and useful for applications that use the Globus Toolkit.
+
+++++
+<div class="flexcontainer flexcontainer-2">
+	<div><b><a href="developer">Developer's Guide</a></b></div>
+	<div>Reference for developers who want to access the C libraries.</div>
+</div>
+++++

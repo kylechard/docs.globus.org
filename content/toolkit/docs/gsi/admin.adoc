@@ -1,8 +1,8 @@
 ---
-full_title: "GT 6.0 GridFTP Admin Guide"
+full_title: "GT 6.0 CSI C Admin Guide"
 short_title: "Admin Guide"
 ---
 
-= GT 6.0 GridFTP Admin Guide
+= GT 6.0 GSI C Admin Guide
 
 [red]#(CONTENT NEEDS REVIEW)#

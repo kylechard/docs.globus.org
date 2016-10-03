@@ -1,8 +1,0 @@
----
-full_title: "GT 6.0 C Common Libraries User Guide"
-short_title: "User Guide"
----
-
-= GT 6.0 C Common Libraries User Guide
-
-[red]#(CONTENT NEEDS REVIEW)#

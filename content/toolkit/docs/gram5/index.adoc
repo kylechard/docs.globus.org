@@ -87,7 +87,3 @@ The following guides are available for this component:
 	<div>Reference and usage scenarios for developers.</div>
 </div>
 ++++
-
-// |link:admin[Admin Guide]	|For system administrators and those installing, building and deploying GT. You should already have read the link:../installation[Installation Guide] and link:../toolkit/quickstart[Quickstart]
-// |link:user[User’s Guide]	|Describes how end-users typically interact with this component.
-// |link:developer[Developer’s Guide]	|Reference and usage scenarios for developers.

@@ -1,8 +1,8 @@
 ---
-full_title: "GT 6.0 GridFTP User Guide"
+full_title: "GT 6.0 GSI C User Guide"
 short_title: "User Guide"
 ---
 
-= GT 6.0 GridFTP User Guide
+= GT 6.0 GSI C User Guide
 
 [red]#(CONTENT NEEDS REVIEW)#

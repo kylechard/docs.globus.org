@@ -25,7 +25,7 @@ Run this command as the root super-user, on the `elephant` or `donkey` hosts res
 `myproxy%`::
 Run this command as the myproxy user, on the `elephant` host. This user is created automatically when the `myproxy-server` package is installed.
 `quser%`, `quser@donkey%`::
-Run this command as the normal user account you are intending to interact with your Globus sevices, on the `elephant` or `donkey` hosts. In this document, we use the `quser` accout for this, but if you have another user, you can use it for that purpose.
+Run this command as the normal user account you are intending to interact with your Globus sevices, on the `elephant` or `donkey` hosts. In this document, we use the [uservars]#quser# accout for this, but if you have another user, you can use it for that purpose.
 
 Commands themselves will be typeset as `run-this-command -with-arguments`, and responses to the commands like this [output]#Some Response Text#. If there is some portion of a command which should be replaced by value, such as a version number, it will be typeset like this: [uservars]#REPLACEME#.
 
@@ -173,7 +173,7 @@ root# netstat -an | grep 7512
 
 ==== User Credentials
 
-We'll need to specify a full name and a login name for the user we'll create credentials for. We'll be using the [uservars]#QuickStart# User as the user's name and [uservars]#quser# as user's account name. You can use this as well if you first create a `quser` unix account. Otherwise, you can use another local user account. Run the `myproxy-admin-adduser` command as the myproxy user to create the credentials. You'll be prompted for a passphrase, which must be at least 6 characters long, to encrypt the private key for the user. You must communicate this passphrase to the user who will be accessing this credential. He can use the `myproxy-change-passphrase` command to change the passphrase.
+We'll need to specify a full name and a login name for the user we'll create credentials for. We'll be using the [uservars]#QuickStart# User as the user's name and [uservars]#quser# as user's account name. You can use this as well if you first create a [uservars]#quser# unix account. Otherwise, you can use another local user account. Run the `myproxy-admin-adduser` command as the myproxy user to create the credentials. You'll be prompted for a passphrase, which must be at least 6 characters long, to encrypt the private key for the user. You must communicate this passphrase to the user who will be accessing this credential. He can use the `myproxy-change-passphrase` command to change the passphrase.
 
 The command to create the myproxy credential for the user is
 
@@ -223,9 +223,9 @@ Check that the GridFTP server is running and listening on the gridftp port:
 
 ----terminal
 root# service globus-gridftp-server status
-[output]#GridFTP Server Running (pid=20087)
+[output]#GridFTP Server Running (pid=20087)#
 root# netstat -an | grep 2811
-tcp        0      0 0.0.0.0:2811            0.0.0.0:*               LISTEN#
+[output]#tcp        0      0 0.0.0.0:2811            0.0.0.0:*               LISTEN#
 ----terminal
 
 Now the GridFTP server is waiting for a request, so we'll generate a proxy from the myproxy service by using `myproxy-logon` and then copy a file from the GridFTP server with the `globus-url-copy` command. We'll use the passphrase used to create the myproxy credential for [uservars]#quser#.
@@ -256,9 +256,9 @@ We can now verify that the service is running and listening on the GRAM5 port:
 
 ----terminal
 root# service globus-gatekeeper status
-[output]#globus-gatekeeper is running (pid=20199)
+[output]#globus-gatekeeper is running (pid=20199)#
 root# netstat -an | grep 2119
-tcp6       0      0 :::2119                 :::*                    LISTEN#
+[output]#tcp6       0      0 :::2119                 :::*                    LISTEN#
 ----terminal
 
 The gatekeeper is set up to run, and is ready to authorize job submissions and pass them on to the fork job manager. We can now run a couple of test jobs:
@@ -309,8 +309,8 @@ We're going to create the host certificate for donkey, but we create it on eleph
 ----terminal
 myproxy% myproxy-admin-addservice -c "donkey.globus.org" -l donkey
 Legacy library getopts.pl will be removed from the Perl core distribution in the next major release. Please install it from the CPAN distribution Perl4::CoreLibs. It is being used at /sbin/myproxy-admin-addservice, line 42.
-Enter PEM pass phrase: [input]#\*\*\*\*\**#
-Verifying - Enter PEM pass phrase: [input]#******#
+Enter PEM pass phrase: [input]#\*\*\*\*\*\*#
+Verifying - Enter PEM pass phrase: [input]#\*\*\****#
 
 [output]#The new signed certificate is at: /var/lib/globus/simple_ca/newcerts/03.pem
 
@@ -320,69 +320,93 @@ Certificate subject is:
 /O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/OU=local/CN=donkey.globus.org#
 ----terminal
 
-Next we'll retrieve the credential on donkey as the root user.
+Next we'll retrieve the credential on `donkey` as the root user.
 
+----terminal
 root@donkey# myproxy-retrieve -s elephant -k donkey.globus.org -l donkey
-Enter MyProxy pass phrase: ******
-Credentials for quser have been stored in
+Enter MyProxy pass phrase: [input]#\*\*\*\***#
+[output]#Credentials for quser have been stored in
 /etc/grid-security/hostcert.pem and
-/etc/grid-security/hostkey.pem.
-At this point, we no longer need to have donkey's host certificate on elephant's myproxy server, so we'll delete it.
+/etc/grid-security/hostkey.pem.#
+----terminal
 
+At this point, we no longer need to have `donkey` 's host certificate on `elephant` 's myproxy server, so we'll delete it.
+
+----terminal
 root@donkey# myproxy-destroy -s elephant -k donkey.globus.org -l donkey
-MyProxy credential 'donkey.globus.org' for user donkey was successfully removed.
-And as a final setup, we'll add quser's credential to the grid-mapfile on donkey, so that the quser account can access services there as well.
+[output]#MyProxy credential 'donkey.globus.org' for user donkey was successfully removed.#
+----terminal
 
+And as a final setup, we'll add [uservars]#quser# 's credential to the grid-mapfile on `donkey`, so that the [uservars]#quser# account can access services there as well.
+
+----terminal
 root@donkey# grid-mapfile-add-entry -dn \
     "/O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/OU=local/CN=QuickStart User" \
     -ln quser
-Modifying /etc/grid-security/grid-mapfile ...
+[output]#Modifying /etc/grid-security/grid-mapfile ...
 /etc/grid-security/grid-mapfile does not exist... Attempting to create /etc/grid-security/grid-mapfile
 New entry:
 "/O=Grid/OU=GlobusTest/OU=simpleCA-elephant.globus.org/OU=local/CN=QuickStart User" quser
-(1) entry added
-At this point, we have set up security on donkey to trust the CA on elephant. We have created a host certificate for donkey so that we can run Globus services on donkey, and we have enabled the quser account to use services on donkey. The last thing to do is to turn on the Globus services on donkey.
+(1) entry added#
+----terminal
+
+At this point, we have set up security on `donkey` to trust the CA on `elephant`. We have created a host certificate for `donkey` so that we can run Globus services on `donkey`, and we have enabled the [uservars]#quser# account to use services on `donkey`. The last thing to do is to turn on the Globus services on `donkey`.
 
 === Setting up your second machine: GridFTP
 
 GridFTP set up on the second machine is identical to the first. I'll just list the commands here; see Setting up GridFTP for additional information.
 
+----terminal
 root@donkey# service globus-gridftp-server start
-Started GridFTP Server                                     [  OK  ]
+[output]#Started GridFTP Server                                     [  OK  ]#
+----terminal
+
 Now we can test it.
 
-First, we'll retrive a proxy credential from the myproxy server so that the user on donkey can interact with the Globus services. Here we'll use the same passphrase as we used to create the quser credential.
+First, we'll retrive a proxy credential from the myproxy server so that the user on `donkey` can interact with the Globus services. Here we'll use the same passphrase as we used to create the [uservars]#quser# credential.
 
+----terminal
 quser@donkey% myproxy-logon -s elephant
-Enter MyProxy pass phrase: ******
-A credential has been received for user quser in /tmp/x509up_u1001.
-Next we'll transfer a file between the gridftp servers on donkey and elephant:
+Enter MyProxy pass phrase: [input]#\*\*\*\***#
+[output]#A credential has been received for user quser in /tmp/x509up_u1001.#
+----terminal
 
+Next we'll transfer a file between the gridftp servers on `donkey` and `elephant`:
+
+----terminal
 quser@donkey% globus-url-copy gsiftp://elephant.globus.org/etc/group \
    gsiftp://donkey.globus.org/tmp/from-elephant
-That was a slightly more complicated test than we ran on elephant earlier. In this case, we did a third-party transfer between two GridFTP servers. It worked, so I have the local and remote security configured correctly.
+----terminal
+
+That was a slightly more complicated test than we ran on `elephant` earlier. In this case, we did a third-party transfer between two GridFTP servers. It worked, so I have the local and remote security configured correctly.
 
 If you run into problems, perhaps you have a firewall between the two machines? GridFTP needs to communicate on data ports, not just port 2811. The error for this condition looks like:
 
-error: globus_ftp_client: the server responded with an error
+----terminal
+[output]#error: globus_ftp_client: the server responded with an error
 500 500-Command failed. : callback failed.
 500-globus_xio: Unable to connect to 140.221.8.19:42777
 500-globus_xio: System error in connect: No route to host
 500-globus_xio: A system call failed: No route to host
-500 End.
-You can set up a range of ports to be open on the firewall and configure GridFTP to use them. See the GridFTP admin firewall doc.
+500 End.#
+----terminal
+
+You can set up a range of ports to be open on the firewall and configure GridFTP to use them. See the link:../../gridftp/admin#firewall[GridFTP admin firewall doc].
 
 === Setting up your second machine: GRAM5
 
-Now we can submit a staging job. This job will copy the /bin/echo program from donkey to a file called /tmp/my_echo. Then it runs it with some arguments, and captures the stderr/stdout. Finally, it will clean up the . Then it runs it with some arguments, and captures the stderr/stdout. Finally, it will clean up the my_echo file when execution is done. file when execution is done.
+Now we can submit a staging job. This job will copy the */bin/echo* program from donkey to a file called [output]#/tmp/my_echo#. Then it runs it with some arguments, and captures the stderr/stdout. Finally, it will clean up the . Then it runs it with some arguments, and captures the stderr/stdout. Finally, it will clean up the [output]#my_echo# file when execution is done.
 
-quser@donkey% globus-job-run elephant \
-    -x '(file_stage_in=(gsiftp://donkey.globus.org/bin/echo /tmp/echo)) \
+----terminal
++++quser@donkey% globus-job-run elephant \
+    -x \'(file_stage_in=(gsiftp://donkey.globus.org/bin/echo /tmp/echo)) \
         (file_clean_up=/tmp/echo)' /bin/ls -l /tmp/echo
- -rw-r--r-- 1 quser quser 27120 Nov  2 09:56 /tmp/echo
+[output]#-rw-r--r-- 1 quser quser 27120 Nov  2 09:56 /tmp/echo#+++
+----terminal
+
 This example staged in a file, had an executable act on that file, and cleaned up the file afterward.
 
-You can get other examples of GRAM files from GRAM usage scenarios.
+You can get other examples of GRAM files from link:../../gram5/user#usage[GRAM usage scenarios].
 
 == Conclusion
-Hopefully this guide has been helpful in familiarizing you with some of the administration tasks and tools to use the Globus Toolkit. If you've reached this point successfully, you should have enough knowledge to enable additional hosts to use your grid by repeating the tasks in Setting up your second machine. Also, by repeating the tasks in User Credentials and User Authorization you can enable additional users to access your compute and data resources.
+Hopefully this guide has been helpful in familiarizing you with some of the administration tasks and tools to use the Globus Toolkit. If you've reached this point successfully, you should have enough knowledge to enable additional hosts to use your grid by repeating the tasks in link:#setting_up_your_second_machine[Setting up your second machine]. Also, by repeating the tasks in link:#user_credentials[User Credentials] and link:#user_authorization[User Authorization] you can enable additional users to access your compute and data resources.
