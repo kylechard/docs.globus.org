@@ -166,5 +166,37 @@ Process nice level for `globus-gatekeeper` and `globus-job-manager` processes. I
 
 After modifying the configuration file, restart the `globus-gatekeeper` using the methods described in link:../../gram5/admin#starting_and_stopping_gram5_services[Starting and Stopping GRAM5 services].
 
+=== Scheduler Event Generator Configuration
+The `globus-scheduler-event-generator` has several configuration options related to filesystem paths. This configuration is located in:
+
+RPM Package::
+[output]#/etc/sysconfig/globus-scheduler-event-generator#
+Debian Package::
+[output]#/etc/default/globus-scheduler-event-generator#
+Source Installer::
+[output]#PREFIX/etc/globus-scheduler-event-generator.conf#
+
+The following configuration variables are available in the `globus-scheduler-event-generator` configuration file:
+
+GLOBUS_SEG_PIDFMT::
+Scheduler Event Generator PID file path format. Modify this to be the location where the `globus-scheduler-event-generator` writes its process IDs (one per configured LRM). The format is a `printf` format string with one %s to be replaced by the LRM name. By default, `globus-scheduler-event-generator` uses [output]#/var/run/globus-scheduler-event-generator-%s.pid.#.
+GLOBUS_SEG_LOGFMT::
+Scheduler Event Generator Log path format. Modify this to be the location where `globus-scheduler-event-generator` writes its event logs. The format is a `printf` format string with one %s to be replaced by the LRM name. By default, `globus-scheduler-event-generator` uses [output]#/var/lib/globus/globus-seg-%s#. If you modify this value, you’ll need to also update the LRM configuration file to look for the log file in the new location. If you modify this value, you’ll need to also update the LRM configuration file to look for the log file in the new location.
+GLOBUS_SEG_NICE_LEVEL::
+Process nice level for `globus-scheduler-event-generator processes`. If not set, the default system process nice level is used.
+
+After modifying the configuration file, restart the `globus-scheduler-event-generator` using the methods described in link:../../gram5/admin#starting_and_stopping_gram5_services[Starting and Stopping GRAM5 services].
+
+=== Job Manager Configuration
+The `globus-job-manager` process is started by the `globus-gatekeeper` and uses the configuration defined in the service entry for the resource name. By default, these service entries use a common configuration file for most job manager features. This configuration is located in:
+
+RPM Package::
+[output]#/etc/globus/globus-gram-job-manager.conf#
+Debian Package::
+[output]#/etc/globus/globus-gram-job-manager.conf#
+Source Installer::
+[output]#PREFIX/etc/globus-gram-job-manager.conf#
+
+This configuration file is used to construct the command-line options for the `globus-job-manager` program. Thus, all of the options described in link:#globus_job_manager_8[`globus-job-manager`] may be used.
 
 
