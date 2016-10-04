@@ -104,7 +104,7 @@ Connection to cli.globusonline.org closed.#
 Because [uservars]#\'carver'# and [uservars]#\'hopper'# have been activated using NERSC credentials, and the [uservars]#\'carver'# and [uservars]#\'hopper'# owners have authorized the user to access their endpoints, [uservars]#demodoc# is able to transfer a file:
 
 ----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#go#ep1/share/godata/file1.txt go#ep2/~/myfile.txt#
+$ ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#nersc#carver/share/godata/file1.txt nersc#hopper/~/myfile.txt#
 [output]#Task ID: 6356aa16-ed20-11df-aa30-1231350018b1#
 ----terminal
 
