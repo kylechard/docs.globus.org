@@ -28,3 +28,36 @@ App", the logout page header will be "Logged out of Example App"
 If redirect_uri and redirect_name parameters are provided, the bottom of
 the logout page will display "Continue to <link-text>", which is linked
 to <http-url>.
+
+== GET https://auth.globus.org/v2/web/identities
+
+This page displays the authenticated user's identities, including any linkages
+that they have established via Globus Auth.
+
+To control the behavior of the page, clients can pass the following
+query parameters:
+
+* client_id=<client-id>
+* redirect_uri=<http-url>
+* redirect_name=<link-text>
+
+If redirect_uri and redirect_name parameters are provided, the top of
+the identities page will display "Return to <link-text>", which is linked
+to <http-url>.
+
+== GET https://auth.globus.org/v2/web/consents
+
+This page displays the authenticated user's application consents: a list of
+applications and the activities that the user has explicitly allowed them to
+engage in via Globus Auth.
+
+To control the behavior of the page, clients can pass the following
+query parameters:
+
+* client_id=<client-id>
+* redirect_uri=<http-url>
+* redirect_name=<link-text>
+
+If redirect_uri and redirect_name parameters are provided, the top of
+the consents page will display "Return to <link-text>", which is linked
+to <http-url>.
