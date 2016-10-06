@@ -187,13 +187,13 @@ ol.upperroman {
   list-style-type: upper-roman;
 }
 
-/* Provider Plan Icon */
-.go-icon-pp {
+/* Subscription Icon */
+.go-icon-subscription {
   position: relative;
 }
-.go-icon-pp:after {
-  background: url('../images/i_provider_plan.png') no-repeat; /* fallback in case svg not supported */
-  background: url('../images/i_provider_plan.svg') no-repeat;
+.go-icon-subscription:after {
+  background: url('../images/i_subscription.png') no-repeat; /* fallback in case svg not supported */
+  background: url('../images/i_subscription.svg') no-repeat;
   position: relative;
   height: 32px;
   width: 32px;
@@ -204,30 +204,30 @@ ol.upperroman {
     right: -35px;
     top: -17px;
 }
-h3 .go-icon-pp:after {
+h3 .go-icon-subscription:after {
   right: -36px;
   top: -15px;
   background-size: 26px;
 }
-h4 .go-icon-pp:after {
+h4 .go-icon-subscription:after {
     top: -16px;
     background-size: 24px;
     right: -34px;
 }
-h4[id*="go_icon_pp"] {
+h4[id*="go_icon_subscription"] {
   margin-top: 12px;
 }
-.alert .title .go-icon-pp:after {
+.alert .title .go-icon-subscription:after {
   height: 26px;
   width: 26px;
   background-size: 26px;
   right: -30px;
   top: -16px;
 }
-p .go-icon-pp {
+p .go-icon-subscription {
   padding-right: 30px;
 }
-p .go-icon-pp:after {
+p .go-icon-subscription:after {
   height: 22px;
   width: 22px;
   background-size: 22px;
