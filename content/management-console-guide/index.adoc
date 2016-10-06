@@ -13,13 +13,13 @@ short_title: "GMC Guide"
 
 [doc-info]#Last Updated: {revdate}#
 
-The management console provides an interface to monitor and manage activity on managed endpoints and is available to Provider Plan subscribers. This allows administrators to identify and troubleshoot faults that may indicate underlying infrastructure issues, and manage resources on their infrastructure
+The management console provides an interface to monitor and manage activity on managed endpoints and is available to subscribers. This allows administrators to identify and troubleshoot faults that may indicate underlying infrastructure issues, and manage resources on their infrastructure
 
 '''
 toc::[]
 
 == Access to console
-Users need to be granted Management Console access on endpoints before they can use the interface. An organization’s Provider Plan support contact(s) can grant such access by contacting Globus support.
+Users need to be granted Management Console access on endpoints before they can use the interface. An organization’s subscription support contact(s) can grant such access by contacting Globus support.
 
 == Monitoring Tasks
 === Activity overview

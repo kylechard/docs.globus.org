@@ -14,4 +14,4 @@ The TCP and UDP ports that must be open for Globus Connect Personal, together wi
 * UDP Port 19302 outbound to stun.l.google.com
 ** This is the STUN server used by Globus Connect Personal when setting up a session with another Globus Connect Personal endpoint (see note below)
 
-NOTE: Transfers between two Globus Connect Personal endpoints are only possible if at least one of the endpoints is covered under a provider plan.
+NOTE: Transfers between two Globus Connect Personal endpoints are only possible if at least one of the endpoints is covered under a subscription.

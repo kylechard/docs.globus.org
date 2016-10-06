@@ -7,7 +7,7 @@ link:asciiguide[Adoc Guide] (link:raw/asciiguide.adoc[RAW])
 link:highlight-test/index.html[Highlight Test]
 
 == Custom Doc Site Styles
-[go-icon-pp]#go-icon-pp class#
+[go-icon-subscription]#go-icon-subscription class#
 
 [uservars]#uservars class#
 
@@ -36,30 +36,20 @@ Page content...
 
 ....
 
-[role="terminal"]
-----
+----terminal
 test terminal block with [input]#input# and [output]#output# classes
-----
+----terminal
 
-[role="terminal"]
---
-test terminal block 2 with [input]#input# and [output]#output# classes
---
+== [go-icon-subscription]#Go icon subscription usage#
 
-----
-testing staging
-----
+=== [go-icon-subscription]#Go icon subscription usage on h3#
 
-== [go-icon-pp]#Go icon pp usage#
+==== [go-icon-subscription]#Go icon subscription usage on h4#
 
-=== [go-icon-pp]#Go icon pp usage on h3#
-
-==== [go-icon-pp]#Go icon pp usage on h4#
-
-.[go-icon-pp]#Provider Plan Features in a block title#
+.[go-icon-subscription]#Subscription Features in a block title#
 [NOTE]
 ====
 Globus file transfer is free-of-charge for non-profit research and educational use.
 Some premium Globus features described in this guide are only available to
-{provider_plans}[Provider Plan subscribers].
+{provider_plans}[subscribers].
 ====

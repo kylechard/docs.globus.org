@@ -11,7 +11,7 @@
 :gridftp_url: http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/
 :researchers_url: http://www.globus.org/researchers/
 :providers_url: http://www.globus.org/providers/
-:provider-plans_url: http://www.globus.org/providers/provider-plans/
+:subscription_url: http://www.globus.org/subscriptions/
 :signup_url: http://www.globus.org/app/SignUp/
 :transfer_url: http://www.globus.org/app/transfer/
 :contact-us_url: http://www.globus.org/contact-us/
@@ -63,12 +63,12 @@ xref:oauth-for-myproxy-anchor[OAuth for MyProxy];
 (2) scripts for set up/configuration and integration into the Globus service; 
 and (3) Globus-maintained dependency packages needed by the other components.
 
-.[go-icon-pp]#Provider Plan Features#
+.[go-icon-subscription]#Subscription Features#
 [NOTE]
 ====
 Globus file transfer is free-of-charge for non-profit research and educational use.
 Some premium Globus features described in this guide are only available to
-link:{provider-plans_url}[Provider Plan] subscribers.
+link:{subscription_url}[subscribers].
 
 Subscriptions help ensure that Globus can
 continue to serve the research data management needs of
@@ -125,7 +125,7 @@ on the system where you plan to install Globus Connect Server:
 ----terminal
 $ hostname -f
 ----terminal
-Confirm that a fully qualified domain name (FQDN) is returned (e.g., 'ep1.transfer.globus.org' ).
+Confirm that a fully qualified domain name (FQDN) is returned (e.g., \'ep1.transfer.globus.org' ).
 
 ==== Check hostname external DNS resolution
 Use a public DNS server operated by a different organization to
@@ -133,7 +133,7 @@ verify that the returned FQDN is publicly resolvable.
 More concretely, you can use `nslookup` to check that your server's 
 FQDN resolves against one of Google's public DNS servers:
 ----terminal
-$ nslookup [input]#'ep1.transfer.globus.org'# 8.8.4.4
+$ nslookup [input]#\'ep1.transfer.globus.org'# 8.8.4.4
 ----terminal
 If you get a message of the form '"** server can't find ep1.transfer.globus.org: NXDOMAIN"',
 your system's hostname is not resolvable via public DNS and you need to 
@@ -361,10 +361,10 @@ for details.
 ==== +RestrictPaths+ option
 This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this endpoint. By default, all paths are enabled for access. 
 
-==== [go-icon-pp]#+Sharing+ option#
+==== [go-icon-subscription]#+Sharing+ option#
 This is a boolean value that determines if sharing is enabled on this particular endpoint. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise. 
 
-==== [go-icon-pp]#+SharingRestrictPaths+ option#
+==== [go-icon-subscription]#+SharingRestrictPaths+ option#
 This option is used to both enable and/or disable specified file paths for all Globus users that are authorized to use this xref:shared-endpoint-anchor[shared endpoint]. By default, all paths are enabled for access. NOTE: When accessing a shared endpoint through Globus, the SharingRestrictPaths option can only set further access restrictions to the endpoint owner's local unix file system permissions. Globus does not and can not override the local unix file system permissions. This option is only used on a xref:managed-endpoint-anchor[managed endpoint], and will be ignored otherwise.
 
 ==== +RequireEncryption+ option
@@ -650,7 +650,7 @@ or to any client or service that is
 used in the Globus software-as-a-service (SaaS) or platform-as-a-service (PaaS) offering
 can be directed to the Globus support team by submitting a 
 link:{contact-us_url}[ticket].
-link:{provider-plans_url}[Provider Plan] subscriptions include a guaranteed support service level.
+link:{subscription_url}[Subscriptions] include a guaranteed support service level.
 
 When submitting a link:{contact-us_url}[ticket] for an issue with Globus Connect Server, please 
 include the endpoint name, a description of your issue, and screenshot/text 
@@ -677,14 +677,14 @@ Sharing makes it easier for an endpoint's users to grant and control access to t
 To illustrate let's consider a case in which Adam, who is employed by ABC University and is the admin of the abcu#ep1 endpoint, wants to enable sharing on his endpoint for some of his users - such as Bob, Sue, etc. - so as to allow them to share with their collaborators (e.g. Ann) who do not have local accounts.  In this case, Adam has decided that he wants to allow users to share out of the "globus" directory in their home directory and nowhere else.
 
 === Requirements
-Sharing can only be enabled on a link:http://docs.globus.org/resource-provider-guide/#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:https://www.globus.org/providers/provider-plans[Provider Plan] are able to create managed endpoints.
+Sharing can only be enabled on a link:http://docs.globus.org/resource-provider-guide/#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:{subscription_url}[subscription] are able to create managed endpoints.
 
-For Adam to be able to enable sharing on his abcu#ep1 endpoint he will first need to be sure that ABC University has a provider plan with Globus.
+For Adam to be able to enable sharing on his abcu#ep1 endpoint he will first need to be sure that ABC University has a subscription with Globus.
 
 === Make an endpoint managed
-Instructions for how an organization with a provider plan can promote an existing endpoint to managed status can be found link:https://docs.globus.org/faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpoint[here].
+Instructions for how an organization with a subscription can promote an existing endpoint to managed status can be found link:https://docs.globus.org/faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpoint[here].
 
-After ensuring that ABC University has a provider plan with Globus, Adam will
+After ensuring that ABC University has a subscription with Globus, Adam will
 next need to make his endpoint managed. To do this he will log in to the Globus
 CLI server using the "abcu" Globus account (instructions for how to do this can
 be found link:http://docs.globus.org/cli/[here]) and he will then execute the following command:
@@ -731,11 +731,11 @@ Along the same lines let's consider what happens when Bob grants share access to
 
 To sum up, both the share permissions granted to a Globus user, as well as the file system rights of the local user that the Globus user (who owns the share) activated on the endpoint with when the share was created, must be taken into account when determining effective permissions to a share. 
 
-== [go-icon-pp]#Management Console#
+== [go-icon-subscription]#Management Console#
 The management console, available on xref:managed-endpoint-anchor[managed endpoints], 
 provides a graphical web interface that can be used to monitor endpoint activity and to 
 identify and troubleshoot faults that may indicate underlying infrastructure issues. 
-An organization's link:{provider-plans_url}[Provider Plan] 
+An organization's link:{subscription_url}[subscription] 
 support contact(s) decide who has access to the management console. 
 
 You can read about the details and benefits of the management console link:../management-console-guide/[here].
@@ -842,7 +842,7 @@ globus-connect-server-io-setup (link to man page link:http://globus.github.io/gl
 
 - Fetch a certificate from the Globus Connect CA and write GridFTP configuration to use it
 - Write GridFTP configuration to enable sharing (note: sharing may only be enabled on managed endpoints with a valid 
-link:{provider-plans_url}[Provider Plan] subscription)
+link:{subscription_url}[subscription])
 - Fetch MyProxy trust roots (if configured to use a MyProxy server)
 - Write GridFTP configuration for authorization callouts
 * If using CILogon, install CILogon CA and CRLs in the globus-connect-server certificate directory and add a cron job to refresh the CRL
@@ -1000,9 +1000,9 @@ An endpoint configured in this way will attempt to map the CILogon credential to
 
 [appendix]
 [[s3_setup_section]]
-=== [go-icon-pp]#Setting up an endpoint on Amazon S3#
+=== [go-icon-subscription]#Setting up an endpoint on Amazon S3#
 Organizations with
-link:{provider-plans_url}[Provider Plan] subscriptions can set up 
+link:{subscription_url}[subscriptions] can set up 
 link:{s3_url}[Amazon S3]-based 
 endpoints.  Instructions are provided at the following link:
 
@@ -1087,7 +1087,7 @@ For a given transfer, the concurrency is calculated as the smallest value across
   See the link:{gridftp_url}[GridFTP documents] for more information.
 [[managed-endpoint-anchor]]Managed Endpoint::
   A managed endpoint is an xref:endpoint-anchor[endpoint] that is covered under a 
-  link:https://www.globus.org/providers/provider-plans[provider plan] and 
+  link:{subscription_url}[subscription] and 
   allows advanced features (like xref:sharing_section[sharing]) to be enabled. To convert an existing 
   endpoint into a managed endpoint see this link:../faq/subscriptions/#how_do_i_convert_an_existing_endpoint_into_a_managed_endpoint[writeup]. 
 [[myproxy-anchor]]MyProxy::

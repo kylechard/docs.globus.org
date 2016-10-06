@@ -61,7 +61,7 @@ setup. This server must have Globus Connect Server
 link:../../resource-provider-guide[installed] and must have
 link:../../resource-provider-guide/#sharing_section[Sharing
 enabled]. Access to the necessary sharing capability requires a
-https://www.globus.org/providers/provider-plans[Provider Plan].
+https://www.globus.org/subscriptions[subscription].
 
 1. A shared endpoint must be created and the Globus user named
 `globuspublish` must be
