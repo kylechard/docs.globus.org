@@ -14,7 +14,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 == Overview
 
 The advanced endpoint management API is available to
-http://www.globus.org/providers/provider-plans[Provider Plan] subscribers.
+https://www.globus.org/subscriptions[subscribers].
 This API allows site administrators to manage the transfers to and from their
 endpoints, to aid in proactive debugging of user transfers. All operations
 listed below require the user to have +Endpoint Manager+ privileges on an
