@@ -199,4 +199,20 @@ Source Installer::
 
 This configuration file is used to construct the command-line options for the `globus-job-manager` program. Thus, all of the options described in link:#globus_job_manager_8[`globus-job-manager`] may be used.
 
+==== Job Manager Logging
+From an administrator’s perspective, the most important job manager configuration options are likely the ones related to logging and auditing. The default GRAM5 configuration puts logs in [output]#/var/log/globus/gram_USERNAME.log#, with logging enabled at the `FATAL` and `ERROR` levels. To enable more fine-grained logging, add the option `-log-levels` ' to [output]#/etc/globus/globus-gram-job-manager#.conf. The value for . The value for 'LEVELS is a set of log levels joined by the | character. The available log levels are:
+
+.GRAM5 Log Levels
+[cols="3*<",options="header"]
+|========
+|Level	|Meaning	|Default Behavior
+|`FATAL`	|Problems which cause the job manager to terminate prematurely.	|Enabled
+|`ERROR`	|Problems which cause a job or operation to fail.	|Enabled
+|`WARN`	|Problems which cause minor problems with job execution or monitoring.	|Disabled
+|`INFO`	|Major events in the lifetime of the job manager and its jobs.	|Disabled
+|`DEBUG`	|Minor events in the lifetime of jobs.	|Disabled
+|`TRACE`	|Job processing details.	|Disabled
+|========
+
+In RPM or Debian package installs, these logs will be configured to be rotated via `logrotate`. See [output]#/etc/logrotate.d/globus-job-manager# for details on the default log rotation configuration.
 
