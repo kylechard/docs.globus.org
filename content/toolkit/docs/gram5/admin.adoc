@@ -37,7 +37,7 @@ If you’re not familiar with the supported LRMs, you might want to start with t
 
 ===== Default GRAM5 Service
 
-GRAM5 can be configured to support multiple LRMs on the same service machine. In that case, one LRM is typically configured as the default LRM which is used when a client uses a shortened version of a GRAM5 link:../user#resource_name[resource name]. A common configuration is to configure a batch system interface as the default, and provide the `jobmanager-fork` service as well for simple jobs, such as creating directories or staging data.
+GRAM5 can be configured to support multiple LRMs on the same service machine. In that case, one LRM is typically configured as the default LRM which is used when a client uses a shortened version of a GRAM5 link:../user#resource_name[resource name]. A common configuration is to configure a batch system interface as the default, and provide the [monospaced]#jobmanager-fork# service as well for simple jobs, such as creating directories or staging data.
 
 ===== Job Status Method
 
@@ -45,8 +45,8 @@ GRAM5 has two ways of determining job state transitions: polling the LRM and usi
 
 Not all LRM adapters provide an interface to the `globus-scheduler-event-generator`, and some require LRM-specific configuration to work properly. This is described in more detail.
 
-=== Installing LRM Adapter Packages
-There are several LRM adapters included in the GT 6.0. For some, there is a `-setup-poll` and `-setup-seg` package which installs the adapter and configuration file needed for job status via polling or the `globus-scheduler-event-generator` program.
+=== Installing LRM Adapter Package
+There are several LRM adapters included in the GT 6.0. For some, there is a [file]#-setup-poll# and [file]#-setup-seg# package which installs the adapter and configuration file needed for job status via polling or the `globus-scheduler-event-generator` program.
 
 There are three ways to get LRM adapters: as RPM packages, as Debian packages, and from the source installer. These installation methods are described in Installing GT 6.0.
 
@@ -68,7 +68,7 @@ LRM adapter packages included in the GT 6.0 release are:
 There are several tools provided with GT 6.0 to manage GRAM5, as well as OS-specific tools to start and stop some of the services. There are tools to manage user authorization, which services are enabled, which scheduler event generator modules are enabled, and to test the `globus-gatekeeper` service.
 
 === Managing GRAM5 Users
-Before a user may interact with the GRAM5 service to submit jobs, he or she must be authorized to use the service. In order to be authorized, a GRAM5 administrator must add the user’s credential name and local account mapping to the `/etc/grid-mapfile`. This can be done using the . This can be done using the `grid-mapfile-add-entry` and `grid-mapfile-delete-entry` tools. For more information, see the link:../../gsi[GSI C] manual.
+Before a user may interact with the GRAM5 service to submit jobs, he or she must be authorized to use the service. In order to be authorized, a GRAM5 administrator must add the user’s credential name and local account mapping to the [file]#/etc/grid-mapfile#. This can be done using the `grid-mapfile-add-entry` and `grid-mapfile-delete-entry` tools. For more information, see the link:../../gsi[GSI C] manual.
 
 === Starting and Stopping GRAM5 services
 In order to run the service, the `globus-gatekeeper`, and, if applicable to your configuration, the `globus-scheduler-event-generator` services must be running on your system. The packages for these services include init scripts and configuration files which can be used to configure, start, and stop the service.
@@ -250,10 +250,10 @@ _PREFIX_/etc/globus/globus-_LRM_.conf
 
 ==== Fork
 
-The globus-fork.conf configuration file can define the following configuration parameters: configuration file can define the following configuration parameters:
+The [file]#globus-fork.conf# configuration file can define the following configuration parameters:
 
 log_path::
-Path to the globus-fork.log file used by the file used by the `globus-fork-starter` and fork SEG module.
+Path to the [file]#globus-fork.log# file used by the file used by the `globus-fork-starter` and fork SEG module.
 mpiexec, mpirun::
 Path to `mpiexec` and `mpirun` for parallel jobs which use MPI. By default, these are not configured. The LRM adapter will use `mpiexec` over `mpirun` if both are defined.
 softenv_dir::
@@ -261,14 +261,14 @@ Path to an installation of link:http://www.mcs.anl.gov/hs/software/systems/softe
 
 ==== Condor
 
-The globus-condor.conf configuration file can define the following configuration parameters: configuration file can define the following configuration parameters:
+The [file]#globus-condor.conf# configuration file can define the following configuration parameters:
 
 condor_os::
 Custom value for the OpSys requirement for condor jobs. If not specified, the system-wide default will be used.
 condor_arch::
 Custom value for the OpSys requirement for condor jobs. If not specified, the system-wide default will be used.
 condor_submit, condor_rm::
-Path to the condor commands that the LRM adapter uses. These are usually determined when the LRM adapter is compiled if the commands are in the PATH.
+Path to the condor commands that the LRM adapter uses. These are usually determined when the LRM adapter is compiled if the commands are in the [output]#PATH#.
 condor_config::
 Value of the `CONDOR_CONFIG` environment variable, which might be needed to use condor in some cases.
 check_vanilla_files::

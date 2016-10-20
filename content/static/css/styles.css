@@ -344,6 +344,10 @@ pre .output {
 .alert code {
   white-space: pre-wrap;
 }
+.file, .monospace {
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-size: 85%;
+}
 .uservars {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
     font-size: 85%;
