@@ -3,4 +3,5 @@
 
 - link:select-group[Select Group]
 - link:browse-endpoint[Browse Endpoint]
+- link:activate-endpoint[Activate Endpoint]
 - link:auth[Globus Auth]
