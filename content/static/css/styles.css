@@ -347,13 +347,19 @@ pre .output {
 .file, .monospace {
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
   font-size: 85%;
+  border: solid 1px #dfdfdf;
+  color: #555;
+  padding: 0 4px;
+  background-color: #fcfcfc;
+  border-radius: 4px;
 }
 .uservars {
-    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-    font-size: 85%;
-    background-color: #fdfde6;
-    border: solid 1px #f3f79e;
-    color: #5273b1;
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-size: 85%;
+  background-color: #fdfde6;
+  border: solid 1px #f3f79e;
+  color: #5273b1;
+  border-radius: 4px;
 }
 .output {
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;

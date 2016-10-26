@@ -41,9 +41,9 @@ GRAM5 can be configured to support multiple LRMs on the same service machine. In
 
 ===== Job Status Method
 
-GRAM5 has two ways of determining job state transitions: polling the LRM and using the Scheduler Event Generator (SEG) service. When polling, each user’s `globus-job-manager` will periodically execute an LRM-specific command to determine the state of each job. On systems with many users, or with users submitting a large number of jobs, this can cause significant resource use on the GRAM5 service machine. Instead, the GRAM5 service can be configured (on a per-LRM basis) to use the `globus-scheduler-event-generator` service to more efficiently process LRM state changes. [NOTE]
+GRAM5 has two ways of determining job state transitions: polling the LRM and using the Scheduler Event Generator (SEG) service. When polling, each user’s `globus-job-manager` will periodically execute an LRM-specific command to determine the state of each job. On systems with many users, or with users submitting a large number of jobs, this can cause significant resource use on the GRAM5 service machine. Instead, the GRAM5 service can be configured (on a per-LRM basis) to use the `globus-scheduler-event-generator` service to more efficiently process LRM state changes.
 
-Not all LRM adapters provide an interface to the `globus-scheduler-event-generator`, and some require LRM-specific configuration to work properly. This is described in more detail.
+NOTE: Not all LRM adapters provide an interface to the `globus-scheduler-event-generator`, and some require LRM-specific configuration to work properly. This is described in more detail.
 
 === Installing LRM Adapter Package
 There are several LRM adapters included in the GT 6.0. For some, there is a [file]#-setup-poll# and [file]#-setup-seg# package which installs the adapter and configuration file needed for job status via polling or the `globus-scheduler-event-generator` program.
@@ -113,8 +113,7 @@ jobmanager-fork [ALIAS to jobmanager-fork-poll]#
 === Enabling and Disabling SEG Modules
 The `-setup-seg` packages described in link:#installing_lrm_adapter_packages[Installing LRM Adapter Packages] will automatically register themselves with the `globus-scheduler-event-generator` service. To disable a module from running when the `globus-scheduler-event-generator` service is started, use the globus-scheduler-event-generator-admin tool.
 
-.Using globus-scheduler-event-generator-admin to disable a SEG module
-This example shows how to stop the pbs globus-scheduler-event-generator module and disable it so it will not restart when the system is rebooted:
+This example shows how to stop the pbs `globus-scheduler-event-generator` module and disable it so it will not restart when the system is rebooted:
 
 ----terminal
 #  /etc/init.d/globus-scheduler-event-generator stop pbs
@@ -285,7 +284,7 @@ Path to PBS server_logs directory. The PBS SEG module parses these logs to gener
 pbs_default::
 Name of the PBS server node, if not the same as the GRAM service node.
 mpiexec, mpirun::
-Path to mpiexec and mpirun for parallel jobs which use MPI. By default these are not configured. The LRM adapter will use `mpiexec` over `mpirun` if both are defined.
+Path to mpiexec and `mpirun` for parallel jobs which use MPI. By default these are not configured. The LRM adapter will use `mpiexec` over `mpirun` if both are defined.
 qsub, qstat, qdel::
 Path to the LRM-specific command to submit, check, and delete PBS jobs. These are usually determined when the LRM adapter is compiled if they are in the PATH.
 cluster::
@@ -299,29 +298,741 @@ Path to an installation of link:http://www.mcs.anl.gov/hs/software/systems/softe
 
 ==== SGE
 
-The globus-sge.conf configuration file can define the following configuration parameters: configuration file can define the following configuration parameters:
+The [file]#globus-sge.conf# configuration file can define the following configuration parameters:
 
-sge_root
+sge_root::
 Root location of the GridEngine installation. If this is set to [output]#undefined#, then the LRM adapter will try to determine it from the `globus-job-manager` environment, or if not there, the contents of the file named by the `sge_config` configuration parameter.
-sge_cell
+sge_cell::
 Name of the GridEngine cell to interact with. If this is set to [output]#undefined#, then the LRM adapter will try to determine it from the `globus-job-manager` environment, or if not there, the contents of the file named by the `sge_config` configuration parameter.
-sge_config
+sge_config::
 Path to a file which defines the `SGE_ROOT` and the `SGE_CELL` environment variables.
-log_path
+log_path::
 Path to GridEngine reporting file. This value is used by the SGE SEG module. If this is used, GridEngine must be configured to write a reporting file and not load reporting data into an ARCo database.
-qsub, qstat, qdel, qconf
-Path to the LRM-specific command to submit, check, and delete GridEngine jobs. These are usually determined when the LRM adapter is compiled if they are in the PATH.
-sun_mprun, mpirun
-Path to mprun and mpirun for parallel jobs which use MPI. By default these are not configured. The LRM adapter will use mprun over mpirun if both are defined.
-default_pe
-Default parallel environment to submit parallel jobs to. If this is not set, then clients must use the parallel_environment RSL attribute to choose one.
-validate_pes
-If this value is set to yes, then the LRM adapter will verify that the `parallel_environment` RSL attribute value matches one of the parallel environments supported by this GridEngine service.
-available_pes
-If this value is defined, use it as a list of parallel environments supported by this GridEngine deployment for validation when validate_pes is set to yes. If validation is being done but this value is not set, then the LRM adapter will query the GridEngine service to determine available parallel environments at startup.
-default_queue
+qsub, qstat, qdel, qconf::
+Path to the LRM-specific command to submit, check, and delete GridEngine jobs. These are usually determined when the LRM adapter is compiled if they are in the [output]#PATH#.
+sun_mprun, mpirun::
+Path to `mprun` and `mpirun` for parallel jobs which use MPI. By default these are not configured. The LRM adapter will use `mprun` over `mpirun` if both are defined.
+default_pe::
+Default parallel environment to submit parallel jobs to. If this is not set, then clients must use the [file]#parallel_environment# RSL attribute to choose one.
+validate_pes::
+If this value is set to yes, then the LRM adapter will verify that the [file]#parallel_environment# RSL attribute value matches one of the parallel environments supported by this GridEngine service.
+available_pes::
+If this value is defined, use it as a list of parallel environments supported by this GridEngine deployment for validation when [file]#validate_pes# is set to [file]#yes#. If validation is being done but this value is not set, then the LRM adapter will query the GridEngine service to determine available parallel environments at startup.
+default_queue::
 Default queue to use if the job description does not name one.
-validate_queues
+validate_queues::
 If this value is set to yes, then the LRM adapter will verify that the queue RSL attribute value matches one of the queues supported by this GridEngine service.
-available_queues
-If this value is defined, use it as a list of queues supported by this GridEngine deployment for validation when validate_queues is set to yes. If validation is being done but this value is not set, then the LRM adapter will query the GridEngine service to determine available queues at startup.
+available_queues::
+If this value is defined, use it as a list of queues supported by this GridEngine deployment for validation when [file]#validate_queues# is set to [file]#yes#. If validation is being done but this value is not set, then the LRM adapter will query the GridEngine service to determine available queues at startup.
+
+===== Enabling reporting for the GridEngine Scheduler Event Generator
+
+In order to use the Scheduler Event Generator with GridEngine, the job reporting feature must be enabled, and ARCo database storage must not be enabled. To enable this, use the command qconf -mconf and modify the reporting_params parameter so that the options reporting and joblog are set to true.
+
+==== SLURM
+
+The globus-slurm.conf configuration file can define the following configuration parameters: configuration file can define the following configuration parameters:
+
+srun, sbatch, salloc, scancel
+Path to the SLURM commands.
+mpi_type
+MPI implementation to use (either openmpi or mpich2).
+openmpi_path
+Path to the OpenMPI implementation if available
+mpich2_path
+Path to the MPICH 2 implementation if available
+
+=== Auditing
+The globus-gram-audit configuration defines information about the database to load the GRAM5 audit records into. This configuration is located in:
+
+RPM Package
+/etc/globus/gram-audit.conf
+Debian Package
+/etc/globus/gram-audit.conf
+Source Installer
+PREFIX/etc/globus/gram-audit.conf
+This configuration file contains the following attributes. Each attribute is defined by a ATTRIBUTE:VALUE pair.
+
+Table 3.2. Audit Configuration Attributes
+
+Attribute Name	Value	Default
+DRIVER
+
+The name of the Perl 5 DBI driver for the database to be used. The supported drivers for this program are <literal>SQLite</literal>, <literal>Pg</literal> (for PostgreSQL), and <literal>mysql</literal>. </simpara>
+
+SQLite
+
+DATABASE
+
+The DBI data source specfication to contact the audit database.
+
+dbname=/var/gram_audit_database/gram_audit.db
+
+USERNAME
+
+Username to authenticate as to the database
+
+PASSWORD
+
+Password to use to authenticate with the database
+
+AUDITVERSION
+
+Version of the audit database table schemas to use. May be 1 or 1TG for this version of the software.
+
+1
+
+
+=== RSL Attributes
+GRAM5 uses the RSL language to encode job descriptions. The attributes supported by gram are defined in RSL Validation Files. These definitions contain information about when the different RSL attributes are valid and what their default values might be if not present. GRAM5 will look in /etc/globus/gram/job-manager.rvf and and /etc/globus/gram/LRM.rvf for site-specfic changes to the RSL validation file. for site-specfic changes to the RSL validation file.
+
+== Audit Logging
+=== Overview
+GRAM5 includes mechanisms to provide access to audit and accounting information associated with jobs that GRAM5 submits to a local resource manager (LRM) such as Torque, GridEngine, or Condor.
+
+In some scenarios, it is desirable to get general information about the usage of the underlying LRM, such as:
+
+What kinds of jobs were submitted via GRAM?
+How long did the processing of a job take?
+How many jobs were submitted by user X?
+The following three use cases give a better overview of the meaning and purpose of auditing and accounting:
+
+Group Access: A grid resource provider allows a remote service (e.g., a gateway or portal) to submit jobs on behalf of multiple users. The grid resource provider only obtains information about the identity of the remote submitting service and thus does not know the identity of the users for which the grid jobs are submitted. This group access is allowed under the condition that the remote service stores audit information so that, if and when needed, the grid resource provider can request and obtain information to track a specific job back to an individual user.
+Query Job Accounting: A client that submits a job needs to be able to obtain, after the job has completed, information about the resources consumed by that job. In portal and gateway environments where many users submit many jobs against a single allocation, this per-job accounting information is needed soon after the job completes so that client-side accounting can be updated. Accounting information is sensitive and thus should only be released to authorized parties.
+Auditing: In a distributed, multi-site environment, it can be necessary to investigate various forms of suspected intrusion and abuse. In such cases, we may need to access an audit trail of the actions performed by a service. When accessing this audit trail, it will frequently be important to be able to relate specific actions to the user.
+Audit logging in GRAM5 is done when a job completes.
+
+=== Audit and Accounting Records
+While audit and accounting records may be generated and stored by different entities in different contexts, we make the following assumptions in this chapter:
+
+Audit Records	Accounting Records
+Generated by:
+
+GRAM service
+
+LRM to which the GRAM service submits jobs
+
+Stored in:
+
+Database, indexed by GJID
+
+LRM, indexed by JID
+
+Data that is stored:
+
+See list below.
+
+May include all information about the duration and resource-usage of a job
+
+The audit record of each job contains the following data:
+
+job_grid_id: String representation of the resource EPR
+local_job_id: Job/process id generated by the scheduler
+subject_name: Distinguished name (DN) of the user
+username: Local username
+idempotence_id: Job id generated on the client-side
+creation_time: Date when the job resource is created
+queued_time: Date when the job is submitted to the scheduler
+stage_in_grid_id: String representation of the stageIn-EPR (RFT)
+stage_out_grid_id: String representation of the stageOut-EPR (RFT)
+clean_up_grid_id: String representation of the cleanUp-EPR (RFT)
+globus_toolkit_version: Version of the server-side GT
+resource_manager_type: Type of the resource manager (Fork, Condor, …)
+job_description: Complete job description document
+success_flag: Flag that shows whether the job failed or finished successfully
+finished_flag: Flag that shows whether the job is already fully processed or still in progress
+gateway_user: Teragrid identity of the user which submitted the job.
+
+=== For More Information
+The rest of this chapter focuses on how to configure GRAM5 to enable Audit-Logging.
+
+=== Configuration
+Audit logging is turned off by default. To enable GRAM5 audit logging, in the job manager, add the command-line option '-audit-directory ' to the job manager configuration in one of the following locations:
+
+$GLOBUS_LOCATION/etc/globus-job-manager.conf to enable it for all job manager services to enable it for all job manager services
+$GLOBUS_LOCATION/etc/grid-services/LRM_SERVICE_NAME to enable it for a particular job manager service for a particular LRM. to enable it for a particular job manager service for a particular LRM.
+
+=== Audit Database Interface
+The globus-gram-audit program reads GRAM5 audit records and loads those records into a SQL database. This program is available as part of the globus_gram_job_manager_auditing package. It must be configured by installing and running the globus_gram_job_manager_auditing_setup_scripts setup package via gpt-postinstall. This setup script creates the $GLOBUS_LOCATION/etc/globus-job-manager-audit.conf configuration file described below and creates database tables needed by the audit system. configuration file described below and creates database tables needed by the audit system.
+
+The globus-gram-audit program support three database systems: MySQL, PostgreSQL, and SQLite.
+
+== Security Considerations
+Table of Contents
+
+=== Security Considerations
+
+GRAM5 runs different parts of itself under different privilege levels. The globus-gatekeeper runs as root, and uses its root privilege to access the host’s private key. It uses the grid map file to map Grid Certificates to local user ids and then uses the setuid() function to change to that user and execute the globus-job-manager program
+
+==== Job Manager Security Considerations
+
+The globus-job-manager program runs as a local non-root account. It receives a delegated limited proxy certificate from the GRAM5 client which it uses to access Grid storage resources via GridFTP and to authenticate job signals (such as client cancel requests), and send job state callbacks to registered clients. This proxy is generally short-lived, and is automatically removed by the job manager when the job completes.
+
+The globus-job-manager program uses a publicly-writable directory for job state files. This directory has the sticky bit set, so users may not remove other users files. Each file is named by a UUID, so it should be unique.
+
+==== Fork SEG Module Security Considerations
+
+The Fork Scheduler Event Generator module uses a globally writable file for job state change events. This is not recommended for production use.
+
+== Troubleshooting
+=== Admin Troubleshooting
+==== Security
+GRAM requires a host certificate and private key in order for the globus-gatekeeeper service to run. These are typically located in /etc/grid-security/hostcert.pem and and /etc/grid-security/hostkey.pem, but the path is configurable in the , but the path is configurable in the gatekeeper configuration file. The key must be protected by file permissions allowing only the root user to read it.
+
+GRAM also (by default) uses a grid-mapfile to authorize Grid users as local users. This file is typically located in to authorize Grid users as local users. This file is typically located in /etc/grid-security/grid-mapfile, but is configurable in the , but is configurable in the gatekeeper configuration file.
+
+Problems in either of these configurations will show up in the gatekeeper log described below. See the GSI documentation for more detailed information about obtaining and installing host certificates and maintaining a grid-mapfile. .
+
+==== Verify that Services are Running
+
+GRAM relies on the globus-gatekeeper program and (in some cases) the globus-scheduler-event-generator programs to process jobs. If the former is not running, jobs requests will fail with a "connection refused" error. If the latter is not running, GRAM jobs will appear to "hang" in the PENDING state.
+
+The globus-gatekeeper is typically started via an init script installed in /etc/init.d/globus-gatekeeper. The command . The command /etc/init.d/globus-gatekeeper status will indicate whether the service is running. See Starting and Stopping GRAM5 services for more information about starting and stopping the globus-gatekeeper program.
+
+If the globus-gatekeeper service fails to start, the output of the command globus-gatekeeper -test will output information describing some types of configuration problems.
+
+The globus-scheduler-event-generator is typically started via an init script installed in /etc/init.d/globus-scheduler-event-generator. It is only needed when the LRM-specific "setup-seg" package is installed. The command . It is only needed when the LRM-specific "setup-seg" package is installed. The command /etc/init.d/globus-scheduler-event-generator status will indicate whether the service is running. See Starting and Stopping GRAM5 services for more information about starting and stopping the globus-scheduler-event-generator program.
+
+==== Verify that LRM packages are installed
+
+The globus-gatekeeper program starts the globus-job-manager service with different command-line parameters depending on the LRM being used. Use the command globus-gatekeeper-admin -l to list which LRMs the gatekeeper is configured to use.
+
+The globus-job-manager-script.pl is the interface between the GRAM job manager process and the LRM adapter. The command /usr/share/globus/globus-job-manager-script.pl -h will print the list of available adapters.
+
+%  /usr/share/globus/globus-job-manager-script.pl -h
+USAGE: /usr/share/globus/globus-job-manager-script.pl -m MANAGER -f FILE -c COMMAND
+Installed managers: condor fork
+The globus-scheduler-event-generator also uses an LRM-specific module to generate scheduler events for GRAM to reduce the amount of resources GRAM uses on the machine where it runs. To determine which LRMs are installed and configured, use the command globus-scheduler-event-generator-admin -l.
+
+%  globus-scheduler-event-generator-admin -l
+fork [DISABLED]
+If any of these do not show the LRM you are trying to use, install the relevant packages related to that LRM and restart the GRAM services. See the GRAM Administrator’s Guide for more information about starting and stopping the GRAM services.
+
+==== Verify that the LRM packages are configured
+
+All GRAM5 LRM adapters have a configuration file for site customizations, such as queue names, paths to executables needed to interface with the LRM, etc. Check that the values in these files are correct. These files are described in LRM Adapter Configuration.
+
+==== Check the Gatekeeper Log
+
+The /var/log/globus-gatekeeper.log file contains information about service requests from clients, and will be useful when diagnosing service startup failures, authentication failures, and authorization failures. file contains information about service requests from clients, and will be useful when diagnosing service startup failures, authentication failures, and authorization failures.
+
+===== Authorization failures
+
+GRAM uses GSI to authenticate client job requests. If there is a problem with the GSI configuration for your host, or a client is trying to connect with a certificate signed by a CA your host does not trust, the job request will fail. This will show up in the log as a "GSS authentication failure". See the GSI Administrator’s Guide for information about diagnosing authentication failures.
+
+===== Gridmap failures
+
+After authentication is complete, GRAM maps the Grid identity to a local user prior to starting the globus-job-manager process. If this fails, an error will show up in the log as "globus_gss_assist_gridmap() failed authorization". See the GSI Administrator’s Guide for information about managing gridmap files.
+
+==== Job Manager Logs
+
+A per-user job manager log is typically located in /var/log/globus/gram_$USERNAME.log. This log contains information from the job manager as it attempts to execute GRAM jobs via a local resource manager. The logs can be fairly verbose. Sometimes looking for log entries near those containing the string . This log contains information from the job manager as it attempts to execute GRAM jobs via a local resource manager. The logs can be fairly verbose. Sometimes looking for log entries near those containing the string level=ERROR will show more information about what caused a particular failure.
+
+Once you’ve found an error in the log, it is generally useful to find log entries related to the job which hit that error. There are two job IDs associated with each job, one a GRAM-specific ID, and one an LRM-specific ID. To determine the GRAM ID associated with a job, look for the attribute gramid in the log message. Finding that, looking for all other log messages which contain that gramid value will give a better picture of what the job manager is doing. To determine the LRM-specific ID, look for a message at TRACE level with the matching GRAM ID found above with the response value matching GRAM_SCRIPT_JOB_ID:LRM-ID. You can then find follow the state of the LRM-ID as well as the GRAM ID in the log, and correlate the LRM-ID information with local resource manager logs and administrative tools.
+
+==== Email Support
+
+If all else fails, please send information about your problem to gram-user@globus.org. You’ll have to subscribe to a list before you can send an e-mail to it. See here for general e-mail lists and information on how to subscribe to a list and here for GRAM-specific lists. Depending on the problem, you may be requested to file a bug report to the Globus project’s Issue Tracker.
+
+== Admin Tools
+=== GLOBUS-GATEKEEPER(8)
+==== NAME
+
+globus-gatekeeper - Authorize and execute a grid service on behalf of a user
+
+==== SYNOPSIS
+
+globus-gatekeeper [-help ] [-conf PARAMETER_FILE] [-test ] -d | -debug -inetd | -f -p PORT | -port PORT [-home PATH] -l LOGFILE | -logfile LOGFILE [-lf LOG_FACILITY] [-acctfile ACCTFILE] [-e LIBEXECDIR] [-launch_method fork_and_exit | fork_and_wait | dont_fork ] [-grid_services SERVICEDIR] [-globusid GLOBUSID] [-gridmap GRIDMAP] [-x509_cert_dir TRUSTED_CERT_DIR] [-x509_cert_file TRUSTED_CERT_FILE] [-x509_user_cert CERT_PATH] [-x509_user_key KEY_PATH] [-x509_user_proxy PROXY_PATH] [-k ] [-globuskmap KMAP] [-pidfile PIDFILE]
+
+==== Description
+
+The globus-gatekeeper program is a meta-server similar to inetd or xinetd that starts other services after authenticating a TCP connection using GSSAPI and mapping the client’s credential to a local account.
+
+The most common use for the globus-gatekeeper program is to start instances of the globus-job-manager(8) service. A single globus-gatekeeper deployment can handle multiple different service configurations by having entries in the /etc/grid-services directory. directory.
+
+Typically, users interact with the globus-gatekeeper program via client applications such as globusrun(1), globus-job-submit, or tools such as CoG jglobus or Condor-G.
+
+The full set of command-line options to globus-gatekeeper consists of:
+
+-help
+Display a help message to standard error and exit
+-conf PARAMETER_FILE
+Load configuration parameters from PARAMETER_FILE. The parameters in that file are treated as additional command-line options.
+-test
+Parse the configuration file and print out the POSIX user id of the globus-gatekeeper process, service home directory, service execution directory, and X.509 subject name and then exits.
+-d, -debug
+Run the globus-gatekeeper process in the foreground.
+-inetd
+Flag to indicate that the globus-gatekeeper process was started via inetd or a similar super-server. If this flag is set and the globus-gatekeeper was not started via inetd, a warning will be printed in the gatekeeper log.
+-f
+Flag to indicate that the globus-gatekeeper process should run in the foreground. This flag has no effect when the globus-gatekeeper is started via inetd.
+-p PORT, -port PORT
+Listen for connections on the TCP/IP port PORT. This option has no effect if the globus-gatekeeper is started via inetd or a similar service. If not specified and the gatekeeper is running as root, the default of 2119 is used. Otherwise, the gatekeeper defaults to an ephemeral port.
+-home PATH
+Sets the gatekeeper deployment directory to PATH. This is used to interpret relative paths for accounting files, libexecdir, certificate paths, and also to set the GLOBUS_LOCATION environment variable in the service environment. If not specified, the gatekeeper looks for service executables in /usr/sbin, configuration in , configuration in /etc, and writes logs and accounting files to , and writes logs and accounting files to /var/log..
+-l LOGFILE, -logfile LOGFILE
+Write log entries to LOGFILE. If LOGFILE is equal to logoff or LOGOFF, then logging will be disabled, both to file and to syslog.
+-lf LOG_FACILITY
+Open syslog using the LOG_FACILITY. If not specified, LOG_DAEMON will be used as the default when using syslog.
+-acctfile ACCTFILE
+Set the path to write accounting records to ACCTFILE. If not set, records will be written to the log file.
+-e LIBEXECDIR
+Look for service executables in LIBEXECDIR. If not specified, the sbin subdirectory of the parameter to subdirectory of the parameter to -home is used, or /usr/sbin if that is not set. if that is not set.
+-launch_method fork_and_exit|fork_and_wait|dont_fork
+Determine how to launch services. The method may be either fork_and_exit (the service runs completely independently of the gatekeeper, which exits after creating the new service process), fork_and_wait (the service is run in a separate process from the gatekeeper but the gatekeeper does not exit until the service terminates), or dont_fork, where the gatekeeper process becomes the service process via the exec() system call.
+-grid_services SERVICEDIR
+Look for service descriptions in SERVICEDIR.
+-globusid GLOBUSID
+Sets the GLOBUSID environment variable to GLOBUSID. This variable is used to construct the gatekeeper contact string if it can not be parsed from the service credential.
+-gridmap GRIDMAP
+Use the file at GRIDMAP to map GSSAPI names to POSIX user names.
+-x509_cert_dir TRUSTED_CERT_DIR
+Use the directory TRUSTED_CERT_DIR to locate trusted CA X.509 certificates. The gatekeeper sets the environment variable X509_CERT_DIR to this value.
+-x509_user_cert CERT_PATH
+Read the service X.509 certificate from CERT_PATH. The gatekeeper sets the X509_USER_CERT environment variable to this value.
+-x509_user_key KEY_PATH
+Read the private key for the service from KEY_PATH. The gatekeeper sets the X509_USER_KEY environment variable to this value.
+-x509_user_proxy PROXY_PATH
+Read the X.509 proxy certificate from PROXY_PATH. The gatekeeper sets the X509_USER_PROXY environment variable to this value.
+-k
+Use the globus-k5 command to acquire Kerberos 5 credentials before starting the service.
+-globuskmap KMAP
+Use KMAP as the path to the Grid credential to kerberos initialization mapping file.
+-pidfile PIDFILE
+Write the process id of the globus-gatekeeper to the file named by PIDFILE.
+1.4. ENVIRONMENT
+
+If the following variables affect the execution of globus-gatekeeper:
+
+X509_CERT_DIR
+Directory containing X.509 trust anchors and signing policy files.
+X509_USER_PROXY
+Path to file containing an X.509 proxy.
+X509_USER_CERT
+Path to file containing an X.509 user certificate.
+X509_USER_KEY
+Path to file containing an X.509 user key.
+GLOBUS_LOCATION
+Default path to gatekeeper service files.
+1.5. Files
+
+/etc/grid-services/SERVICENAME
+Service configuration for SERVICENAME.
+/etc/grid-security/grid-mapfile
+Default file mapping Grid identities to POSIX identities.
+/etc/globuskmap
+Default file mapping Grid identities to Kerberos 5 principals.
+/etc/globus-nologin
+File to disable the globus-gatekeeper program.
+/var/log/globus-gatekeeper.log
+Default gatekeeper log.
+1.6. See also
+
+globus-k5(8), globusrun(1), globus-job-manager(8)
+
+2. GLOBUS-GATEKEEPER-ADMIN(8)
+2.1. NAME
+
+globus-gatekeeper-admin - Manage globus-gatekeeper services
+
+2.2. SYNOPSIS
+
+globus-gatekeeper-admin [-h ]
+
+2.3. Description
+
+The globus-gatekeeper-admin program manages service entries which are used by the globus-gatekeeper to execute services. Service entries are located in the /etc/grid-services directory. The directory. The globus-gatekeeper-admin can list, enable, or disable specific services, or set a service as the default. The -h command-line option shows a brief usage message.
+
+2.3.1. Listing services
+
+The -l command-line option to globus-gatekeeper-admin will cause it to list all of the services which are available to be run by the globus-gatekeeper. In the output, the service name will be followed by its status in brackets. Possible status strings are ENABLED, DISABLED, and ALIAS to , where NAME is another service name.
+
+If the -n ' is used, then only information about the service named 'NAME is printed.
+
+2.3.2. Enabling services
+
+The '-e ' command-line option to globus-gatekeeper-admin will cause it to enable a service so that it may be run by the globus-gatekeeper.
+
+If the -n ' option is used as well, then the service will be enabled with the alias 'NAME.
+
+2.3.3. Enabling a default service
+
+The -E command-line option to globus-gatekeeper-admin will cause it to enable a service alias with the name jobmanager. The globus-gatekeeper-admin program will choose the first service it finds as the default. To enable a particular service as the default, use the -e parameter described above with the -n parameter.
+
+2.3.4. Disabling services
+
+The '-d ' command-line option to globus-gatekeeper-admin will cause it to disable a service so that it may not be run by the globus-gatekeeper. All aliases to a disabled service are also disabled.
+
+2.4. Files
+
+/etc/grid-services
+Default location of enabled gatekeeper service descriptions.
+3. GLOBUS-GRAM-AUDIT(8)
+3.1. NAME
+
+globus-gram-audit - Load GRAM4 and GRAM5 audit records into a database
+
+3.2. SYNOPSIS
+
+globus-gram-audit [--conf CONFIG_FILE] [--create ] | [--update= OLD-VERSION] [--check ] [--delete ] [--audit-directory AUDITDIR] [--quiet ]
+
+3.3. Description
+
+The globus-gram-audit program loads audit records to an SQL-based database. It reads $GLOBUS_LOCATION/etc/globus-job-manager.conf by default to determine the audit directory and then uploads all files in that directory that contain valid audit records to the database configured by the by default to determine the audit directory and then uploads all files in that directory that contain valid audit records to the database configured by the globus_gram_job_manager_auditing_setup_scripts package. If the upload completes successfully, the audit files will be removed.
+
+The full set of command-line options to globus-gram-audit consist of:
+
+--conf CONFIG_FILE
+Use CONFIG_FILE instead of the default from the configuration file for audit database configuration.
+--check
+Check whether the insertion of a record was successful by querying the database after inserting the records. This is used in tests.
+--delete
+Delete audit records from the database right after inserting them. This is used in tests to avoid filling the databse with test records.
+--audit-directory DIR
+Look for audit records in DIR, instead of looking in the directory specified in the job manager configuration. This is used in tests to control which records are loaded to the database and then deleted.
+--query SQL
+Perform the given SQL query on the audit database. This uses the database information from the configuration file to determine how to contact the database.
+--quiet
+Reduce the amount of output for common operations.
+3.4. FILES
+
+The globus-gram-audit uses the following files (paths relative to $GLOBUS_LOCATION).
+
+etc/globus-gram-job-manager.conf
+GRAM5 job manager configuration. It includes the default path to the audit directory
+etc/globus-gram-audit.conf
+Audit configuration. It includes the information needed to contact the audit database.
+4. GLOBUS-JOB-MANAGER(8)
+4.1. NAME
+
+globus-job-manager - Execute and monitor jobs
+
+4.2. SYNOPSIS
+
+globus-job-manager -type LRM [-conf CONFIG_PATH] [-help ] [-globus-host-manufacturer MANUFACTURER] [-globus-host-cputype CPUTYPE] [-globus-host-osname OSNAME] [-globus-host-osversion OSVERSION] [-globus-gatekeeper-host HOST] [-globus-gatekeeper-port PORT] [-globus-gatekeeper-subject SUBJECT] [-home GLOBUS_LOCATION] [-target-globus-location TARGET_GLOBUS_LOCATION] [-condor-arch ARCH] [-condor-os OS] [-history HISTORY_DIRECTORY] [-scratch-dir-base SCRATCH_DIRECTORY] [-enable-syslog ] [-stdio-log LOG_DIRECTORY] [-log-pattern PATTERN] [-log-levels LEVELS] [-state-file-dir STATE_DIRECTORY] [-globus-tcp-port-range PORT_RANGE] [-globus-tcp-source-range SOURCE_RANGE] [-x509-cert-dir TRUSTED_CERTIFICATE_DIRECTORY] [-cache-location GASS_CACHE_DIRECTORY] [-k ] [-extra-envvars VAR=VAL,…] [-seg-module SEG_MODULE] [-audit-directory AUDIT_DIRECTORY] [-globus-toolkit-version TOOLKIT_VERSION] [-disable-streaming ] [-disable-usagestats ] [-usagestats-targets TARGET] [-service-tag SERVICE_TAG]
+
+4.3. Description
+
+The globus-job-manager program is a servivce which starts and controls GRAM jobs which are executed by a local resource management system, such as LSF or Condor. The globus-job-manager program is typically started by the globus-gatekeeper program and not directly by a user. It runs until all jobs it is managing have terminated or its delegated credentials have expired.
+
+Typically, users interact with the globus-job-manager program via client applications such as globusrun, globus-job-submit, or tools such as CoG jglobus or Condor-G.
+
+The full set of command-line options to globus-job-manager consists of:
+
+-help
+Display a help message to standard error and exit
+-type LRM
+Execute jobs using the local resource manager named LRM.
+-conf CONFIG_PATH
+Read additional command-line arguments from the file CONFIG_PATH. If present, this must be the first command-line argument to the globus-job-manager program.
+-globus-host-manufacturer MANUFACTURER:: Indicate the manufacturer of the system which the jobs will execute on. This parameter sets the value of the $(GLOBUS_HOST_MANUFACTURER) RSL substitution to MANUFACTURER
+
+-globus-host-cputype CPUTYPE
+Indicate the CPU type of the system which the jobs will execute on. This parameter sets the value of the $(GLOBUS_HOST_CPUTYPE) RSL substitution to CPUTYPE
+-globus-host-osname OSNAME
+Indicate the operating system type of the system which the jobs will execute on. This parameter sets the value of the $(GLOBUS_HOST_OSNAME) RSL substitution to OSNAME
+-globus-host-osversion OSVERSION
+Indicate the operating system version of the system which the jobs will execute on. This parameter sets the value of the $(GLOBUS_HOST_OSVERSION) RSL substitution to OSVERSION
+-globus-gatekeeper-host HOST
+Indicate the host name of the machine which the job was submitted to. This parameter sets the value of the $(GLOBUS_GATEKEEPER_HOST) RSL substitution to HOST
+-globus-gatekeeper-port PORT
+Indicate the TCP port number of gatekeeper to which jobs are submitted to. This parameter sets the value of the $(GLOBUS_GATEKEEPER_PORT) RSL substitution to PORT
+-globus-gatekeeper-subject SUBJECT
+Indicate the X.509 identity of the gatekeeper to which jobs are submitted to. This parameter sets the value of the $(GLOBUS_GATEKEEPER_SUBJECT) RSL substitution to SUBJECT
+-home GLOBUS_LOCATION
+Indicate the path where the Globus Toolkit(r) is installed on the service node. This is used by the job manager to locate its support and configuration files.
+-target-globus-location TARGET_GLOBUS_LOCATION
+Indicate the path where the Globus Toolkit(r) is installed on the execution host. If this is omitted, the value specified as a parameter to -home is used. This parameter sets the value of the $(GLOBUS_LOCATION) RSL substitution to TARGET_GLOBUS_LOCATION
+-history HISTORY_DIRECTORY
+Configure the job manager to write job history files to HISTORY_DIRECTORY. These files are described in the FILES section below.
+-scratch-dir-base SCRATCH_DIRECTORY
+Configure the job manager to use SCRATCH_DIRECTORY as the default scratch directory root if a relative path is specified in the job RSL’s scratch_dir attribute.
+-enable-syslog
+Configure the job manager to write log messages via syslog. Logging is further controlled by the argument to the -log-levels parameter described below.
+-log-pattern PATTERN
+Configure the job manager to write log messages to files named by the string PATTERN. The PATTERN string may contain job-independent RSL substitutions such as $(HOME), $(LOGNAME), etc, as well as the special RSL substition $(DATE) which will be resolved at log time to the date in YYYYMMDD form.
+-stdio-log LOG_DIRECTORY
+Configure the job manager to write log messages to files in the LOG_DIRECTORY directory. This is a backward-compatible parameter, equivalent to '-log-pattern '.
+-log-levels LEVELS
+Configure the job manager to write log messages of certain levels to syslog and/or log files. The available log levels are FATAL, ERROR, WARN, INFO, DEBUG, and TRACE. Multiple values can be combined with the | character. The default value of logging when enabled is FATAL|ERROR.
+-state-file-dir STATE_DIRECTORY
+Configure the job manager to write state files to STATE_DIRECTORY. If not specified, the job manager uses the default of $GLOBUS_LOCATION/tmp/gram_job_state/. This directory must be writable by all users and be on a file system which supports POSIX advisory file locks. . This directory must be writable by all users and be on a file system which supports POSIX advisory file locks.
+-globus-tcp-port-range PORT_RANGE
+Configure the job manager to restrict its TCP/IP communication to use ports in the range described by PORT_RANGE. This value is also made available in the job environment via the GLOBUS_TCP_PORT_RANGE environment variable.
+-globus-tcp-source-range SOURCE_RANGE
+Configure the job manager to restrict its TCP/IP communication to use source ports in the range described by SOURCE_RANGE. This value is also made available in the job environment via the GLOBUS_TCP_SOURCE_RANGE environment variable.
+-x509-cert-dir TRUSTED_CERTIFICATE_DIRECTORY
+Configure the job manager to search TRUSTED_CERTIFICATE_DIRECTORY for its list of trusted CA certificates and their signing policies. This value is also made available in the job environment via the X509_CERT_DIR environment variable.
+-cache-location GASS_CACHE_DIRECTORY
+Configure the job manager to use the path GASS_CACHE_DIRECTORY for its temporary GASS-cache files. This value is also made available in the job environment via the GLOBUS_GASS_CACHE_DEFAULT environment variable.
+-k
+Configure the job manager to assume it is using Kerberos for authentication instead of X.509 certificates. This disables some certificate-specific processing in the job manager.
+-extra-envvars VAR=VAL,…
+Configure the job manager to define a set of environment variables in the job environment beyond those defined in the base job environment. The format of the parameter to this argument is a comma-separated sequence of VAR=VAL pairs, where VAR is the variable name and VAL is the variable’s value. If the value is not specified, then the value of the variable in the job manager’s environment is used. This option may be present multiple times on the command-line or the job manager configuration file to append multiple environment settings.
+-seg-module SEG_MODULE
+Configure the job manager to use the schedule event generator module named by SEG_MODULE to detect job state changes events from the local resource manager, in place of the less efficient polling operations used in GT2. To use this, one instance of the globus-job-manager-event-generator must be running to process events for the LRM into a generic format that the job manager can parse.
+-audit-directory AUDIT_DIRECTORY
+Configure the job manager to write audit records to the directory named by AUDIT_DIRECTORY. This records can be loaded into a database using the globus-gram-audit program.
+-globus-toolkit-version TOOLKIT_VERSION
+Configure the job manager to use TOOLKIT_VERSION as the version for audit and usage stats records.
+-service-tag SERVICE_TAG
+Configure the job manager to use SERVICE_TAG as a unique identifier to allow multiple GRAM instances to use the same job state directories without interfering with each other’s jobs. If not set, the value untagged will be used.
+-disable-streaming
+Configure the job manager to disable file streaming. This is propagated to the LRM script interface but has no effect in GRAM5.
+-disable-usagestats
+Disable sending of any usage stats data, even if -usagestats-targets is present in the configuration.
+-usagestats-targets TARGET
+Send usage packets to a data collection service for analysis. The TARGET string consists of a comma-separated list of HOST:PORT combinations, each contaiing an optional list of data to send. See Usage Stats Packets for more information about the tags. Special tag strings of all (which enables all tags) and default may be used, or a sequence of characters for the various tags. If this option is not present in the configuration, then the default of usage-stats.globus.org:4810 is used.
+-condor-arch ARCH
+Set the architecture specification for condor jobs to be ARCH in job classified ads generated by the GRAM5 codnor LRM script. This is required for the condor LRM but ignored for all others.
+-condor-os OS
+Set the operating system specification for condor jobs to be OS in job classified ads generated by the GRAM5 codnor LRM script. This is required for the condor LRM but ignored for all others.
+4.4. Environment
+
+If the following variables affect the execution of globus-job-manager
+
+HOME
+User’s home directory.
+LOGNAME
+User’s name.
+JOBMANAGER_SYSLOG_ID
+String to prepend to syslog audit messages.
+JOBMANAGER_SYSLOG_FAC
+Facility to log syslog audit messages as.
+JOBMANAGER_SYSLOG_LVL
+Priority level to use for syslog audit messages.
+GATEKEEPER_JM_ID
+Job manager ID to be used in syslog audit records.
+GATEKEEPER_PEER
+Peer information to be used in syslog audit records
+GLOBUS_ID
+Credential information to be used in syslog audit records
+GLOBUS_JOB_MANAGER_SLEEP
+Time (in seconds) to sleep when the job manager is started. [For debugging purposes only]
+GRID_SECURITY_HTTP_BODY_FD
+File descriptor of an open file which contains the initial job request and to which the initial job reply should be sent. This file descriptor is inherited from the globus-gatekeeper.
+X509_USER_PROXY
+Path to the X.509 user proxy which was delegated by the client to the globus-gatekeeper program to be used by the job manager.
+GRID_SECURITY_CONTEXT_FD
+File descriptor containing an exported security context that the job manager should use to reply to the client which submitted the job.
+GLOBUS_USAGE_TARGETS
+Default list of usagestats services to send usage packets to.
+GLOBUS_TCP_PORT_RANGE
+Default range of allowed TCP ports to listen on. The -globus-tcp-port-range command-line option overrides this.
+GLOBUS_TCP_SOURCE_RANGE
+Default range of allowed TCP ports to bind to. The -globus-tcp-source-range command-line option overrides this.
+4.5. Files
+
+$HOME/.globus/job/HOSTNAME/LRM.TAG.red
+Job manager delegated user credential.
+$HOME/.globus/job/HOSTNAME/LRM.TAG.lock
+Job manager state lock file.
+$HOME/.globus/job/HOSTNAME/LRM.TAG.pid
+Job manager pid file.
+$HOME/.globus/job/HOSTNAME/LRM.TAG.sock
+Job manager socket for inter-job manager communications.
+$HOME/.globus/job/HOSTNAME/JOB_ID/
+Job-specific state directory.
+$HOME/.globus/job/HOSTNAME/JOB_ID/stdin
+Standard input which has been staged from a remote URL.
+$HOME/.globus/job/HOSTNAME/JOB_ID/stdout
+Standard output which will be staged from a remote URL.
+$HOME/.globus/job/HOSTNAME/JOB_ID/stderr
+Standard error which will be staged from a remote URL.
+$HOME/.globus/job/HOSTNAME/JOB_ID/x509_user_proxy
+Job-specific delegated credential.
+$GLOBUS_LOCATION/tmp/gram_job_state/job.HOSTNAME.JOB_ID
+Job state file.
+$GLOBUS_LOCATION/tmp/gram_job_state/job.HOSTNAME.JOB_ID.lock
+Job state lock file. In most cases this will be a symlink to the job manager lock file.
+$GLOBUS_LOCATION/etc/globus-job-manager.conf
+Default location of the global job manager configuration file.
+$GLOBUS_LOCATION/etc/grid-services/jobmanager-LRM
+Default location of the LRM-specific gatekeeper configuration file.
+$GLOBUS_LOCATION/etc/globus/gram/job—manager.rvf
+Default location of the site-specific job manager RSL validation file.
+$GLOBUS_LOCATION/etc/globus/gram/lrm.rvf
+Default location of the site-specific job manager RSL validation file for the named lrm.
+4.6. See Also
+
+globusrun(1), globus-gatekeeper(8), globus-personal-gatekeeper(1), globus-gram-audit(8)
+
+5. GLOBUS-RVF-CHECK(8)
+5.1. NAME
+
+globus-rvf-check - Edit a GRAM5 RSL validation file
+
+5.2. SYNOPSIS
+
+globus-rvf-check [-h ] [-help ]
+
+5.3. Description
+
+The globus-rvf-check command is a utility which checks the syntax of a RSL validation file, and prints out parse errors when encountered. It can also parse the RVF file contents and then dump file’s contents to stdout, after canonicalizing values and quoting. The exit code of globus-rvf-check is 0 if all files specified on the command line exist and have no parse errors.
+
+The full set of command-line options to globus-rvf-check consists of:
+
+-h, -help, --help
+Print command-line option summary and exit
+-d
+Dump the RVF contents to stdout. In the output, Each file which is parsed will be prefixed by an RVF comment which contains the input filename. If not specified, globus-rvf-check just prints a diagnostic message to standard output indicating whether the file could be parsed.
+6. GLOBUS-RVF-EDIT(8)
+6.1. NAME
+
+globus-rvf-edit - Edit a GRAM5 RSL validation file
+
+6.2. SYNOPSIS
+
+globus-rvf-edit [-h ]
+
+6.3. Description
+
+The globus-rvf-edit command is a utility which opens the default editor on a specified RSL validation file, and then, when editing completes, runs the globus-rvf-check command to verify that the RVF file syntax is correct. If a parse error occurs, the user will be given an option to rerun the editor or discard the modifications.
+
+The full set of command-line options to globus-rvf-edit consists of:
+
+-h
+Print command-line option summary and exit
+-s
+Edit of the site-specific RVF file, which provides override values applicable to all LRMs installed on the system.
+-l LRM
+Edit the site-specific LRM overrides for the LRM named by the LRM parameter to the option.
+-f PATH
+Edit the RVF file located at PATH
+7. GLOBUS-SCHEDULER-EVENT-GENERATOR(8)
+7.1. NAME
+
+globus-scheduler-event-generator - Process LRM events into a common format for use with GRAM
+
+7.2. SYNOPSIS
+
+globus-scheduler-event-generator -s LRM [-t TIMESTAMP] [-d DIRECTORY] [-b ] [-p PIDFILE]
+
+7.3. Description
+
+The globus-scheduler-event-generator program processes information from a local resource manager to generate LRM-independent events which GRAM can use to track job state changes. Typically, the globus-scheduler-event-generator is started at system boot time for all LRM adapters which have been installed. The only required parameter to globus-scheduler-event-generator is '-s ', which indicates what LRM-specific module to load. A list of available modules can be found by using the globus-scheduler-event-generator-admin command.
+
+Other options control how the globus-scheduler-event-generator program runs and where its output goes. These options are:
+
+-t TIMESTAMP
+Start processing events which start at TIMESTAMP in seconds since the UNIX epoch. If not present, the globus-scheduler-event-generator will process events from the time it was started, and not look for historical events.
+-d DIRECTORY
+Write the event log to files in DIRECTORY, instead of printing them to standard output. Within DIRECTORY, logs will be named by the time when they were created in YYYYMMDD format.
+-b
+Run the globus-scheduler-event-generator program in the background.
+-p PIDFILE
+Write the process-id of globus-scheduler-event-generator to PIDFILE.
+7.4. Files
+
+/var/lib/globus/globus-seg-LRM/YYYYMMDD
+LRM-independent event log generated by globus-scheduler-event-generator
+7.5. See Also
+
+globus-scheduler-event-generator-admin(8), globus-job-manager(8)
+
+8. GLOBUS-SCHEDULER-EVENT-GENERATOR-ADMIN(8)
+8.1. NAME
+
+globus-scheduler-event-generator-admin - Manage SEG modules
+
+8.2. SYNOPSIS
+
+globus-scheduler-event-generator-admin [-h ]
+
+8.3. Description
+
+The globus-scheduler-event-generator-admin program manages SEG modules which are used by the globus-scheduler-event-generator to monitor a local resource manager or batch system for events. The globus-scheduler-event-generator-admin can list, enable, or disable specific SEG modules. The -h command-line option shows a brief usage message.
+
+8.3.1. Listing SEG Modules
+
+The -l command-line option to globus-scheduler-event-generator-admin will cause it to list all of the SEG modules which are available to be run by the globus-scheduler-event-generator. In the output, the service name will be followed by its status in brackets. Possible status strings are ENABLED and DISABLED.
+
+8.3.2. Enabling SEG Modules
+
+The '-e ' command-line option to globus-scheduler-event-generator-admin will cause it to enable the module so that the init script for the globus-scheduler-event-generator will run it.
+
+8.3.3. Disabling SEG Modules
+
+The '-d ' command-line option to globus-scheduler-event-generator-admin will cause it to disable the module so that it will not be started by the globus-scheduler-event-generator init script.
+
+8.4. Files
+
+/etc/globus/scheduler-event-generator
+Default location of enabled SEG modules.
+8.5. See Also
+
+globus-scheduler-event-generator(8)
+
+Chapter 8. Usage statistics collection by the Globus Alliance
+Table of Contents
+
+1. GRAM5-specific usage statistics
+1. GRAM5-specific usage statistics
+The following usage statistics are sent by default in a UDP packet (in addition to the GRAM component code, packet version, timestamp, and source IP address) at the end of each job.
+
+Job Manager Session ID
+dryrun used
+RSL Host Count
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_UNSUBMITTED
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_FILE_STAGE_IN
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_PENDING
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_ACTIVE
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_FILE_STAGE_OUT
+Timestamp when job hit GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE
+Job Failure Code
+Number of times status is called
+Number of times register is called
+Number of times signal is called
+Number of times refresh is called
+Number of files named in file_clean_up RSL
+Number of files being staged in (including executable, stdin) from http servers
+Number of files being staged in (including executable, stdin) from https servers
+Number of files being staged in (including executable, stdin) from ftp servers
+Number of files being staged in (including executable, stdin) from gsiftp servers
+Number of files being staged into the GASS cache from http servers
+Number of files being staged into the GASS cache from https servers
+Number of files being staged into the GASS cache from ftp servers
+Number of files being staged into the GASS cache from gsiftp servers
+Number of files being staged out (including stdout and stderr) to http servers
+Number of files being staged out (including stdout and stderr) to https servers
+Number of files being staged out (including stdout and stderr) to ftp servers
+Number of files being staged out (including stdout and stderr) to gsiftp servers
+Bitmask of used RSL attributes (values are 2^id from the gram5_rsl_attributes table)
+Number of times unregister is called
+Value of the count RSL attribute
+Comma-separated list of string names of other RSL attributes not in the set defined in globus-gram-job-manager.rvf
+Job type string
+Number of times the job was restarted
+Total number of state callbacks sent to all clients for this job
+The following information can be sent as well in a job status packet but it is not sent unless explicitly enabled by the system administrator:
+
+Value of the executable RSL attribute
+Value of the arguments RSL attribute
+IP adddress and port of the client that submitted the job
+User DN of the client that submitted the job
+In addition to job-related status, the job manager sends information periodically about its execution status. The following information is sent by default in a UDP packet (in addition to the GRAM component code, packet version, timestamp, and source IP address) at job manager start and every 1 hour during the job manager lifetime:
+
+Job Manager Start Time
+Job Manager Session ID
+Job Manager Status Time
+Job Manager Version
+LRM
+Poll used
+Audit used
+Number of restarted jobs
+Total number of jobs
+Total number of failed jobs
+Total number of canceled jobs
+Total number of completed jobs
+Total number of dry-run jobs
+Peak number of concurrently managed jobs
+Number of jobs currently being managed
+Number of jobs currently in the UNSUBMITTED state
+Number of jobs currently in the STAGE_IN state
+Number of jobs currently in the PENDING state
+Number of jobs currently in the ACTIVE state
+Number of jobs currently in the STAGE_OUT state
+Number of jobs currently in the FAILED state
+Number of jobs currently in the DONE state
+Also, please see our policy statement on the collection of usage statistics.
