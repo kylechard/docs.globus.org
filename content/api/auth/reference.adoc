@@ -1,8 +1,9 @@
 ---
 menu_weight: 2
+short_title: API Reference
 ---
 
-= API Reference
+= Globus Auth API Reference
 :toc:
 :numbered:
 :toc-placement: manual

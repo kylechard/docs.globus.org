@@ -1,8 +1,9 @@
 ---
 menu_weight: 3
+short_title: Specification
 ---
 
-= Globus Auth Introduction
+= Globus Auth Specification
 :toc:
 :toclevels: 3
 :numbered:
