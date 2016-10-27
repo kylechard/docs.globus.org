@@ -10,6 +10,6 @@ menu_weight: 0
 * link:developer_guide[Developer Guide] -
   guide to integrating Globus Auth with apps and services
 * link:reference[API Reference]
-* link:introduction[Specification]
+* link:specification[Specification]
 
 For more information, you can also try the link:../helper-pages/auth[Globus Auth Helper Page].
