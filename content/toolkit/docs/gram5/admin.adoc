@@ -241,11 +241,11 @@ Each LRM adapter has its own configuration file which can help customize the ada
 Generally, the GRAM5 LRM configuration files are located in the globus configuration directory, with each configuration file named by the LRM name (`fork`, `condor`, `pbs`, `sge`, or `slurm`). The following are the paths to these configurations:
 
 RPM Package::
-/etc/globus/globus-_LRM_.conf
+[file]#/etc/globus/globus-_LRM_.conf#
 Debian Package::
-/etc/globus/globus-_LRM_.conf:
+[file]#etc/globus/globus-_LRM_.conf:#
 Source Installer::
-_PREFIX_/etc/globus/globus-_LRM_.conf
+[file]#_PREFIX_/etc/globus/globus-_LRM_.conf#
 
 ==== Fork
 
@@ -447,7 +447,7 @@ gateway_user: Teragrid identity of the user which submitted the job.
 The rest of this chapter focuses on how to configure GRAM5 to enable Audit-Logging.
 
 === Configuration
-Audit logging is turned off by default. To enable GRAM5 audit logging, in the job manager, add the command-line option '-audit-directory ' to the job manager configuration in one of the following locations:
+Audit logging is turned off by default. To enable GRAM5 audit logging, in the job manager, add the command-line option '-audit-directory' to the job manager configuration in one of the following locations:
 
 $GLOBUS_LOCATION/etc/globus-job-manager.conf to enable it for all job manager services to enable it for all job manager services
 $GLOBUS_LOCATION/etc/grid-services/LRM_SERVICE_NAME to enable it for a particular job manager service for a particular LRM. to enable it for a particular job manager service for a particular LRM.
@@ -458,19 +458,18 @@ The globus-gram-audit program reads GRAM5 audit records and loads those records 
 The globus-gram-audit program support three database systems: MySQL, PostgreSQL, and SQLite.
 
 == Security Considerations
-Table of Contents
 
-=== Security Considerations
+=== Gatekeeper Security Considerations
 
 GRAM5 runs different parts of itself under different privilege levels. The globus-gatekeeper runs as root, and uses its root privilege to access the host’s private key. It uses the grid map file to map Grid Certificates to local user ids and then uses the setuid() function to change to that user and execute the globus-job-manager program
 
-==== Job Manager Security Considerations
+=== Job Manager Security Considerations
 
 The globus-job-manager program runs as a local non-root account. It receives a delegated limited proxy certificate from the GRAM5 client which it uses to access Grid storage resources via GridFTP and to authenticate job signals (such as client cancel requests), and send job state callbacks to registered clients. This proxy is generally short-lived, and is automatically removed by the job manager when the job completes.
 
 The globus-job-manager program uses a publicly-writable directory for job state files. This directory has the sticky bit set, so users may not remove other users files. Each file is named by a UUID, so it should be unique.
 
-==== Fork SEG Module Security Considerations
+=== Fork SEG Module Security Considerations
 
 The Fork Scheduler Event Generator module uses a globally writable file for job state change events. This is not recommended for production use.
 
@@ -600,7 +599,8 @@ Use the globus-k5 command to acquire Kerberos 5 credentials before starting the 
 Use KMAP as the path to the Grid credential to kerberos initialization mapping file.
 -pidfile PIDFILE
 Write the process id of the globus-gatekeeper to the file named by PIDFILE.
-1.4. ENVIRONMENT
+
+==== ENVIRONMENT
 
 If the following variables affect the execution of globus-gatekeeper:
 
@@ -614,7 +614,8 @@ X509_USER_KEY
 Path to file containing an X.509 user key.
 GLOBUS_LOCATION
 Default path to gatekeeper service files.
-1.5. Files
+
+==== Files
 
 /etc/grid-services/SERVICENAME
 Service configuration for SERVICENAME.
@@ -626,57 +627,59 @@ Default file mapping Grid identities to Kerberos 5 principals.
 File to disable the globus-gatekeeper program.
 /var/log/globus-gatekeeper.log
 Default gatekeeper log.
-1.6. See also
+
+==== See also
 
 globus-k5(8), globusrun(1), globus-job-manager(8)
 
-2. GLOBUS-GATEKEEPER-ADMIN(8)
-2.1. NAME
+=== GLOBUS-GATEKEEPER-ADMIN(8)
+==== NAME
 
 globus-gatekeeper-admin - Manage globus-gatekeeper services
 
-2.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-gatekeeper-admin [-h ]
 
-2.3. Description
+==== Description
 
 The globus-gatekeeper-admin program manages service entries which are used by the globus-gatekeeper to execute services. Service entries are located in the /etc/grid-services directory. The directory. The globus-gatekeeper-admin can list, enable, or disable specific services, or set a service as the default. The -h command-line option shows a brief usage message.
 
-2.3.1. Listing services
+===== Listing services
 
 The -l command-line option to globus-gatekeeper-admin will cause it to list all of the services which are available to be run by the globus-gatekeeper. In the output, the service name will be followed by its status in brackets. Possible status strings are ENABLED, DISABLED, and ALIAS to , where NAME is another service name.
 
 If the -n ' is used, then only information about the service named 'NAME is printed.
 
-2.3.2. Enabling services
+===== Enabling services
 
 The '-e ' command-line option to globus-gatekeeper-admin will cause it to enable a service so that it may be run by the globus-gatekeeper.
 
 If the -n ' option is used as well, then the service will be enabled with the alias 'NAME.
 
-2.3.3. Enabling a default service
+===== Enabling a default service
 
 The -E command-line option to globus-gatekeeper-admin will cause it to enable a service alias with the name jobmanager. The globus-gatekeeper-admin program will choose the first service it finds as the default. To enable a particular service as the default, use the -e parameter described above with the -n parameter.
 
-2.3.4. Disabling services
+===== Disabling services
 
 The '-d ' command-line option to globus-gatekeeper-admin will cause it to disable a service so that it may not be run by the globus-gatekeeper. All aliases to a disabled service are also disabled.
 
-2.4. Files
+==== Files
 
 /etc/grid-services
 Default location of enabled gatekeeper service descriptions.
-3. GLOBUS-GRAM-AUDIT(8)
-3.1. NAME
+
+=== GLOBUS-GRAM-AUDIT(8)
+==== NAME
 
 globus-gram-audit - Load GRAM4 and GRAM5 audit records into a database
 
-3.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-gram-audit [--conf CONFIG_FILE] [--create ] | [--update= OLD-VERSION] [--check ] [--delete ] [--audit-directory AUDITDIR] [--quiet ]
 
-3.3. Description
+==== Description
 
 The globus-gram-audit program loads audit records to an SQL-based database. It reads $GLOBUS_LOCATION/etc/globus-job-manager.conf by default to determine the audit directory and then uploads all files in that directory that contain valid audit records to the database configured by the by default to determine the audit directory and then uploads all files in that directory that contain valid audit records to the database configured by the globus_gram_job_manager_auditing_setup_scripts package. If the upload completes successfully, the audit files will be removed.
 
@@ -694,7 +697,8 @@ Look for audit records in DIR, instead of looking in the directory specified in 
 Perform the given SQL query on the audit database. This uses the database information from the configuration file to determine how to contact the database.
 --quiet
 Reduce the amount of output for common operations.
-3.4. FILES
+
+==== FILES
 
 The globus-gram-audit uses the following files (paths relative to $GLOBUS_LOCATION).
 
@@ -702,16 +706,17 @@ etc/globus-gram-job-manager.conf
 GRAM5 job manager configuration. It includes the default path to the audit directory
 etc/globus-gram-audit.conf
 Audit configuration. It includes the information needed to contact the audit database.
-4. GLOBUS-JOB-MANAGER(8)
-4.1. NAME
+
+=== GLOBUS-JOB-MANAGER(8)
+==== NAME
 
 globus-job-manager - Execute and monitor jobs
 
-4.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-job-manager -type LRM [-conf CONFIG_PATH] [-help ] [-globus-host-manufacturer MANUFACTURER] [-globus-host-cputype CPUTYPE] [-globus-host-osname OSNAME] [-globus-host-osversion OSVERSION] [-globus-gatekeeper-host HOST] [-globus-gatekeeper-port PORT] [-globus-gatekeeper-subject SUBJECT] [-home GLOBUS_LOCATION] [-target-globus-location TARGET_GLOBUS_LOCATION] [-condor-arch ARCH] [-condor-os OS] [-history HISTORY_DIRECTORY] [-scratch-dir-base SCRATCH_DIRECTORY] [-enable-syslog ] [-stdio-log LOG_DIRECTORY] [-log-pattern PATTERN] [-log-levels LEVELS] [-state-file-dir STATE_DIRECTORY] [-globus-tcp-port-range PORT_RANGE] [-globus-tcp-source-range SOURCE_RANGE] [-x509-cert-dir TRUSTED_CERTIFICATE_DIRECTORY] [-cache-location GASS_CACHE_DIRECTORY] [-k ] [-extra-envvars VAR=VAL,…] [-seg-module SEG_MODULE] [-audit-directory AUDIT_DIRECTORY] [-globus-toolkit-version TOOLKIT_VERSION] [-disable-streaming ] [-disable-usagestats ] [-usagestats-targets TARGET] [-service-tag SERVICE_TAG]
 
-4.3. Description
+==== Description
 
 The globus-job-manager program is a servivce which starts and controls GRAM jobs which are executed by a local resource management system, such as LSF or Condor. The globus-job-manager program is typically started by the globus-gatekeeper program and not directly by a user. It runs until all jobs it is managing have terminated or its delegated credentials have expired.
 
@@ -787,7 +792,8 @@ Send usage packets to a data collection service for analysis. The TARGET string 
 Set the architecture specification for condor jobs to be ARCH in job classified ads generated by the GRAM5 codnor LRM script. This is required for the condor LRM but ignored for all others.
 -condor-os OS
 Set the operating system specification for condor jobs to be OS in job classified ads generated by the GRAM5 codnor LRM script. This is required for the condor LRM but ignored for all others.
-4.4. Environment
+
+==== Environment
 
 If the following variables affect the execution of globus-job-manager
 
@@ -821,7 +827,8 @@ GLOBUS_TCP_PORT_RANGE
 Default range of allowed TCP ports to listen on. The -globus-tcp-port-range command-line option overrides this.
 GLOBUS_TCP_SOURCE_RANGE
 Default range of allowed TCP ports to bind to. The -globus-tcp-source-range command-line option overrides this.
-4.5. Files
+
+==== Files
 
 $HOME/.globus/job/HOSTNAME/LRM.TAG.red
 Job manager delegated user credential.
@@ -853,20 +860,21 @@ $GLOBUS_LOCATION/etc/globus/gram/job—manager.rvf
 Default location of the site-specific job manager RSL validation file.
 $GLOBUS_LOCATION/etc/globus/gram/lrm.rvf
 Default location of the site-specific job manager RSL validation file for the named lrm.
-4.6. See Also
+
+==== See Also
 
 globusrun(1), globus-gatekeeper(8), globus-personal-gatekeeper(1), globus-gram-audit(8)
 
-5. GLOBUS-RVF-CHECK(8)
-5.1. NAME
+=== GLOBUS-RVF-CHECK(8)
+==== NAME
 
 globus-rvf-check - Edit a GRAM5 RSL validation file
 
-5.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-rvf-check [-h ] [-help ]
 
-5.3. Description
+==== Description
 
 The globus-rvf-check command is a utility which checks the syntax of a RSL validation file, and prints out parse errors when encountered. It can also parse the RVF file contents and then dump file’s contents to stdout, after canonicalizing values and quoting. The exit code of globus-rvf-check is 0 if all files specified on the command line exist and have no parse errors.
 
@@ -876,16 +884,17 @@ The full set of command-line options to globus-rvf-check consists of:
 Print command-line option summary and exit
 -d
 Dump the RVF contents to stdout. In the output, Each file which is parsed will be prefixed by an RVF comment which contains the input filename. If not specified, globus-rvf-check just prints a diagnostic message to standard output indicating whether the file could be parsed.
-6. GLOBUS-RVF-EDIT(8)
-6.1. NAME
+
+=== GLOBUS-RVF-EDIT(8)
+==== NAME
 
 globus-rvf-edit - Edit a GRAM5 RSL validation file
 
-6.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-rvf-edit [-h ]
 
-6.3. Description
+==== Description
 
 The globus-rvf-edit command is a utility which opens the default editor on a specified RSL validation file, and then, when editing completes, runs the globus-rvf-check command to verify that the RVF file syntax is correct. If a parse error occurs, the user will be given an option to rerun the editor or discard the modifications.
 
@@ -899,16 +908,17 @@ Edit of the site-specific RVF file, which provides override values applicable to
 Edit the site-specific LRM overrides for the LRM named by the LRM parameter to the option.
 -f PATH
 Edit the RVF file located at PATH
-7. GLOBUS-SCHEDULER-EVENT-GENERATOR(8)
-7.1. NAME
+
+=== GLOBUS-SCHEDULER-EVENT-GENERATOR(8)
+==== NAME
 
 globus-scheduler-event-generator - Process LRM events into a common format for use with GRAM
 
-7.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-scheduler-event-generator -s LRM [-t TIMESTAMP] [-d DIRECTORY] [-b ] [-p PIDFILE]
 
-7.3. Description
+==== Description
 
 The globus-scheduler-event-generator program processes information from a local resource manager to generate LRM-independent events which GRAM can use to track job state changes. Typically, the globus-scheduler-event-generator is started at system boot time for all LRM adapters which have been installed. The only required parameter to globus-scheduler-event-generator is '-s ', which indicates what LRM-specific module to load. A list of available modules can be found by using the globus-scheduler-event-generator-admin command.
 
@@ -922,52 +932,52 @@ Write the event log to files in DIRECTORY, instead of printing them to standard 
 Run the globus-scheduler-event-generator program in the background.
 -p PIDFILE
 Write the process-id of globus-scheduler-event-generator to PIDFILE.
-7.4. Files
+
+==== Files
 
 /var/lib/globus/globus-seg-LRM/YYYYMMDD
 LRM-independent event log generated by globus-scheduler-event-generator
-7.5. See Also
+
+==== See Also
 
 globus-scheduler-event-generator-admin(8), globus-job-manager(8)
 
-8. GLOBUS-SCHEDULER-EVENT-GENERATOR-ADMIN(8)
-8.1. NAME
+=== GLOBUS-SCHEDULER-EVENT-GENERATOR-ADMIN(8)
+==== NAME
 
 globus-scheduler-event-generator-admin - Manage SEG modules
 
-8.2. SYNOPSIS
+==== SYNOPSIS
 
 globus-scheduler-event-generator-admin [-h ]
 
-8.3. Description
+==== Description
 
 The globus-scheduler-event-generator-admin program manages SEG modules which are used by the globus-scheduler-event-generator to monitor a local resource manager or batch system for events. The globus-scheduler-event-generator-admin can list, enable, or disable specific SEG modules. The -h command-line option shows a brief usage message.
 
-8.3.1. Listing SEG Modules
+===== Listing SEG Modules
 
 The -l command-line option to globus-scheduler-event-generator-admin will cause it to list all of the SEG modules which are available to be run by the globus-scheduler-event-generator. In the output, the service name will be followed by its status in brackets. Possible status strings are ENABLED and DISABLED.
 
-8.3.2. Enabling SEG Modules
+===== Enabling SEG Modules
 
 The '-e ' command-line option to globus-scheduler-event-generator-admin will cause it to enable the module so that the init script for the globus-scheduler-event-generator will run it.
 
-8.3.3. Disabling SEG Modules
+===== Disabling SEG Modules
 
 The '-d ' command-line option to globus-scheduler-event-generator-admin will cause it to disable the module so that it will not be started by the globus-scheduler-event-generator init script.
 
-8.4. Files
+==== Files
 
 /etc/globus/scheduler-event-generator
 Default location of enabled SEG modules.
-8.5. See Also
+
+==== See Also
 
 globus-scheduler-event-generator(8)
 
-Chapter 8. Usage statistics collection by the Globus Alliance
-Table of Contents
-
-1. GRAM5-specific usage statistics
-1. GRAM5-specific usage statistics
+== Usage statistics collection by the Globus Alliance
+=== GRAM5-specific usage statistics
 The following usage statistics are sent by default in a UDP packet (in addition to the GRAM component code, packet version, timestamp, and source IP address) at the end of each job.
 
 Job Manager Session ID
