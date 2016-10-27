@@ -1,5 +1,6 @@
 ---
 menu_weight: 1
+short_title: Developer Guide
 ---
 
 = Globus Auth Developer Guide

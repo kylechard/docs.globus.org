@@ -2,7 +2,7 @@
 menu_weight: 0
 ---
 
-= Auth API Documentation
+= Globus Auth API Documentation
 :imagesdir: .
 
 == Contents
