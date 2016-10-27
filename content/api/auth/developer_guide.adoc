@@ -1,5 +1,5 @@
 ---
-menu_weight: 2
+menu_weight: 1
 ---
 
 = Globus Auth Developer Guide
