@@ -9,6 +9,11 @@ menu_weight: 1
 
 This guide describes how to develop <<developing-apps,apps>> and <<developing-services,services>> using Globus Auth, how to register your <<registering-idp,login provider>>, how to leverage <<identity-sets,linked identites>> to allow your users to use whichever login provider they want, which <<libraries, libraries and resources>> to use to make your life as a developer easier, and <<samples,sample apps and services>>.
 
+////
+TODO: Section about adding Auth as an IdP to existing products, eg to Confluence/JIRA, maybe AWS?
+////
+
+
 [[developing-apps]]
 == Developing an Application Using Globus Auth
 
@@ -25,14 +30,17 @@ Applications can make use of several different <<developing-services,services>>,
 [[register-app]]
 === Registering an Application
 
-All apps that you register will be part of a <<managing-projects,project>>. For the most part the process of registering projects and applications is explained on the registration page itself (TODO: Make this actually be true, per GitHub issue). However, one aspect that is worth highlighting is the two basic kinds of clients that are available for registration:
+All apps that you register will be part of a <<managing-projects,project>>. Two basic kinds of clients that are available for registration:
 
 - _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described <<client-auth,here>>. This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
 - _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use <<pkce,PKCE>>. This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
 
 The key difference between the two is whether the client can _keep it's private credentials secret_. Any client that is distributed as a binary cannot keep secret credentials; even if attempts are made at obfuscation, extracting the credential will not be difficult for an attacker.
 
+////
+TODO: Registration page tooltips, per GitHub issue.
 TODO: Describe differences for users, named grants etc. Also: Auth code page for native apps.
+////
 
 [[obtaining-authorization]]
 === Obtaining Authorization
@@ -43,13 +51,15 @@ Globus Auth is fully spec compliant OAuth2 implementation. It is recommended tha
 1. Authorization request (https://tools.ietf.org/html/rfc6749#section-4.1.1). The application client constructs a link to an authorization page and directs the user to it. The URL is `https://auth.globus.org/v2/oauth2/authorize` with the following URL encoded query params:
 	- `client_id`. The UUID of the client application.
 	- `redirect_uri`. The URI the user will be redirected back to for the authorization response. Must be pre-registered for this client.
-	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope. TODO: We also support an `access_type=offline` param for requesting refresh token. We should decide which is the canonical way.
+	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope. 
 	- `state`. An opaque value that is returned to the client in the authorization response. The client should use this value to prevent cross-site request forgery as described in https://tools.ietf.org/html/rfc6749#section-10.12.
 	- `response_type`. Value must be `code`.
 	- If the application client is a native app the request must also contain a `code_challenge` and `code_challenge_method` as described in the <<pkce,PKCE section below>>.
 	- All parameters must be URL encoded.
 	- Example of an app requesting access to Globus Transfer and the Globus Auth Identities API with refresh tokens: `https://auth.globus.org/v2/oauth2/authorize?client_id=69ba5e62-7285-45db-952d-e0bb73b5eac7&scope=urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall%20urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities%20offline_access&response_type=code&redirect_uri=https%3A%2F%2Fwww.example.org%2Fmy_app%2Flogin&state=g6l14b2xlgx4dtce8d2ja714i`
-	- TODO: Example of using a library to create the auth URL.
+
+// TODO: Example of using a library to create the auth URL.
+// TODO: We also support an `access_type=offline` param for requesting refresh token. We should decide which is the canonical way.
 
 2. The user is prompted to authenticate, and to consent to giving the client application access to the requested scopes if they have not previously consented (if they have already consented this screen is bypassed).
 
@@ -63,9 +73,12 @@ Globus Auth is fully spec compliant OAuth2 implementation. It is recommended tha
 	- `redirect_uri`. Must be identical to the value sent in the authorization request.
 	- `client_id`. Once again, the UUID of the client application.
 	- If the application client is confidential it must <<client-auth,authenticate>> this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the <<pkce,PKCE section below>>.
-	- TODO: Examples with curl and one or two common libraries
+
+// TODO: Examples with curl and one or two common libraries
 
 5. Access token response (https://tools.ietf.org/html/rfc6749#section-4.1.4). The token response is described in the following section.
+
+// TODO: Describe error conditions: User declines consent.
 
 [[using-tokens]]
 === Using Tokens
@@ -112,15 +125,17 @@ When an access token is nearing its expiry time the application needs to retriev
 
 Refresh tokens are long lived credentials and should never be sent over the wire except when doing a refresh token grant against Globus Auth. Please store them securely.
 
+////
 ==== Refreshing access tokens
 
 TODO: Describe refresh token grant
+////
 
 ==== Token Invalidation
 
 For the security of their users application clients should invalidate tokens when they are done with them, for example as part of a logout operation. This is particularly important for long-lived refresh tokens.
 
-TODO: Endpoint should be described in API reference and this guide should only link to it it.
+// TODO: Endpoint should be described in API reference and this guide should only link to it it.
 
 
 [[client-auth]]
@@ -158,38 +173,44 @@ The authorization URL is then created as <<authorization-request,described above
 * `code_challenge`, as just described.
 * `code_challenge_method`, whose value MUST be `SHA256`.
 
-TODO: Updated example auth url
+// TODO: Updated example auth url
 
-Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above. (ASCIIDOC TODO: Anchor before the list element resets numbering, but link doesn't work if anchor is inside list element...)
+Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above.
+// (ASCIIDOC TODO: Anchor before the list element resets numbering, but link doesn't work if anchor is inside list element...)
 
 These additions allows Globus Auth to verify that the request originated from a particular instance of the application client, so that an attacker is unable to steal a token even if they manage to compromise the authorization code.
 
+////
 [[client-identities]]
 === Client Identities
 
 TODO: High level description of why you'd want to use client identities, and like to API doc
+////
 
 [[skinning]]
 === Skinning
 
-Globus Auth supports skinning, so that when a user comes in from your app the look of Globus Auth matches that of your application. Setting this up is a manual process, please mailto:support@globus.org[contact us] for more details! TODO: Is support@globus.org the right email for this?
+Globus Auth supports skinning, so that when a user comes in from your app the look of Globus Auth matches that of your application. Setting this up is a manual process, please mailto:support@globus.org[contact us] for more details!
 
+////
 [[other-features]]
 === Integrating Other Globus Auth Features
 
 E.g, identity linking, authentication_hint, login_hint, linking to consent/identities pages etc
+////
 
 [[developing-services]]
 == Developing a Service
 
-A Globus Auth _service_ is a system that provides access to resources owned by users, and wants to provides access to those resources to <<developing-apps,applications>> used by end-users, typically via a HTTP API.
+A Globus Auth _service_ is a system that provides access to resources owned by users, and wants to provides access to those resources to <<developing-apps,applications>> used by end-users, typically via a HTTP API. Services can also expand their functionality by in turn <<downstream-services,making use of other services>>.
 
+Registering a Service is currently a manual process. Please mailto:support@globus.org[contact us] for more information!
+
+////
 Developing a service involves:
 
 1. <<registering-services,Registering a service>> and <<managing-scopes,scopes>>.
 2. <<allowing-access,Verifying what access is allowed by tokens>> received from applications clients and implementing access control logic for scopes
-
-Services can also expand their functionality by in turn <<downstream-services,making use of other services>>.
 
 [[registering-services]]
 === Registering Services
@@ -212,12 +233,14 @@ TODO:
 
 [[downstream-services]]
 === Using Dependent Services
+////
 
 [[registering-idp]]
 == Adding an Identity Provider
 
-Please mailto:support@globus.org[contact us] (TODO: support@globus?) if you wish to add your identity provider to Globus Auth to allow your users to use their normal login for authenticating against apps and services.
+Please mailto:support@globus.org[contact us] if you wish to add your identity provider to Globus Auth to allow your users to use their normal login for authenticating against apps and services.
 
+////
 We currently support the following protocols: …
 
 With the following important notes as caveats: Identity providers must supply a provider_specific_id (explain what that’s all about), ...
@@ -242,13 +265,16 @@ openid+email+profile
 === The Globus Auth Identity Set Model at a Glance
 
 === Does My App or Service Need to Set-Aware?
- 
+////
+
 [[managing-projects]]
 == Managing Projects
 
 All apps and services that you register will be part of a _project_. You can add and remove admins to allow others to manage the project. All admins are co-equal, meaning that anyone you add will be able to add/remove/edit all of your apps and services.
 
 When registering you are asked to provide a contact email. It will only be used to give you important notifications related to your project. If you expect your project to last many years, please make sure to keep the contact email current.
+
+////
 
 == Handling Tokens
 
@@ -290,6 +316,7 @@ Resource Servers should also cache dependent access tokens (also obtained from d
 
 Seeing a new dependent_token_cache_id for the same identity and client does NOT indicate that the previous grant has been revoked.”
 
+////
 
 [[libraries]]
 == Libraries and Resources
@@ -301,7 +328,9 @@ Globus provides a Python SDK for interacting with its APIs, including Globus Aut
 [[oauth2-libraries]]
 === OAuth2 Libraries
 
-TODO: Have all of these actually been tested against Auth?
+////
+TODO: XSEDE got Confluence/JIRA and Django working. Mention that somewhere.
+////
 
 * Java: https://developers.google.com/api-client-library/java/google-api-java-client/oauth2 
 * Python: https://developers.google.com/api-client-library/python/guide/aaa_oauth 
@@ -314,5 +343,3 @@ TODO: Have all of these actually been tested against Auth?
 === Sample Applications and Services Using Globus Auth
 
 The https://github.com/globus/globus-sample-data-portal[Globus Sample Data Portal] contains an example of both an application and a service. Beyond basic app/service functionality, it demonstrates the use of <<downstream-services,dependent services>> (in this case Globus Transfer), <<client-identities,client identities>> and other features.
-
-TODO: Do we have other examples we want to link to? What about stuff the summer inters did?
