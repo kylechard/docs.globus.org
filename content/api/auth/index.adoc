@@ -1,5 +1,6 @@
 ---
 menu_weight: 0
+short_title: API Documentation
 ---
 
 = Globus Auth API Documentation
