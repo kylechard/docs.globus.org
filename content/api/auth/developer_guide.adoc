@@ -1,5 +1,5 @@
 ---
-menu_weight: 1
+menu_weight: 2
 ---
 
 = Globus Auth Developer Guide
@@ -7,6 +7,7 @@ menu_weight: 1
 :toclevels: 3
 :numbered:
 
+'''
 This guide describes how to develop <<developing-apps,apps>> and <<developing-services,services>> using Globus Auth, how to register your <<registering-idp,login provider>>, how to leverage <<identity-sets,linked identites>> to allow your users to use whichever login provider they want, which <<libraries, libraries and resources>> to use to make your life as a developer easier, and <<samples,sample apps and services>>.
 
 ////
