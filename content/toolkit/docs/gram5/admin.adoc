@@ -271,13 +271,13 @@ Path to the condor commands that the LRM adapter uses. These are usually determi
 condor_config::
 Value of the `CONDOR_CONFIG` environment variable, which might be needed to use condor in some cases.
 check_vanilla_files::
-Enable checking if executable, standard input, and directory are valid paths for `vanilla` universe jobs. This can detect some types of errors before submitting jobs to condor, but only if the filesystems between the condor submit host and condor execution hosts are equivalent. In other cases, this may cause unneccessary job failures.
+Enable checking if executable, standard input, and directory are valid paths for [file]#vanilla# universe jobs. This can detect some types of errors before submitting jobs to condor, but only if the filesystems between the condor submit host and condor execution hosts are equivalent. In other cases, this may cause unneccessary job failures.
 condor_mpi_script::
 Path to a script to launch MPI jobs on condor
 
 ==== PBS
 
-The globus-pbs.conf configuration file can define the following configuration parameters: configuration file can define the following configuration parameters:
+The [file]#globus-pbs.conf# configuration file can define the following configuration parameters:
 
 log_path::
 Path to PBS server_logs directory. The PBS SEG module parses these logs to generate LRM events.
@@ -327,64 +327,46 @@ If this value is defined, use it as a list of queues supported by this GridEngin
 
 ===== Enabling reporting for the GridEngine Scheduler Event Generator
 
-In order to use the Scheduler Event Generator with GridEngine, the job reporting feature must be enabled, and ARCo database storage must not be enabled. To enable this, use the command qconf -mconf and modify the reporting_params parameter so that the options reporting and joblog are set to true.
+In order to use the Scheduler Event Generator with GridEngine, the job reporting feature must be enabled, and ARCo database storage must not be enabled. To enable this, use the command `qconf -mconf` and modify the [output]#reporting_params# parameter so that the options [output]#reporting# and [output]#joblog# are set to [output]#true#.
 
 ==== SLURM
 
 The globus-slurm.conf configuration file can define the following configuration parameters: configuration file can define the following configuration parameters:
 
-srun, sbatch, salloc, scancel
+srun, sbatch, salloc, scancel::
 Path to the SLURM commands.
-mpi_type
+mpi_type::
 MPI implementation to use (either openmpi or mpich2).
-openmpi_path
+openmpi_path::
 Path to the OpenMPI implementation if available
-mpich2_path
+mpich2_path::
 Path to the MPICH 2 implementation if available
 
 === Auditing
-The globus-gram-audit configuration defines information about the database to load the GRAM5 audit records into. This configuration is located in:
+The `globus-gram-audit` configuration defines information about the database to load the GRAM5 audit records into. This configuration is located in:
 
-RPM Package
-/etc/globus/gram-audit.conf
-Debian Package
-/etc/globus/gram-audit.conf
-Source Installer
-PREFIX/etc/globus/gram-audit.conf
-This configuration file contains the following attributes. Each attribute is defined by a ATTRIBUTE:VALUE pair.
+RPM Package::
+[file]#/etc/globus/gram-audit.conf#
+Debian Package::
+[file]#/etc/globus/gram-audit.conf#
+Source Installer::
+[file]#PREFIX/etc/globus/gram-audit.conf#
 
-Table 3.2. Audit Configuration Attributes
+This configuration file contains the following attributes. Each attribute is defined by a [file]#ATTRIBUTE:VALUE# pair.
 
-Attribute Name	Value	Default
-DRIVER
-
-The name of the Perl 5 DBI driver for the database to be used. The supported drivers for this program are <literal>SQLite</literal>, <literal>Pg</literal> (for PostgreSQL), and <literal>mysql</literal>. </simpara>
-
-SQLite
-
-DATABASE
-
-The DBI data source specfication to contact the audit database.
-
-dbname=/var/gram_audit_database/gram_audit.db
-
-USERNAME
-
-Username to authenticate as to the database
-
-PASSWORD
-
-Password to use to authenticate with the database
-
-AUDITVERSION
-
-Version of the audit database table schemas to use. May be 1 or 1TG for this version of the software.
-
-1
-
+.Audit Configuration Attributes
+[cols="3*<",options="header"]
+|========
+|Attribute Name	|Value	|Default
+|DRIVER	|The name of the Perl 5 DBI driver for the database to be used. The supported drivers for this program are <literal>SQLite</literal>, <literal>Pg</literal> (for PostgreSQL), and <literal>mysql</literal>. </simpara>	|[file]#SQLite#
+|DATABASE	|The DBI data source specfication to contact the audit database.	|[file]#dbname=/var/gram_audit_database/gram_audit.db#
+|USERNAME	|Username to authenticate as to the database	|
+|PASSWORD	|Password to use to authenticate with the database	|
+|AUDITVERSION	|Version of the audit database table schemas to use. May be 1 or 1TG for this version of the software.	|[file]#1#
+|========
 
 === RSL Attributes
-GRAM5 uses the RSL language to encode job descriptions. The attributes supported by gram are defined in RSL Validation Files. These definitions contain information about when the different RSL attributes are valid and what their default values might be if not present. GRAM5 will look in /etc/globus/gram/job-manager.rvf and and /etc/globus/gram/LRM.rvf for site-specfic changes to the RSL validation file. for site-specfic changes to the RSL validation file.
+GRAM5 uses the RSL language to encode job descriptions. The attributes supported by gram are defined in RSL Validation Files. These definitions contain information about when the different RSL attributes are valid and what their default values might be if not present. GRAM5 will look in [file]#/etc/globus/gram/job-manager.rvf# and and [file]#/etc/globus/gram/LRM.rvf# for site-specfic changes to the RSL validation file. for site-specfic changes to the RSL validation file.
 
 == Audit Logging
 === Overview
@@ -392,56 +374,47 @@ GRAM5 includes mechanisms to provide access to audit and accounting information 
 
 In some scenarios, it is desirable to get general information about the usage of the underlying LRM, such as:
 
-What kinds of jobs were submitted via GRAM?
-How long did the processing of a job take?
-How many jobs were submitted by user X?
+- What kinds of jobs were submitted via GRAM?
+- How long did the processing of a job take?
+- How many jobs were submitted by user X?
+
 The following three use cases give a better overview of the meaning and purpose of auditing and accounting:
 
-Group Access: A grid resource provider allows a remote service (e.g., a gateway or portal) to submit jobs on behalf of multiple users. The grid resource provider only obtains information about the identity of the remote submitting service and thus does not know the identity of the users for which the grid jobs are submitted. This group access is allowed under the condition that the remote service stores audit information so that, if and when needed, the grid resource provider can request and obtain information to track a specific job back to an individual user.
-Query Job Accounting: A client that submits a job needs to be able to obtain, after the job has completed, information about the resources consumed by that job. In portal and gateway environments where many users submit many jobs against a single allocation, this per-job accounting information is needed soon after the job completes so that client-side accounting can be updated. Accounting information is sensitive and thus should only be released to authorized parties.
-Auditing: In a distributed, multi-site environment, it can be necessary to investigate various forms of suspected intrusion and abuse. In such cases, we may need to access an audit trail of the actions performed by a service. When accessing this audit trail, it will frequently be important to be able to relate specific actions to the user.
+1. *Group Access:* A grid resource provider allows a remote service (e.g., a gateway or portal) to submit jobs on behalf of multiple users. The grid resource provider only obtains information about the identity of the remote submitting service and thus does not know the identity of the users for which the grid jobs are submitted. This group access is allowed under the condition that the remote service stores audit information so that, if and when needed, the grid resource provider can request and obtain information to track a specific job back to an individual user.
+2. *Query Job Accounting:* A client that submits a job needs to be able to obtain, after the job has completed, information about the resources consumed by that job. In portal and gateway environments where many users submit many jobs against a single allocation, this per-job accounting information is needed soon after the job completes so that client-side accounting can be updated. Accounting information is sensitive and thus should only be released to authorized parties.
+3. *Auditing:* In a distributed, multi-site environment, it can be necessary to investigate various forms of suspected intrusion and abuse. In such cases, we may need to access an audit trail of the actions performed by a service. When accessing this audit trail, it will frequently be important to be able to relate specific actions to the user.
+
 Audit logging in GRAM5 is done when a job completes.
 
 === Audit and Accounting Records
 While audit and accounting records may be generated and stored by different entities in different contexts, we make the following assumptions in this chapter:
 
-Audit Records	Accounting Records
-Generated by:
-
-GRAM service
-
-LRM to which the GRAM service submits jobs
-
-Stored in:
-
-Database, indexed by GJID
-
-LRM, indexed by JID
-
-Data that is stored:
-
-See list below.
-
-May include all information about the duration and resource-usage of a job
+[cols="3*<",options="header"]
+|========
+|	|Audit Records	|Accounting Records
+|Generated by:	|GRAM service	|LRM to which the GRAM service submits jobs
+|Stored in:	|Database, indexed by GJID	|LRM, indexed by JID
+|Data that is stored:	|See list below.	|May include all information about the duration and resource-usage of a job
+|========
 
 The audit record of each job contains the following data:
 
-job_grid_id: String representation of the resource EPR
-local_job_id: Job/process id generated by the scheduler
-subject_name: Distinguished name (DN) of the user
-username: Local username
-idempotence_id: Job id generated on the client-side
-creation_time: Date when the job resource is created
-queued_time: Date when the job is submitted to the scheduler
-stage_in_grid_id: String representation of the stageIn-EPR (RFT)
-stage_out_grid_id: String representation of the stageOut-EPR (RFT)
-clean_up_grid_id: String representation of the cleanUp-EPR (RFT)
-globus_toolkit_version: Version of the server-side GT
-resource_manager_type: Type of the resource manager (Fork, Condor, …)
-job_description: Complete job description document
-success_flag: Flag that shows whether the job failed or finished successfully
-finished_flag: Flag that shows whether the job is already fully processed or still in progress
-gateway_user: Teragrid identity of the user which submitted the job.
+- `job_grid_id`: String representation of the resource EPR
+- `local_job_id`: Job/process id generated by the scheduler
+- `subject_name`: Distinguished name (DN) of the user
+- `username`: Local username
+- `idempotence_id`: Job id generated on the client-side
+- `creation_time`: Date when the job resource is created
+- `queued_time`: Date when the job is submitted to the scheduler
+- `stage_in_grid_id`: String representation of the stageIn-EPR (RFT)
+- `stage_out_grid_id`: String representation of the stageOut-EPR (RFT)
+- `clean_up_grid_id`: String representation of the cleanUp-EPR (RFT)
+- `globus_toolkit_version`: Version of the server-side GT
+- `resource_manager_type`: Type of the resource manager (Fork, Condor, …)
+- `job_description`: Complete job description document
+- `success_flag`: Flag that shows whether the job failed or finished successfully
+- `finished_flag`: Flag that shows whether the job is already fully processed or still in progress
+- `gateway_user`: Teragrid identity of the user which submitted the job.
 
 === For More Information
 The rest of this chapter focuses on how to configure GRAM5 to enable Audit-Logging.
