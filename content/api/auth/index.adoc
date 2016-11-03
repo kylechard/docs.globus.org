@@ -8,7 +8,7 @@ short_title: API Documentation
 
 == Contents
 
-* link:developer_guide[Developer Guide] -
+* link:developer-guide[Developer Guide] -
   guide to integrating Globus Auth with apps and services
 * link:reference[API Reference]
 * link:specification[Specification]
