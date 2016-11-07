@@ -89,7 +89,7 @@ distributions:
 
 - CentOS 5, 6, and 7
 - Debian 7 and 8
-- Fedora 22 and 23
+- Fedora 23 and 24
 - Red Hat Enterprise Linux 5, 6, and 7
 - Scientific Linux 5, 6, and 7
 - SuSE Linux Enterprise Server 11sp3

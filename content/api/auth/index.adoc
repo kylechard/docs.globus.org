@@ -1,14 +1,16 @@
 ---
 menu_weight: 0
+short_title: API Documentation
 ---
 
-= Auth API Documentation
+= Globus Auth API Documentation
 :imagesdir: .
 
 == Contents
 
-* link:introduction[Introduction] -
-  introduction to API
-* link:reference[Reference]
+* link:developer-guide[Developer Guide] -
+  guide to integrating Globus Auth with apps and services
+* link:reference[API Reference]
+* link:specification[Specification]
 
 For more information, you can also try the link:../helper-pages/auth[Globus Auth Helper Page].

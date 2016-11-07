@@ -1,0 +1,13 @@
+= Activate Endpoint
+
+== Overview
+The Activate Endpoint helper page can be used to redirect your users to the Globus web app
+and allow them to activate an endpoint.
+
+Activate Endpoint is located at `https://www.globus.org/app/endpoints/:endpoint_id/activate`
+
+== Parameters
+* endpoint_id
+
+=== `endpoint_id`
+UUID of the endpoint to be activated.

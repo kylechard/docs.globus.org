@@ -1,0 +1,347 @@
+---
+menu_weight: 1
+short_title: Developer Guide
+---
+
+= Globus Auth Developer Guide
+:toc:
+:toclevels: 3
+:numbered:
+
+'''
+This guide describes how to develop <<developing-apps,apps>> and <<developing-services,services>> using Globus Auth, how to register your <<registering-idp,login provider>>, how to leverage <<identity-sets,linked identites>> to allow your users to use whichever login provider they want, which <<libraries, libraries and resources>> to use to make your life as a developer easier, and <<samples,sample apps and services>>.
+
+////
+TODO: Section about adding Auth as an IdP to existing products, eg to Confluence/JIRA, maybe AWS?
+////
+
+
+[[developing-apps]]
+== Developing an Application Using Globus Auth
+
+A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
+
+1. <<register-app,Registering an application>> client at https://developers.globus.org.
+2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to services via <<globus-scopes,_scopes_>> using a standard OAuth2 flow.
+3. <<using-tokens,Using tokens>> to authenticate to services.
+
+Those are the basics. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
+
+Applications can make use of several different <<developing-services,services>>, allowing them to implement features and orchestrate flows that wouldn't be possible by using any single service.
+
+[[register-app]]
+=== Registering an Application
+
+All apps that you register will be part of a <<managing-projects,project>>. Two basic kinds of clients that are available for registration:
+
+- _Confidential clients_ are clients that are capable of keeping client credentials secret. An example of this would be an application that runs on a web server backend. Any client that _can_ be confidential _should_ be confidential for the protection of its users. Confidential clients must authenticate all calls to Auth as described <<client-auth,here>>. This is the type of application you will get if you leave the _Will be used by a native application_ checkbox unchecked.
+- _Non-confidential_ or _native_ applications. Use this client type for CLI apps or other native applications. Native apps must use <<pkce,PKCE>>. This is the type of client you will get if you check the _Will be used by a native application_ checkbox.
+
+The key difference between the two is whether the client can _keep it's private credentials secret_. Any client that is distributed as a binary cannot keep secret credentials; even if attempts are made at obfuscation, extracting the credential will not be difficult for an attacker.
+
+////
+TODO: Registration page tooltips, per GitHub issue.
+TODO: Describe differences for users, named grants etc. Also: Auth code page for native apps.
+////
+
+[[obtaining-authorization]]
+=== Obtaining Authorization
+
+Globus Auth is fully spec compliant OAuth2 implementation. It is recommended that developers use an off-the-shelf <<oauth2-libraries,OAuth2 library>>. Below is a description of the basic authorization flow. Sections of the OAuth2 specification are referenced for more details.
+
+[[authorization-request]]
+1. Authorization request (https://tools.ietf.org/html/rfc6749#section-4.1.1). The application client constructs a link to an authorization page and directs the user to it. The URL is `https://auth.globus.org/v2/oauth2/authorize` with the following URL encoded query params:
+	- `client_id`. The UUID of the client application.
+	- `redirect_uri`. The URI the user will be redirected back to for the authorization response. Must be pre-registered for this client.
+	- `scope`. A space or comma separated list of scopes the application is requesting access to. If refresh tokens are needed, include the `offline_access` scope. 
+	- `state`. An opaque value that is returned to the client in the authorization response. The client should use this value to prevent cross-site request forgery as described in https://tools.ietf.org/html/rfc6749#section-10.12.
+	- `response_type`. Value must be `code`.
+	- If the application client is a native app the request must also contain a `code_challenge` and `code_challenge_method` as described in the <<pkce,PKCE section below>>.
+	- All parameters must be URL encoded.
+	- Example of an app requesting access to Globus Transfer and the Globus Auth Identities API with refresh tokens: `https://auth.globus.org/v2/oauth2/authorize?client_id=69ba5e62-7285-45db-952d-e0bb73b5eac7&scope=urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall%20urn%3Aglobus%3Aauth%3Ascope%3Aauth.globus.org%3Aview_identities%20offline_access&response_type=code&redirect_uri=https%3A%2F%2Fwww.example.org%2Fmy_app%2Flogin&state=g6l14b2xlgx4dtce8d2ja714i`
+
+// TODO: Example of using a library to create the auth URL.
+// TODO: We also support an `access_type=offline` param for requesting refresh token. We should decide which is the canonical way.
+
+2. The user is prompted to authenticate, and to consent to giving the client application access to the requested scopes if they have not previously consented (if they have already consented this screen is bypassed).
+
+3. Authorization response (https://tools.ietf.org/html/rfc6749#section-4.1.2). If the user successfully authenticates and consents they will be returned to the `redirect_uri` included in the authorization request, with the following included as URL encoded query params:
+	- `code`. The authorization code the client application will use to exchange for access/refresh tokens.
+	- `state`. The value the client provided in the authorization request.
+
+4. Access token request (https://tools.ietf.org/html/rfc6749#section-4.1.3). To exchange the `code` for an access token, a `POST` is made to `https://auth.globus.org/v2/oauth2/token` with the following URL encoded query params: [[access-token-request]]
+	- `grant_type`. Value must be `authorization_code`.
+	- `code`. The code received in the authorization response.
+	- `redirect_uri`. Must be identical to the value sent in the authorization request.
+	- `client_id`. Once again, the UUID of the client application.
+	- If the application client is confidential it must <<client-auth,authenticate>> this call using its client credentials. If the client is a native app it must instead include a `code_verifier` parameter as described in the <<pkce,PKCE section below>>.
+
+// TODO: Examples with curl and one or two common libraries
+
+5. Access token response (https://tools.ietf.org/html/rfc6749#section-4.1.4). The token response is described in the following section.
+
+// TODO: Describe error conditions: User declines consent.
+
+[[using-tokens]]
+=== Using Tokens
+
+A successful token response from Globus Auth contains one or more access tokens, and zero or more refresh tokens. The following is an example response from the request above:
+
+[source,json]
+----
+{
+	"access_token": <access-token-for-globus-transfer>,
+	"id_token": <id-token>,
+	"expires_in": 172800, 
+	"resource_server": "transfer.api.globus.org", 
+	"token_type": "Bearer", 
+	"state": "g6l14b2xlgx4dtce8d2ja714i",
+	"scope": "urn:globus:auth:scope:transfer.api.globus.org:all",
+	"refresh_token": <refresh-token-for-globus-transfer>,
+	"other_tokens": [
+		{
+			"access_token": <access-token-for-globus-auth>,
+			"expires_in": 172800,
+			"resource_server": "auth.globus.org",
+			"token_type": "Bearer",
+			"state": "g6l14b2xlgx4dtce8d2ja714i",
+			"scope": "urn:globus:auth:scope:auth.globus.org:view_identities",
+			"refresh_token": <refresh-token-for-globus-auth>}
+	],
+}
+----
+
+Globus Auth, unlike most OAuth2 implementations, supports providing access to multiple different resource servers, and can therefore return multiple access/refresh tokens in the same response. In order to conform to standards (and to allow off-the-shelf libraries to work) the token response for the first requested scope looks like that of any other standards compliant OAuth2 server, and any additional tokens are included in the `other_tokens` array.
+
+After receiving the response the application client should do the following:
+
+- Verify that it received the expected scopes.
+- Verify that the `state` parameter matches what was sent in the authorization request.
+- Store the token(s) for future use, along with their expiry time. Application clients should always inspect the `expires_in` value (in seconds) of all received tokens; it may differ from one request to the next.
+
+Access tokens are then used to authenticate against services by including them in the `Authorization` header of HTTP requests, e.g:
+
+`Authorization: Bearer <access-token-for-globus-transfer>`
+
+When an access token is nearing its expiry time the application needs to retrieve a new one, either by performing another authorization flow as described above (except this time the user won't be prompted for consent again), or by performing a refresh token grant.
+
+Refresh tokens are long lived credentials and should never be sent over the wire except when doing a refresh token grant against Globus Auth. Please store them securely.
+
+////
+==== Refreshing access tokens
+
+TODO: Describe refresh token grant
+////
+
+==== Token Invalidation
+
+For the security of their users application clients should invalidate tokens when they are done with them, for example as part of a logout operation. This is particularly important for long-lived refresh tokens.
+
+// TODO: Endpoint should be described in API reference and this guide should only link to it it.
+
+
+[[client-auth]]
+=== Client Authentication
+
+Clients authenticate to Globus Auth with a HTTP basic auth header, using client credentials created in the registration interface:
+
+`Authorization: Basic <credential>`,
+
+where `<credential>` is the base64 encoded client ID and client credential, separated by a single colon. For instance, in Python the header could be constructed as:
+
+[source,python]
+----
+client_id = "69ba5e62-7285-45db-952d-e0bb73b5eac7"
+client_credential = "QWxhZGRpbjpPcGVuU2VzYW1l"
+client_auth_header = "Authorization: Basic {0}".format(
+	base64.b64encode("{0}:{1}".format(client_id, client_credential)))
+----
+
+[[pkce]]
+=== PKCE
+
+PKCE (https://tools.ietf.org/html/rfc7636[RFC 7636]) is a security protocol that allows unauthenticated ("native") application clients to use the three-legged OAuth2 authorization code grant. Confidential clients may use it as well; doing so may guard against certain attacks that would be made possible if client credentials are compromised.
+
+Before starting the <<obtaining-authorization,authorization flow>> the application client must generate a https://tools.ietf.org/html/rfc7636#section-4.1[`code_verifier`] which meets the following requirements:
+
+* Generated using a reliably random (i.e, unguessable) method.
+* 43-128 characters long consisting of letters, numbers and the characters `-._~`.
+* _Must be freshly generated for each request._
+
+Second, a https://tools.ietf.org/html/rfc7636#section-4.2[`code_challenge`] is created by taking URL safe base64 encoding of a SHA256 digest of the `code_verifier`.
+
+The authorization URL is then created as <<authorization-request,described above>>, but with the two following additional parameters:
+
+* `code_challenge`, as just described.
+* `code_challenge_method`, whose value MUST be `SHA256`.
+
+// TODO: Updated example auth url
+
+Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above.
+// (ASCIIDOC TODO: Anchor before the list element resets numbering, but link doesn't work if anchor is inside list element...)
+
+These additions allows Globus Auth to verify that the request originated from a particular instance of the application client, so that an attacker is unable to steal a token even if they manage to compromise the authorization code.
+
+////
+[[client-identities]]
+=== Client Identities
+
+TODO: High level description of why you'd want to use client identities, and like to API doc
+////
+
+[[skinning]]
+=== Skinning
+
+Globus Auth supports skinning, so that when a user comes in from your app the look of Globus Auth matches that of your application. Setting this up is a manual process, please mailto:support@globus.org[contact us] for more details!
+
+////
+[[other-features]]
+=== Integrating Other Globus Auth Features
+
+E.g, identity linking, authentication_hint, login_hint, linking to consent/identities pages etc
+////
+
+[[developing-services]]
+== Developing a Service
+
+A Globus Auth _service_ is a system that provides access to resources owned by users, and wants to provides access to those resources to <<developing-apps,applications>> used by end-users, typically via a HTTP API. Services can also expand their functionality by in turn <<downstream-services,making use of other services>>.
+
+Registering a Service is currently a manual process. Please mailto:support@globus.org[contact us] for more information!
+
+////
+Developing a service involves:
+
+1. <<registering-services,Registering a service>> and <<managing-scopes,scopes>>.
+2. <<allowing-access,Verifying what access is allowed by tokens>> received from applications clients and implementing access control logic for scopes
+
+[[registering-services]]
+=== Registering Services
+
+TODO: Punting on this until the registration interface is fleshed out
+
+[[managing-scopes]]
+==== Registering and Managing Scopes
+
+TODO: Punting
+
+[[allowing-access]]
+=== Allowing Access Based on Globus Auth Tokens
+
+TODO:
+* Introspecting tokens
+* What to do after introspecting; validate scopes, expiry, identities etc.
+* Usernames vs. identity ids
+* Introspect every request or short term caching?
+
+[[downstream-services]]
+=== Using Dependent Services
+////
+
+[[registering-idp]]
+== Adding an Identity Provider
+
+Please mailto:support@globus.org[contact us] if you wish to add your identity provider to Globus Auth to allow your users to use their normal login for authenticating against apps and services.
+
+////
+We currently support the following protocols: …
+
+With the following important notes as caveats: Identity providers must supply a provider_specific_id (explain what that’s all about), ...
+
+TODO: Flesh this out
+
+[[globus-scopes]]
+== Globus Service Scopes
+
+Each service defines their own scopes. The following are scopes provided by Globus services, that are available to any application.
+
+TODO: Description
+
+auth:view_identities
+transfer:all
+offline_access
+openid+email+profile
+
+[[identity-sets]]
+== Identity Sets
+
+=== The Globus Auth Identity Set Model at a Glance
+
+=== Does My App or Service Need to Set-Aware?
+////
+
+[[managing-projects]]
+== Managing Projects
+
+All apps and services that you register will be part of a _project_. You can add and remove admins to allow others to manage the project. All admins are co-equal, meaning that anyone you add will be able to add/remove/edit all of your apps and services.
+
+When registering you are asked to provide a contact email. It will only be used to give you important notifications related to your project. If you expect your project to last many years, please make sure to keep the contact email current.
+
+////
+
+== Handling Tokens
+
+=== Caching Recommendations for Services
+
+TODO: Make this complete yet accessible
+
+Copypasta from email thread:
+
+1. Receive access token from client.
+2. Introspect it (or use cached information, if this is a repeat request within the past n seconds, depending on policy).
+3. Do you have valid dependent access tokens for the cache id from the (possibly cached) introspection response? If so, GOTO 4. If not:
+3.1 Based on cache id from introspection response, check if you already have dependent refresh tokens. If not, get them using dependent token grant and store them. Then do a refresh token grant and store the resulting access tokens, setting the expiry based on the lifetime of the token.
+4. Use dependent access tokens.
+
+Presumably the asynchronous job checking would be handled similarly:
+
+1. Associate each job with a cache id.
+2. When checking the job, do step 3-4 above.
+
+To expand on Mattias’ guidance...
+
+Only the dependent refresh tokens returned from the dependent token grant in step 3.1 need to be stored in the transfer database, indexed by dependent_tokens_cache_id.  The dependent access tokens need not be stored in the transfer db.  Rather, dependent access tokens can live in memcache, on each transfer backend, indexed by the dependent_tokens_cache_id.  Each task in the transfer db should have an associated dependent_tokens_cache_id.  The dependent refresh tokens for a given dependent_tokens_cache_id should never need to change in the transfer db, and should be good for the lifetime of the task.  
+
+When your background process needs dependent access tokens (e.g, to update linked identities and group memberships), using the dependent_tokens_cache_id for that task, it can first check memcache to see if it already has a valid access token.  If not, it should get the appropriate dependent refresh token from the transfer db, get a new access token from auth using the refresh token, and store that access token back into memcache with the dependent_tokens_cache_id as key.  Each transfer backend server can have its own memcache — no need to share access tokens across servers.  Of course, if you prefer to shove the dependent access tokens in the transfer db, that’s ok also, but that seems more complicated.
+
+Suggested short docstring:
+"Resource Servers should store refresh tokens obtained from dependent token grants using dependent_token_cache_id as a key. When introspecting an access token received from a client, it should check if it already has a refresh token stored, and if so use that token instead of performing a new dependent token grant.
+
+Seeing a new dependent_token_cache_id for the same identity and client does NOT indicate that the previous grant has been revoked."
+
+Suggested long-ish doc string:
+
+“Resource Servers should not do a dependent token grant for every request access token it receive from a client, for performance reasons. Rather, dependent access and refresh tokens can be safely reused with multiple request access tokens, as long as those request access tokens all have the same dependent_tokens_cache_id.
+
+Resource Servers should store dependent refresh tokens (obtained from dependent token grants) for longer-term use, using dependent_tokens_cache_id as a key.  When introspecting a request access token received from a client, it should check if it already has a dependent refresh tokens stored for the dependent_tokens_cache_id, and if so use that token instead of performing a new dependent token grant. When a Resource Server is done with a dependent refresh token, it should call XXXXX to allow Globus Auth to invalidate the dependent refresh token and clean up.
+
+Resource Servers should also cache dependent access tokens (also obtained from dependent token grants), using dependent_tokens_cache_id as a key. If a dependent access token expires, the Resource Server should use the appropriate dependent refresh token to obtain a new dependent access token, and cache it using the dependent_tokens_cache_id as a key.
+
+Seeing a new dependent_token_cache_id for the same identity and client does NOT indicate that the previous grant has been revoked.”
+
+////
+
+[[libraries]]
+== Libraries and Resources
+
+=== Using the Globus Python SDK
+
+Globus provides a Python SDK for interacting with its APIs, including Globus Auth and Transfer. Documentation can be found http://globus.github.io/globus-sdk-python/[here].
+ 
+[[oauth2-libraries]]
+=== OAuth2 Libraries
+
+////
+TODO: XSEDE got Confluence/JIRA and Django working. Mention that somewhere.
+////
+
+* Java: https://developers.google.com/api-client-library/java/google-api-java-client/oauth2 
+* Python: https://developers.google.com/api-client-library/python/guide/aaa_oauth 
+* PHP: https://developers.google.com/api-client-library/php/guide/aaa_overview 
+* JavaScript: https://developers.google.com/api-client-library/javascript/features/authentication 
+* Ruby: https://developers.google.com/api-client-library/ruby/guide/aaa_oauth 
+* Apache Oltu: https://oltu.apache.org/
+
+[[samples]]
+=== Sample Applications and Services Using Globus Auth
+
+The https://github.com/globus/globus-sample-data-portal[Globus Sample Data Portal] contains an example of both an application and a service. Beyond basic app/service functionality, it demonstrates the use of <<downstream-services,dependent services>> (in this case Globus Transfer), <<client-identities,client identities>> and other features.
