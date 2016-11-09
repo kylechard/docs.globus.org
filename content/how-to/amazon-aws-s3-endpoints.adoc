@@ -48,13 +48,13 @@ image::images/S3_IAM_permissions_list.png[]
 You can currently only create a Globus S3 endpoint using the Globus command line interface (CLI). See the link:../../cli/[instructions on configuring your Globus account for CLI access].
 
 1. Log into the Globus CLI (e.g., +ssh myglobusname@cli.globusonline.org+)
-2. To create the endpoint, run: +endpoint-add --s3 --managed-endpoint <endpoint-name>+. For example, if you want the endpoint called "mys3endpoint", run +endpoint-add --s3 --managed-endpoint mys3endpoint+. Note: This command will fail if you do not have a Globus subscription so please link:https://www.globus.org/configure-subscription[contact us] to set up your free trial before adding S3 endpoints.
+2. To create the endpoint, run: +endpoint-add --s3 --managed-endpoint -n "<endpoint_name>"+. For example, if you want the endpoint called "My S3 Endpoint", run +endpoint-add --s3 --managed-endpoint -n "My S3 Endpoint"+. Note: This command will fail if you do not have a Globus subscription so please link:https://www.globus.org/configure-subscription[contact us] to set up your free trial before adding S3 endpoints.
 * Enter the S3 region-specific URL for your S3 bucket. For example, if your S3 bucket name is "bar" in the standard region, enter "https://s3.amazonaws.com/bar". You can find what region your S3 bucket is in by looking in the bucket's Properties in the AWS S3 console, and the hostname to use for each region is link:http://www.bucketexplorer.com/documentation/amazon-s3--amazon-s3-buckets-and-regions.html[listed here].
 * When prompted to "Select Activation Option", enter option "1": 1 Endpoint owner (you) activates the endpoint for all users.
-3. To configure the security for the endpoint, run +endpoint-activate --s3 <endpoint-name>+
+3. To configure the security for the endpoint, make a note of the Endpoint ID returned by the `endpoint-add` command above, and then run `endpoint-activate --s3 <endpoint_id>`.
 * Select Activation Type of "2 Assume Role".
 * When prompted to Enter the role ARN, enter the Role ARN that you noted in the last step of Part A above.
-4. To make the endpoint public, so that it is visible to other users (e.g., those who you give permissions to access the endpoint), run +endpoint-modify --public <endpoint-name>+.
+4. To make the endpoint public, so that it is visible to other users (e.g., those who you give permissions to access the endpoint), run `endpoint-modify --public <endpoint_id>` (once again, use the Endpoint ID returned by the `endpoint-add` command in step 2 above).
 
 == Sharing files on an S3 Endpoint
 Files on an S3 endpoint can be shared with other Globus users in a similar fashion as files on non-S3 endpoints. On the Globus link:https://www.globus.org/app/transfer/[Transfer Files page], select a folder on the S3 endpoint, select "permissions" from the menu in the upper right corner of the file browser windows, and then grant access to a user or group in the "Permissions" panel.
