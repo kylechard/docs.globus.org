@@ -7,7 +7,7 @@
 
 [doc-info]*Last Updated: {revdate}*
 
-NOTE: This page refers to the current Globus CLI which uses a restricted shell. We are in the process of moving to a different CLI that uses python scripts. For more information on the new CLI and to experiment with a beta version please see https://globus.github.io/globus-cli/.
+NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program, now in open Beta.
 
 This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:../cli-beyond-basics[CLI: Beyond the Basics].
 
