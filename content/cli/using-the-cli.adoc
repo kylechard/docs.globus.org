@@ -7,7 +7,7 @@
 
 [doc-info]*Last Updated: {revdate}*
 
-NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program, now in open Beta.
+NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program and now available in Beta.
 
 This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:../cli-beyond-basics[CLI: Beyond the Basics].
 
