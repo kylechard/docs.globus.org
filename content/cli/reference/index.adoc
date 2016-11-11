@@ -10,6 +10,8 @@ menu_weight: 3
 
 [doc-info]*Last Updated: {revdate}*
 
+NOTE: This page refers to the current Globus CLI which uses a restricted shell. We are in the process of moving to a different CLI that uses python scripts. For more information on the new CLI and to experiment with a beta version please see https://globus.github.io/globus-cli/.
+
 link:acl-add[acl-add]::
 acl-add adds a new rule to the endpoint’s access control list (ACL).
 
