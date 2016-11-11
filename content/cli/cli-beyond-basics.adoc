@@ -11,6 +11,8 @@ menu_weight: 2
 
 [doc-info]#Last Updated: {revdate}#
 
+NOTE: This page refers to the current Globus CLI which uses a restricted shell. We are in the process of moving to a different CLI that uses python scripts. For more information on the new CLI and to experiment with a beta version please see https://globus.github.io/globus-cli/.
+
 This is a companion guide to link:../[Getting started with the Command Line Interface (CLI)]. New CLI users should be familiar with that introduction before proceeding.
 
 '''
