@@ -2,7 +2,1522 @@
 full_title: "GT 6.0 GRAM5 Developer Guide"
 short_title: "Developer Guide"
 ---
+:toc:
+:toc-placement: manual
+:toclevels: 3
+:toc-title:
+:numbered:
+:revdate: November 10, 2016
 
 = GT 6.0 GRAM5 Developer Guide
 
 [red]#(CONTENT NEEDS REVIEW)#
+
+This guide is intended to help a developer interact with GRAM5. It includes sections on implementing clients in C and implementing a Local Resource Manager interface, as well as an overview of concepts and APIs used to interact with GRAM.
+
+'''
+toc::[]
+
+== Introduction
+=== Before you begin
+==== Feature summary
+New Features new since 5.2:
+
+- Bug fixes and improved testing
+
+Other Standard Supported Features
+
+- Remote job execution and management
+- Uniform and flexible interface to local resource managers, including Condor, LSF, and SLURM, and GridEngine
+- File staging before and after job execution
+- File and directory clean up after job termination
+- Service auditing for each submitted
+
+Removed Features
+
+- None.
+
+==== Tested platforms
+GRAM5 has been tested extensively on the following platforms:
+
+.Tested Platforms
+[cols="4*<",options="header"]
+|========
+|Operating System   |Distribution   |Version(s) |Architecture(s)
+.10+|Linux  .2+|CentOS  |5, 6   |i386, x86_64
+|7  |x86_64
+|Fedora |20, 21, 22 |i386, x86_64
+.2+|Red Hat Enterprise Linux    |5, 6   |i386, x86_64
+|7  |x86_64
+.2+|Scientific Linux    |5, 6   |i386, x86_64
+|7  |x86_64
+|SUSE Linux Enterprise Server    |11SP3  |x86_64
+|Debian |6, 7, 8    |i386, amd64
+|Ubuntu |12.04LTS, 14.04LTS, 14.10, 15.04   |i386, amd64
+2+|Mac OS X |10.6-10.10 |i386, x86_64
+|Solaris    |OmniOS |r151006    |x86_64
+.2+|Windows 7   2+|Cygwin   |i386, x86_64
+2+|MingW64  |i386, x86_64
+|========
+
+==== Backward compatibility summary
+
+Protocol changes in GRAM since GT4 series:
+
+- The GRAM5 service uses a superset of the GRAM2 protocol for communciation between the client and service. The extensions supported in GRAM5 are implemented in such a way that they are ignored by GRAM2 services or clients. These extensions provide improved error messages and version detection.
+- GRAM5 does not support task coallocation using DUROC and its related protocols. Jobs submitted using DUROC directives will fail.
+- GRAM5 does not support file streaming. The standard output and standard error streams are sent after the job completes instead of during execution. As a special case, support for the Condor grid monitor program implements a small subset of the streaming capabilities of GRAM2 in GT 4.2.x.
+
+==== Technology dependencies
+GRAM depends on the following GT components: * Globus Common * GSI C * GridFTP server
+
+==== Security Considerations
+===== Gatekeeper Security Considerations
+
+GRAM5 runs different parts of itself under different privilege levels. The `globus-gatekeeper` runs as root, and uses its root privilege to access the host's private key. It uses the grid map file to map Grid Certificates to local user ids and then uses the `setuid()` function to change to that user and execute the `globus-job-manager` program
+
+===== Job Manager Security Considerations
+
+The `globus-job-manager` program runs as a local non-root account. It receives a delegated limited proxy certificate from the GRAM5 client which it uses to access Grid storage resources via GridFTP and to authenticate job signals (such as client cancel requests), and send job state callbacks to registered clients. This proxy is generally short-lived, and is automatically removed by the job manager when the job completes.
+
+The `globus-job-manager` program uses a publicly-writable directory for job state files. This directory has the *sticky* bit set, so users may not remove other users files. Each file is named by a UUID, so it should be unique.
+
+===== Fork SEG Module Security Considerations
+
+The Fork Scheduler Event Generator module uses a globally writable file for job state change events. This is not recommended for production use.
+
+=== GRAM5 Concepts for Developers
+==== Blocking and Nonblocking Function Variants
+In the GRAM Client API, all functions that involve sending messages over the network have both blocking and nonblocking variants. These are useful in different programming situations.
+
+The blocking variants, such as the `globus_gram_client_job_request` function require less application code, but will prevent subsequent instructions from executing until the request has been sent and the reply parsed. In a non-threaded environment, other callback functions registered with the Globus event driver may be invoked while the blocking function is running. In a threaded environment, other events may occur in other threads while the function is blocking, but the current thread will be blocked until the response is parsed.
+
+The nonblocking variants, such as `globus_gram_client_register_job_request` require the application to include a callback function which will be called by the Globus event driver when the reply has been parsed. In a non-threaded environment, applications must poll the event driver using functions from the `globus_poll` or `globus_cond_wait` families of functions. In a threaded environment, the callback function may be invoked in another thread than the one calling the non-blocking function, even before the non-blocking function has returned. Application writers must be careful in using synchronization primitives such as `globus_mutex_t` and `globus_cond_t` when using non-blocking functions.
+
+An application writer should use the non-blocking variants if the application will be submitting many jobs concurrently or requires custom network or security attributes. Using the non-blocking variants allows the Globus event driver to better schedule network I/O in these cases.
+
+==== Service Contact Strings
+GRAM uses three types of *contact strings* to describe how to contact different services. These service contacts are:
+
+.GRAM Contact String Types
+[cols="3*<",options="header"]
+|========
+|Type   |Meaning Gatekeeper |Service Contact
+|This string describes how to contact a gatekeeper service. It is used to submit jobs, send "ping" requests to determine if a service is properly deployed, and version requests to determine what version of the software is deployed. Full details of the syntax of this contact is located in the next section.  |Callback Contact   |This string is an HTTPS URL that is an endpoint for GRAM job state callbacks. An https message is posted to this address when the Job Manager detects a job state change.
+|========
+
+===== Resource Names
+
+In GRAM5, a Gatekeeper Service Contact contains the host, port, service name, and service identity required to contact a particular GRAM service. For convenience, default values are used when parts of the contact are omitted. An example of a full gatekeeper service contact is [monospace]#grid.example.org:2119/jobmanager:/C=US/O=Example/OU=Grid/CN=host/grid.example.org#.
+
+The various forms of the resource name using default values follow:
+
+- _HOST_
+- _HOST:PORT_
+- _HOST:PORT/SERVICE_
+- _HOST/SERVICE_
+- _HOST:/SERVICE_
+- _HOST:PORT:SUBJECT_
+- _HOST/SERVICE:SUBJECT_
+- _HOST:/SERVICE:SUBJECT_
+- _HOST:PORT/SERVICE:SUBJECT_
+
+Where the various values have the following meaning:
+
+_HOST_::
+Network name of the machine hosting the service.
+_PORT_::
+Network port number that the service is listening on. If not specified, the default of [monospace]#2119# is used.
+_SERVICE_::
+Path of the service entry in [file]#$GLOBUS_LOCATION/etc/grid-services#. If not specified, the default of . If not specified, the default of jobmanager is used.
+_SUBJECT_::
+X.509 identity of the credential used by the service. If not specified, the default of [monospace]#host@_HOST_# is used.
+
+.Example: Gatekeeper Service Contact Examples
+
+The following strings all name the service [monospace]#grid.example.org:2119/jobmanager:/C=US/O=Example/OU=Grid/CN=host/grid.example.org# using the formats with the various defaults described above.
+
+- [monospace]#grid.example.org#
+- [monospace]#grid.example.org:2119#
+- [monospace]#grid.example.org:2119/jobmanager#
+- [monospace]#grid.example.org/jobmanager#
+- [monospace]#grid.example.org:/jobmanager#
+- [monospace]#grid.example.org:2119:/C=US/O=Example/OU=Grid/CN=host/grid.example.org#
+- [monospace]#grid.example.org/jobmanager:/C=US/O=Example/OU=Grid/CN=host/grid.example.org#
+- [monospace]#grid.example.org:/jobmanager:/C=US/O=Example/OU=Grid/CN=host/grid.example.org#
+- [monospace]#grid.example.org:2119/jobmanager:/C=US/O=Example/OU=Grid/CN=host/grid.example.org#
+
+==== Job State Callbacks and Polling
+GRAM clients and learn about a job's state in two ways: by registering for job state callbacks and by polling for status. These two methods have different performance characteristics and costs.
+
+In order to receive job state callbacks, a client application must create an HTTPS listener using the `globus_gram_client_callback_allow` or `globus_gram_client_info_callback_allow` functions. A non-threaded application must then periodically call a function from either the `globus_cond_wait` or `globus_poll` families in order to process the job state callbacks. Additionally, the network must be configured to allow the GRAM job manager to send messages to the port that the client is listening on. This may be difficult if there is a firewall between the client and service.
+
+The GRAM service initiates the job state callbacks, and thus they are usually sent very shortly after the job state changes, so clients can be notified about the state changes quickly.
+
+In order to poll for job states, a client can call either the blocking or nonblocking variant of the `globus_gram_client_job_status` or `globus_gram_client_job_status_with_info` functions. These functions require that the network be configured to allow the client to contact the network port that the GRAM service is listening on (the Job Contact).
+
+The client intiates these polling operations, so they are only as accurate as the polling frequence of the client. If the client polls very often, it will receive job state changes more quickly, at the risk of increasing the computing and network cost of both the client and service.
+
+==== Credential Management
+The GRAM5 protocols all use GSSAPIv2 abstractions to provide authentication and authorization. By default, GRAM uses an SSL-based GSSAPI for its security.
+
+The client delegates a credential to the gatekeeper service after authentication, and the GRAM job manager service uses this delegated credential as both a job-specific credential and for subsequent communication with GRAM clients.
+
+If a client or clients submit multiple jobs to a gatekeeper service, they will eventually all be handled by a single job manager process. This process will use whichever delegated credential will remain valid the longest for accepting new connections and connecting to clients to send job state callbacks. When a client delegates a new credential to a job, this credential may also be used as the job manager's credential for future connections.
+
+==== RSL
+GRAM5 jobs are described using the RSL language. The GRAM client API submits jobs using the string representation of the RSL, rather than the RSL parse tree. Clients can, if they need to modify of construct RSL at runtime, use the functions in the RSL API to do so.
+
+== GRAM Client Developer's Guide
+=== Basic GRAM Client Scenarios
+
+This chapter contains a series of examples demonstrating how to use different features of the GRAM APIs to interact with the GRAM service. These examples can be compiled by using GNU make with the makefile from link:raw/Makefile.examples[Makefile.examples].
+
+==== "Ping" a Job Manager
+This example shows how to use a gatekeeper "ping" request to determine if a service is running and if the client is authorized to contact it. It takes a gatekeeper service contact as its only command-line option. The link:raw/gram_ping_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    printf("Pinging GRAM resource: %s\n", argv[1]);
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+    /*
+     * Ping the service passed as our first command-line option. If successful,
+     * this function will return GLOBUS_SUCCESS, otherwise an integer
+     * error code.
+     */
+    rc = globus_gram_client_ping(argv[1]);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to ping service at %s because %s (Error %d)\n",
+                argv[1], globus_gram_client_error_string(rc), rc);
+    }
+    else
+    {
+        printf("Ping successful\n");
+    }
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_ping_example.c */
+----
+
+==== Check a Job Manager Version
+This example shows how to use the "version" command to determine what software version a gatekeeper service is running. The link:raw/gram_version_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+#include "globus_gram_protocol.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    globus_hashtable_t extensions = NULL;
+    globus_gram_protocol_extension_t * extension_value;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    printf("Checking version of GRAM resource: %s\n", argv[1]);
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+    /*
+     * Contact the service passed as our first command-line option and perform
+     * a version check. If successful,
+     * this function will return GLOBUS_SUCCESS, otherwise an integer
+     * error code. Old versions of the job manager will return
+     * GLOBUS_GRAM_PROTOCOL_ERROR_HTTP_UNPACK_FAILED as they do not support
+     * the version operation.
+     */
+    rc = globus_gram_client_get_jobmanager_version(argv[1], &extensions);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to get service version from %s because %s "
+                "(Error %d)\n",
+                argv[1], globus_gram_client_error_string(rc), rc);
+    }
+    else
+    {
+        /* The version information is returned in the extensions hash table */
+        extension_value = globus_hashtable_lookup(
+                &extensions,
+                "toolkit-version");
+
+        if (extension_value == NULL)
+        {
+            printf("Unknown toolkit version\n");
+        }
+        else
+        {
+            printf("Toolkit Version: %s\n", extension_value->value);
+        }
+
+        extension_value = globus_hashtable_lookup(
+                &extensions,
+                "version");
+        if (extension_value == NULL)
+        {
+            printf("Unknown package version\n");
+        }
+        else
+        {
+            printf("Package Version: %s\n", extension_value->value);
+        }
+        /* Free the extensions hash and its values */
+        globus_gram_protocol_hash_destroy(&extensions);
+    }
+
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_version_example.c */
+----
+
+==== Submitting a Job
+This example shows how to submit a job to a GRAM service. The link:raw/gram_submit_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    char * job_contact = NULL;
+
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT RSL\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    printf("Submitting job to GRAM resource: %s\n", argv[1]);
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+    /*
+     * Submit the job request to the service passed as our first command-line
+     * option. If successful, this function will return GLOBUS_SUCCESS,
+     * otherwise an integer error code.
+     */
+    rc = globus_gram_client_job_request(
+            argv[1], argv[2], 0, NULL, &job_contact);
+
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to submit job to %s because %s (Error %d)\n",
+                argv[1], globus_gram_client_error_string(rc), rc);
+        if (job_contact != NULL)
+        {
+            printf("Job Contact: %s\n", job_contact);
+        }
+    }
+    else
+    {
+        /* Display job contact string */
+        printf("Job submit successful: %s\n", job_contact);
+    }
+
+    if (job_contact != NULL)
+    {
+        free(job_contact);
+    }
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_submit_example.c */
+----
+
+==== Submitting a Job and Processing Job State Callbacks
+This example shows how to submit a job to a GRAM service and then wait until the job reaches the [monospace]#FAILED# or [monospace]#DONE# state. The link:raw/gram_submit_and_wait_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+struct monitor_t
+{
+    globus_mutex_t mutex;
+    globus_cond_t cond;
+    globus_gram_protocol_job_state_t state;
+};
+
+/*
+ * Job State Callback Function
+ *
+ * This function is called when the job manager sends job states.
+ */
+static
+void
+example_callback(void * callback_arg, char * job_contact, int state,
+        int errorcode)
+{
+    struct monitor_t * monitor = callback_arg;
+
+    globus_mutex_lock(&monitor->mutex);
+
+    printf("Old Job State: %d\nNew Job State: %d\n", monitor->state, state);
+
+    monitor->state = state;
+
+    if (state == GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED ||
+        state == GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE)
+    {
+        globus_cond_signal(&monitor->cond);
+    }
+    globus_mutex_unlock(&monitor->mutex);
+}
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    char * callback_contact = NULL;
+    char * job_contact = NULL;
+    struct monitor_t monitor;
+
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT RSL\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+
+    rc = globus_mutex_init(&monitor.mutex, NULL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error initializing mutex\n");
+        goto deactivate;
+    }
+    rc = globus_cond_init(&monitor.cond, NULL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error initializing condition variable\n");
+        goto destroy_mutex;
+    }
+
+    monitor.state = GLOBUS_GRAM_PROTOCOL_JOB_STATE_UNSUBMITTED;
+
+    globus_mutex_lock(&monitor.mutex);
+
+    /*
+     * Allow GRAM state change callbacks
+     */
+    rc = globus_gram_client_callback_allow(
+            example_callback, &monitor, &callback_contact);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error allowing callbacks because %s (Error %d)\n",
+                globus_gram_client_error_string(rc), rc);
+        goto destroy_cond;
+    }
+    /*
+     * Submit the job request to the service passed as our first command-line
+     * option.
+     */
+    rc = globus_gram_client_job_request(
+            argv[1], argv[2],
+            GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED|
+            GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE,
+            callback_contact, &job_contact);
+
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to submit job to %s because %s (Error %d)\n",
+                argv[1], globus_gram_client_error_string(rc), rc);
+        /* Job submit failed. Short circuit the while loop below by setting
+         * the job state to failed
+         */
+        monitor.state = GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED;
+    }
+    else
+    {
+        /* Display job contact string */
+        printf("Job submit successful: %s\n", job_contact);
+    }
+
+    /* Wait for job state callback to let us know the job has completed */
+    while (monitor.state != GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE &&
+           monitor.state != GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED)
+    {
+        globus_cond_wait(&monitor.cond, &monitor.mutex);
+    }
+    rc = globus_gram_client_callback_disallow(callback_contact);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error disabling callbacks because %s (Error %d)\n",
+                globus_gram_client_error_string(rc), rc);
+    }
+    globus_mutex_unlock(&monitor.mutex);
+
+    if (job_contact != NULL)
+    {
+        free(job_contact);
+    }
+
+destroy_cond:
+    globus_cond_destroy(&monitor.cond);
+destroy_mutex:
+    globus_mutex_destroy(&monitor.mutex);
+deactivate:
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_submit_and_wait_example.c */
+----
+
+==== Polling Job Status
+This example shows how to submit a job to a GRAM service and then wait until the job reaches the [monospace]#FAILED# or [monospace]#DONE# state. The link:raw/gram_poll_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    int status = 0;
+    int failure_code = 0;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s JOB-CONTACT\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+    /*
+     * Check the job status of the job named by the first argument to
+     * this program.
+     */
+    rc = globus_gram_client_job_status(argv[1], &status, &failure_code);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to check job status because %s (Error %d)\n",
+                globus_gram_client_error_string(rc), rc);
+    }
+    else
+    {
+        switch (status)
+        {
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_UNSUBMITTED:
+                printf("Unsubmitted\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_STAGE_IN:
+                printf("StageIn\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_PENDING:
+                printf("Pending\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_ACTIVE:
+                printf("Active\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_SUSPENDED:
+                printf("Suspended\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_STAGE_OUT:
+                printf("StageOut\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_DONE:
+                printf("Done\n");
+                break;
+            case GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED:
+                printf("Failed (%d)\n", failure_code);
+                break;
+            default:
+                printf("Unknown job state\n");
+                break;
+        }
+    }
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_poll_example.c */
+----
+
+==== Canceling a Job
+This example shows how to cancel a job being run by a GRAM service. The link:raw/gram_cancel_example[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s JOB-CONTACT\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+    /*
+     * Cancel the job named by the first argument to
+     * this program.
+     */
+    rc = globus_gram_client_job_cancel(argv[1]);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to cancel job because %s (Error %d)\n",
+                globus_gram_client_error_string(rc), rc);
+    }
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_cancel_example.c */
+----
+
+==== Refreshing Job Credential
+This example shows how to refresh a GRAM job's credential after the job has been submitted by some other means. The link:raw/gram_refresh_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s JOB-CONTACT\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    printf("Refreshing Credential for GRAM Job: %s\n", argv[1]);
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+    /*
+     * Refresh the credential of the job running at the contact named
+     * by the first command-line argument to this program. We'll use the
+     * process's default credential by passing in GSS_C_NO_CREDENTIAL.
+     */
+    rc = globus_gram_client_job_refresh_credentials(
+            argv[1], GSS_C_NO_CREDENTIAL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to refresh credential for job %s because %s (Error %d)\n",
+                argv[1], globus_gram_client_error_string(rc), rc);
+    }
+    else
+    {
+        printf("Refresh successful\n");
+    }
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_refresh_example.c */
+----
+
+=== Advanced GRAM Client Scenarios
+==== Non-blocking Job Submission
+This example shows how to submit a series of GRAM jobs using the non-blocking function `globus_gram_client_register_job_request` and wait until all submissions have completed. This example throttles the number of concurrent job submissions to reduce the load on the service node. The link:raw/gram_nonblocking_submit_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+struct monitor_t
+{
+    globus_mutex_t mutex;
+    globus_cond_t cond;
+    int submit_pending;
+    int successful_submits;
+};
+
+#define CONCURRENT_SUBMITS 5
+
+static
+void
+example_submit_callback(
+    void * user_callback_arg,
+    globus_gram_protocol_error_t operation_failure_code,
+    const char * job_contact,
+    globus_gram_protocol_job_state_t job_state,
+    globus_gram_protocol_error_t job_failure_code)
+{
+    struct monitor_t * monitor = user_callback_arg;
+
+    globus_mutex_lock(&monitor->mutex);
+    monitor->submit_pending--;
+    if (monitor->submit_pending < CONCURRENT_SUBMITS)
+    {
+        globus_cond_signal(&monitor->cond);
+    }
+    printf("Submitted job %s\n",
+            job_contact ? job_contact : "UNKNOWN");
+    if (operation_failure_code == GLOBUS_SUCCESS)
+    {
+        monitor->successful_submits++;
+    }
+    else
+    {
+        printf("submit failed because %s (Error %d)\n",
+                globus_gram_client_error_string(operation_failure_code),
+                operation_failure_code);
+    }
+    globus_mutex_unlock(&monitor->mutex);
+}
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    int i;
+    struct monitor_t monitor;
+
+    if (argc < 3)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT RSL-SPEC...\n",
+                argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    printf("Submiting %d jobs to %s\n", argc-2, argv[1]);
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+
+    rc = globus_mutex_init(&monitor.mutex, NULL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error initializing mutex %d\n", rc);
+
+        goto deactivate;
+    }
+
+    rc = globus_cond_init(&monitor.cond, NULL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error initializing condition variable %d\n", rc);
+
+        goto destroy_mutex;
+    }
+    monitor.submit_pending = 0;
+
+    /* Submits jobs from argv[2] until end of the argv array. At most
+     * CONCURRENT_SUBMITS will be pending at any given time.
+     */
+    globus_mutex_lock(&monitor.mutex);
+    for (i = 2; i < argc; i++)
+    {
+        /* This throttles the number of concurrent job submissions */
+        while (monitor.submit_pending >= CONCURRENT_SUBMITS)
+        {
+            globus_cond_wait(&monitor.cond, &monitor.mutex);
+        }
+
+        /* When the job has been submitted, the example_submit_callback
+         * will be called, either from another thread or from a
+         * globus_cond_wait in a nonthreaded build
+         */
+        rc = globus_gram_client_register_job_request(
+                argv[1], argv[i], 0, NULL, NULL, example_submit_callback,
+                &monitor);
+        if (rc != GLOBUS_SUCCESS)
+        {
+            fprintf(stderr, "Unable to submit job %s because %s (Error %d)\n",
+                    argv[i], globus_gram_client_error_string(rc), rc);
+        }
+        else
+        {
+            monitor.submit_pending++;
+        }
+    }
+
+    /* Wait until the example_submit_callback function has been called for
+     * each job submission
+     */
+    while (monitor.submit_pending > 0)
+    {
+        globus_cond_wait(&monitor.cond, &monitor.mutex);
+    }
+    globus_mutex_unlock(&monitor.mutex);
+
+    printf("Submitted %d jobs (%d successfully)\n",
+            argc-2, monitor.successful_submits);
+
+    globus_cond_destroy(&monitor.cond);
+destroy_mutex:
+    globus_mutex_destroy(&monitor.mutex);
+deactivate:
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_nonblocking_submit_example.c */
+----
+
+==== Custom Security Attributes
+This example shows how to submit a job and delegate a full credential to the job. The link:raw/gram_attr_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module functions
+ * and GRAM Client API functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+
+#include <stdio.h>
+
+struct monitor_t
+{
+    globus_mutex_t mutex;
+    globus_cond_t cond;
+    globus_bool_t done;
+};
+
+static
+void
+example_submit_callback(
+    void * user_callback_arg,
+    globus_gram_protocol_error_t operation_failure_code,
+    const char * job_contact,
+    globus_gram_protocol_job_state_t job_state,
+    globus_gram_protocol_error_t job_failure_code)
+{
+    struct monitor_t * monitor = user_callback_arg;
+
+    globus_mutex_lock(&monitor->mutex);
+    monitor->done = GLOBUS_TRUE;
+    globus_cond_signal(&monitor->cond);
+    if (operation_failure_code == GLOBUS_SUCCESS)
+    {
+        printf("Submitted job %s\n",
+            job_contact ? job_contact : "UNKNOWN");
+    }
+    else
+    {
+        printf("submit failed because %s (Error %d)\n",
+                globus_gram_client_error_string(operation_failure_code),
+                operation_failure_code);
+    }
+    globus_mutex_unlock(&monitor->mutex);
+}
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    globus_gram_client_attr_t attr;
+    struct monitor_t monitor;
+
+    if (argc < 3)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT RSL-SPEC...\n",
+                argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    printf("Submiting job to %s with full proxy\n", argv[1]);
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+
+    rc = globus_mutex_init(&monitor.mutex, NULL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error initializing mutex %d\n", rc);
+
+        goto deactivate;
+    }
+
+    rc = globus_cond_init(&monitor.cond, NULL);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error initializing condition variable %d\n", rc);
+
+        goto destroy_mutex;
+    }
+    monitor.done = GLOBUS_FALSE;
+
+    /* Initialize attribute so that we can set the delegation attribute */
+    rc = globus_gram_client_attr_init(&attr);
+
+    /* Set the proxy attribute */
+    rc = globus_gram_client_attr_set_delegation_mode(
+        attr,
+        GLOBUS_IO_SECURE_DELEGATION_MODE_FULL_PROXY);
+
+    /* Submit the job rsl from argv[2]
+     */
+    globus_mutex_lock(&monitor.mutex);
+    /* When the job has been submitted, the example_submit_callback
+     * will be called, either from another thread or from a
+     * globus_cond_wait in a nonthreaded build
+     */
+    rc = globus_gram_client_register_job_request(
+            argv[1], argv[2], 0, NULL, attr, example_submit_callback,
+            &monitor);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to submit job %s because %s (Error %d)\n",
+                argv[2], globus_gram_client_error_string(rc), rc);
+    }
+
+    /* Wait until the example_submit_callback function has been called for
+     * the job submission
+     */
+    while (!monitor.done)
+    {
+        globus_cond_wait(&monitor.cond, &monitor.mutex);
+    }
+    globus_mutex_unlock(&monitor.mutex);
+
+    globus_cond_destroy(&monitor.cond);
+destroy_mutex:
+    globus_mutex_destroy(&monitor.mutex);
+deactivate:
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_attr_example.c */
+----
+
+==== Modifying RSL
+This example shows how to programmatically add environment variable definitions to an RSL prior to submitting a job. The link:raw/gram_rsl_example.c[source to this example] can be downloaded.
+
+[source,c]
+----
+/*
+ * These headers contain declarations for the globus_module,
+ * the GRAM Client, RSL, and protocol functions
+ */
+#include "globus_common.h"
+#include "globus_gram_client.h"
+#include "globus_rsl.h"
+#include "globus_gram_protocol.h"
+
+#include <stdio.h>
+#include <strings.h>
+
+static
+int
+example_rsl_attribute_match(void * datum, void * arg)
+{
+    const char * relation_attribute = globus_rsl_relation_get_attribute(datum);
+    const char * attribute = arg;
+
+    /* RSL attributes are case-insensitive */
+    return (relation_attribute &&
+            strcasecmp(relation_attribute, attribute) == 0);
+}
+
+int
+main(int argc, char *argv[])
+{
+    int rc;
+    globus_rsl_t *rsl, *environment_relation;
+    globus_rsl_value_t *new_env_pair = NULL;
+    globus_list_t *environment_relation_node;
+    char * rsl_string;
+    char * job_contact;
+
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: %s RESOURCE-MANAGER-CONTACT RSL\n", argv[0]);
+        rc = 1;
+
+        goto out;
+    }
+
+    /*
+     * Always activate the GLOBUS_GRAM_CLIENT_MODULE prior to using any
+     * functions from the GRAM Client API or behavior is undefined.
+     */
+    rc = globus_module_activate(GLOBUS_GRAM_CLIENT_MODULE);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Error activating %s because %s (Error %d)\n",
+                GLOBUS_GRAM_CLIENT_MODULE->module_name,
+                globus_gram_client_error_string(rc),
+                rc);
+        goto out;
+    }
+
+    /* Parse the RSL string into a syntax tree */
+    rsl = globus_rsl_parse(argv[2]);
+    if (rsl == NULL)
+    {
+        rc = 1;
+        fprintf(stderr, "Error parsing RSL string\n");
+        goto deactivate;
+    }
+
+    /* Create the new environment variable pair that we'll insert
+     * into the RSL. We'll start by making an empty sequence
+     */
+    new_env_pair = globus_rsl_value_make_sequence(NULL);
+    if (new_env_pair == NULL)
+    {
+        fprintf(stderr, "Error creating value sequence\n");
+        rc = 1;
+
+        goto free_rsl;
+    }
+    /* Then insert the name-value pair in reverse order */
+    rc = globus_list_insert(
+            globus_rsl_value_sequence_get_list_ref(new_env_pair),
+            globus_rsl_value_make_literal(
+                strdup("itsvalue")));
+    if (rc != GLOBUS_SUCCESS)
+    {
+        goto free_env_pair;
+    }
+
+    rc = globus_list_insert(
+            globus_rsl_value_sequence_get_list_ref(new_env_pair),
+            globus_rsl_value_make_literal(
+                strdup("EXAMPLE_ENVIRONMENT_VARIABLE")));
+    if (rc != GLOBUS_SUCCESS)
+    {
+        goto free_env_pair;
+    }
+    /* Now, check to see if the RSL already contains an environment
+     * attribute.
+     */
+    environment_relation_node = globus_list_search_pred(
+            globus_rsl_boolean_get_operand_list(rsl),
+            example_rsl_attribute_match,
+            GLOBUS_GRAM_PROTOCOL_ENVIRONMENT_PARAM);
+
+    if (environment_relation_node == NULL)
+    {
+        /* Not present yet, create a new relation and insert it into
+         * the RSL.
+         */
+        environment_relation = globus_rsl_make_relation(
+                GLOBUS_RSL_EQ,
+                strdup(GLOBUS_GRAM_PROTOCOL_ENVIRONMENT_PARAM),
+                globus_rsl_value_make_sequence(NULL));
+        rc = globus_list_insert(
+                globus_rsl_boolean_get_operand_list_ref(rsl),
+                environment_relation);
+        if (rc != GLOBUS_SUCCESS)
+        {
+            globus_rsl_free_recursive(environment_relation);
+            goto free_env_pair;
+        }
+    }
+    else
+    {
+        /* Pull the environment relation out of the node returned from the
+         * search function
+         */
+        environment_relation = globus_list_first(environment_relation_node);
+    }
+
+    /* Add the new environment binding to the value sequence associated with
+     * the environment relation
+     */
+    rc = globus_list_insert(
+        globus_rsl_value_sequence_get_list_ref(
+                globus_rsl_relation_get_value_sequence(environment_relation)),
+        new_env_pair);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        goto free_env_pair;
+    }
+    new_env_pair = NULL;
+
+    /* Convert the RSL parse tree to a string */
+    rsl_string = globus_rsl_unparse(rsl);
+
+    /*
+     * Submit the augmented RSL to the service passed as our first command-line
+     * option. If successful, this function will return GLOBUS_SUCCESS,
+     * otherwise an integer error code.
+     */
+    rc = globus_gram_client_job_request(
+            argv[1],
+            rsl_string,
+            0,
+            NULL,
+            &job_contact);
+    if (rc != GLOBUS_SUCCESS)
+    {
+        fprintf(stderr, "Unable to submit job to %s because %s (Error %d)\n",
+                argv[1], globus_gram_client_error_string(rc), rc);
+    }
+    else
+    {
+        printf("Job submitted successfully: %s\n", job_contact);
+    }
+
+    free(rsl_string);
+
+    if (job_contact)
+    {
+        free(job_contact);
+    }
+free_env_pair:
+    if (new_env_pair != NULL)
+    {
+        globus_rsl_value_free_recursive(new_env_pair);
+    }
+free_rsl:
+    globus_rsl_free_recursive(rsl);
+deactivate:
+    /*
+     * Deactivating the module allows it to free memory and close network
+     * connections.
+     */
+    rc = globus_module_deactivate(GLOBUS_GRAM_CLIENT_MODULE);
+out:
+    return rc;
+}
+/* End of gram_rsl_example.c */
+----
+
+== GRAM Server Developer's Guide
+=== LRM Adapter Tutorial
+==== Introduction
+GRAM5 provides a resource-independent abstraction to remote job management. The resource abstraction contains methods for job submission and cancelling, and a method for monitoring job state changes. This set of tutorials describes how to implement and bundle all packages needed for a complete LRM Adapter interface for GRAM5.
+
+For purposes of this tutorial, we will create a fake LRM adapter that pretends to run jobs, but in fact just keeps track of jobs and expires them after the job's [monospace]#max_wall_time# expires. We'll call this LRM the fake LRM adapter.
+
+==== Parts of a GRAM5 LRM Adapter
+A GRAM5 LRM Adapter consists of a few parts which work together to provide a full interface between the GRAM5 Job Manager and the Local Resource Manager. These parts include:
+
+RSL Validation File::
+An option file which defines any custom RSL attributes which the LRM Adapter implements, or sets any custom defaults for RSL attributes that the LRM processes. Defining new RSL attributes in this file allows the GRAM5 service to detect some sets of RSL errors without invoking the Perl LRM Adapter Module. For this example, the file will be called [file]#fake.rvf#.
+Perl LRM Adapter Module::
+A Perl module which implements the execution interface to the LRM. This module translates the Resource Specification Language description of a job's requirements to a concrete way of starting the job on a particular LRM. For this example, this file will be called [file]#fake.pm#.
+Configuration File::
+The GRAM5 service implements a simple configuration file parser which can be used to provide a way to add site customizations to LRM Adapters. These files are usually shared between the Perl LRM Adapter Module and the Scheduler Event Generator Module. For this example, this file will be called [file]#fake.conf#.
+Gatekeeper Service File::
+The Gatekeeper is a privileged service which authenticates and authorizes clients and then starts a Job Manager process on their behalf. The Gatekeeper Service File contains the LRM-specific command-line options to the job manager. For this example, this file will be called [file]#jobmanager-fork#.
+Scheduler Event Generator Module::
+A dynamic object which parses LRM state and generates job state change events in a generic format for GRAM5 to consume. For this example, the SEG module will be called [file]#libglobus_seg_fake.so#.
+
+==== RSL Validation File
+Each LRM Adapter can have a custom RSL validation file (RVF) which indicates which RSL attributes are valid for that LRM, what their default values are, and when they can be used during a job lifecycle.
+
+The RVF entries consist of a set of records containing attribute-value pairs, with a blank line separating records. Each attribute-value pair is separated by the colon character. The value may be quoted with the double-quote character, in which case, the value continues until a second quote character is found; otherwise, the value terminates at end of line.
+
+===== RVF Attributes
+
+The attribute names understood by the GRAM5 RVF parser are:
+
+Attribute::
+The name of an RSL attribute.
+Description::
+A textual description of the attribute.
+RequiredWhen::
+A sequence of link:#rvf_when_values[WHEN-VALUES] describing when this RSL attribute must be present.
+DefaultWhen::
+A sequence of link:#rvf_when_values[WHEN-VALUES] describing when the default RSL value will be applied if it's not present in the RSL.
+ValidWhen::
+A sequence of link:#rvf_when_values[WHEN-VALUES] describing when the RSL attribute may be present.
+Default::
+A literal RSL value sequence containing the default value of the attribute, applied to the RSL when the attribute is not present, but the RSL use matches the DefaultWhen value.
+Values::
+A sequence of strings enumerating the legal values for the RSL attribute.
+Publish::
+When set to true, the RSL attribute will be added to the documentation for the LRM Adapter if the RVF is processed by the create_rsl_documentation.pl script. Otherwise, it will not be mentioned.
+
+===== RVF When Values
+
+The _WHEN-VALUES_ used by the RVF parser are described in this list:
+
+`GLOBUS_GRAM_JOB_SUBMIT`::
+RSL Attribute used in a GRAM5 job request to submit a job to an LRM Adapter.
+`GLOBUS_GRAM_JOB_RESTART`::
+RSL Attribute used in a GRAM5 job request to restart a job which was stopped due to a two-phase commit timeout.
+`GLOBUS_GRAM_JOB_STDIO_UPDATE`::
+RSL Attribute used in a GRAM5 STDIO_UPDATE signal, which may be sent to a job during the two-phase end state.
+
+===== Common RSL Attributes
+
+The GRAM5 service by default implements a common set of RSL attributes for all jobs. Not all of these may be relevant to all LRM types, but are included in the common set so that the same concept will be processed by the same attribute for each LRM. LRM Adapters can disable particular RSL attributes if they want by adding the attribute to their RVF file with
+
+----
+Attribute: AttributeName
+ValidWhen: ""
+----
+
+===== Creating a RSL Validation File for the Fake LRM
+
+Normally, the RVF for a new LRM Adapter will add any LRM-specific RSL attributes and perhaps change the DefaultValue for some. For the [monospace]#fake# LRM, we'll be a bit more complicated and disable most of the GRAM common RSL attributes and reduce things to indicate the queue and execution time for the fake jobs. The [file]#fake.rvf# will do the following: will do the following:
+
+- Remove [monospace]#executable, arguments, directory, environment, file_clean_up, file_stage_in, file_stage_out, file_stage_in_shared, gass_cache, gram_my_job, host_count, library_path, max_cpu_time, min_memory, project, queue, remote_io_url, scratch_dir, stdin, stdout,# and [monospace]#stderr# attributes.
+- Add a [monospace]#max_queue_time# attribute, which will be the maximum time a particular fake job will be in the [monospace]#PENDING# state. This will have a default of 20 minutes.
+- Add a default value to the max_wall_time attribute of 5 minutes.
+
+.Example: fake.rvf
+
+Here is the file:raw/fake.rvf[complete RVF] for the fake LRM Adapter:
+
+----
+# Disable a large number of RSL attributes
+Attribute: executable
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: directory
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: environment
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: file_clean_up
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: file_stage_in
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: file_stage_out
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: file_stage_in_shared
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: gass_cache
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: gram_my_job
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: host_count
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: library_path
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: max_cpu_time
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: min_memory
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: project
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: queue
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: remote_io_url
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: scratch_dir
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: stdin
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: stdout
+ValidWhen: ""
+RequiredWhen: ""
+
+Attribute: stderr
+ValidWhen: ""
+RequiredWhen: ""
+
+# Add a new attribute max_queue_time
+Attribute: max_queue_time
+ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+DefaultWhen: GLOBUS_GRAM_JOB_SUBMIT
+RequiredWhen: GLOBUS_GRAM_JOB_SUBMIT
+Description: "Maximum time a fake job will be in pending, in seconds. The
+              default value is 1200 seconds (20 minutes)"
+Default: 1200
+
+# Add a default value and requirement for max_wall_time
+Attribute: max_wall_time
+DefaultWhen: GLOBUS_GRAM_JOB_SUBMIT
+RequiredWhen: GLOBUS_GRAM_JOB_SUBMIT
+Default: 300
+Description: "Maximum time a fake job will be in the ACTIVE state"
+----
+
+==== Configuration File
+For the fake LRM, there's not much to configure: a path to a file where the LRM should write its job files. For real LRMs, there are other things which might belong there: paths to LRM-specific executables such as `qsub`, tuning parameters fo the LRM adapter script such as the number of available cores per execution node, or the host to contact when using a remote submit protocol between GRAM the the LRM. The configuation parameters used by the LRM adapters included in GRAM5 are described in link:../admin#lrm_adapter_configuration[LRM Adapter Configuration].
+
+The LRM adapter configuration files consist of attribute="value" pairs, which comment lines beginning with the # character. For the example fake LRM, the configuration file looks like this:
+
+----
+# log_path is the path to log file that the  fake LRM generates. This file is
+# updated each time a job is submitted or cancelled. The default if it is not
+# present is ${localstatedir}/fake, which is typically /var/fake
+log_path="/tmp"
+----
+
+*Parsing the Configuration File*
+
+The Globus Toolkit contains API functions for parsing files in the format used by the LRM configuration files. In Perl, use the [monospace]#Globus::Core::Config# class. In C, use the `globus_common_get_attribute_from_config_file()` function.
+
+*Perl API*
+
+The [monospace]#Globus::Core::Config# API is quite simple. The `new()` constructor parses the configuration file and returns an object containing the attribute=value pairs. The `get_attribute()` method returns the value of the named attribute. These functions are used in the fake LRM Perl Module.
+
+*C API*
+
+The `globus_common_get_attribute_from_config_file()` function will load the configuration file and return the value of the attribute passed to it. This function is ued in the SEG module below. Note that this function returns a pointer to a copy of the string value in the location pointed to by the _value_ parameter. The caller must free this value.

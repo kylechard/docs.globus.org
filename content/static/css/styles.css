@@ -347,11 +347,14 @@ pre .output {
 .file, .monospace {
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
   font-size: 85%;
+}
+.file {
   border: solid 1px #dfdfdf;
   color: #555;
   padding: 0 4px;
   background-color: #fcfcfc;
   border-radius: 4px;
+  font-weight: normal;
 }
 .uservars {
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
