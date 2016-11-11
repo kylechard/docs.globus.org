@@ -227,6 +227,7 @@ up to the 100,000 entry limit are returned, sorted by (+type+, +name+).
     "DATA_TYPE": "file_list",
     "path": "/~/path/to/dir",
     "endpoint": "auser#epname",
+    "rename_supported": true,
     "DATA": [
         {
             "DATA_TYPE": "file",
@@ -298,6 +299,10 @@ up to the 100,000 entry limit are returned, sorted by (+type+, +name+).
 The "file" document represents a single file or directory. The response is
 an encapsulated list of "file" documents, with some additional fields providing
 directory level data.
+
+The "rename_supported" field indicates if the endpoint software supports
+rename operations.  This does not necessarily mean the current user has
+authorization to rename a file.
 
 .File Document Example
 ----------------------
@@ -408,6 +413,9 @@ directory level data.
                     | The endpoint in the request is not activated or the
                       activation has expired. Activate the endpoint and retry
                       the operation.
+| Conflict          | 409
+                    | The endpoint in the request is a shared endpoint and
+                      its host endpoint has been deleted.
 |===================
 
 

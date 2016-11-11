@@ -11,6 +11,23 @@ menu_weight: 12
 ifdef::env-github[:outfilesuffix: .adoc]
 
 
+== 5.3 WIP
+
+* Endpoint Roles
+** Add "activity_manager", "activity_monitor", and "administrator" roles
+
+* Advanced Endpoint Management
+** There are now two levels of permissions, and they are mediated by the
+   "activity_manager" and "activity_monitor" roles.
+
+* Endpoint Search
+** Add "administered-by-me" scope
+
+* Endpoint Management
+** The +my_effective_roles+ field can now contain the new roles. In particular,
+   the owner of an endpoint will always have the "administrator" role on the
+   endpoint.
+
 == 5.2
 
 * Advanced Endpoint Management
