@@ -10,7 +10,7 @@ menu_weight: 3
 
 [doc-info]*Last Updated: {revdate}*
 
-NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program, now in open Beta.
+NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program and now available in Beta.
 
 link:acl-add[acl-add]::
 acl-add adds a new rule to the endpoint’s access control list (ACL).
