@@ -298,6 +298,9 @@ that this is different than the task id returned by the submit operations.
                     | One or more endpoints in the request are not activated or
                       have expired activation. Activate the affected
                       endpoint(s) and retry the operation.
+| Conflict          | 409
+                    | The source or destination endpoint in the request is a
+                      shared endpoint and its host endpoint has been deleted.
 |===================
 
 [[submit_delete_task]]
