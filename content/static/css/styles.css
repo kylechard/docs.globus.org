@@ -227,8 +227,10 @@ pre {
   margin-right: 10px;
   text-transform: capitalize;
 }
-.alert a { color: #444; }
-.alert a:hover { text-decoration: underline; }
+.alert a {
+  color: #444;
+  text-decoration: underline;
+}
 .alert.alert-note {
   color: #27518f;
   background-color: #dae8f4;
