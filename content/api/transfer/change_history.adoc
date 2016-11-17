@@ -11,7 +11,7 @@ menu_weight: 12
 ifdef::env-github[:outfilesuffix: .adoc]
 
 
-== 5.3 WIP
+== 5.3 (Nov 2016)
 
 * Endpoint Roles
 ** Add "activity_manager", "activity_monitor", and "administrator" roles
@@ -28,7 +28,10 @@ ifdef::env-github[:outfilesuffix: .adoc]
    the owner of an endpoint will always have the "administrator" role on the
    endpoint.
 
-== 5.2
+* Removed legacy support for an admin seeing tasks they don't own in /task_list.  
+  Use the /endpoint_manager APIs instead.
+
+== 5.2 (July 2016)
 
 * Advanced Endpoint Management
 ** Add +owner_string+ to +task+ document.
@@ -55,7 +58,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 
 * Limit HTTP requests to 100MB.
 
-== 5.1
+== 5.1 (March 2016)
 
 * Endpoint Search
 ** Add +filter_owner_id+ to replace the deprecated +filter_owner_username+.
