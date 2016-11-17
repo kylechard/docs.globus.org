@@ -1521,3 +1521,30 @@ The [monospace]#Globus::Core::Config# API is quite simple. The `new()` construct
 *C API*
 
 The `globus_common_get_attribute_from_config_file()` function will load the configuration file and return the value of the attribute passed to it. This function is ued in the SEG module below. Note that this function returns a pointer to a copy of the string value in the location pointed to by the _value_ parameter. The caller must free this value.
+
+==== LRM Adapter Perl Module
+The Perl-language LRM module provides the job submission and cancelling interface between GRAM5 and the underlying scheduler. Very little has been added to this part of the scheduler interface since Globus Toolkit 2---if you have a version for an older Globus Toolkit release, you can ignore most of this tutorial and jump to the link:#changes_from_previous_versions[Changes from Previous Versions] section of this tutorial. The module annotated below is available from link:fake.pm.
+
+===== Perl LRM Adapter Module
+
+The LRM Adapter interface is implemented as a Perl module which is a subclass of the [monospace]#Globus::GRAM::JobManager# module. Its name must match the type string used when the job manager is started, but in all lower case: for the fake LRM, the module name is [monospace]#Globus::GRAM::JobManager::fake# and it is stored in the file [file]#fake.pm#. Though there are several methods in the [monospace]#Globus::GRAM::JobManager# interface, the only ones which absolutely need to be implemented in a scheduler module are `submit` and `cancel`. The `poll` can be used if there is no SEG module for your LRM Adapter, but using polling can be resource intensive and slow. We'll present the methods in the module one by one, but the entire module can be downloaded from here: fake.pm.
+
+We'll begin by looking at the start of the [file]#fake.pm# source module To begin the script, we import the GRAM support modules into the LRM adapter module's namespace, declare the module's package, and declare this module as a subclass of the source module To begin the script, we import the GRAM support modules into the LRM adapter module's namespace, declare the module's package, and declare this module as a subclass of the [monospace]#Globus::GRAM::JobManager# module. All LRM adapter packages will need to do this, substituting the name of the LRM type being implemented where we see [monospace]#fake# below.
+
+----
+use Globus::GRAM::Error;
+use Globus::GRAM::JobState;
+use Globus::GRAM::JobManager;
+use Globus::Core::Paths;
+use Globus::Core::Config;
+use File::Path;
+use strict;
+use warnings;
+
+package Globus::GRAM::JobManager::fake;
+
+our @ISA = ('Globus::GRAM::JobManager');
+----
+
+Next, we declare any system-specific values which will be read from the configuration file. In the fake case, we will declare a module-global directory for job information and for SEG log entries. In real LRM Adapters, there are often variables which are loaded from the configuration file for such things as the list of available queues, paths to executables such as `mpiexec`, and any other site-specific configuration.
+
