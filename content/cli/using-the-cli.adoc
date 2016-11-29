@@ -32,7 +32,7 @@ The Globus transfer service provides the +transfer+ command for moving files.
 All Globus accounts are provisioned with two endpoints for exploratory use, so as soon as you have an account you should be able to transfer [uservars]#/share/godata/file1.txt# from endpoint [uservars]#go#ep1# to your home directory on [uservars]#go#ep2#, as shown below by user [uservars]#demodoc#:
 
 ----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#go#ep1:/share/godata/file1.txt go#ep2:\~/myfile.txt#
+$ ssh [input]#demodoc#@cli.globusonline.org transfer -- [input]#go#ep1/share/godata/file1.txt go#ep2/\~/myfile.txt#
 [output]#Task ID: 9be793ca-5983-12e6-c030-22100b92c261#
 $ ssh [input]#demodoc#@cli.globusonline.org status [input]#9be793ca-5983-12e6-c030-22100b92c261#
 [output]#Task ID     : 9be793ca-5983-12e6-c030-22100b92c261
