@@ -44,3 +44,17 @@ Indicates that the user MUST use a Globus Connect Personal endpoint. If the user
 
 Valid values: `GC`
 ////
+
+== Response
+
+When the user submits the form, the following data will be sent to the URL
+specified by the `action` parameter:
+
+* `endpoint_id`
+* `path`
+* `folder[0]`, `folder[1]`, ... `folder[n]` (if any; relative to `path`)
+* `file[0]`, `file[1]`, ... `file[n]` (if any; relative to `path`)
+* `label`
+
+Additionally, the parameters that the Browse Endpoint page was initialized
+with (e.g. `action`, `cancelurl`, `method`) will be echoed back in the data.
