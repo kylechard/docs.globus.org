@@ -120,7 +120,7 @@ If your organization is not part of the InCommon Federation, you can request to 
 
 NOTE: If your organization is not part of InCommon and your identity provider is not available via CILogon, you must have at least a Standard subscription and an Alternate Identity Provider Subscription as described link:https://www.globus.org/subscriptions[here] in order for your organization’s identity provider to be supported by Globus.
 
-== How do I know if I am still using Globus Nexus within my application?
+== How do I know if I am using Globus Nexus within my application?
 
 If you are making calls to any URL that starts with the following, you are using Nexus and will need to move to Globus Auth:
 
