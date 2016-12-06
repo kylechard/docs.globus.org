@@ -734,12 +734,6 @@ To sum up, both the share permissions granted to a Globus user, as well as the f
 == [go-icon-subscription]#Management Console#
 The management console, available on xref:managed-endpoint-anchor[managed endpoints], provides a graphical web interface that can be used to monitor endpoint activity and to identify and troubleshoot faults that may indicate underlying infrastructure issues. The Administrator for an endpoint decides who has access to the Management Console for an endpoint via the assignment of the Activity Manager or Activity Monitor role to users, as appropriate. Instructions on how to manage and assign roles for an endpoint can be found link:#roles_and_privileges[here].
 
-
-provides a graphical web interface that can be used to monitor endpoint activity and to 
-identify and troubleshoot faults that may indicate underlying infrastructure issues. 
-An organization's link:{subscription_url}[subscription] 
-support contact(s) decide who has access to the management console. 
-
 You can read about the details and benefits of the management console link:../management-console-guide/[here].
 
 == Roles and privileges
