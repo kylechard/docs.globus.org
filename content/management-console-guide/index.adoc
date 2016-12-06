@@ -19,7 +19,7 @@ The management console provides an interface to monitor and manage activity on m
 toc::[]
 
 == Access to console
-Users need to be granted Management Console access on endpoints before they can use the interface. An organization’s subscription support contact(s) can grant such access by contacting Globus support.
+Users need to be granted Management Console access on an endpoint before they can use the interface. This is accomplished by an Administrator for the endpoint granting the user either the Activity Manager or Activity Monitor role for the endpoint, as appropriate. Instructions on how to manage and assign roles for an endpoint can be found link:../resource-provider-guide/#roles_and_privileges[here].
 
 == Monitoring Tasks
 === Activity overview

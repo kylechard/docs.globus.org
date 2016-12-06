@@ -453,7 +453,12 @@ Check out the following:
 === Mac
 The user can see if GCP is running by looking for the Globus icon in the menu bar, which usually runs across the top of the screen. The Globus icon is a circle with the letter "g" in it. The user should see it in solid black, and not grayed out. If the user does not see that, then GCP is not running and he or she will get this error if they attempt to access their personal endpoint. If the GCP endpoint is not running, then the user can start it by running GCP from his or her Applications folder.
 
+== How do I manage roles on my endpoint?
+The Globus webapp provides an interface to manage roles on the endpoint on the link:https://www.globus.org/app/endpoints[Manage Endpoint page]. You can see a description of the supported roles link:../../resource-provider-guide/#roles_and_privileges[here]. Once you select your endpoint, you can choose the Roles tab to grant/revoke various roles on the endpoint.
 
+[role="img-responsive center-block"]
+image::images/roles.png[Roles Tab]
 
+Note that your endpoint needs to be covered under a subscription as managed endpoint to be able to set roles on the endpoint.
 
-
+You can also use the link:../../api/transfer/endpoint_roles/[Transfer API] to manage roles on an endpoint.
