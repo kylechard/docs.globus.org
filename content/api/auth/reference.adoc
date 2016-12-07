@@ -461,7 +461,7 @@ is recommend that resource owner APIs do the same.
 
 === Including associated resources ("side-loading")
 
-A resource request can have an "include" query parameter, followed by a
+Some resource requests can have an "include" query parameter, followed by a
 list of fields that specify what associated resources should be included
 in the response. For example:
 
@@ -480,6 +480,42 @@ to allow any client to directly access the Globus Auth API.
 
 //A trailing / on a URL path is not significant. Globus Auth will
 //interpret URLs with and without a trailing / in the same way.
+
+=== GET or POST /v2/oauth2/userinfo resource
+
+[cols="default,default,asciidoc",options="header"]
+|=============
+|Field | Type | Description
+|sub | UUID
+|Globus Auth issued identity id, guaranteed to uniquely identify a single
+identity. *Included with all responses.*
+|preferred_username|String|The username of the identity. *Included with responses for the 'profile' scope*
+|name|String|The user's name (e.g. 'Jane Doe'). *Included with responses for the 'profile' scope*
+|email|String|The email address associated with the identity, if known. *Included with responses for the 'email' scope*
+
+
+As described in http://openid.net/specs/openid-connect-core-1_0.html#UserInfo[Section 5.3 of the OpenID Connect specification], this
+resource returns 'claims' about a user's identity. These are the same claims that are returned in the JWT 'id_token'
+alongside the access token. In order to access this resource, your request MUST be authenticated with an access token
+in the HTTP Authorization header, and valid for at least the 'openid' scope. Additional claims will be returned
+if the token is valid for the 'profile' and 'email' scopes.
+
+Example request:
+
+    GET /v2/oauth2/userinfo HTTP/1.1
+    Host: auth.globus.org
+    Authorization: Bearer A7oU1xJ8-ddvRiMf-ZFDvXb
+
+Example response:
+
+    {
+      "email": "ztaylor@example.com",
+      "name": "Zachary Taylor",
+      "preferred_username": "ztaylor@globusid.org",
+      "sub": "e9a5903a-cb98-11e5-a7fa-afe061bd0f40"
+    }
+
+
 
 === /v2/api/identities resources
 
