@@ -492,7 +492,7 @@ identity. *Included with all responses.*
 |preferred_username|String|The username of the identity. *Included with responses for the 'profile' scope*
 |name|String|The user's name (e.g. 'Jane Doe'). *Included with responses for the 'profile' scope*
 |email|String|The email address associated with the identity, if known. *Included with responses for the 'email' scope*
-
+|=============
 
 As described in http://openid.net/specs/openid-connect-core-1_0.html#UserInfo[Section 5.3 of the OpenID Connect specification], this
 resource returns 'claims' about a user's identity. These are the same claims that are returned in the JWT 'id_token'
@@ -514,8 +514,6 @@ Example response:
       "preferred_username": "ztaylor@globusid.org",
       "sub": "e9a5903a-cb98-11e5-a7fa-afe061bd0f40"
     }
-
-
 
 === /v2/api/identities resources
 
