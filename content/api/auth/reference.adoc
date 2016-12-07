@@ -233,46 +233,48 @@ you SHOULD request openid scopes during the authorization request.
 it will contain an array of access token responses containing separate tokens for each resource server.
 |==========
 
-NOTE: The scope named first in the authorization request (excepting openid scopes)
-      will determine the access token returned in the top level of the response object.
+NOTE: If the client has requested any scopes against the Auth resource server (auth.globus.org) itself
+    (e.g. 'openid', 'email', 'profile' or 'urn:globus:auth:scope:auth.globus.org:view_identities')
+    then the access token returned in the top level of the response object will be valid for use with
+    Auth. Tokens for other resource servers will be found under 'other_tokens'.
 
 A successful response is returned as a JSON object, similar to the following:
 
     {
-        "access_token": "tggaKq69-qJiDRHp5oPW_lllll5syWfZ...",
-        "resource_server": "transfer.api.globus.org",
-        "expires_in": 3600,
-        "token_type": "bearer",
-        "scope": "urn:globus:auth:scope:transfer.api.globus.org:monitor_ongoing",
-        "refresh_token": "auqmwrC5qb841p9QsxqwbPgABuiDqUUJ",
-        "id_token": "eyJ0eXAiOiJKV1QiLA0KICJh...",
-        "state": "provided_by_client_to_prevent_replay_attacks",
-        "other_tokens": [
-            {
-                "access_token": "E3SfxOvlvsQ49lTn6cA0RGfRXHcwy85q...",
-                "resource_server": "auth.globus.org",
-                "scope": "urn:globus:auth:scope:auth.globus.org:view_identities",
-                "expires_in": 3600,
-                "refresh_token": "IlLACxpsG53v2zIuGCNPkoJXSF8gHbu8",
-                "token_type": "bearer"
-            },
-            {
-                "access_token": "OCsTf8AMydkPXTsv4stzT2QK5MA_S3a3...",
-                "resource_server": "groups.api.globus.org",
-                "scope": "urn:globus:auth:scope:nexus.api.globus.org:groups",
-                "expires_in": 3600,
-                "refresh_token": "TgwS5_BEFLsZbED42-agjfcriH0-pIee",
-                "token_type": "bearer"
-            },
-            {
-                "access_token": "oreTykUqQZfXXMqa5Zr9GoHaJsyF1AGX...",
-                "resource_server": "atmosphere.jetstream.xsede.org",
-                "scope": "urn:globus:auth:scope:atmosphere.jetstream.xsede.org:manage_data",
-                "expires_in": 3600,
-                "refresh_token": "H-qpG4yMQqkfGLhwjHYy_73TY2PSSAVh",
-                "token_type": "bearer"
-            }
-        ]
+      "access_token": "E3SfxOvlvsQ49lTn6cA0RGfRXHcwy85q...",
+      "expires_in": 3600,
+      "refresh_token": "IlLACxpsG53v2zIuGCNPkoJXSF8gHbu8",
+      "resource_server": "auth.globus.org",
+      "scope": "urn:globus:auth:scope:auth.globus.org:view_identities",
+      "state": "provided_by_client_to_prevent_replay_attacks",
+      "token_type": "bearer",
+      "other_tokens": [
+        {
+          "access_token": "OCsTf8AMydkPXTsv4stzT2QK5MA_S3a3...",
+          "expires_in": 3600,
+          "refresh_token": "TgwS5_BEFLsZbED42-agjfcriH0-pIee",
+          "resource_server": "groups.api.globus.org",
+          "scope": "urn:globus:auth:scope:nexus.api.globus.org:groups",
+          "token_type": "bearer"
+        },
+        {
+          "access_token": "oreTykUqQZfXXMqa5Zr9GoHaJsyF1AGX...",
+          "expires_in": 3600,
+          "refresh_token": "H-qpG4yMQqkfGLhwjHYy_73TY2PSSAVh",
+          "resource_server": "atmosphere.jetstream.xsede.org",
+          "scope": "urn:globus:auth:scope:atmosphere.jetstream.xsede.org:manage_data",
+          "token_type": "bearer"
+        },
+        {
+          "access_token": "tggaKq69-qJiDRHp5oPW_lllll5syWfZ...",
+          "expires_in": 3600,
+          "id_token": "eyJ0eXAiOiJKV1QiLA0KICJh...",
+          "refresh_token": "auqmwrC5qb841p9QsxqwbPgABuiDqUUJ",
+          "resource_server": "transfer.api.globus.org",
+          "scope": "urn:globus:auth:scope:transfer.api.globus.org:monitor_ongoing",
+          "token_type": "bearer"
+        }
+      ]
     }
 
 ==== Refresh Token Grant
@@ -459,7 +461,7 @@ is recommend that resource owner APIs do the same.
 
 === Including associated resources ("side-loading")
 
-A resource request can have an "include" query parameter, followed by a
+Some resource requests can have an "include" query parameter, followed by a
 list of fields that specify what associated resources should be included
 in the response. For example:
 
@@ -479,6 +481,40 @@ to allow any client to directly access the Globus Auth API.
 //A trailing / on a URL path is not significant. Globus Auth will
 //interpret URLs with and without a trailing / in the same way.
 
+=== GET or POST /v2/oauth2/userinfo resource
+
+[cols="default,default,asciidoc",options="header"]
+|=============
+|Field | Type | Description
+|sub | UUID
+|Globus Auth issued identity id, guaranteed to uniquely identify a single
+identity. *Included with all responses.*
+|preferred_username|String|The username of the identity. *Included with responses for the 'profile' scope*
+|name|String|The user's name (e.g. 'Jane Doe'). *Included with responses for the 'profile' scope*
+|email|String|The email address associated with the identity, if known. *Included with responses for the 'email' scope*
+|=============
+
+As described in http://openid.net/specs/openid-connect-core-1_0.html#UserInfo[Section 5.3 of the OpenID Connect specification], this
+resource returns 'claims' about a user's identity. These are the same claims that are returned in the JWT 'id_token'
+alongside the access token. In order to access this resource, your request MUST be authenticated with an access token
+in the HTTP Authorization header, and valid for at least the 'openid' scope. Additional claims will be returned
+if the token is valid for the 'profile' and 'email' scopes.
+
+Example request:
+
+    GET /v2/oauth2/userinfo HTTP/1.1
+    Host: auth.globus.org
+    Authorization: Bearer A7oU1xJ8-ddvRiMf-ZFDvXb
+
+Example response:
+
+    {
+      "email": "ztaylor@example.com",
+      "name": "Zachary Taylor",
+      "preferred_username": "ztaylor@globusid.org",
+      "sub": "e9a5903a-cb98-11e5-a7fa-afe061bd0f40"
+    }
+    
 === /v2/api/identities resources
 
 Resource type: identity
