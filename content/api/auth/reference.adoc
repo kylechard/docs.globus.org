@@ -225,9 +225,7 @@ tokens are valid until the user revokes access. This field is only present if
 the authorization request asked for offline access.
 |id_token | A JWT containing details about the user as defined in the
 link:https://openid.net/specs/openid-connect-core-1_0.html#IDToken[OpenIDConnect specification.]
-Note: Currently, this field is always included by default, but soon it will only be present if the
-'openid' scope was requested during the authorization request. If your application requires an id_token
-you SHOULD request openid scopes during the authorization request.
+Note: Only included if your client requests the `openid` scope during the authorization request.
 |state | The state parameter your client application provided during the authorization request.
 |other_tokens | If the client requested scopes that span multiple resource servers, this field will be present, and
 it will contain an array of access token responses containing separate tokens for each resource server.
@@ -389,23 +387,18 @@ will always have the value bearer.
 |refresh_token | A token that may be used to obtain a new access token. Refresh
 tokens are valid until the user revokes access. This field is only present if
 the authorization request asked for offline access.
-|id_token | A JWT containing details about the user as defined in the
-link:https://openid.net/specs/openid-connect-core-1_0.html#IDToken[OpenIDConnect specification.]
-Note: Currently, this field is always included by default, but soon it will only be present if the
-'openid' scope was requested during the authorization request. If your application requires an id_token
-you SHOULD request openid scopes during the authorization request.
 |state | The state parameter your client application provided during the authorization request.
 |other_tokens | If the client requested scopes that span multiple resource servers, this field will be present, and
 it will contain an array of access token responses containing separate tokens for each resource server.
 |==========
 
-NOTE: The scope named first in the authorization request (excepting openid scopes)
-      will determine the access token returned in the top level of the response object.
+NOTE: If the client has requested any scopes against the Auth resource server (`auth.globus.org`) itself
+    (e.g. `openid`, `email`, `profile` or `urn:globus:auth:scope:auth.globus.org:view_identities`)
+    then the access token returned in the top level of the response object will be valid for use with
+    Auth. Tokens for other resource servers will be found under `other_tokens`.
 
 
 === Verifying identity (via OpenID Connect ID Token)
-
-WARNING: Currently, all OpenID Connect claims are returned in the `id_token` by default, regardless of requested scopes. In the near future, only requested claims will be returned. Your application should request the OpenID Connect scopes it requires.
 
 Globus Auth's OAuth2 grants accept the following OpenID Connect scopes:
 
