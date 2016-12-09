@@ -233,10 +233,10 @@ you SHOULD request openid scopes during the authorization request.
 it will contain an array of access token responses containing separate tokens for each resource server.
 |==========
 
-NOTE: If the client has requested any scopes against the Auth resource server (auth.globus.org) itself
-    (e.g. 'openid', 'email', 'profile' or 'urn:globus:auth:scope:auth.globus.org:view_identities')
+NOTE: If the client has requested any scopes against the Auth resource server (`auth.globus.org`) itself
+    (e.g. `openid`, `email`, `profile` or `urn:globus:auth:scope:auth.globus.org:view_identities`)
     then the access token returned in the top level of the response object will be valid for use with
-    Auth. Tokens for other resource servers will be found under 'other_tokens'.
+    Auth. Tokens for other resource servers will be found under `other_tokens`.
 
 A successful response is returned as a JSON object, similar to the following:
 
@@ -488,17 +488,17 @@ to allow any client to directly access the Globus Auth API.
 |Field | Type | Description
 |sub | UUID
 |Globus Auth issued identity id, guaranteed to uniquely identify a single
-identity. *Included with all responses.*
-|preferred_username|String|The username of the identity. *Included with responses for the 'profile' scope*
-|name|String|The user's name (e.g. 'Jane Doe'). *Included with responses for the 'profile' scope*
-|email|String|The email address associated with the identity, if known. *Included with responses for the 'email' scope*
+identity. _Included with all responses._
+|preferred_username|String|The username of the identity. _Included with responses for the `profile` scope_
+|name|String|The user's name (e.g. Jane Doe). _Included with responses for the `profile` scope_
+|email|String|The email address associated with the identity, if known. _Included with responses for the `email` scope_
 |=============
 
 As described in http://openid.net/specs/openid-connect-core-1_0.html#UserInfo[Section 5.3 of the OpenID Connect specification], this
-resource returns 'claims' about a user's identity. These are the same claims that are returned in the JWT 'id_token'
+resource returns 'claims' about a user's identity. These are the same claims that are returned in the JWT `id_token`
 alongside the access token. In order to access this resource, your request MUST be authenticated with an access token
-in the HTTP Authorization header, and valid for at least the 'openid' scope. Additional claims will be returned
-if the token is valid for the 'profile' and 'email' scopes.
+in the HTTP Authorization header, and valid for at least the `openid` scope. Additional claims will be returned
+if the bearer token is valid for the `profile` and `email` scopes.
 
 Example request:
 
@@ -514,7 +514,7 @@ Example response:
       "preferred_username": "ztaylor@globusid.org",
       "sub": "e9a5903a-cb98-11e5-a7fa-afe061bd0f40"
     }
-    
+
 === /v2/api/identities resources
 
 Resource type: identity
