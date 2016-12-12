@@ -732,13 +732,41 @@ Along the same lines let's consider what happens when Bob grants share access to
 To sum up, both the share permissions granted to a Globus user, as well as the file system rights of the local user that the Globus user (who owns the share) activated on the endpoint with when the share was created, must be taken into account when determining effective permissions to a share. 
 
 == [go-icon-subscription]#Management Console#
-The management console, available on xref:managed-endpoint-anchor[managed endpoints], 
-provides a graphical web interface that can be used to monitor endpoint activity and to 
-identify and troubleshoot faults that may indicate underlying infrastructure issues. 
-An organization's link:{subscription_url}[subscription] 
-support contact(s) decide who has access to the management console. 
+The management console, available on xref:managed-endpoint-anchor[managed endpoints], provides a graphical web interface that can be used to monitor endpoint activity and to identify and troubleshoot faults that may indicate underlying infrastructure issues. The Administrator for an endpoint decides who has access to the Management Console for an endpoint via the assignment of the Activity Manager or Activity Monitor role to users, as appropriate. Instructions on how to manage and assign roles for an endpoint can be found link:#roles_and_privileges[here].
 
 You can read about the details and benefits of the management console link:../management-console-guide/[here].
+
+== Roles and privileges
+
+Users (or groups) can be granted various roles on any managed endpoint, with each role granting the user (or group) different privileges with respect to that endpoint. All roles can be managed via the Transfer API or the link:https://www.globus.org/app/endpoints[Roles tab on the Manage Endpoints page] on the Globus webapp. 
+
+The following roles are supported on managed endpoints. These roles need to be explicitly set and none of the privileges are inherited.
+
+* Administrator
+** Has full control over the endpoint definition of the endpoint. 
+** Can delete endpoint definition
+** Can see endpoint definition even if set to private
+** Can manage roles for endpoint
+** An administrator for an S3 endpoint or a share also has all of the abilities of an Access Manager 
+** Can be granted by other administrators. The creator of the endpoint is granted administrator role by default
+** Does not have Activity Manager and/or Activity Monitor capabilities without being granted such explicitly
+* Activity Manager
+** Has full access to the Management Console for the endpoint
+** Can see endpoint definition even if set to private
+** Can be granted by any user who has Administrator role on the endpoint
+* Activity Monitor
+** Has read only access to the Management Console for the endpoint
+** Can see endpoint definition even if set to private
+** Can be granted by any user who has Administrator role on the endpoint
+* Access Manager
+** Can manage permissions on any endpoints that supports sharing (S3 or shared endpoints)
+** Has read/write access to folders and files on the endpoint
+** If the endpoint is set to private (in the case of S3 endpoint), cannot see the endpoint. 
+** Can be granted by any user who has Administrator role on the endpoint
+
+
+
+
 
 :numbered!:
 

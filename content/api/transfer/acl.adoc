@@ -19,8 +19,6 @@ updating and deleting access rules in the ACL. The ACL for each endpoint can
 have at most 100 access rules.
 
 The owner of the endpoint always has full read and write access to the endpoint.
-This is not included as a rule in the ACL, as it is always present and can't
-be removed.
 
 Access rules are always additive, so permissions cannot be further restricted
 in subdirectories. For example, if a rule gives the identity read-write access
@@ -43,16 +41,15 @@ with the Globus Auth account.
 
 The owner always has permission to manage the ACL on an endpoint. The owner can
 also delegate ACL management to other identities or groups. This is done by
-the "access_manager" role on the endpoint. See the
+assigning the "access_manager" or "administrator" role on the endpoint. See the
 link:../endpoint_roles[Endpoint Roles] documentation. Note that
-identities that have delegated ACL management permission can't further
-delegate to other identities; only the owner can configure the "access_manager"
-role on the endpoint.
+identities that have the "access_manager" role can't further delegate
+ACL management to other identities, but the "adminstrator" role can.
 
-Identities and groups with an "access_manager" role assignment on an endpoint
-also have implicit "rw" permission on "/". This is visible in the
-<<rest_access_get_list,access list>>, but the implicit rules can't be fetched,
-updated or deleted using any other part of the acl API. The
+Identities and groups with an "access_manager" or "administrator" role
+assignment on an endpoint also have implicit "rw" permission on "/". This is
+visible in the <<rest_access_get_list,access list>>, but the implicit rules
+can't be fetched, updated or deleted using any other part of the acl API. The
 link:../endpoint_roles[Endpoint Roles] API should be used to
 manipulate role assignments. Note that access rules from roles can only have
 +principal_type+ of "identity" or "group", and will have +role_id+ set instead
@@ -75,6 +72,7 @@ a single access rule in the ACL.
     "DATA_TYPE": "access",
     "id": 12345,
     "role_id": null,
+    "role_type": null,
     "principal_type": "identity",
     "principal": "368e91db-2294-4b32-b344-6870afb3777d",
     "path": "/",
@@ -96,8 +94,8 @@ an "Exists" error.
                  | Always has value "access" to indicate this document type.
 | id             | string
                  | Unique id for this access rule. Implicit access
-                   rules from "access_manager" role assignments will have a
-                   null +id+, see +role_id+.
+                   rules from role assignments will have a null +id+,
+                   see +role_id+.
 | principal_type | string
                  | Type of principal that the rule applies to.
                    One of "identity", "group",
@@ -127,11 +125,14 @@ an "Exists" error.
                    Either read-only, specified as "r",
                    or read-write, specified as "rw".
 | role_id        | string
-                 | For an implicit access rule from an "access_manager" role
+                 | For an implicit access rule from a role
                    assignment, this will be set to the id of the role.
                    +null+ for standard access rules. This can be used to
                    manipulate the corresponding role using the Endpoint Roles
                    API.
+| role_type      | string
+                 | If role_id is null, this is also null.  
+                    Otherwise, this is the type of the role, either "administrator" or "access_manager".  
 | notify_email   | string
                  | When creating an identity rule, clients can optionally
                    specify a valid email address to send notification to.
@@ -240,11 +241,14 @@ access rules.
 
 Get the list of access rules in the ACL for a specified endpoint.
 
-NOTE: This list includes implicit rules from "access_manager" roles, which
-can't be manipulated directly with other operations in the acl API. The
-endpoint owner also has full read-write permission and this is not included in
-the list. See <<rest_access_delegation,ACL Management Permissions and
+NOTE: This list includes implicit rules roles, which
+can't be manipulated directly with other operations in the acl API. 
+The endpoint owner always has full read-write permission.
+See <<rest_access_delegation,ACL Management Permissions and
 Delegation>>.
+
+.Authorization
+Requires the "access_manager" or "administrator" role on the endpoint.
 
 [cols="h,5"]
 |============
@@ -267,6 +271,7 @@ Delegation>>.
             "principal": "623568a4-3960-4836-be02-09366d201bcb",
             "id": 12345,
             "role_id": null,
+            "role_type": null,
             "permissions": "r"
         },
         {
@@ -276,6 +281,7 @@ Delegation>>.
             "principal": "a2e662ac-d4bc-4ab7-aceb-8a12d2205326",
             "id": 743565,
             "role_id": null,
+            "role_type": null,
             "permissions": "rw"
         }
     ],
@@ -288,6 +294,11 @@ Delegation>>.
 === Get access rule by id
 
 Get a single access rule for a specified endpoint by id.
+
+.Authorization
+Requires the "access_manager" or "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============
@@ -313,6 +324,11 @@ The +notify_email+ and +notify_message+ fields are optional and not persisted
 as part of the +access+ document.
 
 NOTE: The +id+ field of the access document must be omitted in create requests.
+
+.Authorization
+Requires the "access_manager" or "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============
@@ -379,6 +395,11 @@ NOTE: If an email access rule has been claimed since the client fetched
 it and become a user access rule, this will update the user access rule,
 which has the same id.
 
+.Authorization
+Requires the "access_manager" or "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
+
 [cols="h,5"]
 |============
 | URL
@@ -412,6 +433,11 @@ Returns a +result+ document with code "Deleted" on success and HTTP status code
 the client is using a retry loop, both should be accepted as success in case
 the first successful attempt is disconnected after the request is processed but
 before the response is received by the client.
+
+.Authorization
+Requires the "access_manager" or "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============

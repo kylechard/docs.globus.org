@@ -20,3 +20,15 @@ Used as the destination to redirect the client to in the event the "Cancel" butt
 
 === `multiple`
 If set to `yes` (default) the user will be allowed to select multiple groups (checkboxes). If set to `no` or any value other than `yes` the user will be limited to selecting a single group (radio buttons).
+
+== Response
+
+When the user submits the form, the following data will be sent to the URL
+specified by the `action` parameter:
+
+* `groupUuid[0]`, `groupUuid[1]`, ... `groupUuid[n]`
+* `groupName[0]`, `groupName[1]`, ... `groupName[n]`
+
+If the user selects multiple groups, they will appear in the same order in
+both lists such that, e.g., `groupName[2]` is the name and `groupUuid[2]` is
+the UUID of the third group in the user's selection.

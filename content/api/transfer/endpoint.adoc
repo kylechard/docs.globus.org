@@ -32,16 +32,32 @@ Roles].
 For getting list of endpoints matching a name or other categories, see
 link:../endpoint_search[Endpoint Search].
 
-=== Endpoint Visibility and Management
+=== Linked Identities
 
-A private endpoint will be visible if any of the linked identities
-associated with the Globus Auth token used to authenticate to the REST API
-own the endpoint.
+Authorization is based on the capabilities granted to any of the linked
+identities associated with the Globus Auth token used to authenticate to
+the REST API, combined with capabilities granted to any of the groups any
+of the linked identities belong too. For example, a private endpoint will be
+visible if any of the linked identities own the endpoint, or if any of the
+linked identities has an appropriate
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint (see role documentation for details on which roles grant this
+visibility).
 
-The client will have update and delete permissions on an endpoint if any of
-the linked identities associated with the Globus Auth token own the endpoint
-(see the +owner_id+ field). When creating an endpoint, it will have the
-+owner_id+ and +owner_string+ set based on the primary identity.
+When an endpoint is created, the +owner_id+ and +owner_string+ are set based
+on the primary identity.
+
+[[managed_endpoints]]
+=== "Managed" Endpoints
+
+Some advanced endpoint features, for example hosting shared endpoints and
+using the Advanced Endpoint Management API, require a
+link:https://www.globus.org/subscriptions[Globus subscription]. To enable
+these features for an endpoint, the endpoint must be set as "managed" by
+setting the `subscription_id` field on the endpoint to the id for the
+subscription. Once this is set, the endpoint is considered "managed".
+A shared endpoint is considered "managed" if it's host endpoint has a
+non-null `subscription_id`.
 
 [[document_types]]
 == Document Types
@@ -72,6 +88,10 @@ connected to Globus.
 .Shared endpoints
 Shared endpoints will have +host_endpoint_id+ set to a non-null value.
 They have no server sub-documents, and must always be +public+.
+
+NOTE: If a host endpoint is deleted, all hosted shared endpoints will stop
+allowing filesystem operations (task submission and interactive operations).
+The API resources will return a "Conflict" error in this case.
 
 .S3 endpoints
 S3 endpoints will have +s3_url+ set to a non-null value. They have no server
@@ -269,18 +289,29 @@ sub-documents.
                    +host_endpoint_id+ and +host_endpoint_display_name+ instead.
 | host_endpoint_id | string
                  | Id of standard endpoint hosting the shared
-                   endpoint; "null" for non-shared endpoints.
+                   endpoint; "null" for non-shared endpoints. Note that this
+                   will be set on all shared endpoints, regardless of whether
+                   the user has permission to get details of the endpoint or
+                   whether the endpoint has been deleted.
 | host_endpoint_display_name | string
-                 | If the user has permission to view the host endpoint,
-                   this will be set to the +display_name+ of the host, or
-                   to the +canonical_name+ if the +display_name+ is not set.
-                   "null" if the user does not have permission or if the
-                   endpoint is not a shared endpoint.
+                 | If the host endpoint has not been deleted and the user
+                   has authorization for
+                   <<get_endpoint_by_id,Get endpoint by id>> on the host
+                   endpoint, this will be set to the +display_name+ of the
+                   host endpoint, or to the +canonical_name+ if the
+                   +display_name+ is not set.
+                   "null" if the host endpoint has been deleted, if the user
+                   does not have permission, or if the endpoint is not a
+                   shared endpoint.
 | host_path      | string
-                 | Root path being shared on the host endpoint; "null" for
-                   non-shared endpoints. Only visible by the owner of the
-                   endpoint, "null" for other users even if the ACL gives
-                   them access to the files on the endpoint.
+                 | Root path being shared on the host endpoint, if the endpoint
+                   is a shared endpoint and if the user has the "administrator"
+                   link:../endpoint_roles#effective_roles[effective role]
+                   on the shared endpoint or the "activity_monitor"
+                   effective role on the host endpoint. "null" if the host
+                   endpoint has been deleted, if the user does not have one of
+                   the required effective roles, or if the endpoint is not a
+                   shared endpoint.
 | s3_url         | string
                  | [ALPHA] For S3 endpoints, the url to the S3 bucket
 | s3_owner_activated
@@ -298,7 +329,9 @@ sub-documents.
                  | "true" if any active tasks owned by the user are using the
                    endpoint
 | my_effective_roles | list of string
-                 | [ALPHA] List of roles the current user has on the endpoint.
+                 | [ALPHA] List of
+                   link:../endpoint_roles#effective_roles[effective roles]
+                   the current user has on the endpoint.
 | gcp_connected  | boolean
                  | If +is_globus_connect+ is "true", this indicates if the
                    Globus Connect Personal (GCP) software is running and
@@ -561,6 +594,12 @@ deleted endpoints, but only when using id in the URL <endpoint_xid>
 argument. If an endpoint canonical_name is used for the <endpoint_xid>,
 it will return "EndpointNotFound" for deleted endpoints.
 
+.Authorization
+Requires that the endpoint is public or that the user has the "administrator"
+or "activity_monitor"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
+
 [cols="h,5"]
 |============
 | URL
@@ -626,6 +665,19 @@ using the CLI.
 
 Create a shared endpoint.
 
+.Authorization
+Requires that the host endpoint is
+link:../endpoint#managed_endpoints[managed]. For
+Globus Connect Personal endpoints, creating a shared endpoint is also allowed
+if the user has the "administrator"
+link:../endpoint_roles#effective_roles[effective role] on the
+host endpoint.
+
+NOTE: If the authorization requirement is no longer met in the future,
+e.g. if the endpoint is made unmanaged, task submission will not be allowed.
+In this case, attempting to submit a new task will result in a
+"NotLicensedException" error.
+
 [cols="h,5"]
 |============
 | URL
@@ -655,6 +707,11 @@ the servers on the endpoint, in the form of total replacement of the list
 of subdocuments. Using this is deprecated, and the server APIs should be used
 instead. New code should not pass a "DATA" key at all when doing endpoint
 update.
+
+.Authorization
+Requires the "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============
@@ -714,12 +771,16 @@ Which fields can be updated depends on the type of endpoint:
 [[delete_endpoint_by_id]]
 === Delete endpoint by id
 
-Delete an endpoint by id or canonical name (the latter is deprecated). Only the
-owner can delete the endpoint.  Note that all data associated with the
-endpoint, including roles and the ACL, will be deleted as well. If the hostname
-of the server has changed, the +server+ document(s) in the endpoint should be
-changed rather than deleting and recreating the endpoint with different
-servers.
+Delete an endpoint by id or canonical name (the latter is deprecated). Note
+that all data associated with the endpoint, including roles and the ACL, will
+be deleted as well. If the hostname of the server has changed, the +server+
+document(s) in the endpoint should be changed rather than deleting and
+recreating the endpoint with different servers.
+
+.Authorization
+Requires the "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============
@@ -760,6 +821,12 @@ Get a list of all servers belonging to the specified endpoint. Note that
 this is the same as the server list included under the "DATA" key of the
 endpoint document.
 
+.Authorization
+Requires that the endpoint is public or that the user has the "administrator"
+or "activity_monitor"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
+
 [cols="h,5"]
 |============
 | URL
@@ -776,6 +843,12 @@ endpoint document.
 === Get endpoint server by id
 
 Get a specific server belonging to the specified endpoint.
+
+.Authorization
+Requires that the endpoint is public or that the user has the "administrator"
+or "activity_monitor"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============
@@ -798,6 +871,11 @@ to "null". The derived fields and boolean status fields are ignored, and
 should not be included in the request body.
 
 Returns a result document containing the +id+ of the newly added server.
+
+.Authorization
+Requires the "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
 
 [cols="h,5"]
 |============
@@ -830,6 +908,11 @@ Update a server belonging to the specified endpoint. Include only the
 fields to be updated in the request body - any of +hostname+, +scheme+,
 +port+, and +subject+ can be updated.
 
+.Authorization
+Requires the "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
+
 [cols="h,5"]
 |============
 | URL
@@ -849,6 +932,11 @@ fields to be updated in the request body - any of +hostname+, +scheme+,
 
 Delete a server belonging to the specified endpoint.
 
+.Authorization
+Requires the "administrator"
+link:../endpoint_roles#effective_roles[effective role]
+on the endpoint.
+
 [cols="h,5"]
 |============
 | URL
@@ -864,9 +952,10 @@ Delete a server belonging to the specified endpoint.
 [[get_shared_endpoint_list]]
 === Get shared endpoint list
 
-Get a list of shared endpoints owned by the current user and hosted by a given
-GridFTP or Globus Connect Personal endpoint. Returns a "BadRequest" error if
-called on an endpoint that can't host shared endpoints.
+Get a list of shared endpoints for which the user has the "administrator"
+link:../endpoint_roles#effective_roles[effective role].
+hosted by a given GridFTP or Globus Connect Personal endpoint. Returns a
+"BadRequest" error if called on an endpoint that can't host shared endpoints.
 
 [cols="h,5"]
 |============
@@ -885,6 +974,9 @@ called on an endpoint that can't host shared endpoints.
 
 NOTE: The endpoint_list API is deprecated, use
 link:../endpoint_search[Endpoint Search] instead.
+This API does not support newer authorization rules. For example, it does
+not expose private endpoints to users who have an appropriate role on the
+endpoint.
 
 Get a paged list of all endpoints visible to the current user. Most fields are
 returned by default, but some more expensive fields are omitted by default (see

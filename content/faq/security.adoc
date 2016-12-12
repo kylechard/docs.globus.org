@@ -119,3 +119,30 @@ Please send the following information to your IT administrator: "To setup your I
 If your organization is not part of the InCommon Federation, you can request to add your organizational login as an alternate identity provider in Globus. Your system must support the link:http://openid.net/connect/[OpenID Connect] protocol, and be registered with Globus as a trusted identity provider. Please link:https://www.globus.org/alternate-identity-provider-registration[submit this form] so we can register your system. Once the request is vetted and approved, your identity provider will be available as an option for login.
 
 NOTE: If your organization is not part of InCommon and your identity provider is not available via CILogon, you must have at least a Standard subscription and an Alternate Identity Provider Subscription as described link:https://www.globus.org/subscriptions[here] in order for your organization’s identity provider to be supported by Globus.
+
+== How do I know if I am using Globus Nexus within my application?
+
+If you are making calls to any URL that starts with the following, you are using Nexus and will need to move to Globus Auth:
+
+----
+https://www.globus.org/service/nexus
+https://www.globus.org/service/graph
+https://nexus.api.globusonline.org
+https://graph.api.globusonline.org
+----
+
+If you use either of these headers for authentication to Globus services (Nexus or Transfer), you will need to move to Globus Auth:
+
+----
+Authorization: Globus-Goauthtoken <access_token>
+X-Globus-Goauthtoken <access_token>
+----
+
+== What is the equivalent capability in Globus Auth for use of Globus Nexus?
+
+If you are using three legged OAuth with Globus Nexus (redirecting user to `/goauth/authorize`), then you can use the confidential client flow described in https://docs.globus.org/api/auth/developer-guide/#developing-apps.
+
+
+If you are using two legged OAuth with Globus Nexus (usign API `/goauth/token with grant_type=client_credentials`), then you can use the Non-confidential or native application flow described in https://docs.globus.org/api/auth/developer-guide/#developing-apps.
+
+Detailed documentation is at https://docs.globus.org/api/auth/ and a tutorial on Globus Auth with sample source code is available from https://www.globusworld.org/workshop2016. 

@@ -13,34 +13,108 @@ ifdef::env-github[:outfilesuffix: .adoc]
 
 == Overview
 
-The owner of an endpoint has full control over every aspect of the endpoint
-definition, including the attributes and the ACL. Roles allow the owner to
-delegate some administration rights to other identities or groups.
+The identity that created an endpoint (the "owner") has full control over every
+aspect of the endpoint, including the attributes, the ACL, and role
+assignments. Roles allow the owner to delegate a subset of these capabilities
+to other identities or groups. Note that assigning roles requires that
+the endpoint is link:../endpoint#managed_endpoints[managed].
 
-Roles can be assigned to either a single Globus Auth identity or to a Globus
-group, called the "principal". An endpoint can have at most 100 role
-assignments.  Only the owner of the endpoint can manipulate roles, all
-resources in this API will return a "PermissionDenied" error for other
-identities.
+Roles are assigned to a "principal", which can be a Globus Auth identity
+or a Globus group.
 
-Non owners can get a list of roles they have on an endpoint, using the
-+my_effective_roles+ field on the +endpoint+ document. This includes roles
-assigned directly to an identity in the current Globus Auth token, and roles
-assigned to groups one of the identities is a member of.
+Any user can get a list of
+link:../endpoint_roles#effective_roles[effective roles]
+they have on an endpoint from the `my_effective_roles` field of the
+link:../endpoint#endpoint_fields[endpoint document].
 
 === Supported Roles
 
-Role "access_manager":: The principal can view, add, and delete all access
- rules on the endpoint. This role is only supported on endpoints that have
- an ACL. Adding a principal with this role implicitly gives the principal
- read-write access to the endpoint, equivalent to access rule with
- permissions "rw" on path "/". Note that this implicit rule will be visible
- when calling
- link:../acl#rest_access_get_list[Get list of access rules], with
- +role_id+ set instead of +id+. Removing the implicit access rule requires
- deleting the corresponding endpoint role, and the access rule can't be
- modified with the acl API.
+Role "administrator":: The endpoint owner has this role implicitly, and a
+ principal with this role on the endpoint has the same capabilities
+ as the owner:
+    * modify the endpoint definition
+    * delete the endpoint
+    * view, add, update, and delete role assignments on the endpoint
+    * view the endpoint even if it's private
+    * the endpoint will be visible in search results even if it's private
+    * perform filesystem operations on the (ls, mkdir, rename,
+      transfer, delete) even if it's private
+    * create a shared endpoint on a Globus Connect Personal endpoint if one
+      of the user's linked identities is a member of a plus group
+    * all capabilities of the "access_manager" role
 
+Role "access_manager":: The principal can view, add, and delete all access
+ rules on the endpoint. This role is only supported on endpoints that support
+ access control lists. Adding a principal with this role implicitly gives the
+ principal read-write access to the endpoint, equivalent to an access rule with
+ permissions "rw" on path "/". Note that this implicit access rule will be
+ visible when calling link:../acl#rest_access_get_list[Get list of
+ access rules], with +role_id+ set instead of +id+. Removing the implicit
+ access rule requires deleting the corresponding endpoint role, and the access
+ rule can't be modified with the acl API.
+
+Role "activity_manager":: The principal can view and control tasks and other
+ endpoint activity to or from the endpoint. This includes all operations in the
+ link:../advanced_endpoint_management[Advanced Endpoint Management API]
+ (view, pause/resume, cancel). Having this role grants
+ all capabilities of the "activity_monitor" role to the principal.
+ If set on a host endpoint, this role is inherited by all hosted
+ shared endpoints.
+
+Role "activity_monitor":: The principal can view tasks and other activity to
+ or from the endpoint.
+ This includes all read-only task related resources in the
+ link:../advanced_endpoint_management[Advanced Endpoint Management
+ API], like events and task pause info, read-only view of pause rules, and
+ read-only view of the ACL on shared endpoints. If set on a host endpoint, this
+ role is inherited by all hosted shared endpoints. This role also grants
+ visibility on endpoints even if they are private. The private endpoint
+ visibility is supported by the
+ link:../advanced_endpoint_management#mc_get_endpoint[get endpoint as admin]
+ resource in the Advanced Endpoint Management API,
+ link:../endpoint_search[Endpoint Search],
+ link:../endpoint#get_endpoint_by_id[get endpoint],
+ link:../endpoint#get_endpoint_server_by_id[get endpoint server],
+ and
+ link:../endpoint#get_endpoint_server_list[get endpoint server list].
+ If the endpoint is private, submitting transfers and performing filesystem
+ operations will still return a "PermissionDenied" error - only visibility on
+ the endpoint document and servers is granted.
+
+[[effective_roles]]
+=== Effective Roles
+
+The <<role_list,role_list>> resource returns "explicit" roles added using
+the <<create_role,Create endpoint role>> resource, but a user
+can have additional "effective" roles, granted by having other roles on the
+endpoint or it's host, or by being the owner of the endpoint. The
+`my_effective_roles` field of the
+link:../endpoint#endpoint_fields[endpoint document]
+will include all effective roles, not just
+the explicit roles returned in the `role_list`. Authorization decisions
+are based on the effective roles in `my_effective_roles`, rather
+than the explicit role list. In detail:
+
+* The owner of an endpoint has effective roles "administrator" and
+  "access_manager".
+
+* A user with the "administrator" role will also have effective role
+  "access_manager".
+
+* A user with the "activity_monitor" role on a host endpoint will have
+  the "activity_monitor" effective roles on all hosted shared endpoints,
+  and a user with the "activity_manager" role on a host endpoint will have
+  the "activity_manager" role on all hosted shared endpoints.
+
+* A user with the "activity_manager" effective role on an endpoint will
+  also have the "activity_monitor" effective role on the endpoint.
+
+* If the endpoint is made unmanaged, then users with the "activity_manager"
+  or "activity_monitor" roles will no longer have the corresponding effective
+  roles (i.e. the roles will become inactive), until the endpoint is made
+  managed again. Note that in contrast the "administrator" role will continue
+  to remain active even when the endpoint is made unmanaged, but no new roles
+  can be added.
 
 == Document Types
 
@@ -128,6 +202,7 @@ Fields are required for create unless otherwise specified.
                             delete the specified role(s).
 | Exists            |409  | If a role assignment with the same principal
                             and role already exists.
+| Conflict          |409  | If the endpoint is not managed.
 | NotSupported      |409  | If the endpoint does not support the specified
                             role.
 | LimitExceeded     |409  | If the endpoint role list already has the maximum
@@ -138,10 +213,14 @@ Fields are required for create unless otherwise specified.
 
 == Operations
 
+[[role_list]]
 === Get list of endpoint roles
 
 Get a list of role assignments on an endpoint. Since an endpoint can have at
 most 100 roles, this list is not paged and will return at most 100 roles.
+
+.Authorization
+Requires the "administrator" <<effective_roles,effective role>>.
 
 [cols="h,5"]
 |============
@@ -177,10 +256,15 @@ most 100 roles, this list is not paged and will return at most 100 roles.
 |============
 
 
+[[create_role]]
 === Create endpoint role
 
 Assign a role to an identity or group for the given endpoint. On success returns
 a copy of the created role with the system generated id added.
+
+.Authorization
+Requires the "administrator" <<effective_roles,effective role>>, and that
+the endpoint is link:../endpoint#managed_endpoints[managed].
 
 [cols="h,5"]
 |============
@@ -217,6 +301,9 @@ a copy of the created role with the system generated id added.
 
 Get a single role assignment by id.
 
+.Authorization
+Requires the "administrator" <<effective_roles,effective role>>.
+
 [cols="h,5"]
 |============
 | URL
@@ -242,6 +329,10 @@ Get a single role assignment by id.
 
 Delete a single role assignment by id. Returns a result document on
 success.
+
+.Authorization
+Requires the "administrator" <<effective_roles,effective role>>, and that
+the endpoint is link:../endpoint#managed_endpoints[managed].
 
 [cols="h,5"]
 |============

@@ -11,6 +11,8 @@ menu_weight: 2
 
 [doc-info]#Last Updated: {revdate}#
 
+NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program and now available in Beta.
+
 This is a companion guide to link:../[Getting started with the Command Line Interface (CLI)]. New CLI users should be familiar with that introduction before proceeding.
 
 '''

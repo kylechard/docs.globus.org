@@ -155,6 +155,20 @@ The +limit+ query parameter sets how many results to return (max 100), and the
   Limit search to endpoints owned by the specified globusid.org
   user, identified by username. See also the +username+ field of the
   +endpoint+ document.
+
+| filter_host_endpoint
+| string
+| null
+| Single endpoint id. Limit search to endpoints hosted by the specified
+  endpoint. "BadRequest" will be returned if the specified endpoint does not
+  support hosting shared endpoints. "PermissionDenied" will be returned if
+  the user does not have the "administrator"
+  link:../endpoint_roles#effective_roles[effective role]
+  on the specified endpoint.
+  See
+  link:../endpoint#get_shared_endpoint_list[Get shared endpoint list]
+  for getting a list of shared endpoints administered by the current user,
+  which does not require the "administrator" role on the _host_ endpoint.
 |===================
 
 
@@ -162,12 +176,12 @@ The +limit+ query parameter sets how many results to return (max 100), and the
 
 The optional +filter_scope+ query parameter can be used to further restrict
 the endpoints searched. The supported values and their affect are described
-below. Note that some scopes require that the +filter_fulltext+ parameter
-also be specified, while others do not.
+below. Note that some scopes require that another filter
+parameter also be specified (see the list above), while others do not.
 
 [cols="1,8,1",options="header"]
 |===================
-| Value   | Description | filter_fulltext Required
+| Value   | Description | Additional Filter Required
 
 | all
 | Search all endpoints visible to the current user. This is the default.
@@ -195,8 +209,13 @@ also be specified, while others do not.
 
 | shared-with-me
 | Search shared endpoints with access rules that give the current user
-  access. Does not include shared endpoints with public or all authenticated
-  access, e.g. that have access rules with +principal+
-  "all_authenticated_users".
+  access. 
+Does not include rules with public or all_authenticated_users access.
+| False
+
+| administered-by-me
+| Search only endpoints for which the current user has the "administrator"
+  role (this includes endpoints owned by the current user, so this is
+  a superset of scope "my-endpoints").
 | False
 |===================
