@@ -82,18 +82,27 @@ directory listing).
 === Auto Activation
 
 There are two cases in which endpoints can be activated without requiring
-credentials from the user. One case is Globus endpoint types that perform
+credentials from the user.  
+
+1. Globus endpoint types that perform
 authorization based on the user's Globus account. This includes Globus Connect
 Personal Endpoints, Shared Endpoints, and the Globus Tutorial Endpoints. All of
 these endpoints are configured with a +myproxy_server+ of
 "myproxy.globusonline.org". Note that this is not actually a real myproxy
-server, and will not work with normal GridFTP endpoints.
+server, and will not work with GSI GridFTP endpoints.  Note that Anonymous
+GridFTP endpoints should also be configured with "myproxy.globusonline.org" as a
+dummy credential source.
 
-The second case is credential sharing for endpoints configured with an
+2. Credential sharing for endpoints configured with an
 identity provider. If the user has activated one endpoint with a specific
 identity provider, then other endpoints using that same identity provider
 can be auto activated, by copying that credential for use on the other
 endpoint.
+
+
+From the types above, type (1) endpoints can be used without an autoactivate request (the transfer service will do it implicitly).
+Type (2) endpoints must have an autoactivate or activation request (the transfer service will NOT do it implicitly).
+
 
 [[document_types]]
 == Document Types

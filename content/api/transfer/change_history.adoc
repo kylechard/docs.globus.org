@@ -11,6 +11,13 @@ menu_weight: 12
 ifdef::env-github[:outfilesuffix: .adoc]
 
 
+== 5.4 (Dec 2016)
+
+* Don't require explicit activation for myproxy.globusonline.org endpoints
+(GCP, Shared Endpoints, Anonymous FTP endpoints, Tutorial endpoints)
+
+* Remove legacy "subtask_link" from task resource
+
 == 5.3 (Nov 2016)
 
 * Endpoint Roles
