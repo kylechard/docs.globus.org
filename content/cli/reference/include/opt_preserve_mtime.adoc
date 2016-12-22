@@ -1,7 +1,6 @@
 *--preserve-mtime*::
 
-Preserve file modification time of files that were transferred.  Also preserve
-modification time of all directories.  
+Preserve modification time of files that were transferred.  
 +
 NOTE: The destination server must be a recent GridFTP version, otherwise the
 transfer will have errors and not complete.  
