@@ -2071,3 +2071,201 @@ if (globus_l_fake_state.log_path == NULL)
     goto get_log_path_failed;
 }
 ----
+
+===== Register Event
+
+The next main action the activation function does is to register an event to happen later to process the events in the LRM log. For this, we use the `globus_callback_register_oneshot()` function to register an event handler to execute as soon as possible within the `globus-scheduduler-event-generator` program. The callback function in this case is the `globus_l_fake_read_callback()` function defined later.
+
+----
+result = globus_callback_register_oneshot(
+        NULL,
+        NULL,
+        globus_l_fake_read_callback,
+        &globus_l_fake_state);
+if (result != GLOBUS_SUCCESS)
+{
+    goto register_oneshot_failed;
+}
+globus_l_fake_state.callback_count++;
+----
+
+===== Cleanup on Failure
+
+Here we handle the errors that might have occurred above and free temporarily used memory. In case of a failure, `result` is set to something other than [monospace]#GLOBUS_SUCCESS#.
+
+----
+register_oneshot_failed:
+get_log_path_failed:
+    if (result != GLOBUS_SUCCESS)
+    {
+        free(globus_l_fake_state.log_path);
+    }
+    free(log_dir);
+get_log_dir_failed:
+    free(config_path);
+get_config_path_failed:
+get_timestamp_failed:
+    if (result != GLOBUS_SUCCESS)
+    {
+malloc_state_failed:
+        globus_cond_destroy(&globus_l_fake_state.cond);
+cond_init_failed:
+        globus_mutex_destroy(&globus_l_fake_state.mutex);
+mutex_init_failed:
+        globus_module_deactivate(GLOBUS_COMMON_MODULE);
+    }
+activation_failure:
+----
+
+==== Module Deactivation
+
+For our deactivation function, we will wait use the shutdown handling variables in the state structure to wait until all outstanding callback have terminated and then free memory associated with the state.
+
+----
+static
+int
+globus_l_fake_module_deactivate(void)
+{
+----
+
+- link:#shutdown_handling[Shutdown Handling]
+- link:#cleanup_state[Cleanup State]
+
+----
+} /* globus_l_fake_module_deactivate() */
+----
+
+[[shutdown_handling]]
+*Shutdown Handling*. To handle shutdown safely, we must wait until pending callbacks have terminated. To do this, we set the shutdown_called field in the state structure and wait until the [monospace]#callback_count# field is 0. Inside the callback function, if we see that the [monospace]#shutdown_called# field is [monospace]#GLOBUS_TRUE# then it will not reregister itself and will signal when it terminates.
+
+----
+globus_mutex_lock(&globus_l_fake_state.mutex);
+globus_l_fake_state.shutdown_called = GLOBUS_TRUE;
+while (globus_l_fake_state.callback_count > 0)
+{
+    globus_cond_wait(&globus_l_fake_state.cond, &globus_l_fake_state.mutex);
+}
+globus_mutex_unlock(&globus_l_fake_state.mutex);
+----
+
+[[cleanup_state]]
+*Cleanup State*. Finally, we'll free data we allocated in the activation function.
+
+----
+globus_mutex_destroy(&globus_l_fake_state.mutex);
+globus_cond_destroy(&globus_l_fake_state.cond);
+free(globus_l_fake_state.log_path);
+if (globus_l_fake_state.log)
+{
+    fclose(globus_l_fake_state.log);
+}
+while (!globus_list_empty(globus_l_fake_state.jobs))
+{
+    fake_job_info_t *info;
+
+    info = globus_list_remove(
+            &globus_l_fake_state.jobs,
+            globus_l_fake_state.jobs);
+
+    free(info);
+}
+
+globus_module_deactivate(GLOBUS_COMMON_MODULE);
+
+return GLOBUS_SUCCESS;
+----
+
+==== Process Events
+
+The main activity of our LRM module is to generate SEG events so that a job manager will be able to efficient manage its jobs. In this code, we will parse our log file periodically, and fire off any events which are to have occurred for the jobs in the fake job log. The structure of the processing function is this
+
+static
+void
+globus_l_fake_read_callback(void * arg)
+{
+Declare Variables
+Check for Shutdown
+Open Log
+Read Log
+Create Events
+Emit Events
+Reregister Callback
+Error Handling
+} /* globus_l_fake_read_callback() */
+Declare Variables. 
+
+char                                jobid[64];
+globus_list_t                      *l, *events;
+fake_job_info_t                     *info;
+globus_reltime_t                    delay = {0};
+time_t                              now;
+unsigned long                       pending_time, active_time, done_time,
+                                    failed_time;
+globus_scheduler_event_t            *e;
+time_t                              last_timestamp;
+globus_result_t                     result = GLOBUS_SUCCESS;
+Check for Shutdown. To check for shutdown, we'll first lock the mutex associated with the state structure and check if the shutdown_called field is set to true. If so, we'll jump to our error handling code.
+
+globus_mutex_lock(&globus_l_fake_state.mutex);
+if (globus_l_fake_state.shutdown_called)
+{
+    result = GLOBUS_FAILURE;
+
+    goto error;
+}
+Open Log. In general, we'll keep a file open to parse the log, but the first time around, or before any events have been written, the log file might not exist. So we'll check to see if we have a NULL file pointer, and if so, try to open the file. Once opened, we'll use line buffering while we process the file.
+
+if (globus_l_fake_state.log == NULL)
+{
+    globus_l_fake_state.log = fopen(globus_l_fake_state.log_path, "r");
+
+    if (globus_l_fake_state.log != NULL)
+    {
+        /* Enable line buffering */
+        setvbuf(globus_l_fake_state.log, NULL, _IOLBF, 0);
+
+    }
+}
+if (globus_l_fake_state.log == NULL)
+{
+    result = GLOBUS_FAILURE;
+
+    GlobusTimeReltimeSet(delay, 30, 0);
+    goto reregister;
+}
+Read Log. Now we will read all of the log entries from our current position until the end of file. If we've already parsed an entry for a particular job, we will zero out its timestamps and replace with the new timestamps to handle cancel events in the fake job log.
+
+/* previous read might have hit EOF, so clear it before trying to read */
+clearerr(globus_l_fake_state.log);
+
+/* Read any new job info from the log */
+    while (fscanf(globus_l_fake_state.log,
+                "%63[^;];%ld;%ld;%ld;%ld\n",
+                jobid, &pending_time, &active_time, &done_time, &failed_time)
+        == 5)
+{
+    l = globus_list_search_pred(globus_l_fake_state.jobs,
+            globus_l_fake_find_by_job_id, jobid);
+    if (l != NULL)
+    {
+        info = globus_list_first(l);
+        /* If there's a second entry for the same job, it was cancelled, so
+         * clear done/failed timestamps and copy them below
+         */
+        info->done = info->failed = 0;
+    }
+    else
+    {
+        /* First time we've seen this job, set jobid and insert*/
+        info = malloc(sizeof(fake_job_info_t));
+        *info = fake_job_info_initializer;
+        strcpy(info->jobid, jobid);
+
+        globus_list_insert(&globus_l_fake_state.jobs, info);
+    }
+    /* set timestamps */
+    info->pending = pending_time;
+    info->active = active_time;
+    info->done = done_time;
+    info->failed = failed_time;
+}
