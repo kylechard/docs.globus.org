@@ -83,36 +83,52 @@ Now, when you access your Globus Connect Personal endpoint on the Start Transfer
 The Globus service manages transfers to and from a Globus Connect Personal endpoint. Globus Connect Personal uses GSI SSH to maintain a control connection to the Globus service and receive commands. Data are always transferred directly between the Globus Connect Personal endpoint and the destination endpoint – data does not "flow through" Globus in any way.
 
 == How Do I Configure Accessible Directories on Globus Connect Personal for Linux?
-When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the +\~/.globusonline/lta/config-paths+ file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. By default, a +~/.globusonline/lta/config-paths+ file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
+When using Globus Connect Personal, you will only be able to transfer files to and from directories on your local computer that are set to be accessible. To configure which directories are accessible to Globus Connect Personal, you must configure the `~/.globusonline/lta/config-paths` file. This file is a plain text file, with each line corresponding to the configuration of a particular directory path you wish to make accessible. Each line consists of 3 comma separated fields.
+
+----
+<path1>,<sharing flag>,<R/W flag>
+<path2>,<sharing flag>,<R/W flag>
+<path3>,<sharing flag>,<R/W flag>
+...
+----
+
+Path:: The first field is an absolute directory/path to be permitted.  A leading tilde "~" can be used to represent the home directory of the user that runs globusconnectpersonal.
+
+Sharing Flag:: The second field controls sharing, with a value of "1" allowing sharing for the path and a value of "0" disallowing sharing for the path.
++
+NOTE: Sharing is a premium feature, so the endpoint must be covered by a subscription to use sharing. For additional details, see link:../../how-to/share-files/[here].
+
+R/W Flag:: The third field determines whether the path will be accessible read-only or read/write, with a "1" permitting read/write access and a "0" marking the path as read-only. The permissions set by this field are in addition to any other permissions/restrictions that may already be in place on the host - e.g. Linux file system permissions, etc. - and the most restrictive of all applicable permissions are what will determine effective access. For additional details, see link:../../resource-provider-guide/#details_on_effective_share_permissions[here].
+
+By default, a `~/.globusonline/lta/config-paths` file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
 
 ----
 ~/,0,1
 ----
 
-This configuration tells Globus Connect Personal to make the user's home directory accessible, and to make it read/write in terms of the ability to do Globus transfers. If we wanted to configure the user's home directory to be read only with respect to the ability to do Globus transfers we could change config-paths like so:
+This configuration tells Globus Connect Personal to make the user's home directory accessible, and to make it read/write in terms of the ability to do Globus transfers. If we wanted to configure the user's home directory to be read-only with respect to the ability to do Globus transfers we could change config-paths like so:
 
 ----
 ~/,0,0
 ----
- 
-If the user wishes to make additional directories accessible, then each new top level path must be given its own line in the +~/.globusonline/lta/config-paths+ file. For example, if the user wanted to enable Globus Connect Personal to access the /data/tables directory then they would add the following line to their config-paths file:
+
+If the user wishes to make additional directories accessible, then each new top level path must be given its own line in the `~/.globusonline/lta/config-paths` file. For example, if the user wanted to enable Globus Connect Personal to access the /data/tables directory then they would add the following line to their config-paths file:
 
 ----
 /data/tables,0,1
 ----
- 
-After making a change to the +~/.globusonline/lta/config-paths+ file you must stop and restart Globus Connect Personal like so before the changes will take effect:
+
+After making a change to the `~/.globusonline/lta/config-paths` file you must stop and restart Globus Connect Personal before the changes will take effect, like so:
 
 ----terminal
 $ [input]#./globusconnectpersonal -stop#
 
 $ [input]#./globusconnectpersonal -start &#
 ----terminal
- 
+
 In all cases, it is important to note that a user cannot access a directory or a file via Globus Connect Personal that they don't have proper unix file permissions for on the local system. Unix file permissions must be considered along with the permissions specified in the config-paths file to determine actual accessibility for a given file or directory. In any case, the most restrictive of the two categories of permissions will always apply.
 
-
-NOTE: There are some caveats concerning how Globus Connect Personal handles symlinks found in accessible paths. Please read more about that in the following FAQ: link:../transfer-sharing/#how_does_globus_handle_symlinks[How Does Globus Handle Symlinks?]
+NOTE: There are some caveats concerning how Globus Connect Personal handles symlinks found in accessible paths. Please read more about that in the following link:../transfer-sharing/#how_does_globus_handle_symlinks[FAQ: How Does Globus Handle Symlinks?]
 
 == How do I update to the latest version of Globus Connect Personal?
 The steps you will need to take to upgrade your current Globus Connect Personal install will depend on the operating system you are using. Please refer to the section below that corresponds to the OS of the system that you have Globus Connect Personal installed on.
@@ -262,7 +278,7 @@ This issue arises when your home directory is stored on a server, and "*<path>*"
 
 To resolve this problem, you must use Windows' capability to create a shortcut to a network share, or "Map" it to a drive letter. Microsoft provides official documentation for this for link:http://windows.microsoft.com/en-us/windows/create-shortcut-map-network-drive[Windows 7 and Windows Vista], link:https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/windows_fcab_connect_drive.mspx[Windows XP], and link:http://windows.microsoft.com/en-us/windows-8/create-shortcut-to-map-network-drive[Windows 8]. Follow these instructions to assign a drive letter of your choosing to the network share containing your home directory, and then restart Globus Connect Personal.
 
-== Why do I get “Permission Denied” or “Path not allowed” errors on my endpoint?
+== Why do I get "Permission Denied" or "Path not allowed" errors on my endpoint?
 When transferring files with from Globus Connect Personal, a common error that appears on the web site is:
 
 ----
