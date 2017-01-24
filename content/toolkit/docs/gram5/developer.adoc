@@ -1510,15 +1510,15 @@ The LRM adapter configuration files consist of attribute="value" pairs, which co
 log_path="/tmp"
 ----
 
-*Parsing the Configuration File*
+===== Parsing the Configuration File
 
 The Globus Toolkit contains API functions for parsing files in the format used by the LRM configuration files. In Perl, use the [monospace]#Globus::Core::Config# class. In C, use the `globus_common_get_attribute_from_config_file()` function.
 
-*Perl API*
+===== Perl API
 
 The [monospace]#Globus::Core::Config# API is quite simple. The `new()` constructor parses the configuration file and returns an object containing the attribute=value pairs. The `get_attribute()` method returns the value of the named attribute. These functions are used in the fake LRM Perl Module.
 
-*C API*
+===== C API
 
 The `globus_common_get_attribute_from_config_file()` function will load the configuration file and return the value of the attribute passed to it. This function is ued in the SEG module below. Note that this function returns a pointer to a copy of the string value in the location pointed to by the _value_ parameter. The caller must free this value.
 
@@ -2019,7 +2019,7 @@ globus_l_fake_state.shutdown_called = GLOBUS_FALSE;
 globus_l_fake_state.callback_count = 0;
 ----
 
-===== LRM SEG Module Configuration
+*LRM SEG Module Configuration*
 
 [[read_configuration]]
 *Read Configuration*. There are two main pieces of configuation information we'll need to process SEG events: the earliest timestamp we care about (which we get from the SEG module) and the path to our fake job log file (which we get from our configuration file as in the perl module).
@@ -2072,7 +2072,7 @@ if (globus_l_fake_state.log_path == NULL)
 }
 ----
 
-===== Register Event
+*Register Event*
 
 The next main action the activation function does is to register an event to happen later to process the events in the LRM log. For this, we use the `globus_callback_register_oneshot()` function to register an event handler to execute as soon as possible within the `globus-scheduduler-event-generator` program. The callback function in this case is the `globus_l_fake_read_callback()` function defined later.
 
@@ -2089,7 +2089,7 @@ if (result != GLOBUS_SUCCESS)
 globus_l_fake_state.callback_count++;
 ----
 
-===== Cleanup on Failure
+*Cleanup on Failure*
 
 Here we handle the errors that might have occurred above and free temporarily used memory. In case of a failure, `result` is set to something other than [monospace]#GLOBUS_SUCCESS#.
 
@@ -2117,7 +2117,7 @@ mutex_init_failed:
 activation_failure:
 ----
 
-==== Module Deactivation
+===== Module Deactivation
 
 For our deactivation function, we will wait use the shutdown handling variables in the state structure to wait until all outstanding callback have terminated and then free memory associated with the state.
 
@@ -2175,25 +2175,34 @@ globus_module_deactivate(GLOBUS_COMMON_MODULE);
 return GLOBUS_SUCCESS;
 ----
 
-==== Process Events
+===== Process Events
 
 The main activity of our LRM module is to generate SEG events so that a job manager will be able to efficient manage its jobs. In this code, we will parse our log file periodically, and fire off any events which are to have occurred for the jobs in the fake job log. The structure of the processing function is this
 
+----
 static
 void
 globus_l_fake_read_callback(void * arg)
 {
-Declare Variables
-Check for Shutdown
-Open Log
-Read Log
-Create Events
-Emit Events
-Reregister Callback
-Error Handling
-} /* globus_l_fake_read_callback() */
-Declare Variables. 
+----
 
+* link:#declare_variables[Declare Variables]
+* link:#check_for_shutdown[Check for Shutdown]
+* link:#open_log[Open Log]
+* link:#read_log[Read Log]
+* link:#create_events[Create Events]
+* link:#emit_events[Emit Events]
+* link:#reregister_callback[Reregister Callback]
+* link:#error_handling[Error Handling]
+
+----
+} /* globus_l_fake_read_callback() */
+----
+
+[[declare_variables]]
+*Declare Variables.* 
+
+----
 char                                jobid[64];
 globus_list_t                      *l, *events;
 fake_job_info_t                     *info;
@@ -2204,8 +2213,12 @@ unsigned long                       pending_time, active_time, done_time,
 globus_scheduler_event_t            *e;
 time_t                              last_timestamp;
 globus_result_t                     result = GLOBUS_SUCCESS;
-Check for Shutdown. To check for shutdown, we'll first lock the mutex associated with the state structure and check if the shutdown_called field is set to true. If so, we'll jump to our error handling code.
+----
 
+[[check_for_shutdown]]
+*Check for Shutdown.* To check for shutdown, we'll first lock the mutex associated with the state structure and check if the [monospace]#shutdown_called# field is set to true. If so, we'll jump to our error handling code.
+
+----
 globus_mutex_lock(&globus_l_fake_state.mutex);
 if (globus_l_fake_state.shutdown_called)
 {
@@ -2213,8 +2226,12 @@ if (globus_l_fake_state.shutdown_called)
 
     goto error;
 }
-Open Log. In general, we'll keep a file open to parse the log, but the first time around, or before any events have been written, the log file might not exist. So we'll check to see if we have a NULL file pointer, and if so, try to open the file. Once opened, we'll use line buffering while we process the file.
+----
 
+[[open_log]]
+*Open Log.* In general, we'll keep a file open to parse the log, but the first time around, or before any events have been written, the log file might not exist. So we'll check to see if we have a [monospace]#NULL# file pointer, and if so, try to open the file. Once opened, we'll use line buffering while we process the file.
+
+----
 if (globus_l_fake_state.log == NULL)
 {
     globus_l_fake_state.log = fopen(globus_l_fake_state.log_path, "r");
@@ -2233,8 +2250,12 @@ if (globus_l_fake_state.log == NULL)
     GlobusTimeReltimeSet(delay, 30, 0);
     goto reregister;
 }
-Read Log. Now we will read all of the log entries from our current position until the end of file. If we've already parsed an entry for a particular job, we will zero out its timestamps and replace with the new timestamps to handle cancel events in the fake job log.
+----
 
+[[read_log]]
+*Read Log*. Now we will read all of the log entries from our current position until the end of file. If we've already parsed an entry for a particular job, we will zero out its timestamps and replace with the new timestamps to handle cancel events in the fake job log.
+
+----
 /* previous read might have hit EOF, so clear it before trying to read */
 clearerr(globus_l_fake_state.log);
 
@@ -2269,3 +2290,1288 @@ clearerr(globus_l_fake_state.log);
     info->done = done_time;
     info->failed = failed_time;
 }
+----
+
+[[create_events]]
+*Create Events.* Now, we'll walk our list of jobs and create SEG events for each state transition which has occurred since our last timestamp and the current time. These events will be out of order in our events list, because they are created in order of job IDs in the jobs list, and not in timestamp list. We'll deal with this later. Note that we set the timestamp values in the job info to 0 after we create an event. This keeps us from generating an event multiple times.
+
+----
+/* Create set of events that we'll emit this time through: jobs which will
+ * changed state since our last event update
+ */
+now = time(NULL);
+
+events = NULL;
+for (l = globus_l_fake_state.jobs; l != NULL; l = globus_list_rest(l))
+{
+    info = globus_list_first(l);
+
+    if (info->pending >= globus_l_fake_state.start_timestamp &&
+        info->pending < now)
+    {
+        e = malloc(sizeof(globus_scheduler_event_t));
+        e->event_type = GLOBUS_SCHEDULER_EVENT_PENDING;
+        e->job_id = info->jobid;
+        e->timestamp = info->pending;
+        e->exit_code = 0;
+        e->failure_code = 0;
+        e->raw_event = NULL;
+
+        info->pending = 0;
+
+        globus_list_insert(&events, e);
+    }
+    if (info->active >= globus_l_fake_state.start_timestamp &&
+        info->active < now)
+    {
+        e = malloc(sizeof(globus_scheduler_event_t));
+        e->event_type = GLOBUS_SCHEDULER_EVENT_ACTIVE;
+        e->job_id = info->jobid;
+        e->timestamp = info->active;
+        e->exit_code = 0;
+        e->failure_code = 0;
+        e->raw_event = NULL;
+
+        info->active = 0;
+
+        globus_list_insert(&events, e);
+    }
+    if (info->done != 0 && info->done >= globus_l_fake_state.start_timestamp &&
+        info->done < now)
+    {
+        e = malloc(sizeof(globus_scheduler_event_t));
+        e->event_type = GLOBUS_SCHEDULER_EVENT_DONE;
+        e->job_id = info->jobid;
+        e->timestamp = info->done;
+        e->exit_code = 0;
+        e->failure_code = 0;
+        e->raw_event = NULL;
+
+        info->done = 0;
+
+        globus_list_insert(&events, e);
+    }
+    if (info->failed != 0 &&
+        info->failed >= globus_l_fake_state.start_timestamp &&
+        info->failed < now)
+    {
+        e = malloc(sizeof(globus_scheduler_event_t));
+        e->event_type = GLOBUS_SCHEDULER_EVENT_FAILED;
+        e->job_id = info->jobid;
+        e->timestamp = info->failed;
+        e->exit_code = 0;
+        e->failure_code = GLOBUS_GRAM_PROTOCOL_ERROR_USER_CANCELLED;
+        e->raw_event = NULL;
+
+        info->failed = 0;
+        globus_list_insert(&events, e);
+    }
+}
+----
+
+[[emit_events]]
+*Emit Events.* Now we have a set of events, we will sort them by timestamp and then use the SEG API to emit them. After we've emitted an event, we have to free it. If the event is a terminal one (DONE or FAILED) we'll remove the job from the list of jobs in the state structure.
+
+----
+/* Sort the events so that they're in timestamp order */
+events = globus_list_sort_destructive(
+        events, globus_l_fake_compare_events, NULL);
+
+/* Emit events in proper order */
+while (! globus_list_empty(events))
+{
+    e = globus_list_remove(&events, events);
+    last_timestamp = e->timestamp;
+
+    switch (e->event_type)
+    {
+        case GLOBUS_SCHEDULER_EVENT_PENDING:
+            globus_scheduler_event_pending(e->timestamp, e->job_id);
+            break;
+        case GLOBUS_SCHEDULER_EVENT_ACTIVE:
+            globus_scheduler_event_active(e->timestamp, e->job_id);
+            break;
+        case GLOBUS_SCHEDULER_EVENT_FAILED:
+            globus_scheduler_event_failed(e->timestamp, e->job_id,
+                    e->failure_code);
+            break;
+        case GLOBUS_SCHEDULER_EVENT_DONE:
+            globus_scheduler_event_done(e->timestamp, e->job_id, e->exit_code);
+            break;
+    }
+    /* If this is a terminal event, we can remove the job from the list */
+    if (e->event_type == GLOBUS_SCHEDULER_EVENT_FAILED ||
+        e->event_type == GLOBUS_SCHEDULER_EVENT_DONE)
+    {
+        l = globus_list_search_pred(globus_l_fake_state.jobs,
+                globus_l_fake_find_by_job_id, e->job_id);
+        info = globus_list_remove(&globus_l_fake_state.jobs, l);
+        free(info);
+    }
+
+    free(e);
+}
+globus_l_fake_state.start_timestamp = last_timestamp;
+----
+
+[[reregister_callback]]
+*Reregister Callback.* We'll register a new callback instance now (provided we haven't had an error occur) so that we can continue to process jobs later.
+
+----
+    GlobusTimeReltimeSet(delay, 1, 0);
+reregister:
+    result = globus_callback_register_oneshot(
+            NULL,
+            &delay,
+
+    globus_l_fake_read_callback, &globus_l_fake_state);
+    if (result != GLOBUS_SUCCESS)
+    {
+        goto error;
+    }
+    globus_mutex_unlock(&globus_l_fake_state.mutex);
+return;
+----
+
+[[error_handling]]
+*Error Handling.* If an error occurred registering the event or the shutdown handler is invoked, we'll exit this function without registering a new event. In the case the shutdown handling is in place, we'll signal that as well
+
+----
+error:
+    if (globus_l_fake_state.shutdown_called)
+    {
+        globus_l_fake_state.callback_count--;
+
+        if (globus_l_fake_state.callback_count == 0)
+        {
+            globus_cond_signal(&globus_l_fake_state.cond);
+        }
+    }
+    else
+    {
+        fprintf(stderr,
+            "FATAL: Unable to register callback. FAKE SEG exiting\n");
+
+        exit(EXIT_FAILURE);
+    }
+    globus_mutex_unlock(&globus_l_fake_state.mutex);
+
+    return;
+----
+
+===== Utility Functions
+
+We have two utility functions to implement for this module to manage our lists of pending events and jobs.
+
+* link:#find_by_job_id[Find By Job ID]
+* link:#sort_events[Sort Events]
+
+[[find_by_job_id]]
+*Find By Job ID.* The `globus_l_fake_find_by_job_id()` function is used to search the jobs field of the state structure for a [monospace]#fake_job_info_t# containing info about a particular job. This predicate returns a non-zero value if the datum passed to the function has the same job ID as the _arg_ parameter.
+
+----
+static
+int
+globus_l_fake_find_by_job_id(void * datum, void * arg)
+{
+    fake_job_info_t * info = datum;
+
+    return (strcmp(info->jobid, arg) == 0);
+} /* globus_l_fake_find_by_job_id() */
+----
+
+[[sort_events]]
+*Sort Events.* The `globus_l_fake_compare_events()` function is used as a predicate to compare the timestamps and job ids of a pair of events. If the _log_datum_ points to an event which happens earlier in the job lifecycle than the _high_datum_, this function returns [monospace]#GLOBUS_TRUE;# otherwise it returns [monospace]#GLOBUS_FALSE#.
+
+----
+static
+int
+globus_l_fake_compare_events(void * low_datum, void * high_datum,
+        void * relation_args)
+{
+    globus_scheduler_event_t *low_event = low_datum, *high_event = high_datum;
+
+    if (low_event->timestamp < high_event->timestamp)
+    {
+        return GLOBUS_TRUE;
+    }
+    else if (low_event->timestamp == high_event->timestamp)
+    {
+        if (low_event->event_type == GLOBUS_SCHEDULER_EVENT_PENDING)
+        {
+            return GLOBUS_TRUE;
+        }
+        else if (low_event->event_type == GLOBUS_SCHEDULER_EVENT_ACTIVE &&
+                high_event->event_type != GLOBUS_SCHEDULER_EVENT_PENDING)
+        {
+            return GLOBUS_TRUE;
+        }
+        else if (high_event->event_type != GLOBUS_SCHEDULER_EVENT_PENDING &&
+            high_event->event_type != GLOBUS_SCHEDULER_EVENT_ACTIVE)
+        {
+            return GLOBUS_TRUE;
+        }
+    }
+    return GLOBUS_FALSE;
+} /*
+globus_l_fake_compare_events() */
+----
+
+==== Changes from Previous Versions
+===== Changes in GT 5.2
+
+GRAM5 is now designed to work as a native debian or RPM package, with default configuration being done at configuration time, so the setup script description has been removed.
+
+===== Changes in GT 5.0
+
+GRAM5 is based again on the C code base used for GRAM2 (also known as Pre-WS GRAM). The SEG module interface from GRAM4 is retained and optionally used by GRAM5. The GRAM job manager will avoid reloading the GRAM LRM Adapter script for each operation, so all variables not intended to be global state in the Perl LRM Adapter module must be lexically scoped, or state will leak between jobs and cause potentially cause problems.
+
+===== Changes in GT 4.0
+
+*Module Methods*
+
+The GT-4.0 ws-GRAM service only calls a subset of the Perl methods which were used by the pre-ws GRAM services. Most importantly for script implementors, the polling method is no longer used. Instead, the scheduler-event-generator monitors jobs to signal the service when job change changes occur. Staging is now done via the Reliable File Transfer service, so the file_stage_in and file_stage_out methods are no longer called. Schedulers typically did not implement the staging methods, so this shouldn't affect most scheduler modules.
+
+That being said, scheduler implementers which would like to have their scheduler both with pre-ws GRAM and WS-GRAM should definitely implement the poll() method described in the pre-WS version of this tutorial.
+
+*GASS Cache*
+
+The GT-4.0 ws-GRAM service does not use the GASS cache for storing temporary files or for staging files.
+
+===== Changes in GT 3.2
+
+In GT 3.2, additional error message context info was added. Scripts can optionally add one of these fields to the return hash from an operation to provide extra error information to the client:
+
+*GT3_FAILURE_MESSAGE*::
+Error message from underlying script processing indicating what caused a job request to fail
+*GT3_FAILURE_TYPE*::
+One of filestagein, filestageout, filestageinshared, executable, or stdin indicating what job request element caused a staging fault.
+*GT3_FAILURE_SOURCE*::
+Source URL or file for a failed staging operation
+*GT3_FAILURE_DESTINATION*::
+Destination URL or file for a failed staging operation
+
+== GRAM5 Developer's Reference
+=== APIs
+==== C API Documentation Links
+
+GRAM Protocol:: Low-level functions for processing GRAM protocol messages. Symbolic constants for RSL attributes, signals, and job states.
+
+GRAM Client::
+Functions for submitting job requests, sending signals, and listening for job state updates.
+RSL::
+Functions for parsing and manipulating job specifications in the RSL language.
+Scheduler Event Generator::
+Functions for generating and parsing LRM-independent job state change events.
+
+==== GRAM5 Perl API Reference
+GRAM5 also provides a Perl API for creating LRM interface implementations.
+
+==== GLOBUS::GRAM::ERROR(3pm)
+===== NAME
+
+Globus::GRAM::Error - GRAM Protocol Error Constants
+
+===== DESCRIPTION
+
+The Globus::GRAM::Error module defines symbolic names for the Error constants in the GRAM Protocol.
+
+The Globus::GRAM::Error module methods return an object consisting of an integer erorr code, and (optionally) a string explaining the error.
+
+*Methods*
+
+$error = new Globus::GRAM::Error($number, $string);::
+Create a new error object with the given error number and string description. This is called by the error-specific factory methods described below.
+$error→string()::
+Return the error string associated with a Globus::GRAM::Error object.
+$error→value()::
+Return the integer error code associated with a Globus::GRAM::Error object.
+$error = Globus::GRAM::Error::PARAMETER_NOT_SUPPORTED()::
+Create a new PARAMETER_NOT_SUPPORTED GRAM error.
+$error = Globus::GRAM::Error::INVALID_REQUEST()::
+Create a new INVALID_REQUEST GRAM error.
+$error = Globus::GRAM::Error::NO_RESOURCES()::
+Create a new NO_RESOURCES GRAM error.
+$error = Globus::GRAM::Error::BAD_DIRECTORY()::
+Create a new BAD_DIRECTORY GRAM error.
+$error = Globus::GRAM::Error::EXECUTABLE_NOT_FOUND()::
+Create a new EXECUTABLE_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::INSUFFICIENT_FUNDS()::
+Create a new INSUFFICIENT_FUNDS GRAM error.
+$error = Globus::GRAM::Error::AUTHORIZATION()::
+Create a new AUTHORIZATION GRAM error.
+$error = Globus::GRAM::Error::USER_CANCELLED()::
+Create a new USER_CANCELLED GRAM error.
+$error = Globus::GRAM::Error::SYSTEM_CANCELLED()::
+Create a new SYSTEM_CANCELLED GRAM error.
+$error = Globus::GRAM::Error::PROTOCOL_FAILED()::
+Create a new PROTOCOL_FAILED GRAM error.
+$error = Globus::GRAM::Error::STDIN_NOT_FOUND()::
+Create a new STDIN_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::CONNECTION_FAILED()::
+Create a new CONNECTION_FAILED GRAM error.
+$error = Globus::GRAM::Error::INVALID_MAXTIME()::
+Create a new INVALID_MAXTIME GRAM error.
+$error = Globus::GRAM::Error::INVALID_COUNT()::
+Create a new INVALID_COUNT GRAM error.
+$error = Globus::GRAM::Error::NULL_SPECIFICATION_TREE()::
+Create a new NULL_SPECIFICATION_TREE GRAM error.
+$error = Globus::GRAM::Error::JM_FAILED_ALLOW_ATTACH()::
+Create a new JM_FAILED_ALLOW_ATTACH GRAM error.
+$error = Globus::GRAM::Error::JOB_EXECUTION_FAILED()::
+Create a new JOB_EXECUTION_FAILED GRAM error.
+$error = Globus::GRAM::Error::INVALID_PARADYN()::
+Create a new INVALID_PARADYN GRAM error.
+$error = Globus::GRAM::Error::INVALID_JOBTYPE()::
+Create a new INVALID_JOBTYPE GRAM error.
+$error = Globus::GRAM::Error::INVALID_GRAM_MYJOB()::
+Create a new INVALID_GRAM_MYJOB GRAM error.
+$error = Globus::GRAM::Error::BAD_SCRIPT_ARG_FILE()::
+Create a new BAD_SCRIPT_ARG_FILE GRAM error.
+$error = Globus::GRAM::Error::ARG_FILE_CREATION_FAILED()::
+Create a new ARG_FILE_CREATION_FAILED GRAM error.
+$error = Globus::GRAM::Error::INVALID_JOBSTATE()::
+Create a new INVALID_JOBSTATE GRAM error.
+$error = Globus::GRAM::Error::INVALID_SCRIPT_REPLY()::
+Create a new INVALID_SCRIPT_REPLY GRAM error.
+$error = Globus::GRAM::Error::INVALID_SCRIPT_STATUS()::
+Create a new INVALID_SCRIPT_STATUS GRAM error.
+$error = Globus::GRAM::Error::JOBTYPE_NOT_SUPPORTED()::
+Create a new JOBTYPE_NOT_SUPPORTED GRAM error.
+$error = Globus::GRAM::Error::UNIMPLEMENTED()::
+Create a new UNIMPLEMENTED GRAM error.
+$error = Globus::GRAM::Error::TEMP_SCRIPT_FILE_FAILED()::
+Create a new TEMP_SCRIPT_FILE_FAILED GRAM error.
+$error = Globus::GRAM::Error::USER_PROXY_NOT_FOUND()::
+Create a new USER_PROXY_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::OPENING_USER_PROXY()::
+Create a new OPENING_USER_PROXY GRAM error.
+$error = Globus::GRAM::Error::JOB_CANCEL_FAILED()::
+Create a new JOB_CANCEL_FAILED GRAM error.
+$error = Globus::GRAM::Error::MALLOC_FAILED()::
+Create a new MALLOC_FAILED GRAM error.
+$error = Globus::GRAM::Error::DUCT_INIT_FAILED()::
+Create a new DUCT_INIT_FAILED GRAM error.
+$error = Globus::GRAM::Error::DUCT_LSP_FAILED()::
+Create a new DUCT_LSP_FAILED GRAM error.
+$error = Globus::GRAM::Error::INVALID_HOST_COUNT()::
+Create a new INVALID_HOST_COUNT GRAM error.
+$error = Globus::GRAM::Error::UNSUPPORTED_PARAMETER()::
+Create a new UNSUPPORTED_PARAMETER GRAM error.
+$error = Globus::GRAM::Error::INVALID_QUEUE()::
+Create a new INVALID_QUEUE GRAM error.
+$error = Globus::GRAM::Error::INVALID_PROJECT()::
+Create a new INVALID_PROJECT GRAM error.
+$error = Globus::GRAM::Error::RSL_EVALUATION_FAILED()::
+Create a new RSL_EVALUATION_FAILED GRAM error.
+$error = Globus::GRAM::Error::BAD_RSL_ENVIRONMENT()::
+Create a new BAD_RSL_ENVIRONMENT GRAM error.
+$error = Globus::GRAM::Error::DRYRUN()::
+Create a new DRYRUN GRAM error.
+$error = Globus::GRAM::Error::ZERO_LENGTH_RSL()::
+Create a new ZERO_LENGTH_RSL GRAM error.
+$error = Globus::GRAM::Error::STAGING_EXECUTABLE()::
+Create a new STAGING_EXECUTABLE GRAM error.
+$error = Globus::GRAM::Error::STAGING_STDIN()::
+Create a new STAGING_STDIN GRAM error.
+$error = Globus::GRAM::Error::INVALID_JOB_MANAGER_TYPE()::
+Create a new INVALID_JOB_MANAGER_TYPE GRAM error.
+$error = Globus::GRAM::Error::BAD_ARGUMENTS()::
+Create a new BAD_ARGUMENTS GRAM error.
+$error = Globus::GRAM::Error::GATEKEEPER_MISCONFIGURED()::
+Create a new GATEKEEPER_MISCONFIGURED GRAM error.
+$error = Globus::GRAM::Error::BAD_RSL()::
+Create a new BAD_RSL GRAM error.
+$error = Globus::GRAM::Error::VERSION_MISMATCH()::
+Create a new VERSION_MISMATCH GRAM error.
+$error = Globus::GRAM::Error::RSL_ARGUMENTS()::
+Create a new RSL_ARGUMENTS GRAM error.
+$error = Globus::GRAM::Error::RSL_COUNT()::
+Create a new RSL_COUNT GRAM error.
+$error = Globus::GRAM::Error::RSL_DIRECTORY()::
+Create a new RSL_DIRECTORY GRAM error.
+$error = Globus::GRAM::Error::RSL_DRYRUN()::
+Create a new RSL_DRYRUN GRAM error.
+$error = Globus::GRAM::Error::RSL_ENVIRONMENT()::
+Create a new RSL_ENVIRONMENT GRAM error.
+$error = Globus::GRAM::Error::RSL_EXECUTABLE()::
+Create a new RSL_EXECUTABLE GRAM error.
+$error = Globus::GRAM::Error::RSL_HOST_COUNT()::
+Create a new RSL_HOST_COUNT GRAM error.
+$error = Globus::GRAM::Error::RSL_JOBTYPE()::
+Create a new RSL_JOBTYPE GRAM error.
+$error = Globus::GRAM::Error::RSL_MAXTIME()::
+Create a new RSL_MAXTIME GRAM error.
+$error = Globus::GRAM::Error::RSL_MYJOB()::
+Create a new RSL_MYJOB GRAM error.
+$error = Globus::GRAM::Error::RSL_PARADYN()::
+Create a new RSL_PARADYN GRAM error.
+$error = Globus::GRAM::Error::RSL_PROJECT()::
+Create a new RSL_PROJECT GRAM error.
+$error = Globus::GRAM::Error::RSL_QUEUE()::
+Create a new RSL_QUEUE GRAM error.
+$error = Globus::GRAM::Error::RSL_STDERR()::
+Create a new RSL_STDERR GRAM error.
+$error = Globus::GRAM::Error::RSL_STDIN()::
+Create a new RSL_STDIN GRAM error.
+$error = Globus::GRAM::Error::RSL_STDOUT()::
+Create a new RSL_STDOUT GRAM error.
+$error = Globus::GRAM::Error::OPENING_JOBMANAGER_SCRIPT()::
+Create a new OPENING_JOBMANAGER_SCRIPT GRAM error.
+$error = Globus::GRAM::Error::CREATING_PIPE()::
+Create a new CREATING_PIPE GRAM error.
+$error = Globus::GRAM::Error::FCNTL_FAILED()::
+Create a new FCNTL_FAILED GRAM error.
+$error = Globus::GRAM::Error::STDOUT_FILENAME_FAILED()::
+Create a new STDOUT_FILENAME_FAILED GRAM error.
+$error = Globus::GRAM::Error::STDERR_FILENAME_FAILED()::
+Create a new STDERR_FILENAME_FAILED GRAM error.
+$error = Globus::GRAM::Error::FORKING_EXECUTABLE()::
+Create a new FORKING_EXECUTABLE GRAM error.
+$error = Globus::GRAM::Error::EXECUTABLE_PERMISSIONS()::
+Create a new EXECUTABLE_PERMISSIONS GRAM error.
+$error = Globus::GRAM::Error::OPENING_STDOUT()::
+Create a new OPENING_STDOUT GRAM error.
+$error = Globus::GRAM::Error::OPENING_STDERR()::
+Create a new OPENING_STDERR GRAM error.
+$error = Globus::GRAM::Error::OPENING_CACHE_USER_PROXY()::
+Create a new OPENING_CACHE_USER_PROXY GRAM error.
+$error = Globus::GRAM::Error::OPENING_CACHE()::
+Create a new OPENING_CACHE GRAM error.
+$error = Globus::GRAM::Error::INSERTING_CLIENT_CONTACT()::
+Create a new INSERTING_CLIENT_CONTACT GRAM error.
+$error = Globus::GRAM::Error::CLIENT_CONTACT_NOT_FOUND()::
+Create a new CLIENT_CONTACT_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::CONTACTING_JOB_MANAGER()::
+Create a new CONTACTING_JOB_MANAGER GRAM error.
+$error = Globus::GRAM::Error::INVALID_JOB_CONTACT()::
+Create a new INVALID_JOB_CONTACT GRAM error.
+$error = Globus::GRAM::Error::UNDEFINED_EXE()::
+Create a new UNDEFINED_EXE GRAM error.
+$error = Globus::GRAM::Error::CONDOR_ARCH()::
+Create a new CONDOR_ARCH GRAM error.
+$error = Globus::GRAM::Error::CONDOR_OS()::
+Create a new CONDOR_OS GRAM error.
+$error = Globus::GRAM::Error::RSL_MIN_MEMORY()::
+Create a new RSL_MIN_MEMORY GRAM error.
+$error = Globus::GRAM::Error::RSL_MAX_MEMORY()::
+Create a new RSL_MAX_MEMORY GRAM error.
+$error = Globus::GRAM::Error::INVALID_MIN_MEMORY()::
+Create a new INVALID_MIN_MEMORY GRAM error.
+$error = Globus::GRAM::Error::INVALID_MAX_MEMORY()::
+Create a new INVALID_MAX_MEMORY GRAM error.
+$error = Globus::GRAM::Error::HTTP_FRAME_FAILED()::
+Create a new HTTP_FRAME_FAILED GRAM error.
+$error = Globus::GRAM::Error::HTTP_UNFRAME_FAILED()::
+Create a new HTTP_UNFRAME_FAILED GRAM error.
+$error = Globus::GRAM::Error::HTTP_PACK_FAILED()::
+Create a new HTTP_PACK_FAILED GRAM error.
+$error = Globus::GRAM::Error::HTTP_UNPACK_FAILED()::
+Create a new HTTP_UNPACK_FAILED GRAM error.
+$error = Globus::GRAM::Error::INVALID_JOB_QUERY()::
+Create a new INVALID_JOB_QUERY GRAM error.
+$error = Globus::GRAM::Error::SERVICE_NOT_FOUND()::
+Create a new SERVICE_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::JOB_QUERY_DENIAL()::
+Create a new JOB_QUERY_DENIAL GRAM error.
+$error = Globus::GRAM::Error::CALLBACK_NOT_FOUND()::
+Create a new CALLBACK_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::BAD_GATEKEEPER_CONTACT()::
+Create a new BAD_GATEKEEPER_CONTACT GRAM error.
+$error = Globus::GRAM::Error::POE_NOT_FOUND()::
+Create a new POE_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::MPIRUN_NOT_FOUND()::
+Create a new MPIRUN_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::RSL_START_TIME()::
+Create a new RSL_START_TIME GRAM error.
+$error = Globus::GRAM::Error::RSL_RESERVATION_HANDLE()::
+Create a new RSL_RESERVATION_HANDLE GRAM error.
+$error = Globus::GRAM::Error::RSL_MAX_WALL_TIME()::
+Create a new RSL_MAX_WALL_TIME GRAM error.
+$error = Globus::GRAM::Error::INVALID_MAX_WALL_TIME()::
+Create a new INVALID_MAX_WALL_TIME GRAM error.
+$error = Globus::GRAM::Error::RSL_MAX_CPU_TIME()::
+Create a new RSL_MAX_CPU_TIME GRAM error.
+$error = Globus::GRAM::Error::INVALID_MAX_CPU_TIME()::
+Create a new INVALID_MAX_CPU_TIME GRAM error.
+$error = Globus::GRAM::Error::JM_SCRIPT_NOT_FOUND()::
+Create a new JM_SCRIPT_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::JM_SCRIPT_PERMISSIONS()::
+Create a new JM_SCRIPT_PERMISSIONS GRAM error.
+$error = Globus::GRAM::Error::SIGNALING_JOB()::
+Create a new SIGNALING_JOB GRAM error.
+$error = Globus::GRAM::Error::UNKNOWN_SIGNAL_TYPE()::
+Create a new UNKNOWN_SIGNAL_TYPE GRAM error.
+$error = Globus::GRAM::Error::GETTING_JOBID()::
+Create a new GETTING_JOBID GRAM error.
+$error = Globus::GRAM::Error::WAITING_FOR_COMMIT()::
+Create a new WAITING_FOR_COMMIT GRAM error.
+$error = Globus::GRAM::Error::COMMIT_TIMED_OUT()::
+Create a new COMMIT_TIMED_OUT GRAM error.
+$error = Globus::GRAM::Error::RSL_SAVE_STATE()::
+Create a new RSL_SAVE_STATE GRAM error.
+$error = Globus::GRAM::Error::RSL_RESTART()::
+Create a new RSL_RESTART GRAM error.
+$error = Globus::GRAM::Error::RSL_TWO_PHASE_COMMIT()::
+Create a new RSL_TWO_PHASE_COMMIT GRAM error.
+$error = Globus::GRAM::Error::INVALID_TWO_PHASE_COMMIT()::
+Create a new INVALID_TWO_PHASE_COMMIT GRAM error.
+$error = Globus::GRAM::Error::RSL_STDOUT_POSITION()::
+Create a new RSL_STDOUT_POSITION GRAM error.
+$error = Globus::GRAM::Error::INVALID_STDOUT_POSITION()::
+Create a new INVALID_STDOUT_POSITION GRAM error.
+$error = Globus::GRAM::Error::RSL_STDERR_POSITION()::
+Create a new RSL_STDERR_POSITION GRAM error.
+$error = Globus::GRAM::Error::INVALID_STDERR_POSITION()::
+Create a new INVALID_STDERR_POSITION GRAM error.
+$error = Globus::GRAM::Error::RESTART_FAILED()::
+Create a new RESTART_FAILED GRAM error.
+$error = Globus::GRAM::Error::NO_STATE_FILE()::
+Create a new NO_STATE_FILE GRAM error.
+$error = Globus::GRAM::Error::READING_STATE_FILE()::
+Create a new READING_STATE_FILE GRAM error.
+$error = Globus::GRAM::Error::WRITING_STATE_FILE()::
+Create a new WRITING_STATE_FILE GRAM error.
+$error = Globus::GRAM::Error::OLD_JM_ALIVE()::
+Create a new OLD_JM_ALIVE GRAM error.
+$error = Globus::GRAM::Error::TTL_EXPIRED()::
+Create a new TTL_EXPIRED GRAM error.
+$error = Globus::GRAM::Error::SUBMIT_UNKNOWN()::
+Create a new SUBMIT_UNKNOWN GRAM error.
+$error = Globus::GRAM::Error::RSL_REMOTE_IO_URL()::
+Create a new RSL_REMOTE_IO_URL GRAM error.
+$error = Globus::GRAM::Error::WRITING_REMOTE_IO_URL()::
+Create a new WRITING_REMOTE_IO_URL GRAM error.
+$error = Globus::GRAM::Error::STDIO_SIZE()::
+Create a new STDIO_SIZE GRAM error.
+$error = Globus::GRAM::Error::JM_STOPPED()::
+Create a new JM_STOPPED GRAM error.
+$error = Globus::GRAM::Error::USER_PROXY_EXPIRED()::
+Create a new USER_PROXY_EXPIRED GRAM error.
+$error = Globus::GRAM::Error::JOB_UNSUBMITTED()::
+Create a new JOB_UNSUBMITTED GRAM error.
+$error = Globus::GRAM::Error::INVALID_COMMIT()::
+Create a new INVALID_COMMIT GRAM error.
+$error = Globus::GRAM::Error::RSL_SCHEDULER_SPECIFIC()::
+Create a new RSL_SCHEDULER_SPECIFIC GRAM error.
+$error = Globus::GRAM::Error::STAGE_IN_FAILED()::
+Create a new STAGE_IN_FAILED GRAM error.
+$error = Globus::GRAM::Error::INVALID_SCRATCH()::
+Create a new INVALID_SCRATCH GRAM error.
+$error = Globus::GRAM::Error::RSL_CACHE()::
+Create a new RSL_CACHE GRAM error.
+$error = Globus::GRAM::Error::INVALID_SUBMIT_ATTRIBUTE()::
+Create a new INVALID_SUBMIT_ATTRIBUTE GRAM error.
+$error = Globus::GRAM::Error::INVALID_STDIO_UPDATE_ATTRIBUTE()::
+Create a new INVALID_STDIO_UPDATE_ATTRIBUTE GRAM error.
+$error = Globus::GRAM::Error::INVALID_RESTART_ATTRIBUTE()::
+Create a new INVALID_RESTART_ATTRIBUTE GRAM error.
+$error = Globus::GRAM::Error::RSL_FILE_STAGE_IN()::
+Create a new RSL_FILE_STAGE_IN GRAM error.
+$error = Globus::GRAM::Error::RSL_FILE_STAGE_IN_SHARED()::
+Create a new RSL_FILE_STAGE_IN_SHARED GRAM error.
+$error = Globus::GRAM::Error::RSL_FILE_STAGE_OUT()::
+Create a new RSL_FILE_STAGE_OUT GRAM error.
+$error = Globus::GRAM::Error::RSL_GASS_CACHE()::
+Create a new RSL_GASS_CACHE GRAM error.
+$error = Globus::GRAM::Error::RSL_FILE_CLEANUP()::
+Create a new RSL_FILE_CLEANUP GRAM error.
+$error = Globus::GRAM::Error::RSL_SCRATCH()::
+Create a new RSL_SCRATCH GRAM error.
+$error = Globus::GRAM::Error::INVALID_SCHEDULER_SPECIFIC()::
+Create a new INVALID_SCHEDULER_SPECIFIC GRAM error.
+$error = Globus::GRAM::Error::UNDEFINED_ATTRIBUTE()::
+Create a new UNDEFINED_ATTRIBUTE GRAM error.
+$error = Globus::GRAM::Error::INVALID_CACHE()::
+Create a new INVALID_CACHE GRAM error.
+$error = Globus::GRAM::Error::INVALID_SAVE_STATE()::
+Create a new INVALID_SAVE_STATE GRAM error.
+$error = Globus::GRAM::Error::OPENING_VALIDATION_FILE()::
+Create a new OPENING_VALIDATION_FILE GRAM error.
+$error = Globus::GRAM::Error::READING_VALIDATION_FILE()::
+Create a new READING_VALIDATION_FILE GRAM error.
+$error = Globus::GRAM::Error::RSL_PROXY_TIMEOUT()::
+Create a new RSL_PROXY_TIMEOUT GRAM error.
+$error = Globus::GRAM::Error::INVALID_PROXY_TIMEOUT()::
+Create a new INVALID_PROXY_TIMEOUT GRAM error.
+$error = Globus::GRAM::Error::STAGE_OUT_FAILED()::
+Create a new STAGE_OUT_FAILED GRAM error.
+$error = Globus::GRAM::Error::JOB_CONTACT_NOT_FOUND()::
+Create a new JOB_CONTACT_NOT_FOUND GRAM error.
+$error = Globus::GRAM::Error::DELEGATION_FAILED()::
+Create a new DELEGATION_FAILED GRAM error.
+$error = Globus::GRAM::Error::LOCKING_STATE_LOCK_FILE()::
+Create a new LOCKING_STATE_LOCK_FILE GRAM error.
+$error = Globus::GRAM::Error::INVALID_ATTR()::
+Create a new INVALID_ATTR GRAM error.
+$error = Globus::GRAM::Error::NULL_PARAMETER()::
+Create a new NULL_PARAMETER GRAM error.
+$error = Globus::GRAM::Error::STILL_STREAMING()::
+Create a new STILL_STREAMING GRAM error.
+$error = Globus::GRAM::Error::AUTHORIZATION_DENIED()::
+Create a new AUTHORIZATION_DENIED GRAM error.
+$error = Globus::GRAM::Error::AUTHORIZATION_SYSTEM_FAILURE()::
+Create a new AUTHORIZATION_SYSTEM_FAILURE GRAM error.
+$error = Globus::GRAM::Error::AUTHORIZATION_DENIED_JOB_ID()::
+Create a new AUTHORIZATION_DENIED_JOB_ID GRAM error.
+$error = Globus::GRAM::Error::AUTHORIZATION_DENIED_EXECUTABLE()::
+Create a new AUTHORIZATION_DENIED_EXECUTABLE GRAM error.
+$error = Globus::GRAM::Error::RSL_USER_NAME()::
+Create a new RSL_USER_NAME GRAM error.
+$error = Globus::GRAM::Error::INVALID_USER_NAME()::
+Create a new INVALID_USER_NAME GRAM error.
+$error = Globus::GRAM::Error::LAST()::
+Create a new LAST GRAM error.
+
+==== GLOBUS::GRAM::JOBDESCRIPTION(3pm)
+===== NAME
+
+Globus::GRAM::JobDescription - GRAM Job Description
+
+===== NAME
+
+-
+
+===== DESCRIPTION
+
+This object contains the parameters of a job request in a simple object wrapper. The object may be queried to determine the value of any RSL parameter, may be updated with new parameters, and may be saved in the filesystem for later use.
+
+*Methods*
+
+*new Globus::GRAM::JobDescription($filename)*
+
+A JobDescription is constructed from a file consisting of a Perl hash of parameter ⇒ array mappings. Every value in the Job Description is stored internally as an array, even single literals, similar to the way an RSL tree is parsed in C. An example of such a file is
+
+[source,perl]
+----
+$description =
+{
+    executable  => [ '/bin/echo' ],
+    arguments   => [ 'hello', 'world' ],
+    environment => [
+                       [
+                           'GLOBUS_GRAM_JOB_CONTACT',
+                           'https://globus.org:1234/2345/4332'
+                       ]
+                   ]
+};
+----
+
+which corresponds to the rsl fragment
+
+[source,perl]
+----
+&(executable  = /bin/echo)
+ (arguments   = hello world)
+ (environment =
+     (GLOBUS_GRAM_JOB_CONTACT 'https://globus.org:1234/2345/4332')
+ )
+----
+
+When the library_path RSL attribute is specified, this object modifies the environment RSL attribute value to append its value to any system specific variables.
+
+*$description→add(_name_, $value);*
+
+Add a parameter to a job description. The parameter will be normalized internally so that the access methods described below will work with this new parameter. As an example,
+
+[source,perl]
+----
+$description->add('new_attribute', $new_value)
+----
+
+will create a new attribute in the JobDescription, which can be accessed by calling the `$description-new_attribute>()`\ method.
+
+*$value $description→get(_name_);*
+Get a parameter from a job description. As an example,
+
+[source,perl]
+----
+$description->get('attribute')
+----
+
+will return the appropriate attribute in the JobDescription by name.
+
+*$description→save([$filename])*
+
+Save the JobDescription, including any added parameters, to the file named by $filename if present, or replacing the file used in constructing the object.
+
+*$description→print_recursive($file_handle)*
+
+Write the value of the job description object to the file handle specified in the argument list.
+
+*$description→parameter()*
+
+For any parameter defined in the JobDescription can be accessed by calling the method named by the parameter. The method names are automatically created when the JobDescription is created, and may be invoked with arbitrary SillyCaps or underscores. That is, the parameter gram_myjob may be accessed by the GramMyJob, grammyjob, or gram_my_job method names (and others).
+
+If the attributes does not in this object, then undef will be returned.
+
+In a list context, this returns the list of values associated with an attribute.
+
+In a scalar context, if the attribute's value consist of a single literal, then that literal will be returned, otherwise undef will be returned.
+
+For example, from a JobDescription called $d constructed from a description file containing
+
+[source,perl]
+----
+{
+    executable => [ '/bin/echo' ],
+    arguments  => [ 'hello', 'world' ]
+}
+----
+
+The following will hold:
+
+[source,perl]
+----
+$executable = $d->executable()    # '/bin/echo'
+$arguments = $d->arguments()      # undef
+@executable = $d->executable()    # ('/bin/echo')
+@arguments = $d->arguments()      # ('hello', 'world')
+$not_present = $d->not_present()  # undef
+@not_present = $d->not_present()  # ()
+----
+
+To test for existence of a value:
+
+[source,perl]
+----
+@not_present = $d->not_present()
+print "Not defined\n" if(!defined($not_present[0]));
+----
+
+==== GLOBUS::GRAM::JOBMANAGER(3pm)
+===== NAME
+
+Globus::GRAM::JobManager - Base class for all Job Manager scripts
+
+===== NAME
+-
+
+===== DESCRIPTION
+
+The Globus::GRAM::JobManager module implements the base behavior for a Job Manager script interface. Scheduler-specific job manager scripts must inherit from this module in order to be used by the job manager.
+
+*Methods*
+
+*$manager = Globus::GRAM::JobManager→new($JobDescription)*
+
+Each Globus::GRAM::JobManager object is created by calling the constructor with a single argument, a Globus::GRAM::JobDescription object containing the information about the job request which the script will be modifying. Modules which subclass Globus::GRAM::JobManager MUST call the super-class's constructor, as in this code fragment:
+
+[source,perl]
+----
+my $proto = shift;
+my $class = ref($proto) || $proto;
+my $self = $class->SUPER::new(@_);
+
+bless $self, $class;
+----
+
+*$manager→log($string)*
+
+Log a message to the job manager log file. The message is preceded by a timestamp.
+
+*$manager→nfssync($object,$create)*
+
+Send an NFS update by touching the file (or directory) in question. If the $create is true, a file will be created. If it is false, the $object will not be created.
+
+*$manager→respond($message)*
+
+Send a response to the job manager program. The response may either be a hash reference consisting of a hash of (variable, value) pairs, which will be returned to the job manager, or an already formatted string. This only needs to be directly called by a job manager implementation when the script wants to send a partial response while processing one of the scheduler interface methods (for example, to indicate that a file has been staged).
+
+The valid keys for a response are defined in the RESPONSES section.
+
+*$manager→submit()*
+
+Submit a job request to the scheduler. The default implementation returns with the Globus::GRAM::Error::UNIMPLEMENTED error. Scheduler specific subclasses should reimplement this method to submit the job to the scheduler.
+
+A scheduler which implements this method should return a hash reference containing a scheduler-specific job identifier as the value of the hash's JOB_ID key, and optionally, the a GRAM job state as the value of the hash's JOB_STATE key if the job submission was successful; otherwise a Globus::GRAM::Error value should be returned. The job state values are defined in the Globus::GRAM::JobState module. The job parameters (as found in the job rsl) are defined in Globus::GRAM::Jobdescription object
+
+For example:
+
+[source,perl]
+----
+return {JOB_STATE => Globus::GRAM::JobState::PENDING,
+        JOB_ID => $job_id};
+----
+
+*$manager→poll()*
+
+Poll a job's status. The default implementation returns with the Globus::GRAM::Error::UNIMPLEMENTED error. Scheduler specific subclasses should reimplement this method to poll the scheduler.
+
+A scheduler which implements this method should return a hash reference containing the JOB_STATE value. The job's ID can be accessed by calling
+
+*$manager→cancel()*
+
+Cancel a job. The default implementation returns with the Globus::GRAM::Error::UNIMPLEMENTED error. Scheduler specific subclasses should reimplement this method to remove the job from the scheduler.
+
+A scheduler which implements this method should return a hash reference containing the JOB_STATE value. The job's ID can be accessed by calling
+
+*$manager→signal()*
+
+Signal a job. The default implementation returns with the Globus::GRAM::Error::UNIMPLEMENTED error. Scheduler specific subclasses should reimplement this method to remove the job from the scheduler. The JobManager module can determine the job's ID, the signal number, and the (optional) signal arguments from the Job Description by calling it's job_id(), signal(), and and signal_arg() methods, respectively.
+
+Depending on the signal, it may be appropriate for the JobManager object to return a hash reference containing a JOB_STATE update.
+
+*$manager→make_scratchdir()*
+
+Create a scratch directory for a job. The scratch directory location is based on the JobDescription's scratch_dir_base() and scratch_dir() methods.
+
+If the scratch_dir() value is a relative path, then a directory will be created as a subdirectory of scratch_dir_base()/scratch_dir(), otherwise, it will be created as a subdirectory of scratch_dir(). This method will return a hash reference containing mapping SCRATCH_DIR to the absolute path of newly created scratch directory if successful.
+
+*$manager→remove_scratchdir()*
+
+Delete a job's scratch directory. All files and subdirectories of the JobDescription's scratch_directory() will be deleted.
+
+*$manager→file_cleanup()*
+
+Delete some job-related files. All files listed in the JobDescription's file_cleanup() array will be deleted.
+
+*$manager→rewrite_urls()*
+
+Looks up URLs listed in the JobDescription's stdin() and executable(), and replaces them with paths to locally cached copies.
+
+*$manager→stage_in()*
+
+Stage input files need for the job from remote storage. The files to be staged are defined by the array of [URL, path] pairs in the job description's file_stage_in() and file_stage_in_shared() methods. The Globus::GRAM::JobManager module provides an implementation of this functionality using the globus-url-copy and globus-gass-cache programs. Files which are staged in are not automatically removed when the job terminates.
+
+This function returns intermediate responses using the Globus::GRAM::JobManager::response() method to let the job manager know when each individual file has been staged.
+
+*$manager→stage_out()*
+
+Stage output files generated by this job to remote storage. The files to be staged are defined by the array of [URL, destination] pairs in the job description's file_stage_out() method. The Globus::GRAM::JobManager module provides an implementation of this functionality using the globus-url-copy program. Files which are staged out are not removed by this method.
+
+*$manager→cache_cleanup()*
+
+Clean up cache references in the GASS which match this job's cache tag .
+
+*$manager→remote_io_file_create()*
+
+Create the remote I/O file in the job dir which will contain the remote_io_url RSL attribute's value.
+
+*$manager→proxy_relocate()*
+
+Relocate the delegated proxy for job execution. Job Managers need to override the default if they intend to relocate the proxy into some common file system other than the cache. The job manager program does not depend on the new location of the proxy. Job Manager modules must not remove the default proxy.
+
+*$hashref = $manager→proxy_update(); , $manager→append_path($ref, $var, $path)*
+
+Append $path to the value of $ref→{$var}, dealing with the case where $ref→{$var} is not yet defined.
+
+*$manager→pipe_out_cmd(@arg)*
+
+Create a new process to run the first argument application with the remaining arguments (which may be empty). No shell metacharacter will be evaluated, avoiding a shell invocation. Stderr is redirected to /dev/null and stdout is being captured by the parent process, which is also the result returned. In list mode, all lines are returned, in scalar mode, only the first line is being returned. The line termination character is already cut off. Use this function as more efficient backticks, if you do not need shell metacharacter evaluation.
+
+CAUTION: This function deviates in two manners from regular backticks. Firstly, it chomps the line terminator from the output. Secondly, it returns only the first line in scalar context instead of a multiline concatinated string. As with regular backticks, the result may be undefined in scalar context, if no result exists.
+
+A child error code with an exit code of 127 indicates that the application could not be run. The scalar result returned by this function is usually undef'ed in this case.
+
+*($stder, $rc) = $manager→pipe_err_cmd(@arg)*
+
+Create a new process to run the first argument application with the remaining arguments (which may be empty). No shell metacharacter will be evaluated, avoiding a shell invocation.
+
+This method returns a list of two items, the standard error of the program, and the exit code of the program. If the error code is 127, then the application could not be run. Standard output is discarded.
+
+*$manager→fork_and_exec_cmd(@arg)*
+
+Fork off a child to run the first argument in the list. Remaining arguments will be passed, but shell interpolation is avoided. Signals SIGINT and SIGQUIT are ignored in the child process. Stdout is appended to /dev/null, and stderr is dup2 from stdout. The parent waits for the child to finish, and returns the value for the CHILD_ERROR variable as result. Use this function as more efficient system() call, if you can do not need shell metacharacter evaluation.
+
+Note that the inability to execute the program will result in a status code of 127.
+
+*$manager→job_dir()*
+
+Return the temporary directory to store job-related files, which have no need for file caching.
+
+*$manager→setup_softenv()*
+
+Either add a line to the specified command script file handle to load the user's default SoftEnv configuration, or create a custom SoftEnv script and add commands to the specified command script file handle to load it.
+
+===== RESPONSES
+
+When returning from a job interface method, or when sending an intermediate response via the response() method, the following hash keys are valid:
+
+- JOB_STATE**:: An integer job state value. These are enumerated in the Globus::GRAM::JobState module.
+- ERROR**:: An integer error code. These are enumerated in the Globus::GRAM::Error module.
+- JOB_ID:: A string containing a job identifier, which can be used to poll, cancel, or signal a job in progress. This response should only be returned by the submit** method.
+- SCRATCH_DIR:: A string containing the path to a newly-created scratch directory. This response should only be returned by the make_scratchdir** method.
+- STAGED_IN:: A string containing the (URL, path) pair for a file which has now been staged in. This response should only be returned by the stage_in** method.
+- STAGED_IN_SHARED:: A string containing the (URL, path) pair for a file which has now been staged in and symlinked from the cache. This response should only be returned by the stage_in_shared** method.
+- STAGED_OUT:: A string containing the (path, URL) pair for a file which has now been staged out by the script. This response should only be returned by the stage_out** method.
+
+==== GLOBUS::GRAM::JOBSIGNAL(3pm)
+===== NAME
+
+Globus::GRAM::JobSignal - GRAM Protocol JobSignal Constants
+
+===== DESCRIPTION
+
+The Globus::GRAM::JobSignal module defines symbolic names for the JobSignal constants in the GRAM Protocol.
+
+*Methods*
+
+$value = Globus::GRAM::CANCEL()::
+Return the value of the CANCEL constant.
+$value = Globus::GRAM::SUSPEND()::
+Return the value of the SUSPEND constant.
+$value = Globus::GRAM::RESUME()::
+Return the value of the RESUME constant.
+$value = Globus::GRAM::PRIORITY()::
+Return the value of the PRIORITY constant.
+$value = Globus::GRAM::COMMIT_REQUEST()::
+Return the value of the COMMIT_REQUEST constant.
+$value = Globus::GRAM::COMMIT_EXTEND()::
+Return the value of the COMMIT_EXTEND constant.
+$value = Globus::GRAM::STDIO_UPDATE()::
+Return the value of the STDIO_UPDATE constant.
+$value = Globus::GRAM::STDIO_SIZE()::
+Return the value of the STDIO_SIZE constant.
+$value = Globus::GRAM::STOP_MANAGER()::
+Return the value of the STOP_MANAGER constant.
+$value = Globus::GRAM::COMMIT_END()::
+Return the value of the COMMIT_END constant.
+
+==== GLOBUS::GRAM::JOBSTATE(3pm)
+===== NAME
+
+Globus::GRAM::JobState - GRAM Protocol JobState Constants
+
+===== DESCRIPTION
+
+The Globus::GRAM::JobState module defines symbolic names for the JobState constants in the GRAM Protocol.
+
+*Methods*
+
+$value = Globus::GRAM::PENDING()::
+Return the value of the PENDING constant.
+$value = Globus::GRAM::ACTIVE()::
+Return the value of the ACTIVE constant.
+$value = Globus::GRAM::FAILED()::
+Return the value of the FAILED constant.
+$value = Globus::GRAM::DONE()::
+Return the value of the DONE constant.
+$value = Globus::GRAM::SUSPENDED()::
+Return the value of the SUSPENDED constant.
+$value = Globus::GRAM::UNSUBMITTED()::
+Return the value of the UNSUBMITTED constant.
+$value = Globus::GRAM::STAGE_IN()::
+Return the value of the STAGE_IN constant.
+$value = Globus::GRAM::STAGE_OUT()::
+Return the value of the STAGE_OUT constant.
+$value = Globus::GRAM::ALL()::
+Return the value of the ALL constant.
+
+=== RSL Specification v1.1
+
+This is a document to specify the existing RSL v1.0 implementation and interfaces, as they are provided in the GT 6.0 release. This document serves as a reference, and more introductory text.
+
+The Globus Resource Specification Language (RSL) provides a common interchange language to describe resources. The various components of the Globus Resource Management architecture manipulate RSL strings to perform their management functions in cooperation with the other components in the system. The RSL provides the skeletal syntax used to compose complicated resource descriptions, and the various resource management components introduce specific _'ATTRIBUTE','VALUE'>_ pairings into this common structure. Each attribute in a resource description serves as a parameter to control the behavior of one or more components in the resource management system.
+
+==== RSL Syntax Overview
+The core syntax of the RSL syntax is the *relation*. Relations associate an attribute name with a value, eg the relation executable=a.out provides the name of an executable in a resource request. There are two generative syntactic structures in the RSL that are used to build more complicated resource descriptions out of the basic relations: *compound requests* and *value sequences*. In addition, the RSL syntax includes a facility to both introduce and dereference string *substitution variables*.
+
+The simplest form of compound request, utilized by all resource management components, is the conjunct-request. The conjuct-request expresses a conjunction of simple relations or compound requests (like a boolean AND). The most common conjunct-request in Globus RSL strings is the combination of multiple relations such as executable name, node count, executable arguments, and output files for a basic GRAM job request. Similarly, the core RSL syntax includes a disjunct-request form to represent disjunctive relations (like a boolean OR). Currently, however, no resource management component utilizes the disjunct-request form.
+
+The last form of compound request is the multi-request. The multi-request expresses multiple parallel resources that make up a resource description. The multi-request form differs from the conjunction and disjunction in two ways: multi-requests introduce new variable scope, meaning variables defined in one clause of a multi-request are not visible to the other clauses, and multi-requests introduce a non-reducible hierarchy to the resource description. Whereas relations within a conjunct-request can be thought of as *constraints* on the resource being described, the subclauses of a multi-request are best thought of as individual resource descriptions that together constitute an abstract resource collection; the same attributes may be *constrained* in different ways in each subclause without causing a logical contradiction. An example of a contradiction would be to constrain the executable attribute to be two conflicting values within a conjunction. Currently, however, no resource management component utilizes the disjunct-request form.
+
+The simplest form of value in the RSL syntax is the string literal. When explicitly quoted, literals can contain any character, and many common literals that don't contain special characters can appear without quotes. Values can also be variable references, in which case the variable reference is in essence *replaced* with the string value defined for that variable. RSL descriptions can also express string-concatenation of values, especially useful to construct long strings out of several variable references. String concatenation is supported with both an explicit concatenation operator and implicit concatenation for many idiomatic constructions involving variable references and literals.
+
+In addition to the simple value forms given above, the RSL syntax includes the value sequence to express ordered sets of values. The value sequence syntax is used primarily for defining variables and for providing the argument list for a program.
+
+==== RSL Tokenization Overview
+Each RSL string consists of a sequence of RSL tokens, whitespace, and comments. The RSL tokens are either special syntax or regular unquoted literals, where special syntax contains one or more of the following listed special characters and unquoted literals are made of sequences of characters excluding the special characters.
+
+The complete set of special characters that cannot appear as part of an unquoted literal is:
+
+- + (plus)
+- & (ampersand)
+- | (pipe)
+- ( (left paren)
+- ) (right paren)
+- = (equal)
+- < (left angle)
+- > (right angle)
+- ! (exclamation)
+- " (double quote)
+- ' (apostrophe)
+- ^ (carat)
+- # (pound)
+- $ (dollar)
+
+These characters can only be used for the special syntactic forms described in the section and in the section or as within quoted literals.
+
+Quoted literals are introduced with the " (double quote) or ' (single quote/apostrophe) and consist of all the characters up to (but not including) the next solo double or single quote, respectively. To escape a quote character within a quoted literal, the appearance of the quote character twice in a row is converted to a single instance of the character and the literal continues until the next solo quote character. For any quoted literal, there is only one possible escape sequence, eg within a literal delimited by the single quote character only the single quote character uses the escape notation and the double quote character can appear without escape.
+
+Quoted literals can also be introduced with an alternate *user delimiter* notation. User delimited literals are introduced with the ^ (carat) character followed immediately by a user-provided delimiter; the literal consists of all the characters after the user's delimiter up to (but not including) the next solo instance of the delimiter. The delimiter itself may be escaped within the literal by providing two instances in a row, just as the regular quote delimiters are escaped in regular quoted literals.
+
+RSL string comments use a notation similar to comments in the C programming language. Comments are introduced by the prefix (*. Comments continue to the first terminating suffix *) and cannot be nested. Comments are stripped from the RSL string during processing and are syntactically equivalent to whitespace.
+
+*Example 7.1. Quoted Literal Examples*
+
+Assign the value Hello. Welcome to "The Grid" to the attribute arguments, using double-quote as the delimiter and the escaping sequence.
+
+[source,perl]
+----
+arguments = "Hello. Welcome to ""The Grid"""
+----
+
+Assign the value Hello. Welcome to "The Grid" to the attribute arguments using the single-quote delimiter.
+
+[source,perl]
+----
+arguments = 'Hello. Welcome to "The Grid'
+----
+
+Assign the value Hello. Welcome to "The Grid" to the attribute arguments using a user-defined quoting character !.
+
+[source,perl]
+----
+arguments = ^!Hello. Welcome to "The Grid"!
+----
+
+==== RSL Substitution Semantics
+RSL strings can introduce and reference string variables. String substitution variables are defined in a special relation using the [monospace]#rsl_substitution# attribute, and the definitions affect variable references made in the same conjunct-request (or disjunct-request), as well as references made within any multi-request nested inside one of the clauses of the conjunction (or disjunction). Each multi-request introduces a new variable scope for each subrequest, and variable definitions do not escape the closest enclosing scope.
+
+Within any given scope, variable definitions are processed left-to-right in the resource description. Outermost scopes are processed before inner scopes, and the definitions in inner scopes augment the inherited definitions with new and/or updated variable definitions.
+
+Variable definitions and variable references are processed in a single pass, with each definition updating the *environment* prior to processing the next definition. The value provided in a variable definition may include a reference to a previously-defined variable. References to variables that are not yet provided with definitions in the standard RSL variable processing order are replaced with an empty literal string.
+
+==== RSL Attribute Summary
+The RSL syntax is extensible because it defines structure without too many keywords. Each Globus resource management component introduces additional attributes to the set recognized by RSL-aware components, so it is difficult to provide a complete listing of attributes which might appear in a resource description. Resource management components are designed to utilize attributes they recognize and pass unrecongnized relations through unchanged. This allows powerful compositions of different resource management functions.
+
+The following listing summarizes the attribute names utilized by existing resource management components in the standard Globus release. Please see the individual component documentation for discussion of the attribute semantics.
+
+===== RSL(5)
+
+*NAME*
+
+rsl - GRAM5 RSL Attributes
+
+*Description*
+
+`arguments`::
+The command line arguments for the executable. Use quotes, if a space is required in a single argument.
+`count`::
+The number of executions of the executable. [Default: [monospace]#1#]
+`directory`::
+Specifies the path of the directory the jobmanager will use as the default directory for the requested job. [Default: [monospace]#$(HOME)#]
+`dry_run`::
+If dryrun = yes then the jobmanager will not submit the job for execution and will return success. [Default: [monospace]#no#]
+`environment`::
+The environment variables that will be defined for the executable in addition to default set that is given to the job by the jobmanager.
+`executable`::
+The name of the executable file to run on the remote machine. If the value is a GASS URL, the file is transferred to the remote gass cache before executing the job and removed after the job has terminated.
+`expiration`::
+Time (in seconds) after a a job fails to receive a two-phase commit end signal before it is cleaned up. [Default: [monospace]#14400#]
+`file_clean_up`::
+Specifies a list of files which will be removed after the job is completed.
+`file_stage_in`::
+Specifies a list of ("remote URL" "local file") pairs which indicate files to be staged to the nodes which will run the job.
+`file_stage_in_shared`::
+Specifies a list of ("remote URL" "local file") pairs which indicate files to be staged into the cache. A symlink from the cache to the "local file" path will be made.
+`file_stage_out`::
+Specifies a list of ("local file" "remote URL") pairs which indicate files to be staged from the job to a GASS-compatible file server.
+`gass_cache`::
+Specifies location to override the GASS cache location.
+`gram_my_job`::
+Obsolete and ignored. [Default: [monospace]#collective#]
+`host_count`::
+Only applies to clusters of SMP computers, such as newer IBM SP systems. Defines the number of nodes ("pizza boxes") to distribute the "count" processes across.
+`job_type`::
+This specifies how the jobmanager should start the job. Possible values are single (even if the count > 1, only start 1 process or thread), multiple (start count processes or threads), mpi (use the appropriate method (e.g. mpirun) to start a program compiled with a vendor-provided MPI library. Program is started with count nodes), and condor (starts condor jobs in the "condor" universe.) [Default: [monospace]#multiple#]
+`library_path`::
+Specifies a list of paths to be appended to the system-specific library path environment variables. [Default: [monospace]#$(GLOBUS_LOCATION)/lib#]
+`loglevel`::
+Override the default log level for this job. The value of this attribute consists of a combination of the strings FATAL, ERROR, WARN, INFO, DEBUG, TRACE joined by the | character
+`logpattern`::
+Override the default log path pattern for this job. The value of this attribute is a string (potentially containing RSL substitutions) that is evaluated to the path to write the log to. If the resulting string contains the string $(DATE) (or any other RSL substitution), it will be reevaluated at log time.
+`max_cpu_time`::
+Explicitly set the maximum cputime for a single execution of the executable. The units is in minutes. The value will go through an atoi() conversion in order to get an integer. If the GRAM scheduler cannot set cputime, then an error will be returned.
+`max_memory`::
+Explicitly set the maximum amount of memory for a single execution of the executable. The units is in Megabytes. The value will go through an atoi() conversion in order to get an integer. If the GRAM scheduler cannot set maxMemory, then an error will be returned.
+`max_time`::
+The maximum walltime or cputime for a single execution of the executable. Walltime or cputime is selected by the GRAM scheduler being interfaced. The units is in minutes. The value will go through an atoi() conversion in order to get an integer.
+`max_wall_time`::
+Explicitly set the maximum walltime for a single execution of the executable. The units is in minutes. The value will go through an atoi() conversion in order to get an integer. If the GRAM scheduler cannot set walltime, then an error will be returned.
+`min_memory`::
+Explicitly set the minimum amount of memory for a single execution of the executable. The units is in Megabytes. The value will go through an atoi() conversion in order to get an integer. If the GRAM scheduler cannot set minMemory, then an error will be returned.
+`project`::
+Target the job to be allocated to a project account as defined by the scheduler at the defined (remote) resource.
+`proxy_timeout`::
+Obsolete and ignored. Now a job-manager-wide setting.
+`queue`::
+Target the job to a queue (class) name as defined by the scheduler at the defined (remote) resource.
+`remote_io_url`::
+Writes the given value (a URL base string) to a file, and adds the path to that file to the environment throught the GLOBUS_REMOTE_IO_URL environment variable. If this is specified as part of a job restart RSL, the job manager will update the file's contents. This is intended for jobs that want to access files via GASS, but the URL of the GASS server has changed due to a GASS server restart.
+`restart`::
+Start a new job manager, but instead of submitting a new job, start managing an existing job. The job manager will search for the job state file created by the original job manager. If it finds the file and successfully reads it, it will become the new manager of the job, sending callbacks on status and streaming stdout/err if appropriate. It will fail if it detects that the old jobmanager is still alive (via a timestamp in the state file). If stdout or stderr was being streamed over the network, new stdout and stderr attributes can be specified in the restart RSL and the jobmanager will stream to the new locations (useful when output is going to a GASS server started by the client that's listening on a dynamic port, and the client was restarted). The new job manager will return a new contact string that should be used to communicate with it. If a jobmanager is restarted multiple times, any of the previous contact strings can be given for the restart attribute.
+`rsl_substitution`::
+Specifies a list of values which can be substituted into other rsl attributes' values through the $(SUBSTITUTION) mechanism.
+`save_state`::
+Causes the jobmanager to save it's job state information to a persistent file on disk. If the job manager exits or is suspended, the client can later start up a new job manager which can continue monitoring the job.
+`savejobdescription`::
+Save a copy of the job description to $HOME [Default: [monospace]#no#]
+`scratch_dir`::
+Specifies the location to create a scratch subdirectory in. A SCRATCH_DIRECTORY RSL substitution will be filled with the name of the directory which is created.
+`stderr`::
+The name of the remote file to store the standard error from the job. If the value is a GASS URL, the standard error from the job is transferred dynamically during the execution of the job. There are two accepted forms of this value. It can consist of a single destination: stderr = URL, or a sequence of destinations: stderr = (DESTINATION) (DESTINATION). In the latter case, the DESTINATION may itself be a URL or a sequence of an x-gass-cache URL followed by a cache tag. [Default: [monospace]#/dev/null#]
+`stderr_position`::
+Specifies where in the file remote standard error streaming should be restarted from. Must be 0.
+`stdin`::
+The name of the file to be used as standard input for the executable on the remote machine. If the value is a GASS URL, the file is transferred to the remote gass cache before executing the job and removed after the job has terminated. [Default: [monospace]#/dev/null#]
+`stdout`::
+The name of the remote file to store the standard output from the job. If the value is a GASS URL, the standard output from the job is transferred dynamically during the execution of the job. There are two accepted forms of this value. It can consist of a single destination: stdout = URL, or a sequence of destinations: stdout = (DESTINATION) (DESTINATION). In the latter case, the DESTINATION may itself be a URL or a sequence of an x-gass-cache URL followed by a cache tag. [[monospace]#Default: /dev/null#]
+`stdout_position`::
+Specifies where in the file remote output streaming should be restarted from. Must be 0.
+`two_phase`::
+Use a two-phase commit for job submission and completion. The job manager will respond to the initial job request with a WAITING_FOR_COMMIT error. It will then wait for a signal from the client before doing the actual job submission. The integer supplied is the number of seconds the job manager should wait before timing out. If the job manager times out before receiving the commit signal, or if a client issues a cancel signal, the job manager will clean up the job's files and exit, sending a callback with the job status as GLOBUS_GRAM_PROTOCOL_JOB_STATE_FAILED. After the job manager sends a DONE or FAILED callback, it will wait for a commit signal from the client. If it receives one, it cleans up and exits as usual. If it times out and save_state was enabled, it will leave all of the job's files in place and exit (assuming the client is down and will attempt a job restart later). The timeoutvalue can be extended via a signal. When one of the following errors occurs, the job manager does not delete the job state file when it exits: GLOBUS_GRAM_PROTOCOL_ERROR_COMMIT_TIMED_OUT, GLOBUS_GRAM_PROTOCOL_ERROR_TTL_EXPIRED, GLOBUS_GRAM_PROTOCOL_ERROR_JM_STOPPED, GLOBUS_GRAM_PROTOCOL_ERROR_USER_PROXY_EXPIRED. In these cases, it can not be restarted, so the job manager will not wait for the commit signal after sending the FAILED callback
+`username`::
+Verify that the job is running as this user.
+
+==== Simple RSL Examples
+The following are some simple example RSL strings to illustrate idiomatic usage with existing tools and to make concrete some of the more interesting cases of tokenization, concatenation, and variable semantics. These are meant to illustrate the use of the RSL notation without much regard for the specific details of a particular resource management component.
+
+Typical GRAM5 resource descriptions contain at least a few relations in a conjunction:
+
+*Example 7.2. GRAM5 Job Request Examples*
+
+This example shows a conjunct request containing values that are unquoted literals and ordered sequences of a mix of quoted and unquoted literals.
+
+[source,perl]
+----
+(* this is a comment *)
+& (executable = a.out (* <-- that is an unquoted literal *))
+  (directory  = /home/nobody )
+  (arguments  = arg1 "arg 2")
+  (count = 1)
+----
+
+This example demonstrates RSL substitutions, which can be used to make sure a string is used consistently multiple times in a resource description:
+[source,perl]
+----
+& (rsl_substitution  = (TOPDIR  "/home/nobody")
+                       (DATADIR $(TOPDIR)"/data")
+                       (EXECDIR $(TOPDIR)/bin) )
+  (executable = $(EXECDIR)/a.out
+        (* ^-- implicit concatenation *))
+  (directory  = $(TOPDIR) )
+  (arguments  = $(DATADIR)/file1
+        (* ^-- implicit concatenation *)
+                $(DATADIR) # /file2
+        (* ^-- explicit concatenation *)
+                '$(FOO)'            (* <-- a quoted literal *))
+  (environment = (DATADIR $(DATADIR)))
+  (count = 1)
+----
+
+Performing all variable substitution and removing comments yields an equivalent RSL string:
+
+[source,perl]
+----
+& (rsl_substitution  = (TOPDIR "/home/nobody")
+                       (DATADIR "/home/nobody/data")
+                       (EXECDIR "/home/nobody/bin") )
+  (executable = "/home/nobody/bin/a.out" )
+  (directory  = "/home/nobody" )
+  (arguments  = "/home/nobody/data/file1"
+                "/home/nobody/data/file2"
+                "$(FOO)" )
+  (environment = (DATADIR "/home/nobody/data"))
+  (count = 1)
+----
+
+Note in the above variable-substitution example, the variable substitution definitions are not automatically made a part of the job's environment. And explicit [monospace]#environment# attribute must be used to add environment variables for the job. Also note that the third value in the arguments clause is not a variable reference but only quoted literal that happens to contain one of the special characters.
+
+6. RSL grammar and tokenization rules
+The following is a modified BNF grammar for the Resource Specification Language. Lexical rules are provided for the implicit concatenation sequences in the form of conventional regular expressions; for the implicit-concat non-terminal rules, whitespace is not allowed between juxtaposed non-terminals. Grammar comments are provided in square brackets in a column to the right of the productions, eg [comment] to help relate productions in the grammar to the terminology used in the above discussion.
+
+Regular expressions are provided for the terminal class string-literal and for RSL comments. These regular expression make use of a common inverted character-class notation, as popularized by the various lex tools. Comments are syntactically equivalent to whitespace and can only appear where the comment prefix cannot be mistaken for the trailing part of a multi-character unquoted literal.
+
+Table 7.1. RSL Grammar
+
+Production  Rule    Annotations
+specification
+
+relation | '+' spec-list | '&' spec-list | '|' spec-list
+
+relation multi-request conjunct-request disjunct-request
+
+spec-list
+
+'(' specification ')' spec-list | '(' specification ')'
+
+relation
+
+'rsl_substitution' '=' binding-sequence | attribute op value-sequence
+
+Substitution variable definition Attribute binding relation
+
+binding-sequence
+
+binding binding-sequence | binding
+
+binding
+
+'(' string-literal simple-value ')'
+
+Substitution variable definition
+
+attribute
+
+string-literal
+
+attribute
+
+op
+
+'=' |'!=' |'>' |'>=' |'<' |'<='
+
+value-sequence
+
+value value-sequence | value
+
+value
+
+'(' value-sequence ')' | simple-value
+
+simple-value
+
+string-literal | simple-value '#' simple-value | implicit-concat | variable-reference
+
+String Concatenation
+
+variable-reference
+
+'$(' string-literal ')'
+
+Variable Reference
+
+implicit-concat
+
+( unquoted-literal )? ( implicit-concat-core )+
+
+Implicit concatenation
+
+implicit-concat-core
+
+variable-reference | ( variable-reference ) ( unquoted-literal )
+
+string-literal
+
+quoted-literal | unquoted-literal
+
+quoted-literal
+
+''' (([^']) |(''''))* ''' | '"' (([^"]) | ('""')* '"' | '^' c(([^c]|(cc))* c
+
+Single-quote delimiter with escaping Double-quote delimiter with escaping User defined delimiter
+
+unquoted-literal
+
+([^\t\v\n+&|()=<>!"'^#$])+
+
+Non-special characters
+
+comment
+
+'(*' (([^*])|('*'[^)]))* '*)'
+
+Comment
+
