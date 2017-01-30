@@ -1,4 +1,4 @@
-= Globus Globus Connect Server Installation Guide
+= Globus Connect Server Installation Guide
 :imagesdir: .
 :revdate: May 12, 2016
 :toc:
