@@ -58,8 +58,8 @@ are provided.
 
 1. A suitable server for storing the publication data must be
 setup. This server must have Globus Connect Server
-link:../../resource-provider-guide[installed] and must have
-link:../../resource-provider-guide/#sharing_section[Sharing
+link:../../globus-connect-server-installation-guide[installed] and must have
+link:../../globus-connect-server-installation-guide/#sharing_section[Sharing
 enabled]. Access to the necessary sharing capability requires a
 https://www.globus.org/subscriptions[subscription].
 
