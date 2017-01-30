@@ -1,4 +1,4 @@
-= Globus Resource Provider Guide
+= Globus Globus Connect Server Installation Guide
 :imagesdir: .
 :revdate: May 12, 2016
 :toc:
@@ -300,7 +300,7 @@ you edited two configuration options in the
 the +Name+ and +Public+ options in the +[Endpoint]+ section.
 You probably noticed that there are many, many other options
 that can be configured.
-This section of the Globus Resource Provider Guide briefly covers a few of the most commonly changed
+This section of the Globus Globus Connect Server Installation Guide briefly covers a few of the most commonly changed
 options in the +globus-connect-server.conf+ file. After updating settings in the 
 +/etc/globus-connect-server.conf+ file you must run the 
 `globus-connect-server-setup` command (as root) before the settings
@@ -677,7 +677,7 @@ Sharing makes it easier for an endpoint's users to grant and control access to t
 To illustrate let's consider a case in which Adam, who is employed by ABC University and is the admin of the abcu#ep1 endpoint, wants to enable sharing on his endpoint for some of his users - such as Bob, Sue, etc. - so as to allow them to share with their collaborators (e.g. Ann) who do not have local accounts.  In this case, Adam has decided that he wants to allow users to share out of the "globus" directory in their home directory and nowhere else.
 
 === Requirements
-Sharing can only be enabled on a link:http://docs.globus.org/resource-provider-guide/#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:{subscription_url}[subscription] are able to create managed endpoints.
+Sharing can only be enabled on a link:#managed-endpoint-anchor[managed endpoint]. Only organizations with a link:{subscription_url}[subscription] are able to create managed endpoints.
 
 For Adam to be able to enable sharing on his abcu#ep1 endpoint he will first need to be sure that ABC University has a subscription with Globus.
 

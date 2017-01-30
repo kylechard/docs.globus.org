@@ -27,8 +27,8 @@ menus:
         link: ''
         subsections:
             -
-                title: 'Resource Provider Guide'
-                link: '/resource-provider-guide/'
+                title: 'Globus Connect Server Installation Guide'
+                link: '/globus-connect-server-installation-guide/'
             -
                 title: 'Management Console Guide'
                 link: '/management-console-guide/'

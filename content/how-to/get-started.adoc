@@ -144,7 +144,7 @@ Follow the next steps suggested here or explore link:https://globus.org[globus.o
 		<ul>
 			<li>If your resource provider has set up a Globus endpoint, enter the endpoint name on the Globus Transfer Files page, authenticate using your normal username and password for the site when prompted, and proceed with your data transfer request.</li>
 			<li>If you don't know the endpoint name, you can use the search capability on the Globus Transfer Files page to look for an endpoint. Just enter a likely resource name and look for the resource in the scroll-down list of matching endpoints. For example, "umich", "nersc", "xsede", ...</li>
-			<li>If your site is not set up as a Globus endpoint, direct your system administrator to the <a href="../../resource-provider-guide/">Resource Provider Guide</a> or <a href="https://globus.org/contact-us">ask us</a> to contact them on your behalf.</li>
+			<li>If your site is not set up as a Globus endpoint, direct your system administrator to the <a href="../../globus-connect-server-installation-guide/">Globus Connect Server Installation Guide</a> or <a href="https://globus.org/contact-us">ask us</a> to contact them on your behalf.</li>
 		</ul></li>
 	<li><h3>Learn how Globus lets you easily share data.</h3>
 		<ul>

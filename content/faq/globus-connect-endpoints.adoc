@@ -28,7 +28,7 @@ Globus endpoints are named using the following format: [uservars]#<globus-userna
 If you wish to create an endpoint on a personal machine (laptop, personal desktop computer, etc.) please see the instuctions for setting up a Globus Connect Personal endpoint here: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
 
 If you are setting up an endpoint on a multi-user machine (e.g. HPC cluster, lab server, etc.)
-please follow the instructions in the link:../../resource-provider-guide/[Resource Provider Guide].
+please follow the instructions in the link:../../globus-connect-server-installation-guide/[Globus Connect Server Installation Guide].
 
 If you already have a GridFTP server running on your machine you can use the link:https://www.globus.org/app/endpoints[Manage Endpoints webpage] to add an endpoint that refers to that GridFTP server. The link:../../cli/reference/endpoint-add[+endpoint-add+] command on the Globus command line interface can also be used to add an endpoint.
 
@@ -98,7 +98,7 @@ Sharing Flag:: The second field controls sharing, with a value of "1" allowing s
 +
 NOTE: Sharing is a premium feature, so the endpoint must be covered by a subscription to use sharing. For additional details, see link:../../how-to/share-files/[here].
 
-R/W Flag:: The third field determines whether the path will be accessible read-only or read/write, with a "1" permitting read/write access and a "0" marking the path as read-only. The permissions set by this field are in addition to any other permissions/restrictions that may already be in place on the host - e.g. Linux file system permissions, etc. - and the most restrictive of all applicable permissions are what will determine effective access. For additional details, see link:../../resource-provider-guide/#details_on_effective_share_permissions[here].
+R/W Flag:: The third field determines whether the path will be accessible read-only or read/write, with a "1" permitting read/write access and a "0" marking the path as read-only. The permissions set by this field are in addition to any other permissions/restrictions that may already be in place on the host - e.g. Linux file system permissions, etc. - and the most restrictive of all applicable permissions are what will determine effective access. For additional details, see link:../../globus-connect-server-installation-guide/#details_on_effective_share_permissions[here].
 
 By default, a `~/.globusonline/lta/config-paths` file that looks like this will be generated the first time Globus Connect Personal for Linux is run:
 
@@ -400,7 +400,7 @@ If you experience issues with Globus Connect Server related to file permissions,
 The files in +/var/lib/globus-connect-server/grid-security/certificates+ should all have permissions set to 644.
 
 == What ports does Globus Connect Server need open?
-If you experience issues activating an endpoint, it's often the case that one or more of the required ports is not open. Please see the link:../../resource-provider-guide/#open-tcp-ports_section[Resource Provider Guide] for information on required open ports and configuring your firewall.
+If you experience issues activating an endpoint, it's often the case that one or more of the required ports is not open. Please see the link:../../globus-connect-server-installation-guide/#open-tcp-ports_section[Globus Connect Server Installation Guide] for information on required open ports and configuring your firewall.
 
 == How do I enable logging for Globus Connect Server 2.x.y?
 Currently, logging is not supported in Globus Connect Server >= 2.x.y. However, it can be enabled directly in GridFTP server, one of the Globus Connect Server components.
@@ -424,7 +424,7 @@ $ /etc/init.d/globus-gridftp-server restart
 All GridFTP options with their detailed description can be found at: http://toolkit.globus.org/toolkit/docs/6.0/gridftp/admin/
 
 == Does Globus Connect Server require an X.509 certificate to be installed?
-If you link:../../resource-provider-guide/#install_section[install Globus Connect Server] and select the MyProxy option, two components are installed: a GridFTP server and a MyProxy server. By default, certificates for both of these components are automatically installed so there is no need to add or configure X.509 certificates separately. You may choose to configure Globus Connect Server to use a certificate other than the default one installed. Please refer to the link:../../resource-provider-guide/#globus_connect_server_configuration[Globus Connect Server configuration section] to see how that can be set up.
+If you link:../../globus-connect-server-installation-guide/#install_section[install Globus Connect Server] and select the MyProxy option, two components are installed: a GridFTP server and a MyProxy server. By default, certificates for both of these components are automatically installed so there is no need to add or configure X.509 certificates separately. You may choose to configure Globus Connect Server to use a certificate other than the default one installed. Please refer to the link:../../globus-connect-server-installation-guide/#globus_connect_server_configuration[Globus Connect Server configuration section] to see how that can be set up.
 
 If you install Globus Connect Server and select the MyProxy OAuth option, an additional component is installed, namely an OAuth server (either on an existing web server or as part of a new Apache server installation). In this instance, you will need a certificate to be installed on the Apache server and this certificate should be issued by a Certificate Authority (CA) that is automatically trusted by the browser.
 
@@ -470,7 +470,7 @@ Check out the following:
 The user can see if GCP is running by looking for the Globus icon in the menu bar, which usually runs across the top of the screen. The Globus icon is a circle with the letter "g" in it. The user should see it in solid black, and not grayed out. If the user does not see that, then GCP is not running and he or she will get this error if they attempt to access their personal endpoint. If the GCP endpoint is not running, then the user can start it by running GCP from his or her Applications folder.
 
 == How do I manage roles on my endpoint?
-The Globus webapp provides an interface to manage roles on the endpoint on the link:https://www.globus.org/app/endpoints[Manage Endpoint page]. You can see a description of the supported roles link:../../resource-provider-guide/#roles_and_privileges[here]. Once you select your endpoint, you can choose the Roles tab to grant/revoke various roles on the endpoint.
+The Globus webapp provides an interface to manage roles on the endpoint on the link:https://www.globus.org/app/endpoints[Manage Endpoint page]. You can see a description of the supported roles link:../../globus-connect-server-installation-guide/#roles_and_privileges[here]. Once you select your endpoint, you can choose the Roles tab to grant/revoke various roles on the endpoint.
 
 [role="img-responsive center-block"]
 image::images/roles.png[Roles Tab]
