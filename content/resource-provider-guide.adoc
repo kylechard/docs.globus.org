@@ -1,9 +1,0 @@
-= Resource Provider Guide
-
-++++
-<script language="javascript">
-    window.location = "/globus-connect-server-installation-guide";
-</script>
-++++
-
-This page has been moved link:../globus-connect-server-installation-guide/[here].
