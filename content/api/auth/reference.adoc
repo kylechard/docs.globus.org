@@ -559,12 +559,12 @@ The response may not include all fields, depending on the identity's
 visibility policy.  However, the identity id, category, and name fields
 are always visible to all clients.
 
-=== GET /v2/api/identities?identity_ids=<list-of-identity-ids>
+=== GET /v2/api/identities?ids=<list-of-identity-ids>
 
 Returns a list of identity resource type documents for the comma
 separated list of identity ids.
 
-If the identity_id does not exist, it is not in the list…
+If the identity id does not exist, it is not in the list…
 
 An identity document may not include all fields, depending on the
 identity's visibility policy.
