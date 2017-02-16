@@ -44,6 +44,9 @@ menus:
             -
                 title: 'Command Line Interface'
                 link: '/cli/'
+            -
+                title: 'Premium Storage Connectors'
+                link: '/premium-storage-connectors/'
       -
         title: 'Support'
         link: ''

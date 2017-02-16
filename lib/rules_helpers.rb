@@ -9,8 +9,8 @@ module GlobusRuleHelpers
      # matches "/api/*/**" -- note that we can't use "/api/**" because that
      # matches on the index doc, which we don't want to include
      #
-     # matches "/site-docs/**", "/faq/**", "/cli/**", "/release-notes/**", and "/toolkit/**"
-     when /\/((api\/.*)|site-docs|faq|cli|release-notes|toolkit)\//
+     # matches "/site-docs/**", "/faq/**", "/cli/**", "/premium-storage-connectors/**", "/toolkit/**", and "/release-notes/**"
+     when /\/((api\/.*)|site-docs|faq|cli|premium-storage-connectors|toolki|release-notes)\//
        '/sidebar_page.*'
      else
        '/default.*'

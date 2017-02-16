@@ -1,0 +1,12 @@
+---
+full_title: "HDFS Connector"
+short_title: "HDFS"
+menu_weight: 5
+---
+
+= HDFS Connector
+:imagesdir: .
+:revdate: Feb 16, 2017
+
+[doc-info]*Last Updated: {revdate}*
+
