@@ -10,7 +10,7 @@ module GlobusRuleHelpers
      # matches on the index doc, which we don't want to include
      #
      # matches "/site-docs/**", "/faq/**", "/cli/**", and "/release-notes/**"
-     when /\/((api\/.*)|site-docs|faq|cli|release-notes)\//
+     when /\/((api\/.*)|site-docs|faq|cli|premium-storage-connectors|release-notes)\//
        '/sidebar_page.*'
      else
        '/default.*'

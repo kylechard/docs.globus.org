@@ -28,6 +28,12 @@ module Nanoc::Helpers
           :index_loc => '/cli/',
           :page_class => 'cli-page'
         }
+      when /\/premium-storage-connectors\//
+        {
+          :menu_name => 'Premium Storage Connectors Menu',
+          :index_loc => '/premium-storage-connectors/',
+          :page_class => 'stc-page'
+        }
       when /\/site-docs\//
         {
           :menu_name => 'Site Docs Menu',
