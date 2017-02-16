@@ -13,4 +13,4 @@ short_title: API Documentation
 * link:reference[API Reference]
 * link:specification[Specification]
 
-For more information, you can also try the link:../helper-pages/auth[Globus Auth Helper Page].
+For more information, you can also try the link:../helper-pages/auth[Globus Auth Helper Page]. We have also link:https://www.globus.org/sites/default/files/GlobusAuth.pdf[published a paper] (presented at eScience 2016) describing the design and implementation of Globus Auth.
