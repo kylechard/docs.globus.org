@@ -570,9 +570,9 @@ These tests can help you narrow down the potential causes of the issue and simpl
 [[test_basic_endpoint_functionality]]
 ==== Test Basic Endpoint Functionality
 An important verification of endpoint health is to confirm that the endpoint is able to successfully participate in transfers from and to other endpoints.
-Globus maintains two test endpoints, go#ep1 and go#ep2, that are always available for users to access when checking the functionality of their own endpoints.
-First, attempt to transfer the contents of the `/share/godata/` directory on the go#ep1 endpoint to your own endpoint. 
-After that, attempt to transfer those same files to the `/~/` directory on the go#ep2 endpoint. 
+Globus maintains two test endpoints, Globus Tutorial Endpoint 1 and Globus Tutorial Endpoint 2, that are always available for users to access when checking the functionality of their own endpoints.
+First, attempt to transfer the contents of the `/share/godata/` directory on the Globus Tutorial Endpoint 1 endpoint to your own endpoint. 
+After that, attempt to transfer those same files to the `/~/` directory on the Globus Tutorial Endpoint 2 endpoint. 
 If these tests both succeed, then your endpoint is functional and able to serve as the destination and the source of transfers. 
 For more detailed instructions on how to use the Globus service to transfer files, see link:https://www.globus.org/researchers/getting-started[here].
 
