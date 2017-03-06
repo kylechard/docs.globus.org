@@ -22,6 +22,12 @@ module Nanoc::Helpers
           :index_loc => '/api/helper-pages/index.adoc',
           :page_class => 'api-page'
         }
+      when /\/api\/python-sdk\//
+        {
+          :menu_name => 'Python SDK Menu',
+          :index_loc => '/api/python-sdk/index.adoc',
+          :page_class => 'api-page'
+        }
       when /\/cli\//
         {
           :menu_name => 'CLI Menu',

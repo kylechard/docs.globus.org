@@ -25,6 +25,15 @@ route '/static/**/*' do
   @item.identifier.to_s[('/static'.size)..-1]
 end
 
+# python-sdk static folder -- leave 'em alone
+compile '/api/python-sdk/_static/**/*' do
+end
+# routing should strip '/static' off the front, so
+# '/static/css/nav.css' will route to '/css/nav.css'
+route '/api/python-sdk/_static/**/*' do
+  @item.identifier.to_s[('/api/python-sdk/_static'.size)..-1]
+end
+
 # anything which is a CSS, JS, XML, or cert file is
 # compiled via ERB (in case it is at all templated)
 # and routed verbatim

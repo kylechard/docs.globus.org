@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API Authorization &mdash; globus-sdk-python 0.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-overrides.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="globus-sdk-python 0.5.0 documentation" href="../index.html" />
+    <link rel="up" title="Globus SDK Examples" href="../examples.html" />
+    <link rel="next" title="Native App Login" href="native_app.html" />
+    <link rel="prev" title="Globus SDK Examples" href="../examples.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          globus-sdk-python</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.5.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">SDK Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clients.html">Service Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../responses.html">Responses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oauth.html">Globus Auth / OAuth2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authorization.html">API Authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Globus SDK Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optional_dependencies.html">Optional Dependencies</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Globus SDK Examples</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">API Authorization</a><ul>
+<li><a class="reference internal" href="#access-token-authorization-on-authclient-and-transferclient">Access Token Authorization on AuthClient and TransferClient</a></li>
+<li><a class="reference internal" href="#refresh-token-authorization-on-authclient-and-transferclient">Refresh Token Authorization on AuthClient and TransferClient</a></li>
+<li><a class="reference internal" href="#basic-auth-on-an-authclient">Basic Auth on an AuthClient</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../examples.html" title="Previous Chapter: Globus SDK Examples"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Globus SDK Examples</span>
+    </a>
+  </li>
+  <li>
+    <a href="native_app.html" title="Next Chapter: Native App Login"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Native App Login &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/examples/authorization.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="api-authorization">
+<span id="examples-authorization"></span><h1>API Authorization<a class="headerlink" href="#api-authorization" title="Permalink to this headline">¶</a></h1>
+<p>Using a <code class="docutils literal"><span class="pre">GlobusAuthorizer</span></code> is hard to grasp without a few examples to reference.
+The basic usage should be to create these at client instantiation time.</p>
+<div class="section" id="access-token-authorization-on-authclient-and-transferclient">
+<h2>Access Token Authorization on AuthClient and TransferClient<a class="headerlink" href="#access-token-authorization-on-authclient-and-transferclient" title="Permalink to this headline">¶</a></h2>
+<p>Perhaps you&#8217;re in a part of your application that only sees Access Tokens.
+Access Tokens are used to directly authenticate calls against Globus APIs, and
+are limited-lifetime credentials.
+You have distinct Access Tokens for each Globus service which you want to
+access.</p>
+<p>With the tokens in hand, it&#8217;s just a simple matter of wrapping the tokens in
+<a class="reference internal" href="../authorization.html#globus_sdk.AccessTokenAuthorizer" title="globus_sdk.AccessTokenAuthorizer"><code class="xref py py-class docutils literal"><span class="pre">AccessTokenAuthorizer</span></code></a> objects.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">globus_sdk</span> <span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">TransferClient</span><span class="p">,</span> <span class="n">AccessTokenAuthorizer</span>
+
+<span class="n">AUTH_ACCESS_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+<span class="n">TRANSFER_ACCESS_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+
+<span class="c1"># note that we don&#39;t provide the client ID in this case</span>
+<span class="c1"># if you&#39;re using an Access Token you can&#39;t do the OAuth2 flows</span>
+<span class="n">auth_client</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">(</span>
+    <span class="n">authorizer</span><span class="o">=</span><span class="n">AccessTokenAuthorizer</span><span class="p">(</span><span class="n">AUTH_ACCESS_TOKEN</span><span class="p">))</span>
+
+<span class="n">transfer_client</span> <span class="o">=</span> <span class="n">TransferClient</span><span class="p">(</span>
+    <span class="n">authorizer</span><span class="o">=</span><span class="n">AccessTokenAuthorizer</span><span class="p">(</span><span class="n">TRANSFER_ACCESS_TOKEN</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="refresh-token-authorization-on-authclient-and-transferclient">
+<h2>Refresh Token Authorization on AuthClient and TransferClient<a class="headerlink" href="#refresh-token-authorization-on-authclient-and-transferclient" title="Permalink to this headline">¶</a></h2>
+<p>Refresh Tokens are long-lived credentials used to get new Access Tokens
+whenever they expire.
+However, it would be very awkward to create a new client instance every time
+your credentials expire!</p>
+<p>Instead, use a <a class="reference internal" href="../authorization.html#globus_sdk.RefreshTokenAuthorizer" title="globus_sdk.RefreshTokenAuthorizer"><code class="xref py py-class docutils literal"><span class="pre">RefreshTokenAuthorizer</span></code></a> to automatically re-up your credentials
+whenever they near expiration.</p>
+<p>Re-upping credentials is an operation that requires having client credentials
+for Globus Auth, so creating the authorizer is more complex this time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">globus_sdk</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AuthClient</span><span class="p">,</span> <span class="n">TransferClient</span><span class="p">,</span> <span class="n">ConfidentialAppAuthClient</span><span class="p">,</span>
+                        <span class="n">RefreshTokenAuthorizer</span><span class="p">)</span>
+
+<span class="c1"># for doing the refresh</span>
+<span class="n">CLIENT_ID</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+<span class="n">CLIENT_SECRET</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+
+<span class="c1"># the actual tokens</span>
+<span class="n">AUTH_REFRESH_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+<span class="n">TRANSFER_REFRESH_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+
+<span class="c1"># making the authorizer requires that we have an AuthClient which can talk</span>
+<span class="c1"># OAuth2 to Globus Auth</span>
+<span class="n">internal_auth_client</span> <span class="o">=</span> <span class="n">ConfidentialAppAuthClient</span><span class="p">(</span><span class="n">CLIENT_ID</span><span class="p">,</span> <span class="n">CLIENT_SECRET</span><span class="p">)</span>
+
+<span class="c1"># now let&#39;s bake a couple of authorizers</span>
+<span class="n">auth_authorizer</span> <span class="o">=</span> <span class="n">RefreshTokenAuthorizer</span><span class="p">(</span><span class="n">AUTH_REFRESH_TOKEN</span><span class="p">,</span>
+                                         <span class="n">internal_auth_client</span><span class="p">)</span>
+<span class="n">transfer_authorizer</span> <span class="o">=</span> <span class="n">RefreshTokenAuthorizer</span><span class="p">(</span><span class="n">TRANSFER_REFRESH_TOKEN</span><span class="p">,</span>
+                                             <span class="n">internal_auth_client</span><span class="p">)</span>
+
+<span class="c1"># auth_client here is totally different from &quot;internal_auth_client&quot; above</span>
+<span class="c1"># the former is being used to request new tokens periodically, while this</span>
+<span class="c1"># one represents a user authenticated with those tokens</span>
+<span class="n">auth_client</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">(</span><span class="n">authorizer</span><span class="o">=</span><span class="n">auth_authorizer</span><span class="p">)</span>
+<span class="c1"># transfer_client doesn&#39;t have to contend with this duality -- it&#39;s always</span>
+<span class="c1"># representing a user</span>
+<span class="n">transfer_client</span> <span class="o">=</span> <span class="n">TransferClient</span><span class="p">(</span><span class="n">authorizer</span><span class="o">=</span><span class="n">transfer_authorizer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-auth-on-an-authclient">
+<h2>Basic Auth on an AuthClient<a class="headerlink" href="#basic-auth-on-an-authclient" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re using an <a class="reference internal" href="../clients/auth.html#globus_sdk.AuthClient" title="globus_sdk.AuthClient"><code class="xref py py-class docutils literal"><span class="pre">AuthClient</span></code></a> to do OAuth2
+flows, you likely want to authenticate it using your client credentials &#8211; the
+client ID and client secret.</p>
+<p>The preferred method is to use the <code class="docutils literal"><span class="pre">AuthClient</span></code> subclass which automatically
+specifies its authorizer.
+Internally, this will use a <code class="docutils literal"><span class="pre">BasicAuthorizer</span></code> to do Basic Authentication.</p>
+<p>By way of example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">globus_sdk</span> <span class="kn">import</span> <span class="n">ConfidentialAppAuthClient</span>
+
+<span class="n">CLIENT_ID</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+<span class="n">CLIENT_SECRET</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ConfidentialAppAuthClient</span><span class="p">(</span><span class="n">CLIENT_ID</span><span class="p">,</span> <span class="n">CLIENT_SECRET</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and you&#8217;re off to the races!</p>
+<p>Under the hood, this is implicitly running</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">AuthClient</span><span class="p">(</span><span class="n">authorizer</span><span class="o">=</span><span class="n">BasicAuthorizer</span><span class="p">(</span><span class="n">CLIENT_ID</span><span class="p">,</span> <span class="n">CLIENT_SECRET</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>but don&#8217;t do this yourself &#8211; <code class="docutils literal"><span class="pre">ConfidentialAppAuthClient</span></code> has different
+methods from the base <code class="docutils literal"><span class="pre">AuthClient</span></code>.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2016, Globus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
