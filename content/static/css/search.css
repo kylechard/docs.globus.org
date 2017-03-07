@@ -182,3 +182,52 @@ table.gsc-completion-container {
         width: 230px;
     }
 }
+
+/* For Broken search */
+table.gsc-search-box td.gsc-input input {
+    border-radius: 4px !important;
+    height: 30px !important;
+}
+table.gsc-search-box .gsc-clear-button,
+table.gsc-branding {
+    display: none !important;
+}
+table.gsc-search-box::-webkit-input-placeholder, /* Chrome/Opera/Safari */
+table.gsc-search-box::-moz-placeholder, /* Firefox 19+ */
+table.gsc-search-box:-ms-input-placeholder, /* IE 10+ */
+table.gsc-search-box:-moz-placeholder { /* Firefox 18- */
+  display: none !important;
+}
+table.gsc-search-box td.gsc-search-button input.gsc-search-button {
+    border-style: none;
+    color: #fff;
+    height: 30px !important;
+}
+/* media queries */
+@media (min-width: 768px) {
+    #search-container {
+        margin-top: 10px;
+        width: 0%;
+        min-width: 68px;
+        float: right;
+        overflow: hidden;
+        padding-right: 0;
+        padding-left: 0;
+        margin-left: 10px;
+
+        -webkit-transition: width 0.3s;
+        -moz-transition: width 0.3s;
+        transition: width 0.3s;
+
+        -webkit-backface-visibility: hidden;
+    }
+    #search-container td.gsc-input {
+        position: absolute;
+        right: 55px;
+        width: 180px;
+    }
+    #search-container.active {
+        display:block;
+        width: 245px;
+    }
+}
