@@ -10,7 +10,7 @@ menu_weight: 1
 
 [doc-info]*Last Updated: {revdate}*
 
-This connector enables use of a Globus data access interface on a link:https://www.spectralogic.com/products/blackpearl/[SpectraLogic Black Pearl] storage system. This requires the installation of Globus Connect Server and an additional package that is specific to the SpectraLogic BlackPearl storage system called the SpectraLogic BlackPearl DSI.
+This connector enables use of a Globus data access interface on a link:https://www.spectralogic.com/products/blackpearl/[SpectraLogic BlackPearl] storage system. This requires the installation of Globus Connect Server and an additional package that is specific to the SpectraLogic BlackPearl storage system called the SpectraLogic BlackPearl DSI.
 
 This connector is a premium feature available only to Globus subscribers, and is thus only available for link:https://docs.globus.org/globus-connect-server-installation-guide/#managed-endpoint-anchor[Managed Endpoints]. 
 
@@ -77,7 +77,7 @@ local_user3 black_pearl_S3_Access_ID_03 black_pearl_S3_Secret_Key_03
 ----
 +
 When a user activates on an endpoint, the GridFTP server will map those activation credentials to a local user. That local user will then be mapped to a BlackPearl user via the /etc/blackpearl/AccessIDFile, and the user will have access to the SpectraLogic BlackPearl per those mapped credentials.
-. After installing the gridftp-blackpearl-dsi package and configuring the Black Pearl DSI per the instructions above, the GridFTP service needs to be restarted.
+. After installing the gridftp-blackpearl-dsi package and configuring the BlackPearl DSI per the instructions above, the GridFTP service needs to be restarted.
 
 == Basic Endpoint Functionality Test
 
