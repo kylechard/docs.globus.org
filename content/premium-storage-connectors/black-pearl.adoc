@@ -1,7 +1,7 @@
 ---
 full_title: "SpectraLogic BlackPearl Connector"
 short_title: "SpectraLogic BlackPearl"
-menu_weight: 1
+menu_weight: 2
 ---
 
 = SpectraLogic BlackPearl Connector
