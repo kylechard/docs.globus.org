@@ -338,7 +338,7 @@ itself", rather than on behalf of a user. For example, a data portal
 application might have resources that are owned by the portal, rather than
 belonging to a human user.
 
-To accomodate this use case, Globus Auth supports what we call
+To accommodate this use case, Globus Auth supports what we call
 "client-identities". Unlike a human identity that might have a username in the
 form, `jane.doe@uchicago.edu`, client-identities have a username of the form
 `<client_id>@clients.auth.globus.org`, where <client_id> is the UUID your
@@ -370,7 +370,7 @@ The actual request might look like the following:
     Content-Type: application/x-www-form-urlencoded
     Authorization: Basic NDFjYTIwM2QtNzcwMy00NDYxLWFiNGItNjVhNjA0YjE2NjE5OjxDTElFTlRfU0VDUkVUPg==
 
-    scope=scope=openid+email+profile+urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall&
+    scope=openid+email+profile+urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall&
     grant_type=client_credentials
 
 A successful response to this request contains the following fields:
