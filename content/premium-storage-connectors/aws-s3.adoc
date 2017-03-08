@@ -1,16 +1,23 @@
-= Create a Globus Amazon S3 Endpoint
+---
+full_title: "Amazon Web Services S3 Connector"
+short_title: "Amazon Web Services S3"
+menu_weight: 1
+---
+
+= Amazon Web Services S3 Connector
+:revdate: March 8, 2017
 
 The following instructions for creating a Globus endpoint on an Amazon S3 bucket assume that you are familiar with Amazon Web Services in general, and in particular with IAM and S3. You will be granting Globus access to your S3 bucket, using an IAM role. This setup will allow you to use Globus endpoint permissions to grant access to folders within the S3 bucket to other Globus users and groups.
 
 NOTE: A link:https://www.globus.org/subscriptions[Globus subscription] is required to create an S3 endpoint. If your institution is not a subscriber please link:https://www.globus.org/configure-subscription[complete this form to start your free trial].
 
 == Prerequisites
-* In order to transfer files to/from an Amazon S3 endpoint, you must be running the latest version of link:https://www.globus.org/globus-connect-server[Globus Connect Server] or link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on the other endpoint. If transfers are failing, check the event log; if you see "type": "FTPServerError", the other endpoint is most likely running a dated version of Globus Connect Server (or GridFTP server).
+* In order to transfer files to/from an AWS S3 endpoint, you must be running the latest version of link:https://www.globus.org/globus-connect-server[Globus Connect Server] or link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on the other endpoint. If transfers are failing, check the event log; if you see "type": "FTPServerError", the other endpoint is most likely running a dated version of Globus Connect Server (or GridFTP server).
 * Your S3 bucket must contain at least one folder or object in order for it to display correctly on the Globus link:https://www.globus.org/app/transfer[Transfer Files page]. Failure to include at least one folder or object in the S3 bucket will prevent an endpoint backed by the bucket from being accessible in Globus, with "Directory Not Found" errors being generated when access is attempted.
 
 == Part A: Amazon Web Services Account Configuration
 
-You must configure your AWS account with a role that can be assumed by Globus, and that has access to the Amazon S3 bucket.
+You must configure your AWS account with a role that can be assumed by Globus, and that has access to the AWS S3 bucket.
 
 1. Log into the link:https://console.aws.amazon.com/iam[AWS IAM console] using the AWS account that owns the S3 bucket (or as a sufficiently privileged IAM user in that account).
 2. Add a new IAM policy by clicking on "Policies" in the left side bar, and then the "Create Policy" button at the top.
@@ -67,12 +74,12 @@ _Note: You must set the S3 endpoint's visibility to "public" using the command i
 * The +rename+ operation is not currently supported on S3 endpoints.
 * The following Globus transfer options are not currently supported and will be ignored, if set: +verify-size+, +--perf-p+, and +--perf-pp+.
 * The following Globus transfer options are not currently supported and _will cause the file transfer to fail_, if set: +-s 0+ (sync), +-s 1+ (sync-delete), and +--preserve-mtime+.
-* Amazon S3 only supports utf-8 encoded unicode paths, so systems that send filenames improperly (not UTF-8), like  Globus Connect Personal for Windows, will fail when uploading non-ascii file names.
-* Amazon S3 supports non-unix compatible file names such as '.', '..', and embedded '//'.
+* AWS S3 only supports utf-8 encoded unicode paths, so systems that send filenames improperly (not UTF-8), like  Globus Connect Personal for Windows, will fail when uploading non-ascii file names.
+* AWS S3 supports non-unix compatible file names such as '.', '..', and embedded '//'.
 * When uploading to S3, directory markers and, in particular, empty directories, are not explicitly created in the S3 bucket.
 * When downloading from S3, all objects are downloaded, except for objects whose path name ends with a slash (/). The latter are assumed to be directory markers and will be created as directories (not files) on the destination endpoint.
 * The S3 bucket configured as a Globus endpoint must not be a "requester pays for bandwidth" bucket. If it is, all operations will fail, because Globus will not indicate (via HTTP headers) that it is willing to pay for bandwidth charges.
-* Amazon S3 is an eventually-consistent system by design and Globus cannot guarantee stronger levels of consistency.
+* AWS S3 is an eventually-consistent system by design and Globus cannot guarantee stronger levels of consistency.
 
 == Notes
 * If you de-activate an S3 endpoint, you will need to re-run the command in step #3 in Part B.

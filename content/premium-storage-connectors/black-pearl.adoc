@@ -1,0 +1,84 @@
+---
+full_title: "SpectraLogic BlackPearl Connector"
+short_title: "SpectraLogic BlackPearl"
+menu_weight: 2
+---
+
+= SpectraLogic BlackPearl Connector
+:imagesdir: .
+:revdate: March 7, 2017
+
+[doc-info]*Last Updated: {revdate}*
+
+This connector enables use of a Globus data access interface on a link:https://www.spectralogic.com/products/blackpearl/[SpectraLogic BlackPearl] storage system. This requires the installation of Globus Connect Server and an additional package that is specific to the SpectraLogic BlackPearl storage system called the SpectraLogic BlackPearl DSI.
+
+This connector is a premium feature available only to Globus subscribers, and is thus only available for link:https://docs.globus.org/globus-connect-server-installation-guide/#managed-endpoint-anchor[Managed Endpoints]. 
+
+== Prerequisites
+A functional Globus Connect Server installation is required for installation and use of the SpectraLogic BlackPearl connector.  The link:https://docs.globus.org/globus-connect-server-installation-guide/[Globus Connect Server Installation Guide] provides detailed documentation on the steps for installing and configuring a server endpoint.
+
+=== Supported Linux Distributions
+
+==== The SpectraLogic BlackPearl DSI is available for the following Linux distributions:
+- RHEL 7
+- CentOS 7
+- Ubuntu 14.04
+- Ubuntu 16.04
+- Debian 8
+
+==== Supported BlackPearl versions
+
+The SpectraLogic BlackPearl DSI works with the following versions of the SpectraLogic BlackPearl software:
+
+- 3.0 or higher
+
+==== Supported Globus Connect Server versions
+
+The SpectraLogic BlackPearl DSI should be used with the latest version of GCS. (talked to Mike, we want users on latest as best practice, sparrow is running GCS-4.0.36 / GridFTP=11.1)
+
+== Installation
+
+Once a valid Globus Connect Server installation is in place, the SpectraLogic BlackPearl DSI can be installed by following these steps:
+
+. Install the gridftp-blackpearl-dsi package for your platform
++
+RHEL/CentOS:
++
+----terminal
+yum install gridftp-blackpearl-dsi
+----terminal
++
+Ubuntu/Debian:
++
+----terminal
+apt-get install gridftp-blackpearl-dsi
+----terminal
+. Once you've installed the above package onto your server, you'll need to create a file /etc/gridftp.d/blackpearl that contains only the following:
++
+----
+load_dsi_module blackpearl
+threads 1
+----
++
+This will configure the GridFTP service to use the SpectraLogic BlackPearl DSI.
+. You must now configure the SpectraLogic BlackPearl DSI by creating two files. The first file will be /etc/blackpearl/GridFTPConfig and it must contain only the following:
++
+----
+EndPoint           IP_of_bp_data_port_goes_here
+AccessIDFile       /etc/blackpearl/AccessIDFile
+----
++
+The second file will be /etc/blackpearl/AccessIDFile and it will contain mappings, one per line, that will provide a mapping from a local user on the system where the GridFTP server is running to a user on the SpectraLogic BlackPearl system. Below is an example /etc/blackpearl/AccessIDFile file:
++
+----
+local_user1 black_pearl_S3_Access_ID_01 black_pearl_S3_Secret_Key_01
+local_user2 black_pearl_S3_Access_ID_02 black_pearl_S3_Secret_Key_02
+local_user3 black_pearl_S3_Access_ID_03 black_pearl_S3_Secret_Key_03
+----
++
+When a user activates on an endpoint, the GridFTP server will map those activation credentials to a local user. That local user will then be mapped to a BlackPearl user via the /etc/blackpearl/AccessIDFile, and the user will have access to the SpectraLogic BlackPearl per those mapped credentials.
+. After installing the gridftp-blackpearl-dsi package and configuring the BlackPearl DSI per the instructions above, the GridFTP service needs to be restarted.
+
+== Basic Endpoint Functionality Test
+
+After completing the installation, you should do some basic transfer tests with your endpoint to ensure that it is working. We document a process for basic endpoint functionality testing link:https://docs.globus.org/globus-connect-server-installation-guide/#test_basic_endpoint_functionality[here].

@@ -1,0 +1,24 @@
+---
+full_title: "Premium Storage Connectors"
+menu_weight: 0
+---
+
+= Premium Storage Connectors
+:imagesdir: .
+:revdate: Feb 16, 2017
+
+[doc-info]*Last Updated: {revdate}*
+
+Premium storage connectors enable you to add Globus endpoints to access non-POSIX filesystems, including various object stores and archival storage systems. We currently support the following systems via premium storage connectors:
+
+- link:aws-s3[Amazon Web Services S3 Connector]
+- link:black-pearl[SpectraLogic BlackPearl]
+////
+- link:ceph-connector-q1[Ceph object stores]
+- Google Drive (coming soon)
+- link:hpss[High Performance Storage System (HPSS)]
+////
+
+Premium storage connectors are available only on managed endpoints covered under a Globus Standard subscription. 
+
+Every premium connector requires a working Globus Connect Server deployment, and installation of additional package that is custom for the storage system. 
