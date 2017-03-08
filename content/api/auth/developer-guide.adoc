@@ -164,18 +164,25 @@ PKCE (https://tools.ietf.org/html/rfc7636[RFC 7636]) is a security protocol that
 
 Before starting the <<obtaining-authorization,authorization flow>> the application client must generate a https://tools.ietf.org/html/rfc7636#section-4.1[`code_verifier`] which meets the following requirements:
 
-* Generated using a reliably random (i.e, unguessable) method.
+* Generated using a reliably random (i.e., unguessable) method.
 * 43-128 characters long consisting of letters, numbers and the characters `-._~`.
 * _Must be freshly generated for each request._
 
-Second, a https://tools.ietf.org/html/rfc7636#section-4.2[`code_challenge`] is created by taking URL safe base64 encoding of a SHA256 digest of the `code_verifier`.
+Second, a https://tools.ietf.org/html/rfc7636#section-4.2[`code_challenge`] is created by taking the URL safe base64 encoding, without padding, of a SHA256 digest of the `code_verifier`. The same constraints that apply to a `code_verifier` also apply to a `code_challenge`:
+
+* 43-128 characters long consisting of the characters `a-z`, `A-Z`, `0-9`, `-`, `.`, `_`, `~`.
+* May only be used once.
+* It is important to note that the `=` (equals) character is _not_ allowed, and _must_ be stripped off the `code_challenge` after the base64 encoding.
 
 The authorization URL is then created as <<authorization-request,described above>>, but with the two following additional parameters:
 
 * `code_challenge`, as just described.
-* `code_challenge_method`, whose value MUST be `SHA256`.
+* `code_challenge_method`, whose value MUST be `S256`.
 
-// TODO: Updated example auth url
+An example of a complete authorization request URL would look similar to the following:
+----
+https://auth.globus.org/v2/oauth2/authorize?code_challenge=rennw4QyOe3rIlZq-qTh2gL34pYEC_5JXKSKRhc5lVc&code_challenge_method=S256&state=_default&redirect_uri=https%3A%2F%2Fauth.globus.org%2Fv2%2Fweb%2Fauth-code&response_type=code&client_id=asdf&scope=openid+profile+email&access_type=online
+----
 
 Just as with the normal flow, the user is then prompted to authenticate and consent, and is sent back to the `redirect_uri`. For the final step, the <<access-token-request,access token request>>, the application client must include the `code_verifier` parameter created above.
 // (ASCIIDOC TODO: Anchor before the list element resets numbering, but link doesn't work if anchor is inside list element...)
@@ -345,3 +352,5 @@ TODO: XSEDE got Confluence/JIRA and Django working. Mention that somewhere.
 === Sample Applications and Services Using Globus Auth
 
 The https://github.com/globus/globus-sample-data-portal[Globus Sample Data Portal] contains an example of both an application and a service. Beyond basic app/service functionality, it demonstrates the use of <<downstream-services,dependent services>> (in this case Globus Transfer), <<client-identities,client identities>> and other features.
+
+The https://github.com/globus/native-app-examples[Native App Examples] GitHub repository provides some working example scripts for how to build applications that use the Native App authentication flow.
