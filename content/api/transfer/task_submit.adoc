@@ -180,20 +180,26 @@ See also link:../file_operations#path_encoding[Path Encoding].
                         delete.
 | recursive           | boolean
                       | Delete directory contents recursively. Required if
-                        any of the delete items point to a directory. Default
-                        false. Note that unlike transfer submissions, this
-                        is a top level field and can't be sepcified per item.
+                        any of the delete items point to a directory. 
+                        Note that unlike transfer submissions, this
+                        is a top level field and can't be specified per item.
                         Default false.
 | ignore_missing      | boolean
                       | Don't generate errors for non existent files and
                         directories. Default false.
-| interpret_globs     | boolean
-                      | Interpret shell globs at the end of paths.
-                        Supports +*+, +?+, +[+, and +]+ with their standard
-                        shell meanings and +\+ for escaping, but only in the
-                        last segment of the path. If false (the default), these
-                        special characters will be escaped and treated as
-                        literals.
+| interpret_globs     | boolean | 
+If false (the default), every character in the entire path is treated literally.
+ 
+If true, shell glob characters (+*+, +?+, +[+, and +]+) in the last path component are 
+interpreted as a pattern, unless they are escaped by a preceding backslash
+(+\+).  For consistency, the rest of the path (e.g. everything but the final
+component) also has any backslash escapes removed, so a literal backslash
+anywhere in the path must be escaped.  
+Like UNIX, glob characters will not match files or directories that start with
+a period (+.+); a literal period character is required in such cases.  
+The special directory entries +.+ and +..+ are never matched.
+
+
 |===================
 
 [[delete_item_fields]]

@@ -6,7 +6,7 @@ menu_weight: 3
 
 = Command Line Interface (CLI) Reference
 :imagesdir: .
-:revdate: December 22, 2016
+:revdate: March 08, 2017
 
 [doc-info]*Last Updated: {revdate}*
 

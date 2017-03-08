@@ -343,7 +343,7 @@ code hierarchy.
 === Autoactivate endpoint
 
 Attempt to auto activate an endpoint. The response will always contain
-a +code+ field. If the code is "AutoActivateFailed", the response will also
+a +code+ field. If the code is "AutoActivationFailed", the response will also
 include an activation requirements document, which can be filled in and
 submited to activate. On success, it will return a result code of the
 form "AutoActivated.CREDENTIAL_SOURCE", where CREDENTIAL_SOURCE indicates the

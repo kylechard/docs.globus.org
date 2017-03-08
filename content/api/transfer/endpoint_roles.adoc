@@ -42,6 +42,7 @@ Role "administrator":: The endpoint owner has this role implicitly, and a
     * create a shared endpoint on a Globus Connect Personal endpoint if one
       of the user's linked identities is a member of a plus group
     * all capabilities of the "access_manager" role
+    * all capabilities of the "activity_manager" role
 
 Role "access_manager":: The principal can view, add, and delete all access
  rules on the endpoint. This role is only supported on endpoints that support
@@ -95,11 +96,11 @@ the explicit roles returned in the `role_list`. Authorization decisions
 are based on the effective roles in `my_effective_roles`, rather
 than the explicit role list. In detail:
 
-* The owner of an endpoint has effective roles "administrator" and
-  "access_manager".
+* The owner of an endpoint has the effective roles "administrator", 
+  "access_manager", and "activity_manager".
 
-* A user with the "administrator" role will also have effective role
-  "access_manager".
+* A user with the "administrator" role will also have the effective roles
+  "access_manager" and "activity_manager".
 
 * A user with the "activity_monitor" role on a host endpoint will have
   the "activity_monitor" effective roles on all hosted shared endpoints,
