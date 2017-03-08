@@ -34,7 +34,7 @@ The SpectraLogic BlackPearl DSI works with the following versions of the Spectra
 
 ==== Supported Globus Connect Server versions
 
-The SpectraLogic BlackPearl DSI should be used with the latest version of GCS. (talked to Mike, we want users on latest as best practice, sparrow is running GCS-4.0.36 / GridFTP=11.1)
+The SpectraLogic BlackPearl DSI should be used with the latest version of GCS.
 
 == Installation
 
