@@ -139,6 +139,9 @@ table.gsc-completion-container {
     margin: 0 !important;
     padding-bottom: 0 !important;
 }
+.gsc-completion-container img {
+    display: none;
+}
 
 /* media queries */
 @media (min-width: 768px) {
