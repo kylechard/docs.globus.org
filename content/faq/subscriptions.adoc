@@ -40,7 +40,7 @@ Please ensure that [uservars]#<username># has subscription management rights, ot
 You must have a current link:https://www.globus.org/subscriptions[Globus subscription] to be granted subscription management rights. If your Globus account does not have subscription management rights, please contact support@globus.org so that we may enable your account. If you do not have a Globus subscription please link:https://www.globus.org/subscriptions/non-profit-subscription-inquiry[contact us to sign up].
 
 == How do I convert an existing endpoint into a managed endpoint?
-NOTE: The commands below must be run on the Globus command line interface (CLI). Please read this article to configure your account to access the Globus CLI.
+NOTE: The commands below must be run on the Globus command line interface (CLI). Please read link:../../cli/using-the-cli/[this article] to configure your account to access the Globus CLI.
 
 You can convert an existing endpoint into a managed endpoint via the Globus command line interface by running the following command:
 
