@@ -11,6 +11,18 @@ menu_weight: 12
 ifdef::env-github[:outfilesuffix: .adoc]
 
 
+== 5.5 (Mar 2017)
+
+* Endpoint PUT: The +owner_string+ can be changed to any administrator
+  set by a user-identity role (and that role can not be deleted).  
+  Note that +owner_id+ will not change.  
+
+* Endpoint search "shared-by-me" and "my_shared_endpoint_list" return shared endpoints for which you are an administrator or access_manager 
+
+* Endpoint "administrator" role now implies "activity_manager"
+
+* Remove per-owner_id unique constraint on endpoint display_name
+
 == 5.4 (Dec 2016)
 
 * Don't require explicit activation for myproxy.globusonline.org endpoints

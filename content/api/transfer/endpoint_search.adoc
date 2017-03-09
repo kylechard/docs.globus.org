@@ -167,7 +167,7 @@ The +limit+ query parameter sets how many results to return (max 100), and the
   on the specified endpoint.
   See
   link:../endpoint#get_shared_endpoint_list[Get shared endpoint list]
-  for getting a list of shared endpoints administered by the current user,
+  for getting a list of shared endpoints
   which does not require the "administrator" role on the _host_ endpoint.
 |===================
 
@@ -204,7 +204,8 @@ parameter also be specified (see the list above), while others do not.
 | False
 
 | shared-by-me
-| Search shared endpoints owned by the current user.
+| Search shared endpoints for which the current user has the "administrator" or
+"access_manager" role.
 | False
 
 | shared-with-me
