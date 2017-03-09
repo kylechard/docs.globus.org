@@ -748,7 +748,7 @@ The following roles are supported on managed endpoints. These roles need to be e
 ** Can see endpoint definition even if set to private
 ** Can manage roles for endpoint
 ** An administrator for an S3 endpoint or a share also has all of the abilities of an Access Manager 
-** Can be granted by other administrators. The creator of the endpoint is granted administrator role by default
+** Can be granted by other administrators. The creator of the endpoint is granted Administrator role by default
 ** Does not have Activity Manager and/or Activity Monitor capabilities without being granted such explicitly
 * Activity Manager
 ** Has full access to the Management Console for the endpoint
