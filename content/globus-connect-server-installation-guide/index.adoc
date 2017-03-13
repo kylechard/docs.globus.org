@@ -701,6 +701,10 @@ Looking back to our use case with Adam, he will next need to log in (as root) to
 ==== Controlling *what* can be shared
 It is possible to control which file system paths on the endpoint are allowed for sharing via the "SharingRestrictPaths" option, which is also in the [GridFTP] section of the /etc/globus-connect-server.conf file. Remember, after making changes to the /etc/globus-connect-server.conf file it is necessary to run the ‘globus-connect-server-setup' command before those changes will take effect. Additional details about these configuration options can be found xref:gridftp_section[here] and also in the link:https://github.com/globus/globus-connect-server/blob/master/source/globus-connect-server.conf[globus-connect-server.conf] file itself.
 
+In our scenario, Adam wants to allow his users to create shares that point to the "globus" directory in their home directory. Adam has also decided that he wants to allow his users to create shares that can both be read and written to, so he will specify the SharingRestrictPaths option in his endpoint's globus-connect-server.conf file like so:
+
+    SharingRestrictPaths = RW~/globus
+
 ==== Controlling *who* can share
 Recall that our use case with Adam required that sharing be enabled for only certain users. At this point sharing is enabled for all users on the server hosting the abcu#ep1 endpoint. By editing the SharingUsersAllow, SharingGroupsAllow, SharingUsersDeny, and SharingGroupsDeny options in the [GridFTP] section of the /etc/globus-connect-server.conf file, Adam can restrict which local users on the server are allowed to create shares on the abcu#ep1 endpoint. By default, when no value is set for any of these options, GCS will allow sharing for all local user accounts. Any users or groups listed in the SharingGroupsDeny or SharingUsersDeny options will not be allowed to share. If any value is set for SharingUsersAllow or SharingGroupsAllow, then only users and groups explicitly listed in these options will be allowed to share.
 
