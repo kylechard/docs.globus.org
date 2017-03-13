@@ -1,6 +1,6 @@
 = Globus Connect Server Installation Guide
 :imagesdir: .
-:revdate: Feb 16, 2017
+:revdate: March 13, 2017
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -670,7 +670,7 @@ grep -v "\^$\|^;" /etc/globus-connect-server.conf
 ----terminal
 
 [[sharing_section]]
-== Sharing
+== [go-icon-subscription]#Sharing#
 === Description
 Sharing makes it easier for an endpoint's users to grant and control access to their data stored on the endpoint. A more detailed description of the benefits and features of sharing can be found link:https://www.globus.org/data-sharing[here]. A discussion of the security flow for share access/creation can be found link:../authorization-authentication-guide/#share_files_folders[here].
 
