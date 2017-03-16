@@ -290,7 +290,7 @@ xref:test_basic_endpoint_functionality[here].
 
 The set of software components that make up Globus Connect Server are improved and released on an ongoing basis. 
 To take advantage of the lastest features we encourage you to update your local installation from the Globus repository regularly. 
-The steps for doing an update are found xref:update_section[here].
+The steps for doing an update are found xref:update_section[here]. We also recommend that you go link:https://www.globus.org/mailing-lists[here] and subscribe to the Admin mailing list to receive Globus release notes.
 
 == Globus Connect Server Configuration
 
@@ -930,10 +930,6 @@ globus-connect-server-web-cleanup (link to man page link:http://globus.github.io
 [appendix]
 [[update_section]]
 === How to update a Globus Connect Server install
-The Globus team is improving the Globus Connect Server software all
-the time, occasionally, you should update your software to get all the
-latest bug fixes and improvements.
-
 If you are using a version of Globus Connect Server released prior to GT 6,
 then please see our upgrade instructions xref:upgrade_section[here].
 
