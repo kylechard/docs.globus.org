@@ -350,7 +350,7 @@ https://tools.ietf.org/html/rfc6749#section-4.4[OAuth2 `client_credentials` gran
 to retrieve an access_token (or multiple access tokens) valid for that identity.
 
 NOTE: Only confidential clients that have been issued a client_secret
-      may use the `client-credentials` grant.
+      may use the `client_credentials` grant.
 
 POST to the `https://auth.globus.org/v2/oauth2/token` endpoint, with
 an Authorization header containing an HTTP Basic Auth header for your client_id and client_secret, and including the
@@ -384,10 +384,6 @@ A successful response to this request contains the following fields:
 |expires_in | The remaining lifetime of the access token.
 |token_type | Identifies the type of token returned. At this time, this field
 will always have the value bearer.
-|refresh_token | A token that may be used to obtain a new access token. Refresh
-tokens are valid until the user revokes access. This field is only present if
-the authorization request asked for offline access.
-|state | The state parameter your client application provided during the authorization request.
 |other_tokens | If the client requested scopes that span multiple resource servers, this field will be present, and
 it will contain an array of access token responses containing separate tokens for each resource server.
 |==========
