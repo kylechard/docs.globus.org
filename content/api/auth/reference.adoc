@@ -808,11 +808,11 @@ link:https://www.w3.org/TR/2014/REC-html5-20141028/iana.html#application/x-www-f
 
 Request parameters are:
 
-options="header"]
+[options="header"]
 |=============
 |Parameter | Value | Description
 |grant_type | `urn:globus:auth:grant_type:dependent_token` | Custom OAuth2 extension grant type
-|token | <request access token> | The
+|token | <request access token> | The access token issued for the resource server.
 |access_type | `online` or `offline` (default: `online`) |
 If `offline`, include any refresh tokens to which the resource server is entitled.
 Whether or not refresh tokens are included depends on whether the scope policies allow it.
