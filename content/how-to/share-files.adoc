@@ -10,11 +10,11 @@ NOTE: Shared endpoints may only be created on managed endpoints that are part of
 +
 [role="img-responsive center-block"]
 image::images/sharing-1.png[]
-. Highlight the folder that you would like to share, and select the "share" option from the function menu. If the "share" option is not enabled, the endpoint is not configured for sharing. Please contact your endpoint administrator or refer to link:../../globus-connect-server-installation-guide#how_to_enable_and_disable_sharing_in_globus_connect_server[Globus Connect Server Installation Guide] for information on how to update the endpoint configuration.
+. Highlight the folder that you would like to share, and select the "share" option from the top level. If the "share" option is not enabled, the endpoint is not configured for sharing. Please contact your endpoint administrator or refer to link:../../globus-connect-server-installation-guide#how_to_enable_and_disable_sharing_in_globus_connect_server[Globus Connect Server Installation Guide] for information on how to update the endpoint configuration.
 +
 [role="img-responsive center-block"]
 image::images/sharing-2.png[]
-. Provide a name for the shared endpoint, [uservars]#demo# in this example, and click on Create.
+. Provide a name for the shared endpoint, [uservars]#Demo# in this example, and click on Create.
 +
 [role="img-responsive center-block"]
 image::images/sharing-3.png[]
@@ -47,9 +47,9 @@ The user who creates a shared endpoint may also allow other users to manage perm
 [role="img-responsive center-block"]
 image::images/sharing-8.png[]
 +
-The creator of a shared endpoint can assign the access manager role from the new Roles tab on the link:http://globus.org/app/endpoints[Manage Endpoints] page or from the link:http://globus.org/app/transfer[Transfer Files] page by entering the name of the shared endpoint and selecting the permissions option on the pull-down menu.
+The creator of a shared endpoint can assign the access manager role from the Roles tab on the link:http://globus.org/app/endpoints[Manage Endpoints] page or from the link:http://globus.org/app/transfer[Transfer Files] page by entering the name of the shared endpoint and selecting the permissions option on the pull-down menu.
 +
-The Roles tab can be used to assign a role (currently access manager is the only available role) to a Globus user or group.
+The Roles tab can be used to assign a role such as administrator, access manager, activity manager, or activity monitor to a Globus user or group.
 +
 [role="img-responsive center-block"]
 image::images/sharing-9.png[]
