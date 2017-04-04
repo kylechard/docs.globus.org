@@ -15,7 +15,7 @@ menus:
                 link: '/api/transfer/'
             -
                 title: 'Python SDK'
-                link: 'http://globus.github.io/globus-sdk-python'
+                link: 'https://globus-sdk-python.readthedocs.io/en/stable/'
             -
                 title: 'Helper Pages'
                 link: '/api/helper-pages/'
