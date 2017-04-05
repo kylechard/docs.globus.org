@@ -1,20 +1,20 @@
 ---
-full_title: "SEPH Connector"
-short_title: "SEPH"
-menu_weight: 3
+full_title: "CEPH Connector"
+short_title: "CEPH"
+menu_weight: 1
 ---
 
 = SEPH Connector
 :revdate: April 4, 2017
 
-The Ceph connector enables use of a Globus data access interface on an Ceph storage system, via the Ceph Object Gateway. This requires the installation of Globus Connect Server and an additional package that is specific to the CEPH storage system called the CEPH DSI.
+The Ceph connector enables use of a Globus data access interface on an Ceph storage system, via the link:http://docs.ceph.com/docs/master/radosgw/[Ceph Object Gateway]. This requires the installation of Globus Connect Server and an additional package that is specific to the CEPH storage system called the CEPH DSI.
 
-The CEPH connector is a premium feature available only to Globus subscribers, and is thus only available for Managed Endpoints. 
+The CEPH connector is a premium feature available only to Globus subscribers, and is thus only available for link:https://docs.globus.org/globus-connect-server-installation-guide/#managed-endpoint-anchor[Managed Endpoints]. 
 
 == Prerequisites
-A functional Globus Connect Server installation is required for installation and use of the CEPH connector.  The Globus Connect Server Installation Guide provides detailed documentation on the steps for installing and configuring a server endpoint.
+A functional Globus Connect Server installation is required for installation and use of the CEPH connector.  The link:https://docs.globus.org/globus-connect-server-installation-guide/[Globus Connect Server Installation Guide] provides detailed documentation on the steps for installing and configuring a server endpoint.
 
-==Supported Linux Distributions
+=== Supported Linux Distributions
 
 The CEPH DSI is available for the following Linux distributions:
 
@@ -27,10 +27,10 @@ The CEPH DSI is available for the following Linux distributions:
 - Debian 7
 - Debian 8
 
-== Supported CEPH versions
+=== Supported CEPH versions
 The Ceph connector been tested against Jewel and Hammer. 
 
-== Supported Globus Connect Server versions
+=== Supported Globus Connect Server versions
 The CEPH DSI should be used with the latest version of GCS.
 
 == Installation
@@ -39,17 +39,23 @@ Install the package globus-gridftp-server-ceph from the Globus repository.
 
 For RedHat-based systems:
 
-  # yum install globus-gridftp-server-ceph
+----terminal
+# yum install globus-gridftp-server-ceph
+----terminal
 
 For Debian-based systems:
 
-  # apt-get install globus-gridftp-server-ceph
+----terminal
+# apt-get install globus-gridftp-server-ceph
+----terminal
 
 For SLES 11-based systems:
 
-  # zypper install globus-gridftp-server-ceph
+----terminal
+# zypper install globus-gridftp-server-ceph
+----terminal
 
-== Configuration
+=== Configuration
 
 The Ceph DSI requires the following steps for configuration:
 
@@ -58,7 +64,7 @@ The Ceph DSI requires the following steps for configuration:
 - Enable the Ceph DSI
 - Restart the GridFTP server
 
-=== Create a RADOS Gateway User with users:read capabilities
+==== Create a RADOS Gateway User with users:read capabilities
 
 This identity is used by the Ceph DSI to look up keys associated
 with the Ceph user_id that the GridFTP session is authorized to run
@@ -67,28 +73,32 @@ as.
 This command must be run on a host with access to the ceph client.admin keyring
 in order to create the gridftp Ceph user_id:
 
-  # radosgw-admin user create \
-        --uid=gridftp \
-        --display-name "GridFTP Ceph DSI" \
-        --caps="users=read"
+----terminal
+# radosgw-admin user create \
+    --uid=gridftp \
+    --display-name "GridFTP Ceph DSI" \
+    --caps="users=read"
+----terminal
 
 Note in the output for this command the "access_key" and "secret_access_key"
 fields of the "keys" object, as those will be needed in the next step. If
 you forget to record those, you can use the following command to retrieve
 the same information:
 
-  # radosgw-admin user info --uid=gridftp
+----terminal
+# radosgw-admin user info --uid=gridftp
+----terminal
 
-=== Configure the Ceph DSI
+==== Configure the Ceph DSI
 
 The package contains an example configuration file in
 /etc/globus/globus-gridftp-server-ceph.conf
 
 The format of the file is very simple:
 
-- Comments begin with #
+- Comments begin with `#`
 - Configuration values are set by a line of the form
-  name = value
+  `name = value`
 
 There is no special quoting syntax, and whitespace is ignored between tokens.
 
@@ -101,29 +111,31 @@ NOTE: This file contains the keys for the gridftp Ceph user which can read
 all Ceph user's keys---do not change the permissions of this file to make
 it readable by anyone besides root.
 
-=== Enable the Ceph DSI
+==== Enable the Ceph DSI
 
 Create the file /etc/gridftp.d/gridftp-ceph containing these lines:
 
-------------------------------------------------------------------------------
+----
  threads 2
  load_dsi_module ceph
  auth_level 4
-------------------------------------------------------------------------------
+----
 
-=== Restart the GridFTP Server
+==== Restart the GridFTP Server
 
-  # service globus-gridftp-server restart
+----terminal
+# service globus-gridftp-server restart
+----terminal
 
-=== Troubleshooting
+== Troubleshooting
 To enable a debugging log for the ceph dsi, set the environment
 variable GLOBUS_S3_DEBUG "1023,/tmp/s3.log" to enable a highly verbose log
 of the DSI. This can be easily done for a gridftp configuration by creating
 a file /etc/gridftp.d/ceph-debug with the contents
 
-------------------------------------------------------------------------------
+----
  $GLOBUS_S3_DEBUG "1023,/tmp/s3.log"
-------------------------------------------------------------------------------
+----
 
 == Basic Endpoint Functionality Test
 

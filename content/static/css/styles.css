@@ -158,6 +158,13 @@ ol.lowerroman {
 ol.upperroman {
   list-style-type: upper-roman;
 }
+ul.noStyleType {
+  list-style-type: none;
+  list-style-image: none;
+}
+ul.noStyleType li:first-letter {
+  margin-left: -20px;
+}
 
 /* Subscription Icon */
 .go-icon-subscription {

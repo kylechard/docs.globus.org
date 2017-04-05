@@ -1,0 +1,72 @@
+= GCSv5 Beta Install Instructions
+:revdate: April 5, 2017
+
+== Supported Linux distributions
+- RHEL 7
+- CentOS 7
+
+== Prerequisites 
+=== Upgrading from an existing Globus Connect Server install
+Globus Connect Server v5 is meant to be installed on a clean system, and isn’t meant for use to upgrade an existing Globus Connect Server endpoint at this time.
+
+=== Globus Connect Server v5 Firewall Policy Requirements
+If your system is behind a firewall, select TCP ports must be open for Globus to work. You may need to coordinate with your network or security administrator to open the ports.
+
+The TCP ports that must be open for the default Globus Connect Server v5 installation, together with brief descriptions of each, are listed here:
+
+* Port 2811 inbound from 184.73.189.163 and 174.129.226.69
+** Used for GridFTP control channel traffic.
+* Ports 50000—51000 inbound and outbound to/from Any
+** Used for GridFTP data channel traffic.
+** The use of the default port range is strongly recommended (you can read why link:../globus-connect-server-installation-guide/#data_channel_traffic[here]).
+** Data channel traffic is sent directly between endpoints—it is not relayed by the Globus service.
+* Port 7512 inbound from 174.129.226.69
+** Used for MyProxy traffic.
+** Needed if your server will run MyProxy service.
+* Port 2223 outbound to 184.73.255.160 
+** Used to pull certificate information from the Globus service.
+* Port 80 outbound to Any
+** Used to pull Globus Connect Server install packages from the Globus repository.
+* Port 80 inbound from Any 
+** Used to register for certificates with Let’s Encrypt service.
+* Port 443 outbound to Any
+** Used to communicate with the Globus service via its REST API.
+** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
+** Used to communicate with Google Drive servers.
+* Port 443 inbound from Any 
+** Used by GCS Manager Service.
+** Used to communicate with Google Drive servers.
+** Used to register for certificates with Let’s Encrypt service.
+
+== Install Steps
+
+++++
+<ul class="noStyleType">
+<li><p>1. wget http://builds.globus.org/gt6/etc/globus-repo-6-24.noarch.rpm</p></li>
+<li><p>2. yum install globus-repo-6-24.noarch.rpm</p></li>
+<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable (el7)"</p></li>
+<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable (el7)"</p></li>
+<li><p>5. rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus</p></li>
+<li><p>6. yum install yum-plugin-priorities</p></li>
+<li><p>7. yum install globus-connect-server</p></li>
+<li><p>8. Navigate to https://auth.globus.org/v2/web/developers and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p></li></ul>
+
+<p>Make the following changes to the /etc/globus-connect-server.conf file:</p>
+
+<ul class="noStyleType">
+<li><p>9. set [Endpoint].Name to the Display Name from Step 8.</p></li>
+<li><p>10. set [Globus].ClientId to Client ID from step 8.</p></li>
+<li><p>11. set [Globus].ClientSecret to Client Secret from step 8.</p></li>
+<li><p>12. set [Endpoint].Public = True</p></li>
+<li><p>13a. set [Security].IdentityMethod = MyProxy</p></li>
+<li><p>13b. set [Security].AuthorizationMethod = MyProxyGridmapCallout</p></li>
+<li><p>13c. set [MyProxy].ServerName = %(HOSTNAME)s</p></li>
+<li><p>14. set [GCS Manager].ServerName = %(HOSTNAME)s</p></li></ul>
+
+<p>Now create the endpoint:</p>
+
+<ul class="noStyleType">
+<li><p>15. globus-connect-server-setup</p></li>
+<li><p>16. Find endpoint by searching for Display Name of endpoint here: <a href="https://www.globus.org/app/endpoints?scope=all">https://www.globus.org/app/endpoints?scope=all</a></p></li>
+<li><p>17. Verify base functionality via process described here: <a href="../globus-connect-server-installation-guide/#test_basic_endpoint_functionality">https://docs.globus.org/globus-connect-server-installation-guide/#test_basic_endpoint_functionality</a></p></li></ul>
+++++
