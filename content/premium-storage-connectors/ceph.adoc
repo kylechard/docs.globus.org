@@ -1,0 +1,142 @@
+---
+full_title: "CEPH Connector"
+short_title: "CEPH"
+menu_weight: 1
+---
+
+= CEPH Connector
+:revdate: April 4, 2017
+
+The Ceph connector enables use of a Globus data access interface on an Ceph storage system, via the link:http://docs.ceph.com/docs/master/radosgw/[Ceph Object Gateway]. This requires the installation of Globus Connect Server and an additional package that is specific to the CEPH storage system called the CEPH DSI.
+
+The CEPH connector is a premium feature available only to Globus subscribers, and is thus only available for link:https://docs.globus.org/globus-connect-server-installation-guide/#managed-endpoint-anchor[Managed Endpoints]. 
+
+== Prerequisites
+A functional Globus Connect Server installation is required for installation and use of the CEPH connector.  The link:https://docs.globus.org/globus-connect-server-installation-guide/[Globus Connect Server Installation Guide] provides detailed documentation on the steps for installing and configuring a server endpoint.
+
+=== Supported Linux Distributions
+
+The CEPH DSI is available for the following Linux distributions:
+
+- RHEL 7
+- RHEL 6
+- CentOS 7
+- CentOS 6
+- Ubuntu 14.04
+- Ubuntu 16.04
+- Debian 7
+- Debian 8
+
+=== Supported CEPH versions
+The Ceph connector been tested against Jewel and Hammer. 
+
+=== Supported Globus Connect Server versions
+The CEPH DSI should be used with the latest version of GCS.
+
+== Installation
+
+Install the package globus-gridftp-server-ceph from the Globus repository.
+
+For RedHat-based systems:
+
+----terminal
+# yum install globus-gridftp-server-ceph
+----terminal
+
+For Debian-based systems:
+
+----terminal
+# apt-get install globus-gridftp-server-ceph
+----terminal
+
+For SLES 11-based systems:
+
+----terminal
+# zypper install globus-gridftp-server-ceph
+----terminal
+
+=== Configuration
+
+The Ceph DSI requires the following steps for configuration:
+
+- Create a RADOS Gateway User with users:read capabilities
+- Configure the Ceph DSI
+- Enable the Ceph DSI
+- Restart the GridFTP server
+
+==== Create a RADOS Gateway User with users:read capabilities
+
+This identity is used by the Ceph DSI to look up keys associated
+with the Ceph user_id that the GridFTP session is authorized to run
+as.
+
+This command must be run on a host with access to the ceph client.admin keyring
+in order to create the gridftp Ceph user_id:
+
+----terminal
+# radosgw-admin user create \
+    --uid=gridftp \
+    --display-name "GridFTP Ceph DSI" \
+    --caps="users=read"
+----terminal
+
+Note in the output for this command the "access_key" and "secret_access_key"
+fields of the "keys" object, as those will be needed in the next step. If
+you forget to record those, you can use the following command to retrieve
+the same information:
+
+----terminal
+# radosgw-admin user info --uid=gridftp
+----terminal
+
+==== Configure the Ceph DSI
+
+The package contains an example configuration file in
+/etc/globus/globus-gridftp-server-ceph.conf
+
+The format of the file is very simple:
+
+- Comments begin with `#`
+- Configuration values are set by a line of the form
+  `name = value`
+
+There is no special quoting syntax, and whitespace is ignored between tokens.
+
+At the very minimum, the configuration values "host_name",
+"ceph_rg_admin_access_key_id", and "ceph_rgw_admin_secret_access_key" must
+be set. There are comments in the file describing all available configuration
+options.
+
+NOTE: This file contains the keys for the gridftp Ceph user which can read
+all Ceph user's keys---do not change the permissions of this file to make
+it readable by anyone besides root.
+
+==== Enable the Ceph DSI
+
+Create the file /etc/gridftp.d/gridftp-ceph containing these lines:
+
+----
+ threads 2
+ load_dsi_module ceph
+ auth_level 4
+----
+
+==== Restart the GridFTP Server
+
+----terminal
+# service globus-gridftp-server restart
+----terminal
+
+== Troubleshooting
+To enable a debugging log for the ceph dsi, set the environment
+variable GLOBUS_S3_DEBUG "1023,/tmp/s3.log" to enable a highly verbose log
+of the DSI. This can be easily done for a gridftp configuration by creating
+a file /etc/gridftp.d/ceph-debug with the contents
+
+----
+ $GLOBUS_S3_DEBUG "1023,/tmp/s3.log"
+----
+
+== Basic Endpoint Functionality Test
+
+After completing the installation, you should do some basic transfer tests with your endpoint to ensure that it is working. We document a process for basic endpoint functionality testing here.
