@@ -1,0 +1,30 @@
+= ENDPOINT-REMOVE(1)
+
+== NAME
+
+endpoint-remove - Remove an endpoint
+
+== SYNOPSIS
+
+*endpoint-remove* 'ENDPOINT'
+
+== DESCRIPTION
+
+*endpoint-remove* removes a logical endpoint.  
+
+WARNING: Removing an endpoint will permanently disable all existing shared
+endpoints that are hosted by it.
+
+'ENDPOINT' can use these formats:
+
+include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
+
+
+
+== EXAMPLES
+
+Remove a logical endpoint:
+
+----
+$ endpoint-remove testep1
+----

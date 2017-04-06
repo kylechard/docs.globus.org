@@ -1,0 +1,64 @@
+= GLOB(7)
+
+== NAME
+
+glob - Globbing pathnames
+
+== DESCRIPTION
+
+Certain CLI commands, like *rm* and *ls*, will expand a shell-compatibile glob
+pattern in the final path component.  For example, "`go#ep1/tmp/*.txt`" would
+look for all files in /tmp that match "`*.txt`".  
+
+
+== DETAILS
+
+The rules below are standard POSIX.
+
+A string is a wildcard pattern if it contains one of the characters `?`, `*`
+or `[`.  Globbing is the operation that expands a wildcard pattern into the
+list of pathnames matching the pattern.  Matching is defined by:
+
+A `?` (not between brackets) matches any single character.
+
+A `*` (not between brackets) matches any string, including the empty string.
+
+=== Character Classes
+
+An expression "`[...]`" where the first character after the leading `[` is not
+an `!` matches a single character, namely any of the characters enclosed by
+the brackets.  The string enclosed by the brackets cannot be empty; therefore
+`]` can be allowed between the brackets, provided that it is the first
+character.  (Thus, "`[][!]`" matches the three characters `[`, `]` and `!`.)
+
+=== Ranges
+
+There is one special convention: two characters separated by `-` denote a
+range.  Thus, "`[A-Fa-f0-9]`" is equivalent to "`[ABCDEFabcdef0123456789]`".
+One may include `-` in its literal meaning by making it the first or last
+character between the brackets.  Thus, "`[]-]`" matches just the two
+characters `]` and `-`.
+
+=== Complementation
+
+An expression "`[!...]`" matches a single character, namely any character that
+is not matched by the expression obtained by removing the first `!` from it.
+Thus, "`[!]a-]`" matches any single character except `]`, `a` and `-`.
+
+One can remove the special meaning of `?`, `*` and `[` by
+preceding them by a backslash or enclosing enclosing them in quotes.
+Between brackets these characters stand for themselves.
+
+NOTE: The Globus Online CLI shell also performs a level of backslash
+interpretation, so one must double up a backslash to send it to a command.
+
+For example, this would require a file with a literal asterisk in its name:
+
+----
+$ ls go#ep1/tmp/\\*.txt
+----
+
+
+== SEE ALSO
+
+link:../delete[*delete(1)*], link:../ls[*ls(1)*], link:../rm[*rm(1)*], link:../quoting[*quoting(1)*]

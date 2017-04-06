@@ -1,0 +1,71 @@
+= ACL-ADD(1)
+
+== NAME
+
+acl-add - Add an Access Rule
+
+== SYNOPSIS
+
+acl-add 'ENDPOINT/PATH/' --perm {r|rw} 'OPTIONS'...
+
+== DESCRIPTION
+
+*acl-add* adds a new rule to the endpoint's access control list (ACL).
+
+A principal (to whom the rule applies) must be provided.  Valid principal
+options are '--identityid', '--identityusername', '--groupid', '--all', and
+'--anonymous'.
+
+*acl-add* may be called by the owner of the endpoint, or an "access_manager"
+assigned by the *endpoint-role-add* command.
+
+'PATH' is assumed to be URL-encoded.
+
+'ENDPOINT' can use these formats:
+
+include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
+
+include::content/cli/reference/include/more_acl.adoc[]
+
+
+== OPTIONS
+
+--perm='PERM':: 
+Permission (Required): +r+ (read only) or +rw+ (read write)
+
+--identityid='ID'::  
+Identity ID (UUID) to receive permission
+
+--identityusername='USERNAME'::  
+Identity username to receive permission.  
+This will be automatically resolved to an identity ID (UUID).
+Examples: "bob@uchicago.edu", "mary@globusid.org"
+
+--groupid='GROUPID'::  
+Group UUID to receive permission
+
+--all::              
+Create a rule for all authenticated users
+
+--anonymous::              
+Create a rule for all users, including unauthenticated users
+
+
+--notify-email='EMAIL_ADDRESS'::
+Send share notification email to this email address.  Only allowed for
+the principal types *--identityid* and *--identityusername*.
+
+--notify-message='MESSAGE'::
+Add a custom message to the notification email (optional).  Requires
+*--notify-email*.
+
+
+
+== EXAMPLES
+
+Share the `/~/share/` directory with "alice@uchicago.edu", using read-only
+permissions:
+
+----
+$ acl-add bob#myep/~/share/ --identityusername alice@uchicago.edu --perm r
+----

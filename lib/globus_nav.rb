@@ -53,6 +53,7 @@ module Nanoc::Helpers
       root = @items[File.join(namespace, 'index.*')]
       children = ( @items.find_all(File.join(namespace, '*.{adoc,html}')) +
                    @items.find_all(File.join(namespace, '*/index.*')) ).select{|x| x != root}
+      children = children.select{|x| x[:in_menu] != false}
 
       # For each child call the find_item_tree on it and then render the generate the hash
       sections = children.map do |child|
