@@ -5,7 +5,9 @@ menu_weight: 1
 ---
 
 = Amazon Web Services S3 Connector
-:revdate: April 5, 2017
+:revdate: April 6, 2017
+
+[doc-info]*Last Updated: {revdate}*
 
 This connector enables use of a Globus data access interface on an link:https://aws.amazon.com/s3/[AWS S3] storage system. This requires the installation of Globus Connect Server and an additional package that is specific to the AWS S3 storage system called the Amazon S3 DSI.
 

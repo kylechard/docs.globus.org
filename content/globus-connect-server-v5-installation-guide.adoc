@@ -1,6 +1,8 @@
 = Globus Connect Server v5 (Beta) Install Instrucitons
 :revdate: April 6, 2017
 
+[doc-info]*Last Updated: {revdate}*
+
 == Introduction
 Globus Connect Server version 5 is a new major release of the server. The current release is a beta version of the server and has limited storage systems that it can support. At this time, this version of the server is supported only as a clean install on a system. 
 
