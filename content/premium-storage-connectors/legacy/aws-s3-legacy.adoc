@@ -1,6 +1,6 @@
 ---
 full_title: "Amazon Web Services S3 Connector (Legacy)"
-short_title: "Amazon Web Services S3 (Legacy)"
+short_title: "AWS S3 (Legacy)"
 menu_weight: 1
 ---
 
