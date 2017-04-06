@@ -105,6 +105,7 @@ dd,
 dl dt code {
   font-weight: normal;
 }
+.mb-20 { margin-bottom: 20px; }
 
 /* Asciidoc */
 .doc-info {
