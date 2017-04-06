@@ -7,6 +7,7 @@ menu_weight: 1
 = Google Drive Connector (beta)
 :toc:
 :toc-placement: manual
+:toclevels: 1
 :revdate: April 6, 2017
 
 [doc-info]*Last Updated: {revdate}*
