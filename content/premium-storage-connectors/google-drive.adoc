@@ -32,11 +32,15 @@ You must have a Google account to complete this step.
 *** The value that the [GCS Manager].ServerName option is / will be set to in the globus-connect-server.conf file
 . You must now enable the Drive API for your project before it can be used. Click on the "Library" menu for your project, and then click on the "Drive API" link. After that, press the "Enable" button to enable the DriveAPI for your project.
 
-== Remove old configuration and endpoint definition
+== Configure your GCSv5 endpoint to use the Google Drive Connector 
+This section requires that a Globus Connect Server v5 endpoint has been setup and is functional. The basic installation of GCSv5 sets it up for POSIX file systems so basic testing of the installation can be done. 
+
+The following instructions will remove the default endpoint definition, and reconfigure it for use with Google Drive Connector. 
+
+Run the cleanup command to remove the default configuration:
 
     globus-connect-server-cleanup -d
 
-== Configure your GCSv5 endpoint to use the Google Drive Connector 
 Edit globus-connect-server.conf to set the following parameters:
 
 . set [Endpoint].StorageType = Google Drive 
@@ -68,7 +72,7 @@ https://www.globus.org/app/endpoints?scope=all
 . Contact Globus support to make your new endpoint managed. Be sure to send support the UUID of your endpoint from Step 22.
 . After the base endpoint has been made managed, permitted users can then create shares hosted by the endpoint that will be backed by their Google Drives. See separate instructions for process to create shares on Google Drive backed endpoint.
 
-== How to Create a Share on a GCSv5 Beta Google Drive Backed Endpoint for PDF
+== Share a Google Drive folder using Globus
 This section describes creating a shared endpoint to access your files and folders on Google Drive using the Globus interface.
 
 . Find the GCSv5 Connector endpoint that you"ll use to create your Google Drive share on the "Manage Endpoints" page, by searching in the "all" scope. Note that the endpoint must support the Google Drive Premium Connector. Choose the endpoint and select the "My Shares" tab. Then click the "Add Google Drive Share" button.

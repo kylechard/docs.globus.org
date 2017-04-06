@@ -1,42 +1,14 @@
-= GCSv5 Beta Install Instructions
-:revdate: April 5, 2017
+= Globus Connect Server v5 (Beta) Install Instrucitons
+:revdate: April 6, 2017
+
+== Introduction
+Globus Connect Server version 5 is a new major release of the server. The current release is a beta version of the server and has limited storage systems that it can support. At this time, this version of the server is supported only as a clean install on a system. 
+
+IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded to this new server at this time. Globus Connect version 5 installations need to be on a separate machine. Upgrade tools are planned and will be made available in the future.
 
 == Supported Linux distributions
 - RHEL 7
 - CentOS 7
-
-== Prerequisites 
-=== Upgrading from an existing Globus Connect Server install
-Globus Connect Server v5 is meant to be installed on a clean system, and isn’t meant for use to upgrade an existing Globus Connect Server endpoint at this time.
-
-=== Globus Connect Server v5 Firewall Policy Requirements
-If your system is behind a firewall, select TCP ports must be open for Globus to work. You may need to coordinate with your network or security administrator to open the ports.
-
-The TCP ports that must be open for the default Globus Connect Server v5 installation, together with brief descriptions of each, are listed here:
-
-* Port 2811 inbound from 184.73.189.163 and 174.129.226.69
-** Used for GridFTP control channel traffic.
-* Ports 50000—51000 inbound and outbound to/from Any
-** Used for GridFTP data channel traffic.
-** The use of the default port range is strongly recommended (you can read why link:../globus-connect-server-installation-guide/#data_channel_traffic[here]).
-** Data channel traffic is sent directly between endpoints—it is not relayed by the Globus service.
-* Port 7512 inbound from 174.129.226.69
-** Used for MyProxy traffic.
-** Needed if your server will run MyProxy service.
-* Port 2223 outbound to 184.73.255.160 
-** Used to pull certificate information from the Globus service.
-* Port 80 outbound to Any
-** Used to pull Globus Connect Server install packages from the Globus repository.
-* Port 80 inbound from Any 
-** Used to register for certificates with Let’s Encrypt service.
-* Port 443 outbound to Any
-** Used to communicate with the Globus service via its REST API.
-** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
-** Used to communicate with Google Drive servers.
-* Port 443 inbound from Any 
-** Used by GCS Manager Service.
-** Used to communicate with Google Drive servers.
-** Used to register for certificates with Let’s Encrypt service.
 
 == Install Steps
 
@@ -70,3 +42,32 @@ The TCP ports that must be open for the default Globus Connect Server v5 install
 <li><p>16. Find endpoint by searching for Display Name of endpoint here: <a href="https://www.globus.org/app/endpoints?scope=all">https://www.globus.org/app/endpoints?scope=all</a></p></li>
 <li><p>17. Verify base functionality via process described here: <a href="../globus-connect-server-installation-guide/#test_basic_endpoint_functionality">https://docs.globus.org/globus-connect-server-installation-guide/#test_basic_endpoint_functionality</a></p></li></ul>
 ++++
+
+=== Globus Connect Server v5 Firewall Policy Requirements
+If your system is behind a firewall, select TCP ports must be open for Globus to work. You may need to coordinate with your network or security administrator to open the ports.
+
+The TCP ports that must be open for the default Globus Connect Server v5 installation, together with brief descriptions of each, are listed here:
+
+* Port 2811 inbound from 184.73.189.163 and 174.129.226.69
+** Used for GridFTP control channel traffic.
+* Ports 50000—51000 inbound and outbound to/from Any
+** Used for GridFTP data channel traffic.
+** The use of the default port range is strongly recommended (you can read why link:../globus-connect-server-installation-guide/#data_channel_traffic[here]).
+** Data channel traffic is sent directly between endpoints—it is not relayed by the Globus service.
+* Port 7512 inbound from 174.129.226.69
+** Used for MyProxy traffic.
+** Needed if your server will run MyProxy service.
+* Port 2223 outbound to 184.73.255.160 
+** Used to pull certificate information from the Globus service.
+* Port 80 outbound to Any
+** Used to pull Globus Connect Server install packages from the Globus repository.
+* Port 80 inbound from Any 
+** Used to register for certificates with Let’s Encrypt service.
+* Port 443 outbound to Any
+** Used to communicate with the Globus service via its REST API.
+** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
+** Used to communicate with Google Drive servers.
+* Port 443 inbound from Any 
+** Used by GCS Manager Service.
+** Used to communicate with Google Drive servers.
+** Used to register for certificates with Let’s Encrypt service.
