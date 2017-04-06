@@ -7,7 +7,6 @@ menu_weight: 1
 = Google Drive Connector (beta)
 :toc:
 :toc-placement: manual
-:toclevels: 1
 :revdate: April 6, 2017
 
 [doc-info]*Last Updated: {revdate}*
@@ -44,11 +43,14 @@ This section requires that a Globus Connect Server v5 endpoint has been setup an
 
 The following instructions will remove the default endpoint definition, and reconfigure it for use with Google Drive Connector. 
 
-=== Run the cleanup command to remove the default configuration:
+*Run the cleanup command to remove the default configuration:*
 
-    globus-connect-server-cleanup -d
+[role="mb-20"]
+----
+globus-connect-server-cleanup -d
+----
 
-=== Edit globus-connect-server.conf to set the following parameters:
+*Edit globus-connect-server.conf to set the following parameters:*
 
 . set [Endpoint].StorageType = Google Drive 
 . set [Security].IdentityMethod = None
