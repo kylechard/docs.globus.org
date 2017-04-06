@@ -1,0 +1,7 @@
+- UUID: `"7865988a-aeb3-4e55-b8cd-938c258e7854"`
+
+- Legacy Name: `"bob#test_endpoint"`.  This contains the user
+  who owns the endpoint and the endpoint legacy name.
+
+- Unqualified Legacy Name: `"test_endpoint"`.  The user name defaults to the current
+  logged in user.

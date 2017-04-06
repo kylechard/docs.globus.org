@@ -1,0 +1,40 @@
+= SERVER-ADD(1)
+
+== NAME
+
+server-add - Add a FTP server to an endpoint
+
+== SYNOPSIS
+
+*server-add* -p 'SERVER' [-s 'SUBJECT'] 'ENDPOINT'
+
+== DESCRIPTION
+
+This command adds a server to an existing endpoint.
+
+'ENDPOINT' can use these formats:
+
+include::content/cli/reference/include/cli_endpoint_unique_id.adoc[]
+
+== OPTIONS
+
+*-p* 'SERVER'::
+
+'SERVER' is a URL or hostname of a file server.  
+The format is 'SCHEME://HOSTNAME:PORT'.  'SCHEME' may be "ftp" or
+"gsiftp", and defaults to "gsiftp" if not specified.  'PORT' defaults to 2811 if
+not specified.
+
+*-s* 'SUBJECT'::
+
+The subject DN that the server's host certificate must present.  Specify this
+if the server's certificate does not match its host name.
+
+
+== EXAMPLES
+
+----
+$ server-add -p gsiftp://gridftp.test.com:2811 
+    -s "/O=Grid/OU=Globus Test/CN=Test" 
+    55c27fe2-572b-11e5-84dd-22000bb3f45d
+----

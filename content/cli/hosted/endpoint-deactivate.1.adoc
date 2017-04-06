@@ -1,0 +1,24 @@
+= ENDPOINT-DEACTIVATE(1)
+
+== NAME
+
+endpoint-deactivate - Remove authentication credentials
+
+== SYNOPSIS
+
+*endpoint-deactivate* 'ENDPOINT'...
+
+== DESCRIPTION
+
+*endpoint-deactivate* removes the credential previously assigned to a logical
+endpoint by *endpoint-activate*.  
+
+include::content/cli/reference/include/cli_bookmarks_no_paths.adoc[]
+
+== EXAMPLES
+
+Deactivate an endpoint:
+
+----
+$ endpoint-deactivate go#ep1
+----

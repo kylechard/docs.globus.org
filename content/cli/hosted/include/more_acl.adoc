@@ -1,0 +1,2 @@
+TIP: For comprehensive developer information about ACLs, see
+https://docs.globus.org/api/transfer/acl/

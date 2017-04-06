@@ -1,0 +1,5 @@
+=== Automatic Endpoint Activation
+
+If an endpoint is not activated, this command will attempt to auto-activate
+it.  Otherwise, the command will fail, and direct the user to run
+*endpoint-activate* and/or display a web URL for OAuth activation.

@@ -1,0 +1,130 @@
+= ENDPOINT-LIST(1)
+
+== NAME
+
+endpoint-list - Show information about endpoints
+
+== SYNOPSIS
+
+*endpoint-list* ['OPTIONS'] ['PATTERN'...]
+
+== DESCRIPTION
+
+WARNING: This command is deprecated.  Please use *endpoint-details* and
+*endpoint-search*.
+
+*endpoint-list* shows information about endpoints.  Each endpoint has
+one or more servers, represented by a URL and an optional subject DN.  Each
+endpoint may also have a short term security credential which has been
+assigned by the *endpoint-activate* command.  
+
+By default, *endpoint-list* displays concise output and only lists the
+endpoint name (in fully qualified user#name format) and the hours, minutes,
+and seconds remaining until its security credential expires.  If a credential
+does not exist or has expired, a "-" will be displayed as the time remaining.
+Use the *-v* option to display more fields.  
+
+The 'PATTERN' may contain asterisk ("`*`") characters for wildcard matching of
+endpoint names.  The default pattern is "`*`".  
+
+Use the *-p* option to display public endpoints shared by other users.
+Without *-p*, *endpoint-list* displays endpoints owned by the current user and
+any public endpoints that have previously been activated by the current user.  
+
+== OUTPUT FIELDS
+
+See *endpoint-modify* for advanced options not listed here.
+
+*name*::
+The user specified legacy name (DEPRECATED)
+
+*id*::
+The system-generated, globally-unique UUID
+
+*display_name*::
+The user specified name
+
+*hosts*::
+A comma separated list of server URL(s) associated with this endpoint.
+
+*subjects*::
+A comma separated list of subject DN(s) corresponding to each server URL.
+
+*target_endpoint*::
+The underlying logical endpoint (for shared endpoints)
+
+*credential_status*::
+The status of the credential.  Possible values are:
++
+*ACTIVE*;;
+A credential exists and has not expired
+*EXPIRED*;;
+A credential exists and has expired
+*n/a*;;
+No credential exists
+
+*credential_expires*::
+The date and time the credential expires
+
+*credential_subject*::
+The subject DN of the credential 
+
+*credential_time_left*::
+The hours, minutes, and seconds remaining until the credential expires.
+
+*location*::
+
+For a S3 endpoint, this is "n/a".  For a shared endpoint, this is 
+the location of its host endpoint.  For other endpoints, this is either
+"Automatic", meaning it has not been set by the administrator, or a
+"<latitude>,<longitude>" pair.  See *endpoint-modify* for details.
+
+
+*network_use*::
+*max_concurrency*::
+*preferred_concurrency*::
+*max_parallelism*::
+*preferred_parallelism*::
+
+See the *endpoint-modify* --network-use option for details.
++
+The max and preferred values show the current computed values for the endpoint, taking
+into account its number of physical endpoints.
+
+
+== OPTIONS
+
+*-p*::
+Display public endpoints shared by other users.
+
+*-v*::
+Display all fields.  Also turns on long output format.
+
+include::content/cli/reference/include/opt_output.adoc[]
+
+
+== EXAMPLES
+
+List all public endpoints:
+
+----
+$ endpoint-list -p
+----
+
+List endpoints I own or have recently used:
+
+----
+$ endpoint-list *
+----
+
+List public endpoints of the "teragrid" user:
+
+----
+$ endpoint-list -p teragrid#*
+----
+
+List detailed information about endpoints:
+
+----
+$ endpoint-list -v my_endpoint1 my_endpoint2
+----

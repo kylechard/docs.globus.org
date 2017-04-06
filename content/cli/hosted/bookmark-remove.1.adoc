@@ -1,0 +1,32 @@
+= BOOKMARK-REMOVE(1)
+
+== NAME
+
+bookmark-remove - Delete a bookmark
+
+== SYNOPSIS
+
+bookmark-remove { --id 'ID' | -n 'NAME' }
+
+
+== DESCRIPTION
+
+*bookmark-remove* deletes a bookmark.  
+
+
+== OPTIONS
+
+--id 'ID'::
+
+The ID (UUID) of the bookmark.  This is the *id* field returned by
+*bookmark-list*.
+
+-n 'NAME'::
+The name of the bookmark
+
+== EXAMPLES
+
+----
+$ bookmark-remove -n "My Bookmark"
+$ bookmark-remove --id c373cd9d-58a1-11e5-84dd-22000bb3f45d
+----

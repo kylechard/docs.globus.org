@@ -1,16 +1,16 @@
 ---
-full_title: "Command Line Interface (CLI) Reference"
-short_title: "Reference"
-menu_weight: 3
+full_title: "Hosted Command Line Interface (CLI) Reference"
+short_title: "Hosted CLI Reference"
+in_menu: false
 ---
 
-= Command Line Interface (CLI) Reference
+= Hosted Command Line Interface (CLI) Reference
 :imagesdir: .
-:revdate: April 6, 2017
+:revdate: March 08, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
-NOTE: This page refers to the current Globus CLI which is locally installed program. We also have a link:../hosted[reference for the hosted CLI], which is accessed via SSH but will eventually be deprecated.
+NOTE: This page refers to the Hosted Globus CLI which is accessed via SSH and will eventually be deprecated. We have a link:../reference/[new CLI], which is a locally installed program.
 
 link:acl-add[acl-add]::
 acl-add adds a new rule to the endpoint’s access control list (ACL).
