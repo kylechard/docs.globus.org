@@ -33,7 +33,7 @@ $ ssh [input]#<my_globus_id_user_name>#@cli.globusonline.org
 
 For more information about the legacy hosted CLI, see the link:../../cli/using-the-cli#hosted_command_line_interface_legacy[Using the CLI guide].
 
-== How do I generate an SSH key to use with the Globus command line interface?
+== How do I generate an SSH key to use with the Hosted CLI (Legacy)?
 
 === Mac OSX/Linux/Unix
 
