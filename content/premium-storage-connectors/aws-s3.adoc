@@ -96,4 +96,4 @@ a file /etc/gridftp.d/s3-debug with the contents
 == Basic Endpoint Functionality Test
 After completing the installation, you should do some basic transfer tests with your endpoint to ensure that it is working. We document a process for basic endpoint functionality testing here.
 
-NOTE: For legacy installation instructions, go link:../legacy/aws-s3-legacy[here].
+NOTE: For legacy AWS S3 Connector, please see link:../legacy/aws-s3-legacy[https://docs.globus.org/premium-storage-connectors/legacy/aws-s3-legacy].
