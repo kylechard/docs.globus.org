@@ -145,7 +145,7 @@ For CLI examples, see link:using-the-cli[Using The CLI].
 
 
 '''
-== Hosted Command Line Interface
+== Hosted Command Line Interface (Legacy)
 
 [doc-info]*Last Updated: May 12, 2016*
 

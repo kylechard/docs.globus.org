@@ -295,7 +295,7 @@ $ globus task list
 
 Note that only one submission has a success message, but all return the ID for the Task, which only gets carried out once.
 
-== Hosted Command Line Interface
+== Hosted Command Line Interface (Legacy)
 
 [doc-info]*Last Updated: May 12, 2016*
 
