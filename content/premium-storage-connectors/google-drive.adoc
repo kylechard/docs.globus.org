@@ -6,7 +6,13 @@ menu_weight: 1
 
 = Google Drive Connector (beta)
 :toc:
-:revdate: April 4, 2017
+:toc-placement: manual
+:revdate: April 6, 2017
+
+[doc-info]*Last Updated: {revdate}*
+
+'''
+toc::[]
 
 == Prerequisites
 This connector requires a fully functional Globus Connect Server Version 5 (GCSv5) endpoint. See link:../../globus-connect-server-v5-installation-guide[GCSv5 Install instructions].

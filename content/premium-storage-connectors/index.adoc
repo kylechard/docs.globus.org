@@ -5,7 +5,7 @@ menu_weight: 0
 
 = Premium Storage Connectors
 :imagesdir: .
-:revdate: Feb 16, 2017
+:revdate: April 6, 2017
 
 [doc-info]*Last Updated: {revdate}*
 

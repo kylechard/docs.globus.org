@@ -7,6 +7,8 @@ menu_weight: 1
 = Amazon Web Services S3 Connector (Legacy)
 :revdate: March 8, 2017
 
+[doc-info]*Last Updated: {revdate}*
+
 The following instructions for creating a Globus endpoint on an Amazon S3 bucket assume that you are familiar with Amazon Web Services in general, and in particular with IAM and S3. You will be granting Globus access to your S3 bucket, using an IAM role. This setup will allow you to use Globus endpoint permissions to grant access to folders within the S3 bucket to other Globus users and groups.
 
 NOTE: A link:https://www.globus.org/subscriptions[Globus subscription] is required to create an S3 endpoint. If your institution is not a subscriber please link:https://www.globus.org/configure-subscription[complete this form to start your free trial].

@@ -7,6 +7,8 @@ menu_weight: 1
 = CEPH Connector
 :revdate: April 4, 2017
 
+[doc-info]*Last Updated: {revdate}*
+
 The Ceph connector enables use of a Globus data access interface on an Ceph storage system, via the link:http://docs.ceph.com/docs/master/radosgw/[Ceph Object Gateway]. This requires the installation of Globus Connect Server and an additional package that is specific to the CEPH storage system called the CEPH DSI.
 
 The CEPH connector is a premium feature available only to Globus subscribers, and is thus only available for link:https://docs.globus.org/globus-connect-server-installation-guide/#managed-endpoint-anchor[Managed Endpoints]. 
