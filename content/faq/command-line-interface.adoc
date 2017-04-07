@@ -11,6 +11,11 @@ short_title: Command Line Interface (CLI)
 
 toc::[]
 
+== How can I access Globus services using a command line interface?
+Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. More information on the CLI is available link:../../cli[here].
+
+Globus also has a legacy hosted CLI, which provides a restricted shell that users can log into and access the Globus transfer service.   More information on the legacy hosted CLI is available link:../../cli#hosted_command_line_interface_legacy[here].
+
 == What is an SSH key? Why do I need one?
 An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli#hosted_command_line_interface_legacy[legacy hosted CLI]. In order to login to the legacy hosted CLI, you must have a valid public SSH key (or an link:#adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
 
