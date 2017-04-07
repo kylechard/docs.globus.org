@@ -1,4 +1,0 @@
-*--label* 'LABEL'::
-
-Set the task's label.  The label can be displayed and searched for in commands
-such as *status* and *details*.  See *labels(7)* for more details on labels.

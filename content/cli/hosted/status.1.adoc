@@ -35,7 +35,7 @@ Limit the number of results.  Default: Unlimited
 *-a*::
 Show all tasks, including completed
 
-include::content/cli/reference/include/opt_output.adoc[]
+include::content/cli/hosted/include/opt_output.adoc[]
 
 
 == OUTPUT FIELDS
@@ -55,12 +55,12 @@ The label (if any) for the task.
 *request_time*::
 The date and time this task was created
 
-include::content/cli/reference/include/task_statuses.adoc[]
+include::content/cli/hosted/include/task_statuses.adoc[]
 
 *taskid*::
 The unique ID of the task
 
-include::content/cli/reference/include/task_types.adoc[]
+include::content/cli/hosted/include/task_types.adoc[]
 
 
 == EXAMPLES

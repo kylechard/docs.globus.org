@@ -56,6 +56,19 @@ route '/cli/reference/*.adoc' do
   end
 end
 
+route '/cli/hosted/*.adoc' do
+  # exceptional case is "/cli/reference/index.adoc"
+  # this page should be rendered 'normally' as .../index.html
+  if @item.identifier.without_ext.end_with?('/index')
+    @item.identifier.without_ext + '.html'
+  # these end in `.X.adoc` where X is an integer indicating a manpage number
+  else
+    # take everything prior to the last dot -- done with a regex match for
+    # "." followed by non-"." chars followed by end of string
+    @item.identifier.without_ext.sub(/\.[^.]*$/, '') + '/index.html'
+  end
+end
+
 # if it didn't match a rule yet for compilation
 compile '/**/*' do
   if @item.binary?

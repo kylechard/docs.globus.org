@@ -1,5 +1,6 @@
 === Automatic Endpoint Activation
 
-If an endpoint is not activated, this command will attempt to auto-activate
-it.  Otherwise, the command will fail, and direct the user to run
-*endpoint-activate* and/or display a web URL for OAuth activation.
+This command requires all endpoints it uses to be activated. It will attempt to
+auto-activate any endpoints that are not active, but if auto-activation fails,
+you will need to manually activate the endpoint. See 'globus endpoint activate'
+for more details.
