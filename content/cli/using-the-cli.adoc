@@ -310,7 +310,7 @@ Note that only one submission has a success message, but all return the ID for t
 
 [doc-info]*Last Updated: May 12, 2016*
 
-This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:#cli_beyond_the_basics[CLI: Beyond the Basics].
+This guide provides a brief introduction to the hosted CLI.
 
 === Prerequisites
 To use the CLI you must have a link:http://www.globus.org/SignUp[Globus account] with ssh access enabled. To enable your account for ssh access you must add your ssh public key to your Globus account by link:https://www.globus.org/account/ManageIdentities[visiting the Manage Identities page] and clicking "add linked identity", followed by "Add SSH Public Key". If you do not have an ssh key, follow the directions link:../../faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here] to create one.
