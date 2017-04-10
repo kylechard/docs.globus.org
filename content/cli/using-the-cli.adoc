@@ -310,8 +310,6 @@ Note that only one submission has a success message, but all return the ID for t
 
 [doc-info]*Last Updated: May 12, 2016*
 
-NOTE: This section refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program and now available in Beta.
-
 This guide provides a brief introduction to the Globus command-line interface (CLI). Additional CLI features are discussed in link:#cli_beyond_the_basics[CLI: Beyond the Basics].
 
 === Prerequisites
