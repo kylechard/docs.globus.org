@@ -1,118 +1,164 @@
 ---
-full_title: "Command Line Interface (CLI) Reference"
-short_title: "Reference"
-menu_weight: 3
+menu_weight: 10
+short_title: Reference
 ---
 
 = Command Line Interface (CLI) Reference
-:imagesdir: .
-:revdate: April 6, 2017
+:revdate: April 10, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
-NOTE: This page refers to the current Globus CLI which is locally installed program. We also have a link:../hosted[reference for the legacy hosted CLI], which is accessed via SSH but will eventually be deprecated.
+NOTE: This page refers to the current Globus CLI which is locally installed program. We also have a link:../hosted[reference for the hosted CLI], which is accessed via SSH but will eventually be deprecated.
 
-link:acl-add[acl-add]::
-acl-add adds a new rule to the endpoint’s access control list (ACL).
+link:list_commands[globus list-commands]::
+List all CLI commands
 
-link:acl-list[acl-list]::
-acl-list displays all rules in an endpoint’s access control list (ACL).
+link:version[globus version]::
+Show the version and exit
 
-link:acl-remove[acl-remove]::
-acl-remove deletes a specified rule from the endpoint’s ACL.
+link:login[globus login]::
+Login to Globus to get credentials for the Globus CLI
 
-link:bookmark-add[bookmark-add]::
-bookmark-add creates a new bookmark.  A bookmark is linked to an endpoint and path.
+link:logout[globus logout]::
+Logout of the Globus CLI
 
-link:bookmark-list[bookmark-list]::
-bookmark-list shows bookmarks owned by the current user.  The output format is JSON.
+link:whoami[globus whoami]::
+Show the currently logged-in identity.
 
-link:bookmark-remove[bookmark-remove]::
-bookmark-remove deletes a bookmark. 
+link:rename[globus rename]::
+Rename a file or directory on an endpoint
 
-link:cancel[cancel]::
-cancel stops all processing of a task. If the task has already completed, a notice will be displayed.
+link:transfer[globus transfer]::
+Submit a transfer task
 
-link:delete[delete]::
-The delete command can be used to script multi-line delete operations as a single batch.
+link:mkdir[globus mkdir]::
+Make a directory on an endpoint
 
-link:details[details]::
-details displays detailed information about tasks. By default, details displays all currently running or pending tasks. Use the -a option to display all tasks, including completed tasks. Tasks are sorted by request time in descending order.
+link:get_identities[globus get-identities]::
+Lookup Globus Auth identities
 
-link:endpoint-activate[endpoint-activate]::
-endpoint-activate assigns a short term security credential to specified endpoint(s). If pattern is not specified, it defaults to '*', which matches all endpoints shown by endpoint-list.
+link:delete[globus delete]::
+Submit a delete task
 
-link:endpoint-add[endpoint-add]::
-endpoint-add creates a logical endpoint with a user specified name. endpoint-add can also add a physical server to an existing logical endpoint if the -p option is given.
+link:ls[globus ls]::
+List endpoint directory contents
 
-link:endpoint-deactivate[endpoint-deactivate]::
-endpoint-deactivate removes credentials previously assigned to a logical endpoint by endpoint-activate. If pattern is not specified, it defaults to '*'.
+== globus endpoint commands
 
-link:endpoint-details[endpoint-details]::
-enpoint-details shows attributes of endpoint(s).
+link:endpoint_search[globus endpoint search]::
+Search for Globus endpoints
 
-link:endpoint-list[endpoint-list]::
-endpoint-list shows information about endpoints. Each logical endpoint has one or more servers, represented by a URL and an optional subject DN. Each logical endpoint may also have a short term security credential which has been assigned by the endpoint-activate command.
+link:endpoint_activate[globus endpoint activate]::
+Activate an endpoint
 
-link:endpoint-modify[endpoint-modify]::
-endpoint-modify can set attributes of endpoint(s). One attribute can be set or unset against one or more endpoints at a time. See the options below for details. Use the empty string ('') to unset a text attribute. Run endpoint-list -v to view current attributes.
+link:endpoint_show[globus endpoint show]::
+Display a detailed endpoint definition
 
-link:endpoint-remove[endpoint-remove]::
-endpoint-remove can remove logical endpoint(s) with names matching a pattern. endpoint-remove can also remove (unmap) a physical server from a specific logical endpoint.
+link:endpoint_deactivate[globus endpoint deactivate]::
+Deactivate an endpoint
 
-link:endpoint-rename[endpoint-rename]::
-endpoint-rename renames the logical endpoint oldname to newname.
+link:endpoint_create[globus endpoint create]::
+Create a new endpoint
 
-link:endpoint-search[endpoint-search]::
-endpoint-search searches for endpoints which have attributes (display name, legacy name, description, organization, department, keywords) that match the 'SEARCH' text.  The current result size limit is 100 endpoints.
+link:endpoint_[globus endpoint update]::
+Update attributes of an endpoint
 
-link:events[events]::
-events displays events for a task. Events are sorted by time in ascending order.
+link:endpoint_my_shared_endpoint_list[globus endpoint my-shared-endpoint-list]::
+List all shared endpoints on an endpoint owned by the current user
 
-link:glob[glob]::
-Certain CLI commands, like rm and ls, will expand a shell-compatibile glob pattern in the final path component. For example, \'rm go#ep1/tmp/\*.txt' would look for all files in /tmp that match \'*.txt'.
+link:endpoint_is_activated[globus endpoint is-activated]::
+Check if an endpoint is activated
 
-link:labels[labels]::
-Globus Online tasks may be given a user created, arbitrary label to enable easy categorization and management of lots of tasks.
+link:endpoint_delete[globus endpoint delete]::
+Delete a given endpoint
 
-link:ls[ls]::
-The ls command lists files and subdirectories on an endpoint.
+== globus endpoint permission commands
 
-link:mkdir[mkdir]::
-The mkdir command creates a directory. Currently, the parent directory must exist (-p is not supported).
+link:endpoint_permission_create[globus endpoint permission create]::
+Create an access control rule
 
-link:modify[modify]::
-The modify command can change properties of task(s), such as deadline and label.
+link:endpoint_permission_delete[globus endpoint permission delete]::
+Delete an access control rule
 
-link:profile[profile]::
-profile is used to view and modify your user settings. If no arguments are given, the profile command will display your user name, DN(s), sshkeys, email address, and notification settings.
+link:endpoint_permission_list[globus endpoint permission list]::
+List of permissions on an endpoint
 
-link:quoting[quoting]::
-The Globus Online CLI behaves much like a normal shell such as bash with respect to the use of quotes and escaping.
+link:endpoint_permission_update[globus endpoint permission update]::
+Update an access control rule
 
-link:rename[rename]::
-The rename command renames a file or directory on an endpoint.
+link:endpoint_permission_show[globus endpoint permission show]::
+Show a permission on an endpoint
 
-link:rm[rm]::
-The rm command is a quick and easy way to delete a single file, directory, or pattern. Its semantics are as close as possible to UNIX rm.
+== globus endpoint server commands
 
-link:server-add[server-add]::
-server-add adds a server to an existing endpoint.
+link:endpoint_server_add[globus endpoint server add]::
+Add a server to an endpoint
 
-link:server-list[server-list]::
-server-list displays all servers for an endpoint.
+link:endpoint_server_delete[globus endpoint server delete]::
+Delete a server belonging to an endpoint
 
-link:server-remove[server-remove]::
-server-remove removes a server from an endpoint.
+link:endpoint_server_list[globus endpoint server list]::
+List all servers belonging to an endpoint
 
-link:status[status]::
-status displays basic information about tasks. By default, all pending (ACTIVE or INACTIVE) tasks are shown. If the -a option is given, status displays all tasks, including completed tasks. Tasks are sorted by request time in descending order.
+link:endpoint_server_update[globus endpoint server update]::
+Update attributes of a server on an endpoint
 
-link:transfer[transfer]::
-transfer creates a task that copies files and/or directories between endpoints. If multiple input lines are given over stdin, all lines must have the same source and destination endpoint.
+link:endpoint_server_show[globus endpoint server show]::
+Show a server belonging to an endpoint
 
-link:versions[versions]::
-versions displays a list of service / version strings that are supported by the server. A specific version can be requested for a command or a shell by using the v=VERSION:USER_AGENT prefix when running a command or starting the interactive shell. If the server does not support the requested version, the command will fail and an error message will be displayed.
+== globus endpoint role commands
 
-link:wait[wait]::
-wait will wait until a task completes successfully, is canceled, or expires.
+link:endpoint_role_create[globus endpoint role create]::
+Create a role on an endpoint
+
+link:endpoint_role_delete[globus endpoint role delete]::
+Remove a role from an endpoint
+
+link:endpoint_role_list[globus endpoint role list]::
+List of assigned roles on an endpoint
+
+link:endpoint_role_show[globus endpoint role show]::
+Show full info for a role on an endpoint
+
+== globus bookmark commands
+
+link:bookmark_rename[globus bookmark rename]::
+Change a bookmark's name
+
+link:bookmark_create[globus bookmark create]::
+Create a bookmark for the current user
+
+link:bookmark_show[globus bookmark show]::
+Given a bookmark name or ID resolves bookmark to an 'ENDPOINT_ID:PATH'
+
+link:bookmark_list[globus bookmark list]::
+List bookmarks for the current user
+
+link:bookmark_delete[globus bookmark delete]::
+Delete a bookmark
+
+== globus task commands
+
+link:task_event_list[globus task event-list]::
+List events for a given task
+
+link:task[globus task show]::
+Show detailed information about a specific task
+
+link:task_list[globus task list]::
+List tasks for the current user
+
+link:task_update[globus task update]::
+Update a task
+
+link:task_generate_submission_id[globus task generate-submission-id]::
+Get a submission ID
+
+link:task_pause_info[globus task pause-info]::
+Show why an in-progress task is currently paused
+
+link:task_cancel[globus task cancel]::
+Cancel a task
+
+link:task_wait[globus task wait]::
+Wait for a task to complete
