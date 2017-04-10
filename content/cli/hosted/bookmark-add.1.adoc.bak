@@ -1,0 +1,50 @@
+= BOOKMARK-ADD(1)
+
+== NAME
+
+bookmark-add - Create a bookmark to an endpoint and path
+
+== SYNOPSIS
+
+bookmark-add  -n 'NAME' -t 'ENDPOINT/PATH'
+
+
+== DESCRIPTION
+
+*bookmark-add* creates a new bookmark.  A bookmark is linked to an endpoint
+and path.  
+
+The following commands accept bookmarks: ls, mkdir, rename, rm, transfer,
+delete, endpoint-activate, endpoint-deactivate, bookmark-add, endpoint-add
+--sharing.
+
+The new bookmark has a name 'NAME' which may be up to 128 characters long.
+A bookmark named 'NAME' must not already exist for the current user.
+
+Bookmarks are only visible and usable for the user who created them.  If the
+target endpoint is private or deleted, the bookmark is unusable.
+
+
+'PATH' is assumed to be URL-encoded.  'PATH' must be a directory and end with
+"/".
+
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
+
+include::content/cli/hosted/include/cli_path_url_escaped.adoc[]
+
+
+== OPTIONS
+
+-n 'NAME'::
+The name of the new bookmark
+
+-t 'ENDPOINT/PATH'::
+The target endpoint and path.  If 'ENDPOINT' is another bookmark, its target
+endpoint is used and its target path is prepended to 'PATH'.
+
+
+== EXAMPLES
+
+----
+$ bookmark-add -n "My bookmark" -t go#ep1/~/projects/123/
+----

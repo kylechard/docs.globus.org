@@ -1,14 +1,115 @@
 ---
-full_title: "Getting started with the Command Line Interface (CLI)"
+full_title: "Command Line Interface (CLI)"
 ---
 
-= Getting started with the Command Line Interface (CLI)
-:imagesdir: .
-:revdate: May 12, 2016
+= Command Line Interface (CLI)
+:toc:
+:toc-placement: manual
+:toclevels: 1
+:toc-title:
+:revdate: April 10, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
-NOTE: This page refers to the current Globus CLI which is accessed via SSH. We have a link:https://globus.github.io/globus-cli/[new CLI], which is a locally installed program and now available in Beta.
+'''
+toc::[]
+== Command Line Interface (CLI)
+The Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. The CLI is suited for both interactive use and simple scripting use cases. 
+
+The Globus CLI is open source and available at  https://github.com/globus/globus-cli
+You can always view CLI help by passing the '--help' flag to a command. That will show you any subcommands and options supported by that command.
+
+=== Getting Started
+Before you begin, you'll need to link:installation[install the Globus CLI]. Installing the `globus-cli` python packge will provide you with the `globus` command. However, most CLI commands will require authentication to Globus services, so start out by getting logged in:
+
+----terminal
+$ globus login
+[comment]## follow instructions to get setup#
+----terminal
+
+You can check that you can correctly authenticate to the Globus APIs with two quick commands.
+
+First, check that you can access Globus Auth:
+
+----terminal
+$ globus get-identities \'go@globusid.org'
+[output]#ID                                   | Full Name      | Username        | Organization | Email Address
+------------------------------------ | -------------- | --------------- | ------------ | ------------------
+c699d42e-d274-11e5-bf75-1fc5bf53bb24 | www.globus.org | go@globusid.org | Globus       | noreply@globus.org#
+----terminal
+
+Your output should be the same as above. If you are not authenticated, you will see a message similar to:
+
+----terminal
+$ globus get-identities \'go@globusid.org'
+[output]#Globus CLI Error: A GLobus API Error Occurred.
+HTTP status:      401
+code:             UNAUTHORIZED
+message:          Call must be authenticated#
+----terminal
+
+Next, check that you can reach the Globus Transfer API:
+
+----terminal
+[comment]## --filter-owner-id is the ID of \'go@globusid.org', fetched above#
+$ globus endpoint search \'Globus Tutorial Endpoint' \
+    --filter-owner-id \'c699d42e-d274-11e5-bf75-1fc5bf53bb24'
+[output]#Owner           | ID                                   | Display Name
+--------------- | ------------------------------------ | ---------------------------
+go@globusid.org | ddb59aef-6d04-11e5-ba46-22000b92c6ec | Globus Tutorial Endpoint 1
+go@globusid.org | ddb59af0-6d04-11e5-ba46-22000b92c6ec | Globus Tutorial Endpoint 2
+go@globusid.org | cf9bcaa5-6d04-11e5-ba46-22000b92c6ec | Globus S3 Tutorial Endpoint#
+----terminal
+
+If you are not authenticated, you will get an error like the following:
+
+----terminal
+$ globus endpoint search \'Globus Tutorial Endpoint' \
+    --filter-owner-id \'c699d42e-d274-11e5-bf75-1fc5bf53bb24'
+[output]#Globus CLI Error: A Transfer API Error Occurred.
+HTTP status:      401
+request_id:       1AghTj1F6
+code:             AuthenticationFailed
+message:          Token is not active#
+----terminal
+
+Now we have the endpoint IDs for the tutorial endpoints, and can do a test directory listing:
+
+----terminal
+$ globus ls \'ddb59aef-6d04-11e5-ba46-22000b92c6ec:/'
+[output]#home
+mnt
+not shareable
+share#
+----terminal
+
+Start exploring the CLI!
+
+Use globus `list-commands` to see all of the commands in the CLI, and to get more detailed help for a specific information on a command, run that command with the `--help` flag.
+
+=== Updating & Removing the CLI
+==== Update
+To update your version of the CLI to the latest:
+
+----terminal
+$ globus update
+----terminal
+
+==== Uninstall
+To remove the CLI:
+
+----terminal
+rm -r "$HOME/.globus-cli-virtualenv"
+----terminal
+
+You should also edit your `$HOME/.bashrc` and remove the line that reads `export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"`.
+
+=== Globus CLI Examples
+For CLI examples, see link:using-the-cli[Using The CLI].
+
+== Hosted Command Line Interface (Legacy)
+
+[doc-info]*Last Updated: May 12, 2016*
 
 You will need an SSH key in order to access the Globus command line interface (CLI). *If you don't already have an SSH key, instructions for creating one are available link:https://docs.globus.org/faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here].*
 
@@ -31,6 +132,6 @@ $ _
 
 NOTE: If you receive a "permission denied" error, please ensure that your key files have permissions set to read-only (e.g. on Linux/Mac, run: +chmod 400 ~/.ssh/id_*+)
 
-// For more information about using the CLI, see the guide to link:using-the-cli[Using the CLI] and link:cli-beyond-basics[CLI: Beyond the basics].
+// For more information about using the CLI, see the guide to link:using-the-cli[Using the CLI] and link:using-the-cli#cli_beyond_the_basics[CLI: Beyond the basics].
 
 === [text-right next-link]#Next: link:using-the-cli[Using the CLI]#

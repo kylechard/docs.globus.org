@@ -1,0 +1,78 @@
+= RM(1)
+
+== NAME
+
+rm - Delete files and directories on a server
+
+== SYNOPSIS
+
+*rm* ['OPTIONS'] 'ENDPOINT/PATH'
+
+
+== DESCRIPTION
+
+The *rm* command is a quick and easy way to delete a single file, directory,
+or pattern.   Its semantics are as close as possible to UNIX rm.
+
+The 'PATH' may have a shell-compatible wild card pattern in its final
+component.  Type 'man glob' for details.
+
+Like UNIX rm, symbolic links are never followed - only unlinked (deleted).
+
+include::content/cli/hosted/include/cli_autoactivate.adoc[]
+
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
+
+include::content/cli/hosted/include/cli_path_url_escaped.adoc[]
+
+
+== OPTIONS
+
+*-r*::
+
+Remove directories and their contents recursively.  Note that just like
+regular rm, the path does not have to be a directory and symlinks are never
+followed.
+
+*-f*::
+
+Ignore nonexistent files and directories.  The operation succeeds if the path
+does not exist.
+
+
+include::content/cli/hosted/include/opt_label.adoc[]
+
+include::content/cli/hosted/include/opt_deadline.adoc[]
+
+*-D*::
+Create a detached (background) task and exit.
+
+include::content/cli/hosted/include/opt_unsafe.adoc[]
+
+
+== EXAMPLES
+
+Remove files matching a pattern:
+
+----
+$ rm go#ep1/~/Downloads/*.tmp
+----
+
+Remove directories matching a pattern:
+
+----
+$ rm -rf go#ep1/~/Work/testdir*
+----
+
+
+
+== EXIT STATUS
+
+If *-D* is used, rm returns 0 if the task was successfully created.  If *-D*
+is not used, rm returns 0 if the task completes successfully or non zero if
+the task has a fatal error, fails to complete by the deadline, or is canceled.
+
+
+== SEE ALSO
+
+*delete (1)*, link:../glob[*glob(7)*]

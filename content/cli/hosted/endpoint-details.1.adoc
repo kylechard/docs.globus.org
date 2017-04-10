@@ -1,0 +1,68 @@
+= ENDPOINT-DETAILS(1)
+
+== NAME
+
+endpoint-details - Show attributes of endpoint(s)
+
+== SYNOPSIS
+
+*endpoint-details* { -a | 'ENDPOINT' }
+
+== DESCRIPTION
+
+Show attributes of endpoint(s).
+
+For other endpoint information, see the *server-list*, *acl-list*, and
+*endpoint-role-list* commands.
+
+'ENDPOINT' can use these formats:
+
+include::content/cli/hosted/include/cli_endpoint_unique_id.adoc[]
+
+
+== OPTIONS
+
+*-a*::
+Show all endpoints owned by the current user.
+
+include::content/cli/hosted/include/opt_output.adoc[]
+
+
+== OUTPUT FIELDS
+
+See *endpoint-modify* for common fields not listed here.
+
+*id*::
+The endpoint ID (UUID)
+
+*owner*::
+The Globus user name who owns the endpoint
+
+*host_endpoint*::
+If the endpoint is a shared endpoint, this is its host endpoint ID.
+
+*host_endpoint_name*::
+If the endpoint is a shared endpoint, this is its host endpoint display name
+or legacy name (the display name is used if it is set).   The name is only
+visible if the host endpoint is visible to the current user.  Otherwise, this
+field will be null.
+
+*host_path*::
+If the endpoint is a shared endpoint, this is the root path of the share.
+The host path is visible if the host endpoint is not deleted and the current
+user is the owner of either the shared endpoint or the host endpoint.  If the
+host path is not visible, this field will be null.
+
+*credential_status*::
+The current user's credential status: "ACTIVE", "EXPIRED", or "n/a" if the
+endpoint is not activated.
+
+
+== EXAMPLES
+
+----
+$ endpoint-details 5d3c6a52-5244-11e5-84dd-22000bb3f45d
+$ endpoint-details go#ep1
+$ endpoint-details -a -f id,legacy_name,display_name,credential_status -O csv
+----
+

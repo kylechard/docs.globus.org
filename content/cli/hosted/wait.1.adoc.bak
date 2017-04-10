@@ -1,0 +1,36 @@
+= WAIT(1)
+
+== NAME
+
+wait - Wait for a task to finish processing
+
+== SYNOPSIS
+
+*wait* ['OPTIONS'] 'TASKID'
+
+== DESCRIPTION
+
+*wait* will wait until a task completes successfully, is canceled, or expires.
+
+If *wait* is called on a transfer task, a progress bar representing the number
+of files and directories completed and the speed in megabits per second is
+shown.  Recent alerts, if any, are also shown.
+
+== OPTIONS
+
+*-q*::
+Be quiet; display no alerts or progress bar
+
+== EXAMPLES
+
+Wait for a transfer task to complete:
+
+----
+$ wait a04d9872-aec7-11df-9563-1231380722ca
+----
+
+== EXIT STATUS
+
+*wait* returns 0 unless an internal error occurred or 'TASKID' is not a
+valid task id.  Use the *status* command to get the final completion status
+of the task.

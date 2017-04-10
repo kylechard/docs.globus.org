@@ -11,8 +11,13 @@ short_title: Command Line Interface (CLI)
 
 toc::[]
 
+== How can I access Globus services using a command line interface?
+Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. More information on the CLI is available link:../../cli[here].
+
+Globus also has a legacy hosted CLI, which provides a restricted shell that users can log into and access the Globus transfer service.   More information on the legacy hosted CLI is available link:../../cli#hosted_command_line_interface_legacy[here].
+
 == What is an SSH key? Why do I need one?
-An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli[CLI]. In order to login to the Globus CLI, you must have a valid public SSH key (or an link:#adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
+An SSH key is a security credential that is used to confirm your identity to Globus when you access the file transfer service via the link:../../cli#hosted_command_line_interface_legacy[legacy hosted CLI]. In order to login to the legacy hosted CLI, you must have a valid public SSH key (or an link:#adding_an_x_509_certificate_to_a_globus_account[X.509 certificate]) in your profile.
 
 == How do I add an SSH key to my Globus account?
 NOTE: If you don’t already have an SSH key, instructions for creating one are available link:#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[here for Mac OSX, Linux, and Windows systems].
@@ -25,15 +30,15 @@ NOTE: If you don’t already have an SSH key, instructions for creating one are 
 . Click "Add Key" to save.
 
 
-It will take a few minutes for the SSH key to propagate through the system. You may then access the CLI by typing:
+It will take a few minutes for the SSH key to propagate through the system. You may then access the legacy hosted CLI by typing:
 
 ----terminal
 $ ssh [input]#<my_globus_id_user_name>#@cli.globusonline.org
 ----terminal
 
-For more information about the Globus Online CLI, see the link:../../cli/using-the-cli[Using the CLI guide].
+For more information about the legacy hosted CLI, see the link:../../cli/using-the-cli#hosted_command_line_interface_legacy[Using the CLI guide].
 
-== How do I generate an SSH key to use with the Globus command line interface?
+== How do I generate an SSH key to use with the Hosted CLI (Legacy)?
 
 === Mac OSX/Linux/Unix
 
@@ -92,7 +97,7 @@ While you are grabbing the latest client, also grab link:http://the.earth.li/~sg
 
 After downloading PuTTYgen, double-click on the PuTTYgen icon. At the very bottom of the dialog box, there is a section called "Parameters". Under "Type of key to generate:", click the radio button for "SSH2 RSA". You should set the "Number of bits in a generated key:" at the default value of 2048 or higher.
 
-== How do I Connect to the Globus CLI using GSI SSH?
+== How do I Connect to the Hosted CLI (Legacy) using GSI SSH?
 To use GSI SSH you need to configure your Globus profile with the X.509 Certificate that you will use to login.
 
 === Adding an X.509 certificate to a Globus account
@@ -106,11 +111,11 @@ To use GSI SSH you need to configure your Globus profile with the X.509 Certific
 To find your PEM file, run +grid-proxy-info+ at a command prompt. This will print the "path" of your certificate PEM file (e.g. /tmp/x509up_u502), as well as the "type". Make sure that the "type" is "end entity credential", and not some form of proxy. Note that many certificates fetched via the +myproxy-logon+ command are still end entity credentials and can be used for this purpose. List the contents of this file, and then copy and paste the portion of the file between, and including, the lines: —–BEGIN CERTIFICATE—– and —–END CERTIFICATE—–.
 
 === Activating an Endpoint
-You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli/[CLI tutorial] for more details on using GSI SSH.
+You can use GSI SSH to activate the endpoint. Once your account is configured, you can use the +endpoint-activate+ command to activate the endpoint — refer to to the link:../../cli/using-the-cli#hosted_command_line_interface_legacy[CLI tutorial] for more details on using GSI SSH.
 
 == Why don't I see any information when running the "details" and "events" commands?
 This may be related to multiple transfers running simultaneously. If you issue multiple transfer requests, note that only three requests will be running simultaneously at any one time. The remaining transfers will be queued and start moving data as soon as another active transfer completes.
 
-== Why do I see "Permission denied" when accessing the CLI?
-This is usually the result of missing information in your Globus profile. In order to use the CLI interface you will need to add your SSH public key to your Globus account. Please see the FAQ entry for information on link:#how_do_i_add_an_ssh_key_to_my_globus_account[how to add your key].
+== Why do I see "Permission denied" when accessing the Hosted CLI (Legacy)?
+This is usually the result of missing information in your Globus profile. In order to use the legacy hosted CLI interface you will need to add your SSH public key to your Globus account. Please see the FAQ entry for information on link:#how_do_i_add_an_ssh_key_to_my_globus_account[how to add your key].
 

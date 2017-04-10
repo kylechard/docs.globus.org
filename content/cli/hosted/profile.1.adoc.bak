@@ -1,0 +1,34 @@
+= PROFILE(1)
+
+== NAME
+
+profile - View and manage your user profile settings
+
+== SYNOPSIS
+
+*profile* ['OPTIONS']
+
+== DESCRIPTION
+
+*profile* is used to view and modify your user settings.  If no arguments are
+given, the profile command will display your user name, DN(s), sshkeys, email
+address, and notification settings.
+
+== OPTIONS
+
+*-n* {'off' | 'on'}::
+Turn all email notifications on or off.
+
+== EXAMPLES
+
+View your username and all profile settings:
+
+----
+$ profile
+----
+
+Disable all notifications:
+
+----
+$ profile -n off
+----

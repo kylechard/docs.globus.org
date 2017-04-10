@@ -1,0 +1,31 @@
+= ACL-LIST(1)
+
+== NAME
+
+acl-list - Show all Access Rules on an endpoint
+
+== SYNOPSIS
+
+acl-list 'ENDPOINT' 
+
+
+== DESCRIPTION
+
+Display all rules in an endpoint's access control list (ACL).
+
+The current output format is JSON.  Paths are URL-encoded.
+
+'ENDPOINT' can use these formats:
+
+include::content/cli/hosted/include/cli_endpoint_unique_id.adoc[]
+
+include::content/cli/hosted/include/more_acl.adoc[]
+
+
+== EXAMPLES
+
+Show all ACL rules for the endpoint "myep":
+
+----
+$ acl-list bob#myep
+----

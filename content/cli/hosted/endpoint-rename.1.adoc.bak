@@ -1,0 +1,31 @@
+= ENDPOINT-RENAME(1)
+
+== NAME
+
+endpoint-rename - Change the legacy name of an endpoint
+
+== SYNOPSIS
+
+*endpoint-rename* 'OLDNAME' 'NEWNAME'
+
+== DESCRIPTION
+
+WARNING: This command is deprecated.  Endpoints now contain a display
+name and a UUID, which should be used instead.
+
+*endpoint-rename* changes the legacy name of an endpoint from 'OLDNAME' to
+'NEWNAME'.  'OLDNAME' and 'NEWNAME' must be in the old +"user#name"+ format.
+
+Use the *endpoint-modify* command to set or change an endpoint's display name.
+Use *endpoint-search* or *endpoint-details* to show an endpoint's UUID, which
+is set by the system and can never be changed.
+
+
+
+== EXAMPLES
+
+Rename an endpoint called "alice#test_endpoint" to "alice#myep1":
+
+----
+$ endpoint-rename alice#test_endpoint alice#myep1
+----

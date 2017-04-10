@@ -1,0 +1,28 @@
+= BOOKMARK-LIST(1)
+
+== NAME
+
+bookmark-list - Show bookmarks owned by the current user
+
+== SYNOPSIS
+
+bookmark-list [ -n 'NAME' ]
+
+
+== DESCRIPTION
+
+*bookmark-list* shows bookmarks owned by the current user.  The output format
+is JSON.
+
+
+== OPTIONS
+
+-n 'NAME'::
+The bookmark name to show.  If this is not set, all bookmarks are shown.
+
+== EXAMPLES
+
+----
+$ bookmark-list
+$ bookmark-list -n "My Bookmark"
+----

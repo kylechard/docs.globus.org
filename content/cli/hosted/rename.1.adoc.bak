@@ -1,0 +1,45 @@
+= RENAME(1)
+
+== NAME
+
+rename - Quickly rename a file or directory
+
+== SYNOPSIS
+
+*rename* 'ENDPOINT/OLD-PATH' 'ENDPOINT/NEW-PATH'
+
+== DESCRIPTION
+
+The *rename* command renames a file or directory on an endpoint.  
+
+The old path must be an existing file or directory.  The new path must not yet
+exist.  
+
+The new path does not have to be in the same directory as the old path, but
+most endpoints will require it to stay on the same filesystem (you can not
+rename across a filesystem boundary).
+
+The endpoint name must be entered twice (in the old and new paths) for the
+sake of path syntax consistency.
+
+include::content/cli/hosted/include/cli_autoactivate.adoc[]
+
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
+
+include::content/cli/hosted/include/cli_path_url_escaped.adoc[]
+
+
+
+== EXAMPLES
+
+Rename a directory:
+
+----
+$ rename go#ep1/~/tempdir go#ep1/~/project-foo
+----
+
+
+
+== EXIT STATUS
+
+rename returns 0 on success, and 1 if a network or server error occurred.

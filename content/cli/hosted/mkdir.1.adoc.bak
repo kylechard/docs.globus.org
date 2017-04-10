@@ -1,0 +1,36 @@
+= MKDIR(1)
+
+== NAME
+
+mkdir - Create a directory on an endpoint
+
+== SYNOPSIS
+
+*mkdir* 'ENDPOINT/PATH'
+
+
+== DESCRIPTION
+
+The *mkdir* command creates a directory.  Currently, the parent directory must
+exist (-p is not supported).
+
+include::content/cli/hosted/include/cli_autoactivate.adoc[]
+
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
+
+include::content/cli/hosted/include/cli_path_url_escaped.adoc[]
+
+
+== EXAMPLES
+
+Create a directory under your home directory:
+
+----
+$ mkdir go#ep1/~/testfolder
+----
+
+
+== EXIT STATUS
+
+mkdir returns 0 on success, and 1 if a network or server error occurred.
+mkdir returns 1 if the path already exists.

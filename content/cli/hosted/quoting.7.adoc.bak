@@ -1,0 +1,82 @@
+= QUOTING(7)
+
+== NAME
+
+quoting - Quoting and Escaping in the CLI
+
+== DESCRIPTION
+
+The Globus Transfer CLI behaves much like a normal shell such as bash with
+respect to the use of quotes and escaping.
+
+However, there may be differences in how one must escape wildcard (globbing)
+character literals, because the Globus shell itself does not ever perform globbing;
+only the commands it executes do.
+
+== DETAILS
+
+A non-quoted backslash (`\`) is the escape character.  It preserves the
+literal value of the next character that follows.
+
+Enclosing characters in single quotes preserves the literal value of each
+character  within the  quotes.   A  single quote may not occur between single
+quotes, even when preceded by a backslash.
+
+Enclosing characters in double quotes preserves the literal value of all
+characters  within the  quotes, with the exception of backslash (`\`).   The
+backslash retains its special meaning only when followed by one of the
+following characters: double quote, backslash, or <newline>. 
+
+=== Interactive CLI Shell Versus Remote Execution
+
+The quoting and escaping rules described above apply to the interactive CLI
+shell.  Additional escaping is needed when arguments are passed to the CLI
+from a remote shell via ssh or gsissh.  Please see the examples below.
+
+=== Exceptions
+
+The above quoting and escaping rules do not apply to the input lists sent to
+CLI commands such as *transfer* and *delete*.  Please see the man pages for
+these commands to understand the rules that apply.
+
+== EXAMPLES
+
+=== Interactive Shell
+
+Use a backslash to escape a space in a file path:
+
+----
+# a "foo bar" file
+$ ls go#ep1/tmp/foo\ bar
+----
+
+Use double quotes to escape a space in a file path:
+
+----
+# a "foo bar" file
+$ ls "go#ep1/tmp/foo bar"
+----
+
+Remove a file with literal wildcard characters in the name.  Note that we have
+to work around the shell doing a first level of backslash interpretation:
+
+----
+# delete the file "foo*" but leave other files beginning 
+# with "foo" untouched
+$ rm "go#ep2/tmp/foo\*"
+# OR
+$ rm go#ep2/tmp/foo\\*
+----
+
+=== Remote Shell
+
+Handling a space in a file path:
+
+----
+# local shell eats the quotes but leaves the backslash
+$ ssh user@cli.globusonline.org ls "go#ep1/tmp/foo\ bar"
+----
+
+== SEE ALSO
+
+link:../delete[*delete(1)*], link:../ls[*ls(1)*], link:../rm[*rm(1)*], link:../glob[*glob(1)*]
