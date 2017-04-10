@@ -107,8 +107,6 @@ You should also edit your `$HOME/.bashrc` and remove the line that reads `export
 === Globus CLI Examples
 For CLI examples, see link:using-the-cli[Using The CLI].
 
-
-'''
 == Hosted Command Line Interface (Legacy)
 
 [doc-info]*Last Updated: May 12, 2016*

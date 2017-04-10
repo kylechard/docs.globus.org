@@ -43,4 +43,4 @@ globus --help
 If you shell is not Bash, you will have to add `export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"` to your shell's initialization file.
 
 == Updating and Removing
-For more info, see the instructions on link:#updating_amp_removing_the_cli[Updating and Removing CLI Versions].
+For more info, see the instructions on link:../#updating_amp_removing_the_cli[Updating and Removing CLI Versions].
