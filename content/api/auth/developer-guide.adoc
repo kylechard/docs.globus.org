@@ -22,7 +22,7 @@ TODO: Section about adding Auth as an IdP to existing products, eg to Confluence
 A Globus Auth App is used to authenticate users and/or to obtain access to other services. At a very high level, the development cycle consists of:
 
 1. <<register-app,Registering an application>> client at https://developers.globus.org.
-2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to services via <<globus-scopes,_scopes_>> using a standard OAuth2 flow.
+2. <<obtaining-authorization,Obtaining authorization>>. Applications request access to services via _scopes_ using a standard OAuth2 flow.
 3. <<using-tokens,Using tokens>> to authenticate to services.
 
 Those are the basics. Apps that want to provide their users with a more complete, integrated experience can then start looking into features such as <<skinning,skinning>> and <<other-features,other features>> such as allowing users to initiate linking identities from right inside your app.
@@ -332,7 +332,7 @@ Seeing a new dependent_token_cache_id for the same identity and client does NOT 
 
 === Using the Globus Python SDK
 
-Globus provides a Python SDK for interacting with its APIs, including Globus Auth and Transfer. Documentation can be found http://globus.github.io/globus-sdk-python/[here].
+Globus provides a Python SDK for interacting with its APIs, including Globus Auth and Transfer. Documentation can be found https://globus-sdk-python.readthedocs.io/en/stable/[here].
  
 [[oauth2-libraries]]
 === OAuth2 Libraries
