@@ -17,7 +17,7 @@ toc::[]
 The Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. The CLI is suited for both interactive use and simple scripting use cases. 
 
 The Globus CLI is open source and available at  https://github.com/globus/globus-cli
-You can always view CLI help by passing the '–help' flag to a command. That will show you any subcommands and options supported by that command.
+You can always view CLI help by passing the '--help' flag to a command. That will show you any subcommands and options supported by that command.
 
 === Installation
 The Globus CLI is maintained as a python package, built on the link:https://globus.github.io/globus-sdk-python[Globus Python SDK]. Like the SDK, it therefore requires link:https://www.python.org/[Python] 2.7+ or 3.3+. If a supported version of Python is not already installed on your system, see this link:http://docs.python-guide.org/en/latest/starting/installation/[Python installation guide].
@@ -130,9 +130,7 @@ Use globus `list-commands` to see all of the commands in the CLI, and to get mor
 To update your version of the CLI to the latest:
 
 ----terminal
-source "$HOME/.globus-cli-virtualenv/bin/activate"
-pip install -U globus-cli
-deactivate
+$ globus update
 ----terminal
 
 ==== Uninstall
