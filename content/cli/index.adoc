@@ -3,29 +3,33 @@ full_title: "Command Line Interface (CLI)"
 ---
 
 = Command Line Interface (CLI)
-:revdate: April 6, 2017
+:toc:
+:toc-placement: manual
+:toclevels: 1
+:toc-title:
+:revdate: April 10, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
-This CLI provides a convenient shell interface to link:https://globus.org[Globus] APIs, including the Transfer API and the Globus Auth API.
+'''
+toc::[]
+== Command Line Interface (CLI)
+The Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. The CLI is suited for both interactive use and simple scripting use cases. 
 
-Documentation for the APIs is available at https://docs.globus.org
-
+The Globus CLI is open source and available at  https://github.com/globus/globus-cli
 You can always view CLI help by passing the '–help' flag to a command. That will show you any subcommands and options supported by that command.
 
-Source code is available at https://github.com/globus/globus-cli
-
-== Installation
+=== Installation
 The Globus CLI is maintained as a python package, built on the link:https://globus.github.io/globus-sdk-python[Globus Python SDK]. Like the SDK, it therefore requires link:https://www.python.org/[Python] 2.7+ or 3.3+. If a supported version of Python is not already installed on your system, see this link:http://docs.python-guide.org/en/latest/starting/installation/[Python installation guide].
 
-=== For macOS Users
+==== For macOS Users
 For *macOS*, you must install pip first:
 
 ----terminal
 which pip || sudo easy_install pip
 ----terminal
 
-=== For All Platforms
+==== For All Platforms
 To install, run the following commands:
 
 ----terminal
@@ -46,14 +50,14 @@ See that the CLI is installed:
 globus --help
 ----terminal
 
-=== Note on Other Shells
+==== Note on Other Shells
 
 If you shell is not Bash, you will have to add `export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"` to your shell's initialization file.
 
-=== Updating and Removing
+==== Updating and Removing
 For more info, see the instructions on link:#updating_amp_removing_the_cli[Updating and Removing CLI Versions].
 
-== Getting Started
+=== Getting Started
 Installing the `globus-cli` python packge will provide you with the `globus` command. However, most CLI commands will require authentication to Globus services, so start out by getting logged in:
 
 ----terminal
@@ -121,8 +125,8 @@ Start exploring the CLI!
 
 Use globus `list-commands` to see all of the commands in the CLI, and to get more detailed help for a specific information on a command, run that command with the `--help` flag.
 
-== Updating & Removing the CLI
-=== Update
+=== Updating & Removing the CLI
+==== Update
 To update your version of the CLI to the latest:
 
 ----terminal
@@ -131,7 +135,7 @@ pip install -U globus-cli
 deactivate
 ----terminal
 
-=== Uninstall
+==== Uninstall
 To remove the CLI:
 
 ----terminal
@@ -140,7 +144,7 @@ rm -r "$HOME/.globus-cli-virtualenv"
 
 You should also edit your `$HOME/.bashrc` and remove the line that reads `export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"`.
 
-== Globus CLI Examples
+=== Globus CLI Examples
 For CLI examples, see link:using-the-cli[Using The CLI].
 
 
