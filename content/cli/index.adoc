@@ -19,46 +19,8 @@ The Globus CLI is a standalone application that provides a command line interfac
 The Globus CLI is open source and available at  https://github.com/globus/globus-cli
 You can always view CLI help by passing the '--help' flag to a command. That will show you any subcommands and options supported by that command.
 
-=== Installation
-The Globus CLI is maintained as a python package, built on the link:https://globus.github.io/globus-sdk-python[Globus Python SDK]. Like the SDK, it therefore requires link:https://www.python.org/[Python] 2.7+ or 3.3+. If a supported version of Python is not already installed on your system, see this link:http://docs.python-guide.org/en/latest/starting/installation/[Python installation guide].
-
-==== For macOS Users
-For *macOS*, you must install pip first:
-
-----terminal
-which pip || sudo easy_install pip
-----terminal
-
-==== For All Platforms
-To install, run the following commands:
-
-----terminal
-which virtualenv || sudo pip install virtualenv
-virtualenv "$HOME/.globus-cli-virtualenv"
-source "$HOME/.globus-cli-virtualenv/bin/activate"
-pip install globus-cli
-deactivate
-export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"
-echo \'export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"' >> "$HOME/.bashrc"
-----terminal
-
-This will install the CLI and its dependencies into `$HOME/.globus-cli-virtualenv`, and add it to your shell.
-
-See that the CLI is installed:
-
-----terminal
-globus --help
-----terminal
-
-==== Note on Other Shells
-
-If you shell is not Bash, you will have to add `export PATH="$PATH:$HOME/.globus-cli-virtualenv/bin"` to your shell's initialization file.
-
-==== Updating and Removing
-For more info, see the instructions on link:#updating_amp_removing_the_cli[Updating and Removing CLI Versions].
-
 === Getting Started
-Installing the `globus-cli` python packge will provide you with the `globus` command. However, most CLI commands will require authentication to Globus services, so start out by getting logged in:
+Before you begin, you'll need to link:installation[install the Globus CLI]. Installing the `globus-cli` python packge will provide you with the `globus` command. However, most CLI commands will require authentication to Globus services, so start out by getting logged in:
 
 ----terminal
 $ globus login
