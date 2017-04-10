@@ -8,7 +8,7 @@ short_title: "Installation"
 
 [doc-info]*Last Updated: {revdate}*
 
-The Globus CLI is maintained as a python package, built on the link:https://globus.github.io/globus-sdk-python[Globus Python SDK]. Like the SDK, it therefore requires link:https://www.python.org/[Python] 2.7+ or 3.3+. If a supported version of Python is not already installed on your system, see this link:http://docs.python-guide.org/en/latest/starting/installation/[Python installation guide].
+The Globus CLI is maintained as a python package, built on the link:https://globus-sdk-python.readthedocs.io/en/stable/[Globus Python SDK]. Like the SDK, it therefore requires link:https://www.python.org/[Python] 2.7+ or 3.3+. If a supported version of Python is not already installed on your system, see this link:http://docs.python-guide.org/en/latest/starting/installation/[Python installation guide].
 
 == For macOS Users
 For *macOS*, you must install pip first:
