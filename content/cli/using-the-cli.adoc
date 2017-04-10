@@ -3,14 +3,14 @@
 :toc-placement: manual
 :toclevels: 1
 :toc-title:
-:revdate: April 6, 2017
+:revdate: April 10, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
 '''
 toc::[]
 
-'''
+== Command Line Interface (CLI)
 [NOTE]
 ====
 The following examples are all written for a Bash shell. If you are running another shell you may need to modify the non globus commands and syntax found in these examples.
@@ -23,7 +23,7 @@ $ globus login
 and follow the instructions. If you are having problems logging in, consult link:../#getting_started[Getting Started]
 ====
 
-== Finding an Endpoint
+=== Finding an Endpoint
 Searches for a tutorial endpoint, then stores its ID in a local variable to allow for human-readable calls to further globus endpoint commands.
 
 ----terminal
@@ -49,7 +49,7 @@ Keywords:     None#
 
 Search results truncated for readability.
 
-== Endpoint Manipulation
+=== Endpoint Manipulation
 Demonstrates the synchronous commands of `mkdir`, `rename`, and `ls`.
 
 ----terminal
@@ -70,7 +70,7 @@ $ globus ls $ep1:~/
 [output]#cli_example_dir_renamed/#
 ----terminal
 
-== Single Item Transfers
+=== Single Item Transfers
 Submits transfer requests for a file and a directory from one Globus Tutorial Endpoint to another
 
 ----terminal
@@ -91,7 +91,7 @@ $ globus transfer $ep1:/share/godata $ep2:~/godata \
 Task ID: 47477b62-dda0-11e6-9d11-22000a1e3b52#
 ----terminal
 
-== Batch Transfers
+=== Batch Transfers
 Uses a .txt file to request multiple files in one transfer request.
 
 [source,python]
@@ -119,7 +119,7 @@ Task ID: 306900e0-dda1-11e6-9d11-22000a1e3b52#
 
 Note that only one task was needed even though there are multiple files to be transferred.
 
-== Deletions
+=== Deletions
 Submits delete task requests for the files transferred by the previous two examples. Note that even if the target files are non-existent this example will still submit delete tasks without error, but the tasks themselves will fail.
 
 [source,python]
@@ -148,7 +148,7 @@ $ globus delete $ep2:~/ --batch --label "CLI batch delete" < in.txt
 Task ID: a4761f4a-dda1-11e6-9d11-22000a1e3b52#
 ----terminal
 
-== Task Management
+=== Task Management
 Submits an unauthorized transfer task to demonstrate how to view data on why a task hasn't completed and then cancel the task
 
 ----terminal
@@ -187,7 +187,7 @@ $ globus task cancel $task_id
 
 Note the Details field read PERMISSION_DENIED, but the status field was still ACTIVE. Globus will eventually time out such a request when the Deadline is reached, but the user has until then to try to repair any permissions.
 
-== Bookmarks
+=== Bookmarks
 Creates a bookmark then demonstrates how they can be used in place of UUIDs
 
 ----terminal
@@ -212,7 +212,7 @@ file2.txt
 file3.txt#
 ----terminal
 
-== Shared Endpoints
+=== Shared Endpoints
 Makes a directory on a Tutorial Endpoint, sets it up as a Shared Endpoint, and creates a permission for that endpoint.
 
 ----terminal
@@ -257,7 +257,7 @@ $ globus endpoint search --filter-scope shared-by-me
 example@globusid.org  | 3e4efafe-dda4-11e6-9d11-22000a1e3b52 | CLI Example Shared Endpoint#
 ----terminal
 
-== Safe Resubmissions
+=== Safe Resubmissions
 Generates a submission-id that allows for resubmitting a task multiple times while guaranteeing that the actual task will only be carried out once. This is useful for handling the unreliability of networks.
 
 Note that the task ID of the task will differ from the submission ID.

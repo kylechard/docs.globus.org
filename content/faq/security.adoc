@@ -11,6 +11,12 @@ short_title: Security
 
 toc::[]
 
+== How can I access Globus services using a command line interface?
+
+Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. More information on the CLI is available link:../../cli[here].
+
+Globus also has a legacy hosted CLI, which provides a restricted shell that users can log into and access the Globus transfer service.   More information on the legacy hosted CLI is available link:../../cli#hosted_command_line_interface_legacy[here].
+
 == Does Globus need credentials when accessing my system? Does it store these permanently?
 Globus uses only temporary credentials to act on your behalf when making a transfer request, and never keeps your password nor long-term credentials to access a site.
 
