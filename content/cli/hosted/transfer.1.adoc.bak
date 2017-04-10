@@ -41,9 +41,9 @@ task id may be passed to other task management commands.
 
 Globbing ("*") is not supported.
 
-include::content/cli/reference/include/cli_autoactivate.adoc[]
+include::content/cli/hosted/include/cli_autoactivate.adoc[]
 
-include::content/cli/reference/include/cli_bookmarks_and_paths.adoc[]
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
 
 == Input Lines
 
@@ -98,17 +98,17 @@ spaces and "%" characters are allowed and preserved.  An embedded double quote
 These options apply to the transfer command itself:
 
 
-include::content/cli/reference/include/opt_synclevel.adoc[]
+include::content/cli/hosted/include/opt_synclevel.adoc[]
 
-include::content/cli/reference/include/opt_label.adoc[]
+include::content/cli/hosted/include/opt_label.adoc[]
 
-include::content/cli/reference/include/opt_deadline.adoc[]
+include::content/cli/hosted/include/opt_deadline.adoc[]
 
-include::content/cli/reference/include/opt_encrypt.adoc[]
+include::content/cli/hosted/include/opt_encrypt.adoc[]
 
-include::content/cli/reference/include/opt_preserve_mtime.adoc[]
+include::content/cli/hosted/include/opt_preserve_mtime.adoc[]
 
-include::content/cli/reference/include/opt_verify_checksum.adoc[]
+include::content/cli/hosted/include/opt_verify_checksum.adoc[]
 
 *--delete*::
 

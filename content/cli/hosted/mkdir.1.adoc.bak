@@ -14,11 +14,11 @@ mkdir - Create a directory on an endpoint
 The *mkdir* command creates a directory.  Currently, the parent directory must
 exist (-p is not supported).
 
-include::content/cli/reference/include/cli_autoactivate.adoc[]
+include::content/cli/hosted/include/cli_autoactivate.adoc[]
 
-include::content/cli/reference/include/cli_bookmarks_and_paths.adoc[]
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
 
-include::content/cli/reference/include/cli_path_url_escaped.adoc[]
+include::content/cli/hosted/include/cli_path_url_escaped.adoc[]
 
 
 == EXAMPLES

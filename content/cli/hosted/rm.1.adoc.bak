@@ -19,11 +19,11 @@ component.  Type 'man glob' for details.
 
 Like UNIX rm, symbolic links are never followed - only unlinked (deleted).
 
-include::content/cli/reference/include/cli_autoactivate.adoc[]
+include::content/cli/hosted/include/cli_autoactivate.adoc[]
 
-include::content/cli/reference/include/cli_bookmarks_and_paths.adoc[]
+include::content/cli/hosted/include/cli_bookmarks_and_paths.adoc[]
 
-include::content/cli/reference/include/cli_path_url_escaped.adoc[]
+include::content/cli/hosted/include/cli_path_url_escaped.adoc[]
 
 
 == OPTIONS
@@ -40,14 +40,14 @@ Ignore nonexistent files and directories.  The operation succeeds if the path
 does not exist.
 
 
-include::content/cli/reference/include/opt_label.adoc[]
+include::content/cli/hosted/include/opt_label.adoc[]
 
-include::content/cli/reference/include/opt_deadline.adoc[]
+include::content/cli/hosted/include/opt_deadline.adoc[]
 
 *-D*::
 Create a detached (background) task and exit.
 
-include::content/cli/reference/include/opt_unsafe.adoc[]
+include::content/cli/hosted/include/opt_unsafe.adoc[]
 
 
 == EXAMPLES
