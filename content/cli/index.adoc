@@ -11,10 +11,15 @@ full_title: "Command Line Interface (CLI)"
 
 [doc-info]*Last Updated: {revdate}*
 
+Command line clients provide an interface to Globus services from the shell, and are suited for both interactive use and simple scripting use cases.
+
+This page includes information about the Globus CLI, a stand alone application that can be installed on the user’s machine and the the Globus legacy hosted CLI, which provides a restricted shell that users can log into and access the Globus transfer service.
+
 '''
 toc::[]
+
 == Command Line Interface (CLI)
-The Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services. The CLI is suited for both interactive use and simple scripting use cases. 
+The Globus CLI is a standalone application that provides a command line interface to Globus services, both the Transfer and Auth services.
 
 The Globus CLI is open source and available at  https://github.com/globus/globus-cli
 You can always view CLI help by passing the '--help' flag to a command. That will show you any subcommands and options supported by that command.
