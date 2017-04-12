@@ -75,8 +75,7 @@ be using the DSI must create such a file with their credentials.
 
 ----
  % mkdir -m 0700 -p ~/.globus
- % (umask 077; echo "$(id -un);$S3_ACCESS_KEY_ID;$S3_SECRET_ACCESS_KEY" \
- > ~/.globus/s3)
+ % (umask 077; echo "$(id -un);$S3_ACCESS_KEY_ID;$S3_SECRET_ACCESS_KEY" > ~/.globus/s3)
 ----
 
 ==== Restart the gridftp server
