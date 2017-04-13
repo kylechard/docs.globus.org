@@ -65,7 +65,7 @@ $ [input]#rm -r ~/.globusonline/#
 [[globus-connect-personal-cli]]
 == How To Install Globus Connect Personal for Linux Using the Command Line
 
-You may install Globus Connect Personal for Linux using only the command line. Before getting started ensure that you have a valid SSH key associated with your Globus account. If you do not have an SSH key, link:../../faq/command-line-interface/#how_do_i_generate_an_ssh_key_to_use_with_the_globus_command_line_interface[see this guide for instructions on generating one]. Once you have an SSH key, follow the instructions here to associate the SSH key with your Globus account.
+You may install Globus Connect Personal for Linux using only the command line. To install Globus Connect Personal you will need to be logged into the Globus CLI. If you don't already have the Globus CLI installed, consult the getting started section of the link:../../cli/index.html#command_line_interface_cli[Globus CLI documentation] for installation and login instructions.
 
 NOTE: Instructions are also available for link:../globus-connect-personal-linux[installing a Globus Online Personal endpoint using your Web browser].
 
@@ -90,20 +90,16 @@ $ cd globusconnectpersonal-[input]#x.y.z#
 +
 NOTE: In the last line above, replace [uservars]#x.y.z# with the version number from the downloaded file, e.g. globusconnectpersonal-2.0.2.
 
-. Generate a setup key for your endpoint via the Globus command line interface. The example below shows Globus user [uservars]#demodoc# generating a setup key for an endpoint called [uservars]#my-linux-laptop#:
+. Generate a setup key for your endpoint via the Globus command line interface. The example below shows an already logged in Globus user generating a setup key for an endpoint called [uservars]#my-linux-laptop#:
 +
 ----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org
-Welcome to globusonline.org, demodoc. Type \'help' for help.
-$ endpoint-add -n [input]#my-linux-laptop# --gc
-[output]#Endpoint ID: b19b3b45-01ae-11e6-a71c-22000bf2d559
-
-Use this setup key when installing Globus Connect Personal: 
-    224532bb-8a4b-4d32-8995-e1fb442be98e#
-$ exit
+$ globus endpoint create --personal [input]#my-linux-laptop#
+[output]#Message:     Endpoint created successfully
+Endpoint ID: b19b3b45-01ae-11e6-a71c-22000bf2d559
+Setup Key:   224532bb-8a4b-4d32-8995-e1fb442be98e#
 ----terminal
 
-. Back in your local machine shell run the following commands to complete the installation (note that you will need to copy and paste the setup key generated in step 2 above):
+. Now run the following command to complete the installation (note that you will need to copy and paste the setup key generated in step 2 above):
 +
 ----terminal
 $ ./globusconnectpersonal -setup [input]#224532bb-8a4b-4d32-8995-e1fb442be98e#
@@ -114,36 +110,29 @@ Creating /home/demodoc/.globusonline/lta/gridmap
 Done!#
 ----terminal
 
-Globus Connect Personal is now installed and your Globus endpoint is configured.
+. Globus Connect Personal is now installed and your endpoint is configured. You should see your endpoint and be able to get its ID if you search for endpoints you own:
++
+----terminal
+$ globus endpoint search --filter-scope my-endpoints
+[output]#ID                                   | Owner                | Display Name
+------------------------------------ | -------------------- | ----------------------------
+b19b3b45-01ae-11e6-a71c-22000bf2d559 | demodoc@globusid.org | my-linux-laptop#
+----terminal
 
 === Running Globus Connect
-To transfer and share files using Globus, start Globus Connect Personal (and, optionally, activate your endpoint) as follows:
+
+To transfer and share files using Globus, start Globus Connect Personal as follows:
 
 ----terminal
 $ ./globusconnectpersonal -start &
 [output]#[1] 2965#
-$ ssh [input]#demodoc#@cli.globusonline.org endpoint-activate [input]#b19b3b45-01ae-11e6-a71c-22000bf2d559#
 ----terminal
 
-You should now see your endpoint listed (with active credentials) if you run:
+Your endpoint is now running and fully usable, which you can confirm with a `globus ls` command using the endpoint's ID from above. Note that you do not need to activate the endpoint as Globus Connect Personal endpoints accept automatic activation based on your Globus credentials.
 
 ----terminal
-$ ssh [input]#demodoc#@cli.globusonline.org endpoint-search --scope my-endpoints
-[output]#ID                : ea557994-fc2d-11e5-a700-22000bf2d559
-Display Name      : demo
-Legacy Name       : demodoc#ea557994-fc2d-11e5-a700-22000bf2d559
-Owner             : demodoc
-Credential Status : n/a
-Host Endpoint     : ddb59aef-6d04-11e5-ba46-22000b92c6ec
-Host Endpoint Name: Globus Tutorial Endpoint 1
-
-ID                : b19b3b45-01ae-11e6-a71c-22000bf2d559
-Display Name      : my-linux-laptop
-Legacy Name       : demodoc#b19b3b45-01ae-11e6-a71c-22000bf2d559
-Owner             : demodoc
-Credential Status : n/a
-Host Endpoint     : n/a
-Host Endpoint Name: n/a#
+$ globus ls [input]#b19b3b45-01ae-11e6-a71c-22000bf2d559:/#
+[output]#home/#
 ----terminal
 
 The status of Globus Connect Personal running in the background can be controlled using the +-status+ or +-trace+ options. The +-trace+ option provides more detailed information:
