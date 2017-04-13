@@ -65,7 +65,7 @@ $ [input]#rm -r ~/.globusonline/#
 [[globus-connect-personal-cli]]
 == How To Install Globus Connect Personal for Linux Using the Command Line
 
-You may install Globus Connect Personal for Linux using only the command line. To install Globus Connect Personal you will need to be logged into the Globus CLI. If you don't already have the Globus CLI installed consult the getting started section of the link:../../cli/index.html#command_line_interface_cli[Globus CLI documentation] for installation and login instructions.
+You may install Globus Connect Personal for Linux using only the command line. To install Globus Connect Personal you will need to be logged into the Globus CLI. If you don't already have the Globus CLI installed, consult the getting started section of the link:../../cli/index.html#command_line_interface_cli[Globus CLI documentation] for installation and login instructions.
 
 NOTE: Instructions are also available for link:../globus-connect-personal-linux[installing a Globus Online Personal endpoint using your Web browser].
 
@@ -90,7 +90,7 @@ $ cd globusconnectpersonal-[input]#x.y.z#
 +
 NOTE: In the last line above, replace [uservars]#x.y.z# with the version number from the downloaded file, e.g. globusconnectpersonal-2.0.2.
 
-. Generate a setup key for your endpoint via the Globus command line interface. The example below show an already logged in Globus user generating a setup key for an endpoint called [uservars]#my-linux-laptop#:
+. Generate a setup key for your endpoint via the Globus command line interface. The example below shows an already logged in Globus user generating a setup key for an endpoint called [uservars]#my-linux-laptop#:
 +
 ----terminal
 $ globus endpoint create --personal [input]#my-linux-laptop#
@@ -128,10 +128,10 @@ $ ./globusconnectpersonal -start &
 [output]#[1] 2965#
 ----terminal
 
-Your endpoint is now running and fully usable, which you can confirm with a `globus ls` command using the endpoint's id from above. Note that you do not need to activate the endpoint as Globus Connect Personal endpoints accept automatic activation based on your Globus credentials.
+Your endpoint is now running and fully usable, which you can confirm with a `globus ls` command using the endpoint's ID from above. Note that you do not need to activate the endpoint as Globus Connect Personal endpoints accept automatic activation based on your Globus credentials.
 
 ----terminal
-$ globus ls b19b3b45-01ae-11e6-a71c-22000bf2d559:/
+$ globus ls [input]#b19b3b45-01ae-11e6-a71c-22000bf2d559:/#
 [output]#home/#
 ----terminal
 
