@@ -21,7 +21,7 @@ IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded 
 <li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable (el7)"</p></li>
 <li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable (el7)"</p></li>
 <li><p>5. rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus</p></li>
-<li><p>6. Install the link:https://fedoraproject.org/wiki/EPEL[EPEL] repository:<br>
+<li><p>6. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
     yum install epel-release</p></li>
 <li><p>7. yum install yum-plugin-priorities</p></li>
 <li><p>8. yum install globus-connect-server</p></li>
