@@ -8,9 +8,6 @@ Globus Connect Server version 5 is a new major release of the server. The curren
 
 IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded to this new server at this time. Globus Connect version 5 installations need to be on a separate machine. Upgrade tools are planned and will be made available in the future.
 
-== Prerequisites
-A functional Globus Connect Server installation is required for installation and use of the AWS S3 connector. The server can be hosted on any machine that can connect to AWS S3, and be at an institution or on AWS itself.
-
 == Supported Linux distributions
 - RHEL 7
 - CentOS 7
@@ -63,7 +60,7 @@ A functional Globus Connect Server installation is required for installation and
     yum install epel-release</p></li>
 <li><p>7. yum install yum-plugin-priorities</p></li>
 <li><p>8. yum install globus-connect-server</p></li>
-<li><p>9. Navigate to https://developers.globus.org/ and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p>
+<li><p>9. Navigate to <a href="https://developers.globus.org/">https://developers.globus.org/</a> and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p>
 ++++
 
 IMPORTANT: This registration step creates the client id and secret for the Globus Connect Server install, and this registration should not be deleted to ensure that credentials needed to manage the server (the client id and secret) are available. If the registration is deleted, the endpoint cannot be updated or deleted.
