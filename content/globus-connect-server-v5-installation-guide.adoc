@@ -1,4 +1,4 @@
-= Globus Connect Server v5 (Beta) Install Instrucitons
+= Globus Connect Server v5 (Beta) Install Instructions
 :revdate: May 3, 2017
 
 [doc-info]*Last Updated: {revdate}*
