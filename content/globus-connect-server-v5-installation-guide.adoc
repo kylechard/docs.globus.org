@@ -1,5 +1,5 @@
 = Globus Connect Server v5 (Beta) Install Instrucitons
-:revdate: April 6, 2017
+:revdate: May 3, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -8,12 +8,16 @@ Globus Connect Server version 5 is a new major release of the server. The curren
 
 IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded to this new server at this time. Globus Connect version 5 installations need to be on a separate machine. Upgrade tools are planned and will be made available in the future.
 
+== Prerequisites
+A functional Globus Connect Server installation is required for installation and use of the AWS S3 connector. The server can be hosted on any machine that can connect to AWS S3, and be at an institution or on AWS itself.
+
 == Supported Linux distributions
 - RHEL 7
 - CentOS 7
 
 == Install Steps
 
+////
 ++++
 <ul class="noStyleType">
 <li><p>1. wget http://builds.globus.org/gt6/etc/globus-repo-6-24.noarch.rpm</p></li>
@@ -46,6 +50,38 @@ IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded 
 <li><p>17. Find endpoint by searching for Display Name of endpoint here: <a href="https://www.globus.org/app/endpoints?scope=all">https://www.globus.org/app/endpoints?scope=all</a></p></li>
 <li><p>18. Verify base functionality via process described here: <a href="../globus-connect-server-installation-guide/#test_basic_endpoint_functionality">https://docs.globus.org/globus-connect-server-installation-guide/#test_basic_endpoint_functionality</a></p></li></ul>
 ++++
+////
+
+++++
+<ul class="noStyleType">
+<li><p>1. wget http://builds.globus.org/gt6/etc/globus-repo-6-24.noarch.rpm</p></li>
+<li><p>2. yum install globus-repo-6-24.noarch.rpm</p></li>
+<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable (el7)"</p></li>
+<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable (el7)"</p></li>
+<li><p>5. rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus</p></li>
+<li><p>6. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
+    yum install epel-release</p></li>
+<li><p>7. yum install yum-plugin-priorities</p></li>
+<li><p>8. yum install globus-connect-server</p></li>
+<li><p>9. Navigate to https://developers.globus.org/ and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p>
+++++
+
+IMPORTANT: This registration step creates the client id and secret for the Globus Connect Server install, and this registration should not be deleted to ensure that credentials needed to manage the server (the client id and secret) are available. If the registration is deleted, the endpoint cannot be updated or deleted.
+
+++++
+</li></ul>
+
+<p>Make the following changes to the /etc/globus-connect-server.conf file:</p>
+
+<ul class="noStyleType">
+<li><p>10. set [Endpoint].Name to the Display Name from Step 9.</p></li>
+<li><p>11. set [Globus].ClientId to Client ID from step 9.</p></li>
+<li><p>12. set [Globus].ClientSecret to Client Secret from step 9.</p></li>
+<li><p>13. set [Endpoint].Public = True</p></li>
+</ul>
+++++
+
+You are now ready to move on to configuring the link:../premium-storage-connectors/google-drive/[Google Drive connector].
 
 === Globus Connect Server v5 Firewall Policy Requirements
 If your system is behind a firewall, select TCP ports must be open for Globus to work. You may need to coordinate with your network or security administrator to open the ports.
