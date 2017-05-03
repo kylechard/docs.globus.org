@@ -14,7 +14,7 @@ This connector enables use of a Globus data access interface on an link:https://
 The AWS S3 connector is a premium feature available only to Globus subscribers, and is thus only available for link:../../globus-connect-server-installation-guide/#managed-endpoint-anchor[Managed Endpoints]. 
 
 == Prerequisites
-A functional Globus Connect Server installation is required for installation and use of the AWS S3 connector.  The link:../../globus-connect-server-installation-guide/[Globus Connect Server Installation Guide] provides detailed documentation on the steps for installing and configuring a server endpoint.
+A functional Globus Connect Server installation is required for installation and use of the AWS S3 connector. The server can be hosted on any machine that can connect to AWS S3, and be at an institution or on AWS itself. The link:../../globus-connect-server-installation-guide/[Globus Connect Server Installation Guide] provides detailed documentation on the steps for installing and configuring a server endpoint.
 Supported Linux Distributions
 
 The AWS S3 DSI is available for the following Linux distributions:
