@@ -35,32 +35,34 @@ The S3 DSI should be used with the latest version of GCS.
 == Installation
 Install the package globus-gridftp-server-s3 from the Globus repository.
 
-For RedHat-based systems:
+For Red Hat-based systems:
 
 ----terminal
-# yum install globus-gridftp-server-s3
+% yum install globus-gridftp-server-s3
 ----terminal
 
 For Debian-based systems:
 
 ----terminal
-# apt-get install globus-gridftp-server-s3
+% apt-get install globus-gridftp-server-s3
 ----terminal
 
 For SLES 11-based systems:
 
 ----terminal
-# zypper install globus-gridftp-server-s3
+% zypper install globus-gridftp-server-s3
 ----terminal
 
-=== Configuration
+== Configuration
+
 The S3 DSI requires the following steps for configuration:
 
 - Configure the S3 DSI
 - Create a gridmap to S3 credentials
 - Restart the GridFTP server
 
-==== Configure the S3 DSI
+=== Configure the S3 DSI
+
 Create the file /etc/gridftp.d/gridftp-s3 containing these lines:
 
 ----
@@ -68,17 +70,36 @@ Create the file /etc/gridftp.d/gridftp-s3 containing these lines:
  load_dsi_module s3
 ----
 
-==== Create a file containing s3 credentials
+Edit the file /etc/globus/globus-gridftp-server-s3.conf and set the 'host_name' 
+option to be the appropriate Amazon S3 endpoint hostname for the Amazon
+region that hosts the bucket(s) you want the S3 DSI to access.
+
+For example, to configure the S3 DSI to use buckets in the US Standard Region:
+----
+host_name = s3.amazonaws.com
+----
+
+A list of Amazon S3 endpoint hostnames by region can be found here:
+
+http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+
+=== Create a file containing s3 credentials
+
 The default configuration for the S3 DSI looks in $HOME/.globus/s3 for a
 file mapping the current user's ID to S3 access keys. Each user who will
 be using the DSI must create such a file with their credentials.
 
-----
- % mkdir -m 0700 -p ~/.globus
- % (umask 077; echo "$(id -un);$S3_ACCESS_KEY_ID;$S3_SECRET_ACCESS_KEY" > ~/.globus/s3)
-----
+----terminal
+ % mkdir -m 0700 -p \~/.globus
+ % (umask 077; echo "$(id -un);$S3_ACCESS_KEY_ID;$S3_SECRET_ACCESS_KEY" \
+    > ~/.globus/s3)
+----terminal
 
-==== Restart the gridftp server
+The S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY correspond to the Access Key ID
+and Secret Access Key for the user's AWS account that has been granted 
+access to the S3 buckets the user intends to access.
+
+=== Restart the gridftp server
 
 ----terminal
 # service globus-gridftp-server restart
