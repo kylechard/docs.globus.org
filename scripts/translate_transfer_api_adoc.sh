@@ -10,7 +10,7 @@ fi
 KOA_DIR="$1"
 DOC_DIR="$2"
 
-TOC='toc\:\
+TOC='\:toc\:\
 \:toclevels\: 3\
 \:numbered\:'
 
@@ -103,16 +103,27 @@ rm $DOC_DIR/Makefile
 rm $DOC_DIR/private_*
 
 echo "Performing seds inline on files..."
-sed -i.bak -e 's/----\n/----terminal/g' $DOC_DIR/*.adoc
-sed -i.bak -e 's/\*\([a-z]*\)\(([0-9])\)\*/link:..\/\1[\*\1\2\*]/g' $DOC_DIR/*.adoc
-sed -i.bak -e 's/link:\([a-z]*[0-9]*_*[a-z]*[0-9]*_*[a-z]*[0-9]*_*[a-z]*[0-9]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.adoc
-sed -i.bak -e 's/link:..\//link:/g' $DOC_DIR/index.adoc
-sed -i.bak -e "s/toc\: macro/${TOC}/g" $DOC_DIR/*.adoc
-sed -i.bak -e "s/toc\: macro/${TOC}/g" $DOC_DIR/*.adoc
-sed -i.bak -e "/toc\:\:\[\]/d" $DOC_DIR/*.adoc
-sed -i.bak -e 's/\:numbered\://g' $DOC_DIR/change_history.adoc
 
-#add menu_weights
+# (index page only) 
+# Inter-document links require a "" prefix, and "" suffix.
+sed -i.bak -e 's/link:\([_a-z0-9]*\){outfilesuffix}/link:\1/g' $DOC_DIR/index.adoc
+
+# (all other pages)
+# Inter-document links require a "../" prefix, and "" suffix.
+sed -i.bak -e 's/link:\([_a-z0-9]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.adoc
+
+# Note that we don't have to mess with internal cross references 
+# ( <<section,name>> syntax)
+
+# Replace all table-of-contents macro(s)
+sed -i.bak -e "s/^\:toc\: macro/${TOC}/g" $DOC_DIR/*.adoc
+sed -i.bak -e "/^toc\:\:\[\]/d" $DOC_DIR/*.adoc
+
+# Change history is an infinite list of headings, so don't number it
+# TODO: Do we need TOC at all on change_history?
+sed -i.bak -e 's/^\:numbered\://g' $DOC_DIR/change_history.adoc
+
+# Add menu_weights
 sed -i.bak -e "s/^\= /${ACL}" $DOC_DIR/acl.adoc
 sed -i.bak -e "s/^\= /${AEM}" $DOC_DIR/advanced_endpoint_management.adoc
 sed -i.bak -e "s/^\= /${CH}" $DOC_DIR/change_history.adoc
@@ -126,7 +137,8 @@ sed -i.bak -e "s/^\= /${O}" $DOC_DIR/overview.adoc
 sed -i.bak -e "s/^\= /${TS}" $DOC_DIR/task_submit.adoc
 sed -i.bak -e "s/^\= /${TASK}" $DOC_DIR/task.adoc
 
-#add last updated date
+# (index page only) 
+# Add last updated date
 sed -i.bak -e "/\= Transfer API Documentation/a\\
 :revdate: $DATE\\
 \\
