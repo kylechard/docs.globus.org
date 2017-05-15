@@ -10,4 +10,4 @@
 - link:globus-connect-personal-linux[Install and Configure Globus Connect Personal for Linux]
 - link:configure-firewall-gcp[Configure Firewall Policy for Globus Connect Personal]
 - link:amazon-aws-s3-endpoints[Create a Globus Amazon S3 Endpoint]
-- link:preview[How To Use the Preview Environment]
+- link:preview[Use the Preview Environment]
