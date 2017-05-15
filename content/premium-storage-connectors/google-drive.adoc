@@ -32,7 +32,9 @@ You must have a Google account to complete this step.
 . When prompted, choose "Web application" as the Application type.
 . When naming the application be sure to choose a name that is descriptive so users will recognize the application.
 ** Make very careful note of the Google Client ID and Google Client Secret you get in this step.
++
 IMPORTANT: A set of Google credentials can only be used with a single GCSv5 installation. If you wish to install multiple instances you must create a new Google application for each one.
++
 . Configure an entry for "Authorized redirect URIs" as follows:
 ** +++https://YOUR_SERVER_FQDN_HOSTNAME/api/v1/authcallback_google+++
 ** The "YOUR_SERVER_FQDN_HOSTNAME" value must be:
