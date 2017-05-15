@@ -1,0 +1,17 @@
+= How To Use the Preview Environment
+
+== What is the Globus preview environment?
+Globus uses a separate environment, preview, for any new and upcoming changes in the Globus services that we would like users to test before it is released in production. Typically the services on preview are the same as the production system, but as needed updates and changes will be deployed for user testing. When such changes are made available on preview, an announcement is sent to link:https://www.globus.org/mailing-lists[developer-discuss].
+
+The preview environment is completely isolated and separate from the Globus production service.  Accounts and registered applications are not shared between production and preview. You will need to create and maintain separate accounts and registered applications for this environment.
+
+Preview environment is available at https://preview.globus.org and other server information is below:
+
+----
+Web             https://preview.globus.org
+CLI             cli.preview.globus.org
+Auth            auth.preview.globus.org
+Transfer API    transfer.api.preview.globus.org
+Globus ID       globusid.preview.globus.org
+Developers      auth.preview.globus.org/developers
+----
