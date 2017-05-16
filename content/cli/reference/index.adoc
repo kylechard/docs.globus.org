@@ -4,7 +4,7 @@ short_title: Reference
 ---
 
 = Command Line Interface (CLI) Reference
-:revdate: April 10, 2017
+:revdate: May 16, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -145,7 +145,7 @@ Delete a bookmark
 link:task_event_list[globus task event-list]::
 List events for a given task
 
-link:task[globus task show]::
+link:task_show[globus task show]::
 Show detailed information about a specific task
 
 link:task_list[globus task list]::
