@@ -32,7 +32,10 @@ Below are the steps to clone a Globus Connect Server (GCS) endpoint that already
 Since preview hosts will be connecting to your endpoint, some ports must be open. Note that this is in addition to the normal GCS firewall policy requirements as noted link:https://docs.globus.org/globus-connect-server-installation-guide/#open-tcp-ports_section[here].
 
 Port 2811 inbound from 107.20.144.193
+
 - Used for GridFTP control channel traffic.
+
 Port 7512 inbound from 107.20.144.193
+
 - Used for MyProxy traffic.
 - Is needed only if your server is using a MyProxy service.
