@@ -3,7 +3,7 @@
 set -e
 
 if [ $# -ne 2 ]; then
-    echo "Usage: $0 path/to/koa/man/adoc path/to/content/cli"
+    echo "Usage: $0 path/to/globus-cli path/to/content/cli"
     exit 1
 fi
 
