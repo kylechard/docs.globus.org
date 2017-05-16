@@ -3,9 +3,10 @@
 == What is the Globus preview environment?
 Globus uses a separate environment, preview, for any new and upcoming changes in the Globus services that we would like users to test before it is released in production. Typically the services on preview are the same as the production system, but as needed updates and changes will be deployed for user testing. When such changes are made available on preview, an announcement is sent to link:https://www.globus.org/mailing-lists[developer-discuss].
 
-The preview environment is completely isolated and separate from the Globus production service. Accounts and registered applications are not shared between production and preview. You will need to create and maintain separate accounts and registered applications for this environment.
+The preview environment is completely isolated and separate from the Globus production service.  Accounts and registered applications are not shared between production and preview. You will need to create and maintain separate accounts and registered applications for this environment.
+Server Information
 
-The preview environment is available at https://preview.globus.org and other server information is below:
+Preview environment is available at https://preview.globus.org and other server information is below:
 
 ----
 Web             https://preview.globus.org
@@ -15,3 +16,26 @@ Transfer API    transfer.api.preview.globus.org
 Globus ID       globusid.preview.globus.org
 Developers      auth.preview.globus.org/developers
 ----
+
+== "Cloning" a production endpoint for use on preview
+Below are the steps to clone a Globus Connect Server (GCS) endpoint that already exists in the production (prod) environment into the preview environment. Please note that only GCS host endpoints can be cloned - not shares or Globus Connect Personal endpoints. 
+
+. It is a prerequisite that the endpoint to be cloned already exist in the prod environment and be functional there.
+. Start by logging into the preview environment at the following URL: https://preview.globus.org
+. After logging in, create a new endpoint definition in the preview environment via the following link: https://preview.globus.org/app/endpoints/create
+. We recommend choosing a value for "Display Name" that clearly identifies which endpoint from prod you are cloning, and that also makes clear that this endpoint definition is a clone - e.g. "Geosciences preview clone"
+. Under the "Identity Provider" section you must copy verbatim what you see in the prod environment in the Globus web interface Manage Endpoints "Servers" tab / "Identity Provider" section for the endpoint you are cloning.
+. Under the "Servers" section you must copy verbatim what you see in the prod environment in the Globus web interface Manage Endpoints "Servers" tab / "Servers" section for the endpoint you are cloning.
+. Once you've created the endpoint clone, try using it to verify that it works.
+
+=== Preview TCP Ports 
+Since preview hosts will be connecting to your endpoint, some ports must be open. Note that this is in addition to the normal GCS firewall policy requirements as noted link:https://docs.globus.org/globus-connect-server-installation-guide/#open-tcp-ports_section[here].
+
+Port 2811 inbound from 107.20.144.193
+
+- Used for GridFTP control channel traffic.
+
+Port 7512 inbound from 107.20.144.193
+
+- Used for MyProxy traffic.
+- Is needed only if your server is using a MyProxy service.
