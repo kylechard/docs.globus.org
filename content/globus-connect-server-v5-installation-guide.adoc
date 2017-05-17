@@ -99,7 +99,7 @@ The TCP ports that must be open for the default Globus Connect Server v5 install
 * Port 80 outbound to Any
 ** Used to pull Globus Connect Server install packages from the Globus repository.
 * Port 80 inbound from Any 
-** Used to register for certificates with Let’s Encrypt service.
+** Used to register for certificates with Let's Encrypt service. (Only necessary when first setting up GCS)
 * Port 443 outbound to Any
 ** Used to communicate with the Globus service via its REST API.
 ** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
@@ -107,4 +107,4 @@ The TCP ports that must be open for the default Globus Connect Server v5 install
 * Port 443 inbound from Any 
 ** Used by GCS Manager Service.
 ** Used to communicate with Google Drive servers.
-** Used to register for certificates with Let’s Encrypt service.
+** Used to register for certificates with Let's Encrypt service.
