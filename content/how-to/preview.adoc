@@ -3,8 +3,7 @@
 == What is the Globus preview environment?
 Globus uses a separate environment, preview, for any new and upcoming changes in the Globus services that we would like users to test before it is released in production. Typically the services on preview are the same as the production system, but as needed updates and changes will be deployed for user testing. When such changes are made available on preview, an announcement is sent to link:https://www.globus.org/mailing-lists[developer-discuss].
 
-The preview environment is completely isolated and separate from the Globus production service.  Accounts and registered applications are not shared between production and preview. You will need to create and maintain separate accounts and registered applications for this environment.
-Server Information
+The preview environment is completely isolated and separate from the Globus production service. Accounts and registered applications are not shared between production and preview. You will need to create and maintain separate accounts and registered applications for this environment.
 
 Preview environment is available at https://preview.globus.org and other server information is below:
 
@@ -17,8 +16,8 @@ Globus ID       globusid.preview.globus.org
 Developers      auth.preview.globus.org/developers
 ----
 
-== "Cloning" a production endpoint for use on preview
-Below are the steps to clone a Globus Connect Server (GCS) endpoint that already exists in the production (prod) environment into the preview environment. Please note that only GCS host endpoints can be cloned - not shares or Globus Connect Personal endpoints. 
+== Cloning a production endpoint for use on preview
+Below are the steps to clone a Globus Connect Server (GCS) endpoint that already exists in the production environment into the preview environment. Please note that only GCS host endpoints can be cloned - not shares or Globus Connect Personal endpoints. 
 
 . It is a prerequisite that the endpoint to be cloned already exist in the prod environment and be functional there.
 . Start by logging into the preview environment at the following URL: https://preview.globus.org
