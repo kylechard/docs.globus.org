@@ -356,3 +356,26 @@ $ endpoint-activate anon-endpoint -m myproxy.globusonline.org
 $ endpoint-activate std-endpoint -m myproxy-server-associated-with-std-gridftp-server
 $ scp anon-endpoint:/path_to_src_file std-endpoint:/path_to_dst_file
 ----terminal
+
+== How long does Globus store transfer task history?
+Globus will store a basic summary of a user's task history indefinitely. Task details such as Task ID, Task Status, Source and Destination Endpoint Display Names for the task, Task Transfer Settings, and many other details are preserved indefinitely. Certain specific details for tasks are only stored for 30 days and then these details expire. These task details include the faults logged for the task as well as the status information concerning the individual files and directories involved in the transfer task. 
+ 
+From the web interface, users can access their task history at the following URL:
+ 
+https://www.globus.org/app/activity
+ 
+The task details under the "Event Log" tab for a given task are those that will expire after 30 days. All other details for a task will remain available indefinitely.
+ 
+From the link:../../cli/#command_line_interface_cli[Globus CLI], users can access their task history with the `globus task show` command like so:
+ 
+----terminal
+globus task show TASK_ID
+----terminal
+ 
+The above will show the basic details for the task that will be preserved indefinitely. Users can see more detailed information on their task by using the `globus task event-list` command like so:
+ 
+----terminal
+globus task event-list TASK_ID
+----terminal
+ 
+The details returned by the `globus task event-list` command show the job details that are preserved for only 30 days, and thus this command will return nothing for tasks more than 30 days old.
