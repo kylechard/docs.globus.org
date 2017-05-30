@@ -19,12 +19,12 @@ Developers      auth.preview.globus.org/developers
 == Cloning a production endpoint for use on preview
 Below are the steps to clone a Globus Connect Server (GCS) endpoint that already exists in the production environment into the preview environment. Please note that only GCS host endpoints can be cloned - not shares or Globus Connect Personal endpoints. 
 
-. It is a prerequisite that the endpoint to be cloned already exist in the prod environment and be functional there.
+. It is a prerequisite that the endpoint to be cloned already exist in the production environment and be functional there.
 . Start by logging into the preview environment at the following URL: https://preview.globus.org
 . After logging in, create a new endpoint definition in the preview environment via the following link: https://preview.globus.org/app/endpoints/create
-. We recommend choosing a value for "Display Name" that clearly identifies which endpoint from prod you are cloning, and that also makes clear that this endpoint definition is a clone - e.g. "Geosciences preview clone"
-. Under the "Identity Provider" section you must copy verbatim what you see in the prod environment in the Globus web interface Manage Endpoints "Servers" tab / "Identity Provider" section for the endpoint you are cloning.
-. Under the "Servers" section you must copy verbatim what you see in the prod environment in the Globus web interface Manage Endpoints "Servers" tab / "Servers" section for the endpoint you are cloning.
+. We recommend choosing a value for "Display Name" that clearly identifies which endpoint from production you are cloning, and that also makes clear that this endpoint definition is a clone - e.g. "Geosciences preview clone"
+. Under the "Identity Provider" section you must copy verbatim what you see in the production environment in the Globus web interface Manage Endpoints "Servers" tab / "Identity Provider" section for the endpoint you are cloning.
+. Under the "Servers" section you must copy verbatim what you see in the production environment in the Globus web interface Manage Endpoints "Servers" tab / "Servers" section for the endpoint you are cloning.
 . Once you've created the endpoint clone, try using it to verify that it works.
 
 === Preview TCP Ports 
