@@ -102,10 +102,10 @@ We enforce some limits on usage in order to provide reasonable performance to al
 * 100 pending transfer tasks
 * 100,000,000 files in a single transfer task
 * 5,000,000 files in a single directory
-* 10 active command line (CLI) sessions
-* 100 effective ACLs per user on an endpoint
+* 10 active sessions of the link:../../cli/#hosted_command_line_interface_legacy[legacy hosted command line (CLI)]
+* 1,000 endpoints owned by a single user - this total includes both host endpoints footnote:[A host endpoint is a standard endpoint created with Globus Connect Personal or Globus Connect Server] and shared endpoints footnote:[A shared endpoint is a share based on a host endpoint] owned by the user
+* 100 effective ACLs per user on an endpoint footnote:[Of the 1000 total ACLs that may exist for a shared endpoint, no more than 100 of those can apply to any given user:  when a user accesses the shared endpoint, the service finds all ACLs relevant to them either because of ACL against their identity or via their group membership. If the total ACLs there exceeds 100, an error is generated.]
 * 1,000 total ACLs per endpoint
-* 1,000 endpoints owned by a single user
 
 In addition, the Globus service will retain task details about events and completed files for up to 31 days.
 
