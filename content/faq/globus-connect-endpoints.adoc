@@ -46,7 +46,7 @@ link:https://www.globus.org/globus-connect-personal[Globus Connect Personal] on 
 == Where does Globus Connect Personal store its settings?
 Globus Connect stores a few configuration files, such as its private certificate and key, in this location:
 
-- Microsoft Windows : +%LOCALAPPDATA%\Globus Connect+ (or +%APPDATA%\Globus Connect+ on Windows XP)
+- Microsoft Windows : +%LOCALAPPDATA%\Globus Connect+
 - Mac OS X and Linux: +~/.globusonline/lta+
 - On Mac OS X, Globus Connect stores preferences in +~/Library/Preferences/org.globusonline.Globus-Connect.plist+
 
@@ -57,7 +57,7 @@ In order to reinstall a Globus Connect Personal endpoint and obtain a new setup 
 
 2. Delete the entire Globus Connect Personal settings directory (**THIS IS AN IMPORTANT STEP**):    
 
-- Microsoft Windows: +%LOCALAPPDATA%\Globus Connect     Personal+ (or +%APPDATA%\Globus Connect      Personal+ on Windows XP)
+- Microsoft Windows: +%LOCALAPPDATA%\Globus Connect     Personal+
 -  Mac OS X and Linux: +~/.globusonline/lta+
 
 3. Install Globus Connect from scratch: link:../../how-to/globus-connect-personal-mac/[Mac OS X], link:../../how-to/globus-connect-personal-windows/[Windows], link:../../how-to/globus-connect-personal-linux/[Linux].
@@ -276,7 +276,7 @@ If you have a home directory on a network share, you may see an error message of
 
 This issue arises when your home directory is stored on a server, and "*<path>*" takes the form of "*\\example.com\share\Users\ExampleUsername*".
 
-To resolve this problem, you must use Windows' capability to create a shortcut to a network share, or "Map" it to a drive letter. Microsoft provides official documentation for this for link:http://windows.microsoft.com/en-us/windows/create-shortcut-map-network-drive[Windows 7 and Windows Vista], link:https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/windows_fcab_connect_drive.mspx[Windows XP], and link:http://windows.microsoft.com/en-us/windows-8/create-shortcut-to-map-network-drive[Windows 8]. Follow these instructions to assign a drive letter of your choosing to the network share containing your home directory, and then restart Globus Connect Personal.
+To resolve this problem, you must use Windows' capability to create a shortcut to a network share, or "Map" it to a drive letter. Microsoft provides official documentation for this for link:http://windows.microsoft.com/en-us/windows/create-shortcut-map-network-drive[Windows 7] and link:http://windows.microsoft.com/en-us/windows-8/create-shortcut-to-map-network-drive[Windows 8]. Follow these instructions to assign a drive letter of your choosing to the network share containing your home directory, and then restart Globus Connect Personal.
 
 == Why do I get "Permission Denied" or "Path not allowed" errors on my endpoint?
 When transferring files with from Globus Connect Personal, a common error that appears on the web site is:
