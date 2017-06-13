@@ -7,7 +7,7 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-KOA_DIR="$1"
+CLI_DIR="$1" # make sure you've pulled the latest master branch
 DOC_DIR="$2"
 HOSTED_DIR="$2/hosted"
 
@@ -30,7 +30,7 @@ mv $HOSTED_DIR .
 
 # copying new files over
 rm -r $DOC_DIR/reference/*
-cp -r $KOA_DIR/* $DOC_DIR/reference/
+cp -r $CLI_DIR/* $DOC_DIR/reference/
 
 # perform sed commands on all files
 echo "Performing seds inline on files..."

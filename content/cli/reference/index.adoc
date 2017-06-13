@@ -4,7 +4,7 @@ short_title: Reference
 ---
 
 = Command Line Interface (CLI) Reference
-:revdate: May 16, 2017
+:revdate: June 13, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
