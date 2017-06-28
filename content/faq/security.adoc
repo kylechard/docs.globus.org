@@ -144,6 +144,6 @@ X-Globus-Goauthtoken <access_token>
 If you are using three legged OAuth with Globus Nexus (redirecting user to `/goauth/authorize`), then you can use the confidential client flow described in https://docs.globus.org/api/auth/developer-guide/#developing-apps.
 
 
-If you are using two legged OAuth with Globus Nexus (usign API `/goauth/token with grant_type=client_credentials`), then you can use the Non-confidential or native application flow described in https://docs.globus.org/api/auth/developer-guide/#developing-apps.
+If you are using two legged OAuth with Globus Nexus (using API `/goauth/token with grant_type=client_credentials`), then you can use the Non-confidential or native application flow described in https://docs.globus.org/api/auth/developer-guide/#developing-apps.
 
 Detailed documentation is at https://docs.globus.org/api/auth/ and a tutorial on Globus Auth with sample source code is available from https://www.globusworld.org/workshop2016. 
