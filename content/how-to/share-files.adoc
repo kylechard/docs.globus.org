@@ -10,7 +10,7 @@ NOTE: Shared endpoints may only be created on managed endpoints that are part of
 +
 [role="img-responsive center-block"]
 image::images/sharing-1.png[]
-. Highlight the folder that you would like to share, and select the "share" option from the top level. If the "share" option is not enabled, the endpoint is not configured for sharing. Please contact your endpoint administrator or refer to link:../../globus-connect-server-installation-guide#how_to_enable_and_disable_sharing_in_globus_connect_server[Globus Connect Server Installation Guide] for information on how to update the endpoint configuration.
+. Highlight the folder that you would like to share, and select the "share" option from the top level. Please contact your endpoint administrator or refer to link:../../globus-connect-server-installation-guide#how_to_enable_and_disable_sharing_in_globus_connect_server[Globus Connect Server Installation Guide] for information on how to update the endpoint configuration.
 +
 [role="img-responsive center-block"]
 image::images/sharing-2.png[]
