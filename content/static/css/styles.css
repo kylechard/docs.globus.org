@@ -633,41 +633,49 @@ footer #legal {
 }
 
 /**********************************
- * Cookie Notice
- **********************************/
+* Cookie Notice
+**********************************/
 
 #cookie_notice {
-  display: none; /* hide for now */
-  margin: 0;
-  width: 100%;
-  border: 0;
-  border-radius: 0;
-  font-size: .8em;
+display: none; /* hide for now */
+margin: 0;
+width: 100%;
+border: 0;
+border-radius: 0;
+font-size: .8em;
 }
 
 /**********************************
- * GT JIRA Archive
- **********************************/
+* GT JIRA Archive
+**********************************/
 .jira pre,
 .jiracom pre {
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  -webkit-margin-after: 1em;
-  white-space: pre-line;
-  word-break: normal;
- }
- .jiracom pre {
-  margin-left: 15px;
-  padding: 10px;
-  background-color: #f1f6ff;
- }
- .gt-jira-archive #content .sect1 + .sect1 {
-    margin-top: 50px;
-    padding-top: 20px;
-    border-top: solid 1px #eee;
- }
+background-color: transparent;
+padding: 0;
+margin: 0;
+border: 0;
+font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
+font-weight: 300;
+font-size: 16px;
+-webkit-margin-after: 1em;
+white-space: pre-line;
+word-break: normal;
+}
+.jiracom pre {
+margin-left: 15px;
+padding: 10px;
+background-color: #f1f6ff;
+}
+.gt-jira-archive #content .sect1 + .sect1 {
+margin-top: 50px;
+padding-top: 20px;
+border-top: solid 1px #eee;
+}
+
+/**********************************
+* Utilities
+**********************************/
+.mb-1 { margin-bottom: .25rem !important; }
+.mb-2 { margin-bottom: .5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
