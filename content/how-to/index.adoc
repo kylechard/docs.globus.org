@@ -11,3 +11,39 @@
 - link:configure-firewall-gcp[Configure Firewall Policy for Globus Connect Personal]
 - link:amazon-aws-s3-endpoints[Create a Globus Amazon S3 Endpoint]
 - link:preview[Use the Preview Environment]
+
+== Videos
+++++
+<div class="row">
+    <div class="col-12 col-md-6 mb-4">
+        <h4>Globus Overview</h4>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://player.vimeo.com/video/223706131" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 mb-4">
+        <h4>Logging in to Globus</h4>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://player.vimeo.com/video/223707006" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 mb-4">
+        <h4>Transfer Data with Globus</h4>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://player.vimeo.com/video/223707300" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 mb-4">
+        <h4>Share Data with Globus</h4>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://player.vimeo.com/video/223707398" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 mb-4">
+        <h4>Globus Connect Personal</h4>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://player.vimeo.com/video/223707510" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+++++
