@@ -6,6 +6,7 @@ menu_weight: 9
 :toc:
 :toclevels: 3
 :numbered:
+:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
@@ -16,7 +17,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 Shared endpoints and owner activated S3 endpoints have an associated Access
 Control List (ACL), and the API provides methods for reading, creating,
 updating and deleting access rules in the ACL. The ACL for each endpoint can
-have at most 100 access rules.
+have at most 1000 access rules.
 
 The owner of the endpoint always has full read and write access to the endpoint.
 
@@ -370,7 +371,7 @@ on the endpoint.
 | Code     | HTTP Status | Description
 | InvalidPath   | 400  | If the path specified in the access rule is not
                             valid or too long.
-| LimitExceeded | 409 | If the endpoint ACL already has the maximum of 100
+| LimitExceeded | 409 | If the endpoint ACL already has the maximum number of
                         access rules.
 | Exists        | 409 | If an access rule with the same
                         (+principal_type+, +principal+, +path+) already

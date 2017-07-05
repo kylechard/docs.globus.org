@@ -6,9 +6,17 @@ menu_weight: 12
 :toc:
 :toclevels: 3
 
+:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
+
+
+== 5.6 (Jul 2017)
+
+* +endpoint.subscription_id+ is now changeable via PUT
+* +endpoint.owner_string+ can only be changed to an identity of the requestor
+* Add symlinks support.  This requires an updated GridFTP endpoint.
 
 
 == 5.5 (Mar 2017)
@@ -95,7 +103,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
    +destination_local_user+, and +destination_local_user_status+
    to "task" documents.
 
-== 5.0
+== 5.0 (Feb 2016)
 
 * Endpoint
 ** Add +owner_id+ and +owner_string+ fields, deprecate +username+.
@@ -118,7 +126,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 * New resources
 ** link:../endpoint#get_shared_endpoint_list[Get shared endpoint list]
 
-== 4.7
+== 4.7 (Nov 2015)
 
 * Endpoint Search
 ** Change full text search to match on prefix instead of whole word.
@@ -127,23 +135,23 @@ ifdef::env-github[:outfilesuffix: .adoc]
 ** Add search scope 'my-gcp-endpoints'.
 ** Fix bug preventing utf8 search terms in +filter_fulltext+.
 
-== 4.6
+== 4.6 (Nov 2015)
 
 * Endpoint
 ** Add "EndpointDeleted" error to
    link:../endpoint#get_endpoint_by_id[Get endpoint by id].
 * New API: Endpoints Most Recently Used (MRU)
-** `GET /endpoint_mru_list?limit=N`, max limit of 100.
+** +GET /endpoint_mru_list?limit=N+, max limit of 100.
 ** Returns the most recently used
    endpoints for the current user, up to the specified limit, sorted by
    how recently they were used. Currently only submitting a transfer or
    delete tasks to an endpoint counts as 'using' the endpoint.
 ** Also supports the standard +fields+ query parameter.
-** Note that `/endpoint_search?scope=recently-used` is still sorted by
+** Note that +/endpoint_search?scope=recently-used+ is still sorted by
    endpoint name, not by how recently each endpoint was used.
 ** This API is *alpha* and is likely to change in the near future.
 
-== 4.5
+== 4.5 (Oct 2015)
 
 * New link:../endpoint_search[Endpoint Search] API (this
   was actually added in 4.4 but was incomplete).
@@ -159,7 +167,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 ** Add +files_transferred+
    to link:../task#task_document[task document].
 
-== 4.4
+== 4.4 (Oct 2015)
 
 * New link:../endpoint_bookmarks[Endpoint Bookmarks] API.
 
@@ -185,7 +193,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
    +source_endpoint_display_name+, +destination_endpoint_display_name+
    to link:../task#task_document[task document].
 
-== 4.3
+== 4.3 (July 2015)
 
 * Admin task pause (new feature)
 ** Task
@@ -215,7 +223,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 *** Added
     link:../advanced_endpoint_management#get_task_successful_transfers_as_admin[Get task successful transfers as admin]
 
-== 4.2
+== 4.2 (April 2015)
 
 * Endpoint ACL management delegation (new feature)
 ** Added new role api, see

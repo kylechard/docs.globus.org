@@ -101,6 +101,7 @@ UPDATED2='\
 cp -r $KOA_DIR/* $DOC_DIR/
 rm $DOC_DIR/Makefile
 rm $DOC_DIR/private_*
+rm $DOC_DIR/README
 
 echo "Performing seds inline on files..."
 

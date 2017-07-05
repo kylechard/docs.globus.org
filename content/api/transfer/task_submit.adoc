@@ -6,6 +6,7 @@ menu_weight: 2
 :toc:
 :toclevels: 3
 :numbered:
+:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
@@ -55,52 +56,62 @@ to use the id.
 Paths must use the path component separator forward slash (+/+), commonly used
 on Unix and Mac OSX, not backslash. This is true even if one of the endpoints
 happens to be a GridFTP server running on a windows machine, because the
-GridFTP protocol has standardized on forward slash. Directory paths must end in
-forward slash, and file paths must not end in forward slash.
-
-For transfers, both source and destination must be directories or both must be
-files. The destination must be the exact path to create or overwrite on the
-destination, not the parent directory. This is unlike the unix cp and scp
-commands, which will either copy into the destination directory or create the
-directory, depending on whether or not it already exists.
+GridFTP protocol has standardized on forward slash. 
 
 See also link:../file_operations#path_encoding[Path Encoding].
 
 [[common_transfer_and_delete_fields]]
-==== Common Transfer and Delete fields
+=== Common Transfer and Delete fields
 
 [cols="1,1,8",options="header"]
 |===================
 | Field Name     | JSON Type | Description
-| DATA_TYPE      | string
-                 | Either "transfer" or "delete" to indicate the submission
-                   type.
-| submission_id  | string
-                 | Id acquired from +/submission_id+.
-| label          | string
-                 | Optional user specified string to help identify the Transfer
-                   or delete task. See the
-                   link:https://docs.globus.org/cli/reference/labels/[CLI label reference]
-                   for details. Note that label can no longer be updated on
-                   completed tasks, it can only be set when submitting the task
-                   and while the task is still running.
-| notify_on_succeeded| boolean
-                 | If true and the user has notification enabled, send a
-                   notification email when the transfer completes with status
-                   SUCCEEDED. Default true.
-| notify_on_failed   | boolean
-                 | If true and the user has notification enabled, send a
-                   notification email when the transfer completes with status
-                   FAILED. Default true.
-| notify_on_inactive | boolean
-                 | If true and the user has notification enabled, send a
-                   notification email when the transfer enters status
-                   INACTIVE, e.g. from activation credentials expiring.
-                   Default true.
-| deadline       | If non-null, cancel the task if it's not complete at the
-                   specified time. The default (null deadline) behavior is to
-                   have a flexible deadline, which allows the task to continue
-                   indefinitely, as long as it is making progress.
+
+| DATA_TYPE      | string | 
+
+Either "transfer" or "delete" to indicate the submission type.
+
+| submission_id  | string | 
+
+Id acquired from +/submission_id+.
+
+| label          | string a| 
+
+Optional user specified string to help identify the task.  
+The label is opaque; no specific form is required.
+The maximum length is 128 characters.  The allowed characters are:
+
+* ASCII upper and lower case letters
+* The digits 0-9
+* space (" ")
+* hypen ("-")
+* underscore ("_")
+* comma (",")
+
+
+| notify_on_succeeded| boolean | 
+
+If true and the user has notification enabled, send a notification email when
+the transfer completes with status SUCCEEDED. Default true.
+
+| notify_on_failed   | boolean | 
+
+If true and the user has notification enabled, send a notification email when
+the transfer completes with status FAILED. Default true.
+
+| notify_on_inactive | boolean | 
+
+If true and the user has notification enabled, send a notification email when
+the transfer enters status INACTIVE, e.g. from activation credentials
+expiring.  Default true.
+
+| deadline       | string | 
+
+ISO 8601 datetime string.  If non-null, cancel the task if it's not complete
+at the specified time. The default (null deadline) behavior is to have a
+flexible deadline, which allows the task to continue indefinitely, as long as
+it is making progress.
+                    
 |===================
 
 [[transfer_specific_fields]]
@@ -109,63 +120,117 @@ See also link:../file_operations#path_encoding[Path Encoding].
 [cols="1,1,8",options="header"]
 |===================
 | Field Name          | JSON Type | Description
-| source_endpoint     | string
-                      | Id of the endpoint to transfer data from.
-| destination_endpoint| string
-                      | Id of the endpoint to transfer data to.
-| DATA                | list
-                      | List of +transfer_item+ documents containing source
-                        and destination paths.
-| encrypt_data        | boolean
-                      | If true, encrypt the data channel. Default false.
-                        If either the source or destination endpoint, or for
-                        shared endpoints the source or destination host
-                        endpoint, has +force_encryption+ set, the data channel
-                        will be encrypted even if this is set to false.
-| sync_level          | integer
-                     a|If non-null, synchronize files, i.e. copy only files
-                        that are new or have been changed. The level must be an
-                        integer in the 0-3 range, and it controls what checks
-                        are performed to determine if a file should be copied.
-                        Higher levels include the checks from lower levels:
-                        
-                         0:: Copy files that do not exist at the destination.
-                         1:: Copy files if the size of the destination does
-                             not match the size of the source.
-                         2:: Copy files if the timestamp of the destination is
-                             older than the timestamp of the source.
-                         3:: Copy files if checksums of the source and
-                             destination do not match. Files on the
-                             destination are never deleted.
-| verify_checksum     | boolean
-                      | After transfer, verify that the source and
-                        destination file checksums match. If they don't,
-                        re-transfer the entire file and keep trying until
-                        it succeeds. Default false.
-| preserve_timestamp  | boolean
-                      | Preserve file modification time. Default false.
-| delete_destination_extra  | boolean
-                      | Delete extraneous files in the destination directory.
-                        Only applies for recursive directory transfers.
-                        Default false.
+
+| source_endpoint     | string | 
+
+Id of the endpoint to transfer data from.
+
+| destination_endpoint| string | 
+
+Id of the endpoint to transfer data to.
+
+| DATA                | list | 
+
+One or more items to transfer.
+See <<submit_transfer_task,Transfer Submission>> for details.
+
+| encrypt_data        | boolean | 
+
+If true, encrypt the data channel. Default false.  If either the source or
+destination endpoint, or for shared endpoints the source or destination host
+endpoint, has +force_encryption+ set, the data channel will be encrypted even
+if this is set to false.
+
+| sync_level          | integer a|
+
+If non-null, synchronize files, i.e. copy only files that are new or have been
+changed. The level must be an integer in the 0-3 range, and it controls what
+checks are performed to determine if a file should be copied.  Higher levels
+include the checks from lower levels:
+
+0:: Copy files that do not exist at the destination.
+1:: Copy files if the size of the destination does
+    not match the size of the source.
+2:: Copy files if the timestamp of the destination is
+    older than the timestamp of the source.
+3:: Copy files if checksums of the source and
+    destination do not match. 
+
+| verify_checksum     | boolean | 
+
+After transfer, verify that the source and destination file checksums match.
+If they don't, re-transfer the entire file and keep trying until it succeeds.
+Default false.
+
+| preserve_timestamp  | boolean | 
+
+Preserve modification time of files and symlinks. Default false.
+Directory times are not preserved because filesystems typically override
+them.
+
+[[delete_destination_extra]]
+| delete_destination_extra  | boolean | 
+
+Delete files, directories, and symlinks in the destination directory that
+don't exist in the source directory, recursively.  Only applies for recursive
+directory transfers.  Default: false.
+
+[[recursive_symlinks]]
+| recursive_symlinks  | string a| 
+:compat-mode:
+
+How to process symbolic links (symlinks) found in the contents of recursive
+directory transfer_items.  The default is "ignore".  
+Valid values are:
+
+ignore:: Symlinks in the source directory are ignored.   
+If +delete_destination_extra+ is true, all symlinks in the destination directory are removed, 
+because they are presumed not to exist on the source.
+
+keep:: Symlinks in the source directory are created as symlinks in the destination directory.  
+The symlink target path name is preserved identically; there is no conversion between
+absolute or relative paths, or chroot paths.
+
+copy:: Symlinks in the source directory are followed (subject to
+permissions) and created as files or directories in the destination directory.  
+The task will fail if any symlink in the source directory is invalid (no permission to the
+target, or the target does not exist).
+If +delete_destination_extra+ is true, all symlinks in the destination directory are removed.
+
+
 |===================
 
 [[transfer_item_fields]]
-=== Transfer item fields
+=== transfer_item 
 
 [cols="1,1,8",options="header"]
 |===================
 | Field Name          | JSON Type | Description
 | DATA_TYPE           | string
-                      | Always has value "transfer_item" to indicate this
-                        document type.
+                      | Always the value "transfer_item" 
 | source_path         | string
-                      | Source path of file or directory to transfer.
+                      | Source path of file or directory
 | destination_path    | string
-                      | Distination path of file or directory to transfer.
+                      | Destination path of file or directory
 | recursive           | boolean
                       | Must be true for directory paths, false for files.
 |===================
+
+
+[[transfer_symlink_item_fields]]
+=== transfer_symlink_item 
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name          | JSON Type | Description
+| DATA_TYPE           | string
+                      | Always the value "transfer_symlink_item" 
+| source_path         | string
+                      | Source path of symlink to keep
+| destination_path    | string
+                      | Destination path of symlink
+|===================
+
 
 [[delete_specific_fields]]
 === Delete specific fields
@@ -173,21 +238,34 @@ See also link:../file_operations#path_encoding[Path Encoding].
 [cols="1,1,8",options="header"]
 |===================
 | Field Name          | JSON Type | Description
-| endpoint            | string
-                      | Id of the endpoint to delete data on.
-| DATA                | list
-                      | List of +delete_item+ documents containing paths to
-                        delete.
-| recursive           | boolean
-                      | Delete directory contents recursively. Required if
-                        any of the delete items point to a directory. 
-                        Note that unlike transfer submissions, this
-                        is a top level field and can't be specified per item.
-                        Default false.
-| ignore_missing      | boolean
-                      | Don't generate errors for non existent files and
-                        directories. Default false.
-| interpret_globs     | boolean | 
+
+| endpoint            | string | 
+
+Id of the endpoint to delete data on.
+
+| DATA                | list | 
+
+List of +delete_item+ documents containing paths to delete.
+Note that unlike transfer tasks, directories do not need to end with ("/").
+
+File or directory symlinks are deleted and never followed.
+
+
+| recursive           | boolean | 
+
+Delete directory contents recursively.  Required if any +delete_item+ (or any
+path matched by globbing) is a directory.  Symlinks found during recursive
+expansion are deleted and never followed.  Note that unlike transfer
+submissions, this is a top level field and can't be specified per item.
+Default false.
+
+| ignore_missing      | boolean | 
+
+Don't generate errors for non existent files and directories. Default false.
+
+| interpret_globs     | boolean a| 
+:compat-mode:
+
 If false (the default), every character in the entire path is treated literally.
  
 If true, shell glob characters (+*+, +?+, +[+, and +]+) in the last path component are 
@@ -195,25 +273,34 @@ interpreted as a pattern, unless they are escaped by a preceding backslash
 (+\+).  For consistency, the rest of the path (e.g. everything but the final
 component) also has any backslash escapes removed, so a literal backslash
 anywhere in the path must be escaped.  
+ 
 Like UNIX, glob characters will not match files or directories that start with
 a period (+.+); a literal period character is required in such cases.  
 The special directory entries +.+ and +..+ are never matched.
+ 
+The second-to-last path component must be a directory (or
+symlink-to-directory, in which case it is followed). 
+Symlinks found during glob expansion are deleted and never followed.
+
 
 
 |===================
 
 [[delete_item_fields]]
-=== Delete item fields
+=== delete_item 
 
 [cols="1,1,8",options="header"]
 |===================
 | Field Name          | JSON Type | Description
-| DATA_TYPE           | string
-                      | Always has value "delete_item" to indicate this
-                        document type.
-| path                | string
-                      | Path of file or directory to delete. Directory paths
-                        must end in forward slash "/".
+
+| DATA_TYPE           | string | 
+
+Always has value "delete_item" to indicate this document type.
+
+| path                | string | 
+
+Path of file or directory to delete. 
+
 |===================
 
 
@@ -244,6 +331,47 @@ that this is different than the task id returned by the submit operations.
 
 [[submit_transfer_task]]
 === Submit a transfer task
+
+The transfer submission document contains task-level options and one or more items to transfer in the "DATA" field.
+This API is relatively low-level and explicit, but allows renaming and is idempotent.
+There are three types of items:
+
+==== Recursive Directory ====
+
+To copy a directory, use a <<transfer_item_fields,+transfer_item+>> with the +recursive+ option set to True.
+The +source_path+ and +destination_path+ must end with slash ("/").  
+The +source_path+ must be a directory or symlink-to-directory.
+
+The contents of +source_path+ are placed inside +destination_path+ on the destination endpoint.  
+The +destination_path+ directory and all its parent subdirectories are created automatically.
+The <<recursive_symlinks,+recursive_symlinks+>> option determines what happens to symlinks found in the contents of +source_path+.
+The <<delete_destination_extra,+delete_destination_extra+>> option may be used to provide "mirroring".
+
+
+==== File ====
+
+To copy a file, use a <<transfer_item_fields,+transfer_item+>> with the +recursive+ option set to False.
+The +source_path+ and +destination_path+ must not end with slash ("/").
+The +source_path+ must be a file or symlink-to-file.
+
+The file at +source_path+ is copied to +destination_path+.  
+The +destination_path+ is the full path of the destination file, and all parent
+directories are created automatically.
+
+
+==== Symlink ====
+
+To keep a specific symlink (keep the symlink itself, and not dereference its target), use a <<transfer_symlink_item_fields,+transfer_symlink_item+>>.
+The +source_path+ and +destination_path+ must not end with slash ("/").
+The +source_path+ must be a symlink of any type (file, directory, or invalid).
+
+The symlink at +source_path+ is duplicated at +destination_path+ (the target is not dereferenced or copied).   
+The +destination_path+ is the full path of the destination symlink, and all
+parent directories are created automatically.
+The symlink target path name is preserved identically; there is no conversion
+between absolute or relative paths, or chroot paths.  
+
+
 
 [cols="h,5"]
 |============

@@ -6,6 +6,7 @@ menu_weight: 4
 :toc:
 :toclevels: 3
 :numbered:
+:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
@@ -49,7 +50,7 @@ encoding on Linux systems.
 
 NOTE: Globus will handle non UTF-8 filesystems in a limited fashion. If the
 bytes received from the GridFTP server can't be decoded as UTF-8, they will
-be decoded as latin-1 and prefixed with unicode character "\uFFFD", which
+be decoded as latin-1 and prefixed with Unicode character "\uFFFD", which
 renders as a question mark. These paths will not display to the user as
 intended but can be manipulated by passing to other API calls. The rendering
 used is round trip safe, in that it will be converted back to bytes in
@@ -57,7 +58,7 @@ a reliable way if passed back to the API for an operation like mkdir or
 rename. Problems are still likely to arise though, from transferring data
 to other systems that do use UTF-8 encoding or a different non UTF-8 encoding,
 or from accepting user input which will be encoded as UTF-8. This also means
-that if the user provides a path component beginning with the unicode character
+that if the user provides a path component beginning with the Unicode character
 "\uFFFD", then it will be misinterpreted by the system. This character was
 chosen because it's very unlikely to be used in actual filenames, and has
 an appearance that helps indicate that the path may not be displayed
@@ -77,7 +78,7 @@ of GridFTP server and filesystem that result in a generic +EndpointError+ code.
 === Linux and Unix
 
 In Linux and Unix filesystems, file names are stored as raw bytes. The common
-case is that the bytes will be UTF-8 encoded unicode, but it depends on
+case is that the bytes will be UTF-8 encoded Unicode, but it depends on
 user space configuration, which can be set system wide and overridden by
 individual users or even by individual applications or login shells. On most
 modern Linux systems, UTF-8 will be used everywhere unless a user goes out
@@ -87,32 +88,70 @@ corruption will occur.
 
 === Windows
 
-Windows systems use UTF-16 encoding. It is recommended that windows users limit
-themselves to ASCII characters for file names. Non-ascii special characters,
-accented characters, and non-english characters could end up encoded in the
-wrong way, resulting in name corruption. We plan on fixing this in a future
+Windows systems use UTF-16 encoding but do not enforce any particular
+normalization. It is recommended that Windows users limit
+themselves to ASCII characters for file names. Non-ASCII special characters,
+accented characters, and non-English characters could be incorrectly encoded,
+resulting in file name corruption. We plan on fixing this in a future
 update to Globus Connect Personal for Windows, by having the GridFTP server
 convert everything to/from UTF-8 for communication with Globus. Please contact
 support@globus.org if you have concerns.
 
 === Mac OS X
 
-Mac OS X uses UTF-8 by default, but it also does NFD normalization. This can
-cause path name corruption when copying files with non-ASCII names between
-Mac OSX and Linux, if it contains any multi-byte characters that are altered
-by the normalization.
+Mac OS X uses UTF-8 by default, but HFS+ also forces NFD normalization. This can
+cause path name corruption when copying files with non-ASCII names from Linux
+or Windows systems.
+
+The new file system, APFS, will not force NFD normalization, which fixes the
+most common cause of name mangling (a single file).  However, there is still a
+potential issue: two file names that differ only in normalization are allowed
+on Linux and Windows, but will alias a single file on Mac APFS because it is
+normalization-insensitive (this is a similar issue as case-insensitivity).
 
 
 == Document Types
 
 === Result
 
-The "result" family document types, which includes resource specific result
-types like "mkdir_result", represents the result to a foreground operation.
-If the operation fails, an error result we be returned, but some operations
+The "result" family of document types, which includes resource-specific result
+types like "mkdir_result", represents the result of a foreground operation.
+If the operation fails, an error result will be returned.  Some operations
 have multiple success cases.
 
-.Result Document Example
+[caption=]
+.Fields
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| DATA_TYPE      | string | 
+
+Has value "result" or "(subtype)_result" to indicate a result family document
+type. Some result subtypes have additional fields.
+
+| code           | string | 
+
+Code indicating how the operation succeeded. Depends on the specific
+operation.
+
+| message        | string | 
+
+Message describing how the operation succeeded in more detail.
+
+| resource       | string | 
+
+Path relative to the API version root of the request.
+
+| request_id     | string | 
+
+Id of the request, which can be used by Globus admins to look up the request
+in the server logs. Useful when submitting support requests or posting to the
+mailing list.
+
+|===================
+
+.Example
 ------------------------
 {
   "DATA_TYPE": "mkdir_result",
@@ -123,28 +162,138 @@ have multiple success cases.
 }
 ------------------------
 
-==== Result Fields
 
+
+=== file_list Document 
+
+[caption=]
+.Fields
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string | 
+
+Always has value "file_list" to indicate this document type.
+
+| endpoint       | string | 
+
+The endpoint ID that was requested.
+
+| path           | string | 
+
+The path that was listed; may start with +/~/+ when listing the default home directory.
+
+| rename_supported  | bool | 
+
+Indicates if the endpoint supports rename operations.  
+This does not necessarily mean the current user has authorization to rename a file.
+
+| symlink_supported  | bool | 
+
+Indicates if the endpoint supports creating symbolic links.  
+
+| DATA           | list | 
+
+List of "file" documents.
+
+|===================
+
+.Example
+----------------------
+{
+    "DATA_TYPE": "file_list",
+    "path": "/~/path/to/dir",
+    "endpoint": "5d3c6c59-5244-11e5-84dd-22000bb3f45d",
+    "rename_supported": true,
+    "symlink_supported": true,
+    "DATA": [
+        {
+            "DATA_TYPE": "file",
+            ...
+        },
+        ...
+    ]
+}
+----------------------
+
+
+
+=== File Document
+
+[caption=]
+.Fields
 [cols="1,1,8",options="header"]
 |===================
 | Field Name     | JSON Type | Description
 | DATA_TYPE      | string
-                 | Has value "result" or "(subtype)_result" to indicate
-                   a result family document type. Some result subtypes have
-                   additional fields.
-| code           | string
-                 | Code indicating how the operation succeeded. Depends on
-                   the specific operation.
-| message        | string
-                 | Message describing how the operation succeeded in more
-                   detail.
-| resource       | string
-                 | Path relative to the API version root of the request.
-| request_id     | string
-                 | Id of the request, which can be used by Globus admins to
-                   look up the request in the server logs. Useful when
-                   submitting support requests or posting to the mailing list.
+                 | Always has value "file" to indicate this document type.
+
+| name           | string
+                 | The name of this entry in the filesystem
+
+| type           | string
+                 a| The type of the entry: "dir", "file", or "invalid_symlink".   
+                   For unix special files "chr", "blk", "pipe", or "other".
+ 
+If this entry is a valid symlink, the +type+ will describe the target ("file", "dir", etc.),
+and the +permissions+, +size+, +user+, +group+, and +last_modified+ attributes
+will describe the target of the symlink.
+ 
+If this entry is an invalid symlink, the +type+ will be "invalid_symlink", 
+and the +permissions+, +size+, +user+, +group+, and +last_modified+ attributes
+will describe the symlink itself.
+
+
+| link_target    | string
+| If this entry is a symlink (valid or invalid), this is the path of its
+target, which may be an absolute or relative path.  If this entry is not a
+symlink, this field is null.
+
+| permissions    | string
+                 | The unix permissions, as an octal mode string.
+
+| size           | int
+                 | The file size in bytes.
+
+| user           | string
+                 | The user owning the file or directory, if applicable on
+                   the endpoint's filesystem.
+
+| group          | string
+                 | The group owning the file or directory, if applicable.
+
+| last_modified  | string
+                 | The date and time the file or directory was last modified,
+                   in modified ISO 8601 format: YYYY-MM-DD HH:MM:SS+00:00, i.e.
+                   using space instead of "T" to separate date and time.
+                   Always in UTC, indicated explicitly with a trailing "+00:00"
+                   timezone.
+
+| link_size, link_user, link_group, link_last_modified | various
+| If this entry is a symlink (valid or invalid), these fields show attributes
+of the symlink itself, not its target.
+Same format as the +size+, +user+, +group+, and +last_modified+ fields,
+respectively.  These fields will be NULL for older GridFTP versions.
+
+
 |===================
+
+.Example
+----------------------
+{
+    "DATA_TYPE": "file",
+    "name": "somefile",
+    "type": "file",
+    "user": "auser",
+    "group": "agroup",
+    "permissions": "0644",
+    "last_modified": "2000-01-02 03:45:06+00:00",
+    "link_target": null,
+    "size": 1024
+}
+----------------------
+
+
 
 
 == Path Arguments
@@ -152,10 +301,12 @@ have multiple success cases.
 [cols="1,1,8",options="header"]
 |===================
 | Name              | Type  | Description
-| endpoint_xid      | string
-| The +id+ field of the endpoint, or for backward compatibility the
-  +canonical_name+ of the endpoint. The latter is deprecated, and all clients
-  should be updated to use +id+.
+| endpoint_xid      | string | 
+
+The +id+ field of the endpoint, or for backward compatibility the
++canonical_name+ of the endpoint. The latter is deprecated, and all clients
+should be updated to use +id+.
+
 |===================
 
 
@@ -165,10 +316,10 @@ have multiple success cases.
 |===================
 | Name   | Type | Description
 
-| fields | string
-| Comma separated list of fields to include in the response. This can
-  be used to save bandwidth on large list responses when not all
-  fields are needed.
+| fields | string | 
+
+Comma separated list of fields to include in the response. This can be used to
+save bandwidth on large list responses when not all fields are needed.
 
 |===================
 
@@ -178,8 +329,8 @@ have multiple success cases.
 [cols="1,1,8",options="header"]
 |===================
 | Code              | HTTP Status  | Description
-| ServiceUnavailable|503  | If the service is down for maintenance.
-| OperationPaused   |409  | If the administrator of the endpoint has set
+| ServiceUnavailable|503  | The service is down for maintenance.
+| OperationPaused   |409  | The administrator of the endpoint has set
                             a pause rule for the operation. The error response
                             will include a 'pause_message' string field that
                             contains a message from the administrator about
@@ -215,37 +366,8 @@ up to the 100,000 entry limit are returned, sorted by (+type+, +name+).
 
 [cols="h,5"]
 |============
-| URL
-| /operation/endpoint/<endpoint_xid>/ls [?path=/path/to/dir/]
-
-| Method
-| GET
-
-| Response Body a| 
-------------------------------------
-{
-    "DATA_TYPE": "file_list",
-    "path": "/~/path/to/dir",
-    "endpoint": "auser#epname",
-    "rename_supported": true,
-    "DATA": [
-        {
-            "DATA_TYPE": "file",
-
-            "name": "somefile",
-            "type": "file",
-            "link_target": null,
-
-            "user": "auser",
-            "group": "agroup",
-            "permissions": "0644",
-
-            "last_modified": "2000-01-02 03:45:06+00:00",
-            "size": 1024
-        }
-    ]
-}
-------------------------------------
+| URL | /operation/endpoint/<endpoint_xid>/ls [?path=/path/to/dir/]
+| Method | GET
 |============
 
 ==== Dir Listing Query Parameters
@@ -254,150 +376,82 @@ up to the 100,000 entry limit are returned, sorted by (+type+, +name+).
 |===================
 | Name   | Type | Description
 
-| path   | string
-| Path to a directory on the remote endpoint to list.
+| path   | string | 
 
-| show_hidden | boolean
-| "1" for true, "0" for false. If true, show hidden files (files with
-  a name that begins with a dot). Default true.
+Path to a directory on the remote endpoint to list.
 
-| limit  | int
-| Change the page size. Defaults to 100,000, which is also the maximum.
-  Note that the entire directory is is still fetched from the endpoint
-  server on every request. This is because the GridFTP protocol
-  used by most endpoints does not support paging, so paging must be
-  implemented in the REST API server.
+| show_hidden | boolean | 
 
-| offset | int
-| If using a +limit+ less than 100,000, this can be used to page through the
-  results.
+"1" for true, "0" for false. If true, show hidden files (files with a name
+that begins with a dot). Default true.
 
-| orderby | string
-| A comma separated list of order by options. Each order
-  by option is either a field name, or a field name followed by space and 'ASC'
-  or 'DESC' for ascending and descending; ascending is the default. For
-  the directory listing results, any "file" document field can be used in the
-  +orderby+. Default `orderby=type,name`.
+| limit  | int | 
 
-| filter | string
-| Return only file documents that match all of the specified
-  filters. The param value must be a forward slash separated list of
-  filter clauses. For string fields, the clause is of the form
-  `FIELD_NAME:value1,value2,...`, or
-  `FIELD_NAME:~pattern1,pattern1,...`. For example,
-  `filter=name:~.*/type:dir` will return hidden directories.
-  For +size+, a filter clause can be one of `size:>MIN_SIZE`,
-  `size:<MAX_SIZE`, or `size:EXACT_SIZE`. For +last_modified+ the
-  clause is a date range, with dates specified in ISO 9660 format:
-  `last_modified:start,end`. Either start or end can be omitted to specify
-  an open range.
+Change the page size. Defaults to 100,000, which is also the maximum.  Note
+that the entire directory is is still fetched from the endpoint server on
+every request. This is because the GridFTP protocol used by most endpoints
+does not support paging, so paging must be implemented in the REST API server.
+
+| offset | int | 
+
+If using a +limit+ less than 100,000, this can be used to page through the
+results.
+
+| orderby | string | 
+
+A comma separated list of order by options. Each order by option is either a
+field name, or a field name followed by space and 'ASC' or 'DESC' for
+ascending and descending; ascending is the default. For the directory listing
+results, any "file" document field can be used in the +orderby+. Default
++orderby=type,name+.
+
+| filter | string | 
+
+Return only file documents that match all of the specified filters. The param
+value must be a forward slash separated list of filter clauses. For string
+fields, the clause is of the form +FIELD_NAME:value1,value2,...+, or
++FIELD_NAME:~pattern1,pattern1,...+. For example, +filter=name:~.*/type:dir+
+will return hidden directories.  For +size+, a filter clause can be one of
++size:>MIN_SIZE+, +size:<MAX_SIZE+, or +size:EXACT_SIZE+. For +last_modified+
+the clause is a date range, with dates specified in ISO 8601 format:
++last_modified:start,end+. Either start or end can be omitted to specify an
+open range.
+
 |===================
+
 
 [[dir_listing_response]]
 ==== Dir Listing Response
 
-The "file" document represents a single file or directory. The response is
-an encapsulated list of "file" documents, with some additional fields providing
-directory level data.
+The response is a "file_list" document, containing a list of "file" documents,
+and some additional directory-level fields.  Each "file" document represents a
+single file or directory. See the "Document Types" section for details.
 
-The "rename_supported" field indicates if the endpoint software supports
-rename operations.  This does not necessarily mean the current user has
-authorization to rename a file.
-
-.File Document Example
-----------------------
+.Example
+------------------------------------
 {
-    "DATA_TYPE": "file",
-    "name": "somefile",
-    "type": "file",
-
-    "user": "auser",
-    "group": "agroup",
-    "permissions": "0644",
-
-    "last_modified": "2000-01-02 03:45:06+00:00",
-    "link_target": null,
-    "size": 1024
-}
-----------------------
-
-.File List Document Example
-----------------------
-{
-    "DATA_TYPE": "file_list"
-
-    "path": "/~/path/to/dir",
-    "endpoint": "go#ep1",
-
+    "DATA_TYPE": "file_list",
+    "path": "/~/path/to/dir/",
+    "endpoint": "5d3c6c59-5244-11e5-84dd-22000bb3f45d",
+    "rename_supported": true,
+    "symlink_supported": true,
     "DATA": [
         {
             "DATA_TYPE": "file",
-            ...
-        },
-        ...
-    ],
+            "name": "somefile",
+            "type": "file",
+            "link_target": null,
+            "user": "auser",
+            "group": "agroup",
+            "permissions": "0644",
+            "last_modified": "2000-01-02 03:45:06+00:00",
+            "size": 1024
+        }
+    ]
 }
-----------------------
+------------------------------------
 
-[[file_fields]]
-==== File Fields
 
-[cols="1,1,8",options="header"]
-|===================
-| Field Name     | JSON Type | Description
-| DATA_TYPE      | string
-                 | Always has value "file" to indicate this document type.
-
-| name           | string
-                 | The name of the file or directory.
-
-| type           | string
-                 | The type of the listing; possible values include 'dir' and
-                   'file', and for unix special files 'chr', 'blk', 'pipe',
-                   and 'other'.
-
-| link_target    | string
-                 | For symlinks, the absolute path of the target,
-                   otherwise null.
-
-| permissions    | string
-                 | The unix permissions, as an octal mode string.
-
-| size           | int
-                 | The file size in bytes.
-
-| user           | string
-                 | The user owning the file or directory, if applicable on
-                   the endpoint's filesystem.
-
-| group          | string
-                 | The group owning the file or directory, if applicable.
-
-| last_modified  | string
-                 | The date and time the file or directory was last modified,
-                   in modified ISO 9660 format: YYYY-MM-DD HH:MM:SS+00:00, i.e.
-                   using space instead of "T" to separate date and time.
-                   Always in UTC, indicated explicitly with a trailing "+00:00"
-                   timezone.
-|===================
-
-==== File List Fields
-
-[cols="1,1,8",options="header"]
-|===================
-| Field Name     | JSON Type | Description
-| DATA_TYPE      | string
-                 | Always has value "file_list" to indicate this document type.
-| endpoint       | string
-                 | Canonical name of endpoint the listing is for.
-| path           | string
-                 | Path on endpoint the listing is for. Particularly useful
-                   when listing with the default path, to see what the default
-                   was actually mapped to which can depend on the endpoint type
-                   and the configuration of the server.
-| DATA           | list
-                 | List of "file" documents.
-|===================
 
 ==== Errors
 
@@ -453,16 +507,6 @@ endpoint must be activated before performing this operation.
 ------------------------------------
 |============
 
-==== Result Codes
-
-The "code" field of the result document will be one of the following:
-
-[cols="1,1,8",options="header"]
-|===================
-| Code              | HTTP Status  | Description
-| DirectoryCreated  | 202 | Directory created successfully.
-|===================
-
 ==== Mkdir Request Fields
 
 [cols="1,1,8",options="header"]
@@ -472,6 +516,15 @@ The "code" field of the result document will be one of the following:
                  | Always has value "mkdir" to indicate this document type.
 | path           | string
                  | Absolute path on remote endpoint.
+|===================
+==== Result Codes
+
+The "code" field of the result document will be one of the following:
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| DirectoryCreated  | 202 | Directory created successfully.
 |===================
 
 ==== Errors
@@ -495,9 +548,11 @@ as well as the following errors.
 [[rename]]
 === Rename
 
-Rename or move a file or directory on an endpoint filesystem. The endpoint must
-be activated before performing this operation. When moving to a different
-parent directory, the parent directory of the new path must already exist.
+Rename or move a file, directory, or symlink on an endpoint filesystem. 
+If the object is a symlink, the symlink itself is renamed, not its target.
+
+The endpoint must be activated before performing this operation. 
+When moving to a different parent directory, the parent directory of the new path must already exist.
 
 NOTE: Most servers will require that the new path is on the same filesystem as
 the old path, so this is not a general purpose move operation.
@@ -526,10 +581,27 @@ the old path, so this is not a general purpose move operation.
   "code": "FileRenamed",
   "message": "File or directory renamed successfully"
   "request_id": "ShbIUzrWT",
-  "resource": "/operation/endpoint/go%23ep1/mkdir"
+  "resource": "/operation/endpoint/go%23ep1/rename"
 }
 ------------------------------------
 |============
+
+==== Rename Request Fields
+
+JSON strings are Unicode, but will be encoded as UTF-8 to interact with byte
+oriented filesystems. See the <<path_encoding,Path Encoding>> section for
+details. 
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+| DATA_TYPE      | string
+                 | Always has value "rename" to indicate this document type.
+| old_path       | string
+                 | Current absolute path of a file, directory, or symlink
+| new_path       | string
+                 | New absolute path 
+|===================
 
 ==== Result Codes
 
@@ -539,23 +611,6 @@ The "code" field of the result document will be one of the following:
 |===================
 | Code              | HTTP Status  | Description
 | FileRenamed  | 200 | File or directory renamed successfully.
-|===================
-
-==== Rename Request Fields
-
-JSON strings are Unicode, but will be encoded as UTF-8 to interact with byte
-oriented filesystems. See the <<path_encoding,Path Encoding>> section for
-details. Directories paths must end in '/'.
-
-[cols="1,1,8",options="header"]
-|===================
-| Field Name     | JSON Type | Description
-| DATA_TYPE      | string
-                 | Always has value "rename" to indicate this document type.
-| old_path       | string
-                 | Current absolute path of a file or directory on the endpoint.
-| new_path       | string
-                 | New absolute path to rename/move the file or directory to.
 |===================
 
 ==== Errors
@@ -620,4 +675,91 @@ handler which displays the message field to the user.
                       not understood by some users, but it can be used
                       in support requests with Globus and endpoint
                       administrators.
+|===================
+
+
+
+[[symlink]]
+=== Symlink
+
+Create a symbolic link (symlink) on an endpoint filesystem. 
+
+[cols="h,5"]
+|============
+| URL | /operation/endpoint/<endpoint_xid>/symlink
+| Method | POST
+|============
+
+
+==== Request Fields
+
+[cols="1,1,8",options="header"]
+|===================
+| Field Name     | JSON Type | Description
+
+| DATA_TYPE      | string | 
+
+Always the value "symlink" to indicate this document type.
+
+| symlink_target       | string | 
+
+The target that the symlink will point to.  
+This may be a relative or absolute path.
+This is not checked for existence or permissions.
+
+| path       | string | 
+
+The path name of the new symlink to be created.  
+
+|===================
+
+
+.Example
+------------------------------------
+{
+  "DATA_TYPE": "symlink", 
+  "symlink_target": "/~/some/project/myfile.txt",
+  "path": "/~/quick_link.txt"
+}
+------------------------------------
+
+
+==== Result Codes
+
+The "code" field of the result document will be one of the following:
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+| SymlinkCreated  | 200 |  Symbolic link created successfully
+|===================
+
+.Example
+------------------------------------
+{
+  "DATA_TYPE": "result",
+  "code": "SymlinkCreated",
+  "message": "Symbolic link created successfully"
+  "request_id": "ShbIUzrWT",
+  "resource": "/operation/endpoint/go%23ep1/symlink"
+}
+------------------------------------
+
+
+
+==== Errors
+
+This returns the same general errors as rename, and the following: 
+
+[cols="1,1,8",options="header"]
+|===================
+| Code              | HTTP Status  | Description
+
+| NotSupported      |409
+                    | The endpoint does not support symlinks at all, or does
+                    not support this type of symlink.
+                      
+| Exists            |409  
+                    | +path+ already exists.
+
 |===================
