@@ -55,10 +55,10 @@ Some advanced endpoint features, for example hosting shared endpoints and
 using the Advanced Endpoint Management API, require a
 link:https://www.globus.org/subscriptions[Globus subscription]. To enable
 these features for an endpoint, the endpoint must be set as "managed" by
-setting the `subscription_id` field on the endpoint to the id for the
+setting the +subscription_id+ field on the endpoint to the id for the
 subscription. Once this is set, the endpoint is considered "managed".
 A shared endpoint is considered "managed" if it's host endpoint has a
-non-null `subscription_id`.
+non-null +subscription_id+.
 
 [[document_types]]
 == Document Types
@@ -176,7 +176,7 @@ sub-documents.
 | name           | string
                  | [DEPRECATED] Legacy friendly name for the endpoint. Limited
                    to 128 characters, and must match the regex
-                   `^[0-9a-zA-Z][-0-9a-zA-Z_.]*$`. If not specified, will
+                   +^[0-9a-zA-Z][-0-9a-zA-Z_.]*$+. If not specified, will
                    default to the unique +id+.
 | canonical_name | string
                  | [DEPRECATED] The username qualified endpoint name, of the
@@ -193,13 +193,17 @@ sub-documents.
                    username.
 | owner_id       | string
                  | Identity id of the endpoint owner. Can't be updated.
-| owner_string   | string
-                 | Identity name of an endpoint administrator. 
-                   This is initially set to the owner, but it can be changed
+| owner_string   | string | 
+
+Identity name of an endpoint administrator. 
+This is initially set to the owner, but it can be changed
 later to any administrator that is set by a user-identity role (and that
 role may not be deleted). 
-                   Will be included in the fulltext query index used by
-                   the link:../endpoint_search API.
+For security, the new administrator must perform the update.
+
+This field is included in the fulltext query index used by
+the link:../endpoint_search[Endpoint Search API].
+
 | description    | string
                  | A description of the endpoint. Unicode string, max length
                    4096 characters.
@@ -223,19 +227,18 @@ role may not be deleted).
                    Globus users.
 | subscription_id | string
                  | If the endpoint is "managed", this will be a UUID string,
-                   otherwise it will be null. Currently this is set by Globus
-                   service administrators and can't be changed
-                   via the REST API. It will be silently ignored on update.
-                   Note that certain features like setting +network_use+ and
-                   in most cases hosting shared endpoints require a
-                   managed endpoint, so this field is useful for checking that
-                   state.
+                 otherwise it will be null.                      
+    PUT can accept the special string "DEFAULT" to use your default subscription id.
+ Note that certain features like setting +network_use+ and
+   in most cases hosting shared endpoints require a
+   managed endpoint, so this field is useful for checking that
+   state.
 | default_directory
                  | string
                  | Default directory to display when an endpoint is first
                    accessed on the globus.org web interface. The default
-                   is `/~/` for GridFTP endpoints, and `/` for shared endpoints
-                   and S3 endpoints. The mapping of `/~/` depends on the
+                   is +/~/+ for GridFTP endpoints, and +/+ for shared endpoints
+                   and S3 endpoints. The mapping of +/~/+ depends on the
                    configuration of the GridFTP server but is typically the
                    local user's home directory on Linux systems.
 | force_encryption
@@ -256,7 +259,7 @@ role may not be deleted).
                    use the +verify_checksum+ option.
 | expire_time    | string
                  | Date and time the endpoint activation expires, or null if
-                   not activated. Formatted as ISO 9660 but with space instead
+                   not activated. Formatted as ISO 8601 but with space instead
                    of "T" separating the date and time portions.
 | expires_in     | int
                  | Seconds until the endpoint expires, 0 if the endpoint is
@@ -734,41 +737,46 @@ on the endpoint.
 Which fields can be updated depends on the type of endpoint:
 
 [[endpoint_updatable_fields]]
-[cols="h,5"]
+[cols="1,8",options="header"]
 |============
 | Type h| Updatable fields
 
-| Globus Connect Server
-| +display_name+, +description+, +public+,
-  +default_directory+, +force_encryption+, +disable_verify+,
-  +myproxy_server+, +myproxy_dn+, +oauth_server+,
-  +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+,
-  +location+, +network_use+,
-  +min_concurrency+, +preferred_concurrency+,
-  +min_parallelism+, +preferred_parallelism+,
-  DEPRECATED: +name+/+canonical_name+
+| All Endpoint Types |
 
-| Globus Connect Personal
-| +display_name+, +description+,
-  +default_directory+, +force_encryption+, +disable_verify+,
-  +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+
-  DEPRECATED: +name+/+canonical_name+
++display_name+, +description+, 
++organization+, +department+, +keywords+,
++contact_email+, +contact_info+, +info_link+,
++owner_string+
 
-| Shared endpoint
-| +display_name+, +description+,
-  +default_directory+, +force_encryption+, +disable_verify+,
-  +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+
-  DEPRECATED: +name+/+canonical_name+
++default_directory+, +force_encryption+, +disable_verify+
 
-| S3 endpoint
-| +display_name+, +description+,
-  +default_directory+, +force_encryption+, +disable_verify+,
-  +organization+, +department+, +keywords+,
-  +contact_email+, +contact_info+, +info_link+
-  DEPRECATED: +name+/+canonical_name+
+DEPRECATED: +name+, +canonical_name+
+
+| Globus Connect Server | 
+
++subscription_id+, +public+
+
++location+, +network_use+, +min_concurrency+, +preferred_concurrency+,
++min_parallelism+, +preferred_parallelism+
+
++myproxy_server+, +myproxy_dn+, +oauth_server+
+
+
+| Globus Connect Personal | 
+
++subscription_id+, +public+
+
++location+, +network_use+, +min_concurrency+, +preferred_concurrency+,
++min_parallelism+, +preferred_parallelism+
+
+| Shared endpoint | 
+
+No additional fields
+
+| S3 endpoint | 
+
++subscription_id+, +public+
+
 |============
 
 

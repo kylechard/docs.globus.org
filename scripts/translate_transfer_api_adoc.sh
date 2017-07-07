@@ -101,6 +101,7 @@ UPDATED2='\
 cp -r $KOA_DIR/* $DOC_DIR/
 rm $DOC_DIR/Makefile
 rm $DOC_DIR/private_*
+rm $DOC_DIR/README
 
 echo "Performing seds inline on files..."
 
@@ -118,6 +119,9 @@ sed -i.bak -e 's/link:\([_a-z0-9]*\){outfilesuffix}/link:..\/\1/g' $DOC_DIR/*.ad
 # Replace all table-of-contents macro(s)
 sed -i.bak -e "s/^\:toc\: macro/${TOC}/g" $DOC_DIR/*.adoc
 sed -i.bak -e "/^toc\:\:\[\]/d" $DOC_DIR/*.adoc
+
+# This is for asciidoctor, not needed for asciidoc
+sed -i.bak -e "/^\:compat-mode\:/d" $DOC_DIR/*.adoc
 
 # Change history is an infinite list of headings, so don't number it
 # TODO: Do we need TOC at all on change_history?

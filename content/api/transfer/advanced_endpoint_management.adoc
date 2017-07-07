@@ -215,7 +215,7 @@ rules.
   setup. For shared endpoints, this will be the local user that was used
   when creating the shared endpoint. This will also be "null" on older jobs,
   that were started before this feature was added, and if the GridFTP server
-  of the endpoint does not support the `SITE WHOAMI` command. For shared
+  of the endpoint does not support the +SITE WHOAMI+ command. For shared
   endpoints, this field will be "null" unless the user has the
   "activity_monitor"
   link:../endpoint_roles#effective_roles[effective role]
@@ -244,7 +244,7 @@ a|A status code indicating if the local user is available for the source
     "ENDPOINT_ERROR":: An error occurred while contacting the endpoint to
                        determine the local user. The most likely cause is
                        an older GridFTP server that does not support
-                       the `SITE WHOAMI` command.
+                       the +SITE WHOAMI+ command.
 
 | destination_local_user
 | string
@@ -424,6 +424,7 @@ i.e.  with a null +identity_id+, are treated as a special value of
   "editable": true,
   "pause_ls": false,
   "pause_mkdir": true,
+  "pause_symlink": true,
   "pause_rename": true,
   "pause_task_delete": true,
   "pause_task_transfer_write": true,
@@ -546,20 +547,27 @@ i.e.  with a null +identity_id+, are treated as a special value of
 
 | pause_ls
 | boolean
-| Whether to 'pause' or prevent ls operations against the
-  endpoint. Default "true".
+| Prevent API ls (directory listing) operations.
+    Default "true".
 
 | pause_mkdir
 | boolean
-| Whether to 'pause' or prevent mkdir operations against the
-  endpoint that match the rule. Default "true". Note that this only affects
-  the API mkdir resource and CLI mkdir command - if +pause_transfer_write+ is
+| Prevent API mkdir (create directory) operations.
+  Default "true". Note that this only affects
+  the API mkdir operation - if +pause_transfer_write+ is
   "false", then directories can be created as part of the transfer operation.
+
+| pause_symlink
+| boolean
+| Prevent API symlink creation operations.
+  Default "true". Note that this only affects
+  the API symlink operation - if +pause_transfer_write+ is
+  "false", then symlinks can be created as part of the transfer operation.
 
 | pause_rename
 | boolean
-| Whether to 'pause' or prevent rename operations against the
-  endpoint that match the rule. Default 'true'.
+| Prevent API file and directory rename operations.
+  Default 'true'.
 
 | pause_task_delete
 | boolean
@@ -1294,17 +1302,16 @@ request will fail with a "PermissionDenied" error.
 === Get cancel status by id
 
 Returns an +admin_cancel+ document without the +task_id_list+; clients can
-check the +done+ field to determine if the cancel request is complete. Only
-the user who submitted the request has permission to get the status; other
-users will get a "PermissionDenied" error.
-
-NOTE: If an id never existed, this will still return a success response with
-+done+ set to "true". This is because done status is determined on the server
-by absence of any outstanding cancel records associated with the id. For this
-reason clients should take even more care than usual not to corrupt the id.
+check the +done+ field to determine if the cancel request is complete. 
 
 .Authorization
-Only the user who submitted the original cancel request can get its status.
+Only the user who submitted the original cancel request is guaranteed to be
+able to get its status.
+
+NOTE: In the current implementation, all completed request IDs and all
+request IDs never before seen are returned as "done".  Clients should not
+rely on this behavior, and take care not to corrupt the ID.
+
 
 [cols="h,5"]
 |============
@@ -1424,7 +1431,7 @@ Get a list of pause rules on endpoints that the current user has the
 "activity_monitor" role on.
 
 [[pause_rule_editable]]
-Pause rules will be editable (the `editable` field will be "true") if
+Pause rules will be editable (the +editable+ field will be "true") if
 one of the following conditions are met:
 
 * The endpoint is a normal or host endpoint, and the current user
@@ -1449,13 +1456,13 @@ one of the following conditions are met:
   and share managers).
 
 If the result set contains over 1000 rules, a "LimitExceeded" error will be
-returned and the client must pass the `filter_endpoint` query parameter (with
+returned and the client must pass the +filter_endpoint+ query parameter (with
 the endpoint id) to get the rules one endpoint at a time.
 
 .Authorization
 Returns rules on endpoints for which the user has the "activity_monitor"
 link:../endpoint_roles#effective_roles[effective role].
-If +filter_endpoint+ or `filter_host_endpoint` is specified, the user must
+If +filter_endpoint+ or +filter_host_endpoint+ is specified, the user must
 have the "activity_monitor" effective role on the specified endpoint.
 
 NOTE: Pause rules are also accessible to normal users via the

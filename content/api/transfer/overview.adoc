@@ -21,52 +21,32 @@ This documentation assumes a basic familiarity with HTTP, including the GET,
 POST, PUT, and DELETE request methods, Content-Type and Accepts headers, and
 standard status codes.
 
-=== Authentication
+== Authentication
 
-Authentication to the Transfer API requires using the new Globus Auth API to
-obtain an access token. At time of this writing Globus Auth supports the
-OAuth2 authorization code grant (which uses a 3-legged redirection flow),
-which should be used by web applications. Other authorization flows, for
-thick client and CLI applications, are under development and will be announced
-soon.
+Authentication to the Transfer API requires using the Globus Auth API to
+obtain an access token. 
+The link:https://docs.globus.org/api/auth/developer-guide/[Globus Auth developer guide] 
+describes the steps to obtain a token. 
+The link:https://globus-sdk-python.readthedocs.io/en/stable/[Globus Python SDK]
+provides support for Transfer and Globus Auth and can be integrated with your application.  
 
-For development, or for using the new
-link:https://github.com/globus/globus-cli[globus-cli], the simplest way to get
-a token is to use the link:https://tokens.globus.org[Globus Tokens] webapp.
+Authentication using X509 credentials is deprecated and will be removed by
+June 30, 2017.
 
-==== Globus Tokens (temporary method for developers)
+=== Obtaining Tokens
 
-Globus Tokens provides you with tokens for all Globus APIs which are valid for
-two days, and are tied to a consent for "Globus Tokens". This can be used as
-a temporary solution for thick client applications, but developers should plan
-for transitioning to the Globus Auth API when it's feature set is expanded to
-better support thick client auth flows.
+==== Thick Clients
 
-First sign in to the link:https://tokens.globus.org[Globus Tokens] webapp,
-and grant consent. Note that the webapp provides tokens for the Auth
-service as well - make sure to get the token for Transfer.
+Native applications and thick clients should use the Native App flow in Globus
+Auth to obtain tokens. If automated or recurring access to the Transfer
+service is required, refresh tokens should be requested with the native app
+flow. Sample scripts that show native app flow and use of refresh tokens are
+provided here: https://github.com/globus/native-app-examples
 
-The Transfer token needs to be passed to the Transfer API in the
-+Authorization+ header with custom method +Bearer+:
 
-----
-Authorization: Bearer TOKEN
-----
+==== Web Applications
 
-You can test this by saving the token to a private temporary file, e.g.
-`$HOME/tmp-globus-auth-token.txt`, and then passing it to curl with the -H
-option:
-
-----
-TOKEN=$(cat $HOME/tmp-globus-auth-token.txt)
-curl -H "Authorization : Bearer $TOKEN" \
-    'https://transfer.api.globusonline.org/v0.10/task_list'
-----
-
-You could also paste the token directly but then it will be stored in your
-shell history, which is often not desirable.
-
-==== Globus Auth: OAuth2 authorization code grant
+Web applications should use the Authorization Code grant in Globus Auth to obtain tokens. 
 
 In this method, a web application redirects the user agent (user's web browser)
 to Globus to authenticate, and provides a callback URL. Globus
@@ -80,11 +60,30 @@ application permissions and revoke access on a per application basis in the
 future if needed, and prevents the user's password from flowing through
 third party web applications.
 
-For details, see the
-link:https://docs.globus.org/api/auth/[Globus Auth] documentation.
 
-Once the application has the access token, it is passed to the Transfer API in
-the same way as for Globus Tokens method (in the Authorization header).
+=== Using Tokens
+
+
+The Transfer token needs to be passed to the Transfer API in the
++Authorization+ header with custom method +Bearer+:
+
+----
+Authorization: Bearer TOKEN
+----
+
+You can test this by saving the token to a private temporary file, e.g.
++$HOME/tmp-globus-auth-token.txt+, and then passing it to curl with the -H
+option:
+
+----
+TOKEN=$(cat $HOME/tmp-globus-auth-token.txt)
+curl -H "Authorization : Bearer $TOKEN" \
+    'https://transfer.api.globusonline.org/v0.10/task_list'
+----
+
+You could also paste the token directly but then it will be stored in your
+shell history, which is often not desirable.
+
 
 === Terminology
 
@@ -1007,7 +1006,7 @@ List resources which use paging can be controlled with the +offset+ and +limit+
 query parameters. The default +offset+ is 0, while the default +limit+ and
 maximum +offset+ and +limit+ vary among resources. Most list resources have a
 default +limit+ of 10 and a maximum of 1000. Typical usage involves starting
-with +offset+ 0, choosing a page size (`limit=PAGE_SIZE`), and incrementing
+with +offset+ 0, choosing a page size (+limit=PAGE_SIZE+), and incrementing
 +offset+ by +PAGE_SIZE+ to display successive pages.
 
 For example, with a page size of 50:

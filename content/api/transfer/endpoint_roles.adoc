@@ -24,7 +24,7 @@ or a Globus group.
 
 Any user can get a list of
 link:../endpoint_roles#effective_roles[effective roles]
-they have on an endpoint from the `my_effective_roles` field of the
+they have on an endpoint from the +my_effective_roles+ field of the
 link:../endpoint#endpoint_fields[endpoint document].
 
 === Supported Roles
@@ -89,11 +89,11 @@ The <<role_list,role_list>> resource returns "explicit" roles added using
 the <<create_role,Create endpoint role>> resource, but a user
 can have additional "effective" roles, granted by having other roles on the
 endpoint or it's host, or by being the owner of the endpoint. The
-`my_effective_roles` field of the
++my_effective_roles+ field of the
 link:../endpoint#endpoint_fields[endpoint document]
 will include all effective roles, not just
-the explicit roles returned in the `role_list`. Authorization decisions
-are based on the effective roles in `my_effective_roles`, rather
+the explicit roles returned in the +role_list+. Authorization decisions
+are based on the effective roles in +my_effective_roles+, rather
 than the explicit role list. In detail:
 
 * The owner of an endpoint has the effective roles "administrator", 

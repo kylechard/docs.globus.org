@@ -122,6 +122,9 @@ Other task types may be added in the future.
 | delete_destination_extra| boolean
                  | The delete_destination_extra option used for the transfer.
                    Always false for delete tasks.
+| recursive_symlinks | string
+                 | The +recursive_symlinks+ option used for transfer tasks.
+                    Always null for delete tasks.
 | preserve_timestamp| boolean
                  | The preserve_timestamp option used for the transfer.
                    Always false for delete tasks.
@@ -148,14 +151,14 @@ Other task types may be added in the future.
                    CANCELED or EXPIRED event is not included in this fault
                    count.
 | files          | int
-                 | The total number of files in this task. For recursive
-                   transfer and delete tasks, this number can grow over the
-                   life of the transfer as new files and directories are
-                   discovered in directory expansions.
+                 | The total number of files in a transfer task. 
+                    This can grow as the task recursively scans directories.
 | directories    | int
-                 | The total number of directories, given as input, that need
-                   to be scanned recursively for files. This does not include
-                   subdirectories.
+                 | The total number of directories in a transfer task.
+                    This can grow as the task recursively scans directories.
+| symlinks    | int
+                 | The total number of kept symlinks (not copied or ignored) in a transfer task.
+                    This can grow as the task recursively scans directories.
 | files_skipped  | int
                  | The number of files skipped because no changes were
                    detected. This will always be zero for non-sync transfer
@@ -281,7 +284,7 @@ Events are logged as a task makes progress or runs into errors.
                  | Type specific details about the event.
 | time           | string
                  | The date and time the event occurred,
-                   in ISO 9660 format (YYYY-MM-DD HH:MM:SS) and UTC.
+                   in ISO 8601 format (YYYY-MM-DD HH:MM:SS) and UTC.
 |===================
 
 
@@ -460,17 +463,17 @@ that begins with the string "experiment1".
 | pattern list
 | Comma separated list of patterns to match against the label field. Returns
 tasks that match any of the patterns. Each pattern is an operator, followed
-by a string. The operator is one of `!`, `=`, `~`, or `!~`. The `=` operator
-requires an exact match, and `!` matches anything other than the specified
-string. The `~` operator is a case-insentive match and allows the use of
-`*` as a wildcard. The `!~` operator matches anything that does not match
-the pattern. For both `~` operators, a literal `*` can be escaped as
-`\*`, and a literal backslash can be escaped as `\\`. As a shortcut, if no
-operator is specified, `=` (exact match) is assumed.
+by a string. The operator is one of +!+, +=+, +~+, or +!~+. The +=+ operator
+requires an exact match, and +!+ matches anything other than the specified
+string. The +~+ operator is a case-insentive match and allows the use of
++*+ as a wildcard. The +!~+ operator matches anything that does not match
+the pattern. For both +~+ operators, a literal +*+ can be escaped as
++\*+, and a literal backslash can be escaped as +\\+. As a shortcut, if no
+operator is specified, +=+ (exact match) is assumed.
 
 | request_time
 | datetime range
-| Accepts a time range, specified by a comma separated list of two ISO
+| Accepts a time range, specified by a comma separated list of two ISO 8601
 date/time strings. If one of the dates is ommited, it forms an open range, so
 "dt," returns all records with date greator or equal to dt, and ",dt" returns
 all records with dates less than or equal to dt. If there is no comma, it is
