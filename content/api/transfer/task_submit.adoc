@@ -6,7 +6,6 @@ menu_weight: 2
 :toc:
 :toclevels: 3
 :numbered:
-:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
@@ -177,7 +176,6 @@ directory transfers.  Default: false.
 
 [[recursive_symlinks]]
 | recursive_symlinks  | string a| 
-:compat-mode:
 
 How to process symbolic links (symlinks) found in the contents of recursive
 directory transfer_items.  The default is "ignore".  
@@ -264,7 +262,6 @@ Default false.
 Don't generate errors for non existent files and directories. Default false.
 
 | interpret_globs     | boolean a| 
-:compat-mode:
 
 If false (the default), every character in the entire path is treated literally.
  

@@ -1,8 +1,7 @@
 = Transfer API Documentation
-:revdate: July 05, 2017
+:revdate: July 07, 2017
 
 [doc-info]*Last Updated: {revdate}*
-:compat-mode:
 
 // use outfilesuffic in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]

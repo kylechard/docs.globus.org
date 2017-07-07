@@ -6,7 +6,6 @@ menu_weight: 4
 :toc:
 :toclevels: 3
 :numbered:
-:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
@@ -119,7 +118,7 @@ types like "mkdir_result", represents the result of a foreground operation.
 If the operation fails, an error result will be returned.  Some operations
 have multiple success cases.
 
-[caption=]
+[caption=""]
 .Fields
 [cols="1,1,8",options="header"]
 |===================
@@ -166,7 +165,7 @@ mailing list.
 
 === file_list Document 
 
-[caption=]
+[caption=""]
 .Fields
 [cols="1,1,8",options="header"]
 |===================
@@ -220,7 +219,7 @@ List of "file" documents.
 
 === File Document
 
-[caption=]
+[caption=""]
 .Fields
 [cols="1,1,8",options="header"]
 |===================

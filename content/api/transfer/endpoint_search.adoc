@@ -6,7 +6,6 @@ menu_weight: 6
 :toc:
 :toclevels: 3
 :numbered:
-:compat-mode:
 
 // use outfilesuffix in relative links to make them work on github
 ifdef::env-github[:outfilesuffix: .adoc]
