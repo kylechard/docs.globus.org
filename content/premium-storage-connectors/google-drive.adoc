@@ -7,7 +7,7 @@ menu_weight: 1
 = Google Drive Connector (beta)
 :toc:
 :toc-placement: manual
-:revdate: June 28, 2017
+:revdate: July 11, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -168,16 +168,7 @@ IMPORTANT: A set of Google credentials can only be used with a single GCSv5 inst
 TIP: You may wish to provide instructions for your users on how to disconnect this Google application from their accounts. They may do so by visiting https://myaccount.google.com and clicking on the "Connect apps & sites" link.
 
 == Configure your GCSv5 endpoint to use the Google Drive Connector 
-This section requires that a Globus Connect Server v5 endpoint has been setup and is functional. The basic installation of GCSv5 sets it up for POSIX file systems so basic testing of the installation can be done. 
-
-The following instructions will remove the default endpoint definition, and reconfigure it for use with Google Drive Connector. 
-
-*Run the cleanup command to remove the default configuration:*
-
-[role="mb-20"]
-----
-globus-connect-server-cleanup -d
-----
+This section requires that a Globus Connect Server v5 endpoint has been setup and is functional. The basic installation of GCSv5 sets it up for use with POSIX file systems. The following instructions will replace the default endpoint configuration, and reconfigure GCSv5 for use with the Google Drive Connector. 
 
 *Edit globus-connect-server.conf to set the following parameters:*
 
@@ -208,6 +199,17 @@ https://www.globus.org/app/endpoints?scope=all
 +
 . Make note of the endpoint's UUID on the Overview tab
 . Contact Globus support to make your new endpoint managed. Be sure to send support the UUID of your endpoint from Step 22.
+. Once Globus Support notifies you that your endpoint has been made managed, you'll want to grant at least one Globus ID the Administrator Role for your new endpoint. You will do this by running the `/opt/globus/bin/add_admin_role` script and then following the prompts. For example, to grant the "abc" Globus ID the Administrator Role for your endpoint, you would do this:
++
+----
+# /opt/globus/bin/add_admin_role
+Add administrator role for this identity username: abc@globusid.org
+
+...
+----
++
+After the identity is granted the Administrator Role, you should be able to log in to the Globus website using that same Globus ID and then find your endpoint by searching for it in the Manage Endpoints page using the "administered by me" scope.
++
 . After the base endpoint has been made managed, permitted users can then create shares hosted by the endpoint that will be backed by their Google Drives. See separate instructions for process to create shares on Google Drive backed endpoint.
 
 [NOTE]
