@@ -16,3 +16,4 @@ Gemfile.lock
 # virualenv and rvmrc for deploy script
 /.virtualenv
 /.rvmrc
+/.build_tools
