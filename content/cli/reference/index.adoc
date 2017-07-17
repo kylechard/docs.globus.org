@@ -4,7 +4,7 @@ short_title: Reference
 ---
 
 = Command Line Interface (CLI) Reference
-:revdate: June 13, 2017
+:revdate: July 17, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -20,7 +20,7 @@ link:update[globus update]::
 Update the Globus CLI to its latest version
 
 link:login[globus login]::
-Login to Globus to get credentials for the Globus CLI
+Log into Globus to get credentials for the Globus CLI
 
 link:logout[globus logout]::
 Logout of the Globus CLI
