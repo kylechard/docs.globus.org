@@ -26,13 +26,13 @@ NOTE: The commands below must be run on the Globus command line interface (CLI).
 You can add a managed endpoint via the link:../../cli/using-the-cli/[Globus command line interface] by running the following command:
 
 ----terminal
-$ endpoint-add <username>#<endpoint-name> --managed-endpoint
+$ globus endpoint create --managed ENDPOINT_DISPLAY_NAME 
 ----terminal
 
-For example, if user [uservars]#demodoc# wishes to add a managed endpoint called [uservars]#onecluster# then the user must run:
+For example, if a user [uservars]#<username>#  wishes to add a managed endpoint called "My Managed Endpoint" then the user must run:
 
 ----terminal
-$ endpoint-add demodoc#onecluster --managed-endpoint
+$ globus endpoint create --server --managed "My Managed Endpoint"
 ----terminal
 
 Please ensure that [uservars]#<username># has subscription management rights, otherwise the command will fail. Note that a subscription manager can only create endpoints under their own account.
@@ -45,13 +45,19 @@ NOTE: The commands below must be run on the Globus command line interface (CLI).
 You can convert an existing endpoint into a managed endpoint via the Globus command line interface by running the following command:
 
 ----terminal
-$ endpoint-modify --managed-endpoint <username>#<endpoint-name>
+$ globus endpoint update --managed ENDPOINT_UUID
 ----terminal
 
-For example, if user [uservars]#demodoc# wishes to flag the endpoint [uservars]#zerocluster# as a managed endpoint then the user must run:
+For example, if user [uservars]#<username># wishes to flag the endpoint with a UUID of 11111111-2222-3333-4444-555555555555 as a managed endpoint then the user must run:
 
 ----terminal
-$ endpoint-modify --managed-endpoint demodoc#zerocluster
+$ globus endpoint update --managed 11111111-2222-3333-4444-555555555555
+----terminal
+
+If you don't know the UUID of your endpoint, but you do know its display name, then you can find the UUID like this:
+
+----terminal
+$ globus endpoint search --filter-scope my-endpoints "My Endpoint Display Name"
 ----terminal
 
 Please ensure that [uservars]#<username># has subscription management rights, otherwise the command will fail. Note that a subscription manager can only create endpoints under their own account.
