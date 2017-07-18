@@ -11,6 +11,7 @@ ASCIIDOC_TARBALL=asciidoc-$(ASCIIDOC_VERSION).tar.gz
 ASCIIDOC_TARBALL_PATH=$(BUILD_TOOLS_DIR)/asciidoc-$(ASCIIDOC_VERSION).tar.gz
 ASCIIDOC_URL=https://downloads.sourceforge.net/project/asciidoc/asciidoc/$(ASCIIDOC_VERSION)/$(ASCIIDOC_TARBALL)
 ASCIIDOC_BUILD_DIR=$(BUILD_TOOLS_DIR)/asciidoc-$(ASCIIDOC_VERSION)
+ASCIIDOC_INSTALL_DIR=$(shell pwd)/$(BUILD_TOOLS_DIR)/install
 
 
 .PHONY: staging production build help build-tools
@@ -51,13 +52,13 @@ build-tools: asciidoc nanoc pygments
 
 
 asciidoc-setup: asciidoc/backends/bootstrap/bootstrap.conf asciidoc/backends/bootstrap/asciidoc.js
-	./scripts/install_asciidoc_backend.sh
+	./scripts/install_asciidoc_backend.sh "$(ASCIIDOC_INSTALL_DIR)"
 
 $(ASCIIDOC_TARBALL_PATH):
 	wget -nc -P $(BUILD_TOOLS_DIR) $(ASCIIDOC_URL)
 	tar -C $(BUILD_TOOLS_DIR) -xzf $(ASCIIDOC_TARBALL_PATH)
 	cd $(ASCIIDOC_BUILD_DIR) && autoconf
-	cd $(ASCIIDOC_BUILD_DIR) && ./configure --prefix=$(shell pwd)/$(BUILD_TOOLS_DIR)/install
+	cd $(ASCIIDOC_BUILD_DIR) && ./configure --prefix=$(ASCIIDOC_INSTALL_DIR)
 	$(MAKE) -C $(ASCIIDOC_BUILD_DIR)
 	$(MAKE) -C $(ASCIIDOC_BUILD_DIR) install
 	$(MAKE) asciidoc-setup

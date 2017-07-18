@@ -4,6 +4,13 @@ set -e
 # go to the repo root
 cd "$(dirname "$0")/.."
 
+install_dir="$1"
+if [ -z "$install_dir" ];
+then
+    install_dir=".build_tools/install"
+fi
+export PATH="$install_dir/bin:$PATH"
+
 # check for RVMRC
 # assume that any existing .rvmrc is valid and source it
 if [ -f .rvmrc ];
