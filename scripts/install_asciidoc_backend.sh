@@ -4,12 +4,14 @@ set -e
 # go to the repo root
 cd "$(dirname "$0")/.."
 
-install_dir="$1"
-if [ -z "$install_dir" ];
+asciidoc_bindir="$1"
+if [ -z "$asciidoc_bindir" ];
 then
-    install_dir=".build_tools/install"
+    asciidoc_bindir=".build_tools/install/bin"
 fi
-export PATH="$install_dir/bin:$PATH"
+export PATH="$asciidoc_bindir:$PATH"
+
+echo "Installing asciidoc backend with asciidoc_bindir=$asciidoc_bindir"
 
 (cd asciidoc/backends/bootstrap; zip -r bootstrap.zip . -x ".*" -x "*/.*")
 

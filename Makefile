@@ -5,6 +5,8 @@ GEM_COMMAND?=gem
 
 BUILD_TOOLS_DIR=.build_tools
 VENV=$(BUILD_TOOLS_DIR)/venv
+BUNDLE_DIR=$(BUILD_TOOLS_DIR)/bundle-vendor/
+BUNDLE_BINDIR=$(BUNDLE_DIR)/bin
 
 ASCIIDOC_VERSION=8.6.9
 ASCIIDOC_TARBALL=asciidoc-$(ASCIIDOC_VERSION).tar.gz
@@ -12,6 +14,7 @@ ASCIIDOC_TARBALL_PATH=$(BUILD_TOOLS_DIR)/asciidoc-$(ASCIIDOC_VERSION).tar.gz
 ASCIIDOC_URL=https://downloads.sourceforge.net/project/asciidoc/asciidoc/$(ASCIIDOC_VERSION)/$(ASCIIDOC_TARBALL)
 ASCIIDOC_BUILD_DIR=$(BUILD_TOOLS_DIR)/asciidoc-$(ASCIIDOC_VERSION)
 ASCIIDOC_INSTALL_DIR=$(shell pwd)/$(BUILD_TOOLS_DIR)/install
+ASCIIDOC_BACKEND_FLAGFILE=$(BUILD_TOOLS_DIR)/asciidoc-backend-flagfile
 
 
 .PHONY: staging production build help build-tools
@@ -51,9 +54,6 @@ clean:
 build-tools: asciidoc nanoc pygments
 
 
-asciidoc-setup: asciidoc/backends/bootstrap/bootstrap.conf asciidoc/backends/bootstrap/asciidoc.js
-	./scripts/install_asciidoc_backend.sh "$(ASCIIDOC_INSTALL_DIR)"
-
 $(ASCIIDOC_TARBALL_PATH):
 	wget -nc -P $(BUILD_TOOLS_DIR) $(ASCIIDOC_URL)
 	tar -C $(BUILD_TOOLS_DIR) -xzf $(ASCIIDOC_TARBALL_PATH)
@@ -61,20 +61,26 @@ $(ASCIIDOC_TARBALL_PATH):
 	cd $(ASCIIDOC_BUILD_DIR) && ./configure --prefix=$(ASCIIDOC_INSTALL_DIR)
 	$(MAKE) -C $(ASCIIDOC_BUILD_DIR)
 	$(MAKE) -C $(ASCIIDOC_BUILD_DIR) install
-	$(MAKE) asciidoc-setup
 
-asciidoc: $(ASCIIDOC_TARBALL_PATH)
+$(ASCIIDOC_BACKEND_FLAGFILE): asciidoc/backends/bootstrap/bootstrap.conf asciidoc/backends/bootstrap/asciidoc.js $(ASCIIDOC_TARBALL_PATH)
+	./scripts/install_asciidoc_backend.sh
+	touch $(ASCIIDOC_BACKEND_FLAGFILE)
+
+asciidoc: $(ASCIIDOC_TARBALL_PATH) $(ASCIIDOC_BACKEND_FLAGFILE)
 
 
 # ensure that nanoc is a no-op if installed; but don't insist on rbenv, rvm, or
-# other specific install procedure
-ifeq ($(shell if which nanoc; then echo nanoc; fi),)
-nanoc:
+# other specific install procedure for bundler
+ifeq ($(shell if which bundle; then echo bundle; fi),)
+bundler:
 	$(GEM_COMMAND) install bundler --no-ri --no-rdoc
-	bundle install
 else
-nanoc: ;
+bundler: ;
 endif
+nanoc: $(BUNDLE_BINDIR)/nanoc
+$(BUNDLE_BINDIR)/nanoc:
+	$(MAKE) bundler
+	bundle install --path "$(BUNDLE_DIR)" --binstubs "$(BUNDLE_BINDIR)"
 
 $(VENV):
 	virtualenv $(VENV)

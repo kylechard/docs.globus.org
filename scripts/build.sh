@@ -4,12 +4,17 @@ set -e
 # go to the repo root
 cd "$(dirname "$0")/.."
 
-install_dir="$1"
-if [ -z "$install_dir" ];
+asciidoc_bindir="$1"
+bundle_bindir="$2"
+if [ -z "$asciidoc_bindir" ];
 then
-    install_dir=".build_tools/install"
+    asciidoc_bindir=".build_tools/install/bin"
 fi
-export PATH="$install_dir/bin:$PATH"
+if [ -z "$bundle_bindir" ];
+then
+    bundle_bindir=".build_tools/bundle-vendor/bin"
+fi
+export PATH="$bundle_bindir:$asciidoc_bindir:$PATH"
 
 # check for RVMRC
 # assume that any existing .rvmrc is valid and source it
