@@ -1,6 +1,6 @@
 = Globus Connect Server Installation Guide
 :imagesdir: .
-:revdate: March 13, 2017
+:revdate: July 20, 2017
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -194,8 +194,8 @@ First, add the Globus Connect Server repository to your package management
 system:
 
 ----terminal
-$ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
-$ sudo rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
+$ sudo curl -LOs https://downloads.globus.org/toolkit/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
+$ sudo rpm --import https://downloads.globus.org/toolkit/gt6/stable/repo/rpm/RPM-GPG-KEY-Globus
 $ sudo yum install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
@@ -222,17 +222,17 @@ $ sudo yum install globus-connect-server
 First, add the Globus Connect Server repository to your package management
 system:
 ----terminal
-$ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
-$ sudo rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus
+$ sudo curl -LOs https://downloads.globus.org/toolkit/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
+$ sudo rpm --import https://downloads.globus.org/toolkit/gt6/stable/repo/rpm/RPM-GPG-KEY-Globus
 $ sudo zypper install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
 Next, retrieve and install the additional required repositories:
 ----terminal
-$ sudo zypper ar http://download.opensuse.org/repositories/Apache/SLE_11_SP3/Apache.repo
-$ sudo zypper ar http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/Apache:Modules.repo
-$ sudo rpm --import http://download.opensuse.org/repositories/Apache/SLE_11_SP3/repodata/repomd.xml.key
-$ sudo rpm --import http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_11_SP3/repodata/repomd.xml.key
+$ sudo zypper ar http://download.opensuse.org/repositories/Apache/SLE_12_SP2/Apache.repo
+$ sudo zypper ar http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_12_SP2/Apache:Modules.repo
+$ sudo rpm --import http://download.opensuse.org/repositories/Apache/SLE_12_SP2/repodata/repomd.xml.key
+$ sudo rpm --import http://download.opensuse.org/repositories/Apache:/Modules/Apache_SLE_12_SP2/repodata/repomd.xml.key
 $ sudo zypper remove libapr1
 ----terminal
 
@@ -246,7 +246,7 @@ $ sudo zypper install globus-connect-server
 First, add the Globus Connect Server repository to your package management
 system:
 ----terminal
-$ sudo curl -LOs http://toolkit.globus.org/ftppub/globus-connect-server/globus-connect-server-repo_latest_all.deb
+$ sudo curl -LOs https://downloads.globus.org/toolkit/globus-connect-server/globus-connect-server-repo_latest_all.deb
 $ sudo dpkg -i globus-connect-server-repo_latest_all.deb
 $ sudo apt-get update
 ----terminal
