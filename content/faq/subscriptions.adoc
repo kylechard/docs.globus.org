@@ -26,7 +26,7 @@ NOTE: The commands below must be run on the Globus command line interface (CLI).
 You can add a managed endpoint via the link:../../cli/using-the-cli/[Globus command line interface] by running the following command:
 
 ----terminal
-$ globus endpoint create --managed ENDPOINT_DISPLAY_NAME 
+$ globus endpoint create --server --managed ENDPOINT_DISPLAY_NAME 
 ----terminal
 
 For example, if a user [uservars]#<username>#  wishes to add a managed endpoint called "My Managed Endpoint" then the user must run:
