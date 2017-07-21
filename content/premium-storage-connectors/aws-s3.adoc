@@ -83,27 +83,25 @@ A list of Amazon S3 endpoint hostnames by region can be found here:
 
 http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
 
-=== Create a file containing s3 credentials
-
-The default configuration for the S3 DSI looks in $HOME/.globus/s3 for a
-file mapping the current user's ID to S3 access keys. Each user who will
-be using the DSI must create such a file with their credentials.
+=== Restart the gridftp server
 
 ----terminal
- % mkdir -m 0700 -p \~/.globus
- % (umask 077; echo "$(id -un);$S3_ACCESS_KEY_ID;$S3_SECRET_ACCESS_KEY" \
+# service globus-gridftp-server restart
+----terminal
+
+=== Create a file for each user containing their s3 credentials 
+
+Each user will need to have a special file created which specifies the S3 credentials associated with their local user account. The default configuration for the S3 DSI looks in $HOME/.globus/s3 for a file mapping the current user's ID to S3 access keys. Each user who will be using the DSI must create such a file with their credentials. This file can be created and populated by the user with the following commands:
+
+----terminal
+ # mkdir -m 0700 -p \~/.globus
+ # (umask 077; echo "$(id -un);$S3_ACCESS_KEY_ID;$S3_SECRET_ACCESS_KEY" \
     > ~/.globus/s3)
 ----terminal
 
 The S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY correspond to the Access Key ID
 and Secret Access Key for the user's AWS account that has been granted 
 access to the S3 buckets the user intends to access.
-
-=== Restart the gridftp server
-
-----terminal
-# service globus-gridftp-server restart
-----terminal
 
 == Debugging Tips
 To enable a debugging log for the S3 dsi, set the environment
