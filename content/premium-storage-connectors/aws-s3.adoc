@@ -5,7 +5,7 @@ menu_weight: 1
 ---
 
 = Amazon Web Services S3 Connector
-:revdate: April 6, 2017
+:revdate: July 24, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
