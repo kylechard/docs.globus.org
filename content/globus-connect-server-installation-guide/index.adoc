@@ -1,6 +1,6 @@
 = Globus Connect Server Installation Guide
 :imagesdir: .
-:revdate: July 20, 2017
+:revdate: July 27, 2017
 :toc:
 :toc-placement: manual
 :toclevels: 3
@@ -89,11 +89,11 @@ distributions:
 
 - CentOS 5, 6, and 7
 - Debian 7 and 8
-- Fedora 23 and 24
+- Fedora 24 and 25
 - Red Hat Enterprise Linux 5, 6, and 7
 - Scientific Linux 5, 6, and 7
-- SuSE Linux Enterprise Server 11sp3
-- Ubuntu 12.04 LTS, 14.04 LTS, 15.10, and 16.04 LTS
+- SuSE Linux Enterprise Server 12
+- Ubuntu 14.04 LTS, and 16.04 LTS
 
 === Administrator privileges
 You must have administrator (root) privileges on your system
@@ -199,17 +199,29 @@ $ sudo rpm --import https://downloads.globus.org/toolkit/gt6/stable/repo/rpm/RPM
 $ sudo yum install globus-connect-server-repo-latest.noarch.rpm
 ----terminal
 
-Next, if you are running CentOS 5, Red Hat Enterprise Linux 5, or Scientific Linux 5, add the additional required repository and install yum-priorities:
+You will need the link:https://fedoraproject.org/wiki/EPEL[EPEL repository] available and enabled on your system. If this is not already the case, you can install the EPEL repository with the instructions below.
+
+Install EPEL repository on CentOS 5, Red Hat Enterprise Linux 5, and Scientific Linux 5:
 
 ----terminal
-$ sudo curl -LOs http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
-$ sudo yum install epel-release-5-4.noarch.rpm
+$ sudo curl -LOs https://dl.fedoraproject.org/pub/epel/epel-release-latest-5.noarch.rpm
+$ sudo yum install epel-release-latest-5.noarch.rpm
 $ sudo yum install yum-priorities
 ----terminal
 
-Now, if you are running CentOS 6+, Red Hat Enterprise Linux 6+, or Scientific Linux 6+, install yum-plugin-priorities:
+Install EPEL repository on CentOS 6, Red Hat Enterprise Linux 6, and Scientific Linux 6:
 
 ----terminal
+$ sudo curl -LOs https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+$ sudo yum install epel-release-latest-6.noarch.rpm
+$ sudo yum install yum-plugin-priorities
+----terminal
+
+Install EPEL repository on CentOS 7, Red Hat Enterprise Linux 7, and Scientific Linux 7:
+
+----terminal
+$ sudo curl -LOs https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+$ sudo yum install epel-release-latest-7.noarch.rpm
 $ sudo yum install yum-plugin-priorities
 ----terminal
 
