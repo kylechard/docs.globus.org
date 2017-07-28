@@ -7,7 +7,7 @@ menu_weight: 1
 = Google Drive Connector (beta)
 :toc:
 :toc-placement: manual
-:revdate: July 11, 2017
+:revdate: July 28, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -34,53 +34,17 @@ IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded 
 
 === Install Steps
 
-////
 ++++
 <ul class="noStyleType">
-<li><p>1. wget http://builds.globus.org/gt6/etc/globus-repo-6-24.noarch.rpm</p></li>
-<li><p>2. yum install globus-repo-6-24.noarch.rpm</p></li>
-<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable (el7)"</p></li>
-<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable (el7)"</p></li>
-<li><p>5. rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus</p></li>
-<li><p>6. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
+<li><p>1. wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm</p></li>
+<li><p>2. yum install globus-toolkit-repo-latest.noarch.rpm</p></li>
+<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable"</p></li>
+<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable"</p></li>
+<li><p>5. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
     yum install epel-release</p></li>
-<li><p>7. yum install yum-plugin-priorities</p></li>
-<li><p>8. yum install globus-connect-server</p></li>
-<li><p>9. Navigate to https://auth.globus.org/v2/web/developers and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p></li></ul>
-
-<p>Make the following changes to the /etc/globus-connect-server.conf file:</p>
-
-<ul class="noStyleType">
-<li><p>10. set [Endpoint].Name to the Display Name from Step 8.</p></li>
-<li><p>11. set [Globus].ClientId to Client ID from step 8.</p></li>
-<li><p>12. set [Globus].ClientSecret to Client Secret from step 8.</p></li>
-<li><p>13. set [Endpoint].Public = True</p></li>
-<li><p>14a. set [Security].IdentityMethod = MyProxy</p></li>
-<li><p>14b. set [Security].AuthorizationMethod = MyProxyGridmapCallout</p></li>
-<li><p>14c. set [MyProxy].ServerName = %(HOSTNAME)s</p></li>
-<li><p>15. set [GCS Manager].ServerName = %(HOSTNAME)s</p></li></ul>
-
-<p>Now create the endpoint:</p>
-
-<ul class="noStyleType">
-<li><p>16. globus-connect-server-setup</p></li>
-<li><p>17. Find endpoint by searching for Display Name of endpoint here: <a href="https://www.globus.org/app/endpoints?scope=all">https://www.globus.org/app/endpoints?scope=all</a></p></li>
-<li><p>18. Verify base functionality via process described here: <a href="../globus-connect-server-installation-guide/#test_basic_endpoint_functionality">https://docs.globus.org/globus-connect-server-installation-guide/#test_basic_endpoint_functionality</a></p></li></ul>
-++++
-////
-
-++++
-<ul class="noStyleType">
-<li><p>1. wget http://builds.globus.org/gt6/etc/globus-repo-6-24.noarch.rpm</p></li>
-<li><p>2. yum install globus-repo-6-24.noarch.rpm</p></li>
-<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable (el7)"</p></li>
-<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable (el7)"</p></li>
-<li><p>5. rpm --import http://toolkit.globus.org/ftppub/globus-connect-server/RPM-GPG-KEY-Globus</p></li>
-<li><p>6. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
-    yum install epel-release</p></li>
-<li><p>7. yum install yum-plugin-priorities</p></li>
-<li><p>8. yum install globus-connect-server</p></li>
-<li><p>9. Navigate to <a href="https://developers.globus.org/">https://developers.globus.org/</a> and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p>
+<li><p>6. yum install yum-plugin-priorities</p></li>
+<li><p>7. yum install globus-connect-server</p></li>
+<li><p>8. Navigate to <a href="https://developers.globus.org/">https://developers.globus.org/</a> and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p>
 ++++
 
 IMPORTANT: This registration step creates the client id and secret for the Globus Connect Server install, and this registration should not be deleted to ensure that credentials needed to manage the server (the client id and secret) are available. If the registration is deleted, the endpoint cannot be updated or deleted.
@@ -91,10 +55,9 @@ IMPORTANT: This registration step creates the client id and secret for the Globu
 <p>Make the following changes to the /etc/globus-connect-server.conf file:</p>
 
 <ul class="noStyleType">
-<li><p>10. set [Endpoint].Name to the Display Name from Step 9.</p></li>
-<li><p>11. set [Globus].ClientId to Client ID from step 9.</p></li>
-<li><p>12. set [Globus].ClientSecret to Client Secret from step 9.</p></li>
-<li><p>13. set [Endpoint].Public = True</p></li>
+<li><p>9. set [Endpoint].Name to the Display Name from Step 8.</p></li>
+<li><p>10. set [Globus].ClientId to Client ID from step 8.</p></li>
+<li><p>11. set [Globus].ClientSecret to Client Secret from step 8.</p></li>
 </ul>
 ++++
 
@@ -109,46 +72,23 @@ The TCP ports that must be open for the default Globus Connect Server v5 install
 ** Used for GridFTP data channel traffic.
 ** The use of the default port range is strongly recommended (you can read why link:../globus-connect-server-installation-guide/#data_channel_traffic[here]).
 ** Data channel traffic is sent directly between endpoints—it is not relayed by the Globus service.
-* Port 7512 inbound from 174.129.226.69
-** Used for MyProxy traffic.
-** Needed if your server will run MyProxy service.
-* Port 2223 outbound to 184.73.255.160 
-** Used to pull certificate information from the Globus service.
-* Port 80 outbound to Any
-** Used to pull Globus Connect Server install packages from the Globus repository.
 * Port 80 inbound from Any 
 ** Used to register for certificates with Let's Encrypt service. (Only necessary when first setting up GCS)
 * Port 443 outbound to Any
 ** Used to communicate with the Globus service via its REST API.
 ** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
 ** Used to communicate with Google Drive servers.
+** Used to pull Globus Connect Server install packages from the Globus repository.
 * Port 443 inbound from Any 
 ** Used by GCS Manager Service.
 ** Used to communicate with Google Drive servers.
 ** Used to register for certificates with Let's Encrypt service.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 == Prepare a Google project for use with Globus
 You must have a Google account to complete this step. 
 
 . Go to the following URL:
-** https://console.developers.google.com/iam-admin/projects
+** https://console.developers.google.com/projectselector/iam-admin/iam
 . Click "Create Project" button
 . After creating the project, Click on the "Credentials" menu, then click on the "Create Credentials" button and select the "OAuth client ID" option.
 . Configure the Consent screen.
@@ -172,23 +112,9 @@ This section requires that a Globus Connect Server v5 endpoint has been setup an
 
 *Edit globus-connect-server.conf to set the following parameters:*
 
-. set [Endpoint].StorageType = Google Drive 
-. set [Security].IdentityMethod = None
-. set [Security].AuthorizationMethod = Gridmap
-. set [GridFTP].Sharing = True
-. set [GridFTP].ServiceCredentialSource = Globus
-. set [GridFTP].CertificateFile = %(ROOT)s/var/lib/globus-connect-server/grid-security/gridftp-hostcert.pem
-. set [GridFTP].KeyFile = %(ROOT)s/var/lib/globus-connect-server/grid-security/gridftp-hostkey.pem
-. comment out [MyProxy].ServerName
-. comment out [MyProxy].ServerHost
-. comment out [OAuth].ServerName
-. comment out [OAuth].ServerHost
 . set [GCS Manager].Domains = comma separated list of identity domains you wish to be able to create shares on this endpoint.
-. In globus-connect-server.conf, set [GCS Manager].ServiceCredentialSource = LetsEncrypt
-. set [GCS Manager].CertificateFile = %(ROOT)s/var/lib/globus-connect-server/grid-security/gcsmanager-hostcert.pem
-. set [GCS Manager].KeyFile = %(ROOT)s/var/lib/globus-connect-server/grid-security/gcsmanager-hostkey.pem
-. set [Google Drive].ClientId = the Google Client ID obtained in Section 2.5
-. set [Google Drive].ClientSecret = the Google Client Secret obtained in Section 2.5
+. set [Google Drive].ClientId = the Google Client ID obtained in the "Prepare a Google project for use with Globus" Section
+. set [Google Drive].ClientSecret = the Google Client Secret obtained the in "Prepare a Google project for use with Globus" Section
 . set [LetsEncrypt].Email = admin email address
 . set [LetsEncrypt].AgreeToS = True
 . [GridFTP].ServerName and [GCS Manager].ServerName must both be set to the same publicly resolvable DNS name. On an aws ec2 instance, that name must also NOT be the aws public DNS name (e.g. gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com)
@@ -198,7 +124,7 @@ This section requires that a Globus Connect Server v5 endpoint has been setup an
 https://www.globus.org/app/endpoints?scope=all
 +
 . Make note of the endpoint's UUID on the Overview tab
-. Contact Globus support to make your new endpoint managed. Be sure to send support the UUID of your endpoint from Step 22.
+. Contact Globus support to make your new endpoint managed. Be sure to send support the UUID of your endpoint from Step 9.
 . Once Globus Support notifies you that your endpoint has been made managed, you'll want to grant at least one Globus ID the Administrator Role for your new endpoint. You will do this by running the `/opt/globus/bin/add_admin_role` script and then following the prompts. For example, to grant the "abc" Globus ID the Administrator Role for your endpoint, you would do this:
 +
 ----
