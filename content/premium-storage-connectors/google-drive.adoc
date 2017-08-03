@@ -90,7 +90,8 @@ You must have a Google account to complete this step.
 . Go to the following URL:
 ** https://console.developers.google.com/projectselector/iam-admin/iam
 . Click "Create Project" button
-. After creating the project, Click on the "Credentials" menu, then click on the "Create Credentials" button and select the "OAuth client ID" option.
+. After creating the project, navigate to the link:https://console.developers.google.com/apis/dashboard[Google API Manager] menu.
+. Click on the "Credentials" menu, then click on the "Create Credentials" button and select the "OAuth client ID" option.
 . Configure the Consent screen.
 . When prompted, choose "Web application" as the Application type.
 . When naming the application be sure to choose a name that is descriptive so users will recognize the application.
