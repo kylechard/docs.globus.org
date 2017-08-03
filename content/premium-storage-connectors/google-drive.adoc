@@ -1,13 +1,13 @@
 ---
-full_title: "Google Drive Connector (beta)"
-short_title: "Google Drive (beta)"
+full_title: "Google Drive Connector"
+short_title: "Google Drive"
 menu_weight: 1
 ---
 
-= Google Drive Connector (beta)
+= Google Drive Connector
 :toc:
 :toc-placement: manual
-:revdate: July 28, 2017
+:revdate: August 3, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
@@ -24,7 +24,7 @@ IMPORTANT: Please be sure to verify your GCSv5 endpoint is functional before you
 == Globus Connect Server v5 Install Instructions
 
 === Introduction
-Globus Connect Server version 5 is a new major release of the server. The current release is a beta version of the server and has limited storage systems that it can support. At this time, this version of the server is supported only as a clean install on a system. 
+Globus Connect Server version 5 is a new major release of the server and is currently only for use with the Google Drive Connector. At this time, this version of the server is supported only as a clean install on a system. 
 
 IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded to this new server at this time. Globus Connect version 5 installations need to be on a separate machine. Upgrade tools are planned and will be made available in the future.
 
@@ -38,8 +38,8 @@ IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded 
 <ul class="noStyleType">
 <li><p>1. wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm</p></li>
 <li><p>2. yum install globus-toolkit-repo-latest.noarch.rpm</p></li>
-<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Unstable"</p></li>
-<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Unstable"</p></li>
+<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Stable"</p></li>
+<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Stable"</p></li>
 <li><p>5. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
     yum install epel-release</p></li>
 <li><p>6. yum install yum-plugin-priorities</p></li>
@@ -73,7 +73,7 @@ The TCP ports that must be open for the default Globus Connect Server v5 install
 ** The use of the default port range is strongly recommended (you can read why link:../globus-connect-server-installation-guide/#data_channel_traffic[here]).
 ** Data channel traffic is sent directly between endpoints—it is not relayed by the Globus service.
 * Port 80 inbound from Any 
-** Used to register for certificates with Let's Encrypt service. (Only necessary when first setting up GCS)
+** Used to register for certificates with Let's Encrypt service. (Only necessary when first setting up Globus Connect Server)
 * Port 443 outbound to Any
 ** Used to communicate with the Globus service via its REST API.
 ** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
@@ -112,10 +112,10 @@ This section requires that a Globus Connect Server v5 endpoint has been setup an
 
 *Edit globus-connect-server.conf to set the following parameters:*
 
-. set [GCS Manager].Domains = comma separated list of identity domains you wish to be able to create shares on this endpoint.
-. set [Google Drive].ClientId = the Google Client ID obtained in the "Prepare a Google project for use with Globus" Section
-. set [Google Drive].ClientSecret = the Google Client Secret obtained the in "Prepare a Google project for use with Globus" Section
-. set [LetsEncrypt].Email = admin email address
+. set [GCS Manager].Domains as a comma separated list of identity domains that control which Google identities can be used to create shares on this endpoint.
+. set [Google Drive].ClientId as the Google Client ID obtained in the "Prepare a Google project for use with Globus" Section.
+. set [Google Drive].ClientSecret as the Google Client Secret obtained the in "Prepare a Google project for use with Globus" Section.
+. set [LetsEncrypt].Email as an administrator’s email address. This address will also receive any notifications regarding the Let's Encrypt certs in use on the endpoint.
 . set [LetsEncrypt].AgreeToS = True
 . [GridFTP].ServerName and [GCS Manager].ServerName must both be set to the same publicly resolvable DNS name. On an aws ec2 instance, that name must also NOT be the aws public DNS name (e.g. gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com)
 . Run `globus-connect-server-setup` to create the endpoint definition and configure the GCS services locally
@@ -136,7 +136,7 @@ Add administrator role for this identity username: abc@globusid.org
 +
 After the identity is granted the Administrator Role, you should be able to log in to the Globus website using that same Globus ID and then find your endpoint by searching for it in the Manage Endpoints page using the "administered by me" scope.
 +
-. After the base endpoint has been made managed, permitted users can then create shares hosted by the endpoint that will be backed by their Google Drives. See separate instructions for process to create shares on Google Drive backed endpoint.
+. After the base endpoint has been made managed, permitted users can then create shares hosted by the endpoint that will be backed by their Google Drives. See "Share a Google Drive folder using Globus" section for instructions on how to create shares hosted by the new endpoint.
 
 [NOTE]
 =======
