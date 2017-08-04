@@ -118,7 +118,7 @@ This section requires that a Globus Connect Server v5 endpoint has been setup an
 . set [Google Drive].ClientSecret = the Google Client Secret obtained the in "Prepare a Google project for use with Globus" Section
 . set [LetsEncrypt].Email = admin email address
 . set [LetsEncrypt].AgreeToS = True
-. [GridFTP].ServerName and [GCS Manager].ServerName must both be set to the same publicly resolvable DNS name. On an aws ec2 instance, that name must also NOT be the aws public DNS name (e.g. gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com)
+. [GridFTP].ServerName and [GCS Manager].ServerName must both be set to the same publicly resolvable DNS name. On an aws ec2 instance, that name must also NOT be the aws public DNS name (e.g. gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com). Also on an aws ec2 instance, [GridFTP].ServerHost and [GCS Manager].ServerHost should both be set to the special value of `%(HOSTNAME)s`.
 . Run `globus-connect-server-setup` to create the endpoint definition and configure the GCS services locally
 . Find endpoint by searching for Display Name of endpoint here: 
 +
