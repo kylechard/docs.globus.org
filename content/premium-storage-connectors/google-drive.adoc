@@ -7,176 +7,208 @@ menu_weight: 1
 = Google Drive Connector
 :toc:
 :toc-placement: manual
-:revdate: August 3, 2017
+:revdate: August 8, 2017
 
 [doc-info]*Last Updated: {revdate}*
 
 '''
+The Google Drive connector enables use of Globus services to access and share content from a Google Drive associated with a Google account. The Google Drive connector is a premium feature available only to organizations with a link:https://www.globus.org/subscriptions[Globus Standard subscription].   
+
+This document describes how to install and use the Google Drive connector. After the installation is complete, any authorized user can establish a connection to their personal Google Drive by following the steps in link:../../how-to/access-google-drive[this How To].
+
+The installation must be done by a system administrator, and has the following distinct set of steps:
+
+* Installation of the packages needed for Globus Connect Server version 5 endpoint and the Google Drive connector
+* Registration of the endpoint with Globus to obtain credentials to securely use the Globus service APIs
+* Registration of the endpoint with Google to obtain credentials for the endpoint to securely use the Google Drive APIs for accessing data
+* Configuration of the endpoint to use the Google Drive connector and credentials from Google 
+* Firewall configuration
+
+Please contact us at support@globus.org if you have questions or need help with installation and use of the Google Drive connector.
+
+'''
 toc::[]
 
-== Prerequisites
-This connector requires a fully functional Globus Connect Server Version 5 (GCSv5) endpoint.
+== Endpoint Installation
+The Google Drive connector requires Globus Connect Server version 5, a new major release of the server that requires a separate install. This version is currently only for use with the Google Drive Connector, and subsequent releases of Globus Connect Server version 5 will add additional capabilities to the server such that it can be used in place of Globus Connect Server version 4. 
 
-In addition, a Google Account is required. It will be used to register the GCSv5 endpoint manager as a Google OAuth client.
-
-IMPORTANT: Please be sure to verify your GCSv5 endpoint is functional before you move on to configure the Google Drive Connector.
-
-== Globus Connect Server v5 Install Instructions
-
-=== Introduction
-Globus Connect Server version 5 is a new major release of the server and is currently only for use with the Google Drive Connector. At this time, this version of the server is supported only as a clean install on a system. 
-
-IMPORTANT: Existing Globus Connect Server (v4) installations cannot be upgraded to this new server at this time. Globus Connect version 5 installations need to be on a separate machine. Upgrade tools are planned and will be made available in the future.
+IMPORTANT: Currently you will need a separate machine to install Globus Connect Server version 5 and existing Globus Connect Server (version 4) installations cannot be upgraded to this new server at this time. Upgrade tools are planned and will be made available in the future.
 
 === Supported Linux distributions
-- RHEL 7
-- CentOS 7
+* RHEL 7
+* CentOS 7
 
-=== Install Steps
+=== Prerequisites
+* You must have administrator (root) privileges on your system to install Globus Connect Server; sudo can be used to perform the installation.
+* The machine will need a publicly resolvable DNS name. This name will be used in multiple places in the configuration. 
++
+NOTE: On an AWS EC2 instances, the publicly resolvable DNS name must NOT be the AWS public DNS name (e.g., the configuration should use gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com).
++
+* Firewall policy and required configuration is described link:#globus_connect_server_v5_firewall_policy_requirements[here].
+* The EPEL repository, and yum-plugin-priorities must be available on the machine. 
+** RHEL7/CentOS 7
++
+----terminal
+wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
+----terminal
++
+----terminal
+yum install globus-toolkit-repo-latest.noarch.rpm
+----terminal
++
+----terminal
+yum-config-manager --enable "Globus Connect Server 5 Stable"
+----terminal
++
+----terminal
+yum-config-manager --enable "Globus Toolkit 6 Stable"
+----terminal
++
+----terminal
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+----terminal
++
+----terminal
+yum install epel-release-latest-7.noarch.rpm
+----terminal
++
+----terminal
+yum install yum-plugin-priorities
+----terminal
++
+----terminal
+yum install globus-connect-server
+----terminal
 
-++++
-<ul class="noStyleType">
-<li><p>1. wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm</p></li>
-<li><p>2. yum install globus-toolkit-repo-latest.noarch.rpm</p></li>
-<li><p>3. yum-config-manager --enable "Globus Connect Server 5 Stable"</p></li>
-<li><p>4. yum-config-manager --enable "Globus Toolkit 6 Stable"</p></li>
-<li><p>5. Install the <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> repository:<br>
-    yum install epel-release</p></li>
-<li><p>6. yum install yum-plugin-priorities</p></li>
-<li><p>7. yum install globus-connect-server</p></li>
-<li><p>8. Navigate to <a href="https://developers.globus.org/">https://developers.globus.org/</a> and create a new project, then add a new Globus Connect Server to that project, then generate a new client secret. Make note of the Display Name, Client ID, and Client Secret used here.</p>
-++++
+== Registration of endpoint with Globus
+The Globus Connect Server v5 endpoint needs to be registered as a service with Globus. The registration process will result in a unique id (called client ID) and secret that will allow the endpoint to securely use the Globus APIs.
 
-IMPORTANT: This registration step creates the client id and secret for the Globus Connect Server install, and this registration should not be deleted to ensure that credentials needed to manage the server (the client id and secret) are available. If the registration is deleted, the endpoint cannot be updated or deleted.
+=== Prerequisites
+You will need a Globus account to complete these steps and the registration will be stored under this Globus account. Note that this account is only for registration and the administrator may use an existing Globus account.
 
-++++
-</li></ul>
+=== Steps
+. To register the endpoint, go to https://developers.globus.org/
+. Choose the option "Register a new Globus Connect Server v5"
+. If you have never used the registration interface before, it will prompt you to create a new project. Projects allow you to organize your registered applications and services, and grant other users rights to manage registrations within a project. You can learn more about Globus projects at https://docs.globus.org/api/auth/developer-guide/#managing-projects. You can grant other users administrative rights on the project to manage all registrations within the project.
+. Once you have created a project, select "Add…" then "Add new Globus Connect Server" to register your endpoint:
+.. The Display Name you specify here will be the name your users will see and search for to find your endpoint.
+.. A client ID will be generated for your endpoint
+.. Choose the "Generate New Client Secret" option, enter a description to identify how the secret is used, and click "Generate Secret" to obtain a client secret. 
+. Make note of the Display Name, client ID, and client secret before exiting the page.
 
-<p>Make the following changes to the /etc/globus-connect-server.conf file:</p>
+IMPORTANT: This registration step creates the client id and secret for the Globus Connect Server install.  To ensure that the credentials (the client id and secret) needed to manage the server are available, this registration should not be deleted. If the registration is deleted, the endpoint cannot be updated or deleted.
 
-<ul class="noStyleType">
-<li><p>9. set [Endpoint].Name to the Display Name from Step 8.</p></li>
-<li><p>10. set [Globus].ClientId to Client ID from step 8.</p></li>
-<li><p>11. set [Globus].ClientSecret to Client Secret from step 8.</p></li>
-</ul>
-++++
+=== Configuration
+On the machine where the Globus Connect Server v5 endpoint was installed, you'll need to edit the configuration file at `/etc/globus-connect-server.conf` and do the following:
 
-=== Globus Connect Server v5 Firewall Policy Requirements
+. Under the [Globus] section,
+.. set the 'ClientId' field to client ID obtained at registration
+.. set the 'ClientSecret' to client secret generated at registration.
+. Under the [Endpoint] section, 
+.. set the 'Name' field to the Display Name  you specified at registration.
+
+== Registration of endpoint with Google 
+The Globus Connect Server v5 endpoint needs to be registered as an application with Google so that users can authorize the endpoint to access their Google Drive on their behalf. The following steps describe how the endpoint can be registered as a Google OAuth client to obtain a client id and secret from Google. 
+
+=== Prerequisites
+* You will need a Google account to complete these steps, and the registration will be stored under that Google account. 
++
+NOTE: This account is only for registration of the application and has no bearing on Google accounts that will be allowed to use this endpoint to access data. An administrator may use an existing Google account.
++
+* You will need the fully qualified name of the machine where the  endpoint is being set up, and it should resolve to a public DNS.
+
+=== Steps:
+. To register the endpoint with Google, go to their link:https://console.developers.google.com/projectselector/iam-admin/iam[Developers Console]
+. If you have never created a project with Google, you will be prompted to create one. If you create a project, you do not have to change the default permissions for the project when given the option to do so.
+. After you have created or selected a project, go to the Google API Manager Dashboard (https://console.developers.google.com/apis/dashboard) and choose the "Credentials" option to create credentials for use with the endpoint.
+. Choose the "Create credentials" button and "OAuth client ID" option. 
+. You will be prompted to configure the consent screen that will be shown to  the users when they sign in to your endpoint. 
+. Once you have configured the consent screen, you will be prompted to select an application type. Choose "Web application" and configure it as follows:
+.. Name: set a descriptive name to be able to identify the registration of this endpoint in your projects on the Google API Manager. For example, the endpoint display name can be used for this.
+.. Authorization redirect URIs: set to +++https://YOUR_SERVER_FQDN_HOSTNAME/api/v1/authcallback_google+++ where the "YOUR_SERVER_FQDN_HOSTNAME" is the fully qualified host name of the machine where the endpoint is installed. 
+.. Select "Create".
+. Make note of the client ID and secret you get from Google for this application, as you will need them to configure the endpoint. 
+. The next step is to enable this registration to use the Google Drive API. Select the "Library" menu, and search for the "Drive API". 
+. Once you have the "Google Drive API" page, select the "Enable" option to allow the endpoint to access the Google Drive API using these credentials.
+
+=== Configuration
+On the machine where the Globus Connect Server v5 endpoint was installed, you'll need to edit the configuration file at `/etc/globus-connect-server.conf` and do the following:
+
+. Under the [Google Drive] section,
+.. set 'ClientId' to the client ID obtained from Google in the previous steps
+.. set 'ClientSecret' to the client secret obtained from Google in the previous steps.
+
+IMPORTANT: A set of Google credentials can only be used with a single Globus Connect Server v5 endpoint. If you want to install multiple instances you must create a new Google application for each one.
+
+== Configure endpoint to use the Google Drive Connector
+This section completes the configuration of the endpoint, including steps to obtain certificates. 
+
+. Edit `/etc/globus-connect-server.conf` to set the following parameters:
+.. In the [Google Drive] section, set 'Domains' to be a comma separated list of Google domains from which Google Drive can be made accessible via this endpoint. When set, only users who have an account from one of these Google domains can link their Google Drive to this endpoint and make it accessible. For example, if you would like restrict the use of this endpoint such that only users who have an account from your campus Google domain can make their Drive accessible via this endpoint, set the value to be your Google domain. To restrict it to users who have accounts from uchicago.edu or examplegoogledomain,com, the value will be set to "mygoogledomain.com, uchicago.edu"
+.. In the [LetsEncrypt] section,
+... Set 'Email' to an administrator's email address. This address will also receive notifications regarding the Let's Encrypt certs in use on the endpoint.
+... Set [LetsEncrypt].AgreeToS = True to agree to the LetsEncrypt Terms and Conditions.
+.. In the [Endpoint] section, set 'ServerName' to the publicly resolvable DNS name of the machine. Note: On an AWS EC2 instances, the publicly resolvable DNS name must NOT be the AWS public DNS name 
+. Run the following setup command to create the endpoint definition and configure the GCS services locally: 
++
+----terminal
+$ globus-connect-server-setup
+----terminal
++
+Once this is successful, an endpoint with the Google Drive connector is added to Globus and the UUID of the endpoint is returned.
++
+. The endpoint needs to be set as managed for it be usable. Please email support@globus.org with the UUID of your endpoint, so it can be set as managed. The UUID of the endpoint is displayed when the setup script runs successfully.
+. Once your endpoint has been set as managed, grant the Administrator Role for your new endpoint to one of your identities;  you may also grant the role to other Globus users. To grant the Administrator Role run the `/opt/globus/bin/add_admin_role` script:
++
+----terminal
+$  /opt/globus/bin/add_admin_role --identity abc@uchicago.edu
+----terminal
++
+It is recommended that you grant administrator role on the endpoint to other system administrators in your organization to ensure multiple trusted personnel have access to manage the endpoint.
++
+. Once the role has been granted, you can log into Globus with the identity, and find the endpoint.  (https://www.globus.org/app/endpoints?scope=administered-by-me) You should see the identity as administrator.  You can now edit the endpoint definition and fill in other fields in the Overview tab of the endpoint.
+
+The endpoint is now ready for users to login and access content on Google Drive. 
+
+[NOTE]
+=====
+When Globus Connect Server version 5 is configured to use Let's Encrypt certificates a new daily cron job will be set up on your system the first time that the `globus-connect-server-setup` command is run. This cron job will check your certificates and renew them as needed. You can also force this check at any time by manually running the job using the /etc/cron.daily/gcs-letsencrypt-renew command. 
+
+Without this cron job, the Let's Encrypt certificates being used by your endpoint will expire 90 days after they were created, and your endpoint will stop functioning properly.
+=====
+
+== Globus Connect Server v5 Firewall Policy Requirements
 If your system is behind a firewall, select TCP ports must be open for Globus to work. You may need to coordinate with your network or security administrator to open the ports.
-
-The TCP ports that must be open for the default Globus Connect Server v5 installation, together with brief descriptions of each, are listed here:
+The TCP ports that must be open for the default Globus Connect Server version 5 installation, together with brief descriptions of each, are listed here:
 
 * Port 2811 inbound from 184.73.189.163 and 174.129.226.69
 ** Used for GridFTP control channel traffic.
 * Ports 50000—51000 inbound and outbound to/from Any
 ** Used for GridFTP data channel traffic.
-** The use of the default port range is strongly recommended (you can read why link:../globus-connect-server-installation-guide/#data_channel_traffic[here]).
+** The use of the default port range is strongly recommended (you can read why link:../../globus-connect-server-installation-guide/#data_channel_traffic[here]).
 ** Data channel traffic is sent directly between endpoints—it is not relayed by the Globus service.
-* Port 80 inbound from Any 
+* Port 80 inbound from Any
 ** Used to register for certificates with Let's Encrypt service. (Only necessary when first setting up Globus Connect Server)
 * Port 443 outbound to Any
 ** Used to communicate with the Globus service via its REST API.
-** nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
+nexus.api.globusonline.org is a CNAME for an Amazon link:http://aws.amazon.com/elasticloadbalancing/[ELB]; IP addresses in the ELB are subject to change.
 ** Used to communicate with Google Drive servers.
 ** Used to pull Globus Connect Server install packages from the Globus repository.
-* Port 443 inbound from Any 
+* Port 443 inbound from Any
 ** Used by GCS Manager Service.
 ** Used to communicate with Google Drive servers.
 ** Used to register for certificates with Let's Encrypt service.
 
-== Prepare a Google project for use with Globus
-You must have a Google account to complete this step. 
+== Updating Globus Connect Server version 5 install
 
-. Go to the following URL:
-** https://console.developers.google.com/projectselector/iam-admin/iam
-. Click "Create Project" button
-. After creating the project, navigate to the link:https://console.developers.google.com/apis/dashboard[Google API Manager] menu.
-. Click on the "Credentials" menu, then click on the "Create Credentials" button and select the "OAuth client ID" option.
-. Configure the Consent screen.
-. When prompted, choose "Web application" as the Application type.
-. When naming the application be sure to choose a name that is descriptive so users will recognize the application.
-** Make very careful note of the Google Client ID and Google Client Secret you get in this step.
-+
-IMPORTANT: A set of Google credentials can only be used with a single GCSv5 installation. If you wish to install multiple instances you must create a new Google application for each one.
-+
-. Configure an entry for "Authorized redirect URIs" as follows:
-** +++https://YOUR_SERVER_FQDN_HOSTNAME/api/v1/authcallback_google+++
-** The "YOUR_SERVER_FQDN_HOSTNAME" value must be:
-*** Resolvable in public DNS.
-*** The value that the [GCS Manager].ServerName option is / will be set to in the globus-connect-server.conf file.
-. You must now enable the Drive API for your project before it can be used. Click on the "Library" menu for your project, and then click on the "Drive API" link. After that, press the "Enable" button to enable the DriveAPI for your project.
-
-TIP: You may wish to provide instructions for your users on how to disconnect this Google application from their accounts. They may do so by visiting https://myaccount.google.com and clicking on the "Connect apps & sites" link.
-
-== Configure your GCSv5 endpoint to use the Google Drive Connector 
-This section requires that a Globus Connect Server v5 endpoint has been setup and is functional. The basic installation of GCSv5 sets it up for use with POSIX file systems. The following instructions will replace the default endpoint configuration, and reconfigure GCSv5 for use with the Google Drive Connector. 
-
-*Edit globus-connect-server.conf to set the following parameters:*
-
-. set [GCS Manager].Domains as a comma separated list of identity domains that control which Google identities can be used to create shares on this endpoint.
-. set [Google Drive].ClientId as the Google Client ID obtained in the "Prepare a Google project for use with Globus" Section.
-. set [Google Drive].ClientSecret as the Google Client Secret obtained the in "Prepare a Google project for use with Globus" Section.
-. set [LetsEncrypt].Email as an administrator’s email address. This address will also receive any notifications regarding the Let's Encrypt certs in use on the endpoint.
-. set [LetsEncrypt].AgreeToS = True
-. [GridFTP].ServerName and [GCS Manager].ServerName must both be set to the same publicly resolvable DNS name. On an aws ec2 instance, that name must also NOT be the aws public DNS name (e.g. gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com). Also on an aws ec2 instance, [GridFTP].ServerHost and [GCS Manager].ServerHost should both be set to the special value of `%(HOSTNAME)s`.
-. Run `globus-connect-server-setup` to create the endpoint definition and configure the GCS services locally
-. Find endpoint by searching for Display Name of endpoint here: 
-+
-https://www.globus.org/app/endpoints?scope=all
-+
-. Make note of the endpoint's UUID on the Overview tab
-. Contact Globus support to make your new endpoint managed. Be sure to send support the UUID of your endpoint from Step 9.
-. Once Globus Support notifies you that your endpoint has been made managed, you'll want to grant at least one Globus ID the Administrator Role for your new endpoint. You will do this by running the `/opt/globus/bin/add_admin_role` script and then following the prompts. For example, to grant the "abc" Globus ID the Administrator Role for your endpoint, you would do this:
-+
-----
-# /opt/globus/bin/add_admin_role
-Add administrator role for this identity username: abc@globusid.org
-
-...
-----
-+
-After the identity is granted the Administrator Role, you should be able to log in to the Globus website using that same Globus ID and then find your endpoint by searching for it in the Manage Endpoints page using the "administered by me" scope.
-+
-. After the base endpoint has been made managed, permitted users can then create shares hosted by the endpoint that will be backed by their Google Drives. See "Share a Google Drive folder using Globus" section for instructions on how to create shares hosted by the new endpoint.
-
-[NOTE]
-=======
-When GCSv5 is configured to use Let's Encrypt certs a new daily cron job will be set up on your system the first time that the `globus-connect-server-setup` command is run. This cron job will check your GCSv5 certs and renew them as needed. You can also force this check at any time by manually running the job like so:
+To update your Globus Connect Server v5 endpoint, run the following command:
 
 ----terminal
-# /etc/cron.daily/gcs-letsencrypt-renew
+$ yum update \\*globus\* 
 ----terminal
 
-Without this cron job, the Let's Encrypt certs being used by your GCSv5 endpoint will expire (90 days after they were created, when GCSv5 was first installed) and your endpoint will stop functioning properly.
-=======
+After updating your packages, be sure to restart the services and ensure that the update takes full effect by running:
 
-
-
-
-== Share a Google Drive folder using Globus
-This section describes creating a shared endpoint to access your files and folders on Google Drive using the Globus interface.
-
-. Find the GCSv5 Connector endpoint that you"ll use to create your Google Drive share on the "Manage Endpoints" page, by searching in the "all" scope. Note that the endpoint must support the Google Drive Premium Connector. Choose the endpoint and select the "My Shares" tab. Then click the "Add Google Drive Share" button.
-+
-[role="img-responsive center-block"]
-image::images/google_drive-1.png[]
-+
-. If this is your first time creating a share on this endpoint, you may be prompted to associate a Google Account with your Globus Identity, so that Globus knows which Google Drive you wish to share.
-+
-[role="img-responsive center-block"]
-image::images/google_drive-2.png[]
-+
-. Configure the details for your share. Click the "Create Endpoint" button when done.
-+
-[role="img-responsive center-block"]
-image::images/google_drive-3.png[]
-+
-. Grant the endpoint access to your Google drive.
-+
-[role="img-responsive center-block"]
-image::images/google_drive-4.png[]
-+
-. Your share has now been created.
-+
-[role="img-responsive center-block"]
-image::images/google_drive-5.png[]
+----terminal
+$ globus-connect-server-setup
+----terminal
