@@ -9,7 +9,7 @@ Globus users who have access to an endpoint configured with a Google Drive conne
 
 Use the Google Drive connector-enabled endpoint provided by your site administrator or use the search feature on: https://www.globus.org/app/endpoints?scope=all to find an endpoint that has a Google Drive connector. The status column for properly-configured endpoints will contain “GCSv5 Connector”. Such endpoints can also have policy restrictions on Google accounts that can be used to create shared endpoints to access Google Drive content. 
 
-Choose the endpoint and select the "My Shares" tab. Choose the option to "Add Google Drive Share" to setup a shared endpoint for your Google Drive content. Once created, only you will be able to access the content on that endpoint, and you can choose to share with other collaborators by explicitly setting permissions.
+Choose the endpoint and select the "My Shares" tab. Choose the option to "Add Google Drive Share" to set up a shared endpoint for your Google Drive content. Once created, only you will be able to access the content on that endpoint, and you can choose to share with other collaborators by explicitly setting permissions.
 
 [role="img-responsive center-block"]
 image::images/google-drive-1.png[]
