@@ -276,7 +276,7 @@ If you have a home directory on a network share, you may see an error message of
 
 This issue arises when your home directory is stored on a server, and "*<path>*" takes the form of "*\\example.com\share\Users\ExampleUsername*".
 
-To resolve this problem, you must use Windows' capability to create a shortcut to a network share, or "Map" it to a drive letter. Microsoft provides official documentation for this for link:http://windows.microsoft.com/en-us/windows/create-shortcut-map-network-drive[Windows 7] and link:http://windows.microsoft.com/en-us/windows-8/create-shortcut-to-map-network-drive[Windows 8]. Follow these instructions to assign a drive letter of your choosing to the network share containing your home directory, and then restart Globus Connect Personal.
+To resolve this problem, you must use Windows' capability to create a shortcut to a network share, or "Map" it to a drive letter. Microsoft provides official documentation for this link:https://support.microsoft.com/en-us/help/4026635/windows-map-a-network-drive[here]. Follow these instructions to assign a drive letter of your choosing to the network share containing your home directory, and then restart Globus Connect Personal.
 
 == Why do I get "Permission Denied" or "Path not allowed" errors on my endpoint?
 When transferring files with from Globus Connect Personal, a common error that appears on the web site is:
