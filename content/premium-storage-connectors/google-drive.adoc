@@ -45,37 +45,39 @@ IMPORTANT: Currently you will need a separate machine to install Globus Connect 
 NOTE: On an AWS EC2 instance, the publicly resolvable DNS name must NOT be the AWS public DNS name (e.g., the configuration should use gcs.mydomain.com and not ec2-w-x-y-z.us-west-2.compute.amazonaws.com).
 +
 * Firewall policy and required configuration is described link:#globus_connect_server_v5_firewall_policy_requirements[here].
-* The EPEL repository and yum-plugin-priorities must be available on the machine. 
-** RHEL7/CentOS 7
-+
+* The EPEL repository and yum-plugin-priorities must be available on the machine.
+
+==== Steps
+RHEL7/CentOS 7
+
 ----terminal
 wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
 ----terminal
-+
+
 ----terminal
 yum install globus-toolkit-repo-latest.noarch.rpm
 ----terminal
-+
+
 ----terminal
 yum-config-manager --enable "Globus Connect Server 5 Stable"
 ----terminal
-+
+
 ----terminal
 yum-config-manager --enable "Globus Toolkit 6 Stable"
 ----terminal
-+
+
 ----terminal
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ----terminal
-+
+
 ----terminal
 yum install epel-release-latest-7.noarch.rpm
 ----terminal
-+
+
 ----terminal
 yum install yum-plugin-priorities
 ----terminal
-+
+
 ----terminal
 yum install globus-connect-server
 ----terminal
@@ -144,7 +146,7 @@ IMPORTANT: A set of Google credentials can only be used with a single Globus Con
 This section completes the configuration of the endpoint, including steps to obtain certificates. 
 
 . Edit `/etc/globus-connect-server.conf` to set the following parameters:
-.. In the [Google Drive] section, set 'Domains' to be a comma separated list of Google domains from which Google Drive can be made accessible via this endpoint. When set, only users who have an account from one of these Google domains can link their Google Drive to this endpoint and make it accessible. For example, if you would like restrict the use of this endpoint such that only users who have an account from your campus Google domain can make their Drive accessible via this endpoint, set the value to be your Google domain. To restrict it to users who have accounts from uchicago.edu or examplegoogledomain.com, the value will be set to "mygoogledomain.com, uchicago.edu"
+.. In the [Google Drive] section, set 'Domains' to be a comma separated list of Google domains from which Google Drive can be made accessible via this endpoint. When set, only users who have an account from one of these Google domains can link their Google Drive to this endpoint and make it accessible. For example, if you would like restrict the use of this endpoint such that only users who have an account from your campus Google domain can make their Drive accessible via this endpoint, set the value to be your Google domain. To restrict it to users who have accounts from uchicago.edu or mygoogledomain.com, the value will be set to "uchicago.edu, mygoogledomain.com"
 .. In the [LetsEncrypt] section,
 ... Set 'Email' to an administrator's email address. This address will also receive notifications regarding the Let's Encrypt certs in use on the endpoint.
 ... Set [LetsEncrypt].AgreeToS = True to agree to the LetsEncrypt Terms and Conditions.
