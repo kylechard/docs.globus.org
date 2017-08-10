@@ -47,7 +47,7 @@ NOTE: On an AWS EC2 instance, the publicly resolvable DNS name must NOT be the A
 * Firewall policy and required configuration is described link:#globus_connect_server_v5_firewall_policy_requirements[here].
 * The EPEL repository and yum-plugin-priorities must be available on the machine.
 
-==== Steps
+=== Steps
 RHEL7/CentOS 7
 
 ----terminal
@@ -120,13 +120,13 @@ NOTE: This account is only for registration of the application and has no bearin
 * You will need the fully qualified name of the machine where the  endpoint is being set up, and it should resolve to a public DNS.
 
 === Steps:
-. To register the endpoint with Google, go to their link:https://console.developers.google.com/projectselector/iam-admin/iam[Developers Console]
+. To register the endpoint with Google, go to their Developer Console (https://console.developers.google.com/projectselector/iam-admin/iam)
 . If you have never created a project with Google, you will be prompted to create one. If you create a project, you do not have to change the default permissions for the project when given the option to do so.
 . After you have created or selected a project, go to the Google API Manager Dashboard (https://console.developers.google.com/apis/dashboard) and choose the "Credentials" option to create credentials for use with the endpoint.
 . Choose the "Create credentials" button and "OAuth client ID" option. 
 . You will be prompted to configure the consent screen that will be shown to  the users when they sign in to your endpoint. 
 . Once you have configured the consent screen, you will be prompted to select an application type. Choose "Web application" and configure it as follows:
-.. Name: set a descriptive name to be able to identify the registration of this endpoint in your projects on the Google API Manager. For example, the endpoint display name can be used for this.
+.. Name: set a descriptive name to be able to identify the registration of this endpoint in your projects on the Google API Manager. For example, the endpoint Display Name can be used for this.
 .. Authorization redirect URIs: set to +++https://YOUR_SERVER_FQDN_HOSTNAME/api/v1/authcallback_google+++ where the "YOUR_SERVER_FQDN_HOSTNAME" is the fully qualified host name of the machine where the endpoint is installed. 
 .. Select "Create".
 . Make note of the client ID and secret you get from Google for this application, as you will need them to configure the endpoint. 
