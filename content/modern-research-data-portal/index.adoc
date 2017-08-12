@@ -1,0 +1,21 @@
+= The Modern Research Data Portal: A Design Pattern for Networked, Data-Intensive Science
+:imagesdir: .
+
+We describe a new design pattern, the modern research data portal, that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs.
+
+A link:[technical article | URL TO BE PROVIDED] describes this design pattern; reviews representative examples at research laboratories and universities (see below); and uses coding examples to demonstrate how Globus APIs can be used to implement a range of research data portal capabilities.
+
+A link:https://github.com/globus/globus-sample-data-portal/notebook.ipynb[Jupyter notebook] demonstrates some Globus features described in the technical article.
+  
+A link:[simple example data portal | URL TO BE PROVIDED BY VAS] allows you to experiment with an example implementation of the design pattern.
+
+
+A link:https://github.com/globus/globus-sample-data-portal[GitHub repository] provides code for the simple data portal that you can experiment with online.
+
+A link:mrdp-description[companion web site] provides a narrative description of the simple data portal code.
+*** To add some images, we could include the following material *** TERESA: I can provide images if these are wanted
+
+The following are examples of research data portals described in the article.
+
+Sanger screenshot, Globus publication screenshot, RDA screenshot —
+each with a brief description 
