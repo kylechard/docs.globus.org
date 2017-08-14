@@ -170,7 +170,7 @@ It is recommended that you grant administrator role on the endpoint to other sys
 +
 . Once the role has been granted, you can log into Globus with the identity, and find the endpoint.  (https://www.globus.org/app/endpoints?scope=administered-by-me) You should see the identity as administrator.  You can now edit the endpoint definition and fill in other fields in the Overview tab of the endpoint.
 
-The endpoint is now ready for users to login and access content on Google Drive. For more information on how to access a Google Drive with Globus, see this link:../../how-to/access-google-drive/[how to].
+The endpoint is now ready for users to login and access content on Google Drive. For more information on how to access a Google Drive with Globus, see this link:../../how-to/access-google-drive/[How To].
 
 [NOTE]
 =====
