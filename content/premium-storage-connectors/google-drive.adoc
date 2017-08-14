@@ -14,7 +14,7 @@ menu_weight: 1
 '''
 The Google Drive connector enables use of Globus services to access and share content from a Google Drive associated with a Google account. The Google Drive connector is a premium feature available only to organizations with a link:https://www.globus.org/subscriptions[Globus Standard subscription].   
 
-This document describes how to install and use the Google Drive connector. After the installation is complete, any authorized user can establish a connection to their personal Google Drive by following the steps in link:../../how-to/access-google-drive[this How To].
+This document describes how to install and use the Google Drive connector. After the installation is complete, any authorized user can establish a connection to their personal Google Drive by following the steps in this link:../../how-to/access-google-drive[How To].
 
 The installation must be done by a system administrator, and has the following distinct set of steps:
 
