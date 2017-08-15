@@ -7,21 +7,20 @@
 
 [doc-info]*Last Updated: {revdate}*
 
-This page describes a new design pattern, the modern research data portal, that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs. 
+This page describes a new design pattern, the modern research data portal (MRDP), that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs. 
 
 To demonstrate how easily such a portal can be developed we have developed a https://github.com/globus/globus-sample-data-portal[sample data portal] that we describe in the following. 
 
 === Prerequisites
-In order to run the example code that follows you will need to have the following  and deploy the 
+In order to run the example code that follows you will need to install several software dependencies and clone the MRDP GitHub repository. 
 
 ==== Supported Distributions
 
-===== The sample data portal has been tested on the following operating systems
 - Windows
 - Linux
 - MacOS
 
-===== Required Software:
+==== Required Software:
 
 - Python 2.x or 3.x
 - Globus SDK 
@@ -29,21 +28,23 @@ In order to run the example code that follows you will need to have the followin
 
 == Basic Research Data Portal functionality
 
-At the heart of the research data portal is a simple module that provides scalable access to data. The associated https://github.com/TODO[Jupyter Notebook] illustrates this pattern. 
+At the heart of the research data portal is a simple module that provides scalable and secure access to data. To illustrate this basic pattern we include a simple https://github.com/globus/globus-sample-data-portal/tree/master/notebook[Jupyter Notebook]. 
 
 Here the research data portal code follows four simple steps: (1) create a shared endpoint; (2) copy
 the requested data to that shared endpoint; (3) set permissions on the shared endpoint to enable access by the requesting user, and email the user a URL that they can use to retrieve data from the shared endpoint; and ultimately (perhaps after several days or weeks), (4) delete the new shared endpoint.
 
-To run this code. Download the Jupyter Notebook and execute the cells in the notebook. 
+To run this code you will need to first install Jupyter Notebook using Anaconda or pip. Instructions are available http://jupyter.org/install.html[here].
+ 
+You can then open the notebook using Jupyter as follows and execute the cells in the notebook. 
 
 [source,python,linenums]
 ----
-git clone https://github.com/TODO
 jupyter notebook
 ----
 
+.A screenshot of the MRDP Jupyter Notebook.
+image::images/jupyter.png[]
 
-TODO: MORE ABOUT WHAT IS HERE...
 
 == Sample research data portal.
 
@@ -54,13 +55,17 @@ This complete implementation is some 700 lines of code, plus 500 lines for an ex
 that we discuss in the next section. We do not include the entire code in this document,
 but we do discuss its major features. Complete source code is available in GitHub:
 https://github.com/globus/globus-sample-data-portal[https://github.com/globus/globus-sample-data-portal] and a running
+<<<<<<< HEAD
 instance of the portal is accessible online: https://mrdp.globus.org//[https://mrdp.globus.org/]
+=======
+instance of the portal is accessible online: https://mrdp.globus.org/[https://mrdp.globus.org/]
+>>>>>>> mrdp-updates
 
-Before deploying the code, we must first register an Globus Auth client or ``app'' 
-definition via the Globus Auth management interface (developers.globus.org[developers.globus.org]). 
-An app is required to enable RDP service to complete the OAuth2 workflo
+Before deploying the code, we must first register an Globus Auth client or "`app`"
+definition via the Globus Auth management interface (https://developers.globus.org[https://developers.globus.org]). 
+An app is required to enable RDP service to complete the OAuth2 workflow
 to obtain access tokens. The registration process requires a name, requested
-scopes for access Globus Auth managed services (e.g., ``urn:globus:auth:scope:transfer.api.globus.org:all'' for access Globus transfer 
+scopes for accessing Globus Auth managed services (e.g., "`urn:globus:auth:scope:transfer.api.globus.org:all`" for access to Globus transfer 
 capabilities), valid redirect URLs, and associated policies. 
 Globus Auth creates a unique client ID and secret through which 
 a service can prove its identity when requesting tokens from Globus Auth.
@@ -70,52 +75,50 @@ simple web servers.
 Flask allows us to define via `@`-prefixed _decorators_
 what actions should be performed when
 a user accesses specific URLs.
-For example, in the following code the decorator on Line XXX
+For example, in the following code the decorator
 specifies that a `GET` on the URL with the suffix `'/'`
 should result in a call to the `home()` function.
 Thus if the RDP web server's URL prefix is `http://localhost:5000`, 
-then accessing suffix `'/'` (i.e., `smallcode{http://localhost:5000/`)
+then accessing suffix `'/'` (i.e., `http://localhost:5000/`)
 will result in a call to `render_template('home.jinja2')`,
 which uses the Jinja2 templating language
 to render the server's home page, as defined by the template `home.jinja2`.
-(Here and elsewhere, we indicate the filename and line numbers from the sample RDP web server implementation.)
 
-+
 ----
 @app.route('/', methods=['GET'])
 def home():
     """Home page - play with it if you must!"""
     return render_template('home.jinja2')
 ----
-+
+
 
 The following code specifies that when a
 user visits `http://localhost:5000/login`, 
 the user should be redirected to the `authcallback` URL suffix.
 
-+
+
 ----
 @app.route('/login', methods=['GET'])
 def login():
     """Send the user to Globus Auth."""
     return redirect(url_for('authcallback'))
 ----
-+
+
 
 The URL `http://localhost:5000/authcallback` in turn calls the 
-`authcallback` function, shown in the Listing below, which uses the OAuth2 protocol to obtain access
+`authcallback` function, shown below, which uses the OAuth2 protocol to obtain access
 tokens that the portal can
 subsequently use to interact with Globus Auth or dependent services (e.g., Globus Transfer or the graph service.)
 The basic idea is as follows.
-First, the web server redirects the user to authenticate using Globus Auth (lines XXX--XXX). 
+First, the web server redirects the user to authenticate using Globus Auth. 
 The redirect URL includes the URL to return to (`http://localhost:5000/authcallback`) 
-after the user has authenticated.  The response includes a _auth code_ parameter 
-which can be unpacked and then swapped for access tokens by contacting Globus Auth (lines XXX--XXX)
+after the user has authenticated.  The response includes an _auth code_ parameter 
+which is unpacked and then swapped for access tokens by contacting Globus Auth
 and specifying the scopes needed by the portal. 
 Finally, the resulting access tokens are returned to the portal in a JSON object which also includes
 information about the user's identity. 
 
-+
+
 ----
 @app.route('/authcallback', methods=['GET'])
 def authcallback():
@@ -156,20 +159,21 @@ def authcallback():
 
     return redirect(url_for('transfer'))
 ----
-+
+
 
 The last line returns, redirecting the web browser to the portal's transfer page, 
-as shown in Figure XXX. 
+as shown below. 
 
 .A portion of the RDP sample portal, showing the five user options at top (each mapped to a 'route' in the code) and two of the available datasets.
 image::images/rdp.png[]
 
+
 A request to transfer files requires that the user first select the dataset(s) to be transferred
 and then specify the destination endpoint and location for the dataset(s).
-The listing below implements these behaviors.
-Line XXX checks that the user has selected datasets on the transfer web page. 
-Line XXX redirects the user to `https://www.globus.org/app/browse-endpoint`,
-one of the _web helper pages_ (see Figure XXX) 
+The code below implements these behaviors.
+It first checks that the user has selected datasets on the transfer web page. 
+It then redirects the user to `https://www.globus.org/app/browse-endpoint`,
+one of the _web helper pages_ (see Figure below) 
 that Globus operates to simplify RDP implementation.
 The browse endpoint helper page returns the endpoint ID and path
 to which the user wants to transfer the selected dataset(s). 
@@ -177,7 +181,7 @@ The `submit_transfer` function (not shown here)
 uses the endpoint ID and path to execute a Globus transfer request
 using code similar to the RDP code above.
 
-+
+
 ----
 @app.route('/transfer', methods=['GET', 'POST'])
 @authenticated
@@ -215,12 +219,11 @@ def transfer():
 
     return redirect(browse_endpoint)
 ----
-+
 
-==== Invoking other services}
+.The browse endpoint Web helper page that an RDP can use to select an endpoint and location for a transfer.
+image::images/GlobusWebWidget1.png[]
 
-
-image::images/GlobusWebWidget1.png[The browse endpoint Web helper page that an RDP can use to select an endpoint and location for a transfer]
+== Invoking other services
 
 The final element of the RDP design pattern that we discuss here 
 is the invocation of other services.
@@ -231,13 +234,11 @@ You might want to provide services that perform subsetting, quality control, dat
 or other lightweight analyses before serving data. 
 Another reason is that you might want to provide a public REST API for the main portal machinery,
 so that other app and service developers can integrate with and build on your portal.
-%You might also want to leverage other services to perform particular tasks
-%such as data cleansing or analysis.
 
 Our RDP skeleton illustrates this capability.
 When a user selects the *Graph* option to request that datasets be graphed,
 the portal does not perform those graphing operations itself but instead sends a request 
-to a separate Graph service. 
+to a separate _Graph service_. 
 The request provides the names of the datasets to be graphed.
 The Graph service retrieves these datasets from a specified location,
 runs the graphing program, and uploads the resulting
@@ -245,26 +246,15 @@ graphs to a dynamically created shared endpoint for subsequent retrieval.
 We describe in the following both the portal server and Graph server code used to
 implement this behavior.
 
-% It would be nice if code could be extracted from files and then line numbers matched.
-
 The portal server logic is in the function `graph()` in file `portal/view.py`,
 from which we extract the following code which sets up and sends the graph request.
 The code extracts the access token for the graph service
 from the access tokens retrieved during authentication (note: the graph service scope is requested during 
 this flow)
-%(retrieve a set of access tokens (Line~\ref{code:gr:00}), 
-%% [We could explain CLIENT IDENTITY here, but probably too much?]
-%on the portal's ``client identity" 
-%(The portal server could send this request as itself or as the user;
-%the use of the ``client identity" means that it is sending the request as itself.) 
-%from which it extracts the access token for the graph service (Line~\ref{code:gr:0}).
 It then assembles the URL, header (containing the Graph service access token), and data for the REST call,
 which is dispatched.
-Note how on Lines XXX and XXX
-information about the requesting user is extracted and passed to the graph service.
+Note how information about the requesting user is extracted and passed to the graph service.
 
-
-+
 ----
  tokens = get_portal_tokens()
   
@@ -288,19 +278,17 @@ information about the requesting user is extracted and passed to the graph servi
                        data=req_data, --latexlabel 
                        verify=False)
 ----
-+
+
 
 The Graph service then receives a HTTPS request with a header containing the access token in the
 form `Authorization: Bearer <request-access-token>`.
-%Auth API: POST /v2/oauth2/token/introspect
-It uses the following code to call out to Globus Auth (Line XXX) to introspect the request access token.
-(Line XXX packages the service's `client_id` and `client_secret` for authorization.)
+It uses the following code to call out to Globus Auth to introspect the request access token.
+(Including packaging the service's `client_id` and `client_secret` for authorization.)
 Globus Auth returns a set of information about the token, including
-its validity, client, scope, and effective identity. % and identities\_set
-The Graph service can then verify the token information (Lines XXX-XXX)
+its validity, client, scope, and effective identity. 
+The Graph service can then verify the token information 
 and authorize the request (in our example, this is a no-op: every request is accepted).
 
-+
 ----
   # Get the access token from the request
   token = get_token(request.headers['Authorization'])
@@ -329,57 +317,51 @@ and authorize the request (in our example, this is a no-op: every request is acc
   # global object
   g.req_token = token
 ----
-+
+
 
 As the Graph service needs to act as a client to the data service on which the datasets as located,
 it next requests dependent tokens from Globus Auth: 
 
-+
 ----
   client = load_auth_client()
   dependent_tokens = 
           client.oauth2_get_dependent_tokens(token)
 ----
-+
 
 from which it extracts the two access tokens that allow it to itself act as a client to 
 the Globus Transfer service and an HTTP endpoint service from which it will retrieve datasets:
 
-When a resource server receives a request from a client, after validating the access token included in the request (<request access token>) via token introspection (`POST /v2/oauth2/token/introspect`), the resource server may need to retrieve dependent access tokens that allow this resource server to act as a client to other resource servers on behalf of the client. The resource server does so by performing a Globus Auth "Dependent Token Grant", which is an OAuth2 Extension Grant.
+When a resource server receives a request from a client, after validating the access token included in the request (`<request access token>`) via token introspection (`POST /v2/oauth2/token/introspect`), the resource server may need to retrieve dependent access tokens that allow this resource server to act as a client to other resource servers on behalf of the client. The resource server does so by performing a Globus Auth _Dependent Token Grant_, which is an OAuth2 Extension Grant.
 
-+
 ----
   transfer_token = dependent_tokens.by_resource_server[
     'transfer.api.globus.org']['access_token']
   http_token = dependent_tokens.by_resource_server[
     'tutorial-https-endpoint.globus.org']['access_token']
 ----
-+
       
 The service also extracts from the request the names and year
 of the datasets to be graphed, and the identity of the requesting user for use
 when configuring the shared endpoint: 
 
-+
+
 ----
-request.form.getlist('datasets') --latexlabel `\label{code:z:1}`
+request.form.getlist('datasets')
   selected_year = request.form.get('year')
   user_identity_id = request.form.get('user_identity_id')
 ----
-+
 
-The Graph service next fetches each \smallcode{dataset} via an HTTP request to the data server,
+
+The Graph service next fetches each `dataset` via an HTTP request to the data server,
 using code like the following. 
-The \smallcode{http\_token} previously obtained from Globus Auth provides the credentials
+The `http_token` previously obtained from Globus Auth provides the credentials
 required to authenticate to the data server.  
 
-+
 ----
   response = requests.get(dataset, 
       headers=dict(Authorization='Bearer ' + 
 			  http_token))
 ----
-+
 
 A graph is generated for each dataset. 
 Then, the Globus SDK functions `operation_mkdir` and `add_endpoint_acl_rule`
@@ -398,7 +380,8 @@ the `graph()` function in `portal/rules.py`
 extracts the number and location of the newly created graph files from the response
 and then directs the user to a Globus transfer browser to access the files. 
 
-This example shows how the Globus architecture allows a service developer 
+== Summary
+This example shows how Globus allows a service developer 
 to outsource all identity management and authentication functions.
 Identities are provided by federated identity providers, such as InCommon and Google.
 All REST API security functions, including consent and token issuance, validation, and revocation,
