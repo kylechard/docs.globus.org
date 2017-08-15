@@ -15,10 +15,10 @@ We describe a new design pattern, the modern research data portal, that disaggre
     </div>
     <div class="col-xs-12 col-sm-4">
         <div class="well text-center"> <!-- example data portal -->
-            <a href="https://github.com/globus/globus-sample-data-portal"><img src="images/github-logo.svg" width="66" height="66"/></a>
-            <h2><a href="https://github.com/globus/globus-sample-data-portal">Example Data Portal</a></h2>
+            <a href="https://mrdp.globus.org/"><img src="images/github-logo.svg" width="66" height="66"/></a>
+            <h2><a href="https://mrdp.globus.org/">Example Data Portal</a></h2>
             <p class="text-left">allows you to experiment with an example implementation of the design pattern</p>
-            <div class="more-link"><a href="https://github.com/globus/globus-sample-data-portal">Learn more</a></div>
+            <div class="more-link"><a href="https://mrdp.globus.org/">Learn more</a></div>
         </div>
     </div>
     <div class="col-xs-12 col-sm-4">
