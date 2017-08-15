@@ -217,7 +217,7 @@ def transfer():
 
 image::images/GlobusWebWidget1.png[The browse endpoint Web helper page that an RDP can use to select an endpoint and location for a transfer]
 
-== Invoking other services}
+== Invoking other services
 
 The final element of the RDP design pattern that we discuss here 
 is the invocation of other services.
