@@ -55,11 +55,7 @@ This complete implementation is some 700 lines of code, plus 500 lines for an ex
 that we discuss in the next section. We do not include the entire code in this document,
 but we do discuss its major features. Complete source code is available in GitHub:
 https://github.com/globus/globus-sample-data-portal[https://github.com/globus/globus-sample-data-portal] and a running
-<<<<<<< HEAD
-instance of the portal is accessible online: https://mrdp.globus.org//[https://mrdp.globus.org/]
-=======
 instance of the portal is accessible online: https://mrdp.globus.org/[https://mrdp.globus.org/]
->>>>>>> mrdp-updates
 
 Before deploying the code, we must first register an Globus Auth client or "`app`"
 definition via the Globus Auth management interface (https://developers.globus.org[https://developers.globus.org]). 
