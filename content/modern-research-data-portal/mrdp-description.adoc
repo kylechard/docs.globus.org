@@ -1,5 +1,4 @@
 = The Modern Research Data Portal: A Design Pattern for Networked, Data-Intensive Science
-:imagesdir: .
 :revdate: August 12, 2017
 :source-highlighter: pygments
 :pygments-style: manni
@@ -43,6 +42,7 @@ jupyter notebook
 ----
 
 .A screenshot of the MRDP Jupyter Notebook.
+[role="img-responsive center-block"]
 image::images/jupyter.png[]
 
 
@@ -161,6 +161,7 @@ The last line returns, redirecting the web browser to the portal's transfer page
 as shown below. 
 
 .A portion of the RDP sample portal, showing the five user options at top (each mapped to a 'route' in the code) and two of the available datasets.
+[role="img-responsive center-block"]
 image::images/rdp.png[]
 
 
@@ -217,6 +218,7 @@ def transfer():
 ----
 
 .The browse endpoint Web helper page that an RDP can use to select an endpoint and location for a transfer.
+[role="img-responsive center-block"]
 image::images/GlobusWebWidget1.png[]
 
 == Invoking other services
