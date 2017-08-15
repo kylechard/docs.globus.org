@@ -23,7 +23,7 @@ We describe a new design pattern, the modern research data portal, that disaggre
     </div>
     <div class="col-xs-12 col-sm-4">
         <div class="well text-center"> <!-- companion website -->
-            <a href="mrdp-description"><img src="images/placeholder.png" width="66" height="66"/></a>
+            <a href="mrdp-description"><img src="images/companion-site.svg" width="66" height="66"/></a>
             <h2><a href="mrdp-description">Companion Website</a></h2>
             <p class="text-left">provides a narrative description of the simple data portal code</p>
             <div class="more-link"><a href="mrdp-description">Learn more</a></div>
