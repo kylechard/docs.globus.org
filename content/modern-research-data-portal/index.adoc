@@ -3,19 +3,58 @@
 
 We describe a new design pattern, the modern research data portal, that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs.
 
-A link:[technical article | URL TO BE PROVIDED] describes this design pattern; reviews representative examples at research laboratories and universities (see below); and uses coding examples to demonstrate how Globus APIs can be used to implement a range of research data portal capabilities.
-
-A link:https://github.com/globus/globus-sample-data-portal/notebook.ipynb[Jupyter notebook] demonstrates some Globus features described in the technical article.
-  
-A link:[simple example data portal | URL TO BE PROVIDED BY VAS] allows you to experiment with an example implementation of the design pattern.
-
-
-A link:https://github.com/globus/globus-sample-data-portal[GitHub repository] provides code for the simple data portal that you can experiment with online.
-
-A link:mrdp-description[companion web site] provides a narrative description of the simple data portal code.
-*** To add some images, we could include the following material *** TERESA: I can provide images if these are wanted
-
-The following are examples of research data portals described in the article.
-
-Sanger screenshot, Globus publication screenshot, RDA screenshot —
-each with a brief description 
+++++
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="well text-center">
+            <a href="https://github.com/globus/globus-sample-data-portal"><img src="images/github-logo.svg" width="66" height="66"/></a>
+            <h2><a href="https://github.com/globus/globus-sample-data-portal">GitHub Repo</a></h2>
+            <p class="text-left">provides code for the simple data portal that you can experiment with online</p>
+            <div class="more-link"><a href="https://github.com/globus/globus-sample-data-portal">Learn more</a></div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="well text-center"> <!-- example data portal -->
+            <a href="https://github.com/globus/globus-sample-data-portal"><img src="images/github-logo.svg" width="66" height="66"/></a>
+            <h2><a href="https://github.com/globus/globus-sample-data-portal">Example Data Portal</a></h2>
+            <p class="text-left">allows you to experiment with an example implementation of the design pattern</p>
+            <div class="more-link"><a href="https://github.com/globus/globus-sample-data-portal">Learn more</a></div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="well text-center"> <!-- companion website -->
+            <a href="mrdp-description"><img src="images/placeholder.png" width="66" height="66"/></a>
+            <h2><a href="mrdp-description">Companion Website</a></h2>
+            <p class="text-left">provides a narrative description of the simple data portal code</p>
+            <div class="more-link"><a href="mrdp-description">Learn more</a></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="well text-center"> <!-- jupyter notebook -->
+            <a href="https://github.com/globus/globus-sample-data-portal/tree/master/notebook"><img src="images/jupyter-logo.svg" width="66" height="66"/></a>
+            <h2><a href="https://github.com/globus/globus-sample-data-portal/tree/master/notebook">Jupyter Notebook</a></h2>
+            <p class="text-left">demonstrates some Globus features described in the technical article</p>
+            <div class="more-link"><a href="https://github.com/globus/globus-sample-data-portal/tree/master/notebook">Learn more</a></div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        <div class="well"> <!-- text block -->
+            <p class="text-left">A technical article describes this design pattern; reviews representative examples at research laboratories and universities (see below); and uses coding examples to demonstrate how Globus APIs can be used to implement a range of research data portal capabilities.</p>
+            <div class="more-link"><a href="">Learn more</a></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Samples</h2>
+        <p>The following are examples of research data portals described in the article.</p>
+        <div class="row">
+            <img src="images/placeholder.png" class="img-responsive col-xs-12 col-sm-4 mb-3">
+            <img src="images/placeholder.png" class="img-responsive col-xs-12 col-sm-4 mb-3">
+            <img src="images/placeholder.png" class="img-responsive col-xs-12 col-sm-4 mb-3">
+        </div>
+    </div>
+</div>
+++++
