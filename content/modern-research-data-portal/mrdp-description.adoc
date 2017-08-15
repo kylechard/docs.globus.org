@@ -42,7 +42,8 @@ You can then open the notebook using Jupyter as follows and execute the cells in
 jupyter notebook
 ----
 
-image::images/jupyter.png[The MRDP Jupyter Notebook]
+.A screenshot of the MRDP Jupyter Notebook.
+image::images/jupyter.png[]
 
 
 == Sample research data portal.
@@ -215,7 +216,8 @@ def transfer():
     return redirect(browse_endpoint)
 ----
 
-image::images/GlobusWebWidget1.png[The browse endpoint Web helper page that an RDP can use to select an endpoint and location for a transfer]
+.The browse endpoint Web helper page that an RDP can use to select an endpoint and location for a transfer.
+image::images/GlobusWebWidget1.png[]
 
 == Invoking other services
 
@@ -374,7 +376,7 @@ the `graph()` function in `portal/rules.py`
 extracts the number and location of the newly created graph files from the response
 and then directs the user to a Globus transfer browser to access the files. 
 
-==Summary
+== Summary
 This example shows how Globus allows a service developer 
 to outsource all identity management and authentication functions.
 Identities are provided by federated identity providers, such as InCommon and Google.
