@@ -51,9 +51,9 @@ We describe a new design pattern, the modern research data portal, that disaggre
         <h2>Samples</h2>
         <p>The following are examples of research data portals described in the article.</p>
         <div class="row">
-            <img src="images/placeholder.png" class="img-responsive col-xs-12 col-sm-4 mb-3">
-            <img src="images/placeholder.png" class="img-responsive col-xs-12 col-sm-4 mb-3">
-            <img src="images/placeholder.png" class="img-responsive col-xs-12 col-sm-4 mb-3">
+            <a href="https://publish.globus.org/" class="imageblock col-xs-12 col-sm-4 mb-3"><img src="images/globuspublish.png" class="img-responsive"></a>
+            <a href="https://imputation.sanger.ac.uk/" class="imageblock col-xs-12 col-sm-4 mb-3"><img src="images/sanger.png" class="img-responsive"></a>
+            <a href="https://rda.ucar.edu/" class="imageblock col-xs-12 col-sm-4 mb-3"><img src="images/rda.png" class="img-responsive"></a>
         </div>
     </div>
 </div>

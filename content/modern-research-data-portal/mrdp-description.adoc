@@ -3,23 +3,28 @@
 :source-highlighter: pygments
 :pygments-style: manni
 :pygments-linenums-mode: inline
+:toc:
+:toc-placement: manual
 
 [doc-info]*Last Updated: {revdate}*
 
 This page describes a new design pattern, the modern research data portal (MRDP), that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs. 
 
-To demonstrate how easily such a portal can be developed we have developed a https://github.com/globus/globus-sample-data-portal[sample data portal] that we describe in the following. 
+To demonstrate how easily such a portal can be developed we have developed a https://github.com/globus/globus-sample-data-portal[sample data portal] that we describe in the following.
 
-=== Prerequisites
+'''
+toc::[]
+
+== Prerequisites
 In order to run the example code that follows you will need to install several software dependencies and clone the MRDP GitHub repository. 
 
-==== Supported Distributions
+=== Supported Distributions
 
 - Windows
 - Linux
 - MacOS
 
-==== Required Software:
+=== Required Software:
 
 - Python 2.x or 3.x
 - Globus SDK 
@@ -36,10 +41,9 @@ To run this code you will need to first install Jupyter Notebook using Anaconda 
  
 You can then open the notebook using Jupyter as follows and execute the cells in the notebook. 
 
-[source,python,linenums]
-----
-jupyter notebook
-----
+----terminal
+$ jupyter notebook
+----terminal
 
 .A screenshot of the MRDP Jupyter Notebook.
 [role="img-responsive center-block"]
