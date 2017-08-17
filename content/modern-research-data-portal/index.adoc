@@ -1,3 +1,8 @@
+---
+full_title: "The Modern Research Data Portal: A Design Pattern for Networked, Data-Intensive Science"
+short_title: "MRDP"
+---
+
 = The Modern Research Data Portal: A Design Pattern for Networked, Data-Intensive Science
 :imagesdir: .
 
