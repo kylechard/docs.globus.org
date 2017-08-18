@@ -1,4 +1,4 @@
-= The Modern Research Data Portal: A Design Pattern for Networked, Data-Intensive Science
+= Code Walkthrough for the Modern Research Data Portal
 :revdate: August 12, 2017
 :source-highlighter: pygments
 :pygments-style: manni
