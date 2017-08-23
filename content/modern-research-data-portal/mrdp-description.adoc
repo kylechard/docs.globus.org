@@ -8,9 +8,10 @@
 
 [doc-info]*Last Updated: {revdate}*
 
-This page describes a new design pattern, the modern research data portal (MRDP), that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs. 
+The modern research data portal (MRDP) is a new design pattern that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, supports new deployment architectures that decouple control logic from data storage, and reduce development and operations costs.
 
-To demonstrate how easily such a portal can be developed we have developed a https://github.com/globus/globus-sample-data-portal[sample data portal] that we describe in the following.
+This page provides a companion guide to the https://github.com/globus/globus-sample-data-portal[sample data portal] code. We first present a simple Jupyter notebook that illustrates the core capabilities implemented by the MRDP. We then walk through the flask-based sample data portal, describing how Globus Auth is used to manage identities and how Globus is used to provide secure and high performance access to data. Finally, we describe how an external service, in this case a graphing service, can be invoked securely by the MRDP to illustrate how external capabilities can be integrated. 
+
 
 '''
 toc::[]
@@ -34,8 +35,7 @@ In order to run the example code that follows you will need to install several s
 
 At the heart of the research data portal is a simple module that provides scalable and secure access to data. To illustrate this basic pattern we include a simple https://github.com/globus/globus-sample-data-portal/tree/master/notebook[Jupyter Notebook]. 
 
-Here the research data portal code follows four simple steps: (1) create a shared endpoint; (2) copy
-the requested data to that shared endpoint; (3) set permissions on the shared endpoint to enable access by the requesting user, and email the user a URL that they can use to retrieve data from the shared endpoint; and ultimately (perhaps after several days or weeks), (4) delete the new shared endpoint.
+The example portal we describe here makes a scientific dataset available to specific users. The sample data portal is self-contained, it relies on Globus to manage user identities and therefore has no need to implement its own user registration system. Once users are given permission, they can browse the datasets in the portal, and download them. The download process is implemented by creating a Globus shared endpoint to which the user has read permission, staging the data into that shared endpoint, allowing the user to download the data from that shared endpoint via Globus, and eventually deleting the shared endpoint after some period of time. Thus, the MRDP code follows four simple steps: (1) create a shared endpoint; (2) copy the requested data to that shared endpoint; (3) set permissions on the shared endpoint to enable access by the requesting user, and direct the user to Globus to retrieve data from the shared endpoint; and ultimately (perhaps after several days or weeks), (4) delete the new shared endpoint.
 
 To run this code you will need to first install Jupyter Notebook using Anaconda or pip. Instructions are available http://jupyter.org/install.html[here].
  
@@ -50,7 +50,7 @@ $ jupyter notebook
 image::images/jupyter.png[]
 
 
-== Sample research data portal.
+== Sample research data portal
 
 We now turn our attention to assembling a simple RDP portal server
 that allows users to sign up, log in, select datasets from a set of temperature record datasets,
@@ -63,7 +63,7 @@ instance of the portal is accessible online: https://mrdp.globus.org/[https://mr
 
 Before deploying the code, we must first register an Globus Auth client or "`app`"
 definition via the Globus Auth management interface (https://developers.globus.org[https://developers.globus.org]). 
-An app is required to enable RDP service to complete the OAuth2 workflow
+An app is required to enable the RDP service to complete the OAuth2 workflow
 to obtain access tokens. The registration process requires a name, requested
 scopes for accessing Globus Auth managed services (e.g., "`urn:globus:auth:scope:transfer.api.globus.org:all`" for access to Globus transfer 
 capabilities), valid redirect URLs, and associated policies. 
