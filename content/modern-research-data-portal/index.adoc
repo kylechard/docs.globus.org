@@ -6,7 +6,7 @@ short_title: "MRDP"
 = The Modern Research Data Portal: A Design Pattern for Networked, Data-Intensive Science
 :imagesdir: .
 
-We describe a new design pattern, the modern research data portal, that disaggregates the traditional monolithic web portal to achieve orders-of-magnitude increases in data transfer performance, support new deployment architectures that decouple control logic from data storage, and reduce development and operations costs.
+The Modern Research Data Portal is a new design pattern for providing secure, scalable, and high performance access to research data.
 
 ++++
 <div class="row">
@@ -46,8 +46,8 @@ We describe a new design pattern, the modern research data portal, that disaggre
     </div>
     <div class="col-xs-12 col-sm-8">
         <div class="well">
-            <p class="text-left">A technical article describes this design pattern; reviews representative examples at research laboratories and universities (see below); and uses coding examples to demonstrate how Globus APIs can be used to implement a range of research data portal capabilities.</p>
-            <div class="more-link"><a href="">Learn more</a></div>
+            <p class="text-left">A technical article describes this design pattern, reviews representative examples at research laboratories and universities (see below), and uses coding examples to demonstrate how Globus APIs can be used to implement a range of research data portal capabilities.</p>
+            <!--<div class="more-link"><a href="">Learn more</a></div>-->
         </div>
     </div>
 </div>
